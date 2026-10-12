@@ -33,6 +33,7 @@ public partial class App : Application
         var validationIndex = Array.IndexOf(e.Args, "--validate");
         var onlineValidationIndex = Array.IndexOf(e.Args, "--validate-online");
         var installedValidationIndex = Array.IndexOf(e.Args, "--validate-installed");
+        var accessibilityValidationIndex = Array.IndexOf(e.Args, "--validate-accessibility");
         if (validationIndex >= 0)
         {
             var reportPath = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts/desktop-validation.json");
@@ -47,6 +48,7 @@ public partial class App : Application
         if (dataIndex >= 0 && dataIndex + 1 < e.Args.Length) dataDirectory = Path.GetFullPath(e.Args[dataIndex + 1]);
         if (validationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts", "desktop-validation", Guid.NewGuid().ToString("N"));
         if (onlineValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[onlineValidationIndex + 1]), "artifacts", "online-validation", Guid.NewGuid().ToString("N"));
+        if (accessibilityValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[accessibilityValidationIndex + 1]), "artifacts", "accessibility-validation", Guid.NewGuid().ToString("N"));
         if (installedValidationIndex >= 0)
         {
             var validationRoot = Path.GetFullPath(e.Args[installedValidationIndex + 1]);
@@ -60,6 +62,14 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        if (accessibilityValidationIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var result = await DesktopAccessibilityValidation.RunAsync(window, model, theme, Path.GetFullPath(e.Args[accessibilityValidationIndex + 1]));
+            result &= await DesktopDisplayValidation.RunAsync(window, model, Path.GetFullPath(e.Args[accessibilityValidationIndex + 1]));
+            Shutdown(result ? 0 : 1); return;
+        }
         if (installedValidationIndex >= 0)
         {
             window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
@@ -115,7 +125,8 @@ public partial class App : Application
                 var failureDetails = await DesktopFailureValidation.RunAsync(window, baseDirectory, dataDirectory, validationRoot);
                 var multiplePasswords = await DesktopMultiPasswordValidation.RunAsync(window, baseDirectory, dataDirectory, validationRoot);
                 var accessibility = await DesktopAccessibilityValidation.RunAsync(window, model, theme, validationRoot);
-                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && browser && failureDetails && multiplePasswords && accessibility;
+                var displays = await DesktopDisplayValidation.RunAsync(window, model, validationRoot);
+                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && browser && failureDetails && multiplePasswords && accessibility && displays;
                 await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess,
                     compressionAndPasswordReusePassed = compression.Flow, compressionAutomationLabelsAndShortcutPassed = compression.Accessibility,
                     archiveBrowserPassed = browser, extractionFailureDetailsPassed = failureDetails, multiplePasswordsPassed = multiplePasswords, accessibilityPassed = accessibility, engines = model.EngineVersions.ToArray() }));
