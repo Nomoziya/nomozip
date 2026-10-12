@@ -16,6 +16,7 @@ VIProductVersion "${VERSION}"
 VIAddVersionKey /LANG=2052 "ProductName" "nomozip"
 VIAddVersionKey /LANG=2052 "FileDescription" "nomozip 当前用户安装程序"
 VIAddVersionKey /LANG=2052 "FileVersion" "${VERSION}"
+VIAddVersionKey /LANG=2052 "ProductVersion" "${DISPLAY_VERSION}"
 VIAddVersionKey /LANG=2052 "LegalCopyright" "Nomoziya"
 
 !ifdef VALIDATION_ROOT
@@ -152,7 +153,7 @@ cleanupdone:
   CreateShortcut "${SHORTCUT_DIR}\nomozip.lnk" "$INSTDIR\ArchivePassword.exe"
   CreateShortcut "${SHORTCUT_DIR}\卸载 nomozip.lnk" "$INSTDIR\Uninstall.exe"
   WriteRegStr HKCU "${REG_KEY}" "DisplayName" "nomozip 开发预览"
-  WriteRegStr HKCU "${REG_KEY}" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKCU "${REG_KEY}" "DisplayVersion" "${DISPLAY_VERSION}"
   WriteRegStr HKCU "${REG_KEY}" "Publisher" "Nomoziya"
   WriteRegStr HKCU "${REG_KEY}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "${REG_KEY}" "DisplayIcon" "$INSTDIR\ArchivePassword.exe"
