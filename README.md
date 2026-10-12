@@ -28,6 +28,7 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [当前支持范围、验证证据与交接](docs/ACCEPTANCE.md)
+- [后续任务与相关产品研究](docs/ROADMAP.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
 - [解压主界面示意](design-system/extraction.svg)
 - [界面预览图](design-system/extraction.png)
