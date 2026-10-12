@@ -73,6 +73,8 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: validation-reports
-          path: artifacts/*validation.json
+          path: |
+            artifacts/*validation.json
+            artifacts/accessibility-preview/*.png
           if-no-files-found: ignore
       # This workflow does not publish or sign production updates.

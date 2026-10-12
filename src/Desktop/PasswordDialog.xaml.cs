@@ -48,7 +48,12 @@ public partial class PasswordDialog : Window
     private void OnContinue(object sender, RoutedEventArgs e)
     {
         var secret = ShowPassword.IsChecked == true ? VisibleSecret.Text : SecretBox.Password;
-        if (string.IsNullOrEmpty(secret)) { ErrorLabel.Text = "请输入密码。"; SecretBox.Focus(); return; }
+        if (string.IsNullOrEmpty(secret))
+        {
+            ErrorLabel.Text = "请输入密码。";
+            if (ShowPassword.IsChecked == true) VisibleSecret.Focus(); else SecretBox.Focus();
+            return;
+        }
         var selected = SavedBox.SelectedItem as SavedPassword;
         Response = new PasswordPromptResponse(secret, SavePassword.IsChecked == true && SavePassword.IsEnabled, NameBox.Text, selected?.Secret == secret ? selected.Id : null);
         if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? "未命名密码" : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt);
