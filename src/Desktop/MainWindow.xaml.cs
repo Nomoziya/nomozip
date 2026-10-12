@@ -15,6 +15,8 @@ public partial class MainWindow : Window
             var narrow = ActualWidth < 1000;
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             ExtractionLayout.Height = narrow ? double.NaN : Math.Max(280, ExtractionViewport.ActualHeight);
+            ExtractionViewport.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
+            SettingsScroll.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;
             ListRow.Height = narrow ? new GridLength(240) : new GridLength(1, GridUnitType.Star);
             SettingsColumn.Width = narrow ? new GridLength(0) : new GridLength(280);
             SettingsRow.Height = narrow ? GridLength.Auto : new GridLength(0);

@@ -31,10 +31,10 @@ Copy-Item (Join-Path $taskRoot 'docs/QUICK_START.txt') (Join-Path $taskOutput '�
 if (-not $SelfContained) {
     $taskInstructions = Join-Path $taskOutput '使用说明.txt'
     $taskText = [IO.File]::ReadAllText($taskInstructions)
-    $taskText = $taskText.Replace('安装版和独立 ZIP 版已携带 .NET 10 Windows Desktop Runtime，无需另行安装。','当前开发构建需要 .NET 10 Windows Desktop Runtime；正式下载的安装版与独立 ZIP 版已携带运行组件。')
+    $taskText = $taskText.Replace('完整独立版携带 .NET 10 Windows Desktop Runtime，无需另行安装；轻量版使用系统共享运行库。','此为轻量版，需 .NET 10 Windows Desktop Runtime x64（10.0.12 或更高的 10.0 补丁版）；不需要 SDK。运行库下载：https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0')
     [IO.File]::WriteAllText($taskInstructions, $taskText, [Text.UTF8Encoding]::new($false))
 }
-if ($SelfContained -and (Test-Path (Join-Path $taskRoot '.tools/nsis/ucrt64/share/licenses/nsis/COPYING'))) {
+if (Test-Path (Join-Path $taskRoot '.tools/nsis/ucrt64/share/licenses/nsis/COPYING')) {
     Copy-Item (Join-Path $taskRoot '.tools/nsis/ucrt64/share/licenses/nsis/COPYING') (Join-Path $taskLicenses 'NSIS-COPYING.txt') -Force
 }
 Copy-Item (Join-Path $taskRoot '.tools/dotnet/LICENSE.txt') (Join-Path $taskLicenses 'Microsoft-Dotnet-LICENSE.txt') -Force

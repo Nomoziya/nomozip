@@ -36,9 +36,15 @@ VIAddVersionKey /LANG=2052 "LegalCopyright" "Nomoziya"
 Var DeleteData
 Var DeleteCheckbox
 Var Dialog
+Var PreserveAssociations
+Var OriginalOpenCommand
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE "安装 nomozip"
-!define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n仅为当前 Windows 用户安装，已包含 .NET 运行组件。升级会保留密码库、设置和已下载的引擎。$\r$\n$\r$\n软件仍为开发预览。安装前请关闭正在运行的 nomozip。"
+!ifdef FRAMEWORK_DEPENDENT
+  !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n这是轻量版，使用系统共享的 .NET 10 Windows Desktop Runtime x64（10.0.12 或更高的 10.0 补丁版），无需 SDK。未安装运行库时，请先从 dotnet.microsoft.com 下载并安装，或改用携带运行库的完整独立版。$\r$\n$\r$\n升级保留密码库、设置和下载的引擎，并清理上一安装的程序文件。安装前请关闭 nomozip。"
+!else
+  !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n仅为当前 Windows 用户安装，已包含 .NET 运行组件。升级会保留密码库、设置和已下载的引擎。$\r$\n$\r$\n软件仍为开发预览。安装前请关闭正在运行的 nomozip。"
+!endif
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -115,6 +121,30 @@ FunctionEnd
 
 Section "安装"
   !insertmacro CheckNotRunning "install"
+  ; Run only a registered installation's own cleanup list. This removes old bundled runtime
+  ; files during a full-to-light upgrade without deleting unrelated files or user data.
+  ReadRegStr $0 HKCU "${REG_KEY}" "InstallLocation"
+  StrCmp $0 $INSTDIR 0 cleanupdone
+  IfFileExists "$INSTDIR\Uninstall.exe" 0 cleanupdone
+  StrCpy $PreserveAssociations 0
+  ReadRegStr $OriginalOpenCommand HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" ""
+  StrCmp $OriginalOpenCommand '"$INSTDIR\ArchivePassword.exe" "%1"' 0 runoldcleanup
+  ; Keep the ProgID present so Windows defaults survive legacy uninstallers. Trailing
+  ; whitespace leaves command semantics unchanged but avoids their exact ownership match.
+  StrCpy $PreserveAssociations 1
+  WriteRegStr HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" "" "$OriginalOpenCommand "
+runoldcleanup:
+  ExecWait '"$INSTDIR\Uninstall.exe" /S _?=$INSTDIR' $1
+  ${If} $PreserveAssociations == 1
+    WriteRegStr HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" "" "$OriginalOpenCommand"
+  ${EndIf}
+  ${If} $1 != 0
+    IfSilent +2
+    MessageBox MB_OK|MB_ICONSTOP "上一安装未能完成清理。请关闭 nomozip 后重试；本机密码库和设置保持不变。"
+    SetErrorLevel 2
+    Abort
+  ${EndIf}
+cleanupdone:
   SetOutPath "$INSTDIR"
   File /r "${APP_DIR}\*"
   WriteUninstaller "$INSTDIR\Uninstall.exe"

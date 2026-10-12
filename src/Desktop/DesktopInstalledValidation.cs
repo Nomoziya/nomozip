@@ -8,7 +8,7 @@ namespace ArchivePassword.Desktop;
 
 internal static class DesktopInstalledValidation
 {
-    public static async Task<bool> RunAsync(MainViewModel model, DpapiPasswordVault vault, string baseDirectory, string root)
+    public static async Task<bool> RunAsync(MainViewModel model, DpapiPasswordVault vault, string baseDirectory, string root, bool sharedRuntime = false)
     {
         var runtimeLocal = Path.GetFullPath(RuntimeEnvironment.GetRuntimeDirectory()).TrimEnd(Path.DirectorySeparatorChar)
             .Equals(Path.GetFullPath(baseDirectory).TrimEnd(Path.DirectorySeparatorChar), StringComparison.OrdinalIgnoreCase);
@@ -28,9 +28,9 @@ internal static class DesktopInstalledValidation
                 && File.ReadAllBytes(actual).SequenceEqual(File.ReadAllBytes(Path.Combine(root, "tests/fixtures/generated/中文示例.txt")));
         }
         catch { extraction = false; }
-        var passed = runtimeLocal && extraction;
-        await File.WriteAllTextAsync(Path.Combine(root, "artifacts/installed-smoke-validation.json"), JsonSerializer.Serialize(new
-        { passed, runtimeLocal, savedPasswordExtraction = extraction, existingVaultReused = reused, realNetwork = false, syntheticData = true }));
+        var passed = runtimeLocal != sharedRuntime && extraction;
+        await File.WriteAllTextAsync(Path.Combine(root, sharedRuntime ? "artifacts/light-installed-smoke-validation.json" : "artifacts/installed-smoke-validation.json"), JsonSerializer.Serialize(new
+        { passed, runtimeLocal, sharedRuntime, runtimeVersion = RuntimeEnvironment.GetSystemVersion(), savedPasswordExtraction = extraction, existingVaultReused = reused, realNetwork = false, syntheticData = true }));
         return passed;
     }
 }

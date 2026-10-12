@@ -45,6 +45,17 @@ internal static class DesktopAccessibilityValidation
                         var size = Descendants(selectedRow).OfType<TextBlock>().First(block => block.Text == model.SelectedTask.SizeText);
                         Check("selected archive metadata uses row foreground", ColorOf(size.Foreground) == ColorOf(selectedRow.Foreground));
                     }
+                    if (page == 0)
+                    {
+                        var action = (Button)window.FindName("ExtractAction");
+                        var settings = (ScrollViewer)window.FindName("SettingsScroll");
+                        Check($"extraction width {width} fixed primary action", action.IsVisible && action.IsEnabled
+                            && !Ancestors(action).Any(parent => parent is ScrollViewer));
+                        Check($"extraction width {width} one form scroll region", width == 1120
+                            ? ((ScrollViewer)window.FindName("ExtractionViewport")).VerticalScrollBarVisibility == ScrollBarVisibility.Disabled
+                              && settings.ComputedVerticalScrollBarVisibility == Visibility.Collapsed
+                            : settings.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled);
+                    }
                     var inputs = Descendants(window).OfType<Control>().Where(control => control.TemplatedParent is null && control.IsVisible && control.IsEnabled && control.Focusable
                         && control is Button or TextBox or ComboBox or CheckBox).ToArray();
                     var labels = new List<string>();
@@ -67,6 +78,20 @@ internal static class DesktopAccessibilityValidation
                     if (!named) failures.Add("controls: " + string.Join(", ", labels));
                     foreach (var scroll in Descendants(window).OfType<ScrollViewer>()) scroll.ScrollToTop();
                     await Layout();
+                    if (page == 0 && width == 800)
+                    {
+                        var viewport = (ScrollViewer)window.FindName("ExtractionViewport");
+                        var bar = Descendants(viewport).OfType<System.Windows.Controls.Primitives.ScrollBar>()
+                            .First(value => value.Orientation == Orientation.Vertical && ReferenceEquals(value.TemplatedParent, viewport));
+                        var track = (System.Windows.Controls.Primitives.Track)bar.Template.FindName("PART_Track", bar);
+                        var before = viewport.VerticalOffset;
+                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragStartedEventArgs(0, 0) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragStartedEvent });
+                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragDeltaEventArgs(0, 12) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragDeltaEvent });
+                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragCompletedEventArgs(0, 12, false) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragCompletedEvent });
+                        await Layout();
+                        Check("custom scrollbar thumb retains scrolling", viewport.VerticalOffset > before);
+                        viewport.ScrollToTop(); await Layout();
+                    }
                     foreach (var scale in new[] { 1.0, 1.25, 1.5, 2.0 })
                         Render(window, Path.Combine(directory, $"page-{page}-{width}-{scale * 100:0}.png"), scale);
                 }
@@ -125,7 +150,7 @@ internal static class DesktopAccessibilityValidation
         finally
         {
             theme.Apply(SystemParameters.HighContrast);
-            var passed = checks.Count == 29 && checks.Values.All(value => value);
+            var passed = checks.Count == 34 && checks.Values.All(value => value);
             await File.WriteAllTextAsync(Path.Combine(root, "artifacts/accessibility-validation.json"), JsonSerializer.Serialize(new
             {
                 passed, total = checks.Count, checks, failures, syntheticData = true,
@@ -134,7 +159,7 @@ internal static class DesktopAccessibilityValidation
                 humanKeyboardNarratorExplorerAndMonitorDpiAccepted = false
             }));
         }
-        return checks.Count == 29 && checks.Values.All(value => value);
+        return checks.Count == 34 && checks.Values.All(value => value);
     }
 
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
@@ -145,6 +170,10 @@ internal static class DesktopAccessibilityValidation
             yield return child;
             foreach (var descendant in Descendants(child)) yield return descendant;
         }
+    }
+    private static IEnumerable<DependencyObject> Ancestors(DependencyObject child)
+    {
+        while (VisualTreeHelper.GetParent(child) is { } parent) { yield return parent; child = parent; }
     }
     private static Color ColorOf(Brush brush) => ((SolidColorBrush)brush).Color;
     private static void Render(Window window, string path, double scale)

@@ -1,4 +1,4 @@
-param([string]$ValidationRoot)
+param([string]$ValidationRoot, [switch]$FrameworkDependent)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskParent = [IO.Path]::GetFullPath((Join-Path $taskRoot 'artifacts/installer-validation')).TrimEnd('\') + '\'
@@ -19,7 +19,7 @@ function Invoke-Installer([string]$Path,[string[]]$Arguments) {
     if ($taskProcess.ExitCode -ne 0) { throw "Installer returned $($taskProcess.ExitCode)." }
 }
 if (-not (Test-Path $taskFirst)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskFirst -Version '0.1.0.1' -ValidationRoot $taskValidation }
-if (-not (Test-Path $taskUpgrade)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskUpgrade -Version '0.1.0.2' -ValidationRoot $taskValidation }
+if (-not (Test-Path $taskUpgrade)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskUpgrade -Version '0.1.0.2' -ValidationRoot $taskValidation -FrameworkDependent:$FrameworkDependent }
 try {
     Invoke-Installer $taskFirst @('/S')
     $taskChecks.firstInstall = (Test-Path (Join-Path $taskApplication 'ArchivePassword.exe')) -and (Test-Path (Join-Path $taskValidation 'shortcuts/nomozip.lnk'))
@@ -37,20 +37,30 @@ try {
     $taskSettingsHash = (Get-FileHash $taskSettings -Algorithm SHA256).Hash
     'old release instruction' | Set-Content (Join-Path $taskApplication '使用说明.txt')
     'unrelated user file' | Set-Content (Join-Path $taskApplication 'keep-user-file.txt')
+    $taskAssociationRoot = 'HKCU:\Software\nomozip-validation\InstallerAssociations'
+    $taskAssociationCommand = Join-Path $taskAssociationRoot 'nomozip.Archive\shell\open\command'
+    $taskOriginalCommand = '"' + (Join-Path $taskApplication 'ArchivePassword.exe') + '" "%1"'
+    New-Item -Force $taskAssociationCommand | Out-Null
+    Set-Item -LiteralPath $taskAssociationCommand -Value $taskOriginalCommand
     Invoke-Installer $taskUpgrade @('/S')
     $taskChecks.newVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.2'
-    $taskChecks.upgradeReplacedOwnedPayload = (Get-FileHash (Join-Path $taskApplication '使用说明.txt')).Hash -eq (Get-FileHash (Join-Path $taskRoot 'artifacts/self-contained-app/使用说明.txt')).Hash
+    $taskPayload = if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }
+    $taskChecks.upgradeReplacedOwnedPayload = (Get-FileHash (Join-Path $taskApplication '使用说明.txt')).Hash -eq (Get-FileHash (Join-Path $taskRoot "$taskPayload/使用说明.txt")).Hash
+    $taskChecks.upgradePreservedFileEntry = (Get-Item -LiteralPath $taskAssociationCommand).GetValue('') -eq $taskOriginalCommand
+    $taskInstalledBytes = (Get-ChildItem -LiteralPath $taskApplication -Recurse -File | Measure-Object Length -Sum).Sum
+    if ($FrameworkDependent) { $taskChecks.upgradeRemovedBundledRuntime = -not (Test-Path (Join-Path $taskApplication 'coreclr.dll')) -and $taskInstalledBytes -lt 12MB }
     $taskChecks.upgradePreservedVault = (Get-FileHash $taskVault).Hash -eq $taskVaultHash
     $taskChecks.upgradePreservedSettings = (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
-    $taskSmoke = Start-Process -FilePath (Join-Path $taskApplication 'ArchivePassword.exe') -ArgumentList @('--validate-installed',$taskRoot,'--data-dir',$taskData) -WindowStyle Hidden -Wait -PassThru
+    $taskSmokeArguments = @('--validate-installed',$taskRoot,'--data-dir',$taskData)
+    if ($FrameworkDependent) { $taskSmokeArguments += '--shared-runtime' }
+    $taskSmoke = Start-Process -FilePath (Join-Path $taskApplication 'ArchivePassword.exe') -ArgumentList $taskSmokeArguments -WindowStyle Hidden -Wait -PassThru
     $taskChecks.installedOfflinePasswordExtraction = $taskSmoke.ExitCode -eq 0
-    $taskSmokeReport = Get-Content -Raw (Join-Path $taskRoot 'artifacts/installed-smoke-validation.json') | ConvertFrom-Json
-    $taskChecks.bundledRuntimeActuallyLoaded = $taskSmokeReport.runtimeLocal
+    $taskSmokeReportName = if ($FrameworkDependent) { 'light-installed-smoke-validation.json' } else { 'installed-smoke-validation.json' }
+    $taskSmokeReport = Get-Content -Raw (Join-Path $taskRoot "artifacts/$taskSmokeReportName") | ConvertFrom-Json
+    $taskChecks.expectedRuntimeActuallyLoaded = $taskSmokeReport.runtimeLocal -eq (-not $FrameworkDependent)
     $taskChecks.preservedVaultActuallyReused = $taskSmokeReport.existingVaultReused
     $taskVaultHash = (Get-FileHash $taskVault).Hash
     $taskSettingsHash = (Get-FileHash $taskSettings).Hash
-    $taskAssociationRoot = 'HKCU:\Software\nomozip-validation\InstallerAssociations'
-    $taskAssociationCommand = Join-Path $taskAssociationRoot 'nomozip.Archive\shell\open\command'
     New-Item -Force $taskAssociationCommand | Out-Null
     Set-Item -LiteralPath $taskAssociationCommand -Value ('"' + (Join-Path $taskApplication 'ArchivePassword.exe') + '" "%1"')
     Invoke-Installer (Join-Path $taskApplication 'Uninstall.exe') @('/S',('_?=' + $taskApplication))
@@ -68,8 +78,10 @@ try {
     if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
     Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskPassed = $taskChecks.Count -eq 16 -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
-    [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot 'artifacts/installer-validation.json') -Encoding utf8
+    $taskExpectedChecks = if ($FrameworkDependent) { 18 } else { 17 }
+    $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
+    $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
+    [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8
 }
 if (-not $taskPassed) { throw 'Installer acceptance failed; inspect artifacts/installer-validation.json.' }
 Write-Output 'Installer install/upgrade/offline extraction/uninstall acceptance passed.'
