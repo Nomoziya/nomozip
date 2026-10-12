@@ -1,5 +1,7 @@
 # 构建、验证与维护
 
+当前交付为第九轻量预览；功能、代理验收与维护交接已收尾，完整范围和证据见 [验收与交接](ACCEPTANCE.md)。下方各版本的发布、准备和修复记录保留其当时状态，当前结论以上述交接文档为准。
+
 第九公开预览 [v0.1.0-preview.9](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.9) 已发布，标签 `8a86c4062d4567daef7dcdc8cc0c518abb7cd1aa`（产品代码 `7bea5ae6ebc0aeb0ce78e2553bc590272b8f9eae` 已通过最终 CI，之后仅增加文档）。四项轻量资产均无登录公开下载，SHA-256 与本地及 GitHub 摘要一致；报告 `artifacts/public-preview-9-validation.json`。43 文件载荷 9085627 字节，100 文件源码快照、包 CRC/私密材料排除/固定公钥及仅轻量发布检查通过，报告 `artifacts/preview-9-package-validation.json`。首次准备的未发布安装器保留在原 staging 目录，实际发布使用修复后 `artifacts/release-preview-9-final-fixed/`。稳定引擎仍为 `engine-26.04`，历史资产不覆盖。本机启动入口为第九预览。新增功能的代理检查已完成，不等待用户逐版重复测试；第八预览人工未测试及其它真正依赖用户环境的状态保持不变。
 
 第九预览最终代码 `7bea5ae6ebc0aeb0ce78e2553bc590272b8f9eae` 的 [Windows CI 38257418706](https://github.com/Nomoziya/nomozip/actions/runs/38257418706) 全部通过，15 份报告及 36 张虚构数据渲染已下载至 `artifacts/github-validation-38257418706/validation-reports/`。101 项引擎、48 项组合密码业务流程、14 项正式桌面组合流程、38 项压缩（每版四次快速取消）、25 项核心、原有浏览/更新/布局/签名/入口检查通过。轻量安装及旧完整到轻量升级 18/18，云端安装 9288888 字节，原有密码库/设置复用及旧运行库清理通过。首轮失败已通过明确修复解决；没有用原样重跑代替修复。仅发布轻量 EXE、ZIP、源码和校验清单，公开下载校验待完成。

@@ -23,6 +23,8 @@
 
 从第七预览起，矩阵同时验证内容列表、大小/加密标记、文件名加密的密码请求和错密拒绝，覆盖 7z/ZIP/RAR/RAR5。签名工具要求目标引擎版本有对应列表检查，因此缺少列表覆盖的旧报告即使其它检查全通过也会被拒绝。报告结构和签名包载荷保持兼容；已有公开引擎资产不覆盖，未来候选按更新后的矩阵验收。
 
+从第九预览起，目标引擎还须提供传统 ZIP、AES ZIP、RAR5 的组合密码验证及逐字节解压证据。签名工具同时要求这些目标版本的检查名称和全通过结果；缺少组合覆盖的旧报告会被拒绝。`follow-official-engine.ps1 -Update` 已调用当前矩阵，因此新候选沿用相同门槛；基线两版最新报告为 101/101，包含目标候选时总数按实际矩阵变化。日常安装引擎时的微型检查与维护端完整矩阵分别承担其现有职责。
+
 从第三预览起，维护脚本还要求候选引擎通过 7z/ZIP 创建与加密的压缩矩阵。签名打包同时读取 `artifacts/compression-validation.json`，验证各版本的实测 DLL 哈希和检查结果，并把压缩证据合并进受签名清单保护的兼容性报告；缺失或不对应的报告会阻止签名。已发布的旧引擎包保持不可变，两版既有官方 DLL 已通过新的压缩验证。
 
 ```powershell
@@ -39,7 +41,7 @@
 
 ## GitHub 渠道约定
 
-仓库的最新稳定 Release 中应包含 `ArchivePassword-engine-XX.XX-win-x64.zip`；草稿与预发布不用于客户端更新。包名中的版本与经签名验证的版本必须一致。稳定引擎包使用 `engine-XX.XX` 标签；软件开发预览使用 `v0.1.0-preview.1` 预发布标签，不将软件预览冒充稳定产品。发布者为用户已授权的 Nomoziya 账号。
+仓库的最新稳定 Release 中应包含 `ArchivePassword-engine-XX.XX-win-x64.zip`；草稿与预发布不用于客户端更新。包名中的版本与经签名验证的版本必须一致。稳定引擎包使用 `engine-XX.XX` 标签；软件开发预览使用 `v0.1.0-preview.N` 标签并设为预发布，最新软件为第九预览。软件预览保持 `latest=false`，保留独立的稳定引擎渠道。发布者为用户已授权的 Nomoziya 账号。
 
 客户端只发出公开仓库元数据和资产下载请求，不发送密码库、用户压缩包或解压记录。签名在下载后独立验证；GitHub 元数据中的版本名称不是真实性凭据。
 
@@ -52,5 +54,7 @@ CI 已部署每日检查官方版本、兼容性验证与报告保存，并通�
 测试与打包使用独立的虚构样本。`scripts/test.ps1` 生成临时测试密钥、签名测试包和测试应用副本；这些数据不会进入源码包或用户软件包，也不要求正式密钥参与测试。
 
 源码副本不包含当前开发预览的私钥，完整测试仍可运行。自行建立其它发布渠道时，需要生成自己的密钥对，明确更换固定公钥并重新构建软件；不能为原有软件伪造相同发布身份。
+
+当前完整支持范围、各报告和实际环境未验证项集中在 [验收与交接](ACCEPTANCE.md)。软件安装包只发布共享运行库轻量版；维护脚本默认重建 `artifacts/app` 也是共享运行库模式。通过矩阵的引擎候选不等于已公开发布，仍须完成本节的签名和渠道发布步骤。
 
 原始接口资料：[微软 RSA.VerifyData](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsa.verifydata?view=net-10.0)、[GitHub Releases API](https://docs.github.com/en/rest/releases/releases#get-the-latest-release)、[GitHub 定时工作流](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)、[MSYS2 构建环境](https://github.com/msys2/setup-msys2)。
