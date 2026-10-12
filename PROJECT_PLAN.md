@@ -1,6 +1,6 @@
 # 项目规划
 
-更新：2026-10-12，Asia/Shanghai。状态：P0/P1 验证完成；P2 开发预览已发布；P4 稳定引擎与真实线上更新通过，完整安装卸载待完成。
+更新：2026-10-12，Asia/Shanghai。状态：P0/P1 验证完成；P2 开发预览已发布；P4 自包含安装与卸载已实现，本地流程通过，第二预览发布准备中。
 
 ## 当前进度
 
@@ -24,6 +24,8 @@
 2026-10-12 发布完成：软件预发布 [v0.1.0-preview.1](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.1) 已公开，含 Windows x64 程序 ZIP、64 文件源码快照及 SHA256SUMS；从无登录凭据的公开地址下载三项资产，均与本地审核文件及 GitHub 资产摘要一致。对应代码提交 `738ebf5e274f01134114468cabcbf3f35f7a2255` 的云端验证 [38198753411](https://github.com/Nomoziya/nomozip/actions/runs/38198753411) 通过，报告已下载到 `artifacts/github-validation-38198753411/`。稳定引擎 [engine-26.04](https://github.com/Nomoziya/nomozip/releases/tag/engine-26.04) 独立发布，软件预发布不会改变客户端读取的最新稳定引擎。真实公开网络的 `artifacts/online-validation.json` 为 8/8 通过；首次失败源于验收代码检查了错误的签名文件名，已更正为实际安装的 `update-manifest.sig` 后验证通过，产品更新逻辑无需修改。发布私钥仍为 DPAPI 密文，临时解密文件已清理，源码及下载包的凭据/私钥/密码库扫描与 ZIP CRC 检查通过。软件为依赖 .NET 10 Desktop Runtime 的开发预览，尚无安装程序或 Authenticode 签名；人工桌面验收、未来新官方版本分支与 P3 范围继续保留。不得覆盖已公开的不可变资产；后续产品变更使用新预发布标签与包。
 
 ## 1. 已确认需求与审计结果
+
+2026-10-12 安装阶段：继续沿用同一主会话 gpt-6.1-sol / high，无子代理。增加自包含 .NET 10 / WPF 分发及 NSIS 当前用户安装器，安装、升级及默认卸载保留密码库和设置，删除数据需要独立勾选和确认；卸载仅删除产品载荷清单中的文件。下载的 SourceForge 文件实际为网页，校验失败后未执行，改用 MSYS2 官方 NSIS 3.13-2 包，公开 SHA-256 核验通过，编译器解压至 `.tools`。本地两版实际安装/覆盖升级/离线解压/默认卸载/重装/明确删除虚构数据的 13 项检查通过；程序确认实际加载安装目录内的运行组件。新增检查会复用真实格式的旧 DPAPI 密码库，14 项最终版本待云端验证。当前沙箱不能启动 NSIS 32 位安装程序，出现系统 DLL 重定位错误；已在沙箱外执行限定于 `artifacts/installer-validation/` 与独立测试注册表项的本地验证，未接触真实密码库。UI 与程序版本名称统一为 nomozip / 0.1.0-preview.2。安装向导及桌面完整人工无障碍/DPI 验收仍待完成。开发预览 1 与稳定引擎资产保持不可变，新安装包使用预览 2 标签。实现与验证说明见 [INSTALLATION.md](docs/INSTALLATION.md)。
 
 | 项目 | 决定或事实 |
 | --- | --- |

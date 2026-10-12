@@ -2,6 +2,8 @@
 
 当前交付为已公开发布的 0.1.0 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新与真实 GitHub 线上引擎更新闭环已验证；完整安装卸载、人工桌面验收和基础压缩功能仍在后续阶段。
 
+第二预览增加当前用户安装包与携带运行组件的独立 ZIP。构建和安装/升级/卸载验收见 [安装说明](INSTALLATION.md)。普通开发构建继续使用系统运行时；`-SelfContained` 构建会携带 .NET / WPF 运行组件。安装器不会将这些组件安装为全局运行时。
+
 ## 本机运行
 
 运行 `artifacts/app/ArchivePassword.exe`。需要 .NET 10 Windows Desktop Runtime；当前本机已有对应运行时。此包目前不是自包含安装包。
