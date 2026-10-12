@@ -1,9 +1,9 @@
 param([string]$ApplicationDirectory, [string]$OutputFile,
-    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.5', [string]$ValidationRoot, [switch]$FrameworkDependent)
+    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.6', [string]$ValidationRoot, [switch]$FrameworkDependent)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 if (-not $ApplicationDirectory) { $ApplicationDirectory = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }) }
-if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/nomozip-0.1.0-preview.5-light-setup-win-x64.exe' } else { 'artifacts/nomozip-0.1.0-preview.5-setup-win-x64.exe' }) }
+if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/nomozip-0.1.0-preview.6-light-setup-win-x64.exe' } else { 'artifacts/nomozip-0.1.0-preview.6-setup-win-x64.exe' }) }
 $ApplicationDirectory = [IO.Path]::GetFullPath($ApplicationDirectory)
 $OutputFile = [IO.Path]::GetFullPath($OutputFile)
 if (-not (Test-Path (Join-Path $ApplicationDirectory 'ArchivePassword.exe'))) { throw 'Build the application first.' }

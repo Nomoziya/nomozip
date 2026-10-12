@@ -14,6 +14,7 @@ public partial class MainWindow : Window
         {
             var narrow = ActualWidth < 1000;
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
+            CompressionPage.ArrangePanels(narrow);
             ExtractionLayout.Height = narrow ? double.NaN : Math.Max(280, ExtractionViewport.ActualHeight);
             ExtractionViewport.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
             SettingsScroll.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;
