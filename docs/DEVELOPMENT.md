@@ -1,5 +1,7 @@
 # 构建、验证与维护
 
+第八公开预览 [v0.1.0-preview.8](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.8) 已发布，标签对应 `f4d800e`（代码提交 `cfbaa60aeac80e5df77fb1daaa57994fd146dc87` 已通过上述 Windows CI，之后仅增加验收说明）。本版只发布四项资产：轻量 EXE、轻量 ZIP、97 文件源码快照和 SHA256SUMS；无登录公开下载均与本地及 GitHub SHA-256 一致，报告 `artifacts/public-preview-8-validation.json`。43 文件轻量载荷 9061633 字节，安装 EXE 2091681 字节、ZIP 3334779 字节；CRC、私密材料排除和固定公钥检查通过，报告 `artifacts/preview-8-package-validation.json`。稳定引擎仍为 `engine-26.04`，历史资产保持不变。本机启动入口已同步第八预览。第七预览布局/浏览的人工通过保留，新增失败详情及其余真实桌面项目继续待确认。
+
 第八预览构建与云端验收完成：代码提交 `cfbaa60aeac80e5df77fb1daaa57994fd146dc87` 的 [Windows CI 38245933629](https://github.com/Nomoziya/nomozip/actions/runs/38245933629) 全部通过；13 份报告和 36 张虚构数据渲染已下载至 `artifacts/github-validation-38245933629/validation-reports/`。81 项引擎、25 项核心、10 项新增桌面失败流程及既有浏览/压缩/更新/签名/入口/44 项布局检查通过。轻量安装 18/18，包括旧完整到轻量升级、移除随包运行库、复用旧密码库、设置保留及卸载数据选项；云端安装 9265736 字节。新版本仅分发轻量 EXE、轻量 ZIP、源码和 SHA256SUMS，公开下载校验仍待完成。
 
 2026-10-12 用户确认已体验第七预览，“布局和浏览正常”。将压缩页、密码库布局及内容浏览的实际体验记为人工通过；不从该回复扩展为所有格式、所有窗口尺寸、键盘/讲述人、系统高对比度、多屏 DPI、旧数据保留或 Explorer 的全部通过。保留第四预览压缩加密/自动解密、第五预览解压布局/体积的原有结果。
