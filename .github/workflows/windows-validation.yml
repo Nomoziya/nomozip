@@ -12,7 +12,39 @@ permissions:
   contents: read
 
 jobs:
+  vault-export:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Prepare SDK and synthetic vault export
+        run: |
+          $env:PATH = 'C:\Program Files\7-Zip;' + $env:PATH
+          ./scripts/bootstrap.ps1
+          $env:DOTNET_CLI_HOME = Join-Path $PWD '.tools/dotnet-home'
+          & ./.tools/dotnet/dotnet.exe build tests/VaultTransferValidation/VaultTransferValidation.csproj --nologo -m:1 -nr:false
+          if ($LASTEXITCODE -ne 0) { throw 'Vault export fixture build failed.' }
+          & ./.tools/dotnet/dotnet.exe tests/VaultTransferValidation/bin/Debug/net10.0-windows/VaultTransferValidation.dll $PWD.Path export (Join-Path $PWD 'artifacts/vault-cross-machine')
+          if ($LASTEXITCODE -ne 0) { throw 'Synthetic cross-machine export failed.' }
+      - name: Transfer artificial encrypted fixtures to another Windows runner
+        uses: actions/upload-artifact@v7
+        with:
+          name: vault-cross-machine-fixtures
+          path: |
+            artifacts/vault-cross-machine/synthetic.nvault
+            artifacts/vault-cross-machine/source.apv
+            artifacts/vault-cross-machine/source-identity.json
+          retention-days: 7
   validate:
+    needs: vault-export
     runs-on: windows-latest
     timeout-minutes: 40
     defaults:
@@ -63,6 +95,15 @@ jobs:
           ./scripts/test.ps1 -SkipEngineValidation
           & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
+      - name: Obtain synthetic backup from independent Windows machine
+        uses: actions/download-artifact@v8
+        with:
+          name: vault-cross-machine-fixtures
+          path: artifacts/vault-cross-machine
+      - name: Verify portable backup migration with real encrypted extraction
+        run: |
+          & ./.tools/dotnet/dotnet.exe tests/VaultTransferValidation/bin/Debug/net10.0-windows/VaultTransferValidation.dll $PWD.Path cross-import (Join-Path $PWD 'artifacts/vault-cross-machine')
+          if ($LASTEXITCODE -ne 0) { throw 'Independent Windows machine vault migration failed.' }
       - name: Validate lightweight installer and legacy bundled-runtime upgrade
         run: |
           ./scripts/bootstrap-installer.ps1
@@ -78,5 +119,6 @@ jobs:
           path: |
             artifacts/*validation.json
             artifacts/accessibility-preview/*.png
+            artifacts/vault-transfer-preview/*.png
           if-no-files-found: ignore
       # This workflow does not publish or sign production updates.

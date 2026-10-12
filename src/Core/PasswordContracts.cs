@@ -10,6 +10,7 @@ public interface IPasswordVault
     Task RecordSuccessAsync(Guid id, string archivePath, CancellationToken cancellationToken = default);
     Task<Guid?> GetAssociatedPasswordAsync(string archivePath, CancellationToken cancellationToken = default);
     Task RestoreBackupAsync(CancellationToken cancellationToken = default);
+    Task<PasswordImportPlan> ImportAsync(IReadOnlyList<SavedPassword> passwords, PasswordImportMode mode, CancellationToken cancellationToken = default);
 }
 public interface IPasswordCandidateProvider
 {

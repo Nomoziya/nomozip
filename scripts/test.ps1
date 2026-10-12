@@ -6,10 +6,12 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
+& $taskDotnet (Join-Path $taskRoot 'tests/VaultTransferValidation/bin/Debug/net10.0-windows/VaultTransferValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Encrypted vault transfer validation failed.' }
 $taskPython = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $taskPython -or $taskPython -like '*WindowsApps*') {
     $taskPython = (Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe')
@@ -105,3 +107,5 @@ $taskApplication = Join-Path $taskTestApp 'ArchivePassword.exe'
 $taskGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskGui.ExitCode -ne 0) { throw 'Desktop command validation failed.' }
 Write-Output 'Desktop command validation passed.'
+$taskVaultGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-vault-transfer', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskVaultGui.ExitCode -ne 0) { throw 'Desktop vault transfer command validation failed.' }
