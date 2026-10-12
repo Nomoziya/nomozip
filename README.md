@@ -2,9 +2,9 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-当前状态：0.1.0-preview.5 Windows x64 开发预览已发布，提供共享运行库轻量版和完整独立版。引擎 57 项、核心 17 项、更新 22 项、压缩 38 项、打开方式 7 项、四条桌面流程、34 项补充桌面检查、17 项完整安装及 18 项完整到轻量安装验证通过；此前真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
+当前版本：0.1.0-preview.6 Windows x64 开发预览，提供共享运行库轻量版和完整独立版。引擎 57 项、核心 17 项、更新 22 项、压缩 38 项、打开方式 7 项、四条桌面流程、44 项桌面检查、17 项完整安装及 18 项完整到轻量安装验证通过；此前真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
 
-下载：[Windows x64 第五预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.5)。已有 .NET 10 Desktop Runtime x64 的电脑推荐带 `light` 的轻量安装 EXE：安装包约 2 MB，软件安装目录约 9 MB；未安装运行库时需从 [微软官网](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0) 安装桌面运行库（本轮验证 10.0.12），不需要 SDK。约 9 MB 不包括系统共享运行库的占用。无需另装运行库可选完整独立 EXE / ZIP，约 148 MB 载荷。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
+下载：[Windows x64 第六预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.6)。已有 .NET 10 Desktop Runtime x64 的电脑推荐带 `light` 的轻量安装 EXE：安装包约 2 MB，软件安装目录约 9 MB；未安装运行库时需从 [微软官网](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0) 安装桌面运行库（本轮验证 10.0.12），不需要 SDK。约 9 MB 不包括系统共享运行库的占用。无需另装运行库可选完整独立 EXE / ZIP，约 148 MB 载荷。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
@@ -12,13 +12,15 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 完整构建、运行与限制见 [开发与维护说明](docs/DEVELOPMENT.md)，更新与发布见 [更新说明](docs/UPDATES.md)。升级及默认卸载保留密码库，详见 [安装说明](docs/INSTALLATION.md)。
 
-第四预览的压缩加密和自动解密已获用户确认；下一步请按 [第五预览人工验收](docs/INSTALLATION.md#第五预览的人工验收) 检查轻量升级、新解压布局及实际桌面操作。
+第四预览的压缩加密和自动解密、第五预览的解压布局和约 9 MB 体积已获用户确认；下一步请按 [第六预览人工验收](docs/INSTALLATION.md#第六预览的人工验收) 检查压缩页、添加记录后的密码库布局及其余实际桌面操作。
 
 第三预览增加 7z/ZIP 创建、加密和可选 Windows 打开方式入口，[云端验证](https://github.com/Nomoziya/nomozip/actions/runs/38206962560) 全部通过。操作、密码限制与数据保护见 [压缩说明](docs/COMPRESSION.md)。同包多密码组合解压仍未实现。
 
 第四预览修复高对比度配色、空密码焦点及小工作区窗口尺寸，[最终 Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38223276557) 全部通过。人工键盘、Narrator、实际 DPI/高对比度和 Explorer 操作仍待确认，范围见开发说明的 P5 章节。
 
 第五预览根据实际反馈调整解压滚动布局：操作固定在底栏，普通宽窗口的设置卡片无需滚动，窄窗口保留溢出滚动并使用统一细轨。共享运行库轻量版保留全部现有功能，从已登记完整旧版升级会清理旧运行组件并保留密码/设置/入口和非产品文件。[最终 Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38228863264) 全部通过；完整到轻量安装已确认实际复用旧密码库并使用共享运行库。新布局仍需用户实际确认。
+
+用户随后确认第五预览的解压布局和体积符合预期。第六预览把压缩页改为相同的工具栏、分栏和固定底栏结构，并修整密码库的行距、内容对齐、表头、启停/未使用状态和操作区域。[Windows CI 38236148792](https://github.com/Nomoziya/nomozip/actions/runs/38236148792) 全部通过；新增多条虚构记录和窄窗口检查，两页的新布局仍待用户体验。
 
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)

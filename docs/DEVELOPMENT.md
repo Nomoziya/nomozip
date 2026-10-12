@@ -1,6 +1,8 @@
 # 构建、验证与维护
 
-当前交付为已公开发布的 0.1.0-preview.2 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新、真实 GitHub 线上引擎更新及安装/升级/卸载已验证；人工桌面验收与基础压缩功能仍在后续阶段。
+最新进度（2026-10-12）：第六预览的压缩/密码库一致性修整完成，代码提交 `bee2f344e663d95d3a9eda527733d115eeea629f` 的 [Windows CI 38236148792](https://github.com/Nomoziya/nomozip/actions/runs/38236148792) 全部通过，十二份报告和 34 张虚构数据渲染位于 `artifacts/github-validation-38236148792/validation-reports/`。44 项桌面检查覆盖宽/窄窗口主操作固定、分栏一致性、17 条虚构密码记录的行高/对齐和列宽，其余既有引擎、密码库、更新、压缩、打开方式、四条桌面流程、签名和完整/轻量安装检查均通过。局部本地安装 18/18，通过实际复用旧虚构密码库与共享 .NET 10.0.12，安装 9189724 字节；云端轻量安装为 9213600 字节。轻量载荷 9015576 字节 / 43 文件，完整载荷 155172327 字节 / 438 文件。用户已确认第五预览的解压布局/约 9 MB 体积；第六预览压缩和密码库的新布局仍待体验，真实桌面未确认项目继续保留。下文旧版记录按其原版本解释。
+
+当前交付为 0.1.0-preview.6 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新、真实 GitHub 线上引擎更新及安装/升级/卸载已验证；人工桌面验收与基础压缩功能仍在后续阶段。
 
 第二预览增加当前用户安装包与携带运行组件的独立 ZIP。构建和安装/升级/卸载验收见 [安装说明](INSTALLATION.md)。普通开发构建继续使用系统运行时；`-SelfContained` 构建会携带 .NET / WPF 运行组件。安装器不会将这些组件安装为全局运行时。
 
@@ -75,7 +77,7 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 
 ## P5 无障碍与布局验收
 
-2026-10-12 用户确认第四预览的“压缩加密、自动解密，目前没发现问题”，已记录为压缩加密和自动复用密码解压的人工通过。报告未指定归档格式及其它操作，不扩展为完整人工验收；第五预览的新布局/轻量安装及键盘、Narrator、DPI、Explorer 等仍待确认。此前自动报告保留原检查范围，不将其人工验收字段改为通过。
+2026-10-12 用户确认第四预览的“压缩加密、自动解密，目前没发现问题”，已记录为压缩加密和自动复用密码解压的人工通过。报告未指定归档格式及其它操作，不扩展为完整人工验收；第五预览的新布局/轻量安装及键盘、Narrator、DPI、Explorer 等仍待确认。用户随后确认第五预览的解压布局符合预期、安装体积约 9 MB，将这两项追加为人工通过；旧记录保留及其余实际桌面操作仍未确认。此前自动报告保留原检查范围，不将其人工验收字段改为通过。
 
 对比第四最终提交 `3bf9c4443124244ffbf524737ffde373034f2997` 与第五最终提交 `ddb3771c8f27e3fc212a3cf143ee1b79945744ef`，`src/Core`、`src/Infrastructure` 和 `src/EngineWorker` 无源码变化，保留用户已经通过的功能验收，不因后续阶段而重复这些检查。
 
@@ -83,7 +85,7 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 
 新增 `artifacts/accessibility-validation.json` 和 `artifacts/accessibility-preview/`：29 项检查覆盖四页在 1120×760 与 800×500 DIP 下的可获焦输入控件名称、滚动可达性、主窗口和密码对话框适应较小工作区、选中行文字、系统色资源映射与恢复、密码框受保护语义、显示明文提示及空密码的逻辑焦点。34 张渲染图使用虚构数据和 100%/125%/150%/200% 像素密度；高对比度图使用系统色资源模拟，不修改操作系统主题。报告明确保留 `humanKeyboardNarratorExplorerAndMonitorDpiAccepted=false`，不把控件属性、程序焦点或离屏渲染称为真人验收。
 
-人工体验剩余步骤以 [第五预览人工验收](INSTALLATION.md#第五预览的人工验收) 为准：先确认完整旧版到轻量版的向导升级、原有记录及新解压布局，再补齐键盘、讲述人、实际系统主题/缩放和 Explorer 入口。第四预览已通过的压缩加密和自动解密保留有效，不要求重复验收。安装、升级、卸载的数据保留已自动验证，实际体验仍需用户确认；未测试环境明确保留为未验证，P5 保持未完成。
+人工体验剩余步骤以 [第六预览人工验收](INSTALLATION.md#第六预览的人工验收) 为准：先确认压缩页和多条记录后的密码库新布局，再补齐旧记录保留、键盘、讲述人、实际系统主题/缩放和 Explorer 入口。第四预览已通过的压缩加密和自动解密保留有效，不要求重复验收。安装、升级、卸载的数据保留已自动验证，实际体验仍需用户确认；未测试环境明确保留为未验证，P5 保持未完成。
 
 实现依据（2026-10-12）：微软的 [WPF 焦点说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/focus-overview) 区分键盘焦点与逻辑焦点；[系统资源说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/systems/xaml-resources-how-to-use-system) 和 [系统参数变更事件](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.staticpropertychanged?view=windowsdesktop-10.0) 支持系统配色更新；[WorkArea](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.workarea?view=windowsdesktop-10.0) 提供主显示器工作区，跨显示器场景仍待实际验收。
 
