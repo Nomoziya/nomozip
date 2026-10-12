@@ -22,11 +22,13 @@ VIAddVersionKey /LANG=2052 "LegalCopyright" "Nomoziya"
   !define REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\nomozip-validation"
   !define DATA_DIR "${VALIDATION_ROOT}\data"
   !define SHORTCUT_DIR "${VALIDATION_ROOT}\shortcuts"
+  !define ASSOCIATION_ROOT "Software\nomozip-validation\InstallerAssociations"
   InstallDir "${VALIDATION_ROOT}\app"
 !else
   !define REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\nomozip"
   !define DATA_DIR "$LOCALAPPDATA\ArchivePassword"
   !define SHORTCUT_DIR "$SMPROGRAMS\nomozip"
+  !define ASSOCIATION_ROOT "Software\Classes"
   InstallDir "$LOCALAPPDATA\Programs\nomozip"
   InstallDirRegKey HKCU "${REG_KEY}" "InstallLocation"
 !endif
@@ -131,6 +133,16 @@ SectionEnd
 
 Section "Uninstall"
   !insertmacro CheckNotRunning "uninstall"
+  ReadRegStr $0 HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" ""
+  StrCmp $0 '"$INSTDIR\ArchivePassword.exe" "%1"' 0 associationsdone
+  DeleteRegValue HKCU "${ASSOCIATION_ROOT}\.7z\OpenWithProgids" "nomozip.Archive"
+  DeleteRegValue HKCU "${ASSOCIATION_ROOT}\.zip\OpenWithProgids" "nomozip.Archive"
+  DeleteRegValue HKCU "${ASSOCIATION_ROOT}\.rar\OpenWithProgids" "nomozip.Archive"
+  DeleteRegKey HKCU "${ASSOCIATION_ROOT}\nomozip.Archive"
+  !ifndef VALIDATION_ROOT
+    System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'
+  !endif
+associationsdone:
   ; Only remove files owned by this installer; preserve unrelated files in the chosen directory.
   !include "${OWNED_FILES}"
   Delete "$INSTDIR\Uninstall.exe"

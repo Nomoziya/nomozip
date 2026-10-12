@@ -27,6 +27,16 @@ public partial class App : Application
         var validationIndex = Array.IndexOf(e.Args, "--validate");
         var onlineValidationIndex = Array.IndexOf(e.Args, "--validate-online");
         var installedValidationIndex = Array.IndexOf(e.Args, "--validate-installed");
+        if (validationIndex >= 0)
+        {
+            var reportPath = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts/desktop-validation.json");
+            File.WriteAllText(reportPath, "{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException += (_, failure) =>
+            {
+                File.WriteAllText(reportPath, JsonSerializer.Serialize(new { passed = false, exceptionType = failure.Exception.GetType().Name, stack = failure.Exception.StackTrace }));
+                failure.Handled = true; Shutdown(1);
+            };
+        }
         var dataIndex = Array.IndexOf(e.Args, "--data-dir");
         if (dataIndex >= 0 && dataIndex + 1 < e.Args.Length) dataDirectory = Path.GetFullPath(e.Args[dataIndex + 1]);
         if (validationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts", "desktop-validation", Guid.NewGuid().ToString("N"));
@@ -94,8 +104,10 @@ public partial class App : Application
                 updateSuccess &= model.EngineSummary.Contains("26.04");
                 var restartedModel = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window));
                 await restartedModel.InitializeAsync(); updateSuccess &= restartedModel.EngineSummary.Contains("26.04");
-                var passed = success && manualSuccess && updateSuccess;
-                await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess, engines = model.EngineVersions.ToArray(), status = model.Tasks.Single().Status }));
+                var compression = await DesktopCompressionValidation.RunAsync(window, model, baseDirectory, dataDirectory, validationRoot);
+                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility;
+                await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess,
+                    compressionAndPasswordReusePassed = compression.Flow, compressionAutomationLabelsAndShortcutPassed = compression.Accessibility, engines = model.EngineVersions.ToArray(), status = model.Tasks.Single().Status }));
                 Shutdown(passed ? 0 : 1);
             }
             catch

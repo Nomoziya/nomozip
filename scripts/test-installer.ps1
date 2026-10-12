@@ -49,16 +49,26 @@ try {
     $taskChecks.preservedVaultActuallyReused = $taskSmokeReport.existingVaultReused
     $taskVaultHash = (Get-FileHash $taskVault).Hash
     $taskSettingsHash = (Get-FileHash $taskSettings).Hash
+    $taskAssociationRoot = 'HKCU:\Software\nomozip-validation\InstallerAssociations'
+    $taskAssociationCommand = Join-Path $taskAssociationRoot 'nomozip.Archive\shell\open\command'
+    New-Item -Force $taskAssociationCommand | Out-Null
+    Set-Item -LiteralPath $taskAssociationCommand -Value ('"' + (Join-Path $taskApplication 'ArchivePassword.exe') + '" "%1"')
     Invoke-Installer (Join-Path $taskApplication 'Uninstall.exe') @('/S',('_?=' + $taskApplication))
     $taskChecks.uninstallRemovedProgramAndRegistration = -not (Test-Path (Join-Path $taskApplication 'ArchivePassword.exe')) -and -not (Test-Path $taskRegistry)
     $taskChecks.defaultUninstallPreservedData = (Get-FileHash $taskVault).Hash -eq $taskVaultHash -and (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
     $taskChecks.uninstallPreservedUnrelatedFile = Test-Path (Join-Path $taskApplication 'keep-user-file.txt')
+    $taskChecks.uninstallRemovedOwnedFileEntry = -not (Test-Path (Join-Path $taskAssociationRoot 'nomozip.Archive'))
     Invoke-Installer $taskUpgrade @('/S')
     $taskChecks.reinstallPreservedVault = (Get-FileHash $taskVault).Hash -eq $taskVaultHash
+    New-Item -Force $taskAssociationCommand | Out-Null
+    Set-Item -LiteralPath $taskAssociationCommand -Value '"C:\synthetic-other-copy\ArchivePassword.exe" "%1"'
     Invoke-Installer (Join-Path $taskApplication 'Uninstall.exe') @('/S','/DELETEDATA=1',('_?=' + $taskApplication))
     $taskChecks.explicitDataDeletion = -not (Test-Path $taskData)
+    $taskChecks.uninstallPreservedOtherCopyFileEntry = Test-Path $taskAssociationCommand
+    if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
+    Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskPassed = $taskChecks.Count -eq 14 -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
+    $taskPassed = $taskChecks.Count -eq 16 -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot 'artifacts/installer-validation.json') -Encoding utf8
 }
 if (-not $taskPassed) { throw 'Installer acceptance failed; inspect artifacts/installer-validation.json.' }

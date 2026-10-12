@@ -12,6 +12,8 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 完整构建、运行与限制见 [开发与维护说明](docs/DEVELOPMENT.md)，更新与发布见 [更新说明](docs/UPDATES.md)。升级及默认卸载保留密码库，详见 [安装说明](docs/INSTALLATION.md)。同包多密码组合解压、基础压缩与文件关联仍属于后续阶段。
 
+第三预览增加 7z/ZIP 创建、加密和可选 Windows 打开方式入口，正在进行发布验收。操作、密码限制与数据保护见 [压缩说明](docs/COMPRESSION.md)。同包多密码组合解压仍未实现。
+
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
 - [解压主界面示意](design-system/extraction.svg)

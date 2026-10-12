@@ -21,6 +21,8 @@
 
 先执行 `scripts/follow-official-engine.ps1 -Update` 或准备指定官方引擎，再运行兼容性矩阵。报告现在记录每个实测 DLL 的哈希；签名工具拒绝未通过、版本不对应或 DLL 已更改的报告。维护端兼容性矩阵覆盖广于客户端的微型解码检查。
 
+从第三预览起，维护脚本还要求候选引擎通过 7z/ZIP 创建与加密的压缩矩阵。签名打包同时读取 `artifacts/compression-validation.json`，验证各版本的实测 DLL 哈希和检查结果，并把压缩证据合并进受签名清单保护的兼容性报告；缺失或不对应的报告会阻止签名。已发布的旧引擎包保持不可变，两版既有官方 DLL 已通过新的压缩验证。
+
 ```powershell
 # 当前维护电脑的发布私钥按 Windows 用户加密；脚本仅在签名时临时解密。
 ./scripts/package-engine-update.ps1 -Version 26.04 -ProtectedPrivateKey '.tools/release-signing/private-key.dpapi' -OutputDirectory 'artifacts/release-engine-packages'

@@ -250,6 +250,7 @@ public:
     }
 };
 struct Format { GUID id; std::wstring name, extensions; };
+#include "Compression.h"
 template<class T> static T exported(HMODULE library, const char* name) {
     auto address = GetProcAddress(library, name);
     T result = nullptr;
@@ -285,6 +286,7 @@ static json run(json& request, const wchar_t* dllPath) {
         json result = json::array(); for (auto& format : formats) result.push_back({{"name", utf8(format.name)}, {"extensions", utf8(format.extensions)}});
         return {{"kind", "result"}, {"status", "success"}, {"formats", result}};
     }
+    if (operation == "create") return createArchive(request, formats, createFunc);
     if (operation != "list" && operation != "test" && operation != "extract") throw std::runtime_error("unsupported_operation");
     Context context;
     context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));

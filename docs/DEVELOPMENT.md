@@ -62,3 +62,11 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 详细报告：`artifacts/engine-validation.json`、`artifacts/core-validation.json`、`artifacts/update-validation.json`、`artifacts/desktop-validation.json`。用量与完整产品质量不从这些局部检查推导。
 
 首个公开预览 [v0.1.0-preview.1](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.1) 对应提交 `738ebf5e274f01134114468cabcbf3f35f7a2255`，其 [GitHub Windows 检查](https://github.com/Nomoziya/nomozip/actions/runs/38198753411) 通过。软件下载资产已通过公开地址重新下载并核对 SHA-256。发布资产保持不可变；修改代码后使用新的版本标签，勿覆盖旧包。
+
+## 第三预览验证
+
+2026-10-12 的 P3 增加 7z/ZIP 创建、压缩级别、加密和 7z 文件名加密。两版官方引擎的 38 项压缩检查通过，覆盖官方工具读取、空文件与目录、错密、覆盖保护、取消和失败清理。实际 WPF 按钮通过 UI Automation 创建加密包，输入并保存密码，再用密码库自动解压，输出逐字节一致；桌面流程扩展为四条，控件名称与页面快捷键检查通过。7 项隔离注册表检查通过，验证可选打开方式登记/移除不会修改默认应用或删除其他程序、副本的登记。
+
+官方引擎跟进脚本与签名打包器现在同时要求解压和压缩报告，报告必须绑定实际 DLL 哈希；错配压缩报告的拒绝签名检查通过。不会因此覆盖已有稳定引擎发布资产。安装/卸载入口清理的最终检查及第三预览云端发布仍在进行。
+
+新增报告为 `artifacts/compression-validation.json`、`artifacts/association-validation.json` 和 `artifacts/signing-validation.json`。UI Automation 检查不能代替真人键盘、Narrator、高对比度、DPI 和 Explorer 入口验收；同包多密码组合解压仍未实现。7z 支持 Unicode 密码，当前官方 ZIP 写入接口只接受 ASCII 密码，界面会明确拒绝不支持的输入。

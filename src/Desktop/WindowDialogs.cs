@@ -7,6 +7,29 @@ namespace ArchivePassword.Desktop;
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null)
 {
+    public string[] SelectCompressionFiles()
+    {
+        var dialog = new OpenFileDialog { Multiselect = true, Title = "添加要压缩的文件", Filter = "所有文件|*.*" };
+        return dialog.ShowDialog(owner) == true ? dialog.FileNames : [];
+    }
+    public string? SelectCompressionFolder()
+    {
+        var dialog = new OpenFolderDialog { Title = "添加要压缩的文件夹" };
+        return dialog.ShowDialog(owner) == true ? dialog.FolderName : null;
+    }
+    public string? SelectArchiveOutput(string format)
+    {
+        var dialog = new SaveFileDialog { Title = "保存新压缩包", Filter = format == "7z" ? "7z 压缩包|*.7z" : "ZIP 压缩包|*.zip", DefaultExt = "." + format, AddExtension = true, OverwritePrompt = false };
+        return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
+    }
+    public bool ConfirmArchiveReplacement(string path) => confirmEngineUpdate?.Invoke(path, "archive") ?? (MessageBox.Show(owner,
+        "目标已有压缩包：\n" + path + "\n\n新压缩包校验成功后才替换。是否继续？", "替换压缩包", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+    public Task<PasswordPromptResponse?> AskCompressionPasswordAsync(string name, IReadOnlyList<SavedPassword> saved, bool canSave)
+    {
+        var dialog = new PasswordDialog(name, false, saved, canSave, compressing: true) { Owner = owner };
+        prepareDialog?.Invoke(dialog);
+        return Task.FromResult(dialog.ShowDialog() == true ? dialog.Response : null);
+    }
     public string[] SelectArchives()
     {
         var dialog = new OpenFileDialog { Multiselect = true, Title = "添加压缩包", Filter = "常用压缩包|*.7z;*.zip;*.rar;*.001;*.tar;*.gz;*.bz2;*.xz|所有文件|*.*" };

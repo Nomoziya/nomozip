@@ -28,7 +28,11 @@ public partial class MainWindow : Window
     }
     private void OnDrop(object sender, DragEventArgs e)
     {
-        if (e.Data.GetData(DataFormats.FileDrop) is string[] paths && DataContext is MainViewModel model) model.AddFiles(paths);
+        if (e.Data.GetData(DataFormats.FileDrop) is string[] paths && DataContext is MainViewModel model)
+        {
+            if (model.Page == 3) model.AddCompressionSources(paths);
+            else model.AddFiles(paths);
+        }
     }
     private async void OnClosing(object? sender, CancelEventArgs e)
     {
