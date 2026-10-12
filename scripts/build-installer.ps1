@@ -1,7 +1,8 @@
 param([string]$ApplicationDirectory, [string]$OutputFile,
-    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.7', [string]$ValidationRoot, [switch]$FrameworkDependent)
+    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.7', [string]$ValidationRoot, [switch]$FrameworkDependent = $true)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
+if (-not $FrameworkDependent -and -not $ValidationRoot) { throw 'Bundled runtime installers are only allowed for isolated legacy-upgrade validation.' }
 if (-not $ApplicationDirectory) { $ApplicationDirectory = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }) }
 if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/nomozip-0.1.0-preview.7-light-setup-win-x64.exe' } else { 'artifacts/nomozip-0.1.0-preview.7-setup-win-x64.exe' }) }
 $ApplicationDirectory = [IO.Path]::GetFullPath($ApplicationDirectory)

@@ -23,6 +23,8 @@ def archive(path, files, base):
 
 
 application = ROOT / args.app_directory
+if (application / "coreclr.dll").exists():
+    raise RuntimeError("Only shared-runtime lightweight releases are published; bundled payloads are reserved for legacy installer validation.")
 app_files = [file for file in application.rglob("*") if file.is_file()]
 if not (application / "ArchivePassword.exe").exists():
     raise RuntimeError("Build the application first.")

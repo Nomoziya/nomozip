@@ -1,6 +1,6 @@
 nomozip 0.1.0-preview.7（Windows x64 开发预览）
 
-完整独立版携带 .NET 10 Windows Desktop Runtime，无需另行安装；轻量版使用系统共享运行库。
+后续发行版仅提供轻量版，使用系统共享的 .NET 10 Windows Desktop Runtime x64（10.0.12 或更高的 10.0 补丁版），无需 SDK。
 安装版：运行 setup-win-x64.exe，按向导为当前用户安装；从开始菜单打开 nomozip。
 ZIP 版：解压到一个目录，运行 ArchivePassword.exe。
 轻量版文件名含 light；未安装共享运行库时，先从 https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0 安装 .NET Desktop Runtime / Windows / x64（10.0.12 或更高的 10.0 补丁版），无需 SDK。

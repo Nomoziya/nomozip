@@ -63,13 +63,13 @@ jobs:
           ./scripts/test.ps1 -SkipEngineValidation
           & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
-      - name: Build and validate per-user installer with bundled runtime
+      - name: Validate lightweight installer and legacy bundled-runtime upgrade
         run: |
           ./scripts/bootstrap-installer.ps1
+          # Bundled runtime is an isolated old-install fixture, never a release.
           ./scripts/build.ps1 -Configuration Release -SkipWorker -SelfContained -OutputDirectory artifacts/self-contained-app
-          ./scripts/test-installer.ps1
           ./scripts/build.ps1 -Configuration Release -SkipWorker -OutputDirectory artifacts/light-app
-          ./scripts/test-installer.ps1 -FrameworkDependent
+          ./scripts/test-installer.ps1
       - name: Keep validation evidence
         if: always()
         uses: actions/upload-artifact@v7
