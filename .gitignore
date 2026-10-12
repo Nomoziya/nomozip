@@ -1,0 +1,8 @@
+.tools/
+artifacts/
+**/bin/
+**/obj/
+engines/**/7z.dll
+engines/**/7z.exe
+tests/fixtures/generated/
+*.user

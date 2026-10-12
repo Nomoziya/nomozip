@@ -1,0 +1,69 @@
+name: Windows validation and upstream engine check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      PYTHONUTF8: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - uses: msys2/setup-msys2@v2
+        id: msys2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc
+      - name: Add native tools to the job path
+        env:
+          TASK_MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+        run: |
+          (Join-Path $env:TASK_MSYS2_LOCATION 'ucrt64/bin') | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          'C:\Program Files\7-Zip' | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+      - name: Prepare official engines and local SDK
+        run: ./scripts/bootstrap.ps1
+      - name: Build worker and prepare integration fixtures
+        run: |
+          ./scripts/build-worker.ps1
+          $env:DOTNET_CLI_HOME = Join-Path $PWD '.tools/dotnet-home'
+          $env:NUGET_HTTP_CACHE_PATH = Join-Path $PWD '.tools/nuget-http'
+          $env:NUGET_SCRATCH = Join-Path $PWD '.tools/nuget-scratch'
+          & ./.tools/dotnet/dotnet.exe build tests/EngineSmoke/EngineSmoke.csproj --nologo -m:1 -nr:false
+          if ($LASTEXITCODE -ne 0) { throw 'Engine client build failed.' }
+          python tests/engine_validation.py
+          if ($LASTEXITCODE -ne 0) { throw 'Baseline engine validation failed.' }
+      - name: Validate a new official stable engine when available
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: ./scripts/follow-official-engine.ps1 -Update
+      - name: Build desktop preview
+        run: ./scripts/build.ps1 -Configuration Release -SkipWorker
+      - name: Validate vault, updates and desktop command flows
+        run: ./scripts/test.ps1 -SkipEngineValidation
+      - name: Keep validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: validation-reports
+          path: artifacts/*validation.json
+          if-no-files-found: ignore
+      # This workflow does not publish or sign production updates.

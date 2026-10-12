@@ -1,0 +1,7 @@
+{
+  "version": "26.03",
+  "architecture": "x64",
+  "protocol": 1,
+  "source": "https://github.com/ip7z/7zip/releases/download/26.03/7z2603-x64.exe",
+  "dllSha256": "65e4c1f855f9ef6e8f0f5df8e3f27d9eb5f07311408639da0a1ca0b8f4871b0d"
+}

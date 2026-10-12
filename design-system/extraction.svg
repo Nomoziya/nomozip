@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760" viewBox="0 0 1120 760" role="img" aria-labelledby="title desc">
+  <title id="title">压缩包工具解压主界面规划示意</title>
+  <desc id="desc">左侧解压、密码库与设置导航，中央压缩包任务列表，右侧输出目录、密码复用与同名文件策略。使用虚构数据。</desc>
+  <defs>
+    <style>text{font-family:'Segoe UI','Microsoft YaHei',sans-serif;fill:#1F2937} .secondary{fill:#4B5563} .small{font-size:13px} .body{font-size:14px} .heading{font-size:16px;font-weight:600} .white{fill:#FFFFFF} .blue{fill:#1D4ED8} .green{fill:#15803D} .line{stroke:#E5E7EB;stroke-width:1} .icon{stroke:#4B5563;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}</style>
+  </defs>
+  <rect width="1120" height="760" fill="#F3F4F6"/>
+  <rect width="1120" height="44" fill="#FFFFFF"/>
+  <text x="20" y="28" class="body" font-weight="600">压缩包工具</text>
+  <text x="943" y="28" class="small secondary">界面规划示意</text>
+  <path d="M1039 22h12m28-6v12m-6-6h12m20-6-12 12m0-12 12 12" class="icon"/>
+  <path d="M0 44H1120" class="line"/>
+  <rect x="0" y="45" width="176" height="715" fill="#FFFFFF"/>
+  <text x="24" y="86" font-size="18" font-weight="600">压缩包工具</text>
+  <text x="24" y="110" class="small secondary">解压与密码管理</text>
+  <rect x="12" y="142" width="152" height="44" rx="6" fill="#EFF6FF"/>
+  <rect x="12" y="154" width="3" height="20" rx="1.5" fill="#1D4ED8"/>
+  <path d="M30 159h18v12H30zm9-5v11m-4-4 4 4 4-4" stroke="#1D4ED8" stroke-width="1.6" fill="none"/>
+  <text x="60" y="170" class="body blue" font-weight="600">解压</text>
+  <path d="M30 211h18v14H30zm4 0v-4a5 5 0 0 1 10 0v4" class="icon"/>
+  <text x="60" y="222" class="body">密码库</text>
+  <circle cx="39" cy="268" r="8" class="icon"/><circle cx="39" cy="268" r="3" class="icon"/>
+  <text x="60" y="274" class="body">设置</text>
+  <text x="24" y="720" class="small secondary">密码仅保存在本机</text>
+  <path d="M176 44V760" class="line"/>
+  <text x="208" y="98" font-size="26" font-weight="600">解压</text>
+  <text x="208" y="127" class="body secondary">添加压缩包，选择输出目录后开始。</text>
+  <rect x="208" y="152" width="872" height="60" rx="8" fill="#FFFFFF"/>
+  <rect x="224" y="164" width="136" height="36" rx="6" fill="#FFFFFF" stroke="#6B7280"/>
+  <text x="246" y="187" class="body">＋ 添加压缩包</text>
+  <text x="380" y="187" class="body secondary">也可以将文件拖入此窗口</text>
+  <text x="1009" y="187" class="small secondary">3 个任务</text>
+  <rect x="208" y="232" width="556" height="452" rx="8" fill="#FFFFFF"/>
+  <text x="228" y="265" class="heading">压缩包</text>
+  <text x="228" y="302" class="small secondary">文件</text>
+  <text x="552" y="302" class="small secondary">大小</text>
+  <text x="656" y="302" class="small secondary">状态</text>
+  <path d="M224 317h524" class="line"/>
+  <rect x="224" y="324" width="524" height="72" rx="4" fill="#EFF6FF"/>
+  <path d="M240 340h20v28h-20zm10 0v28m-3-23h6m-6 5h6m-6 5h6" stroke="#1D4ED8" stroke-width="1.5" fill="none"/>
+  <text x="274" y="351" class="body" font-weight="600">资料合集.7z</text>
+  <text x="274" y="376" class="small secondary">D:\Downloads\资料合集.7z</text>
+  <text x="552" y="352" class="small">128 MB</text>
+  <text x="656" y="352" class="small blue">准备就绪</text>
+  <path d="M240 419h20v28h-20zm10 0v28m-3-23h6m-6 5h6m-6 5h6" class="icon"/>
+  <text x="274" y="431" class="body" font-weight="600">图片备份.zip</text>
+  <text x="274" y="456" class="small secondary">D:\Downloads\图片备份.zip</text>
+  <text x="552" y="431" class="small">42 MB</text>
+  <text x="656" y="431" class="small">准备就绪</text>
+  <path d="M224 477h524" class="line"/>
+  <path d="M240 498h20v28h-20zm10 0v28m-3-23h6m-6 5h6m-6 5h6" class="icon"/>
+  <text x="274" y="510" class="body" font-weight="600">设计素材.rar</text>
+  <text x="274" y="535" class="small secondary">D:\Downloads\设计素材.rar</text>
+  <text x="552" y="510" class="small">86 MB</text>
+  <text x="656" y="510" class="small green">已解压</text>
+  <text x="274" y="565" class="small blue">打开输出目录</text>
+  <path d="M224 589h524" class="line"/>
+  <text x="228" y="659" class="small secondary">2 个待解压 · 1 个已完成</text>
+  <rect x="788" y="232" width="292" height="452" rx="8" fill="#FFFFFF"/>
+  <text x="808" y="265" class="heading">解压设置</text>
+  <text x="808" y="301" class="body">输出目录</text>
+  <rect x="808" y="314" width="252" height="40" rx="6" fill="#FFFFFF" stroke="#6B7280"/>
+  <text x="820" y="340" class="small">D:\Extracted</text>
+  <rect x="984" y="322" width="68" height="24" rx="4" fill="#F3F4F6"/>
+  <text x="1002" y="339" class="small">浏览</text>
+  <text x="808" y="388" class="body">同名文件</text>
+  <rect x="808" y="401" width="252" height="40" rx="6" fill="#FFFFFF" stroke="#6B7280"/>
+  <text x="820" y="427" class="body">每次询问</text>
+  <path d="m1037 416 5 5 5-5" class="icon"/>
+  <path d="M808 465h252" class="line"/>
+  <rect x="808" y="490" width="18" height="18" rx="3" fill="#1D4ED8"/>
+  <path d="m812 499 4 4 7-8" stroke="#FFFFFF" stroke-width="1.6" fill="none"/>
+  <text x="836" y="504" class="body">自动尝试保存的密码</text>
+  <text x="808" y="533" class="small secondary">密码库中有 18 个可用密码</text>
+  <text x="808" y="557" class="small secondary">未匹配时，会提示你输入密码。</text>
+  <text x="808" y="588" class="small blue">管理密码库</text>
+  <rect x="808" y="616" width="252" height="44" rx="6" fill="#1D4ED8"/>
+  <text x="934" y="644" text-anchor="middle" class="body white" font-weight="600">开始解压（2）</text>
+  <text x="208" y="720" class="small secondary">使用保存的密码时，界面不会显示密码内容。</text>
+</svg>
