@@ -1,5 +1,13 @@
 # 验收与交接
 
+## 正式版 0.1.0 已发布
+
+[首个正式版 v0.1.0](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0) 已公开，非草稿、非预发布；发布标签对应 `1059801bcb125f6da6e7abc4ca0a42dc4b4f9be3`。[Windows CI 38270823087](https://github.com/Nomoziya/nomozip/actions/runs/38270823087) 全部通过，17 份报告位于 `artifacts/github-validation-38270823087/validation-reports/`，无失败。此前的有效检查继续保留；正式版版本显示、安装升级和分发追加检查完成。
+
+从实际已发布第九预览创建虚构旧密码库，安装升级到正式版的 9/9 检查确认：软件与安装器显示 0.1.0，文件版本递增为 0.1.0.11，密码库/设置逐字节保留，旧密码真实解压成功，默认卸载保留数据，且未携带运行库。报告 `artifacts/stable-upgrade-validation.json`，本地安装 9292357 字节；云端安装检查 18/18，安装 9320686 字节。用户已确认修复后的焦点框和任务文件朗读没有问题，并授权正式发布；既有人工通过项目保留，实际不同 DPI 多屏切换仍未实测。
+
+发行包在 `artifacts/release-0.1.0/`，仅轻量 EXE、轻量 ZIP、源码 ZIP、SHA256SUMS 四项。43 文件载荷 9118187 字节，安装器 2110924 字节，源码快照 105 文件；包 CRC、正式元数据、固定公钥、官方引擎/worker 保持一致、私密材料排除全部通过，见 `artifacts/stable-package-validation.json`。四项资产均经无登录公开下载，与本地及 GitHub SHA-256 一致，见 `artifacts/public-stable-validation.json`。软件 Release 显式 `latest=false`，稳定引擎 `/releases/latest` 仍为 `engine-26.04`，当前引擎更新无需修改客户端；历史资产不覆盖。以下候选/预览记录保留为各阶段证据，不表示正式版仍待发布。
+
 2026-10-12 用户确认“复验完成，没有问题”，焦点框完整和任务文件名朗读修复追加人工通过，并明确授权发布首个正式版。正式版 0.1.0 沿用已验收实现，仅调整发布元数据与说明；正在检查正式安装升级、构建、包审核及公开下载。真实不同 DPI 多屏切换仍保留未实测状态，用户已授权在当前证据范围内发布。
 
 修复候选已完成：功能修复提交 `74804471d8ab6d4890b93e92559a3f557e4899d8` 的 [Windows CI 38268684247](https://github.com/Nomoziya/nomozip/actions/runs/38268684247) 全部通过，17 份报告位于 `artifacts/github-validation-38268684247/validation-reports/`；既有引擎 101/101、组合密码 48/48、压缩 38/38、安装升级 18/18 和其它流程保留通过。新增 UIA/焦点 17/17、桌面布局 45/45、显示矩阵 13/13 同样通过。随后提交 `a5a7f7ebc80cf2236efd876b24af39738ba1b227` 仅修整隐藏验证窗口的截图，45/17/13 项本地针对性检查通过，并检查了极小布局截图；不重复未改变的业务检查。
