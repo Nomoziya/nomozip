@@ -31,9 +31,9 @@ var report = await File.ReadAllBytesAsync(args[3]);
 using var evidence = JsonDocument.Parse(report);
 var cases = evidence.RootElement.GetProperty("cases").EnumerateArray().ToArray();
 if (evidence.RootElement.GetProperty("passed").GetInt32() != evidence.RootElement.GetProperty("total").GetInt32() || cases.Any(value => !value.GetProperty("passed").GetBoolean()) || cases.Count(value => value.GetProperty("name").GetString()!.StartsWith(version + " ", StringComparison.Ordinal)) < 20) throw new InvalidOperationException("A passing compatibility report for this version is required.");
-foreach (var required in new[] { "lists plain.7z", "lists encrypted-header.7z", "lists real RAR", "lists encrypted RAR5" })
+foreach (var required in new[] { "lists plain.7z", "lists encrypted-header.7z", "lists real RAR", "lists encrypted RAR5", "combines mixed-password RAR5", "combines mixed-password AES ZIP", "combines mixed-password traditional ZIP", "extracts exact mixed-password RAR5", "extracts exact mixed-password AES ZIP", "extracts exact mixed-password traditional ZIP" })
     if (!cases.Any(value => value.GetProperty("name").GetString() == version + " " + required))
-        throw new InvalidOperationException("Passing archive listing evidence for this version is required.");
+        throw new InvalidOperationException("Passing archive listing and multiple-password evidence for this version is required.");
 var payload = new Dictionary<string, byte[]> { ["7z.dll"] = await File.ReadAllBytesAsync(Path.Combine(directory, "7z.dll")), ["License.txt"] = await File.ReadAllBytesAsync(Path.Combine(directory, "License.txt")), ["compatibility-report.json"] = report };
 var hashes = payload.ToDictionary(value => value.Key, value => Convert.ToHexString(SHA256.HashData(value.Value)).ToLowerInvariant());
 using var compressionEvidence = JsonDocument.Parse(await File.ReadAllBytesAsync(args[7]));

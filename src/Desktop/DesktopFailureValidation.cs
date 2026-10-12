@@ -35,7 +35,7 @@ internal static class DesktopFailureValidation
                     else
                     {
                         var summary = (TextBlock)dialog.FindName("FailureSummary");
-                        Check("password retry shows partial counts and not extracted", summary.Text.Contains("项通过") && summary.Text.Contains("项失败") && summary.Text.Contains("尚未解压") && summary.Text.Contains("不同密码"));
+                        Check("password retry shows partial counts and not extracted", summary.Text.Contains("项通过") && summary.Text.Contains("项失败") && summary.Text.Contains("尚未解压") && summary.Text.Contains("其它密码"));
                         var button = ((StackPanel)dialog.FindName("FailurePanel")).Children.OfType<Button>().Single();
                         ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
                         // Invoke is dispatched; close the password prompt after the nested details dialog.

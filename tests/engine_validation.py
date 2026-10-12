@@ -18,9 +18,9 @@ VERSIONS = ("26.04", "26.03")
 REPORT = []
 
 
-def request(version, operation, archive=None, output=None, password=None):
+def request(version, operation, archive=None, output=None, password=None, item_passwords=None):
     command = [str(WORKER), str(ROOT / "engines" / version / "7z.dll")]
-    data = dict(protocol=1, operation=operation, archivePath=str(archive), outputPath=str(output), password=password)
+    data = dict(protocol=1, operation=operation, archivePath=str(archive), outputPath=str(output), password=password, itemPasswords=item_passwords)
     process = subprocess.run(command, input=json.dumps(data, ensure_ascii=False) + "\n", encoding="utf-8", capture_output=True, timeout=60)
     messages = [json.loads(line) for line in process.stdout.splitlines()]
     assert messages and messages[-1]["kind"] == "result", (process.returncode, process.stderr)
@@ -80,6 +80,21 @@ def main():
     rar = rar_fixture("test_read_format_rar.rar")
     encrypted_rar = rar_fixture("test_read_format_rar5_encrypted_filenames.rar")
     multi_password_rar = rar_fixture("test_read_format_rar5_encrypted.rar")
+    rar_reference = FIXTURES / "mixed-rar-reference"
+    if not (rar_reference / "d.txt").exists():
+        for password, names in (("password", ("a.txt", "b.txt", "c.txt")), ("password2", ("d.txt",))):
+            subprocess.run([str(ROOT / "engines/26.04/7z.exe"), "x", "-y", "-p" + password, str(multi_password_rar), "-o" + str(rar_reference), *names], check=True, capture_output=True)
+    mixed_zips = []
+    for kind, method in (("traditional", "ZipCrypto"), ("AES", "AES256")):
+        first = FIXTURES / "第一文件.txt"
+        second = FIXTURES / "第二文件.txt"
+        first.write_text("first encrypted content 中文\n" * 7, encoding="utf-8")
+        second.write_text("second encrypted content 中文\n" * 9, encoding="utf-8")
+        archive = FIXTURES / ("mixed-" + kind.lower() + ".zip")
+        if not archive.exists():
+            for path, password in ((first, "password"), (second, "password2")):
+                subprocess.run([str(ROOT / "engines/26.04/7z.exe"), "a", "-tzip", "-y", "-mem=" + method, "-p" + password, str(archive), str(path)], check=True, capture_output=True)
+        mixed_zips.append((kind, archive))
     hostile = FIXTURES / "traversal.zip"
     with zipfile.ZipFile(hostile, "w") as archive:
         archive.writestr("../escaped.txt", "should never escape")
@@ -128,6 +143,23 @@ def main():
         check(version + " reports mixed-password partial failure", mixed["status"] == "error" and mixed.get("successfulItems", 0) > 0 and len(mixed.get("failures", [])) > 0, mixed)
         mixed_paths = {item["index"]: item["path"] for item in request(version, "list", multi_password_rar, password="password").get("items", [])}
         check(version + " partial failures identify actual archive paths", all(failure.get("path") and mixed_paths.get(failure["index"]) == failure["path"] for failure in mixed.get("failures", [])), mixed)
+        mapping = [dict(index=index, password="password") for index in mixed.get("verifiedEncryptedItems", [])]
+        combined = request(version, "test", multi_password_rar, password="password2", item_passwords=mapping)
+        check(version + " combines mixed-password RAR5", combined["status"] == "success" and len(combined.get("verifiedEncryptedItems", [])) == 2, combined)
+        rar_output = FIXTURES / "outputs" / (version + "-mixed-RAR5-" + str(time.time_ns()))
+        combined_extract = request(version, "extract", multi_password_rar, rar_output, "password2", mapping)
+        check(version + " extracts exact mixed-password RAR5", combined_extract["status"] == "success" and all((rar_output / name).read_bytes() == (rar_reference / name).read_bytes() for name in ("a.txt", "b.txt", "c.txt", "d.txt")), combined_extract)
+        for kind, archive in mixed_zips:
+            partial = request(version, "test", archive, password="password")
+            mapping = [dict(index=index, password="password") for index in partial.get("verifiedEncryptedItems", [])]
+            check(version + " identifies verified encrypted " + kind + " ZIP item", partial["status"] == "error" and len(mapping) == 1 and len(partial["failures"]) == 1, partial)
+            incorrect = request(version, "test", archive, password="wrong", item_passwords=mapping)
+            check(version + " rejects incomplete mixed-password " + kind + " ZIP", incorrect["status"] == "error" and len(incorrect["failures"]) == 1, incorrect)
+            combined = request(version, "test", archive, password="password2", item_passwords=mapping)
+            check(version + " combines mixed-password " + kind + " ZIP", combined["status"] == "success" and len(combined.get("verifiedEncryptedItems", [])) == 2, combined)
+            output = FIXTURES / "outputs" / (version + "-mixed-" + kind + "-" + str(time.time_ns()))
+            extracted = request(version, "extract", archive, output, "password2", mapping)
+            check(version + " extracts exact mixed-password " + kind + " ZIP", extracted["status"] == "success" and all((output / name).read_bytes() == (FIXTURES / name).read_bytes() for name in ("第一文件.txt", "第二文件.txt")), extracted)
         unsafe_output = FIXTURES / "outputs" / (version + "-unsafe-" + str(time.time_ns()))
         unsafe = request(version, "extract", hostile, unsafe_output)
         check(version + " blocks archive traversal", unsafe.get("code") == "unsafe_path" and not (unsafe_output.parent / "escaped.txt").exists(), unsafe)

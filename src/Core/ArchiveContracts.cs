@@ -16,9 +16,16 @@ public sealed record EngineResult
     public uint SuccessfulItems { get; init; }
     public IReadOnlyList<ArchiveEntry> Items { get; init; } = [];
     public IReadOnlyList<EngineFailure> Failures { get; init; } = [];
+    public IReadOnlyList<uint> VerifiedEncryptedItems { get; init; } = [];
     public IReadOnlyList<EngineFormat> Formats { get; init; } = [];
     public bool IsSuccess => Status == "success";
     public bool NeedsPassword => Code is "password_required" or "wrong_password" or "password_or_corrupt";
+}
+
+public interface IArchiveMultiPasswordEngine
+{
+    Task<EngineResult> TestWithPasswordsAsync(string archivePath, string? password, IReadOnlyDictionary<uint, string> itemPasswords, IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default);
+    Task<EngineResult> ExtractWithPasswordsAsync(string archivePath, string outputPath, string? password, IReadOnlyDictionary<uint, string> itemPasswords, IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default);
 }
 
 public interface IArchiveEngine

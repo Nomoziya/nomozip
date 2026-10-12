@@ -70,7 +70,7 @@
         <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="2"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
         <StackPanel><TextBlock Text="设置" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,24"/>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
-            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.8" Margin="0,0,0,8"/>
+            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.9" Margin="0,0,0,8"/>
             <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/><TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,8,0,16"/>
             <Label Content="可用引擎" Target="{Binding ElementName=EngineChoice}" Padding="0"/><ComboBox x:Name="EngineChoice" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="选择已验证的本地引擎" Margin="0,8,0,0"/>
             <WrapPanel Margin="0,12,0,16"><Button Content="使用所选版本" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/><Button Content="恢复上一版本" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/></WrapPanel>

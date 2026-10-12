@@ -113,11 +113,12 @@ public partial class App : Application
                 var compression = await DesktopCompressionValidation.RunAsync(window, model, baseDirectory, dataDirectory, validationRoot);
                 var browser = await DesktopBrowserValidation.RunAsync(window, baseDirectory, dataDirectory, validationRoot);
                 var failureDetails = await DesktopFailureValidation.RunAsync(window, baseDirectory, dataDirectory, validationRoot);
+                var multiplePasswords = await DesktopMultiPasswordValidation.RunAsync(window, baseDirectory, dataDirectory, validationRoot);
                 var accessibility = await DesktopAccessibilityValidation.RunAsync(window, model, theme, validationRoot);
-                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && browser && failureDetails && accessibility;
+                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && browser && failureDetails && multiplePasswords && accessibility;
                 await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess,
                     compressionAndPasswordReusePassed = compression.Flow, compressionAutomationLabelsAndShortcutPassed = compression.Accessibility,
-                    archiveBrowserPassed = browser, extractionFailureDetailsPassed = failureDetails, accessibilityPassed = accessibility, engines = model.EngineVersions.ToArray() }));
+                    archiveBrowserPassed = browser, extractionFailureDetailsPassed = failureDetails, multiplePasswordsPassed = multiplePasswords, accessibilityPassed = accessibility, engines = model.EngineVersions.ToArray() }));
                 Shutdown(passed ? 0 : 1);
             }
             catch

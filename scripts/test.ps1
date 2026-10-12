@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -71,8 +71,28 @@ $taskListingRejection.WaitForExit(); $taskListingOutput.GetAwaiter().GetResult()
 $taskListingRejected = $taskListingRejection.ExitCode -ne 0 -and -not (Test-Path $taskListingPackage)
 @{passed=($taskSigningPassed -and $taskListingRejected);compressionEvidenceHashRejection=$taskSigningPassed;missingListingEvidenceRejection=$taskListingRejected} | ConvertTo-Json | Set-Content (Join-Path $taskRoot 'artifacts/signing-validation.json') -Encoding utf8
 if (-not $taskListingRejected) { throw 'A compatibility report without archive listing evidence was accepted.' }
+$taskWithoutMultiple = Get-Content -Raw (Join-Path $taskRoot 'artifacts/engine-validation.json') | ConvertFrom-Json
+$taskWithoutMultiple.cases = @($taskWithoutMultiple.cases | Where-Object { $_.name -notmatch ' combines mixed-password ' })
+$taskWithoutMultiple.total = $taskWithoutMultiple.cases.Count
+$taskWithoutMultiple.passed = $taskWithoutMultiple.total
+$taskMultipleReport = Join-Path $taskTestAssets 'missing-multiple-password-report.json'
+$taskWithoutMultiple | ConvertTo-Json -Depth 8 | Set-Content $taskMultipleReport -Encoding utf8
+$taskMultiplePackage = Join-Path $taskTestAssets 'missing-multiple-password-must-not-be-signed.zip'
+if (Test-Path $taskMultiplePackage) { throw 'A previously rejected multiple-password artifact exists; inspect it before continuing.' }
+$taskMultipleSigner = [Diagnostics.ProcessStartInfo]::new($taskDotnet)
+$taskMultipleSigner.UseShellExecute = $false; $taskMultipleSigner.CreateNoWindow = $true
+$taskMultipleSigner.RedirectStandardOutput = $true; $taskMultipleSigner.RedirectStandardError = $true
+foreach ($taskArgument in @($taskPackager,'pack',(Join-Path $taskRoot 'engines/26.04'),'26.04',$taskMultipleReport,$taskTestPrivate,$taskMultiplePackage,$taskTestPublic,(Join-Path $taskRoot 'artifacts/compression-validation.json'))) { $taskMultipleSigner.ArgumentList.Add($taskArgument) }
+$taskMultipleRejection = [Diagnostics.Process]::Start($taskMultipleSigner)
+$taskMultipleOutput = $taskMultipleRejection.StandardOutput.ReadToEndAsync(); $taskMultipleError = $taskMultipleRejection.StandardError.ReadToEndAsync()
+$taskMultipleRejection.WaitForExit(); $taskMultipleOutput.GetAwaiter().GetResult() | Out-Null; $taskMultipleError.GetAwaiter().GetResult() | Out-Null
+$taskMultipleRejected = $taskMultipleRejection.ExitCode -ne 0 -and -not (Test-Path $taskMultiplePackage)
+@{passed=($taskSigningPassed -and $taskListingRejected -and $taskMultipleRejected);compressionEvidenceHashRejection=$taskSigningPassed;missingListingEvidenceRejection=$taskListingRejected;missingMultiplePasswordEvidenceRejection=$taskMultipleRejected} | ConvertTo-Json | Set-Content (Join-Path $taskRoot 'artifacts/signing-validation.json') -Encoding utf8
+if (-not $taskMultipleRejected) { throw 'A compatibility report without multiple-password evidence was accepted.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/CoreValidation/bin/Debug/net10.0-windows/CoreValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Core validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/MultiPasswordValidation/bin/Debug/net10.0-windows/MultiPasswordValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Multiple password validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/BrowserValidation/bin/Debug/net10.0-windows/BrowserValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Archive browser validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/UpdateValidation/bin/Debug/net10.0-windows/UpdateValidation.dll') $taskRoot
