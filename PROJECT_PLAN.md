@@ -1,6 +1,6 @@
 # 项目规划
 
-更新：2026-10-12，Asia/Shanghai。状态：P0/P1 验证完成；P2 可运行；P4 稳定引擎已发布，真实线上更新通过，软件预览准备上传。
+更新：2026-10-12，Asia/Shanghai。状态：P0/P1 验证完成；P2 开发预览已发布；P4 稳定引擎与真实线上更新通过，完整安装卸载待完成。
 
 ## 当前进度
 
@@ -20,6 +20,8 @@
 2026-10-12 上传阶段：用户授权“上传，继续任务”，源码已推送至 `main`（初始提交 `cc568bd041a6a5e85d23fb2d700fdc9b7a3e6813`）。GitHub Windows CI 运行 `38197882961` 完成并通过，下载的云端报告为引擎 57/57、核心 17/17、更新 22/22，以及 3 条真实 WPF 流程。稳定引擎包与软件开发预览将分别发布；新 RSA 3072 位产品发布公钥已固定，私钥按当前 Windows 用户加密保存在被忽略的 `.tools/release-signing/private-key.dpapi`，明文私钥已删除。更新签名脚本支持临时解密且结束清理，实际签名与公钥校验通过。新增 `--validate-online` 独立虚构数据验收模式，实际公开网络验证已在稳定引擎 Release 发布后执行并通过；软件预览包继续上传。完整安装卸载与人工桌面验收仍待完成。以上记录更新此前仓库创建阶段的状态。
 
 可运行程序：[artifacts/app/ArchivePassword.exe](artifacts/app/ArchivePassword.exe)；入口：[启动软件.cmd](启动软件.cmd)。详细运行、维护与验证说明见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。下文保留初始审计和计划依据，状态以本节为准。
+
+2026-10-12 发布完成：软件预发布 [v0.1.0-preview.1](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.1) 已公开，含 Windows x64 程序 ZIP、64 文件源码快照及 SHA256SUMS；从无登录凭据的公开地址下载三项资产，均与本地审核文件及 GitHub 资产摘要一致。对应代码提交 `738ebf5e274f01134114468cabcbf3f35f7a2255` 的云端验证 [38198753411](https://github.com/Nomoziya/nomozip/actions/runs/38198753411) 通过，报告已下载到 `artifacts/github-validation-38198753411/`。稳定引擎 [engine-26.04](https://github.com/Nomoziya/nomozip/releases/tag/engine-26.04) 独立发布，软件预发布不会改变客户端读取的最新稳定引擎。真实公开网络的 `artifacts/online-validation.json` 为 8/8 通过；首次失败源于验收代码检查了错误的签名文件名，已更正为实际安装的 `update-manifest.sig` 后验证通过，产品更新逻辑无需修改。发布私钥仍为 DPAPI 密文，临时解密文件已清理，源码及下载包的凭据/私钥/密码库扫描与 ZIP CRC 检查通过。软件为依赖 .NET 10 Desktop Runtime 的开发预览，尚无安装程序或 Authenticode 签名；人工桌面验收、未来新官方版本分支与 P3 范围继续保留。不得覆盖已公开的不可变资产；后续产品变更使用新预发布标签与包。
 
 ## 1. 已确认需求与审计结果
 

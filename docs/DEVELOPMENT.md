@@ -1,6 +1,6 @@
 # 构建、验证与维护
 
-当前交付为 0.1.0 开发预览，可运行的 Windows x64 WPF 软件。密码复用与本地签名引擎更新闭环已验证；完整发布、基础压缩功能和线上渠道部署仍在后续阶段。
+当前交付为已公开发布的 0.1.0 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新与真实 GitHub 线上引擎更新闭环已验证；完整安装卸载、人工桌面验收和基础压缩功能仍在后续阶段。
 
 ## 本机运行
 
@@ -56,3 +56,5 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 - 已检查三个实际 WPF 页面和 800 DIP 宽度的渲染预览；渲染数据为虚构数据。真实键盘、Narrator、高对比度、多屏 DPI 与用户实际使用尚待验收。
 
 详细报告：`artifacts/engine-validation.json`、`artifacts/core-validation.json`、`artifacts/update-validation.json`、`artifacts/desktop-validation.json`。用量与完整产品质量不从这些局部检查推导。
+
+首个公开预览 [v0.1.0-preview.1](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.1) 对应提交 `738ebf5e274f01134114468cabcbf3f35f7a2255`，其 [GitHub Windows 检查](https://github.com/Nomoziya/nomozip/actions/runs/38198753411) 通过。软件下载资产已通过公开地址重新下载并核对 SHA-256。发布资产保持不可变；修改代码后使用新的版本标签，勿覆盖旧包。
