@@ -8,7 +8,7 @@ public enum ExistingFilePolicy { Ask, Skip, Replace }
 public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vault, IPasswordCandidateProvider candidates)
 {
     public async Task<ExtractionOutcome> ExtractAsync(string archivePath, string outputPath, bool autoTry,
-        Func<Task<PasswordPromptResponse?>> requestPassword,
+        Func<EngineResult, Task<PasswordPromptResponse?>> requestPassword,
         Func<string, Task<ExistingFilePolicy>> resolveConflict,
         IProgress<TaskUpdate>? progress = null,
         CancellationToken cancellationToken = default,
@@ -49,8 +49,8 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         {
             cancellationToken.ThrowIfCancellationRequested();
             progress?.Report(new TaskUpdate("waiting", "请输入可用密码"));
-            supplied = await requestPassword();
-            if (supplied is null) return new ExtractionOutcome(new EngineResult { Status = "cancelled", Code = "cancelled" }, destination, warning);
+            supplied = await requestPassword(result);
+            if (supplied is null) return new ExtractionOutcome(result with { Status = "cancelled", Code = "cancelled" }, destination, warning);
             secret = supplied.Secret;
             currentState = "testing"; currentMessage = "正在验证输入的密码";
             result = await engine.TestAsync(archivePath, secret, engineProgress, cancellationToken);

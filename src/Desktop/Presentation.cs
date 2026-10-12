@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows;
+using ArchivePassword.Core;
 
 namespace ArchivePassword.Desktop;
 
@@ -43,6 +44,7 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private double percent;
     private bool running, indeterminate;
     public bool Completed { get; set; }
+    public EngineResult? Failure { get; set; }
     public string Status { get => status; set => Set(ref status, value); }
     public double Percent { get => percent; set => Set(ref percent, value); }
     public bool IsIndeterminate { get => indeterminate; set => Set(ref indeterminate, value); }
