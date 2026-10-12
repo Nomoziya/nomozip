@@ -1,5 +1,7 @@
 # 安装、升级与卸载
 
+当前验收固定为第九预览轻量版，具体步骤见[实际系统体验操作清单](SYSTEM_ACCEPTANCE.md)。用户已要求测试完成并反馈后再发布正式版；无需补测第八预览。
+
 发布政策（第七预览公开后确认）：以后只发布依赖系统共享 .NET 的轻量安装 EXE 和 ZIP。历史完整独立版保留下载；CI 中带运行组件的载荷仅是旧版升级测试夹具，不成为发行资产。未来发布应包含轻量 EXE、轻量 ZIP、源码快照和 SHA256SUMS 四项。
 
 历史第七预览提供两种 Windows x64 分发，功能相同：`nomozip-0.1.0-preview.7-light-setup-win-x64.exe` 为轻量安装版，程序目录约 9 MB，使用系统共享的 .NET 10 Windows Desktop Runtime x64（10.0.12 或更高的 10.0 补丁版）；`nomozip-0.1.0-preview.7-setup-win-x64.exe` 为完整独立版，携带运行组件，无需另装运行时。两者均为当前用户安装，默认程序目录为 `%LOCALAPPDATA%/Programs/nomozip`，开始菜单提供程序和卸载入口。安装前关闭 nomozip。
