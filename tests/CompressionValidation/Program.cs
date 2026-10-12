@@ -59,10 +59,17 @@ foreach (var version in versions)
     Check(version + " different roots with same archive path rejected", rejected.Engine.Code == "duplicate_archive_path");
     var invalidZip = await service.CreateAsync([source], Path.Combine(folder, version + "-unicode.zip"), "zip", password: "中文");
     Check(version + " unsupported ZIP Unicode password rejected before writing", invalidZip.Engine.Code == "zip_password_ascii_only" && !File.Exists(invalidZip.OutputPath));
-    using var cancel = new CancellationTokenSource();
-    var cancelOutput = Path.Combine(folder, version + "-cancel.7z");
-    var cancelled = await service.CreateAsync([source], cancelOutput, "7z", progress: new ForwardProgress<TaskUpdate>(value => { if (value.Progress is not null) cancel.Cancel(); }), cancellationToken: cancel.Token);
-    Check(version + " cancel removes partial output", cancelled.Engine.Status == "cancelled" && !File.Exists(cancelOutput) && !Directory.EnumerateFiles(folder, ".nomozip-create-*").Any());
+    var allCancelled = true;
+    for (var attempt = 0; attempt < 4; attempt++)
+    {
+        using var cancel = new CancellationTokenSource();
+        var cancelOutput = Path.Combine(folder, version + "-cancel-" + attempt + ".7z");
+        var cancelled = await service.CreateAsync([source], cancelOutput, "7z", progress: new ForwardProgress<TaskUpdate>(value => { if (value.Progress is not null) cancel.Cancel(); }), cancellationToken: cancel.Token);
+        var cancelledCleanly = cancel.IsCancellationRequested && cancelled.Engine.Status == "cancelled" && !File.Exists(cancelOutput) && !Directory.EnumerateFiles(folder, ".nomozip-create-*").Any();
+        if (!cancelledCleanly) Console.WriteLine(JsonSerializer.Serialize(new { version, attempt, cancelled.Engine.Status, cancelled.Engine.Code, requested = cancel.IsCancellationRequested, outputExists = File.Exists(cancelOutput) }));
+        allCancelled &= cancelledCleanly;
+    }
+    Check(version + " cancel removes partial output", allCancelled);
     var failedReplace = await service.CreateAsync([Path.Combine(folder, "missing")], existing, "7z", replace: true);
     Check(version + " failed replacement keeps existing valid archive", !failedReplace.Engine.IsSuccess && (await client.TestAsync(existing)).IsSuccess);
 }

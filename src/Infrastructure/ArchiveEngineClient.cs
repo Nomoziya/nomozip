@@ -56,11 +56,12 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath) : 
             process.StandardInput.Close();
             await process.WaitForExitAsync(CancellationToken.None);
             await diagnosticDrain;
-            return result;
+            return token.IsCancellationRequested ? new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" } : result;
         }
         catch (OperationCanceledException) { return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" }; }
         catch (Exception exception) when (exception is IOException or InvalidOperationException or System.ComponentModel.Win32Exception or JsonException)
         {
+            if (token.IsCancellationRequested) return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" };
             return new EngineResult { Protocol = 1, Code = "worker_connection_failed" };
         }
         finally { if (started && !process.HasExited) process.Kill(entireProcessTree: true); }
