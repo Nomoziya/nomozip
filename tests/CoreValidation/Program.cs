@@ -44,7 +44,7 @@ var service = new ExtractionService(engine, vault, provider);
 var promptCount = 0;
 var output = Path.Combine(testRoot, "automatic-output");
 var outcome = await service.ExtractAsync(archive, output, true,
-    () => { promptCount++; return Task.FromResult<PasswordPromptResponse?>(null); },
+    _ => { promptCount++; return Task.FromResult<PasswordPromptResponse?>(null); },
     _ => Task.FromResult(ExistingFilePolicy.Replace));
 var source = Path.Combine(root, "tests/fixtures/generated/中文示例.txt");
 Check("automatic password reaches real extraction", outcome.Engine.IsSuccess && promptCount == 0 && File.ReadAllBytes(Path.Combine(output, "中文示例.txt")).SequenceEqual(File.ReadAllBytes(source)));
@@ -54,7 +54,7 @@ await vault.DeleteAsync(correct.Id);
 promptCount = 0;
 var manualOutput = Path.Combine(testRoot, "manual-output");
 var manual = await service.ExtractAsync(archive, manualOutput, true,
-    () => { promptCount++; return Task.FromResult<PasswordPromptResponse?>(new(password, true, "newly saved")); },
+    _ => { promptCount++; return Task.FromResult<PasswordPromptResponse?>(new(password, true, "newly saved")); },
     _ => Task.FromResult(ExistingFilePolicy.Replace));
 Check("automatic failure falls back to manual", manual.Engine.IsSuccess && promptCount == 1);
 Check("successful manual password saved and survives reopen", (await new DpapiPasswordVault(vaultPath).ReadAsync()).Any(value => value.Secret == password && value.LastSuccessAt is not null));
@@ -62,10 +62,10 @@ Check("successful manual password saved and survives reopen", (await new DpapiPa
 var existing = Path.Combine(manualOutput, "中文示例.txt");
 await File.WriteAllTextAsync(existing, "keep this existing file");
 var skipped = await service.ExtractAsync(archive, manualOutput, true,
-    () => Task.FromResult<PasswordPromptResponse?>(null), _ => Task.FromResult(ExistingFilePolicy.Skip));
+    _ => Task.FromResult<PasswordPromptResponse?>(null), _ => Task.FromResult(ExistingFilePolicy.Skip));
 Check("skip conflict preserves existing data", skipped.Engine.IsSuccess && await File.ReadAllTextAsync(existing) == "keep this existing file" && skipped.Warning is not null);
 var declined = await service.ExtractAsync(archive, manualOutput, true,
-    () => Task.FromResult<PasswordPromptResponse?>(null), _ => Task.FromResult(ExistingFilePolicy.Ask));
+    _ => Task.FromResult<PasswordPromptResponse?>(null), _ => Task.FromResult(ExistingFilePolicy.Ask));
 Check("cancel conflict writes no final files", declined.Engine.Status == "cancelled" && await File.ReadAllTextAsync(existing) == "keep this existing file");
 
 using (var skip = new CancellationTokenSource())
@@ -73,9 +73,27 @@ using (var skip = new CancellationTokenSource())
     promptCount = 0;
     var progress = new ForwardProgress<TaskUpdate>(value => { if (value.State == "password") skip.Cancel(); });
     var skippedCandidates = await service.ExtractAsync(archive, Path.Combine(testRoot, "skip-candidates"), true,
-        () => { promptCount++; return Task.FromResult<PasswordPromptResponse?>(new(password, false, "")); },
+        _ => { promptCount++; return Task.FromResult<PasswordPromptResponse?>(new(password, false, "")); },
         _ => Task.FromResult(ExistingFilePolicy.Replace), progress, skipSavedPasswordToken: skip.Token);
     Check("skip saved candidates enters manual flow", skippedCandidates.Engine.IsSuccess && promptCount == 1);
+}
+
+foreach (var version in new[] { "26.04", "26.03" })
+{
+    var failureEngine = new ArchiveEngineClient(Path.Combine(root, "artifacts/worker/ArchiveEngineWorker.exe"), Path.Combine(root, $"engines/{version}/7z.dll"));
+    var failureService = new ExtractionService(failureEngine, vault, provider);
+    var failureOutput = Path.Combine(testRoot, "partial-" + version);
+    var vaultBefore = await File.ReadAllBytesAsync(vaultPath);
+    var attempts = 0;
+    EngineResult? observed = null;
+    var failed = await failureService.ExtractAsync(Path.Combine(root, "tests/fixtures/generated/test_read_format_rar5_encrypted.rar"), failureOutput, false,
+        result => { observed = result; return Task.FromResult<PasswordPromptResponse?>(attempts++ == 0 ? new("password", true, "must not save") : null); },
+        _ => Task.FromResult(ExistingFilePolicy.Replace));
+    Check(version + " partial validation reaches prompt with counts and paths", observed is { SuccessfulItems: > 0 } && observed.Failures.Count > 0 && observed.Failures.All(value => !string.IsNullOrWhiteSpace(value.Path)));
+    Check(version + " cancelled partial validation retains last failure", failed.Engine.Status == "cancelled" && !failed.Engine.IsSuccess && failed.Engine.SuccessfulItems == observed!.SuccessfulItems && failed.Engine.Failures.SequenceEqual(observed.Failures));
+    var listed = await failureEngine.ListAsync(Path.Combine(root, "tests/fixtures/generated/test_read_format_rar5_encrypted.rar"), "password");
+    Check(version + " failure indices map to real listed paths", failed.Engine.Failures.All(value => listed.Items.Any(entry => entry.Index == value.Index && entry.Path == value.Path)));
+    Check(version + " partial validation writes no files or passwords", !Directory.EnumerateFileSystemEntries(failureOutput).Any() && (await File.ReadAllBytesAsync(vaultPath)).SequenceEqual(vaultBefore));
 }
 
 var prior = await File.ReadAllBytesAsync(vaultPath);

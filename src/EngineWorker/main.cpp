@@ -243,7 +243,9 @@ public:
                     result == NArchive::NExtract::NOperationResult::kUnsupportedMethod ? "unsupported_method" :
                     context.passwordRequested && (result == NArchive::NExtract::NOperationResult::kCRCError || result == NArchive::NExtract::NOperationResult::kDataError) ? "password_or_corrupt" : "corrupt_archive";
                 if (error.empty()) error = code;
-                failures.push_back({{"index", currentIndex}, {"code", code}});
+                auto pathName = property(archive, currentIndex, kpidPath).text();
+                if (pathName.empty()) pathName = context.archivePath.stem().wstring();
+                failures.push_back({{"index", currentIndex}, {"code", code}, {"path", utf8(pathName)}});
             }
         } catch (...) { return E_FAIL; }
         return cancelled ? E_ABORT : S_OK;

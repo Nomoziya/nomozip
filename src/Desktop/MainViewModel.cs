@@ -59,6 +59,7 @@ public sealed partial class MainViewModel : ObservableObject
         BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) OutputPath = path; }, () => IsIdle);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
         BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page == 0 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
+        ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(() => skipPasswords?.Cancel(), () => IsBusy && CanSkipPasswords);
         OpenOutputCommand = new RelayCommand(() => OpenFolder(OutputPath), () => Directory.Exists(OutputPath));
@@ -84,6 +85,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand BrowseOutputCommand { get; }
     public ICommand ExtractCommand { get; }
     public ICommand BrowseArchiveCommand { get; }
+    public ICommand ShowFailureCommand { get; }
     public ICommand CancelCommand { get; }
     public ICommand SkipPasswordsCommand { get; }
     public ICommand OpenOutputCommand { get; }
@@ -179,7 +181,7 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 if (cancellation.IsCancellationRequested) break;
                 skipPasswords.Dispose(); skipPasswords = new CancellationTokenSource();
-                task.Running = true; task.IsIndeterminate = true; SelectedTask = task;
+                task.Running = true; task.IsIndeterminate = true; task.Failure = null; SelectedTask = task;
                 var prompts = 0;
                 var progress = new Progress<TaskUpdate>(value =>
                 {
@@ -190,11 +192,13 @@ public sealed partial class MainViewModel : ObservableObject
                 try
                 {
                     var outcome = await service.ExtractAsync(task.Path, OutputPath, AutoTry,
-                        () => dialogs.AskPasswordAsync(task.Name, prompts++ > 0, allPasswords, vaultAvailable, cancellation.Token),
+                        failure => dialogs.AskPasswordAsync(task.Name, prompts++ > 0, allPasswords, vaultAvailable, cancellation.Token, previousFailure: failure),
                         path => Task.FromResult(ConflictPolicy == 1 ? ExistingFilePolicy.Skip : ConflictPolicy == 2 ? ExistingFilePolicy.Replace : dialogs.ResolveConflict(path)),
                         progress, cancellation.Token, skipPasswords.Token);
                     task.Completed = outcome.Engine.IsSuccess;
                     task.Status = outcome.Engine.IsSuccess ? "已解压" : outcome.Engine.Status == "cancelled" ? "已取消" : ErrorText(outcome.Engine.Code);
+                    task.Failure = outcome.Engine.IsSuccess ? null : outcome.Engine;
+                    if (task.Failure?.Failures.Count > 0) task.Status += $" · {task.Failure.Failures.Count} 项失败";
                     if (outcome.Warning is not null) Banner = outcome.Warning;
                     Footer = $"{task.Name}：{task.Status}";
                     if (outcome.Engine.Status == "cancelled") break;

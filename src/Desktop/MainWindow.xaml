@@ -35,7 +35,7 @@
                   <DataGridTemplateColumn Header="状态" Width="160"><DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel Margin="8" VerticalAlignment="Center"><TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Status}"/><ProgressBar Value="{Binding Percent}" Height="4" Margin="0,6,0,0" IsIndeterminate="{Binding IsIndeterminate}" Visibility="{Binding ProgressVisibility}" AutomationProperties.Name="解压进度"/></StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
                 </DataGrid.Columns>
               </DataGrid>
-              <TextBlock Grid.Row="2" Text="{Binding TaskSummary}" Style="{StaticResource Secondary}" Margin="8,16,0,0"/>
+              <DockPanel Grid.Row="2" Margin="8,16,0,0"><Button x:Name="FailureDetailsAction" Content="失败详情" Command="{Binding ShowFailureCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="查看所选任务失败条目"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></Button.Style></Button><TextBlock Text="{Binding TaskSummary}" Style="{StaticResource Secondary}" VerticalAlignment="Center"/></DockPanel>
               <TextBlock Grid.Row="1" Text="添加压缩包或拖入文件" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Tasks.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
             </Grid>
           </Border>
@@ -70,7 +70,7 @@
         <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="2"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
         <StackPanel><TextBlock Text="设置" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,24"/>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
-            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.7" Margin="0,0,0,8"/>
+            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.8" Margin="0,0,0,8"/>
             <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/><TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,8,0,16"/>
             <Label Content="可用引擎" Target="{Binding ElementName=EngineChoice}" Padding="0"/><ComboBox x:Name="EngineChoice" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="选择已验证的本地引擎" Margin="0,8,0,0"/>
             <WrapPanel Margin="0,12,0,16"><Button Content="使用所选版本" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/><Button Content="恢复上一版本" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/></WrapPanel>

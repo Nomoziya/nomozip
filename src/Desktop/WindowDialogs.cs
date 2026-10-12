@@ -6,7 +6,7 @@ namespace ArchivePassword.Desktop;
 
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
-    Action<ArchiveContentsDialog>? prepareContents = null)
+    Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null)
 {
     public string[] SelectCompressionFiles()
     {
@@ -47,10 +47,16 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         prepareContents?.Invoke(dialog);
         dialog.ShowDialog();
     }
-    public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token, bool browsing = false)
+    public void ShowExtractionFailure(string name, EngineResult failure)
+    {
+        var dialog = new ExtractionFailureDialog(name, failure) { Owner = owner };
+        prepareFailure?.Invoke(dialog);
+        dialog.ShowDialog();
+    }
+    public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token, bool browsing = false, EngineResult? previousFailure = null)
     {
         if (token.IsCancellationRequested) return Task.FromResult<PasswordPromptResponse?>(null);
-        var dialog = new PasswordDialog(name, failed, saved, canSave, browsing: browsing) { Owner = owner };
+        var dialog = new PasswordDialog(name, failed, saved, canSave, browsing: browsing, previousFailure: previousFailure, prepareFailure: prepareFailure) { Owner = owner };
         prepareDialog?.Invoke(dialog);
         using var registration = token.Register(() => dialog.Dispatcher.BeginInvoke(() => dialog.Close()));
         var accepted = dialog.ShowDialog();

@@ -2,7 +2,7 @@ namespace ArchivePassword.Core;
 
 public sealed record ArchiveEntry(uint Index, string Path, ulong Size, bool Directory, bool Encrypted);
 public sealed record EngineProgress(ulong Completed, ulong Total);
-public sealed record EngineFailure(uint Index, string Code);
+public sealed record EngineFailure(uint Index, string Code, string Path = "");
 public sealed record EngineFormat(string Name, string Extensions);
 
 public sealed record EngineResult

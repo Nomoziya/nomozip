@@ -126,6 +126,8 @@ def main():
         check(version + " listing rejects wrong header password", wrong_listing.get("code") in ("wrong_password", "password_or_corrupt") and not wrong_listing.get("items"), wrong_listing)
         mixed = request(version, "test", multi_password_rar, password="password")
         check(version + " reports mixed-password partial failure", mixed["status"] == "error" and mixed.get("successfulItems", 0) > 0 and len(mixed.get("failures", [])) > 0, mixed)
+        mixed_paths = {item["index"]: item["path"] for item in request(version, "list", multi_password_rar, password="password").get("items", [])}
+        check(version + " partial failures identify actual archive paths", all(failure.get("path") and mixed_paths.get(failure["index"]) == failure["path"] for failure in mixed.get("failures", [])), mixed)
         unsafe_output = FIXTURES / "outputs" / (version + "-unsafe-" + str(time.time_ns()))
         unsafe = request(version, "extract", hostile, unsafe_output)
         check(version + " blocks archive traversal", unsafe.get("code") == "unsafe_path" and not (unsafe_output.parent / "escaped.txt").exists(), unsafe)
