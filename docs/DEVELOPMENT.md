@@ -33,9 +33,18 @@ Python 测试在本轮使用 Codex 自带 Python。其它机器需可用 Python 
 
 第一条只检查官方稳定版；第二条在有新版本时下载官方包，禁用候选引擎，运行真实兼容性矩阵，通过后重新生成本地产品包。当前最新版 26.04 已在本地，因此本轮只验证了“当前版本无需更新”的分支；未来新版本的完整下载/验证/重建分支尚未实跑。
 
-此脚本面向项目维护与本机开发。现有产品可检查官方版本和产品 GitHub Releases、下载或导入签名更新包、验证后启用，并恢复上一引擎。更新包不需要用户另装官方 7-Zip。流程、测试包和发布密钥约定见 [更新说明](UPDATES.md)。客户端已实现，公开仓库已创建；源码和 Release 尚未上传，真实线上渠道尚未部署。
+此脚本面向项目维护与本机开发。现有产品可检查官方版本和产品 GitHub Releases、下载或导入签名更新包、验证后启用，并恢复上一引擎。更新包不需要用户另装官方 7-Zip。流程、测试包和发布密钥约定见 [更新说明](UPDATES.md)。源码和 CI 已上传，软件下载及稳定引擎包见 [Releases](https://github.com/Nomoziya/nomozip/releases)。
 
-`.github/workflows/windows-validation.yml` 已准备 Windows 构建、实际引擎/密码库/更新/桌面验证，以及定期检查官方新引擎的流程；当前只保存了定义，未在 GitHub 运行。流程仅保留验证报告，不发布产品，也不使用正式签名密钥。
+`.github/workflows/windows-validation.yml` 已部署 Windows 构建、实际引擎/密码库/更新/桌面验证，以及定期检查官方新引擎的流程；[首次 GitHub 运行](https://github.com/Nomoziya/nomozip/actions/runs/38197882961) 全部检查通过。流程仅保留验证报告，不发布产品，也不使用正式签名密钥。
+
+公开发布后，维护者可在已构建程序上执行真实线上更新验收：
+
+```powershell
+$taskApp = Start-Process artifacts/app/ArchivePassword.exe -ArgumentList @('--validate-online', $PWD.Path) -WindowStyle Hidden -Wait -PassThru
+if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifacts/online-validation.json.' }
+```
+
+该模式使用独立的虚构密码库，通过正式桌面命令从 26.03 检查、下载、校验和启用公开发布的 26.04，验证实际解压与回退持久化。它不随普通 CI 自动执行，也不访问用户真实密码库。
 
 ## 本轮验证范围
 
