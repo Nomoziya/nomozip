@@ -2,7 +2,9 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-当前状态：0.1.0 Windows x64 开发预览已构建。引擎 57 项、核心 17 项、更新 22 项，以及 3 条桌面流程验证通过；完整用户验收与线上发布尚未完成。
+当前状态：0.1.0 Windows x64 开发预览已构建。引擎 57 项、核心 17 项、更新 22 项，以及 3 条桌面流程验证通过；真实线上引擎更新的 8 项桌面检查通过，完整用户验收仍待完成。
+
+下载：[Windows x64 开发预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.1)。解压后运行 `ArchivePassword.exe`；需要 [.NET 10 Windows Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
