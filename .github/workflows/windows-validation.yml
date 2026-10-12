@@ -100,10 +100,8 @@ jobs:
         with:
           name: vault-cross-machine-fixtures
           path: artifacts/vault-cross-machine
-      - name: Verify portable backup migration with real encrypted extraction
-        run: |
-          & ./.tools/dotnet/dotnet.exe tests/VaultTransferValidation/bin/Debug/net10.0-windows/VaultTransferValidation.dll $PWD.Path cross-import (Join-Path $PWD 'artifacts/vault-cross-machine')
-          if ($LASTEXITCODE -ne 0) { throw 'Independent Windows machine vault migration failed.' }
+      - name: Verify portable backup migration as an independent Windows user
+        run: ./scripts/test-vault-independent-user.ps1
       - name: Validate lightweight installer and legacy bundled-runtime upgrade
         run: |
           ./scripts/bootstrap-installer.ps1
