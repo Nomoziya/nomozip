@@ -1,8 +1,10 @@
 # 构建、验证与维护
 
-当前交付为已公开发布的 0.1.0 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新与真实 GitHub 线上引擎更新闭环已验证；完整安装卸载、人工桌面验收和基础压缩功能仍在后续阶段。
+当前交付为已公开发布的 0.1.0-preview.2 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新、真实 GitHub 线上引擎更新及安装/升级/卸载已验证；人工桌面验收与基础压缩功能仍在后续阶段。
 
 第二预览增加当前用户安装包与携带运行组件的独立 ZIP。构建和安装/升级/卸载验收见 [安装说明](INSTALLATION.md)。普通开发构建继续使用系统运行时；`-SelfContained` 构建会携带 .NET / WPF 运行组件。安装器不会将这些组件安装为全局运行时。
+
+第二预览提交为 `50df33855e25b8daa9747b20335efabf3eb0ab17`，其 [GitHub Windows 验证](https://github.com/Nomoziya/nomozip/actions/runs/38202511444) 包含 14/14 安装检查，覆盖升级后真实复用旧 DPAPI 密码库、实际加载安装目录中的运行组件、离线解压、数据保留与明确删除。下载地址为 [v0.1.0-preview.2](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.2)。
 
 ## 本机运行
 
