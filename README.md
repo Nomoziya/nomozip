@@ -2,11 +2,11 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-当前版本：0.1.0-preview.7 Windows x64 开发预览已公开，提供共享运行库轻量版和完整独立版。引擎 79 项、核心 17 项、更新 22 项、压缩 38 项、打开方式 7 项、浏览 28 项、四条原有桌面流程、新增 13 项桌面浏览与 44 项布局检查、17 项完整安装及 18 项完整到轻量安装验证通过；此前真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
+当前版本：0.1.0-preview.8 Windows x64 开发预览，仅提供共享运行库轻量版。解压密码重试和任务列表提供失败条目数量、路径与原因；通过部分条目仍不计为完整解压成功。引擎 81 项、核心 25 项、新增桌面失败流程 10 项与既有检查、18 项轻量安装升级检查全部通过。第七预览的压缩页、密码库布局和内容浏览已获用户确认；完整人工桌面验收仍待完成。
 
 发布约定：用户于第七预览发布后要求后续只发布共享运行库轻量版。历史完整版本保持不变；未来安装 EXE 和 ZIP 均依赖 .NET 10 Desktop Runtime x64。
 
-下载：[Windows x64 第七预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.7)。已有 .NET 10 Desktop Runtime x64 的电脑推荐带 `light` 的轻量安装 EXE：安装包约 2 MB，软件安装目录约 9 MB；未安装运行库时需从 [微软官网](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0) 安装桌面运行库（本轮验证 10.0.12），不需要 SDK。约 9 MB 不包括系统共享运行库的占用。第七预览及更早的历史发布仍有完整独立版，但不再制作新的完整发行包。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
+下载：[Windows x64 第八预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.8)。已有 .NET 10 Desktop Runtime x64 的电脑推荐带 `light` 的轻量安装 EXE：安装包约 2 MB，软件安装目录约 9 MB；未安装运行库时需从 [微软官网](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0) 安装桌面运行库（本轮验证 10.0.12），不需要 SDK。约 9 MB 不包括系统共享运行库的占用。第七预览及更早的历史发布仍有完整独立版，但不再制作新的完整发行包。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
