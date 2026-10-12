@@ -14,6 +14,8 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 第三预览增加 7z/ZIP 创建、加密和可选 Windows 打开方式入口，[云端验证](https://github.com/Nomoziya/nomozip/actions/runs/38206962560) 全部通过。操作、密码限制与数据保护见 [压缩说明](docs/COMPRESSION.md)。同包多密码组合解压仍未实现。
 
+第四预览正在发布验收：修复高对比度配色、空密码焦点及小工作区窗口尺寸，29 项补充桌面检查通过。人工键盘、Narrator、实际 DPI/高对比度和 Explorer 操作仍待确认，范围见开发说明的 P5 章节。
+
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
 - [解压主界面示意](design-system/extraction.svg)

@@ -30,6 +30,11 @@ internal static class DesktopAccessibilityValidation
             foreach (var width in new[] { 1120, 800 })
             {
                 window.Width = width; window.Height = width == 800 ? 600 : 760;
+                if (width == 800)
+                {
+                    WindowPlacement.FitWorkArea(window, new Rect(0, 0, 800, 500));
+                    Check("startup fits simulated small work area", window.Height <= 500 && window.MinHeight <= 500 && window.Width <= 800);
+                }
                 foreach (var page in new[] { 0, 3, 1, 2 })
                 {
                     model.Page = page;
@@ -86,6 +91,8 @@ internal static class DesktopAccessibilityValidation
                 Owner = window, Height = 420, WindowStartupLocation = WindowStartupLocation.Manual,
                 Left = -32000, Top = -32000, ShowActivated = false, ShowInTaskbar = false
             };
+            WindowPlacement.FitWorkArea(dialog, new Rect(0, 0, 420, 400));
+            Check("password dialog fits simulated small work area", dialog.Width <= 420 && dialog.Height <= 400 && dialog.MinHeight <= 400);
             try
             {
                 dialog.Show(); await Layout();
@@ -111,23 +118,23 @@ internal static class DesktopAccessibilityValidation
                 var name = (TextBox)dialog.FindName("NameBox"); name.BringIntoView(); await Layout();
                 Check("password save name reachable at minimum height", name.IsVisible && name.IsEnabled
                     && UIElementAutomationPeer.CreatePeerForElement(name)!.GetName() == "密码名称");
-                Render(dialog, Path.Combine(directory, "password-dialog-420.png"), 1.0);
+                Render(dialog, Path.Combine(directory, "password-dialog-small-workarea.png"), 1.0);
             }
             finally { dialog.Close(); }
         }
         finally
         {
             theme.Apply(SystemParameters.HighContrast);
-            var passed = checks.Count == 27 && checks.Values.All(value => value);
+            var passed = checks.Count == 29 && checks.Values.All(value => value);
             await File.WriteAllTextAsync(Path.Combine(root, "artifacts/accessibility-validation.json"), JsonSerializer.Serialize(new
             {
                 passed, total = checks.Count, checks, failures, syntheticData = true,
-                renderScales = new[] { 100, 125, 150, 200 }, highContrastSystemEnabled = SystemParameters.HighContrast,
+                renderScales = new[] { 100, 125, 150, 200 }, layoutSizes = new[] { "1120x760", "800x500" }, highContrastSystemEnabled = SystemParameters.HighContrast,
                 scope = "UI Automation semantics, logical focus, scroll reachability and rendering with simulated contrast resources/pixel density",
                 humanKeyboardNarratorExplorerAndMonitorDpiAccepted = false
             }));
         }
-        return checks.Count == 27 && checks.Values.All(value => value);
+        return checks.Count == 29 && checks.Values.All(value => value);
     }
 
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)

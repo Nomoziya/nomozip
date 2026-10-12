@@ -75,8 +75,10 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 
 ## P5 无障碍与布局验收
 
-第四预览修复系统高对比度资源下选中导航和提示的文字配色、选中归档辅助文字的颜色继承，以及开启“显示密码”后提交空密码应返回可见输入框的问题。高对比度开关变化会在应用运行时更新资源，关闭后恢复原设计配色。
+第四预览修复系统高对比度资源下选中导航和提示的文字配色、选中归档辅助文字的颜色继承，以及开启“显示密码”后提交空密码应返回可见输入框的问题。高对比度开关变化会在应用运行时更新资源，关闭后恢复原设计配色。主窗口启动和密码对话框按系统工作区收缩最小尺寸与初始尺寸，避免高缩放下固定高度超过可用区域。
 
-新增 `artifacts/accessibility-validation.json` 和 `artifacts/accessibility-preview/`：27 项检查覆盖四页在 800/1120 DIP 宽度下的可获焦输入控件名称、滚动可达性、选中行文字、系统色资源映射与恢复、密码框受保护语义、显示明文提示及空密码的逻辑焦点。34 张渲染图使用虚构数据和 100%/125%/150%/200% 像素密度；高对比度图使用系统色资源模拟，不修改操作系统主题。报告明确保留 `humanKeyboardNarratorExplorerAndMonitorDpiAccepted=false`，不把控件属性、程序焦点或离屏渲染称为真人验收。
+新增 `artifacts/accessibility-validation.json` 和 `artifacts/accessibility-preview/`：29 项检查覆盖四页在 1120×760 与 800×500 DIP 下的可获焦输入控件名称、滚动可达性、主窗口和密码对话框适应较小工作区、选中行文字、系统色资源映射与恢复、密码框受保护语义、显示明文提示及空密码的逻辑焦点。34 张渲染图使用虚构数据和 100%/125%/150%/200% 像素密度；高对比度图使用系统色资源模拟，不修改操作系统主题。报告明确保留 `humanKeyboardNarratorExplorerAndMonitorDpiAccepted=false`，不把控件属性、程序焦点或离屏渲染称为真人验收。
 
 人工体验剩余步骤：安装最新版并创建一个加密 7z，勾选成功后保存，再解压确认自动复用；通过 Tab/Shift+Tab、导航方向键、Enter、Escape 和页面快捷键完成一次流程；开启 Narrator，检查控件与错误提示是否清晰；切换 Windows 高对比度和 125%/150%/200% 缩放、跨显示器移动，确认主操作可见；最后在设置添加打开方式入口，从 Explorer 打开测试包并确认移除入口后原默认应用保留。安装、升级、卸载的数据保留已自动验证，向导操作与这些实际桌面体验仍需用户确认。自动检查发现问题继续修复，人工项目未确认时 P5 保持未完成。
+
+实现依据（2026-10-12）：微软的 [WPF 焦点说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/focus-overview) 区分键盘焦点与逻辑焦点；[系统资源说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/systems/xaml-resources-how-to-use-system) 和 [系统参数变更事件](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.staticpropertychanged?view=windowsdesktop-10.0) 支持系统配色更新；[WorkArea](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.workarea?view=windowsdesktop-10.0) 提供主显示器工作区，跨显示器场景仍待实际验收。
