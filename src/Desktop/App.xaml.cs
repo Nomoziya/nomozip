@@ -26,10 +26,17 @@ public partial class App : Application
         var previewIndex = Array.IndexOf(e.Args, "--preview");
         var validationIndex = Array.IndexOf(e.Args, "--validate");
         var onlineValidationIndex = Array.IndexOf(e.Args, "--validate-online");
+        var installedValidationIndex = Array.IndexOf(e.Args, "--validate-installed");
         var dataIndex = Array.IndexOf(e.Args, "--data-dir");
         if (dataIndex >= 0 && dataIndex + 1 < e.Args.Length) dataDirectory = Path.GetFullPath(e.Args[dataIndex + 1]);
         if (validationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts", "desktop-validation", Guid.NewGuid().ToString("N"));
         if (onlineValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[onlineValidationIndex + 1]), "artifacts", "online-validation", Guid.NewGuid().ToString("N"));
+        if (installedValidationIndex >= 0)
+        {
+            var validationRoot = Path.GetFullPath(e.Args[installedValidationIndex + 1]);
+            if (dataIndex < 0) dataDirectory = Path.Combine(validationRoot, "artifacts", "installed-validation", Guid.NewGuid().ToString("N"));
+            else if (!dataDirectory.StartsWith(Path.Combine(validationRoot, "artifacts", "installer-validation") + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) { Shutdown(2); return; }
+        }
         var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
         var window = new MainWindow();
         var model = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window, validationIndex >= 0 ? PrepareValidationDialog : null,
@@ -37,6 +44,13 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        if (installedValidationIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var result = await DesktopInstalledValidation.RunAsync(model, vault, baseDirectory, Path.GetFullPath(e.Args[installedValidationIndex + 1]));
+            Shutdown(result ? 0 : 1); return;
+        }
         if (onlineValidationIndex >= 0)
         {
             window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;

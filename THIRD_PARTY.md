@@ -14,4 +14,6 @@ The native worker is built with MinGW and static runtime libraries. GCC runtime,
 
 The C# password store uses Microsoft's System.Security.Cryptography.ProtectedData 10.0.12 package (MIT): https://www.nuget.org/packages/System.Security.Cryptography.ProtectedData/10.0.12. Runtime and framework dependencies are Microsoft's .NET 10 / WPF.
 
+The self-contained Windows x64 distribution includes Microsoft .NET 10.0.12 and WPF runtime files from Microsoft's official NuGet runtime packs. Its runtime updates require a new application package. The per-user installer uses NSIS 3.13, obtained from the official MSYS2 3.13-2 package with the published SHA-256 verified: https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-nsis. NSIS copyright and applicable license notices are included as `licenses/NSIS-COPYING.txt`.
+
 Integration tests download RAR fixtures from libarchive's test suite, and do not include them in the application package: https://github.com/libarchive/libarchive/tree/master/libarchive/test. The tests use the fixture content and passwords documented in test_read_format_rar_encryption.c. Test fixture provenance is independent from the product license.
