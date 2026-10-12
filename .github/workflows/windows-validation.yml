@@ -59,7 +59,10 @@ jobs:
       - name: Build desktop preview
         run: ./scripts/build.ps1 -Configuration Release -SkipWorker
       - name: Validate vault, updates and desktop command flows
-        run: ./scripts/test.ps1 -SkipEngineValidation
+        run: |
+          ./scripts/test.ps1 -SkipEngineValidation
+          & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
+          if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
       - name: Build and validate per-user installer with bundled runtime
         run: |
           ./scripts/bootstrap-installer.ps1

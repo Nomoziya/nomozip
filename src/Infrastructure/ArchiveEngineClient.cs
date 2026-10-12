@@ -5,7 +5,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed class ArchiveEngineClient(string workerPath, string enginePath) : IArchiveEngine
+public sealed class ArchiveEngineClient(string workerPath, string enginePath) : IArchiveEngine, IArchiveCreator
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
@@ -13,8 +13,11 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath) : 
     public Task<EngineResult> ListAsync(string archivePath, string? password = null, CancellationToken cancellationToken = default) => RunAsync("list", archivePath, null, password, null, cancellationToken);
     public Task<EngineResult> TestAsync(string archivePath, string? password = null, IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default) => RunAsync("test", archivePath, null, password, progress, cancellationToken);
     public Task<EngineResult> ExtractAsync(string archivePath, string outputPath, string? password = null, IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default) => RunAsync("extract", archivePath, outputPath, password, progress, cancellationToken);
+    public Task<EngineResult> CreateAsync(CompressionRequest request, string outputPath, string? password,
+        IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default) =>
+        RunAsync("create", null, outputPath, password, progress, cancellationToken, request);
 
-    private async Task<EngineResult> RunAsync(string operation, string? archivePath, string? outputPath, string? password, IProgress<EngineProgress>? progress, CancellationToken token)
+    private async Task<EngineResult> RunAsync(string operation, string? archivePath, string? outputPath, string? password, IProgress<EngineProgress>? progress, CancellationToken token, CompressionRequest? creation = null)
     {
         if (token.IsCancellationRequested) return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" };
         var start = new ProcessStartInfo(Path.GetFullPath(workerPath))
@@ -32,7 +35,8 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath) : 
             started = true;
             var diagnosticDrain = process.StandardError.ReadToEndAsync();
             // Sensitive request data stays in the parent/child pipe and is never logged.
-            await JsonSerializer.SerializeAsync(process.StandardInput.BaseStream, new { protocol = 1, operation, archivePath, outputPath, password }, JsonOptions, token);
+            await JsonSerializer.SerializeAsync(process.StandardInput.BaseStream, new { protocol = 1, operation, archivePath, outputPath, password,
+                sourceEntries = creation?.Entries, format = creation?.Format, compressionLevel = creation?.Level, encryptHeaders = creation?.EncryptHeaders }, JsonOptions, token);
             await process.StandardInput.BaseStream.WriteAsync("\n"u8.ToArray(), token);
             await process.StandardInput.BaseStream.FlushAsync(token);
             var response = ReadResultAsync(process, progress);

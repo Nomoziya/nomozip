@@ -9,7 +9,7 @@ using ArchivePassword.Infrastructure;
 
 namespace ArchivePassword.Desktop;
 
-public sealed class MainViewModel : ObservableObject
+public sealed partial class MainViewModel : ObservableObject
 {
     private readonly string baseDirectory, dataDirectory;
     private readonly IPasswordVault vault;
@@ -54,9 +54,10 @@ public sealed class MainViewModel : ObservableObject
         }
         Tasks.CollectionChanged += (_, _) => { Changed(nameof(TaskSummary)); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
+        OpenInputCommand = new RelayCommand(() => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else AddFilesCommand.Execute(null); }, () => IsIdle);
         RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is not null);
         BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) OutputPath = path; }, () => IsIdle);
-        ExtractCommand = new AsyncCommand(ExtractAsync, () => IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
+        ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(() => skipPasswords?.Cancel(), () => IsBusy && CanSkipPasswords);
         OpenOutputCommand = new RelayCommand(() => OpenFolder(OutputPath), () => Directory.Exists(OutputPath));
@@ -71,10 +72,13 @@ public sealed class MainViewModel : ObservableObject
         ApplyEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.ActivateAsync(SelectedEngineVersion, token); await RefreshEngineSelectionAsync(); UpdateMessage = "已切换解压引擎。"; }), () => IsIdle && updater is not null && SelectedEngineVersion != activeEngine && EngineVersions.Contains(SelectedEngineVersion));
         RollbackEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.RollbackAsync(token); await RefreshEngineSelectionAsync(); UpdateMessage = "已恢复上一版本。"; }), () => IsIdle && updater is not null && EngineVersions.Contains(previousEngine));
         OpenLicensesCommand = new RelayCommand(() => OpenFolder(Path.Combine(baseDirectory, "licenses")));
+        InitializeCompressionCommands();
+        InitializeAssociationCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
     public ICommand AddFilesCommand { get; }
+    public ICommand OpenInputCommand { get; }
     public ICommand RemoveFileCommand { get; }
     public ICommand BrowseOutputCommand { get; }
     public ICommand ExtractCommand { get; }
@@ -92,7 +96,8 @@ public sealed class MainViewModel : ObservableObject
     public ICommand ApplyEngineCommand { get; }
     public ICommand RollbackEngineCommand { get; }
     public ICommand OpenLicensesCommand { get; }
-    public int Page { get => page; set => Set(ref page, value); }
+    public int Page { get => page; set { if (Set(ref page, value)) Changed(nameof(NavigationIndex)); } }
+    public int NavigationIndex { get => Page switch { 3 => 1, 1 => 2, 2 => 3, _ => 0 }; set => Page = value switch { 1 => 3, 2 => 1, 3 => 2, _ => 0 }; }
     public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) Changed(nameof(IsIdle)); } }
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
@@ -339,6 +344,10 @@ public sealed class MainViewModel : ObservableObject
     private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null);
     public void LoadPreview()
     {
+        CompressionSources.Add(new("D:\\Documents\\资料", "文件夹"));
+        CompressionSources.Add(new("D:\\Documents\\说明.txt", "文件"));
+        CompressionOutput = "D:\\Documents\\资料备份.7z";
+        CompressionEncrypt = true;
         initializing = false; Changed(nameof(IsIdle));
         Tasks.Add(new ArchiveTaskRow("D:\\Downloads\\资料合集.7z", "128 MB"));
         Tasks.Add(new ArchiveTaskRow("D:\\Downloads\\图片备份.zip", "42 MB"));

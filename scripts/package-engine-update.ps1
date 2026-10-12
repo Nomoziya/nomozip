@@ -37,7 +37,7 @@ try {
         [IO.File]::WriteAllBytes($taskTemporaryKey, $taskKeyBytes)
         $PrivateKey = $taskTemporaryKey
     }
-    & $taskDotnet $taskPackager pack (Join-Path $taskRoot "engines/$Version") $Version (Join-Path $taskRoot 'artifacts/engine-validation.json') $PrivateKey $taskOutput $taskPublicKey
+    & $taskDotnet $taskPackager pack (Join-Path $taskRoot "engines/$Version") $Version (Join-Path $taskRoot 'artifacts/engine-validation.json') $PrivateKey $taskOutput $taskPublicKey (Join-Path $taskRoot 'artifacts/compression-validation.json')
     if ($LASTEXITCODE -ne 0) { throw 'Signed update packaging failed.' }
 } finally {
     if ($taskTemporaryKey -and (Test-Path -LiteralPath $taskTemporaryKey)) { Remove-Item -LiteralPath $taskTemporaryKey }

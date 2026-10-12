@@ -10,7 +10,7 @@ public partial class PasswordDialog : Window
     private readonly bool editing;
     public PasswordPromptResponse? Response { get; private set; }
     public SavedPassword? Edited { get; private set; }
-    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false)
+    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false)
     {
         InitializeComponent(); original = existing; this.editing = editing;
         SavedBox.ItemsSource = saved; SavedPanel.Visibility = !editing && saved.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -24,6 +24,12 @@ public partial class PasswordDialog : Window
             NameBox.Text = existing?.Name ?? ""; NotesBox.Text = existing?.Notes ?? ""; AutoTryBox.IsChecked = existing?.AutoTry ?? true; SecretBox.Password = existing?.Secret ?? "";
         }
         else NameBox.Text = archiveName;
+        if (compressing)
+        {
+            Title = Heading.Text = "设置压缩密码"; ContinueButton.Content = "使用此密码";
+            Description.Text = "密码用于本次创建压缩包。也可以选择已保存的密码。";
+            SavePassword.Content = "压缩成功后保存到密码库";
+        }
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear(); SavedBox.ItemsSource = null; };
     }
