@@ -1,5 +1,7 @@
 # 验收与交接
 
+2026-10-12 后续范围已确认：暂不增加功能，以第九预览完成实际系统体验与正式版准备。按用户要求，先提供[具体操作清单](SYSTEM_ACCEPTANCE.md)，正式版等待用户测试并反馈后再发布；当前人工项目仍未确认，既有通过结果保留。
+
 更新：2026-10-12，Asia/Shanghai。当前交付为 [第九预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.9)，产品代码 `7bea5ae6ebc0aeb0ce78e2553bc590272b8f9eae`，发布标签对应 `8a86c4062d4567daef7dcdc8cc0c518abb7cd1aa`。本次交接只修改说明，保留已经通过的产品与验证结果。
 
 ## 已交付范围
