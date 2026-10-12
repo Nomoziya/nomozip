@@ -66,7 +66,7 @@ internal static class DesktopDisplayValidation
                         }
                         checks[$"display {index} simulated {scale * 100:0}% page {page} actions reachable"] = reachable;
                         if (index == 0 && scale == 2.0 && page is 0 or 3)
-                            DesktopAccessibilityValidation.Render(window, Path.Combine(root, $"artifacts/accessibility-preview/compact-page-{page}-512x360.png"), 1.0);
+                            DesktopAccessibilityValidation.Render(window, Path.Combine(root, $"artifacts/accessibility-preview/compact-page-{page}-512x360.png"), 1.0, clientOnly: true);
                     }
                 }
             }
