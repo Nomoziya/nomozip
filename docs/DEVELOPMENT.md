@@ -67,6 +67,8 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 
 2026-10-12 的 P3 增加 7z/ZIP 创建、压缩级别、加密和 7z 文件名加密。两版官方引擎的 38 项压缩检查通过，覆盖官方工具读取、空文件与目录、错密、覆盖保护、取消和失败清理。实际 WPF 按钮通过 UI Automation 创建加密包，输入并保存密码，再用密码库自动解压，输出逐字节一致；桌面流程扩展为四条，控件名称与页面快捷键检查通过。7 项隔离注册表检查通过，验证可选打开方式登记/移除不会修改默认应用或删除其他程序、副本的登记。
 
-官方引擎跟进脚本与签名打包器现在同时要求解压和压缩报告，报告必须绑定实际 DLL 哈希；错配压缩报告的拒绝签名检查通过。不会因此覆盖已有稳定引擎发布资产。安装/卸载入口清理的最终检查及第三预览云端发布仍在进行。
+官方引擎跟进脚本与签名打包器现在同时要求解压和压缩报告，报告必须绑定实际 DLL 哈希；错配压缩报告的拒绝签名检查通过。不会因此覆盖已有稳定引擎发布资产。安装/升级/卸载的 16 项检查通过，覆盖密码库与设置保留、安装内运行组件、旧密码实际复用、默认卸载保留与明确删除数据、卸载只清理自己的打开方式登记。
+
+第三公开预览 [v0.1.0-preview.3](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.3) 对应代码提交 `fc1c162b46b977aa89895a09d7b6b0aaced87cd5`；[Windows CI 38206962560](https://github.com/Nomoziya/nomozip/actions/runs/38206962560) 全部通过，九份报告下载至 `artifacts/github-validation-38206962560/validation-reports/`。分发包含安装 EXE、438 文件自包含 ZIP、83 文件源码快照与校验清单，旧预览和稳定引擎资产保持不可变。四项发布资产均通过无登录公开地址下载并核对本地及 GitHub SHA-256 摘要，稳定引擎渠道仍为 `engine-26.04`；报告为 `artifacts/public-preview-3-validation.json`。
 
 新增报告为 `artifacts/compression-validation.json`、`artifacts/association-validation.json` 和 `artifacts/signing-validation.json`。UI Automation 检查不能代替真人键盘、Narrator、高对比度、DPI 和 Explorer 入口验收；同包多密码组合解压仍未实现。7z 支持 Unicode 密码，当前官方 ZIP 写入接口只接受 ASCII 密码，界面会明确拒绝不支持的输入。
