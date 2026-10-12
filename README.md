@@ -2,15 +2,15 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-当前版本：0.1.0-preview.9 Windows x64 开发预览已公开，仅提供共享运行库轻量版。已支持传统 ZIP、AES ZIP、RAR5 的同包多密码组合解压，自动尝试并可手动补充；完整解压后才保存已验证密码。修复快速取消时误报引擎连接失败的问题。101 项引擎、48 项组合密码业务流程、14 项桌面组合流程及原有检查、18 项轻量安装升级全部通过。新增功能由代理测试改进，不要求逐版人工重复测试；第八预览用户未测试，原有人工确认保留。
+首个正式版：0.1.0，Windows x64，仅提供共享运行库轻量版。支持密码库、自动尝试和手动补充、7z/ZIP 创建及加密、7z/ZIP/RAR 内容浏览与解压，以及经本产品签名验证的官方引擎更新与回退。传统 ZIP、AES ZIP、RAR5 的同包多密码组合解压已专项验证；完整解压后才保存已验证的新密码。焦点框、任务文件朗读和极小工作区布局已修复，用户复验确认没有问题并授权正式发布。
 
 发布约定：用户于第七预览发布后要求后续只发布共享运行库轻量版。历史完整版本保持不变；未来安装 EXE 和 ZIP 均依赖 .NET 10 Desktop Runtime x64。
 
-下载：[Windows x64 第九预览](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.9)。已有 .NET 10 Desktop Runtime x64 的电脑推荐带 `light` 的轻量安装 EXE：安装包约 2 MB，软件安装目录约 9 MB；未安装运行库时需从 [微软官网](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0) 安装桌面运行库（本轮验证 10.0.12），不需要 SDK。约 9 MB 不包括系统共享运行库的占用。第七预览及更早的历史发布仍有完整独立版，但不再制作新的完整发行包。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
+下载：[Windows x64 正式版 0.1.0](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0)。安装 EXE 约 2 MB，软件目录约 9 MB；依赖系统共享的 [.NET 10 Windows Desktop Runtime x64](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)（10.0.12 或更高的 10.0 补丁版），不需要 SDK。关闭软件后使用安装器升级，会保留密码库、设置和已下载的引擎。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`；约 9 MB 不包括共享运行库。历史完整独立版保持不变，不再发布新完整包。`engine-XX.XX` Release 仅用于引擎更新，不能单独当软件运行。
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
-当前预览支持加密密码库、自动尝试密码、更新包导入、GitHub Releases 更新下载、明确启用与恢复上一引擎。源码与 Windows 验证工作流已上传到 [Nomoziya/nomozip](https://github.com/Nomoziya/nomozip)，首次云端验证通过。软件下载与稳定引擎更新分别发布，软件仍为开发预览；下载入口见 [Releases](https://github.com/Nomoziya/nomozip/releases)。更新包使用独立产品发布密钥，客户端固定对应公钥。
+源码与 Windows 验证工作流位于 [Nomoziya/nomozip](https://github.com/Nomoziya/nomozip)。软件发行与稳定引擎更新分别发布；更新包使用独立产品发布密钥，客户端固定对应公钥。支持范围、自动检查与实际体验记录见[验收说明](docs/ACCEPTANCE.md)；实际不同 DPI 多屏切换尚未实测。
 
 完整构建、运行与限制见 [开发与维护说明](docs/DEVELOPMENT.md)，更新与发布见 [更新说明](docs/UPDATES.md)。升级及默认卸载保留密码库，详见 [安装说明](docs/INSTALLATION.md)。
 

@@ -1,13 +1,17 @@
 param([string]$ApplicationDirectory, [string]$OutputFile,
-    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.10', [string]$ValidationRoot, [switch]$FrameworkDependent = $true)
+    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.11', [string]$ValidationRoot, [switch]$FrameworkDependent = $true,
+    [string]$DisplayVersion)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 if (-not $FrameworkDependent -and -not $ValidationRoot) { throw 'Bundled runtime installers are only allowed for isolated legacy-upgrade validation.' }
 if (-not $ApplicationDirectory) { $ApplicationDirectory = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }) }
-if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/nomozip-0.1.0-preview.10-light-setup-win-x64.exe' } else { 'artifacts/nomozip-0.1.0-preview.10-setup-win-x64.exe' }) }
+if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/nomozip-0.1.0-light-setup-win-x64.exe' } else { 'artifacts/nomozip-legacy-fixture-setup-win-x64.exe' }) }
 $ApplicationDirectory = [IO.Path]::GetFullPath($ApplicationDirectory)
 $OutputFile = [IO.Path]::GetFullPath($OutputFile)
 if (-not (Test-Path (Join-Path $ApplicationDirectory 'ArchivePassword.exe'))) { throw 'Build the application first.' }
+if (-not $DisplayVersion) {
+    $DisplayVersion = if ($ValidationRoot) { $Version } else { (Get-Item -LiteralPath (Join-Path $ApplicationDirectory 'ArchivePassword.exe')).VersionInfo.ProductVersion.Split('+')[0] }
+}
 if ((Test-Path (Join-Path $ApplicationDirectory 'coreclr.dll')) -eq $FrameworkDependent.IsPresent) { throw 'Application payload does not match the selected runtime mode.' }
 if (Test-Path $OutputFile) { throw 'Keep installers immutable; choose a new output file.' }
 if ($ValidationRoot) {
@@ -27,7 +31,7 @@ foreach ($taskDirectory in (Get-ChildItem -LiteralPath $ApplicationDirectory -Re
     $taskLines.Add('RMDir "$INSTDIR\' + [IO.Path]::GetRelativePath($ApplicationDirectory, $taskDirectory.FullName) + '"')
 }
 [IO.File]::WriteAllLines($taskOwned, $taskLines, [Text.UTF8Encoding]::new($false))
-$taskArguments = @('/V2', "/DAPP_DIR=$ApplicationDirectory", "/DOUTPUT_FILE=$OutputFile", "/DOWNED_FILES=$taskOwned", "/DVERSION=$Version")
+$taskArguments = @('/V2', "/DAPP_DIR=$ApplicationDirectory", "/DOUTPUT_FILE=$OutputFile", "/DOWNED_FILES=$taskOwned", "/DVERSION=$Version", "/DDISPLAY_VERSION=$DisplayVersion")
 if ($ValidationRoot) { $taskArguments += "/DVALIDATION_ROOT=$ValidationRoot" }
 if ($FrameworkDependent) { $taskArguments += '/DFRAMEWORK_DEPENDENT' }
 $taskArguments += (Join-Path $taskRoot 'installer/nomozip.nsi')

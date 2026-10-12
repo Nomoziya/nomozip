@@ -9,6 +9,7 @@ parser.add_argument('--app-directory', default='artifacts/app')
 parser.add_argument('--output-directory', default='artifacts')
 parser.add_argument('--version', default='0.1-preview')
 parser.add_argument('--skip-source', action='store_true')
+parser.add_argument('--source-name', default='nomozip-source-preview.zip')
 args = parser.parse_args()
 OUTPUT = ROOT / args.output_directory
 OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -47,5 +48,5 @@ for file in (ROOT / "engines").rglob("*"):
         sources.append(file)
 if any("private" in file.name.lower() or file.suffix == ".apv" for file in sources):
     raise RuntimeError("Unexpected private material in source package.")
-archive(OUTPUT / "nomozip-source-preview.zip", sources, ROOT)
+archive(OUTPUT / args.source_name, sources, ROOT)
 print(f"Packaged {len(app_files)} app files and {len(sources)} source files.")
