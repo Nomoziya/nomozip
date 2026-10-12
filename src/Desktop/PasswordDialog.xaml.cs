@@ -10,7 +10,7 @@ public partial class PasswordDialog : Window
     private readonly bool editing;
     public PasswordPromptResponse? Response { get; private set; }
     public SavedPassword? Edited { get; private set; }
-    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false)
+    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false, bool browsing = false)
     {
         InitializeComponent(); original = existing; this.editing = editing;
         WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
@@ -30,6 +30,13 @@ public partial class PasswordDialog : Window
             Title = Heading.Text = "设置压缩密码"; ContinueButton.Content = "使用此密码";
             Description.Text = "密码用于本次创建压缩包。也可以选择已保存的密码。";
             SavePassword.Content = "压缩成功后保存到密码库";
+        }
+        if (browsing)
+        {
+            Title = Heading.Text = "输入查看密码"; ContinueButton.Content = "查看内容";
+            SavePassword.IsEnabled = false; SavePassword.Visibility = Visibility.Collapsed;
+            Description.Text = archiveName + (failed ? "\n密码可能不匹配，或压缩包已损坏。" : "\n此压缩包的文件名已加密，需要密码才能查看内容。")
+                + "\n本次仅查看内容；如需保存新密码，请在解压成功后保存。";
         }
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear(); SavedBox.ItemsSource = null; };

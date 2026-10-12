@@ -5,7 +5,8 @@ using Microsoft.Win32;
 namespace ArchivePassword.Desktop;
 
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
-    Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null)
+    Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
+    Action<ArchiveContentsDialog>? prepareContents = null)
 {
     public string[] SelectCompressionFiles()
     {
@@ -40,10 +41,16 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         var dialog = new OpenFolderDialog { Title = "选择输出目录", InitialDirectory = System.IO.Directory.Exists(current) ? current : "" };
         return dialog.ShowDialog(owner) == true ? dialog.FolderName : null;
     }
-    public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token)
+    public void ShowArchiveContents(ArchiveContentsViewModel model)
+    {
+        var dialog = new ArchiveContentsDialog(model) { Owner = owner };
+        prepareContents?.Invoke(dialog);
+        dialog.ShowDialog();
+    }
+    public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token, bool browsing = false)
     {
         if (token.IsCancellationRequested) return Task.FromResult<PasswordPromptResponse?>(null);
-        var dialog = new PasswordDialog(name, failed, saved, canSave) { Owner = owner };
+        var dialog = new PasswordDialog(name, failed, saved, canSave, browsing: browsing) { Owner = owner };
         prepareDialog?.Invoke(dialog);
         using var registration = token.Register(() => dialog.Dispatcher.BeginInvoke(() => dialog.Close()));
         var accepted = dialog.ShowDialog();

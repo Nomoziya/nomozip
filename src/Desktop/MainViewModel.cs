@@ -58,6 +58,7 @@ public sealed partial class MainViewModel : ObservableObject
         RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is not null);
         BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) OutputPath = path; }, () => IsIdle);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
+        BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page == 0 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(() => skipPasswords?.Cancel(), () => IsBusy && CanSkipPasswords);
         OpenOutputCommand = new RelayCommand(() => OpenFolder(OutputPath), () => Directory.Exists(OutputPath));
@@ -82,6 +83,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand RemoveFileCommand { get; }
     public ICommand BrowseOutputCommand { get; }
     public ICommand ExtractCommand { get; }
+    public ICommand BrowseArchiveCommand { get; }
     public ICommand CancelCommand { get; }
     public ICommand SkipPasswordsCommand { get; }
     public ICommand OpenOutputCommand { get; }

@@ -205,9 +205,14 @@ internal static class DesktopAccessibilityValidation
         while (VisualTreeHelper.GetParent(child) is { } parent) { yield return parent; child = parent; }
     }
     private static Color ColorOf(Brush brush) => ((SolidColorBrush)brush).Color;
-    private static void Render(Window window, string path, double scale)
+    internal static void Render(Window window, string path, double scale)
     {
-        var bitmap = new RenderTargetBitmap((int)Math.Ceiling(window.ActualWidth * scale), (int)Math.Ceiling(window.ActualHeight * scale),
+        // A bordered Window's native frame is not part of its WPF visual. Capture
+        // the actual client dimensions to avoid an empty strip beneath the image.
+        var content = (FrameworkElement)window.Content;
+        var width = content.ActualWidth + content.Margin.Left + content.Margin.Right;
+        var height = content.ActualHeight + content.Margin.Top + content.Margin.Bottom;
+        var bitmap = new RenderTargetBitmap((int)Math.Ceiling(width * scale), (int)Math.Ceiling(height * scale),
             96 * scale, 96 * scale, PixelFormats.Pbgra32);
         bitmap.Render(window);
         var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(bitmap));

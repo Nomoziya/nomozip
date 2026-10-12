@@ -95,6 +95,10 @@ def main():
         caps = request(version, "capabilities")
         check(version + " capabilities", caps["status"] == "success" and any(value["name"] == "Rar5" for value in caps["formats"]))
         for index, (archive, password) in enumerate(fixtures):
+            listed = request(version, "list", archive, password=password)
+            check(version + " lists " + archive.name, listed["status"] == "success"
+                  and any(item["path"] == source.name and item["size"] == source.stat().st_size
+                          and item["encrypted"] == (password is not None) for item in listed.get("items", [])), listed)
             if password is not None:
                 wrong = request(version, "test", archive, password="definitely-wrong")
                 check(version + " rejects wrong " + archive.name, wrong["status"] == "error" and wrong.get("code") in ("wrong_password", "password_or_corrupt"), wrong)
@@ -109,9 +113,17 @@ def main():
         rar_output = FIXTURES / "outputs" / (version + "-rar-" + str(time.time_ns()))
         rar_result = request(version, "extract", rar, rar_output)
         check(version + " extracts real RAR", rar_result["status"] == "success" and any(rar_output.rglob("test.txt")), rar_result)
+        listed_rar = request(version, "list", rar)
+        check(version + " lists real RAR", listed_rar["status"] == "success" and len(listed_rar.get("items", [])) > 0, listed_rar)
         encrypted_output = FIXTURES / "outputs" / (version + "-rar5-" + str(time.time_ns()))
         rar5_result = request(version, "extract", encrypted_rar, encrypted_output, "password")
         check(version + " extracts encrypted RAR5", rar5_result["status"] == "success" and (encrypted_output / "a.txt").read_bytes() == b"This is from a.txt", rar5_result)
+        listed_rar5 = request(version, "list", encrypted_rar, password="password")
+        check(version + " lists encrypted RAR5", listed_rar5["status"] == "success" and any(item["path"] == "a.txt" for item in listed_rar5.get("items", [])), listed_rar5)
+        locked_listing = request(version, "list", fixtures[3][0])
+        check(version + " listing requests header password", locked_listing.get("code") == "password_required" and not locked_listing.get("items"), locked_listing)
+        wrong_listing = request(version, "list", fixtures[3][0], password="wrong")
+        check(version + " listing rejects wrong header password", wrong_listing.get("code") in ("wrong_password", "password_or_corrupt") and not wrong_listing.get("items"), wrong_listing)
         mixed = request(version, "test", multi_password_rar, password="password")
         check(version + " reports mixed-password partial failure", mixed["status"] == "error" and mixed.get("successfulItems", 0) > 0 and len(mixed.get("failures", [])) > 0, mixed)
         unsafe_output = FIXTURES / "outputs" / (version + "-unsafe-" + str(time.time_ns()))
@@ -119,6 +131,8 @@ def main():
         check(version + " blocks archive traversal", unsafe.get("code") == "unsafe_path" and not (unsafe_output.parent / "escaped.txt").exists(), unsafe)
         damaged = request(version, "test", corrupt)
         check(version + " rejects corrupt archive without success", damaged["status"] == "error" and not damaged.get("code", "").startswith("wrong_password"), damaged)
+        damaged_listing = request(version, "list", corrupt)
+        check(version + " rejects corrupt listing", damaged_listing["status"] == "error" and not damaged_listing.get("items"), damaged_listing)
         absent = request(version, "test", first)
         check(version + " reports missing volume", absent.get("code") == "missing_volume", absent)
 
