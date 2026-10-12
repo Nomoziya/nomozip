@@ -6,8 +6,34 @@ namespace ArchivePassword.Desktop;
 
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
-    Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null)
+    Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
+    Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null)
 {
+    public string? SelectVaultBackup(bool exporting)
+    {
+        if (selectVaultBackup is not null) return selectVaultBackup(exporting);
+        var filter = "nomozip 加密密码备份|*.nvault";
+        if (exporting)
+        {
+            var dialog = new SaveFileDialog { Title = "导出加密密码备份", Filter = filter, DefaultExt = ".nvault", AddExtension = true,
+                FileName = "nomozip-passwords-" + DateTime.Now.ToString("yyyyMMdd"), OverwritePrompt = true };
+            return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
+        }
+        var input = new OpenFileDialog { Title = "导入加密密码备份", Filter = filter };
+        return input.ShowDialog(owner) == true ? input.FileName : null;
+    }
+    public string? AskBackupPassword(bool exporting, string path)
+    {
+        var dialog = new VaultBackupDialog(exporting, path) { Owner = owner };
+        prepareVaultBackup?.Invoke(dialog);
+        return dialog.ShowDialog() == true ? dialog.Passphrase : null;
+    }
+    public PasswordImportMode? PreviewVaultImport(IReadOnlyList<SavedPassword> existing, IReadOnlyList<SavedPassword> incoming)
+    {
+        var dialog = new VaultImportDialog(existing, incoming) { Owner = owner };
+        prepareVaultImport?.Invoke(dialog);
+        return dialog.ShowDialog() == true ? dialog.Mode : null;
+    }
     public string[] SelectCompressionFiles()
     {
         var dialog = new OpenFileDialog { Multiselect = true, Title = "添加要压缩的文件", Filter = "所有文件|*.*" };

@@ -34,6 +34,7 @@ public partial class App : Application
         var onlineValidationIndex = Array.IndexOf(e.Args, "--validate-online");
         var installedValidationIndex = Array.IndexOf(e.Args, "--validate-installed");
         var accessibilityValidationIndex = Array.IndexOf(e.Args, "--validate-accessibility");
+        var vaultTransferValidationIndex = Array.IndexOf(e.Args, "--validate-vault-transfer");
         if (validationIndex >= 0)
         {
             var reportPath = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts/desktop-validation.json");
@@ -49,6 +50,7 @@ public partial class App : Application
         if (validationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts", "desktop-validation", Guid.NewGuid().ToString("N"));
         if (onlineValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[onlineValidationIndex + 1]), "artifacts", "online-validation", Guid.NewGuid().ToString("N"));
         if (accessibilityValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[accessibilityValidationIndex + 1]), "artifacts", "accessibility-validation", Guid.NewGuid().ToString("N"));
+        if (vaultTransferValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[vaultTransferValidationIndex + 1]), "artifacts", "vault-transfer-desktop", Guid.NewGuid().ToString("N"));
         if (installedValidationIndex >= 0)
         {
             var validationRoot = Path.GetFullPath(e.Args[installedValidationIndex + 1]);
@@ -62,6 +64,13 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        if (vaultTransferValidationIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var result = await DesktopVaultTransferValidation.RunAsync(window, theme, Path.GetFullPath(e.Args[vaultTransferValidationIndex + 1]), baseDirectory, dataDirectory);
+            Shutdown(result ? 0 : 1); return;
+        }
         if (accessibilityValidationIndex >= 0)
         {
             window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;

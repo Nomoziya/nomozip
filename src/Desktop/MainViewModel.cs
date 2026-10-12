@@ -68,6 +68,8 @@ public sealed partial class MainViewModel : ObservableObject
         EditPasswordCommand = new AsyncCommand(() => EditPasswordAsync(SelectedPassword), () => IsIdle && vaultAvailable && SelectedPassword is not null);
         DeletePasswordCommand = new AsyncCommand(DeletePasswordAsync, () => IsIdle && vaultAvailable && SelectedPassword is not null);
         RestoreVaultCommand = new AsyncCommand(RestoreVaultAsync, () => IsIdle);
+        ExportVaultCommand = new AsyncCommand(() => TransferVaultAsync(true), () => IsIdle && vaultAvailable && allPasswords.Count > 0);
+        ImportVaultCommand = new AsyncCommand(() => TransferVaultAsync(false), () => IsIdle && vaultAvailable);
         CheckUpdatesCommand = new AsyncCommand(CheckUpdatesAsync, () => IsIdle);
         ImportUpdateCommand = new AsyncCommand(ImportUpdateAsync, () => IsIdle && updater is not null);
         InstallUpdateCommand = new AsyncCommand(InstallOnlineUpdateAsync, () => IsIdle && updater is not null && availableUpdate is not null);
@@ -94,6 +96,8 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand EditPasswordCommand { get; }
     public ICommand DeletePasswordCommand { get; }
     public ICommand RestoreVaultCommand { get; }
+    public ICommand ExportVaultCommand { get; }
+    public ICommand ImportVaultCommand { get; }
     public ICommand CheckUpdatesCommand { get; }
     public ICommand ImportUpdateCommand { get; }
     public ICommand InstallUpdateCommand { get; }

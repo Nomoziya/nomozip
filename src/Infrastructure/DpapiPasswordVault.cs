@@ -14,6 +14,24 @@ public sealed class DpapiPasswordVault(string path) : IPasswordVault
     public Task<IReadOnlyList<SavedPassword>> ReadAsync(CancellationToken cancellationToken = default) => WithDocumentAsync<IReadOnlyList<SavedPassword>>(document => document.Passwords.ToArray(), false, cancellationToken);
     public Task<Guid?> GetAssociatedPasswordAsync(string archivePath, CancellationToken cancellationToken = default) => WithDocumentAsync<Guid?>(document => document.Associations.TryGetValue(Path.GetFullPath(archivePath).ToUpperInvariant(), out var id) ? id : null, false, cancellationToken);
 
+    public async Task<PasswordImportPlan> ImportAsync(IReadOnlyList<SavedPassword> passwords, PasswordImportMode mode, CancellationToken cancellationToken = default)
+    {
+        EncryptedVaultBackup.ValidateRecords(passwords);
+        await gate.WaitAsync(cancellationToken);
+        try
+        {
+            var document = File.Exists(path) ? await LoadAsync(path, cancellationToken) : new VaultDocument { Version = 1 };
+            var plan = PasswordImportPlanner.Build(document.Passwords, passwords, mode);
+            if (plan.Added > 0)
+            {
+                document.Passwords.AddRange(plan.Additions);
+                await SaveDocumentAsync(document, cancellationToken);
+            }
+            return plan;
+        }
+        finally { gate.Release(); }
+    }
+
     public Task SaveAsync(SavedPassword password, CancellationToken cancellationToken = default) => WithDocumentAsync<object?>(document =>
     {
         if (string.IsNullOrEmpty(password.Secret)) throw new ArgumentException("Password cannot be empty.", nameof(password));
