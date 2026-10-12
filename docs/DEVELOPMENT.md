@@ -1,10 +1,12 @@
 # 构建、验证与维护
 
+第七预览（2026-10-12）补齐内容浏览界面，代码提交 `3fc065e2b0e77d262a6731de72a93b3914471a95` 的 [Windows CI 38239454113](https://github.com/Nomoziya/nomozip/actions/runs/38239454113) 全部通过。两版实际引擎浏览 28/28，桌面浏览 13/13（包括自动/手动文件名加密、直接查看 AES ZIP、搜索及空匹配、键盘名称/快捷键、小工作区完整文件行、取消及数据不被浏览修改），既有布局 44/44；原解压、压缩、密码库和更新流程保留通过。引擎矩阵已扩展为 79/79，并由现有官方维护脚本对未来候选执行；签名工具拒绝缺少目标版本列表覆盖的报告，拒签测试通过。十四份报告和 35 张虚构数据渲染位于 `artifacts/github-validation-38239454113/validation-reports/`。完整安装 17/17、完整到轻量安装 18/18，云端轻量安装 9244171 字节，确认共享运行库和旧密码库复用。审核载荷轻量 9043567 字节 / 43 文件、完整 155200322 字节 / 438 文件；轻量 EXE 2086719 字节、ZIP 3328492 字节，约 9 MB 仍不包含系统运行库。浏览不写入输出目录/密码库，不将打开头部误当作数据验证成功；其实际体验和未完成人工桌面项目继续待确认。以下旧版本记录保留各自范围。
+
 第六预览已公开：[v0.1.0-preview.6](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.6)，标签提交 `fa20f300d337b212166e99ee8a1fcf71e1796888`，仅比下述通过 CI 的代码提交增加文档记录。轻量安装 EXE 2081691 字节、ZIP 3318677 字节；完整 EXE/ZIP、86 文件源码快照和 SHA256SUMS 也已发布。六项资产经公开无登录地址重新下载，SHA-256 与本地及 GitHub 资产摘要一致，报告 `artifacts/public-preview-6-validation.json`；包 CRC 与私密材料排除检查通过。轻量/完整 worker、26.04/26.03 引擎和固定公钥逐字节一致，指标报告 `artifacts/package-size-validation.json`。稳定引擎仍为 `engine-26.04`，旧发布未覆盖，本机入口已更新。
 
 最新进度（2026-10-12）：第六预览的压缩/密码库一致性修整完成，代码提交 `bee2f344e663d95d3a9eda527733d115eeea629f` 的 [Windows CI 38236148792](https://github.com/Nomoziya/nomozip/actions/runs/38236148792) 全部通过，十二份报告和 34 张虚构数据渲染位于 `artifacts/github-validation-38236148792/validation-reports/`。44 项桌面检查覆盖宽/窄窗口主操作固定、分栏一致性、17 条虚构密码记录的行高/对齐和列宽，其余既有引擎、密码库、更新、压缩、打开方式、四条桌面流程、签名和完整/轻量安装检查均通过。局部本地安装 18/18，通过实际复用旧虚构密码库与共享 .NET 10.0.12，安装 9189724 字节；云端轻量安装为 9213600 字节。轻量载荷 9015576 字节 / 43 文件，完整载荷 155172327 字节 / 438 文件。用户已确认第五预览的解压布局/约 9 MB 体积；第六预览压缩和密码库的新布局仍待体验，真实桌面未确认项目继续保留。下文旧版记录按其原版本解释。
 
-当前交付为 0.1.0-preview.6 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新、真实 GitHub 线上引擎更新及安装/升级/卸载已验证；人工桌面验收与基础压缩功能仍在后续阶段。
+当前交付为 0.1.0-preview.7 开发预览，可运行的 Windows x64 WPF 软件。密码复用、本地签名更新、真实 GitHub 线上引擎更新及安装/升级/卸载已验证；内容浏览、压缩和密码复用均已实现，完整人工桌面验收仍待完成。
 
 第二预览增加当前用户安装包与携带运行组件的独立 ZIP。构建和安装/升级/卸载验收见 [安装说明](INSTALLATION.md)。普通开发构建继续使用系统运行时；`-SelfContained` 构建会携带 .NET / WPF 运行组件。安装器不会将这些组件安装为全局运行时。
 
@@ -87,7 +89,7 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 
 新增 `artifacts/accessibility-validation.json` 和 `artifacts/accessibility-preview/`：29 项检查覆盖四页在 1120×760 与 800×500 DIP 下的可获焦输入控件名称、滚动可达性、主窗口和密码对话框适应较小工作区、选中行文字、系统色资源映射与恢复、密码框受保护语义、显示明文提示及空密码的逻辑焦点。34 张渲染图使用虚构数据和 100%/125%/150%/200% 像素密度；高对比度图使用系统色资源模拟，不修改操作系统主题。报告明确保留 `humanKeyboardNarratorExplorerAndMonitorDpiAccepted=false`，不把控件属性、程序焦点或离屏渲染称为真人验收。
 
-人工体验剩余步骤以 [第六预览人工验收](INSTALLATION.md#第六预览的人工验收) 为准：先确认压缩页和多条记录后的密码库新布局，再补齐旧记录保留、键盘、讲述人、实际系统主题/缩放和 Explorer 入口。第四预览已通过的压缩加密和自动解密保留有效，不要求重复验收。安装、升级、卸载的数据保留已自动验证，实际体验仍需用户确认；未测试环境明确保留为未验证，P5 保持未完成。
+人工体验剩余步骤以 [第七预览人工验收](INSTALLATION.md#第七预览的人工验收) 为准：先确认压缩页和多条记录后的密码库新布局，再补齐旧记录保留、键盘、讲述人、实际系统主题/缩放和 Explorer 入口。第四预览已通过的压缩加密和自动解密保留有效，不要求重复验收。安装、升级、卸载的数据保留已自动验证，实际体验仍需用户确认；未测试环境明确保留为未验证，P5 保持未完成。
 
 实现依据（2026-10-12）：微软的 [WPF 焦点说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/focus-overview) 区分键盘焦点与逻辑焦点；[系统资源说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/systems/xaml-resources-how-to-use-system) 和 [系统参数变更事件](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.staticpropertychanged?view=windowsdesktop-10.0) 支持系统配色更新；[WorkArea](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.workarea?view=windowsdesktop-10.0) 提供主显示器工作区，跨显示器场景仍待实际验收。
 
