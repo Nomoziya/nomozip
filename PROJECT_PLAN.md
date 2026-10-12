@@ -1,12 +1,14 @@
 # 项目规划
 
-更新：2026-10-12，Asia/Shanghai。状态：第四开发预览准备中；P5 无障碍与布局检查推进，完整人工验收待完成。
+更新：2026-10-12，Asia/Shanghai。状态：第四开发预览已公开；P5 的 29 项补充桌面检查通过，完整人工验收待完成。
 
 ## 当前进度
 
 2026-10-12 P5 继续验收：当前回合 `01a12f1e-54fc-7ff3-8c6c-fc4ead6b1a44` 核实为 gpt-6.1-sol / high，与共用组合一致，无子代理。用户回复尚未体验第三预览，要求先继续验收。发现并修复高对比度导航/提示的文字与背景配色、选中归档辅助文字的颜色继承，以及显示密码状态下提交空密码错误聚焦到隐藏输入框的问题。高对比度设置变更会刷新应用资源；正常模式恢复原设计配色。新增四页两种宽度的 UI Automation 名称、键盘可获焦属性、滚动可达性和密码字段/逻辑焦点检查，生成 100%/125%/150%/200% 像素密度与系统色资源预览。真实操作系统高对比度、物理键盘、Narrator、跨显示器 DPI、安装向导和 Explorer 入口仍须人工验收；不会以程序或模拟渲染检查代替。第四预览将保留已发布资产，使用新版本标签。
 
 用户已于后续回合要求继续，授权进入实施。本回合 turn_context 再次核实为 gpt-6.1-sol / high，与共用组合一致；无模型切换、无子代理。
+
+2026-10-12 第四预览完成：[v0.1.0-preview.4](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.4) 已公开，最终代码提交为 `3bf9c4443124244ffbf524737ffde373034f2997`，[Windows CI 38223276557](https://github.com/Nomoziya/nomozip/actions/runs/38223276557) 全部通过。P5 本轮修复配色、可见密码输入焦点和启动/对话框尺寸适应工作区；29 项补充检查在 1120×760、800×500 DIP 以及 420×400 对话框的模拟工作区中通过。原有 96 项检查、38 项压缩、7 项打开方式、四条桌面流程、签名证据拒绝及 16 项安装检查均通过。十份云端报告与 34 张虚构数据渲染图已下载到 `artifacts/github-validation-38223276557/validation-reports/`；对小布局、密码框和高密度图进行了目视检查。安装 EXE、438 文件自包含 ZIP、86 文件源码快照与校验清单均经无登录公开下载核验 SHA-256 和 GitHub 摘要，报告为 `artifacts/public-preview-4-validation.json`；稳定引擎通道仍为 `engine-26.04`。此前准备版提交的运行 `38222528406` 也通过，但最终发布以新增工作区适配后的提交与运行 `38223276557` 为准。已更新本机启动入口到第四预览代码。用户尚未体验，真人键盘/Narrator、系统高对比度、多屏 DPI、安装向导及 Explorer/默认应用操作没有取得确认，P5 保持未完成；不得把离屏 UI Automation、逻辑焦点及资源/密度模拟替代人工结果。
 
 2026-10-12 后续授权：用户明确要求下载创建仓库的工具并创建相关公开仓库。已下载官方 GitHub CLI 2.102.0 至项目 `.tools/github-cli/bin/gh.exe`，按官方发布资产的 SHA-256 校验通过；用户完成设备授权，CLI 登录确认为 Nomoziya。已创建公开仓库 https://github.com/Nomoziya/nomozip，并通过无登录凭据的 GitHub REST API 核验 `private=false`。CLI 凭据现以 DPAPI CurrentUser 加密保存在被忽略的 `.tools/gh-config/github-token.dpapi`，已删除其明文 hosts 文件。创建脚本为 `scripts/create-github-repository.ps1`，只在调用 CLI 的子进程环境中临时使用解密凭据。仓库创建完成；当时源码、CI 与更新包尚未上传或发布。
 
