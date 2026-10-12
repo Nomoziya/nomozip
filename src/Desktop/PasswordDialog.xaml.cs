@@ -13,6 +13,7 @@ public partial class PasswordDialog : Window
     public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false)
     {
         InitializeComponent(); original = existing; this.editing = editing;
+        WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
         SavedBox.ItemsSource = saved; SavedPanel.Visibility = !editing && saved.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         EditorDetails.Visibility = editing ? Visibility.Visible : Visibility.Collapsed;
         SavePassword.IsEnabled = canSave;

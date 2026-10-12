@@ -145,6 +145,7 @@ public partial class App : Application
             using var stream = File.Create(e.Args[previewIndex + 1]); encoder.Save(stream);
             Shutdown(); return;
         }
+        WindowPlacement.FitWorkArea(window, SystemParameters.WorkArea);
         window.Show();
         _ = model.InitializeAsync();
         foreach (var argument in e.Args.Where(value => File.Exists(value))) model.AddFiles([argument]);
