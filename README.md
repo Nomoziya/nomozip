@@ -27,6 +27,7 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 第七预览补齐原计划中的只读内容浏览：选择压缩包后点击“查看内容”（Control L），搜索包内路径并查看类型、原始大小和加密标记。文件名加密时可复用密码库或手动输入；浏览不解压、不保存密码，也不标记任务已解压。[Windows CI 38239454113](https://github.com/Nomoziya/nomozip/actions/runs/38239454113) 全部通过，后续官方引擎的维护和签名门槛也已加入列表验证。
 
 - [项目规划与阶段验收](PROJECT_PLAN.md)
+- [当前支持范围、验证证据与交接](docs/ACCEPTANCE.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
 - [解压主界面示意](design-system/extraction.svg)
 - [界面预览图](design-system/extraction.png)
