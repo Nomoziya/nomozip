@@ -10,17 +10,23 @@ namespace ArchivePassword.Desktop;
 
 public partial class App : Application
 {
+    private ThemeResources? theme;
+    private void OnSystemParametersChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SystemParameters.HighContrast))
+            Dispatcher.BeginInvoke(() => theme?.Apply(SystemParameters.HighContrast));
+    }
+    protected override void OnExit(ExitEventArgs e)
+    {
+        SystemParameters.StaticPropertyChanged -= OnSystemParametersChanged;
+        base.OnExit(e);
+    }
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        if (SystemParameters.HighContrast)
-        {
-            Resources["CanvasBrush"] = SystemColors.WindowBrush; Resources["SurfaceBrush"] = SystemColors.WindowBrush;
-            Resources["TextBrush"] = SystemColors.WindowTextBrush; Resources["SecondaryBrush"] = SystemColors.WindowTextBrush;
-            Resources["BorderBrush"] = SystemColors.WindowTextBrush; Resources["DividerBrush"] = SystemColors.WindowTextBrush;
-            Resources["AccentBrush"] = SystemColors.HighlightBrush; Resources["OnAccentBrush"] = SystemColors.HighlightTextBrush;
-            Resources["SelectionBrush"] = SystemColors.HighlightBrush;
-        }
+        theme = new ThemeResources(Resources);
+        theme.Apply(SystemParameters.HighContrast);
+        SystemParameters.StaticPropertyChanged += OnSystemParametersChanged;
         var baseDirectory = AppContext.BaseDirectory;
         var dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArchivePassword");
         var previewIndex = Array.IndexOf(e.Args, "--preview");
@@ -105,9 +111,11 @@ public partial class App : Application
                 var restartedModel = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window));
                 await restartedModel.InitializeAsync(); updateSuccess &= restartedModel.EngineSummary.Contains("26.04");
                 var compression = await DesktopCompressionValidation.RunAsync(window, model, baseDirectory, dataDirectory, validationRoot);
-                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility;
+                var accessibility = await DesktopAccessibilityValidation.RunAsync(window, model, theme, validationRoot);
+                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && accessibility;
                 await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess,
-                    compressionAndPasswordReusePassed = compression.Flow, compressionAutomationLabelsAndShortcutPassed = compression.Accessibility, engines = model.EngineVersions.ToArray(), status = model.Tasks.Single().Status }));
+                    compressionAndPasswordReusePassed = compression.Flow, compressionAutomationLabelsAndShortcutPassed = compression.Accessibility,
+                    accessibilityPassed = accessibility, engines = model.EngineVersions.ToArray() }));
                 Shutdown(passed ? 0 : 1);
             }
             catch

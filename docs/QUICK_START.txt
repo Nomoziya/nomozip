@@ -1,4 +1,4 @@
-nomozip 0.1.0-preview.3（Windows x64 开发预览）
+nomozip 0.1.0-preview.4（Windows x64 开发预览）
 
 安装版和独立 ZIP 版已携带 .NET 10 Windows Desktop Runtime，无需另行安装。
 安装版：运行 setup-win-x64.exe，按向导为当前用户安装；从开始菜单打开 nomozip。
