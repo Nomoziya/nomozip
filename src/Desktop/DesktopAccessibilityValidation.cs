@@ -26,6 +26,10 @@ internal static class DesktopAccessibilityValidation
         {
             model.Tasks.Clear(); model.CompressionSources.Clear(); model.EngineVersions.Clear();
             model.LoadPreview(); model.SelectedPassword = model.PasswordRows.First(); model.SelectedTask = model.Tasks.First();
+            // Exercise a populated vault without reading or persisting user data.
+            for (var index = 0; index < 16; index++)
+                model.PasswordRows.Add(new ArchivePassword.Core.SavedPassword(Guid.NewGuid(), index % 2 == 0 ? "未命名密码" : "资料备份 " + index,
+                    "synthetic-only", index == 1 ? "用于检查长备注是否正常省略，完整内容可通过提示查看" : "", index % 3 != 0, DateTimeOffset.UtcNow));
             window.WindowStyle = WindowStyle.None; window.ResizeMode = ResizeMode.NoResize;
             foreach (var width in new[] { 1120, 800 })
             {
@@ -55,6 +59,31 @@ internal static class DesktopAccessibilityValidation
                             ? ((ScrollViewer)window.FindName("ExtractionViewport")).VerticalScrollBarVisibility == ScrollBarVisibility.Disabled
                               && settings.ComputedVerticalScrollBarVisibility == Visibility.Collapsed
                             : settings.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled);
+                    }
+                    if (page == 3)
+                    {
+                        var view = (CompressionView)window.FindName("CompressionPage");
+                        var action = (Button)view.FindName("CreateButton");
+                        var settings = (ScrollViewer)view.FindName("SettingsScroll");
+                        var panel = (Border)view.FindName("SettingsPanel");
+                        Check($"compression width {width} fixed primary action", action.IsVisible && action.IsEnabled
+                            && !Ancestors(action).Any(parent => parent is ScrollViewer));
+                        Check($"compression width {width} matches extraction columns", Grid.GetColumn(panel) == (width == 1120 ? 2 : 0)
+                            && Grid.GetRow(panel) == (width == 1120 ? 0 : 1));
+                        Check($"compression width {width} one form scroll region", width == 1120
+                            ? ((ScrollViewer)view.FindName("CompressionViewport")).VerticalScrollBarVisibility == ScrollBarVisibility.Disabled
+                            : settings.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled);
+                    }
+                    if (page == 1)
+                    {
+                        var table = (DataGrid)window.FindName("PasswordTable");
+                        var row = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
+                        var name = Descendants(row).OfType<TextBlock>().First(block => block.Text == model.PasswordRows[0].Name);
+                        var bounds = name.TransformToAncestor(row).TransformBounds(new Rect(name.RenderSize));
+                        Check($"vault width {width} compact centered populated rows", model.PasswordRows.Count == 17 && row.ActualHeight <= 50
+                            && Math.Abs(bounds.Top + bounds.Height / 2 - row.ActualHeight / 2) <= 2);
+                        var scroll = Descendants(table).OfType<ScrollViewer>().First();
+                        Check($"vault width {width} columns fit without horizontal scroll", scroll.ExtentWidth <= scroll.ViewportWidth + 1);
                     }
                     var inputs = Descendants(window).OfType<Control>().Where(control => control.TemplatedParent is null && control.IsVisible && control.IsEnabled && control.Focusable
                         && control is Button or TextBox or ComboBox or CheckBox).ToArray();
@@ -150,7 +179,7 @@ internal static class DesktopAccessibilityValidation
         finally
         {
             theme.Apply(SystemParameters.HighContrast);
-            var passed = checks.Count == 34 && checks.Values.All(value => value);
+            var passed = checks.Count == 44 && checks.Values.All(value => value);
             await File.WriteAllTextAsync(Path.Combine(root, "artifacts/accessibility-validation.json"), JsonSerializer.Serialize(new
             {
                 passed, total = checks.Count, checks, failures, syntheticData = true,
@@ -159,7 +188,7 @@ internal static class DesktopAccessibilityValidation
                 humanKeyboardNarratorExplorerAndMonitorDpiAccepted = false
             }));
         }
-        return checks.Count == 34 && checks.Values.All(value => value);
+        return checks.Count == 44 && checks.Values.All(value => value);
     }
 
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)

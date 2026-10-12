@@ -53,14 +53,24 @@
         <Grid.Style><Style TargetType="Grid"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="1"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Grid.Style>
         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
         <StackPanel Margin="0,0,0,20"><TextBlock Text="密码库" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="保存常用密码，下次解压时自动尝试。" Style="{StaticResource Secondary}" Margin="0,8,0,0"/></StackPanel>
-        <DockPanel Grid.Row="1" Margin="0,0,0,16"><Button Content="添加密码" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" DockPanel.Dock="Right" Margin="12,0,0,0"/><Label Content="搜索名称或备注" Target="{Binding ElementName=PasswordSearch}" DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0" Margin="0,0,12,0"/><TextBox x:Name="PasswordSearch" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="搜索密码名称或备注" ToolTip="搜索名称或备注，不搜索密码明文"/></DockPanel>
-        <Border Grid.Row="2" Style="{StaticResource Card}"><Grid><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><DataGrid ItemsSource="{Binding PasswordRows}" SelectedItem="{Binding SelectedPassword}" AutomationProperties.Name="已保存密码列表"><DataGrid.Columns><DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="*"/><DataGridTextColumn Header="备注" Binding="{Binding Notes}" Width="*"/><DataGridCheckBoxColumn Header="自动尝试" Binding="{Binding AutoTry}" Width="90"/><DataGridTextColumn Header="最近使用" Binding="{Binding LastSuccessAt, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="160"/></DataGrid.Columns></DataGrid><StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,0"><Button Content="编辑所选密码" Command="{Binding EditPasswordCommand}"/><Button Content="删除所选密码" Command="{Binding DeletePasswordCommand}" Margin="12,0,0,0"/></StackPanel></Grid></Border>
+        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="16" Margin="0,0,0,16"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><Label Content="搜索名称或备注" Target="{Binding ElementName=PasswordSearch}" Padding="0" Margin="0,0,0,8"/><TextBox Grid.Row="1" x:Name="PasswordSearch" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="搜索密码名称或备注" ToolTip="搜索名称或备注，不搜索密码明文"/></Grid><Button Grid.Column="1" Content="添加密码" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="16,0,0,0"/></Grid></Border>
+        <Border Grid.Row="2" Style="{StaticResource Card}" Padding="16"><Grid>
+          <DataGrid x:Name="PasswordTable" ItemsSource="{Binding PasswordRows}" SelectedItem="{Binding SelectedPassword}" RowHeight="48" AutomationProperties.Name="已保存密码列表" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="*" MinWidth="100" ElementStyle="{StaticResource TableText}"/>
+              <DataGridTextColumn Header="备注" Binding="{Binding Notes}" Width="*" MinWidth="80" ElementStyle="{StaticResource TableText}"/>
+              <DataGridTemplateColumn Header="自动尝试" Width="88"><DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource TableText}"><Setter Property="Text" Value="已停用"/><Style.Triggers><DataTrigger Binding="{Binding AutoTry}" Value="True"><Setter Property="Text" Value="已启用"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+              <DataGridTextColumn Header="最近使用" Binding="{Binding LastSuccessAt, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue=尚未使用}" Width="148" ElementStyle="{StaticResource TableText}"/>
+            </DataGrid.Columns>
+          </DataGrid>
+          <TextBlock Text="没有匹配的密码。可调整搜索或添加密码。" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" TextWrapping="Wrap" Margin="16"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding PasswordRows.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+        </Grid></Border>
       </Grid>
       <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
         <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="2"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
         <StackPanel><TextBlock Text="设置" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,24"/>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
-            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.5" Margin="0,0,0,8"/>
+            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.6" Margin="0,0,0,8"/>
             <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/><TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,8,0,16"/>
             <Label Content="可用引擎" Target="{Binding ElementName=EngineChoice}" Padding="0"/><ComboBox x:Name="EngineChoice" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="选择已验证的本地引擎" Margin="0,8,0,0"/>
             <WrapPanel Margin="0,12,0,16"><Button Content="使用所选版本" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/><Button Content="恢复上一版本" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/></WrapPanel>
@@ -75,10 +85,11 @@
           <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="关于" Style="{StaticResource Heading}"/><TextBlock Text="使用官方 7-Zip 引擎。许可证与来源信息随产品附带。" Style="{StaticResource Secondary}"/><Button Content="查看许可证与来源" Command="{Binding OpenLicensesCommand}" HorizontalAlignment="Left" Margin="0,16,0,0"/></StackPanel></Border>
         </StackPanel>
       </ScrollViewer>
-      <local:CompressionView x:Name="CompressionPage" xmlns:local="clr-namespace:ArchivePassword.Desktop" Grid.Row="1">
+      <local:CompressionView x:Name="CompressionPage" xmlns:local="clr-namespace:ArchivePassword.Desktop" Grid.Row="1" Grid.RowSpan="2">
         <local:CompressionView.Style><Style TargetType="local:CompressionView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="3"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></local:CompressionView.Style>
       </local:CompressionView>
       <Grid Grid.Row="2" Margin="0,16,0,0">
+        <Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="3"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Grid.Style>
         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
         <WrapPanel HorizontalAlignment="Right">
           <WrapPanel.Style><Style TargetType="WrapPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></WrapPanel.Style>
@@ -87,6 +98,7 @@
           <Button Content="跳过尝试，输入密码" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CanSkipPasswords}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
           <Button Content="打开输出目录" Command="{Binding OpenOutputCommand}" Margin="0,0,0,8"/>
         </WrapPanel>
+        <WrapPanel HorizontalAlignment="Right"><WrapPanel.Style><Style TargetType="WrapPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="1"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></WrapPanel.Style><Button Content="编辑所选密码" Command="{Binding EditPasswordCommand}" Margin="0,0,12,8"/><Button Content="删除所选密码" Command="{Binding DeletePasswordCommand}" Margin="0,0,0,8"/></WrapPanel>
         <TextBlock Grid.Row="1" Text="{Binding Footer}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
       </Grid>
     </Grid>
