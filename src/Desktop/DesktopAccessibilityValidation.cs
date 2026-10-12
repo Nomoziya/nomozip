@@ -175,11 +175,12 @@ internal static class DesktopAccessibilityValidation
                 Render(dialog, Path.Combine(directory, "password-dialog-small-workarea.png"), 1.0);
             }
             finally { dialog.Close(); }
+            Check("task speech names and complete focus adorners", await DesktopUiRegressionValidation.RunAsync(window, model, root));
         }
         finally
         {
             theme.Apply(SystemParameters.HighContrast);
-            var passed = checks.Count == 44 && checks.Values.All(value => value);
+            var passed = checks.Count == 45 && checks.Values.All(value => value);
             await File.WriteAllTextAsync(Path.Combine(root, "artifacts/accessibility-validation.json"), JsonSerializer.Serialize(new
             {
                 passed, total = checks.Count, checks, failures, syntheticData = true,
@@ -188,7 +189,7 @@ internal static class DesktopAccessibilityValidation
                 humanKeyboardNarratorExplorerAndMonitorDpiAccepted = false
             }));
         }
-        return checks.Count == 44 && checks.Values.All(value => value);
+        return checks.Count == 45 && checks.Values.All(value => value);
     }
 
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
