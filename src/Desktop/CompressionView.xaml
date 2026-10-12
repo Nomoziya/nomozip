@@ -6,7 +6,7 @@
       <Button Content="添加文件" Command="{Binding AddCompressionFilesCommand}" AutomationProperties.Name="添加要压缩的文件" DockPanel.Dock="Left"/>
       <Button Content="添加文件夹" Command="{Binding AddCompressionFolderCommand}" DockPanel.Dock="Left" Margin="12,0,0,0"/>
       <Button Content="移除所选" Command="{Binding RemoveCompressionSourceCommand}" DockPanel.Dock="Right" Margin="12,0,0,0"/>
-      <TextBlock Text="也可以将内容拖入此窗口" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="16,0"/>
+      <TextBlock x:Name="DropHint" Text="也可以将内容拖入此窗口" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="16,0"/>
     </DockPanel></Border>
     <ScrollViewer Grid.Row="2" x:Name="CompressionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
       <Grid x:Name="CompressionLayout">

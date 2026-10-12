@@ -24,4 +24,5 @@ public partial class CompressionView : UserControl
         Grid.SetColumn(SettingsPanel, narrow ? 0 : 2);
         SettingsPanel.Margin = narrow ? new Thickness(0, 16, 0, 0) : new Thickness(0);
     }
+    internal void SetCompactToolbar(bool compact) => DropHint.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
 }

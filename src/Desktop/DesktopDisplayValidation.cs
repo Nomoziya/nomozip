@@ -23,12 +23,14 @@ internal static class DesktopDisplayValidation
         };
         if (!EnumDisplayMonitors(0, 0, callback, 0) || monitors.Count == 0) throw new IOException("Display enumeration failed.");
         var measured = new List<object>();
+        var failures = new List<object>();
         var hwnd = new WindowInteropHelper(window).Handle;
         var originalOpacity = window.Opacity;
         try
         {
             // Move only the isolated validation window. Opacity prevents it obscuring the user's desktop.
             window.Opacity = 0;
+            model.Banner = ""; // Reset the synthetic high-contrast preview message from the preceding suite.
             foreach (var (monitor, index) in monitors.Select((value, index) => (value, index)))
             {
                 var work = monitor.Work;
@@ -43,7 +45,7 @@ internal static class DesktopDisplayValidation
                 foreach (var scale in new[] { 1.25, 1.5, 2.0 })
                 {
                     window.MinWidth = 800; window.MinHeight = 600; window.Width = 1120; window.Height = 760;
-                    var simulatedWork = new Rect(0, 0, (work.Right - work.Left) / scale, (work.Bottom - work.Top) / scale);
+                    var simulatedWork = new Rect(0, 0, Math.Min(work.Right - work.Left, 1024) / scale, Math.Min(work.Bottom - work.Top, 720) / scale);
                     WindowPlacement.FitWorkArea(window, simulatedWork);
                     foreach (var page in new[] { 0, 3, 1, 2 })
                     {
@@ -56,10 +58,15 @@ internal static class DesktopDisplayValidation
                             control.BringIntoView();
                             await window.Dispatcher.InvokeAsync(() => window.UpdateLayout(), DispatcherPriority.ApplicationIdle);
                             var bounds = control.TransformToAncestor(window).TransformBounds(new Rect(control.RenderSize));
-                            reachable &= bounds.Width > 0 && bounds.Height > 0 && bounds.Left >= -1 && bounds.Top >= -1
+                            var fits = bounds.Width > 0 && bounds.Height > 0 && bounds.Left >= -1 && bounds.Top >= -1
                                 && bounds.Right <= window.ActualWidth + 1 && bounds.Bottom <= window.ActualHeight + 1;
+                            reachable &= fits;
+                            if (!fits) failures.Add(new { page, scale, control = System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(control)?.GetName(),
+                                bounds = bounds.ToString(), windowSize = new[] { window.ActualWidth, window.ActualHeight } });
                         }
                         checks[$"display {index} simulated {scale * 100:0}% page {page} actions reachable"] = reachable;
+                        if (index == 0 && scale == 2.0 && page is 0 or 3)
+                            DesktopAccessibilityValidation.Render(window, Path.Combine(root, $"artifacts/accessibility-preview/compact-page-{page}-512x360.png"), 1.0);
                     }
                 }
             }
@@ -72,9 +79,10 @@ internal static class DesktopDisplayValidation
         }
         var passed = checks.Count == monitors.Count * 13 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(root, "artifacts/display-validation.json"), JsonSerializer.Serialize(new
-        { passed, total = checks.Count, checks, measured, monitorCount = monitors.Count,
+        { passed, total = checks.Count, checks, measured, failures, monitorCount = monitors.Count,
             multiMonitorMovementTested = monitors.Count > 1, operatingSystemScalingChanged = false,
-            scope = "Actual connected-display window DPI; 125/150/200% work-area layout simulation. No OS settings changed." }));
+            layoutWorkAreaPixelCap = new[] { 1024, 720 },
+            scope = "Actual connected-display window DPI; 125/150/200% layout simulation with work-area pixels capped to 1024x720, including 512x360 DIP. No OS settings changed." }));
         return passed;
     }
 
