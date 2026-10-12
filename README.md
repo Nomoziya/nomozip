@@ -2,17 +2,17 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-当前状态：0.1.0-preview.2 Windows x64 开发预览已发布，提供安装版与独立 ZIP。引擎 57 项、核心 17 项、更新 22 项、3 条桌面流程和 14 项安装流程验证通过；真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
+当前状态：0.1.0-preview.3 Windows x64 开发预览已发布，提供安装版与独立 ZIP。引擎 57 项、核心 17 项、更新 22 项、压缩 38 项、打开方式 7 项、四条桌面流程及 16 项安装流程验证通过；此前真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
 
-下载：[Windows x64 安装版与独立 ZIP](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.2)。运行安装程序，或解压 ZIP 后运行 `ArchivePassword.exe`；均已携带 .NET / WPF 运行组件。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
+下载：[Windows x64 安装版与独立 ZIP](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.3)。运行安装程序，或解压 ZIP 后运行 `ArchivePassword.exe`；均已携带 .NET / WPF 运行组件。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
 当前预览支持加密密码库、自动尝试密码、更新包导入、GitHub Releases 更新下载、明确启用与恢复上一引擎。源码与 Windows 验证工作流已上传到 [Nomoziya/nomozip](https://github.com/Nomoziya/nomozip)，首次云端验证通过。软件下载与稳定引擎更新分别发布，软件仍为开发预览；下载入口见 [Releases](https://github.com/Nomoziya/nomozip/releases)。更新包使用独立产品发布密钥，客户端固定对应公钥。
 
-完整构建、运行与限制见 [开发与维护说明](docs/DEVELOPMENT.md)，更新与发布见 [更新说明](docs/UPDATES.md)。升级及默认卸载保留密码库，详见 [安装说明](docs/INSTALLATION.md)。同包多密码组合解压、基础压缩与文件关联仍属于后续阶段。
+完整构建、运行与限制见 [开发与维护说明](docs/DEVELOPMENT.md)，更新与发布见 [更新说明](docs/UPDATES.md)。升级及默认卸载保留密码库，详见 [安装说明](docs/INSTALLATION.md)。
 
-第三预览增加 7z/ZIP 创建、加密和可选 Windows 打开方式入口，正在进行发布验收。操作、密码限制与数据保护见 [压缩说明](docs/COMPRESSION.md)。同包多密码组合解压仍未实现。
+第三预览增加 7z/ZIP 创建、加密和可选 Windows 打开方式入口，[云端验证](https://github.com/Nomoziya/nomozip/actions/runs/38206962560) 全部通过。操作、密码限制与数据保护见 [压缩说明](docs/COMPRESSION.md)。同包多密码组合解压仍未实现。
 
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
