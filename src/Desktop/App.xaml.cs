@@ -1,0 +1,121 @@
+using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using ArchivePassword.Infrastructure;
+using ArchivePassword.Core;
+using System.Text.Json;
+
+namespace ArchivePassword.Desktop;
+
+public partial class App : Application
+{
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        if (SystemParameters.HighContrast)
+        {
+            Resources["CanvasBrush"] = SystemColors.WindowBrush; Resources["SurfaceBrush"] = SystemColors.WindowBrush;
+            Resources["TextBrush"] = SystemColors.WindowTextBrush; Resources["SecondaryBrush"] = SystemColors.WindowTextBrush;
+            Resources["BorderBrush"] = SystemColors.WindowTextBrush; Resources["DividerBrush"] = SystemColors.WindowTextBrush;
+            Resources["AccentBrush"] = SystemColors.HighlightBrush; Resources["OnAccentBrush"] = SystemColors.HighlightTextBrush;
+            Resources["SelectionBrush"] = SystemColors.HighlightBrush;
+        }
+        var baseDirectory = AppContext.BaseDirectory;
+        var dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArchivePassword");
+        var previewIndex = Array.IndexOf(e.Args, "--preview");
+        var validationIndex = Array.IndexOf(e.Args, "--validate");
+        var dataIndex = Array.IndexOf(e.Args, "--data-dir");
+        if (dataIndex >= 0 && dataIndex + 1 < e.Args.Length) dataDirectory = Path.GetFullPath(e.Args[dataIndex + 1]);
+        if (validationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts", "desktop-validation", Guid.NewGuid().ToString("N"));
+        var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
+        var window = new MainWindow();
+        var model = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window, validationIndex >= 0 ? PrepareValidationDialog : null,
+            validationIndex >= 0 ? () => Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts/update-test-assets/ArchivePassword-engine-26.03-win-x64.zip") : null,
+            validationIndex >= 0 ? (_, _) => true : null));
+        window.DataContext = model;
+        MainWindow = window;
+        if (validationIndex >= 0)
+        {
+            var validationRoot = Path.GetFullPath(e.Args[validationIndex + 1]);
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            Directory.CreateDirectory(dataDirectory);
+            try
+            {
+                var fixture = Path.Combine(validationRoot, "tests/fixtures/generated/encrypted-header.7z");
+                await vault.SaveAsync(new SavedPassword(Guid.NewGuid(), "synthetic desktop sample", "测试密碼 ' $ & 空格", "", true, DateTimeOffset.UtcNow));
+                await model.InitializeAsync();
+                model.OutputPath = Path.Combine(dataDirectory, "output");
+                model.AddFiles([fixture]);
+                model.ExtractCommand.Execute(null);
+                await model.WaitForIdleAsync();
+                var extracted = Path.Combine(model.OutputPath, "中文示例.txt");
+                var expected = Path.Combine(validationRoot, "tests/fixtures/generated/中文示例.txt");
+                var success = model.Tasks.Single().Completed && File.Exists(extracted) && File.ReadAllBytes(extracted).SequenceEqual(File.ReadAllBytes(expected));
+                foreach (var saved in await vault.ReadAsync()) await vault.DeleteAsync(saved.Id);
+                await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                model.Tasks.Clear(); model.OutputPath = Path.Combine(dataDirectory, "manual-output"); model.AddFiles([fixture]);
+                model.ExtractCommand.Execute(null); await model.WaitForIdleAsync();
+                var manualFile = Path.Combine(model.OutputPath, "中文示例.txt");
+                var manualSuccess = model.Tasks.Single().Completed && File.Exists(manualFile) && File.ReadAllBytes(manualFile).SequenceEqual(File.ReadAllBytes(expected)) && (await vault.ReadAsync()).Any(value => value.Secret == "测试密碼 ' $ & 空格");
+                await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                var vaultBeforeUpdate = await File.ReadAllBytesAsync(Path.Combine(dataDirectory, "passwords.apv"));
+                model.ImportUpdateCommand.Execute(null); await model.WaitForIdleAsync();
+                var updateSuccess = model.EngineSummary.Contains("26.03") && Enumerable.SequenceEqual(vaultBeforeUpdate, await File.ReadAllBytesAsync(Path.Combine(dataDirectory, "passwords.apv")));
+                await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                model.Tasks.Clear(); model.OutputPath = Path.Combine(dataDirectory, "updated-engine-output"); model.AddFiles([fixture]);
+                model.ExtractCommand.Execute(null); await model.WaitForIdleAsync();
+                updateSuccess &= model.Tasks.Single().Completed && File.ReadAllBytes(Path.Combine(model.OutputPath, "中文示例.txt")).SequenceEqual(File.ReadAllBytes(expected));
+                model.RollbackEngineCommand.Execute(null); await model.WaitForIdleAsync();
+                updateSuccess &= model.EngineSummary.Contains("26.04");
+                var restartedModel = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window));
+                await restartedModel.InitializeAsync(); updateSuccess &= restartedModel.EngineSummary.Contains("26.04");
+                var passed = success && manualSuccess && updateSuccess;
+                await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess, engines = model.EngineVersions.ToArray(), status = model.Tasks.Single().Status }));
+                Shutdown(passed ? 0 : 1);
+            }
+            catch
+            {
+                await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), "{\"passed\":false,\"error\":\"desktop_validation_failed\"}");
+                Shutdown(1);
+            }
+            return;
+        }
+        if (previewIndex >= 0 && previewIndex + 1 < e.Args.Length)
+        {
+            model.LoadPreview();
+            var pageIndex = Array.IndexOf(e.Args, "--preview-page");
+            if (pageIndex >= 0 && pageIndex + 1 < e.Args.Length) model.Page = int.Parse(e.Args[pageIndex + 1]);
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowInTaskbar = false; window.ShowActivated = false; window.WindowStyle = WindowStyle.None; window.ResizeMode = ResizeMode.NoResize;
+            var widthIndex = Array.IndexOf(e.Args, "--preview-width");
+            var previewWidth = widthIndex >= 0 && widthIndex + 1 < e.Args.Length ? int.Parse(e.Args[widthIndex + 1]) : 1120;
+            window.Width = previewWidth; window.Height = 760;
+            window.Show();
+            await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+            var content = (FrameworkElement)window.Content;
+            content.UpdateLayout();
+            var target = new RenderTargetBitmap(previewWidth, 760, 96, 96, PixelFormats.Pbgra32);
+            target.Render(content);
+            var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(target));
+            using var stream = File.Create(e.Args[previewIndex + 1]); encoder.Save(stream);
+            Shutdown(); return;
+        }
+        window.Show();
+        _ = model.InitializeAsync();
+        foreach (var argument in e.Args.Where(value => File.Exists(value))) model.AddFiles([argument]);
+    }
+
+    private static void PrepareValidationDialog(PasswordDialog dialog)
+    {
+        dialog.WindowStartupLocation = WindowStartupLocation.Manual; dialog.Left = -32000; dialog.Top = -32000;
+        dialog.ShowActivated = false;
+        dialog.Loaded += (_, _) => dialog.Dispatcher.BeginInvoke(() =>
+        {
+            ((System.Windows.Controls.PasswordBox)dialog.FindName("SecretBox")).Password = "测试密碼 ' $ & 空格";
+            ((System.Windows.Controls.CheckBox)dialog.FindName("SavePassword")).IsChecked = true;
+            ((System.Windows.Controls.Button)dialog.FindName("ContinueButton")).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+        });
+    }
+}
