@@ -1,5 +1,7 @@
 # 构建、验证与维护
 
+第七预览公开下载已验证：[v0.1.0-preview.7](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.7)，标签 `fa3e6fb84ecb6282a016d39d8b2587d89d643bd7`，包含当时确认的轻量/完整安装与 ZIP、94 文件源码快照和校验清单。六项资产均无登录下载并核对本地及 GitHub SHA-256，报告 `artifacts/public-preview-7-validation.json`。随后用户确认未来仅发布轻量版；已有不可变资产保持不变，新发布规则见 [安装说明](INSTALLATION.md)。完整载荷今后仅用于隔离测试旧版本升级，不是发行物。
+
 第七预览（2026-10-12）补齐内容浏览界面，代码提交 `3fc065e2b0e77d262a6731de72a93b3914471a95` 的 [Windows CI 38239454113](https://github.com/Nomoziya/nomozip/actions/runs/38239454113) 全部通过。两版实际引擎浏览 28/28，桌面浏览 13/13（包括自动/手动文件名加密、直接查看 AES ZIP、搜索及空匹配、键盘名称/快捷键、小工作区完整文件行及数据不被浏览修改），既有布局 44/44；原解压、压缩、密码库和更新流程保留通过。引擎矩阵已扩展为 79/79，并由现有官方维护脚本对未来候选执行；签名工具拒绝缺少目标版本列表覆盖的报告，拒签测试通过。十四份报告和 35 张虚构数据渲染位于 `artifacts/github-validation-38239454113/validation-reports/`。完整安装 17/17、完整到轻量安装 18/18，云端轻量安装 9244171 字节，确认共享运行库和旧密码库复用。审核载荷轻量 9043567 字节 / 43 文件、完整 155200322 字节 / 438 文件；轻量 EXE 2086719 字节、ZIP 3328492 字节，约 9 MB 仍不包含系统运行库。浏览不写入输出目录/密码库，不将打开头部误当作数据验证成功；其实际体验和未完成人工桌面项目继续待确认。以下旧版本记录保留各自范围。
 
 第六预览已公开：[v0.1.0-preview.6](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.6)，标签提交 `fa20f300d337b212166e99ee8a1fcf71e1796888`，仅比下述通过 CI 的代码提交增加文档记录。轻量安装 EXE 2081691 字节、ZIP 3318677 字节；完整 EXE/ZIP、86 文件源码快照和 SHA256SUMS 也已发布。六项资产经公开无登录地址重新下载，SHA-256 与本地及 GitHub 资产摘要一致，报告 `artifacts/public-preview-6-validation.json`；包 CRC 与私密材料排除检查通过。轻量/完整 worker、26.04/26.03 引擎和固定公钥逐字节一致，指标报告 `artifacts/package-size-validation.json`。稳定引擎仍为 `engine-26.04`，旧发布未覆盖，本机入口已更新。
