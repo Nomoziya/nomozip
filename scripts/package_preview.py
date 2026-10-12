@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--app-directory', default='artifacts/app')
 parser.add_argument('--output-directory', default='artifacts')
 parser.add_argument('--version', default='0.1-preview')
+parser.add_argument('--skip-source', action='store_true')
 args = parser.parse_args()
 OUTPUT = ROOT / args.output_directory
 OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -28,6 +29,9 @@ if not (application / "ArchivePassword.exe").exists():
 if any(file.suffix in ('.apv', '.pem', '.dpapi') and file.name != 'update-public-key.pem' for file in app_files):
     raise RuntimeError("Unexpected private material in app package.")
 archive(OUTPUT / f"nomozip-{args.version}-win-x64.zip", app_files, application)
+if args.skip_source:
+    print(f"Packaged {len(app_files)} app files; source snapshot already packaged separately.")
+    raise SystemExit(0)
 
 sources = []
 for folder in ("src", "tests", "tools", "scripts", "docs", "config", "resources", "design-system", "installer", ".github"):

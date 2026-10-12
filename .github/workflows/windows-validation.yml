@@ -68,6 +68,8 @@ jobs:
           ./scripts/bootstrap-installer.ps1
           ./scripts/build.ps1 -Configuration Release -SkipWorker -SelfContained -OutputDirectory artifacts/self-contained-app
           ./scripts/test-installer.ps1
+          ./scripts/build.ps1 -Configuration Release -SkipWorker -OutputDirectory artifacts/light-app
+          ./scripts/test-installer.ps1 -FrameworkDependent
       - name: Keep validation evidence
         if: always()
         uses: actions/upload-artifact@v7

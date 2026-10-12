@@ -64,7 +64,7 @@ public partial class App : Application
         {
             window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
             window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
-            var result = await DesktopInstalledValidation.RunAsync(model, vault, baseDirectory, Path.GetFullPath(e.Args[installedValidationIndex + 1]));
+            var result = await DesktopInstalledValidation.RunAsync(model, vault, baseDirectory, Path.GetFullPath(e.Args[installedValidationIndex + 1]), e.Args.Contains("--shared-runtime"));
             Shutdown(result ? 0 : 1); return;
         }
         if (onlineValidationIndex >= 0)

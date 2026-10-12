@@ -40,15 +40,11 @@
             </Grid>
           </Border>
           <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource Card}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+            <ScrollViewer x:Name="SettingsScroll" VerticalScrollBarVisibility="Auto"><StackPanel>
               <TextBlock Text="解压设置" Style="{StaticResource Heading}"/>
               <Label Content="输出目录" Target="{Binding ElementName=OutputBox}" Padding="0"/><TextBox x:Name="OutputBox" Text="{Binding OutputPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,8" AutomationProperties.Name="输出目录" IsEnabled="{Binding IsIdle}"/><Button Content="浏览目录" Command="{Binding BrowseOutputCommand}" HorizontalAlignment="Left" Margin="0,0,0,16"/>
               <Label Content="同名文件" Target="{Binding ElementName=ConflictBox}" Padding="0"/><ComboBox x:Name="ConflictBox" SelectedIndex="{Binding ConflictPolicy}" Margin="0,8,0,16" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="同名文件处理"><ComboBoxItem Content="每次询问"/><ComboBoxItem Content="跳过同名文件"/><ComboBoxItem Content="覆盖同名文件"/></ComboBox>
               <CheckBox Content="自动尝试保存的密码" IsChecked="{Binding AutoTry}" IsEnabled="{Binding IsIdle}"/><TextBlock Text="{Binding VaultSummary}" Style="{StaticResource Secondary}"/><Button Content="管理密码库" Command="{Binding OpenVaultCommand}" Margin="0,12,0,20"/>
-              <Button Content="{Binding ExtractButtonText}" Command="{Binding ExtractCommand}" MinHeight="44" AutomationProperties.Name="开始解压，Control E"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"><Style.Triggers><DataTrigger Binding="{Binding IsNarrow}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
-              <Button Content="跳过尝试，输入密码" Command="{Binding SkipPasswordsCommand}" Margin="0,12,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CanSkipPasswords}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
-              <Button Content="取消当前任务" Command="{Binding CancelCommand}" Margin="0,8,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsBusy}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
-              <Button Content="打开输出目录" Command="{Binding OpenOutputCommand}" Margin="0,16,0,0"/>
             </StackPanel></ScrollViewer>
           </Border>
         </Grid></ScrollViewer>
@@ -64,7 +60,7 @@
         <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="2"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
         <StackPanel><TextBlock Text="设置" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,24"/>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
-            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.4" Margin="0,0,0,8"/>
+            <TextBlock Text="引擎与更新" Style="{StaticResource Heading}"/><TextBlock Text="产品版本：0.1.0-preview.5" Margin="0,0,0,8"/>
             <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/><TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,8,0,16"/>
             <Label Content="可用引擎" Target="{Binding ElementName=EngineChoice}" Padding="0"/><ComboBox x:Name="EngineChoice" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="选择已验证的本地引擎" Margin="0,8,0,0"/>
             <WrapPanel Margin="0,12,0,16"><Button Content="使用所选版本" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/><Button Content="恢复上一版本" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/></WrapPanel>
@@ -82,11 +78,17 @@
       <local:CompressionView x:Name="CompressionPage" xmlns:local="clr-namespace:ArchivePassword.Desktop" Grid.Row="1">
         <local:CompressionView.Style><Style TargetType="local:CompressionView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="3"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></local:CompressionView.Style>
       </local:CompressionView>
-      <DockPanel Grid.Row="2" Margin="0,16,0,0">
-        <Button Content="{Binding ExtractButtonText}" Command="{Binding ExtractCommand}" MinHeight="44" DockPanel.Dock="Right" Margin="16,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding Page}" Value="0"/><Condition Binding="{Binding IsNarrow}" Value="True"/><Condition Binding="{Binding IsIdle}" Value="True"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible"/></MultiDataTrigger></Style.Triggers></Style></Button.Style></Button>
-        <Button Content="取消当前任务" Command="{Binding CancelCommand}" DockPanel.Dock="Right" Margin="16,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding IsNarrow}" Value="True"/><Condition Binding="{Binding IsBusy}" Value="True"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible"/></MultiDataTrigger></Style.Triggers></Style></Button.Style></Button>
-        <TextBlock Text="{Binding Footer}" Style="{StaticResource Secondary}" TextWrapping="Wrap" VerticalAlignment="Center" AutomationProperties.LiveSetting="Polite"/>
-      </DockPanel>
+      <Grid Grid.Row="2" Margin="0,16,0,0">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <WrapPanel HorizontalAlignment="Right">
+          <WrapPanel.Style><Style TargetType="WrapPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></WrapPanel.Style>
+          <Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" Command="{Binding ExtractCommand}" MinHeight="44" AutomationProperties.Name="开始解压，Control E" Margin="0,0,12,8"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"><Style.Triggers><DataTrigger Binding="{Binding IsIdle}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+          <Button Content="取消当前任务" Command="{Binding CancelCommand}" Margin="0,0,12,8"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsBusy}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+          <Button Content="跳过尝试，输入密码" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CanSkipPasswords}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+          <Button Content="打开输出目录" Command="{Binding OpenOutputCommand}" Margin="0,0,0,8"/>
+        </WrapPanel>
+        <TextBlock Grid.Row="1" Text="{Binding Footer}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+      </Grid>
     </Grid>
   </Grid>
 </Window>

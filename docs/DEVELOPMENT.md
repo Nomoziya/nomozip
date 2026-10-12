@@ -84,3 +84,11 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 实现依据（2026-10-12）：微软的 [WPF 焦点说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/focus-overview) 区分键盘焦点与逻辑焦点；[系统资源说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/systems/xaml-resources-how-to-use-system) 和 [系统参数变更事件](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.staticpropertychanged?view=windowsdesktop-10.0) 支持系统配色更新；[WorkArea](https://learn.microsoft.com/en-us/dotnet/api/system.windows.systemparameters.workarea?view=windowsdesktop-10.0) 提供主显示器工作区，跨显示器场景仍待实际验收。
 
 2026-10-12 第四公开预览 [v0.1.0-preview.4](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.4) 对应最终提交 `3bf9c4443124244ffbf524737ffde373034f2997`；[CI 38223276557](https://github.com/Nomoziya/nomozip/actions/runs/38223276557) 全部通过，原有检查及新增 29 项桌面检查均通过，十份报告和 34 张渲染图下载至 `artifacts/github-validation-38223276557/validation-reports/`。安装 EXE、438 文件自包含 ZIP、86 文件源码快照与校验清单四项资产已从无登录公开地址下载，SHA-256 与本地和 GitHub 摘要一致；报告为 `artifacts/public-preview-4-validation.json`。稳定引擎通道仍为 `engine-26.04`，旧发布资产保持不变。本机 `artifacts/app/ArchivePassword.exe` 同步为第四预览代码；人工验收状态按上节继续保留。
+
+## 第五预览：实际体验修复与轻量分发
+
+解压页固定开始、取消、跳过密码尝试和打开输出目录操作，普通宽窗口设置卡片无需滚动。窄窗口使用外层区域滚动，设置内部不再另设滚动；统一细轨样式保留 WPF 原有 Track/Thumb 和页面滚动命令，未隐藏溢出设置。补充桌面检查扩展到 34 项，包含主操作位置、滚动结构和真实 WPF 滑块拖动事件使偏移变化。四条桌面功能流程继续通过；渲染使用虚构数据，不能代替用户的新一轮体验。
+
+用户选择保留 WPF 和功能，新增共享 .NET 10 Desktop Runtime 的轻量分发；完整独立分发保留。原完整载荷约 148 MB，轻量载荷约 9 MB；后者不包括系统共享运行库的安装占用。安装、依赖、从完整旧版清理载荷并保留密码/设置/文件入口的行为见 [INSTALLATION.md](INSTALLATION.md)。隔离的完整到轻量安装验收 18 项通过，实际旧密码复用成功，确认加载共享运行库并移除旧随包 DLL；安装目录 9183799 字节。完整模式新增保留打开方式的检查，最终 17 项待云端验证。
+
+技术依据（2026-10-12）：[微软 .NET 分发说明](https://learn.microsoft.com/en-us/dotnet/core/deploying/)说明共享运行库模式的依赖与体积取舍；[WPF 裁剪限制](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/incompatibilities)明确当前 SDK 禁用 WPF 裁剪。沿用现有实现和微软 apphost，不引入未经支持的裁剪/AOT，也不以改变项目技术栈来隐瞒兼容成本。新报告为 `artifacts/light-installer-validation.json` 和 `artifacts/light-installed-smoke-validation.json`，普通安装/功能报告继续保留其各自范围。
