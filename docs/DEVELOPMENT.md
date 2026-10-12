@@ -35,7 +35,7 @@ Python 测试在本轮使用 Codex 自带 Python。其它机器需可用 Python 
 ./scripts/follow-official-engine.ps1 -Update
 ```
 
-第一条只检查官方稳定版；第二条在有新版本时下载官方包，禁用候选引擎，运行真实兼容性矩阵，通过后重新生成本地产品包。当前最新版 26.04 已在本地，因此本轮只验证了“当前版本无需更新”的分支；未来新版本的完整下载/验证/重建分支尚未实跑。
+第一条只检查官方稳定版；第二条在有新版本时下载官方包，禁用候选引擎，运行解压和压缩兼容性矩阵，通过后重新生成本地产品包。26.04 已在主项目中，因此普通维护运行无需更新；2026-10-12 已在隔离工作区将其作为缺失候选，实跑完整下载/验证/重建及失败保护分支。真实未来版本的具体 DLL 尚未出现，仍须逐版验收。
 
 此脚本面向项目维护与本机开发。现有产品可检查官方版本和产品 GitHub Releases、下载或导入签名更新包、验证后启用，并恢复上一引擎。更新包不需要用户另装官方 7-Zip。流程、测试包和发布密钥约定见 [更新说明](UPDATES.md)。源码和 CI 已上传，软件下载及稳定引擎包见 [Releases](https://github.com/Nomoziya/nomozip/releases)。
 
@@ -74,6 +74,10 @@ if ($taskApp.ExitCode -ne 0) { throw 'Online acceptance failed; inspect artifact
 新增报告为 `artifacts/compression-validation.json`、`artifacts/association-validation.json` 和 `artifacts/signing-validation.json`。UI Automation 检查不能代替真人键盘、Narrator、高对比度、DPI 和 Explorer 入口验收；同包多密码组合解压仍未实现。7z 支持 Unicode 密码，当前官方 ZIP 写入接口只接受 ASCII 密码，界面会明确拒绝不支持的输入。
 
 ## P5 无障碍与布局验收
+
+2026-10-12 用户确认第四预览的“压缩加密、自动解密，目前没发现问题”，已记录为压缩加密和自动复用密码解压的人工通过。报告未指定归档格式及其它操作，不扩展为完整人工验收；第五预览的新布局/轻量安装及键盘、Narrator、DPI、Explorer 等仍待确认。此前自动报告保留原检查范围，不将其人工验收字段改为通过。
+
+对比第四最终提交 `3bf9c4443124244ffbf524737ffde373034f2997` 与第五最终提交 `ddb3771c8f27e3fc212a3cf143ee1b79945744ef`，`src/Core`、`src/Infrastructure` 和 `src/EngineWorker` 无源码变化，保留用户已经通过的功能验收，不因后续阶段而重复这些检查。
 
 第四预览修复系统高对比度资源下选中导航和提示的文字配色、选中归档辅助文字的颜色继承，以及开启“显示密码”后提交空密码应返回可见输入框的问题。高对比度开关变化会在应用运行时更新资源，关闭后恢复原设计配色。主窗口启动和密码对话框按系统工作区收缩最小尺寸与初始尺寸，避免高缩放下固定高度超过可用区域。
 
