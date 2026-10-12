@@ -1,6 +1,6 @@
 # 密码库加密备份与迁移
 
-此功能自 0.2.0 开发候选加入；公开正式版 0.1.0 不包含此入口。
+此功能自 0.2.0-preview.1 开发候选加入，已完成代理验收；公开正式版 0.1.0 不包含此入口。本地候选位于 `artifacts/release-0.2.0-preview.1/`，未发布新的正式版。
 
 ## 操作
 
@@ -30,4 +30,4 @@
 
 现有 APV1 本机库保持兼容；备份载荷版本独立管理。未来格式版本须增加明确读取/迁移器及样本，当前未知版本拒绝读取，不猜测或尝试降级解析。实现没有更换本机密码库加密策略，也不是 F08 的主密码功能。
 
-验证使用虚构密码和隔离数据目录：`artifacts/vault-transfer-local-validation.json`、`artifacts/desktop-vault-transfer-validation.json`。迁移检查由两个 Windows CI 作业导出和导入；GitHub 镜像可能沿用相同机器名和 SID，因此导入作业在临时 VM 上创建不同 SID 的专用测试账户，载入其真实用户配置后运行，结束删除该账户。脚本限制在 GitHub 托管临时环境执行，不在用户电脑创建账户。先确认源 DPAPI 文件不可读取，再确认 portable 备份导入、目标库重新打开和实际自动解压。CI 未通过前不把跨独立用户迁移记录为验收完成。
+验证使用虚构密码和隔离数据目录：`artifacts/vault-transfer-local-validation.json` 为 34/34，`artifacts/desktop-vault-transfer-validation.json` 为 24/24。迁移检查由两个 Windows CI 作业导出和导入；GitHub 镜像可能沿用相同机器名和 SID，因此导入作业在临时 VM 上创建不同 SID 的专用测试账户，载入其真实用户配置后运行，结束删除该账户。脚本限制在 GitHub 托管临时环境执行，不在用户电脑创建账户。源 DPAPI 文件不可读取、portable 备份导入、目标库重新打开和实际自动解压共 5/5；[最终 Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38279427184) 全部通过，证据见 `artifacts/github-validation-38279427184/vault-transfer-cross-import-validation.json`。
