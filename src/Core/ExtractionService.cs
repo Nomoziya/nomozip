@@ -20,9 +20,22 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         string? secret = null, warning = null;
         Guid? savedId = null;
         PasswordPromptResponse? supplied = null;
+        var verifiedPasswords = new Dictionary<uint, PasswordPromptResponse>();
         var currentState = "testing";
         var currentMessage = "正在检查压缩包";
         var engineProgress = new ForwardProgress<EngineProgress>(value => progress?.Report(new TaskUpdate(currentState, currentMessage, value)));
+        async Task<EngineResult> VerifyPasswordAsync(PasswordPromptResponse candidate, CancellationToken token)
+        {
+            var overrides = verifiedPasswords.Where(value => value.Value.Secret != candidate.Secret).ToDictionary(value => value.Key, value => value.Value.Secret);
+            var tested = engine is IArchiveMultiPasswordEngine multi && overrides.Count > 0
+                ? await multi.TestWithPasswordsAsync(archivePath, candidate.Secret, overrides, engineProgress, token)
+                : await engine.TestAsync(archivePath, candidate.Secret, engineProgress, token);
+            if (tested.Status == "cancelled") return tested;
+            foreach (var failed in tested.Failures) verifiedPasswords.Remove(failed.Index);
+            foreach (var index in tested.VerifiedEncryptedItems)
+                if (!verifiedPasswords.ContainsKey(index)) verifiedPasswords[index] = candidate;
+            return tested;
+        }
         progress?.Report(new TaskUpdate("testing", "正在检查压缩包"));
         result = await engine.TestAsync(archivePath, progress: engineProgress, cancellationToken: cancellationToken);
         if (!result.IsSuccess && result.NeedsPassword && autoTry)
@@ -38,7 +51,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 currentMessage = $"正在尝试保存的密码，{index + 1}/{entries.Count}";
                 progress?.Report(new TaskUpdate(currentState, currentMessage));
                 using var candidateCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, skipSavedPasswordToken);
-                result = await engine.TestAsync(archivePath, entries[index].Secret, engineProgress, candidateCancellation.Token);
+                result = await VerifyPasswordAsync(new(entries[index].Secret, false, "", entries[index].SavedId), candidateCancellation.Token);
                 if (skipSavedPasswordToken.IsCancellationRequested && !cancellationToken.IsCancellationRequested)
                 { result = new EngineResult { Code = "password_required" }; break; }
                 if (result.IsSuccess) { secret = entries[index].Secret; savedId = entries[index].SavedId; break; }
@@ -53,7 +66,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             if (supplied is null) return new ExtractionOutcome(result with { Status = "cancelled", Code = "cancelled" }, destination, warning);
             secret = supplied.Secret;
             currentState = "testing"; currentMessage = "正在验证输入的密码";
-            result = await engine.TestAsync(archivePath, secret, engineProgress, cancellationToken);
+            result = await VerifyPasswordAsync(supplied, cancellationToken);
             if (result.IsSuccess) savedId = supplied.SavedId;
             if (!result.IsSuccess && result.NeedsPassword) progress?.Report(new TaskUpdate("waiting", "密码可能不匹配，或压缩包已损坏"));
         }
@@ -67,7 +80,10 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         {
             currentState = "extracting"; currentMessage = "正在解压";
             progress?.Report(new TaskUpdate(currentState, currentMessage));
-            result = await engine.ExtractAsync(archivePath, staging, secret, engineProgress, cancellationToken);
+            var overrides = verifiedPasswords.Where(value => value.Value.Secret != secret).ToDictionary(value => value.Key, value => value.Value.Secret);
+            result = engine is IArchiveMultiPasswordEngine multi && overrides.Count > 0
+                ? await multi.ExtractWithPasswordsAsync(archivePath, staging, secret, overrides, engineProgress, cancellationToken)
+                : await engine.ExtractAsync(archivePath, staging, secret, engineProgress, cancellationToken);
             if (!result.IsSuccess) return new ExtractionOutcome(result, destination, warning);
             cancellationToken.ThrowIfCancellationRequested();
             var decisions = new List<(string Source, string Target, ExistingFilePolicy Policy)>();
@@ -98,13 +114,19 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             committed = true;
             try
             {
-                if (savedId is { } id) await vault.RecordSuccessAsync(id, archivePath, CancellationToken.None);
-                else if (supplied?.Save == true)
+                var usedPasswords = verifiedPasswords.Where(value => result.VerifiedEncryptedItems.Contains(value.Key)).Select(value => value.Value).DistinctBy(value => value.Secret, StringComparer.Ordinal).ToArray();
+                // Engines without per-item evidence keep the established single-password behavior.
+                if (verifiedPasswords.Count == 0 && secret is not null) usedPasswords = [supplied ?? new(secret, false, "", savedId)];
+                foreach (var used in usedPasswords)
                 {
-                    id = Guid.NewGuid();
-                    var name = string.IsNullOrWhiteSpace(supplied.Name) ? Path.GetFileName(archivePath) : supplied.Name.Trim();
-                    await vault.SaveAsync(new SavedPassword(id, name, supplied.Secret, "", true, DateTimeOffset.UtcNow), CancellationToken.None);
-                    await vault.RecordSuccessAsync(id, archivePath, CancellationToken.None);
+                    if (used.SavedId is { } id) await vault.RecordSuccessAsync(id, archivePath, CancellationToken.None);
+                    else if (used.Save)
+                    {
+                        id = Guid.NewGuid();
+                        var name = string.IsNullOrWhiteSpace(used.Name) ? Path.GetFileName(archivePath) : used.Name.Trim();
+                        await vault.SaveAsync(new SavedPassword(id, name, used.Secret, "", true, DateTimeOffset.UtcNow), CancellationToken.None);
+                        await vault.RecordSuccessAsync(id, archivePath, CancellationToken.None);
+                    }
                 }
             }
             catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException)

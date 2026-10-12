@@ -11,6 +11,7 @@
 #include <thread>
 #include <vector>
 #include <algorithm>
+#include <map>
 #include "Common/MyInitGuid.h"
 #include "7zip/Archive/IArchive.h"
 #include "7zip/IPassword.h"
@@ -111,14 +112,20 @@ public:
     }
 };
 struct Context {
-    bool passwordDefined = false, passwordRequested = false, missingVolume = false;
+    bool passwordDefined = false, passwordRequested = false, passwordMissing = false, missingVolume = false;
     std::wstring password;
+    std::map<UInt32, std::wstring> itemPasswords;
     fs::path archivePath;
-    ~Context() { if (!password.empty()) SecureZeroMemory(password.data(), password.size() * sizeof(wchar_t)); }
-    HRESULT getPassword(BSTR* result) noexcept {
+    ~Context() {
+        if (!password.empty()) SecureZeroMemory(password.data(), password.size() * sizeof(wchar_t));
+        for (auto& entry : itemPasswords) if (!entry.second.empty()) SecureZeroMemory(entry.second.data(), entry.second.size() * sizeof(wchar_t));
+    }
+    HRESULT getPassword(BSTR* result, const std::wstring* itemPassword = nullptr) noexcept {
         *result = nullptr; passwordRequested = true;
-        if (cancelled || !passwordDefined) return E_ABORT;
-        *result = SysAllocStringLen(password.data(), (UINT)password.size());
+        if (cancelled) return E_ABORT;
+        if (!itemPassword && !passwordDefined) { passwordMissing = true; return E_ABORT; }
+        const auto& value = itemPassword ? *itemPassword : password;
+        *result = SysAllocStringLen(value.data(), (UINT)value.size());
         return *result ? S_OK : E_OUTOFMEMORY;
     }
 };
@@ -187,6 +194,7 @@ class ExtractCallback final : public IArchiveExtractCallback, public ICryptoGetT
 public:
     std::string error;
     json failures = json::array();
+    json verifiedEncryptedItems = json::array();
     UInt32 currentIndex = 0, successfulItems = 0;
     ExtractCallback(Context& ctx, IInArchive* arc, fs::path destination) : context(ctx), archive(arc), output(std::move(destination)) {}
     ~ExtractCallback() { if (currentStream) currentStream->Release(); }
@@ -207,7 +215,10 @@ public:
         } catch (...) { return E_FAIL; }
         return S_OK;
     }
-    HRESULT STDMETHODCALLTYPE CryptoGetTextPassword(BSTR* result) noexcept override { return context.getPassword(result); }
+    HRESULT STDMETHODCALLTYPE CryptoGetTextPassword(BSTR* result) noexcept override {
+        auto found = context.itemPasswords.find(currentIndex);
+        return context.getPassword(result, found == context.itemPasswords.end() ? nullptr : &found->second);
+    }
     HRESULT STDMETHODCALLTYPE GetStream(UInt32 index, ISequentialOutStream** stream, Int32 mode) noexcept override {
         *stream = nullptr; currentIndex = index;
         if (cancelled) return E_ABORT;
@@ -237,7 +248,10 @@ public:
     HRESULT STDMETHODCALLTYPE SetOperationResult(Int32 result) noexcept override {
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
         try {
-            if (result == NArchive::NExtract::NOperationResult::kOK) ++successfulItems;
+            if (result == NArchive::NExtract::NOperationResult::kOK) {
+                ++successfulItems;
+                if (property(archive, currentIndex, kpidEncrypted).boolean() && !property(archive, currentIndex, kpidIsDir).boolean()) verifiedEncryptedItems.push_back(currentIndex);
+            }
             else {
                 std::string code = result == NArchive::NExtract::NOperationResult::kWrongPassword ? "wrong_password" :
                     result == NArchive::NExtract::NOperationResult::kUnsupportedMethod ? "unsupported_method" :
@@ -292,6 +306,15 @@ static json run(json& request, const wchar_t* dllPath) {
     if (operation != "list" && operation != "test" && operation != "extract") throw std::runtime_error("unsupported_operation");
     Context context;
     context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));
+    if (request.contains("itemPasswords") && !request["itemPasswords"].is_null()) {
+        for (auto& entry : request["itemPasswords"]) {
+            auto index = entry.at("index").get<UInt32>();
+            auto& secret = entry.at("password").get_ref<std::string&>();
+            if (!context.itemPasswords.emplace(index, wide(secret)).second) throw std::runtime_error("duplicate_item_password");
+            if (!secret.empty()) SecureZeroMemory(secret.data(), secret.size());
+        }
+        request.erase("itemPasswords");
+    }
     if (request.contains("password") && !request["password"].is_null()) {
         context.passwordDefined = true;
         auto& secret = request["password"].get_ref<std::string&>();
@@ -311,7 +334,7 @@ static json run(json& request, const wchar_t* dllPath) {
     std::wstring usedFormat;
     for (const auto& format : formats) {
         if (cancelled) break;
-        context.passwordRequested = false; context.missingVolume = false;
+        context.passwordRequested = false; context.passwordMissing = false; context.missingVolume = false;
         input->Seek(0, STREAM_SEEK_SET, nullptr);
         if (createFunc(&format.id, &IID_IInArchive, reinterpret_cast<void**>(&archive.ptr)) != S_OK) continue;
         UInt64 maxCheck = 1 << 23;
@@ -334,8 +357,8 @@ static json run(json& request, const wchar_t* dllPath) {
     auto* extract = new ExtractCallback(context, archive.ptr, output); callback.ptr = extract;
     HRESULT result = archive->Extract(nullptr, 0xFFFFFFFF, operation == "test" ? 1 : 0, callback.ptr);
     archive->Close();
-    std::string code = cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordRequested && !context.passwordDefined ? "password_required" : !extract->error.empty() ? extract->error : result != S_OK ? "engine_error" : "ok";
-    return {{"kind", "result"}, {"status", cancelled ? "cancelled" : code == "ok" ? "success" : "error"}, {"code", code}, {"hresult", (uint32_t)result}, {"format", utf8(usedFormat)}, {"itemCount", itemCount}, {"successfulItems", extract->successfulItems}, {"failures", extract->failures}};
+    std::string code = cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordMissing ? "password_required" : !extract->error.empty() ? extract->error : result != S_OK ? "engine_error" : "ok";
+    return {{"kind", "result"}, {"status", cancelled ? "cancelled" : code == "ok" ? "success" : "error"}, {"code", code}, {"hresult", (uint32_t)result}, {"format", utf8(usedFormat)}, {"itemCount", itemCount}, {"successfulItems", extract->successfulItems}, {"failures", extract->failures}, {"verifiedEncryptedItems", extract->verifiedEncryptedItems}};
 }
 int wmain(int argc, wchar_t** argv) {
     _setmode(_fileno(stdin), _O_BINARY); _setmode(_fileno(stdout), _O_BINARY);

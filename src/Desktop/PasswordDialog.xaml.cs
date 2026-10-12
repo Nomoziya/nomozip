@@ -25,7 +25,7 @@ public partial class PasswordDialog : Window
         {
             FailurePanel.Visibility = Visibility.Visible;
             FailureSummary.Text = $"上次验证：{previousFailure.SuccessfulItems} 项通过，{previousFailure.Failures.Count} 项失败。尚未解压文件。"
-                + (previousFailure.SuccessfulItems > 0 ? "\n部分条目可能使用不同密码，也可能已损坏；当前需要一个能完整验证压缩包的密码。" : "");
+                + (previousFailure.VerifiedEncryptedItems.Count > 0 ? "\n已验证的密码会用于对应文件。请为剩余失败条目输入其它密码；也可能是文件损坏。" : "");
         }
         Description.Text = editing ? "密码会由当前 Windows 用户加密保存在本机。" : archiveName + (failed ? "\n上一个密码未能完整验证。密码可能不匹配，或压缩包已损坏。" : "\n请输入密码，或选择一个已保存的密码。");
         if (editing)
