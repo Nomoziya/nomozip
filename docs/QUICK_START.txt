@@ -17,8 +17,8 @@ https://dotnet.microsoft.com/en-us/download/dotnet/10.0
 
 当前开发预览的限制：
 - 同一包多个不同密码的组合解压尚未完成。
-- 已支持检查、下载和验证 GitHub Releases 中的产品引擎包。Nomoziya/nomozip 公开仓库已创建，但尚无产品 Release，正式线上更新渠道未部署。
-- 当前更新包采用开发预览签名，只用于预览验收。
+- 软件下载与稳定引擎更新包分别发布：https://github.com/Nomoziya/nomozip/releases
+- 设置中可检查、下载和验证产品渠道的引擎包。更新包由产品发布密钥签名。
 - 基础压缩、文件关联和安装包属于后续阶段。
 - 键盘、Narrator、高对比度和多屏 DPI 的完整人工验收尚待完成。
 

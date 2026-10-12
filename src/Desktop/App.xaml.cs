@@ -25,16 +25,25 @@ public partial class App : Application
         var dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArchivePassword");
         var previewIndex = Array.IndexOf(e.Args, "--preview");
         var validationIndex = Array.IndexOf(e.Args, "--validate");
+        var onlineValidationIndex = Array.IndexOf(e.Args, "--validate-online");
         var dataIndex = Array.IndexOf(e.Args, "--data-dir");
         if (dataIndex >= 0 && dataIndex + 1 < e.Args.Length) dataDirectory = Path.GetFullPath(e.Args[dataIndex + 1]);
         if (validationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts", "desktop-validation", Guid.NewGuid().ToString("N"));
+        if (onlineValidationIndex >= 0) dataDirectory = Path.Combine(Path.GetFullPath(e.Args[onlineValidationIndex + 1]), "artifacts", "online-validation", Guid.NewGuid().ToString("N"));
         var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
         var window = new MainWindow();
         var model = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window, validationIndex >= 0 ? PrepareValidationDialog : null,
             validationIndex >= 0 ? () => Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts/update-test-assets/ArchivePassword-engine-26.03-win-x64.zip") : null,
-            validationIndex >= 0 ? (_, _) => true : null));
+            validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        if (onlineValidationIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var result = await DesktopOnlineValidation.RunAsync(window, model, vault, baseDirectory, dataDirectory, Path.GetFullPath(e.Args[onlineValidationIndex + 1]));
+            Shutdown(result ? 0 : 1); return;
+        }
         if (validationIndex >= 0)
         {
             var validationRoot = Path.GetFullPath(e.Args[validationIndex + 1]);

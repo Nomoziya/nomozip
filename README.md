@@ -1,4 +1,4 @@
-# 7zip-password
+# nomozip
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
@@ -6,7 +6,7 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
-当前预览支持加密密码库、自动尝试密码、更新包导入、GitHub Releases 更新下载、明确启用与恢复上一引擎。更新渠道已配置为公开仓库 [Nomoziya/nomozip](https://github.com/Nomoziya/nomozip)；仓库已创建，源码与 Release 尚未上传，真实线上更新未部署。使用开发预览签名，正式发布前须配置正式发布密钥。
+当前预览支持加密密码库、自动尝试密码、更新包导入、GitHub Releases 更新下载、明确启用与恢复上一引擎。源码与 Windows 验证工作流已上传到 [Nomoziya/nomozip](https://github.com/Nomoziya/nomozip)，首次云端验证通过。软件下载与稳定引擎更新分别发布，软件仍为开发预览；下载入口见 [Releases](https://github.com/Nomoziya/nomozip/releases)。更新包使用独立产品发布密钥，客户端固定对应公钥。
 
 完整构建、运行与限制见 [开发与维护说明](docs/DEVELOPMENT.md)，更新与发布见 [更新说明](docs/UPDATES.md)。同包多密码组合解压、基础压缩功能及安装包仍待完成。
 

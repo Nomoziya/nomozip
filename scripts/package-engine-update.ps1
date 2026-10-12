@@ -1,4 +1,5 @@
-param([ValidatePattern('^\d{2}\.\d{2}$')][string]$Version = '26.04', [string]$PrivateKey, [switch]$Development)
+param([ValidatePattern('^\d{2}\.\d{2}$')][string]$Version = '26.04', [string]$PrivateKey,
+    [string]$ProtectedPrivateKey, [string]$OutputDirectory, [switch]$Development)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
@@ -18,10 +19,27 @@ if ($Development) {
         if ($LASTEXITCODE -ne 0) { throw 'Signing key creation failed.' }
     }
 }
-if (-not $PrivateKey) { throw 'Supply a release private key, or use -Development for local preview packages.' }
+if ($ProtectedPrivateKey -and ($PrivateKey -or $Development)) { throw 'Supply only one private key option.' }
+if (-not $PrivateKey -and -not $ProtectedPrivateKey) { throw 'Supply a release private key, a protected private key, or use -Development for local preview packages.' }
 $taskPublicKey = Join-Path $taskRoot 'config/update-public-key.pem'
 if (-not (Test-Path $taskPublicKey)) { throw 'A product public key must be pinned in config/update-public-key.pem before signing.' }
-$taskOutput = Join-Path $taskRoot "artifacts/updates/ArchivePassword-engine-$Version-win-x64.zip"
+if (-not $OutputDirectory) { $OutputDirectory = Join-Path $taskRoot 'artifacts/updates' }
+$taskOutput = Join-Path $OutputDirectory "ArchivePassword-engine-$Version-win-x64.zip"
 if (Test-Path $taskOutput) { throw 'An update package already exists. Keep it immutable; choose a different artifact directory or remove it explicitly.' }
-& $taskDotnet $taskPackager pack (Join-Path $taskRoot "engines/$Version") $Version (Join-Path $taskRoot 'artifacts/engine-validation.json') $PrivateKey $taskOutput $taskPublicKey
-if ($LASTEXITCODE -ne 0) { throw 'Signed update packaging failed.' }
+$taskKeyBytes = $null
+$taskTemporaryKey = $null
+try {
+    if ($ProtectedPrivateKey) {
+        $taskKeyBytes = [Security.Cryptography.ProtectedData]::Unprotect([IO.File]::ReadAllBytes((Resolve-Path -LiteralPath $ProtectedPrivateKey)), $null, [Security.Cryptography.DataProtectionScope]::CurrentUser)
+        $taskKeyDirectory = Join-Path $taskRoot '.tools/signing-temporary'
+        New-Item -ItemType Directory -Force $taskKeyDirectory | Out-Null
+        $taskTemporaryKey = Join-Path $taskKeyDirectory ([Guid]::NewGuid().ToString('N') + '.pem')
+        [IO.File]::WriteAllBytes($taskTemporaryKey, $taskKeyBytes)
+        $PrivateKey = $taskTemporaryKey
+    }
+    & $taskDotnet $taskPackager pack (Join-Path $taskRoot "engines/$Version") $Version (Join-Path $taskRoot 'artifacts/engine-validation.json') $PrivateKey $taskOutput $taskPublicKey
+    if ($LASTEXITCODE -ne 0) { throw 'Signed update packaging failed.' }
+} finally {
+    if ($taskTemporaryKey -and (Test-Path -LiteralPath $taskTemporaryKey)) { Remove-Item -LiteralPath $taskTemporaryKey }
+    if ($taskKeyBytes) { [Array]::Clear($taskKeyBytes, 0, $taskKeyBytes.Length) }
+}
