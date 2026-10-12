@@ -2,9 +2,9 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-当前状态：0.1.0-preview.3 Windows x64 开发预览已发布，提供安装版与独立 ZIP。引擎 57 项、核心 17 项、更新 22 项、压缩 38 项、打开方式 7 项、四条桌面流程及 16 项安装流程验证通过；此前真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
+当前状态：0.1.0-preview.4 Windows x64 开发预览已发布，提供安装版与独立 ZIP。引擎 57 项、核心 17 项、更新 22 项、压缩 38 项、打开方式 7 项、四条桌面流程、29 项补充桌面检查及 16 项安装流程验证通过；此前真实线上引擎更新的 8 项桌面检查通过，完整人工用户验收仍待完成。
 
-下载：[Windows x64 安装版与独立 ZIP](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.3)。运行安装程序，或解压 ZIP 后运行 `ArchivePassword.exe`；均已携带 .NET / WPF 运行组件。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
+下载：[Windows x64 安装版与独立 ZIP](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.4)。运行安装程序，或解压 ZIP 后运行 `ArchivePassword.exe`；均已携带 .NET / WPF 运行组件。稳定引擎包发布在独立的 `engine-XX.XX` Release，不能单独当软件运行。
 
 本机双击 [启动软件.cmd](启动软件.cmd)，或运行 [ArchivePassword.exe](artifacts/app/ArchivePassword.exe)。选择压缩包和输出目录后开始；在密码库中添加密码，或在手动输入时勾选成功后保存。
 
@@ -14,7 +14,7 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 第三预览增加 7z/ZIP 创建、加密和可选 Windows 打开方式入口，[云端验证](https://github.com/Nomoziya/nomozip/actions/runs/38206962560) 全部通过。操作、密码限制与数据保护见 [压缩说明](docs/COMPRESSION.md)。同包多密码组合解压仍未实现。
 
-第四预览正在发布验收：修复高对比度配色、空密码焦点及小工作区窗口尺寸，29 项补充桌面检查通过。人工键盘、Narrator、实际 DPI/高对比度和 Explorer 操作仍待确认，范围见开发说明的 P5 章节。
+第四预览修复高对比度配色、空密码焦点及小工作区窗口尺寸，[最终 Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38223276557) 全部通过。人工键盘、Narrator、实际 DPI/高对比度和 Explorer 操作仍待确认，范围见开发说明的 P5 章节。
 
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
