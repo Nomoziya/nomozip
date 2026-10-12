@@ -57,6 +57,11 @@ internal static class DesktopVaultTransferValidation
                     Check("preview defaults to keeping local duplicates", combo.SelectedIndex == 0 && dialog.Mode == PasswordImportMode.SkipDuplicates);
                     if (keepBoth) combo.SelectedIndex = 1;
                     await Layout(dialog);
+                    var row = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
+                    Check("preview row accessibility names the record and action", UIElementAutomationPeer.CreatePeerForElement(row)!.GetName().Contains(item.Name));
+                    var cells = Descendants(row).OfType<DataGridCell>().ToArray();
+                    Check("preview cells expose record names instead of generic cell labels", cells.Length == 3
+                        && cells.All(cell => UIElementAutomationPeer.CreatePeerForElement(cell)!.GetName().Contains(item.Name)));
                     Screenshot(dialog, Path.Combine(screenshots, "import-preview.png"));
                     if (cancelPreview) dialog.Close(); else Invoke((Button)dialog.FindName("ImportButton"));
                 }));
@@ -132,6 +137,14 @@ internal static class DesktopVaultTransferValidation
         var content = (FrameworkElement)window.Content;
         var bounds = element.TransformToAncestor(content).TransformBounds(new Rect(element.RenderSize));
         return element.IsVisible && bounds.Top >= 0 && bounds.Left >= 0 && bounds.Bottom <= content.ActualHeight + 1 && bounds.Right <= content.ActualWidth + 1;
+    }
+    private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
+    {
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, index); yield return child;
+            foreach (var descendant in Descendants(child)) yield return descendant;
+        }
     }
     private static void Screenshot(Window window, string path)
     {
