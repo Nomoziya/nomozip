@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -53,8 +53,28 @@ $taskRejection.WaitForExit(); $taskOutputDrain.GetAwaiter().GetResult() | Out-Nu
 $taskSigningPassed = $taskRejection.ExitCode -ne 0 -and -not (Test-Path $taskRejectedPackage)
 @{passed=$taskSigningPassed;compressionEvidenceHashRejection=$taskSigningPassed} | ConvertTo-Json | Set-Content (Join-Path $taskRoot 'artifacts/signing-validation.json') -Encoding utf8
 if (-not $taskSigningPassed) { throw 'A mismatched compression report was accepted by the signing tool.' }
+$taskWithoutListing = Get-Content -Raw (Join-Path $taskRoot 'artifacts/engine-validation.json') | ConvertFrom-Json
+$taskWithoutListing.cases = @($taskWithoutListing.cases | Where-Object { $_.name -notmatch ' lists | listing' })
+$taskWithoutListing.total = $taskWithoutListing.cases.Count
+$taskWithoutListing.passed = $taskWithoutListing.total
+$taskListingReport = Join-Path $taskTestAssets 'missing-listing-report.json'
+$taskWithoutListing | ConvertTo-Json -Depth 8 | Set-Content $taskListingReport -Encoding utf8
+$taskListingPackage = Join-Path $taskTestAssets 'missing-listing-must-not-be-signed.zip'
+if (Test-Path $taskListingPackage) { throw 'A previously rejected listing artifact exists; inspect it before continuing.' }
+$taskListingSigner = [Diagnostics.ProcessStartInfo]::new($taskDotnet)
+$taskListingSigner.UseShellExecute = $false; $taskListingSigner.CreateNoWindow = $true
+$taskListingSigner.RedirectStandardOutput = $true; $taskListingSigner.RedirectStandardError = $true
+foreach ($taskArgument in @($taskPackager,'pack',(Join-Path $taskRoot 'engines/26.04'),'26.04',$taskListingReport,$taskTestPrivate,$taskListingPackage,$taskTestPublic,(Join-Path $taskRoot 'artifacts/compression-validation.json'))) { $taskListingSigner.ArgumentList.Add($taskArgument) }
+$taskListingRejection = [Diagnostics.Process]::Start($taskListingSigner)
+$taskListingOutput = $taskListingRejection.StandardOutput.ReadToEndAsync(); $taskListingError = $taskListingRejection.StandardError.ReadToEndAsync()
+$taskListingRejection.WaitForExit(); $taskListingOutput.GetAwaiter().GetResult() | Out-Null; $taskListingError.GetAwaiter().GetResult() | Out-Null
+$taskListingRejected = $taskListingRejection.ExitCode -ne 0 -and -not (Test-Path $taskListingPackage)
+@{passed=($taskSigningPassed -and $taskListingRejected);compressionEvidenceHashRejection=$taskSigningPassed;missingListingEvidenceRejection=$taskListingRejected} | ConvertTo-Json | Set-Content (Join-Path $taskRoot 'artifacts/signing-validation.json') -Encoding utf8
+if (-not $taskListingRejected) { throw 'A compatibility report without archive listing evidence was accepted.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/CoreValidation/bin/Debug/net10.0-windows/CoreValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Core validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/BrowserValidation/bin/Debug/net10.0-windows/BrowserValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Archive browser validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/UpdateValidation/bin/Debug/net10.0-windows/UpdateValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Update validation failed.' }
 $taskTestApp = Join-Path $taskRoot 'artifacts/test-app'

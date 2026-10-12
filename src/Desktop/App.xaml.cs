@@ -111,11 +111,12 @@ public partial class App : Application
                 var restartedModel = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window));
                 await restartedModel.InitializeAsync(); updateSuccess &= restartedModel.EngineSummary.Contains("26.04");
                 var compression = await DesktopCompressionValidation.RunAsync(window, model, baseDirectory, dataDirectory, validationRoot);
+                var browser = await DesktopBrowserValidation.RunAsync(window, baseDirectory, dataDirectory, validationRoot);
                 var accessibility = await DesktopAccessibilityValidation.RunAsync(window, model, theme, validationRoot);
-                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && accessibility;
+                var passed = success && manualSuccess && updateSuccess && compression.Flow && compression.Accessibility && browser && accessibility;
                 await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new { passed, automaticFlowPassed = success, passwordDialogAndSavePassed = manualSuccess, engineUpdateAndRollbackPassed = updateSuccess,
                     compressionAndPasswordReusePassed = compression.Flow, compressionAutomationLabelsAndShortcutPassed = compression.Accessibility,
-                    accessibilityPassed = accessibility, engines = model.EngineVersions.ToArray() }));
+                    archiveBrowserPassed = browser, accessibilityPassed = accessibility, engines = model.EngineVersions.ToArray() }));
                 Shutdown(passed ? 0 : 1);
             }
             catch
