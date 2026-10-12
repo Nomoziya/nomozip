@@ -13,6 +13,12 @@ public partial class MainWindow : Window
         void ArrangePanels()
         {
             var narrow = ActualWidth < 1000;
+            var compact = ActualWidth < 800;
+            SidebarColumn.Width = new GridLength(compact ? 120 : 176);
+            SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(16, 24, 16, 24);
+            MainContent.Margin = new Thickness(compact ? 12 : 24);
+            ExtractionDropHint.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
             ExtractionLayout.Height = narrow ? double.NaN : Math.Max(280, ExtractionViewport.ActualHeight);
