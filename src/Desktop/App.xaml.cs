@@ -103,6 +103,14 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var extractionToolsIndex=Array.IndexOf(e.Args,"--validate-extraction-tools");
+        if(extractionToolsIndex>=0)
+        {
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;
+            window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopExtractionToolsValidation.RunAsync(window,theme,Path.GetFullPath(e.Args[extractionToolsIndex+1]),baseDirectory);
+            Shutdown(passed?0:1);return;
+        }
         var applicationUiIndex = Array.IndexOf(e.Args, "--validate-application-updates");
         if (applicationUiIndex >= 0)
         {
