@@ -5,7 +5,7 @@ using ArchivePassword.Infrastructure;
 
 var root = Path.GetFullPath(args[0]);
 var scope = @"Software\nomozip-validation\Shell-" + Guid.NewGuid().ToString("N");
-var executable = Path.Combine(root, "artifacts/app/ArchivePassword.exe");
+var executable = Path.GetFullPath(Path.Combine(root, "artifacts/app/ArchivePassword.exe"));
 if (args.Length > 1) executable = Path.GetFullPath(args[1]);
 if (args.Length > 2)
 {
