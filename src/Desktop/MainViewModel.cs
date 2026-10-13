@@ -79,6 +79,7 @@ public sealed partial class MainViewModel : ObservableObject
         OpenLicensesCommand = new RelayCommand(() => OpenFolder(Path.Combine(baseDirectory, "licenses")));
         InitializeCompressionCommands();
         InitializeAssociationCommands();
+        InitializeApplicationUpdateCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
