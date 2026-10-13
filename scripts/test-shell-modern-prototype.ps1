@@ -4,7 +4,7 @@ $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskDirectory = Join-Path $taskRoot ('artifacts/shell-modern/' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Force $taskDirectory | Out-Null
 $taskLibrary = Join-Path $taskDirectory 'NomoZipExplorerPrototype.dll'
-& g++ -std=c++17 -O2 -s -Wall -Wextra -shared -static-libgcc -static-libstdc++ (Join-Path $taskRoot 'src/ShellPrototype/ExplorerCommand.cpp') -lshlwapi -lshell32 -lole32 -luuid -o $taskLibrary
+& g++ -std=c++17 -O2 -s -Wall -Wextra -shared -static -static-libgcc -static-libstdc++ (Join-Path $taskRoot 'src/ShellPrototype/ExplorerCommand.cpp') -lshlwapi -lshell32 -lole32 -luuid -o $taskLibrary
 if ($LASTEXITCODE -ne 0) { throw 'Modern menu prototype compilation failed.' }
 $taskClient = Join-Path $taskDirectory 'ShellClient.exe'
 & g++ -std=c++17 -O2 -municode -static -static-libgcc -static-libstdc++ ("-I" + (Join-Path $taskRoot '.tools')) (Join-Path $taskRoot 'tests/ShellValidation/client.cpp') -lshell32 -lole32 -luuid -o $taskClient
