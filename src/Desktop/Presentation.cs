@@ -38,6 +38,8 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? enabled = null)
 public sealed class ArchiveTaskRow(string path, string? previewSize = null) : ObservableObject
 {
     private string? resultOutputPath;
+    public string? SelectedOutputPath {get;set;}
+    public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;
     private EngineResult? verificationResult;
     public string? ResultOutputPath { get=>resultOutputPath;set=>Set(ref resultOutputPath,value); }
     public EngineResult? VerificationResult {get=>verificationResult;set=>Set(ref verificationResult,value);}

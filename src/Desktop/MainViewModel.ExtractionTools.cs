@@ -58,8 +58,8 @@ public sealed partial class MainViewModel
     }
     private void OpenSelectedOutput()
     {
-        var targets=SelectedTask?.ResultOutputPath is { } selected && Directory.Exists(selected) ? new[] {selected}
-            : Tasks.Where(task=>task.Completed && task.ResultOutputPath is not null && Directory.Exists(task.ResultOutputPath)).Select(task=>task.ResultOutputPath!).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+        var targets=SelectedTask?.LatestOutputPath is { } selected && Directory.Exists(selected) ? new[] {selected}
+            : Tasks.Where(task=>task.LatestOutputPath is not null && Directory.Exists(task.LatestOutputPath)).Select(task=>task.LatestOutputPath!).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
         if(targets.Length==0 && Directory.Exists(OutputPath)) targets=[Path.GetFullPath(OutputPath)];
         OpenResultDirectories(targets);
     }

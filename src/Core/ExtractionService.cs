@@ -13,12 +13,12 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         IProgress<TaskUpdate>? progress = null,
         CancellationToken cancellationToken = default,
         CancellationToken skipSavedPasswordToken = default,
-        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null)
+        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null,IReadOnlyList<ArchiveEntry>? selection=null)
     {
         var destination = Path.GetFullPath(outputPath);
         Directory.CreateDirectory(destination);
         var verification = await new ArchiveVerificationService(engine, candidates).VerifyAsync(archivePath, autoTry,
-            requestPassword, progress, cancellationToken, skipSavedPasswordToken);
+            requestPassword, progress, cancellationToken, skipSavedPasswordToken,selection);
         var result = verification.Engine;
         var secret = verification.Secret;
         var savedId = verification.SavedId;
@@ -34,7 +34,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             cancellationToken.ThrowIfCancellationRequested();
             try
             {
-                destination = Path.GetFullPath(resolveDestination(listed.Items));
+                destination = Path.GetFullPath(resolveDestination(selection ?? listed.Items));
                 Directory.CreateDirectory(destination);
             }
             catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
@@ -53,7 +53,9 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             currentState = "extracting"; currentMessage = "正在解压";
             progress?.Report(new TaskUpdate(currentState, currentMessage));
             var overrides = verifiedPasswords.Where(value => value.Value.Secret != secret).ToDictionary(value => value.Key, value => value.Value.Secret);
-            result = engine is IArchiveMultiPasswordEngine multi && overrides.Count > 0
+            result = selection is not null
+                ? engine is IArchiveSelectionEngine selectedEngine ? await selectedEngine.ExtractSelectionAsync(archivePath,staging,selection,secret,overrides,engineProgress,cancellationToken) : new EngineResult {Code="unsupported_selection"}
+                : engine is IArchiveMultiPasswordEngine multi && overrides.Count > 0
                 ? await multi.ExtractWithPasswordsAsync(archivePath, staging, secret, overrides, engineProgress, cancellationToken)
                 : await engine.ExtractAsync(archivePath, staging, secret, engineProgress, cancellationToken);
             if (!result.IsSuccess) return new ExtractionOutcome(result, destination, warning);

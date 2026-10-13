@@ -190,13 +190,16 @@ class ExtractCallback final : public IArchiveExtractCallback, public ICryptoGetT
     fs::path output;
     OutputStream* currentStream = nullptr;
     UInt64 total = 0;
+    const std::vector<UInt32>* requested = nullptr;
+    bool currentRequested = true;
+    Int32 currentMode = NArchive::NExtract::NAskMode::kExtract;
     ULONGLONG lastProgress = 0;
 public:
     std::string error;
     json failures = json::array();
     json verifiedEncryptedItems = json::array();
     UInt32 currentIndex = 0, successfulItems = 0;
-    ExtractCallback(Context& ctx, IInArchive* arc, fs::path destination) : context(ctx), archive(arc), output(std::move(destination)) {}
+    ExtractCallback(Context& ctx, IInArchive* arc, fs::path destination,const std::vector<UInt32>* selected = nullptr) : context(ctx), archive(arc), output(std::move(destination)),requested(selected) {}
     ~ExtractCallback() { if (currentStream) currentStream->Release(); }
     REFCOUNT_IMPL
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID id, void** object) noexcept override {
@@ -221,10 +224,12 @@ public:
     }
     HRESULT STDMETHODCALLTYPE GetStream(UInt32 index, ISequentialOutStream** stream, Int32 mode) noexcept override {
         *stream = nullptr; currentIndex = index;
+        currentMode = mode;
+        currentRequested = !requested || std::binary_search(requested->begin(),requested->end(),index);
         if (cancelled) return E_ABORT;
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
         try {
-            if (mode != NArchive::NExtract::NAskMode::kExtract) return S_OK;
+            if (!currentRequested || mode != NArchive::NExtract::NAskMode::kExtract) return S_OK;
             auto pathName = property(archive, index, kpidPath).text();
             if (pathName.empty()) pathName = context.archivePath.stem().wstring();
             if (!property(archive, index, kpidSymLink).text().empty() || !property(archive, index, kpidHardLink).text().empty() || property(archive, index, kpidIsAltStream).boolean()) { error = "unsafe_path"; return E_ACCESSDENIED; }
@@ -244,9 +249,10 @@ public:
             *stream = currentStream; currentStream->AddRef(); return S_OK;
         } catch (const std::exception& e) { error = std::string(e.what()) == "unsafe_path" ? "unsafe_path" : "write_failed"; return E_FAIL; }
     }
-    HRESULT STDMETHODCALLTYPE PrepareOperation(Int32) noexcept override { return cancelled ? E_ABORT : S_OK; }
+    HRESULT STDMETHODCALLTYPE PrepareOperation(Int32 mode) noexcept override { currentMode=mode; return cancelled ? E_ABORT : S_OK; }
     HRESULT STDMETHODCALLTYPE SetOperationResult(Int32 result) noexcept override {
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
+        if(requested && (!currentRequested || currentMode==NArchive::NExtract::NAskMode::kSkip)) return cancelled ? E_ABORT : S_OK;
         try {
             if (result == NArchive::NExtract::NOperationResult::kOK) {
                 ++successfulItems;
@@ -303,6 +309,8 @@ static json run(json& request, const wchar_t* dllPath) {
         return {{"kind", "result"}, {"status", "success"}, {"formats", result}};
     }
     if (operation == "create") return createArchive(request, formats, createFunc);
+    const bool selective = operation=="test-selection" || operation=="extract-selection";
+    if (selective) operation=operation=="test-selection" ? "test" : "extract";
     if (operation != "list" && operation != "test" && operation != "extract") throw std::runtime_error("unsupported_operation");
     Context context;
     context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));
@@ -345,6 +353,23 @@ static json run(json& request, const wchar_t* dllPath) {
     }
     if (!archive.ptr) return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "error"}, {"code", cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordRequested ? context.passwordDefined ? "password_or_corrupt" : "password_required" : "unsupported_or_corrupt"}};
     UInt32 itemCount = 0; archive->GetNumberOfItems(&itemCount);
+    std::vector<UInt32> selected;
+    if(selective) {
+        if(!request.contains("selection") || !request["selection"].is_array() || request["selection"].empty())
+            return {{"kind","result"},{"status","error"},{"code","invalid_selection"}};
+        for(const auto& entry : request["selection"]) {
+            auto index=entry.at("index").get<UInt32>();
+            if(index>=itemCount || property(archive.ptr,index,kpidPath).text()!=wide(entry.at("path").get<std::string>())
+                || property(archive.ptr,index,kpidSize).number()!=entry.at("size").get<UInt64>()
+                || property(archive.ptr,index,kpidIsDir).boolean()!=entry.at("directory").get<bool>()
+                || property(archive.ptr,index,kpidEncrypted).boolean()!=entry.at("encrypted").get<bool>())
+                return {{"kind","result"},{"status","error"},{"code","selection_changed"}};
+            selected.push_back(index);
+        }
+        std::sort(selected.begin(),selected.end());
+        if(std::adjacent_find(selected.begin(),selected.end())!=selected.end())
+            return {{"kind","result"},{"status","error"},{"code","invalid_selection"}};
+    }
     if (operation == "list") {
         json items = json::array();
         for (UInt32 index = 0; index < itemCount && !cancelled; ++index) items.push_back({{"index", index}, {"path", utf8(property(archive.ptr, index, kpidPath).text())}, {"size", property(archive.ptr, index, kpidSize).number()}, {"directory", property(archive.ptr, index, kpidIsDir).boolean()}, {"encrypted", property(archive.ptr, index, kpidEncrypted).boolean()}});
@@ -354,8 +379,8 @@ static json run(json& request, const wchar_t* dllPath) {
     fs::path output = operation == "extract" ? fs::absolute(wide(request.at("outputPath").get<std::string>())) : fs::path();
     if (operation == "extract") fs::create_directories(output);
     ComPtr<IArchiveExtractCallback> callback;
-    auto* extract = new ExtractCallback(context, archive.ptr, output); callback.ptr = extract;
-    HRESULT result = archive->Extract(nullptr, 0xFFFFFFFF, operation == "test" ? 1 : 0, callback.ptr);
+    auto* extract = new ExtractCallback(context, archive.ptr, output,selective ? &selected : nullptr); callback.ptr = extract;
+    HRESULT result = archive->Extract(selective ? selected.data() : nullptr,selective ? static_cast<UInt32>(selected.size()) : 0xFFFFFFFF, operation == "test" ? 1 : 0, callback.ptr);
     archive->Close();
     std::string code = cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordMissing ? "password_required" : !extract->error.empty() ? extract->error : result != S_OK ? "engine_error" : "ok";
     return {{"kind", "result"}, {"status", cancelled ? "cancelled" : code == "ok" ? "success" : "error"}, {"code", code}, {"hresult", (uint32_t)result}, {"format", utf8(usedFormat)}, {"itemCount", itemCount}, {"successfulItems", extract->successfulItems}, {"failures", extract->failures}, {"verifiedEncryptedItems", extract->verifiedEncryptedItems}};

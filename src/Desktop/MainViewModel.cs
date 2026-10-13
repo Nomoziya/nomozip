@@ -63,7 +63,7 @@ public sealed partial class MainViewModel : ObservableObject
         ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(() => skipPasswords?.Cancel(), () => IsBusy && CanSkipPasswords);
-        OpenOutputCommand = new RelayCommand(OpenSelectedOutput, () => IsIdle && (Directory.Exists(OutputPath) || Tasks.Any(task=>task.ResultOutputPath is {} path && Directory.Exists(path))));
+        OpenOutputCommand = new RelayCommand(OpenSelectedOutput, () => IsIdle && (Directory.Exists(OutputPath) || Tasks.Any(task=>task.LatestOutputPath is {} path && Directory.Exists(path))));
         OpenVaultCommand = new RelayCommand(() => Page = 1);
         AddPasswordCommand = new AsyncCommand(() => EditPasswordAsync(null), () => IsIdle && vaultAvailable);
         EditPasswordCommand = new AsyncCommand(() => EditPasswordAsync(SelectedPassword), () => IsIdle && vaultAvailable && SelectedPassword is not null);
@@ -209,7 +209,7 @@ public sealed partial class MainViewModel : ObservableObject
                         path => Task.FromResult(ConflictPolicy == 1 ? ExistingFilePolicy.Skip : ConflictPolicy == 2 ? ExistingFilePolicy.Replace : dialogs.ResolveConflict(path)),
                         progress, cancellation.Token, skipPasswords.Token,resolveDestination);
                     task.Completed = outcome.Engine.IsSuccess;
-                    task.ResultOutputPath=outcome.Engine.IsSuccess?outcome.OutputPath:null;
+                    task.ResultOutputPath=outcome.Engine.IsSuccess?outcome.OutputPath:null;task.SelectedOutputPath=null;
                     if(task.Completed) openResults.Add(outcome.OutputPath);
                     task.Status = outcome.Engine.IsSuccess ? "已解压" : outcome.Engine.Status == "cancelled" ? "已取消" : ErrorText(outcome.Engine.Code);
                     task.Failure = outcome.Engine.IsSuccess ? null : outcome.Engine;
