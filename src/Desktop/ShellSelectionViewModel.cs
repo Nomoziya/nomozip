@@ -32,8 +32,8 @@ public sealed partial class MainViewModel
         shellAction = selection.Action;
         foreach (var path in selection.Paths) Tasks.Add(new ArchiveTaskRow(path) { ShellOutputPath = selection.OutputFor(path) });
         ShellDestinationDescription = selection.Action == ShellAction.ExtractHere
-            ? "右键解压：各压缩包分别输出到其所在目录。上方显示首个任务目录；用“浏览目录”可统一修改。"
-            : "右键解压：每包输出到各自的同名文件夹。上方显示首个任务目录；用“浏览目录”可统一修改。";
+            ? "各包分别解压到所在目录。右侧显示首个目标，“浏览目录”可统一修改。"
+            : "各包分别解压到同名文件夹。右侧显示首个目标，“浏览目录”可统一修改。";
         Changed(nameof(HasShellDestinations));
         if (!ExtractCommand.CanExecute(null)) { Banner = "未找到可用引擎，尚未解压。"; return; }
         ExtractCommand.Execute(null); await WaitForIdleAsync();
