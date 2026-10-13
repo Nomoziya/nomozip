@@ -28,8 +28,22 @@ foreach ($taskCase in @('ExtractHere','ExtractFolder','Compress','LargeCompress'
         $taskList = Join-Path $taskValidation 'large-paths.json'
         [IO.File]::WriteAllText($taskList, ($taskPaths | ConvertTo-Json -Compress), [Text.UTF8Encoding]::new($false))
     }
-    $taskServer = Start-Process -FilePath $taskApp -ArgumentList @('--shell-server','--validate-shell-server',('"' + $taskRoot + '"')) -WindowStyle Hidden -PassThru
+    $taskErrorLog = Join-Path $taskValidation ($taskCase + '-server-error.log')
+    $taskOutputLog = Join-Path $taskValidation ($taskCase + '-server-output.log')
+    $taskServer = Start-Process -FilePath $taskApp -ArgumentList @('--shell-server','--validate-shell-server',('"' + $taskRoot + '"')) -WindowStyle Hidden -PassThru -RedirectStandardError $taskErrorLog -RedirectStandardOutput $taskOutputLog
     try {
+        # The server already publishes this marker after all three class factories register.
+        # Wait for this process, as in test-shell-live.ps1, before asking COM to activate it.
+        $taskReady = Join-Path $taskRoot ('artifacts/shell-server-ready-' + $taskServer.Id + '.json')
+        $taskDeadline = [DateTime]::UtcNow.AddSeconds(20)
+        while (-not (Test-Path -LiteralPath $taskReady)) {
+            if ($taskServer.HasExited) {
+                $taskDetails = if (Test-Path -LiteralPath $taskErrorLog) { [IO.File]::ReadAllText($taskErrorLog) } else { '' }
+                throw "Desktop $taskAction server exited before readiness ($($taskServer.ExitCode)): $taskDetails"
+            }
+            if ([DateTime]::UtcNow -ge $taskDeadline) { throw "Desktop $taskAction server did not register its COM factories within 20 seconds." }
+            Start-Sleep -Milliseconds 100
+        }
         $taskIndex = @('ExtractHere','ExtractFolder','Compress').IndexOf($taskAction) + 1
         $taskClsid = '{c708b15d-0d3e-47ab-8fc8-c22d21ff117' + $taskIndex + '}'
         if ($taskCase -eq 'LargeCompress') { & $taskClient $taskClsid (Join-Path $taskValidation 'large-client.json') --paths-file $taskList }
