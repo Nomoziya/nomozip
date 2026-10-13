@@ -148,3 +148,6 @@ if ($taskOriginGui.ExitCode -ne 0) { throw 'Desktop origin metadata validation f
 
 $taskDpiGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-dpi', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskDpiGui.ExitCode -ne 0) { throw 'Desktop per-monitor DPI validation failed.' }
+
+$taskQueueGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-queue', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskQueueGui.ExitCode -ne 0) { throw 'Desktop task queue validation failed.' }

@@ -2,7 +2,7 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-0.2.0 开发候选已加入 [密码库加密备份](docs/VAULT_BACKUP.md)、[基础右键菜单](docs/SHELL_MENU.md)、[软件正式版检查与下载页](docs/APPLICATION_UPDATES.md)、[解压规则、独立校验及结果目录操作](docs/EXTRACTION_TOOLS.md) 、[选择性解压](docs/SELECTIVE_EXTRACTION.md) 、[密码分组、来源及重复整理](docs/PASSWORD_ORGANIZATION.md) 和 [文件 SHA-256 与校验清单](docs/FILE_HASHES.md)、[ZIP 文件名编码](docs/ZIP_FILENAME_ENCODING.md)、[解压后的下载来源标记](docs/DOWNLOAD_ORIGIN.md)、[每显示器 DPI 与小窗口适配](docs/DISPLAY_SCALING.md)，仍仅提供轻量版。公开正式版保持 0.1.0，候选功能不表示已公开发布。
+0.2.0 开发候选已加入 [密码库加密备份](docs/VAULT_BACKUP.md)、[基础右键菜单](docs/SHELL_MENU.md)、[软件正式版检查与下载页](docs/APPLICATION_UPDATES.md)、[解压规则、独立校验及结果目录操作](docs/EXTRACTION_TOOLS.md) 、[选择性解压](docs/SELECTIVE_EXTRACTION.md) 、[密码分组、来源及重复整理](docs/PASSWORD_ORGANIZATION.md) 和 [文件 SHA-256 与校验清单](docs/FILE_HASHES.md)、[ZIP 文件名编码](docs/ZIP_FILENAME_ENCODING.md)、[解压后的下载来源标记](docs/DOWNLOAD_ORIGIN.md)、[每显示器 DPI 与小窗口适配](docs/DISPLAY_SCALING.md)、[任务重排与单项解压](docs/TASK_QUEUE.md)，仍仅提供轻量版。公开正式版保持 0.1.0，候选功能不表示已公开发布。
 
 首个正式版 0.1.0 已公开，Windows x64，仅提供共享运行库轻量版。支持密码库、自动尝试和手动补充、7z/ZIP 创建及加密、7z/ZIP/RAR 内容浏览与解压，以及经本产品签名验证的官方引擎更新与回退。传统 ZIP、AES ZIP、RAR5 的同包多密码组合解压已专项验证；完整解压后才保存已验证的新密码。焦点框、任务文件朗读和极小工作区布局已修复，用户复验确认没有问题。正式版 [Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38270823087)、预览到正式版升级和四项公开发行资产 SHA-256 校验全部通过。
 
