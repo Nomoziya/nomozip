@@ -93,9 +93,9 @@
 
 ## 当前状态
 
-2026-10-13 B2 / F20 开发验收中：手动 ZIP 文件名代码页、名称预览和同任务浏览/校验/整包及所选输出已接入；Unicode 名称优先，ZIP 密码规则保留。本地双引擎数据 77 / 窗口 31 项通过，完整 Windows CI 和四项轻量候选待完成。见 [ZIP 文件名编码](ZIP_FILENAME_ENCODING.md)。
+2026-10-13 B2 / F20 完成：手动 ZIP 文件名代码页、名称预览和同任务浏览/校验/整包及所选输出已验收；Unicode 名称优先，ZIP 密码规则保留。数据 CI 75 / 界面 31、本地额外旧 worker 2 项通过，[Windows CI 38386939913](https://github.com/Nomoziya/nomozip/actions/runs/38386939913) 40 份报告全部通过；四项本地轻量候选 0.2.0-preview.8 位于 `artifacts/release-0.2.0-preview.8/`。B2 完成，下一工作包 B3 Windows 适配。见 [ZIP 文件名编码](ZIP_FILENAME_ENCODING.md)。
 
-2026-10-13 B2 / F19：文件 SHA-256、比较和清单导入/实际计算值导出已实现，数据 34 / 界面 43 项及 [Windows CI 38368045548](https://github.com/Nomoziya/nomozip/actions/runs/38368045548) 全部通过，38 份报告已核对，候选 0.2.0-preview.7 仅在本地。F20 未实施，B2 未整体完成。见 [文件 SHA-256](FILE_HASHES.md)。
+2026-10-13 B2 / F19：文件 SHA-256、比较和清单导入/实际计算值导出已实现，数据 34 / 界面 43 项及 [Windows CI 38368045548](https://github.com/Nomoziya/nomozip/actions/runs/38368045548) 全部通过，38 份报告已核对，候选 0.2.0-preview.7 仅在本地。当时 F20 未实施，B2 未整体完成；现已由上述 F20 验收补齐。见 [文件 SHA-256](FILE_HASHES.md)。
 
 2026-10-13 B2 / F06：密码分组、来源、重复提醒/合并和文件名优先规则已实现，数据 30 项、界面 30 项及 [Windows CI 38360550910](https://github.com/Nomoziya/nomozip/actions/runs/38360550910) 全部通过，36 份报告已核对，候选 0.2.0-preview.6 仅在本地。旧数据默认空元数据，合并迁移关联；其它自动候选保留。下一步 F19/F20，B2 未整体完成。见 [密码整理](PASSWORD_ORGANIZATION.md)。
 
