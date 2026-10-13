@@ -33,7 +33,7 @@ public partial class ExtractionRulesDialog : Window
     public ExtractionRulesDialog(ExtractionDirectoryRules rules,string custom,IReadOnlyList<string> recent)
     {
         InitializeComponent();Editor=new() { Location=(int)rules.Location,Layout=(int)rules.Layout,Naming=(int)rules.Naming,Collision=(int)rules.Collision,OpenAfterSuccess=rules.OpenAfterSuccess,CustomPath=custom,RecentPaths=recent };DataContext=Editor;
-        WindowPlacement.FitWorkArea(this,SystemParameters.WorkArea);Loaded+=(_,_)=>LocationBox.Focus();
+        Loaded+=(_,_)=>LocationBox.Focus();
     }
     private void OnApply(object sender,RoutedEventArgs e) { if(Editor.Validate()) DialogResult=true; }
 }

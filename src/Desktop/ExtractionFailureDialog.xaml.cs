@@ -29,7 +29,6 @@ public partial class ExtractionFailureDialog : Window
                 "corrupt_archive" => "文件损坏",
                 _ => "处理失败"
             })).ToArray();
-        WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
         Loaded += (_, _) => FailureTable.Focus();
     }
     private void OnClose(object sender, RoutedEventArgs e) => Close();

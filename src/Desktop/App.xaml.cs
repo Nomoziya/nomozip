@@ -26,6 +26,7 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        WindowPlacement.ValidationMode = e.Args.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
         theme = new ThemeResources(Resources);
         theme.Apply(SystemParameters.HighContrast);
         SystemParameters.StaticPropertyChanged += OnSystemParametersChanged;
@@ -76,7 +77,6 @@ public partial class App : Application
                     shellWindow.WindowStartupLocation = WindowStartupLocation.Manual; shellWindow.Left = -32000; shellWindow.Top = -32000;
                     shellWindow.ShowActivated = false; shellWindow.ShowInTaskbar = false;
                 }
-                else WindowPlacement.FitWorkArea(shellWindow, SystemParameters.WorkArea);
                 shellWindow.Show();
                 if (testRoot is not null) await shellVault.SaveAsync(new SavedPassword(Guid.NewGuid(), "synthetic shell acceptance", "测试密碼 ' $ & 空格", "", true, DateTimeOffset.UtcNow));
                 await shellModel.InitializeAsync();
@@ -103,6 +103,20 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var dpiIndex = Array.IndexOf(e.Args, "--validate-dpi");
+        if (dpiIndex >= 0)
+        {
+            window.SuppressExitConfirmationForValidation = true;
+            var dpiReport = Path.Combine(Path.GetFullPath(e.Args[dpiIndex + 1]), "artifacts/dpi-ui-validation.json");
+            File.WriteAllText(dpiReport, "{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException += (_, failure) =>
+            {
+                File.WriteAllText(dpiReport, JsonSerializer.Serialize(new { passed = false, exceptionType = failure.Exception.GetType().Name, message = failure.Exception.Message, stack = failure.Exception.StackTrace }));
+                failure.Handled = true; Shutdown(1);
+            };
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000; window.Opacity = 0; window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopDpiValidation.RunAsync(window, Path.GetFullPath(e.Args[dpiIndex + 1]), baseDirectory); Shutdown(passed ? 0 : 1); return;
+        }
         var originIndex = Array.IndexOf(e.Args, "--validate-origin");
         if (originIndex >= 0)
         {
@@ -285,7 +299,6 @@ public partial class App : Application
             using var stream = File.Create(e.Args[previewIndex + 1]); encoder.Save(stream);
             Shutdown(); return;
         }
-        WindowPlacement.FitWorkArea(window, SystemParameters.WorkArea);
         window.Show();
         _ = model.InitializeAsync();
         foreach (var argument in e.Args.Where(value => File.Exists(value))) model.AddFiles([argument]);
