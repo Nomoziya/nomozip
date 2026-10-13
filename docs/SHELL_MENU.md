@@ -1,6 +1,6 @@
 # 右键解压与压缩
 
-此功能属于本地开发候选 0.2.0-preview.2；公开正式版 0.1.0 不包含此入口。基础菜单已实现并完成代理验收，[最终 Windows CI 38340205265](https://github.com/Nomoziya/nomozip/actions/runs/38340205265) 全部成功，本地候选在 `artifacts/release-0.2.0-preview.2/`。
+此功能属于本地开发候选 0.2.0-preview.2；公开正式版 0.1.0 不包含此入口。基础菜单已实现并完成代理验收，[最终 Windows CI 38340205265](https://github.com/Nomoziya/nomozip/actions/runs/38340205265) 全部成功，本地候选在 `artifacts/release-0.2.0-preview.2-reviewed/`。
 
 ## 使用
 
