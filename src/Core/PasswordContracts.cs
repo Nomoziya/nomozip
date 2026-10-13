@@ -1,6 +1,7 @@
 namespace ArchivePassword.Core;
 
-public sealed record SavedPassword(Guid Id, string Name, string Secret, string Notes, bool AutoTry, DateTimeOffset CreatedAt, DateTimeOffset? LastSuccessAt = null);
+public sealed record SavedPassword(Guid Id, string Name, string Secret, string Notes, bool AutoTry, DateTimeOffset CreatedAt, DateTimeOffset? LastSuccessAt = null,
+    string Group = "", string Source = "", string MatchText = "");
 public sealed record PasswordCandidate(Guid? SavedId, string Secret);
 public interface IPasswordVault
 {
@@ -29,6 +30,7 @@ public sealed class PasswordCandidateProvider(IPasswordVault vault) : IPasswordC
         var records = await vault.ReadAsync(cancellationToken);
         return records.Where(value => value.AutoTry)
             .OrderByDescending(value => value.Id == associated)
+            .ThenByDescending(value => PasswordOrganization.MatchesArchive(value, archivePath))
             .ThenByDescending(value => value.LastSuccessAt)
             .ThenBy(value => value.CreatedAt)
             .DistinctBy(value => value.Secret, StringComparer.Ordinal)

@@ -103,6 +103,12 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var organizationIndex = Array.IndexOf(e.Args, "--validate-password-organization");
+        if (organizationIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000; window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopPasswordOrganizationValidation.RunAsync(window, theme, Path.GetFullPath(e.Args[organizationIndex + 1]), baseDirectory); Shutdown(passed ? 0 : 1); return;
+        }
         var selectionIndex=Array.IndexOf(e.Args,"--validate-selection");
         if(selectionIndex>=0)
         {
