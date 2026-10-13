@@ -6,12 +6,15 @@
 #include <shobjidl.h>
 #include <fstream>
 
-static bool Find(HMENU menu, const wchar_t* title, UINT& result) {
+static bool Find(HMENU menu, const wchar_t* title, UINT& result, IContextMenu2* context, int depth=0) {
     for (int index = 0; index < GetMenuItemCount(menu); ++index) {
         wchar_t text[512]{}; MENUITEMINFOW item{}; item.cbSize=sizeof(item); item.fMask=MIIM_STRING|MIIM_ID|MIIM_SUBMENU; item.dwTypeData=text; item.cch=511;
         if (!GetMenuItemInfoW(menu,index,TRUE,&item)) continue;
         if (!lstrcmpW(text,title)) { result=item.wID; return true; }
-        if (item.hSubMenu && Find(item.hSubMenu,title,result)) return true;
+        if (item.hSubMenu && depth < 5) {
+            if (context) context->HandleMenuMsg(WM_INITMENUPOPUP,reinterpret_cast<WPARAM>(item.hSubMenu),MAKELPARAM(index,FALSE));
+            if (Find(item.hSubMenu,title,result,context,depth+1)) return true;
+        }
     }
     return false;
 }
@@ -24,7 +27,11 @@ int wmain(int argc, wchar_t** argv) {
     folder->Release(); if (FAILED(hr)) return 5;
     auto menu=CreatePopupMenu(); hr=context->QueryContextMenu(menu,0,1,30000,CMF_NORMAL); if (FAILED(hr)) return 6;
     UINT root=0,here=0,own=0,compress=0;
-    bool visible=Find(menu,L"nomozip",root) && Find(menu,L"解压到当前目录",here) && Find(menu,L"解压到同名文件夹",own) && Find(menu,L"压缩…",compress);
+    IContextMenu2* notifications=nullptr; context->QueryInterface(IID_PPV_ARGS(&notifications));
+    bool hasRoot=Find(menu,L"nomozip",root,notifications),hasHere=Find(menu,L"解压到当前目录",here,notifications),hasOwn=Find(menu,L"解压到同名文件夹",own,notifications),hasCompress=Find(menu,L"压缩…",compress,notifications);
+    if (notifications) notifications->Release();
+    fprintf(stderr,"Actual menu visibility root=%d here=%d folder=%d compress=%d\n",hasRoot,hasHere,hasOwn,hasCompress);
+    bool visible=hasRoot && hasHere && hasOwn && hasCompress;
     if (!visible) { fwprintf(stderr,L"Actual Windows Shell menu did not contain the expected commands.\n"); return 7; }
     CMINVOKECOMMANDINFOEX invoke{}; invoke.cbSize=sizeof(invoke); invoke.fMask=CMIC_MASK_UNICODE; invoke.nShow=SW_SHOWNORMAL;
     invoke.lpVerb=MAKEINTRESOURCEA(compress-1); invoke.lpVerbW=MAKEINTRESOURCEW(compress-1);
