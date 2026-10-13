@@ -5,7 +5,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed class ArchiveEngineClient(string workerPath, string enginePath) : IArchiveEngine, IArchiveCreator, IArchiveMultiPasswordEngine,IArchiveSelectionEngine
+public sealed class ArchiveEngineClient(string workerPath, string enginePath, int filenameCodePage = 0) : IArchiveEngine, IArchiveCreator, IArchiveMultiPasswordEngine,IArchiveSelectionEngine
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
@@ -25,7 +25,10 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath) : 
         =>RunAsync("extract-selection",archive,output,password,progress,token,itemPasswords:itemPasswords,selection:selection);
     private async Task<EngineResult> RunAsync(string operation, string? archivePath, string? outputPath, string? password, IProgress<EngineProgress>? progress, CancellationToken token, CompressionRequest? creation = null, IReadOnlyDictionary<uint, string>? itemPasswords = null,IReadOnlyList<ArchiveEntry>? selection=null)
     {
+        if (!ZipFilenameEncoding.IsSupported(filenameCodePage)) throw new ArgumentOutOfRangeException(nameof(filenameCodePage));
         if (token.IsCancellationRequested) return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" };
+        // Separate operations make older workers reject an override instead of silently ignoring it.
+        if (filenameCodePage != 0 && operation is not ("create" or "capabilities")) operation += "-encoded";
         var start = new ProcessStartInfo(Path.GetFullPath(workerPath))
         {
             UseShellExecute = false, CreateNoWindow = true,
@@ -41,7 +44,7 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath) : 
             started = true;
             var diagnosticDrain = process.StandardError.ReadToEndAsync();
             // Sensitive request data stays in the parent/child pipe and is never logged.
-            await JsonSerializer.SerializeAsync(process.StandardInput.BaseStream, new { protocol = 1, operation, archivePath, outputPath, password,
+            await JsonSerializer.SerializeAsync(process.StandardInput.BaseStream, new { protocol = 1, operation, archivePath, outputPath, password, filenameCodePage,
                 itemPasswords = itemPasswords?.Select(value => new { index = value.Key, password = value.Value }),selection,
                 sourceEntries = creation?.Entries, format = creation?.Format, compressionLevel = creation?.Level, encryptHeaders = creation?.EncryptHeaders }, JsonOptions, token);
             await process.StandardInput.BaseStream.WriteAsync("\n"u8.ToArray(), token);

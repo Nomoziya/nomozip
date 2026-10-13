@@ -84,7 +84,7 @@ public sealed partial class MainViewModel
         try
         {
             task.Running=true; task.IsIndeterminate=true; task.VerificationResult=null;
-            var client=new ArchiveEngineClient(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),engines.DllPath(activeEngine));
+            var client=CreateReadClient(task);
             var service=new ArchiveVerificationService(client,new PasswordCandidateProvider(vault)); var prompts=0;
             var outcome=await service.VerifyAsync(task.Path,AutoTry,
                 failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,false,cancellation.Token,previousFailure:failure,testing:true),

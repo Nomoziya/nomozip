@@ -13,7 +13,7 @@ public sealed partial class MainViewModel
         cancellation = new CancellationTokenSource(); skipPasswords = new CancellationTokenSource();
         try
         {
-            var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));
+            var client = CreateReadClient(task);
             var service = new ArchiveBrowsingService(client, new PasswordCandidateProvider(vault));
             var prompts = 0;
             var progress = new Progress<TaskUpdate>(value => { Footer = $"{task.Name}：{value.Message}"; CanSkipPasswords = value.State == "password"; });

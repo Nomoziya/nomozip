@@ -8,8 +8,14 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
-    Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null)
+    Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null)
 {
+    public int? EditFilenameEncoding(string archive,int codePage,Func<int,CancellationToken,Task<EngineResult>> read,CancellationToken token)
+    {
+        var dialog=new FilenameEncodingDialog(new(archive,codePage,read,token)) {Owner=owner};prepareEncoding?.Invoke(dialog);
+        using var registration=token.Register(()=>dialog.Dispatcher.BeginInvoke(()=>{if(dialog.IsVisible) dialog.Close();}));
+        return dialog.ShowDialog()==true?dialog.Model.Selected.CodePage:null;
+    }
     public void ShowFileHashes(string? path, CancellationToken token = default)
     {
         var dialog = new FileHashDialog(path) { Owner = owner }; prepareHashes?.Invoke(dialog);

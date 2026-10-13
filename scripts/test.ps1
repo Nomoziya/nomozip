@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -113,6 +113,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Application update validation failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'Extraction tools validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/SelectionValidation/bin/Debug/net10.0-windows/SelectionValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Selection validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/EncodingValidation/bin/Debug/net10.0-windows/EncodingValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'ZIP encoding validation failed.' }
 $taskTestApp = Join-Path $taskRoot 'artifacts/test-app'
 New-Item -ItemType Directory -Force $taskTestApp | Out-Null
 Copy-Item (Join-Path $taskRoot 'artifacts/app/*') $taskTestApp -Recurse -Force
@@ -135,3 +137,6 @@ $taskExtractionToolsGui = Start-Process -FilePath $taskApplication -ArgumentList
 if ($taskExtractionToolsGui.ExitCode -ne 0) { throw 'Desktop extraction tools validation failed.' }
 $taskSelectionGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-selection', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskSelectionGui.ExitCode -ne 0) { throw 'Desktop selected extraction validation failed.' }
+
+$taskEncodingGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-encoding', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskEncodingGui.ExitCode -ne 0) { throw 'Desktop ZIP encoding validation failed.' }
