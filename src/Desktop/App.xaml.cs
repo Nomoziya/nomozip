@@ -103,6 +103,20 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var originIndex = Array.IndexOf(e.Args, "--validate-origin");
+        if (originIndex >= 0)
+        {
+            window.SuppressExitConfirmationForValidation = true;
+            var originReport = Path.Combine(Path.GetFullPath(e.Args[originIndex + 1]), "artifacts/origin-ui-validation.json");
+            File.WriteAllText(originReport, "{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException += (_, failure) =>
+            {
+                File.WriteAllText(originReport, JsonSerializer.Serialize(new { passed = false, exceptionType = failure.Exception.GetType().Name, message = failure.Exception.Message, stack = failure.Exception.StackTrace }));
+                failure.Handled = true; Shutdown(1);
+            };
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000; window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopOriginValidation.RunAsync(window, Path.GetFullPath(e.Args[originIndex + 1]), baseDirectory); Shutdown(passed ? 0 : 1); return;
+        }
         var encodingIndex = Array.IndexOf(e.Args, "--validate-encoding");
         if (encodingIndex >= 0)
         {

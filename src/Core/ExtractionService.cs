@@ -5,7 +5,7 @@ public sealed record ExtractionOutcome(EngineResult Engine, string OutputPath, s
 public sealed record TaskUpdate(string State, string Message, EngineProgress? Progress = null);
 public enum ExistingFilePolicy { Ask, Skip, Replace }
 
-public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vault, IPasswordCandidateProvider candidates)
+public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vault, IPasswordCandidateProvider candidates, IExtractionOriginReader? origin = null)
 {
     public async Task<ExtractionOutcome> ExtractAsync(string archivePath, string outputPath, bool autoTry,
         Func<EngineResult, Task<PasswordPromptResponse?>> requestPassword,
@@ -16,6 +16,10 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null,IReadOnlyList<ArchiveEntry>? selection=null)
     {
         var destination = Path.GetFullPath(outputPath);
+        IExtractionOriginMark? originMark;
+        try { originMark = origin is null ? null : await origin.ReadAsync(archivePath, cancellationToken); }
+        catch (ExtractionOriginException error) { return new(new EngineResult { Code = error.Code }, destination, error.Message); }
+        catch (OperationCanceledException) { return new(new EngineResult { Status = "cancelled", Code = "cancelled" }, destination); }
         Directory.CreateDirectory(destination);
         var verification = await new ArchiveVerificationService(engine, candidates).VerifyAsync(archivePath, autoTry,
             requestPassword, progress, cancellationToken, skipSavedPasswordToken,selection);
@@ -70,6 +74,13 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 decisions.Add((source, target, policy));
             }
             // No final files are moved until extraction and all conflict decisions complete.
+            if (originMark is not null)
+            {
+                currentState = "origin"; currentMessage = "正在保留下载来源信息";
+                progress?.Report(new TaskUpdate(currentState, currentMessage));
+                warning = CombineWarnings(warning, await originMark.ApplyAsync(decisions.Where(value => value.Policy != ExistingFilePolicy.Skip).Select(value => value.Source).ToArray(), cancellationToken));
+                cancellationToken.ThrowIfCancellationRequested();
+            }
             foreach (var (source, target, policy) in decisions)
             {
                 if (policy == ExistingFilePolicy.Skip) continue;
@@ -84,7 +95,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 Directory.CreateDirectory(target);
             }
             var skipped = decisions.Count(value => value.Policy == ExistingFilePolicy.Skip);
-            if (skipped > 0) warning = $"已跳过 {skipped} 个同名文件。";
+            if (skipped > 0) warning = CombineWarnings(warning, $"已跳过 {skipped} 个同名文件。");
             committed = true;
             try
             {
@@ -104,9 +115,11 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 }
             }
             catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException)
-            { warning = "解压已完成，但密码未能保存，请检查密码库。"; }
+            { warning = CombineWarnings(warning, "解压已完成，但密码未能保存，请检查密码库。"); }
             return new ExtractionOutcome(result, destination, warning);
         }
+        catch (ExtractionOriginException error)
+        { return new(new EngineResult { Code = error.Code }, destination, CombineWarnings(warning, error.Message)); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             return new ExtractionOutcome(new EngineResult { Code = "output_write_failed" }, destination, "输出文件未能全部写入，请检查目标目录。已写入的文件仍在目标目录中。");
@@ -120,6 +133,8 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             }
         }
     }
+
+    private static string? CombineWarnings(string? current, string? added) => string.IsNullOrEmpty(added) ? current : string.IsNullOrEmpty(current) ? added : current + "\n" + added;
 
     private static void ValidateOutputPath(string root, string target)
     {
