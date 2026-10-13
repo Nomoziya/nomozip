@@ -44,6 +44,10 @@ public partial class MainWindow : Window
             else model.AddFiles(paths);
         }
     }
+    private void OnQueueActions(object sender,RoutedEventArgs args)
+    {
+        if(sender is Button button && button.ContextMenu is {} menu) {menu.PlacementTarget=button;menu.IsOpen=true;}
+    }
     private async void OnClosing(object? sender, CancelEventArgs e)
     {
         if (!closingApproved && !SuppressExitConfirmationForValidation && DataContext is MainViewModel { IsBusy: true } model)

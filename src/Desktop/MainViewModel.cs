@@ -81,6 +81,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeAssociationCommands();
         InitializeApplicationUpdateCommands();
         InitializeExtractionToolCommands();
+        InitializeQueueCommands();
         InitializePasswordOrganizationCommands();
         InitializeFileHashCommands();
         InitializeFilenameEncodingCommands();
@@ -180,12 +181,12 @@ public sealed partial class MainViewModel : ObservableObject
             && PasswordOrganization.MatchesSearch(value, Search))) PasswordRows.Add(item);
         Changed(nameof(PasswordListSummary)); Changed(nameof(DuplicateSummary));
     }
-    private async Task ExtractAsync()
+    private Task ExtractAsync()=>ExtractTasksAsync(Tasks.Where(value=>!value.Completed).ToArray());
+    private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch)
     {
         if (directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = "请选择输出目录。"; return; }
         IsBusy = true; idle = new TaskCompletionSource(); Banner = "";
         cancellation = new CancellationTokenSource(); skipPasswords = new CancellationTokenSource();
-        var batch=Tasks.Where(value=>!value.Completed).ToArray();
         var openResults=new List<string>();
         try
         {
@@ -231,7 +232,7 @@ public sealed partial class MainViewModel : ObservableObject
         { Banner = "无法处理文件或写入设置，请检查输出目录与文件权限。"; }
         finally
         {
-            var shouldOpen=directoryRules.OpenAfterSuccess && !cancellation.IsCancellationRequested && batch.Length>0 && batch.All(task=>task.Completed);
+            var shouldOpen=directoryRules.OpenAfterSuccess && !cancellation.IsCancellationRequested && batch.Count>0 && batch.All(task=>task.Completed);
             CanSkipPasswords = false; cancellation.Dispose(); skipPasswords.Dispose(); cancellation = null; skipPasswords = null; IsBusy = false;
             try { if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray()); }
             finally {idle.TrySetResult();}
