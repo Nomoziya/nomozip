@@ -27,3 +27,6 @@
 已编译 `src/ShellPrototype/ExplorerCommand.cpp`，通过 IExplorerCommand 子命令枚举、状态查询和向现有程序的真实委托；`AppxManifest.xml` 提供 native COM、现有 EXE、文件/目录菜单和 sparse identity 声明，已校验 CLSID 对应关系。原型 DLL 169984 字节，不随本次轻量产品分发。
 
 [微软原生菜单说明](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/integrate-packaged-app-with-file-explorer)要求 IExplorerCommand 和包身份。当前未安装或验证该 sparse package，也未在真实 Windows 11 第一层菜单展示验收；没有把 XML 可读或接口通过当作部署成功。后续 B3 继续包身份、签名/部署、升级移除与真实 Windows 11 展示验收。本地未安装证书、启用开发者模式或重启 Explorer。
+
+
+2026-10-13 部署审计：原型清单已补充实际 SDK 模式验证，修复 COM 元素顺序和旧 EntryPoint 与 win32App 的冲突。小型 sparse identity 构建通过，临时 CI 签名/注册、包 COM 激活、升级移除正在验证；当前未启用产品原生菜单，Windows 11 第一层展示和公开签名仍未完成。详见 [部署审计](SHELL_IDENTITY.md)。
