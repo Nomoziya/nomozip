@@ -52,7 +52,8 @@ try {
     $taskThumbprint = $taskCertificate.Thumbprint
     $taskPublicCertificate = Join-Path $taskOutput 'test-public.cer'
     Export-Certificate -Cert $taskCertificate -FilePath $taskPublicCertificate | Out-Null
-    Import-Certificate -FilePath $taskPublicCertificate -CertStoreLocation Cert:\CurrentUser\TrustedPeople | Out-Null
+    # AppX deployment validates device trust; CurrentUser trust failed with 0x800B0109.
+    Import-Certificate -FilePath $taskPublicCertificate -CertStoreLocation Cert:\LocalMachine\TrustedPeople | Out-Null
     foreach ($taskBinary in @($taskProbe,(Join-Path $taskExternal 'ArchivePassword.exe'),(Join-Path $taskExternal 'NomoZipExplorerPrototype.dll'),$taskPackage)) {
         & $taskTools['signtool.exe'] sign /fd SHA256 /sha1 $taskThumbprint /s My $taskBinary | Out-Null
         if ($LASTEXITCODE -ne 0) { throw 'Disposable fixture signing failed.' }
@@ -110,14 +111,18 @@ finally {
     try {
         Get-AppxPackage -Name $taskName | Remove-AppxPackage
         if ($taskThumbprint) {
-            foreach ($taskStore in @('TrustedPeople','My')) { $taskCertificatePath = "Cert:\CurrentUser\$taskStore\$taskThumbprint"; if (Test-Path -LiteralPath $taskCertificatePath) { if ($taskStore -eq 'My') { Remove-Item -LiteralPath $taskCertificatePath -DeleteKey } else { Remove-Item -LiteralPath $taskCertificatePath } } }
+            $taskTrustPath = "Cert:\LocalMachine\TrustedPeople\$taskThumbprint"
+            if (Test-Path -LiteralPath $taskTrustPath) { Remove-Item -LiteralPath $taskTrustPath }
+            $taskKeyPath = "Cert:\CurrentUser\My\$taskThumbprint"
+            if (Test-Path -LiteralPath $taskKeyPath) { Remove-Item -LiteralPath $taskKeyPath -DeleteKey }
         }
         $taskCleanupPassed = $null -eq (Get-AppxPackage -Name $taskName)
+        if ($taskThumbprint) { $taskCleanupPassed = $taskCleanupPassed -and -not (Test-Path -LiteralPath $taskTrustPath) -and -not (Test-Path -LiteralPath $taskKeyPath) }
     } catch { $taskFailure = 'Disposable cleanup failed: ' + $_.Exception.Message; $taskCleanupPassed = $false }
 }
 $taskChecks.DisposableCleanup = $taskCleanupPassed
 $taskChecks.NoProductionPayloadMutation = (Get-FileHash -LiteralPath (Join-Path $taskRoot 'artifacts/app/ArchivePassword.exe')).Hash -eq $taskOriginalAppHash
-$taskReport = [ordered]@{passed=($taskChecks.Values -notcontains $false);total=$taskChecks.Count;checks=$taskChecks;failure=$taskFailure;packageName=$taskName;temporaryVmOnly=$true;actualWindows11MenuTested=$false;productionSigningConfigured=$false;includedInProduct=$false;directory=$taskOutput}
+$taskReport = [ordered]@{passed=($taskChecks.Values -notcontains $false);total=$taskChecks.Count;checks=$taskChecks;failure=$taskFailure;packageName=$taskName;temporaryVmOnly=$true;testTrustStore='LocalMachine/TrustedPeople';hostOs=(Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').ProductName;hostBuild=[Environment]::OSVersion.Version.ToString();actualWindows11MenuTested=$false;productionSigningConfigured=$false;includedInProduct=$false;directory=$taskOutput}
 $taskReport | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $taskRoot 'artifacts/shell-identity-validation.json') -Encoding utf8
 if (-not $taskReport.passed) { throw 'Sparse identity deployment validation failed; see shell-identity-validation.json.' }
 $taskReport | ConvertTo-Json -Depth 6
