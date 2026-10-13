@@ -122,6 +122,7 @@ jobs:
             artifacts/vault-transfer-preview/*.png
             artifacts/password-organization-preview/*.png
             artifacts/file-hash-preview/*.png
+            artifacts/encoding-preview/*.png
             artifacts/shell-validation/**/*.log
           if-no-files-found: ignore
       # This workflow does not publish or sign production updates.

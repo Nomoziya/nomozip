@@ -47,7 +47,9 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     public string? ShellOutputPath { get => shellOutputPath; set => Set(ref shellOutputPath, value); }
     public string Path { get; } = path;
     public string Name => System.IO.Path.GetFileName(Path);
-    public string SizeText => previewSize ?? FileSize();
+    private int filenameCodePage;
+    public int FilenameCodePage { get=>filenameCodePage; set { if(!ZipFilenameEncoding.IsSupported(value)) throw new ArgumentOutOfRangeException(nameof(value)); if(Set(ref filenameCodePage,value)) Changed(nameof(SizeText)); } }
+    public string SizeText => (previewSize ?? FileSize()) + (FilenameCodePage==0 ? "" : $" · CP{FilenameCodePage}");
     private string status = "准备就绪";
     private double percent;
     private bool running, indeterminate;

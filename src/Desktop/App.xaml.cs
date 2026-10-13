@@ -103,6 +103,20 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var encodingIndex = Array.IndexOf(e.Args, "--validate-encoding");
+        if (encodingIndex >= 0)
+        {
+            window.SuppressExitConfirmationForValidation = true;
+            var encodingReport = Path.Combine(Path.GetFullPath(e.Args[encodingIndex + 1]), "artifacts/encoding-ui-validation.json");
+            File.WriteAllText(encodingReport, "{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException += (_, failure) =>
+            {
+                File.WriteAllText(encodingReport, JsonSerializer.Serialize(new { passed = false, exceptionType = failure.Exception.GetType().Name, message = failure.Exception.Message, stack = failure.Exception.StackTrace }));
+                failure.Handled = true; Shutdown(1);
+            };
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000; window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopEncodingValidation.RunAsync(window, theme, Path.GetFullPath(e.Args[encodingIndex + 1]), baseDirectory); Shutdown(passed ? 0 : 1); return;
+        }
         var fileHashIndex = Array.IndexOf(e.Args, "--validate-file-hashes");
         if (fileHashIndex >= 0)
         {

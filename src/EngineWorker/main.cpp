@@ -309,6 +309,13 @@ static json run(json& request, const wchar_t* dllPath) {
         return {{"kind", "result"}, {"status", "success"}, {"formats", result}};
     }
     if (operation == "create") return createArchive(request, formats, createFunc);
+    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded";
+    UInt32 codePage=0;
+    if(encoded) {
+        codePage=request.value("filenameCodePage",0u);
+        if((codePage!=936 && codePage!=932 && codePage!=437 && codePage!=65001) || !IsValidCodePage(codePage)) return {{"kind","result"},{"status","error"},{"code","invalid_filename_encoding"}};
+        operation.erase(operation.size()-8);
+    } else if(request.value("filenameCodePage",0u)!=0) return {{"kind","result"},{"status","error"},{"code","invalid_filename_encoding"}};
     const bool selective = operation=="test-selection" || operation=="extract-selection";
     if (selective) operation=operation=="test-selection" ? "test" : "extract";
     if (operation != "list" && operation != "test" && operation != "extract") throw std::runtime_error("unsupported_operation");
@@ -345,6 +352,12 @@ static json run(json& request, const wchar_t* dllPath) {
         context.passwordRequested = false; context.passwordMissing = false; context.missingVolume = false;
         input->Seek(0, STREAM_SEEK_SET, nullptr);
         if (createFunc(&format.id, &IID_IInArchive, reinterpret_cast<void**>(&archive.ptr)) != S_OK) continue;
+        if(encoded && _wcsicmp(format.name.c_str(),L"zip")==0) {
+            ComPtr<ISetProperties> properties;
+            if(archive->QueryInterface(IID_ISetProperties,reinterpret_cast<void**>(&properties.ptr))!=S_OK) return {{"kind","result"},{"status","error"},{"code","filename_encoding_unsupported"}};
+            const wchar_t* name=L"cp"; Variant cp; cp.value.vt=VT_UI4; cp.value.ulVal=codePage;
+            if(properties->SetProperties(&name,&cp.value,1)!=S_OK) return {{"kind","result"},{"status","error"},{"code","filename_encoding_unsupported"}};
+        }
         UInt64 maxCheck = 1 << 23;
         HRESULT opened = archive->Open(input.ptr, &maxCheck, open.ptr);
         if (opened == S_OK) { usedFormat = format.name; break; }
@@ -352,6 +365,7 @@ static json run(json& request, const wchar_t* dllPath) {
         if (context.passwordRequested || context.missingVolume || (matches(format) && opened != S_FALSE)) break;
     }
     if (!archive.ptr) return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "error"}, {"code", cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordRequested ? context.passwordDefined ? "password_or_corrupt" : "password_required" : "unsupported_or_corrupt"}};
+    if(encoded && _wcsicmp(usedFormat.c_str(),L"zip")!=0) return {{"kind","result"},{"status","error"},{"code","filename_encoding_not_zip"}};
     UInt32 itemCount = 0; archive->GetNumberOfItems(&itemCount);
     std::vector<UInt32> selected;
     if(selective) {
