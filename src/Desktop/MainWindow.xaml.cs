@@ -7,6 +7,7 @@ namespace ArchivePassword.Desktop;
 public partial class MainWindow : Window
 {
     private bool closingApproved;
+    internal bool SuppressExitConfirmationForValidation { get; set; }
     public MainWindow()
     {
         InitializeComponent();
@@ -45,7 +46,7 @@ public partial class MainWindow : Window
     }
     private async void OnClosing(object? sender, CancelEventArgs e)
     {
-        if (!closingApproved && DataContext is MainViewModel { IsBusy: true } model)
+        if (!closingApproved && !SuppressExitConfirmationForValidation && DataContext is MainViewModel { IsBusy: true } model)
         {
             e.Cancel = true;
             if (MessageBox.Show(this, "正在处理任务。取消任务并退出？", "退出", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)

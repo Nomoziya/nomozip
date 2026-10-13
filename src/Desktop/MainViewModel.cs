@@ -82,6 +82,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeApplicationUpdateCommands();
         InitializeExtractionToolCommands();
         InitializePasswordOrganizationCommands();
+        InitializeFileHashCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
