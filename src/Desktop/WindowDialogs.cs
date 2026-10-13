@@ -7,7 +7,8 @@ namespace ArchivePassword.Desktop;
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
-    Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null)
+    Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
+    Func<string, int, bool>? confirmPasswordOrganization = null)
 {
     public ExtractionRulesEditor? EditExtractionRules(ExtractionDirectoryRules rules,string custom,IReadOnlyList<string> recent)
     {
@@ -99,6 +100,10 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         prepareDialog?.Invoke(dialog);
         return dialog.ShowDialog() == true ? dialog.Edited : null;
     }
+    public bool ConfirmDuplicatePassword(int count) => confirmPasswordOrganization?.Invoke("duplicate", count) ??
+        MessageBox.Show(owner, $"已有 {count} 条记录保存了相同密码。仍然保存此记录？\n\n可取消后编辑已有记录，或保存后在密码库合并重复记录。", "密码已存在", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+    public bool ConfirmMergePasswords(string name, int count) => confirmPasswordOrganization?.Invoke("merge", count) ??
+        MessageBox.Show(owner, $"保留“{name}”，合并其它 {count} 条相同密码记录？\n\n保留所选记录的名称、备注、分组、来源、规则和自动尝试设置，其它记录的这些信息将被移除。保留最早创建时间、最近成功时间，所有压缩包关联转到所选记录。", "合并重复密码", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
     public ExistingFilePolicy ResolveConflict(string path) => MessageBox.Show(owner, "目标目录已有同名文件：\n" + path + "\n\n选择“是”覆盖，“否”跳过，“取消”停止当前任务。", "同名文件", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) switch
     { MessageBoxResult.Yes => ExistingFilePolicy.Replace, MessageBoxResult.No => ExistingFilePolicy.Skip, _ => ExistingFilePolicy.Ask };
     public bool ConfirmDelete(string name) => MessageBox.Show(owner, $"删除本机保存的密码“{name}”？", "删除密码", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;

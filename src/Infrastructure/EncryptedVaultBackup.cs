@@ -18,7 +18,8 @@ public static class EncryptedVaultBackup
     {
         if (passwords.Count > 10_000 || passwords.Any(value => value is null || value.Id == Guid.Empty
             || string.IsNullOrEmpty(value.Secret) || value.Secret.Length > 16_384
-            || value.Name is null || value.Name.Length > 16_384 || value.Notes is null || value.Notes.Length > 65_536))
+            || value.Name is null || value.Name.Length > 16_384 || value.Notes is null || value.Notes.Length > 65_536
+            || !PasswordOrganization.ValidMetadata(value)))
             throw new VaultTransferException("invalid_backup_records");
     }
 

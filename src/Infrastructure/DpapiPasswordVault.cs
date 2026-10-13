@@ -4,7 +4,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed class DpapiPasswordVault(string path) : IPasswordVault
+public sealed class DpapiPasswordVault(string path) : IPasswordVault, IPasswordOrganizationVault
 {
     private static readonly byte[] Magic = "APV1"u8.ToArray();
     private static readonly JsonSerializerOptions Options = new(JsonSerializerDefaults.Web);
@@ -35,11 +35,37 @@ public sealed class DpapiPasswordVault(string path) : IPasswordVault
     public Task SaveAsync(SavedPassword password, CancellationToken cancellationToken = default) => WithDocumentAsync<object?>(document =>
     {
         if (string.IsNullOrEmpty(password.Secret)) throw new ArgumentException("Password cannot be empty.", nameof(password));
+        if (!PasswordOrganization.ValidMetadata(password)) throw new ArgumentException("Invalid password metadata.", nameof(password));
         var existing = document.Passwords.FindIndex(value => value.Id == password.Id);
         if (existing < 0) document.Passwords.Add(password);
         else document.Passwords[existing] = password;
         return null;
     }, true, cancellationToken);
+
+    public async Task<int> MergeDuplicatesAsync(Guid keepId, IReadOnlyList<Guid> removeIds, CancellationToken token = default)
+    {
+        await gate.WaitAsync(token);
+        try
+        {
+            var document = File.Exists(path) ? await LoadAsync(path, token) : new VaultDocument { Version = 1 };
+            var ids = removeIds.ToHashSet();
+            if (ids.Count == 0) return 0;
+            var keepIndex = document.Passwords.FindIndex(value => value.Id == keepId);
+            var others = document.Passwords.Where(value => ids.Contains(value.Id)).ToArray();
+            if (keepIndex < 0 || ids.Contains(keepId) || others.Length != ids.Count)
+                throw new VaultException("password_records_changed");
+            var keep = document.Passwords[keepIndex];
+            if (others.Any(value => !string.Equals(value.Secret, keep.Secret, StringComparison.Ordinal)))
+                throw new VaultException("password_records_changed");
+            document.Passwords[keepIndex] = PasswordOrganization.Merge(keep, others);
+            document.Passwords.RemoveAll(value => ids.Contains(value.Id));
+            foreach (var key in document.Associations.Where(pair => ids.Contains(pair.Value)).Select(pair => pair.Key).ToArray())
+                document.Associations[key] = keepId;
+            await SaveDocumentAsync(document, token);
+            return ids.Count;
+        }
+        finally { gate.Release(); }
+    }
 
     public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => WithDocumentAsync<object?>(document =>
     {

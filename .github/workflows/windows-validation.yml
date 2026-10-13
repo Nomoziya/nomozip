@@ -120,5 +120,6 @@ jobs:
             artifacts/*validation.json
             artifacts/accessibility-preview/*.png
             artifacts/vault-transfer-preview/*.png
+            artifacts/password-organization-preview/*.png
           if-no-files-found: ignore
       # This workflow does not publish or sign production updates.

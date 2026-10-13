@@ -81,6 +81,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeAssociationCommands();
         InitializeApplicationUpdateCommands();
         InitializeExtractionToolCommands();
+        InitializePasswordOrganizationCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
@@ -128,7 +129,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string TaskSummary => $"{Tasks.Count(value => !value.Completed)} 个待处理 · {Tasks.Count(value => value.Completed)} 个已完成";
     public string ExtractButtonText => $"开始解压（{Tasks.Count(value => !value.Completed)}）";
     public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) Changed(nameof(DisplayOutputPath)); } }
-    public SavedPassword? SelectedPassword { get => selectedPassword; set => Set(ref selectedPassword, value); }
+    public SavedPassword? SelectedPassword { get => selectedPassword; set { if (Set(ref selectedPassword, value)) { Changed(nameof(DuplicateSummary)); CommandManager.InvalidateRequerySuggested(); } } }
 
     public async Task InitializeAsync()
     {
@@ -168,12 +169,14 @@ public sealed partial class MainViewModel : ObservableObject
     {
         try { allPasswords = (await vault.ReadAsync()).ToList(); vaultAvailable = true; }
         catch (VaultException exception) { allPasswords = []; vaultAvailable = false; Banner = exception.BackupAvailable ? "密码库无法读取。你可以在设置中恢复备份，或先手动输入解压密码。" : "密码库无法读取，请保留原文件。你仍可手动输入解压密码。"; }
-        FilterPasswords(); Changed(nameof(VaultSummary)); CommandManager.InvalidateRequerySuggested();
+        RefreshPasswordGroups(); FilterPasswords(); Changed(nameof(VaultSummary)); CommandManager.InvalidateRequerySuggested();
     }
     private void FilterPasswords()
     {
         PasswordRows.Clear();
-        foreach (var item in allPasswords.Where(value => value.Name.Contains(Search, StringComparison.CurrentCultureIgnoreCase) || value.Notes.Contains(Search, StringComparison.CurrentCultureIgnoreCase))) PasswordRows.Add(item);
+        foreach (var item in allPasswords.Where(value => (SelectedPasswordGroup?.Value is null || value.Group == SelectedPasswordGroup.Value)
+            && PasswordOrganization.MatchesSearch(value, Search))) PasswordRows.Add(item);
+        Changed(nameof(PasswordListSummary)); Changed(nameof(DuplicateSummary));
     }
     private async Task ExtractAsync()
     {
@@ -237,8 +240,12 @@ public sealed partial class MainViewModel : ObservableObject
     {
         var edited = dialogs.EditPassword(existing);
         if (edited is null) return;
+        var duplicateCount = allPasswords.Count(value => value.Id != edited.Id && value.Secret == edited.Secret);
+        if (duplicateCount > 0 && !dialogs.ConfirmDuplicatePassword(duplicateCount)) return;
+        IsBusy = true; idle = new TaskCompletionSource();
         try { await vault.SaveAsync(edited); await RefreshVaultAsync(); Banner = ""; }
         catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "密码未能保存，原密码库已保留。"; }
+        finally { IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
     }
     private async Task DeletePasswordAsync()
     {

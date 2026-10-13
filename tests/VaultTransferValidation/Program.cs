@@ -19,7 +19,7 @@ void Check(string name, bool passed)
     if (!passed) throw new Exception(name);
 }
 var passphrase = "虚构的迁移口令 2026 $ '&";
-var record = new SavedPassword(Guid.Parse("d9101152-45d1-4d48-a327-332188ee0fba"), "synthetic transfer label", "测试密碼 ' $ & 空格", "synthetic notes", true, DateTimeOffset.Parse("2026-01-02T03:04:05Z"));
+var record = new SavedPassword(Guid.Parse("d9101152-45d1-4d48-a327-332188ee0fba"), "synthetic transfer label", "测试密碼 ' $ & 空格", "synthetic notes", true, DateTimeOffset.Parse("2026-01-02T03:04:05Z"), null, "合成迁移分组", "synthetic.example", "header");
 var sourcePath = Path.Combine(fixture, "source.apv");
 var backupPath = Path.Combine(fixture, "synthetic.nvault");
 var original = new DpapiPasswordVault(sourcePath);

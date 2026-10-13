@@ -35,6 +35,7 @@ public partial class PasswordDialog : Window
             Title = Heading.Text = existing is null ? "添加密码" : "编辑密码";
             ContinueButton.Content = "保存密码"; SavePassword.Visibility = Visibility.Collapsed; DetailsPanel.Visibility = Visibility.Visible;
             NameBox.Text = existing?.Name ?? ""; NotesBox.Text = existing?.Notes ?? ""; AutoTryBox.IsChecked = existing?.AutoTry ?? true; SecretBox.Password = existing?.Secret ?? "";
+            GroupBox.Text = existing?.Group ?? ""; SourceBox.Text = existing?.Source ?? ""; MatchBox.Text = existing?.MatchText ?? "";
         }
         else NameBox.Text = archiveName;
         if (compressing)
@@ -89,7 +90,8 @@ public partial class PasswordDialog : Window
         }
         var selected = SavedBox.SelectedItem as SavedPassword;
         Response = new PasswordPromptResponse(secret, SavePassword.IsChecked == true && SavePassword.IsEnabled, NameBox.Text, selected?.Secret == secret ? selected.Id : null);
-        if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? "未命名密码" : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt);
+        if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? "未命名密码" : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt,
+            GroupBox.Text.Trim(), SourceBox.Text.Trim(), MatchBox.Text.Trim());
         DialogResult = true;
     }
 }
