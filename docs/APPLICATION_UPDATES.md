@@ -18,6 +18,8 @@
 
 ## 验证
 
+最终代码 `d381c9d` 的 [Windows CI 38342403339](https://github.com/Nomoziya/nomozip/actions/runs/38342403339) 全部通过，30 份报告含新增 28 项版本判断与 36 项界面检查，以及现有功能、实际 Shell、跨用户迁移与 21 项安装升级回归。无登录公开查询也已确认软件正式版 0.1.0，与 engine-26.04 的最新引擎入口分离。仅验证 x64 产品；其它架构仅为元数据样本。
+
 - `tests/ApplicationUpdateValidation`：正式/预览/引擎/草稿筛选、数字版本比较、架构与轻量资产、分页、下载来源、HTTP 错误及取消；可增加 `--online` 对公开产品仓库只读检查。
 - `ArchivePassword.exe --validate-application-updates <项目目录>`：使用独立合成资料、HTTP 夹具和浏览器替身，验证实际 WPF 绑定、UIA 调用、窄窗口、主题、错误状态与引擎独立性；不会读取实际用户库、开启真实浏览器或安装软件。
 - 本地报告 `artifacts/application-update-validation.json`、`artifacts/application-update-ui-validation.json`、`artifacts/application-update-public-validation.json`。持续集成通过 `scripts/test.ps1` 执行前两项。
