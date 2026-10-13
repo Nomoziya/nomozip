@@ -42,7 +42,7 @@ int wmain(int argc, wchar_t** argv) {
     }
     commands->Release(); if (!found) return 11;
     EXPCMDSTATE state{}; hr = child->GetState(selection, TRUE, &state);
-    if (FAILED(hr) || state != ECS_ENABLED) return 12;
+    if (FAILED(hr) || state != ECS_ENABLED) {fwprintf(stderr,L"Packaged command state HRESULT 0x%08lx, state %u\n",static_cast<unsigned long>(hr),static_cast<unsigned>(state));return 12;}
     hr = child->Invoke(selection, nullptr); child->Release(); selection->Release(); CoUninitialize();
     if (FAILED(hr)) { fwprintf(stderr,L"Packaged invoke HRESULT: 0x%08lx\n",static_cast<unsigned long>(hr)); return 13; }
     // Package identity is checked by the OS; no LoadLibrary or registry COM bypass.

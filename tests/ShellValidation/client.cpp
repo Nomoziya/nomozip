@@ -14,8 +14,9 @@ int wmain(int argc, wchar_t** argv) {
     if (argc < 4) return 2;
     if (FAILED(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED))) return 3;
     CLSID clsid{}; if (FAILED(CLSIDFromString(argv[1], &clsid))) return 4;
-    bool modern = argc >= 6 && std::wstring(argv[3]) == L"--modern-dll";
-    int firstPath = modern ? 5 : 3;
+    bool stateOnly = argc >= 7 && std::wstring(argv[3]) == L"--modern-state";
+    bool modern = stateOnly || (argc >= 6 && std::wstring(argv[3]) == L"--modern-dll");
+    int firstPath = stateOnly ? 6 : modern ? 5 : 3;
     std::vector<std::wstring> paths;
     if (argc == 5 && std::wstring(argv[3]) == L"--paths-file") {
         std::ifstream file(argv[4], std::ios::binary); auto document = nlohmann::json::parse(file);
@@ -52,7 +53,9 @@ int wmain(int argc, wchar_t** argv) {
         }
         children->Release(); if (!found) return 14;
         EXPCMDSTATE state{}; hr = child->GetState(selection,TRUE,&state);
-        if (FAILED(hr) || state != ECS_ENABLED) return 15;
+        auto expectedState = stateOnly ? static_cast<EXPCMDSTATE>(wcstoul(argv[5],nullptr,10)) : ECS_ENABLED;
+        if (FAILED(hr) || state != expectedState) { fwprintf(stderr,L"Command state HRESULT 0x%08lx, state %u, expected %u\n",static_cast<unsigned long>(hr),static_cast<unsigned>(state),static_cast<unsigned>(expectedState)); for(const auto& path:paths) {IShellItem* item=nullptr;SFGAOF attrs=0;if(SUCCEEDED(SHCreateItemFromParsingName(path.c_str(),nullptr,IID_PPV_ARGS(&item)))) {item->GetAttributes(SFGAO_FOLDER|SFGAO_FILESYSTEM,&attrs);item->Release();} fwprintf(stderr,L"Shell attributes 0x%08lx, file attributes 0x%08lx\n",static_cast<unsigned long>(attrs),static_cast<unsigned long>(GetFileAttributesW(path.c_str())));} return 15; }
+        if (stateOnly) {child->Release();selection->Release();FreeLibrary(library);CoUninitialize();std::ofstream out(argv[2]);out<<"{\"passed\":true,\"modernState\":true,\"selected\":"<<paths.size()<<",\"state\":"<<static_cast<unsigned>(state)<<"}";return 0;}
         for (int attempt = 0; attempt < 100; ++attempt) {
             hr = child->Invoke(selection,nullptr);
             if (SUCCEEDED(hr) || hr != REGDB_E_CLASSNOTREG) break;
