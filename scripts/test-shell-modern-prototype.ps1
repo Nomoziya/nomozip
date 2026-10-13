@@ -9,6 +9,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Modern menu prototype compilation failed.' }
 $taskClient = Join-Path $taskDirectory 'ShellClient.exe'
 & g++ -std=c++17 -O2 -municode -static -static-libgcc -static-libstdc++ ("-I" + (Join-Path $taskRoot '.tools')) (Join-Path $taskRoot 'tests/ShellValidation/client.cpp') -lshell32 -lole32 -luuid -o $taskClient
 if ($LASTEXITCODE -ne 0) { throw 'Modern menu client compilation failed.' }
+& (Join-Path $PSScriptRoot 'test-shell-command-state.ps1') -LibraryPath $taskLibrary -ClientPath $taskClient
 $taskApp = Join-Path (Join-Path $taskRoot $ApplicationDirectory) 'ArchivePassword.exe'
 $taskArchive = Join-Path $taskDirectory '原生接口验证.7z'
 Copy-Item -LiteralPath (Join-Path $taskRoot 'tests/fixtures/generated/encrypted-header.7z') -Destination $taskArchive

@@ -41,11 +41,12 @@ public:
             for (DWORD index = 0; index < count; ++index) {
                 IShellItem* item = nullptr; PWSTR path = nullptr;
                 if (FAILED(items->GetItemAt(index, &item))) return S_OK;
-                SFGAOF itemAttrs = 0; item->GetAttributes(SFGAO_FOLDER,&itemAttrs);
                 auto hr = item->GetDisplayName(SIGDN_FILESYSPATH, &path); item->Release();
                 if (FAILED(hr)) return S_OK;
                 auto ext = PathFindExtensionW(path);
-                bool supported = !(itemAttrs & SFGAO_FOLDER) && (!lstrcmpiW(ext,L".7z") || !lstrcmpiW(ext,L".zip") || !lstrcmpiW(ext,L".rar"));
+                // ZIP/7z files can also be Shell folders; use physical directory attributes.
+                auto fileAttrs = GetFileAttributesW(path);
+                bool supported = fileAttrs != INVALID_FILE_ATTRIBUTES && !(fileAttrs & FILE_ATTRIBUTE_DIRECTORY) && (!lstrcmpiW(ext,L".7z") || !lstrcmpiW(ext,L".zip") || !lstrcmpiW(ext,L".rar"));
                 CoTaskMemFree(path); if (!supported) return S_OK;
             }
         }
