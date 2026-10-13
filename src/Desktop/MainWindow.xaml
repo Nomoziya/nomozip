@@ -73,7 +73,7 @@
         <StackPanel><TextBlock Text="设置" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,24"/>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
             <TextBlock Text="软件更新" Style="{StaticResource Heading}"/>
-            <TextBlock Text="{Binding ApplicationVersionDescription}" Margin="0,0,0,8"/>
+            <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,0,0,8"/>
             <TextBlock Text="软件正式版由 nomozip 发布，与 7-Zip 引擎更新分别检查。" Style="{StaticResource Secondary}"/>
             <WrapPanel Margin="0,16,0,0"><Button x:Name="CheckApplicationUpdatesButton" Content="检查软件更新" Command="{Binding CheckApplicationUpdatesCommand}" Margin="0,0,12,8"/><Button x:Name="OpenApplicationDownloadButton" Content="打开软件下载页" Command="{Binding OpenApplicationDownloadCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,0,8"/></WrapPanel>
             <TextBlock x:Name="ApplicationUpdateStatus" Text="{Binding ApplicationUpdateMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
