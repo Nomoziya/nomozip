@@ -1,5 +1,15 @@
 # 右键解压与压缩
 
+2026-10-14 当前产品范围：保留传统菜单；用户不进行 Windows 代码签名，因此第一层原生菜单公开部署及发行签名已移出当前交付验收。下文原型记录仅保留研究成果，不作为后续发布门槛。
+
+## 传统菜单与原生菜单的区别
+
+这里指文件资源管理器的右键菜单，不是软件窗口里的按钮或菜单。传统菜单在 Windows 11 右键后点击“显示更多选项”可见；原生菜单使用 Windows 11 第一层的新菜单样式，右键后即可找到入口。两者均可调用同样的解压与压缩流程，菜单位置本身不会改变密码库、格式支持或引擎性能。当前产品采用传统入口。
+
+本项目传统菜单使用当前用户的登记和已有 EXE，不需要 MSIX 包身份或 Windows 代码签名。原生菜单原型采用 IExplorerCommand 和 sparse identity；按[微软部署要求](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/grant-identity-to-nonpackaged-apps)，面向用户分发身份包需要目标电脑信任的签名。[无签名安装路线](https://learn.microsoft.com/en-us/windows/msix/package/unsigned-package)用于测试，不能通过删去验收项目使 Windows 跳过部署要求。当前保留传统菜单，不分发自签证书或要求用户修改信任。
+
+Windows Authenticode/身份包签名用于 Windows 发布者与代码身份；现有引擎更新包的 RSA 验签用于本产品检查更新来源。后者已有自己的密钥和固定公钥，不需要商业 Windows 证书，继续保留。
+
 此功能属于本地开发候选 0.2.0-preview.2；公开正式版 0.1.0 不包含此入口。基础菜单已实现并完成代理验收，[最终 Windows CI 38340205265](https://github.com/Nomoziya/nomozip/actions/runs/38340205265) 全部成功，本地候选在 `artifacts/release-0.2.0-preview.2-reviewed/`。
 
 ## 使用
