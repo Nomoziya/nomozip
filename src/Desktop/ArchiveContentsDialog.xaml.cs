@@ -7,8 +7,8 @@ public partial class ArchiveContentsDialog : Window
     public ArchiveContentsDialog(ArchiveContentsViewModel model)
     {
         InitializeComponent(); DataContext = model;
-        WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
-        Loaded += (_, _) => EntrySearch.Focus();
+        void Arrange() {var compact=ActualHeight<420;ContentsArchiveName.Visibility=ContentsSummary.Visibility=compact?Visibility.Collapsed:Visibility.Visible;}
+        SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
         var closing=false;
         Closing+=async (_,e)=>
         {

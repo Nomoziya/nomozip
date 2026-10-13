@@ -19,7 +19,6 @@ public partial class PasswordDialog : Window
         InitializeComponent(); original = existing; this.editing = editing;
         this.testing=testing;
         this.archiveName = archiveName; this.previousFailure = previousFailure; this.prepareFailure = prepareFailure;
-        WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
         SavedBox.ItemsSource = saved; SavedPanel.Visibility = !editing && saved.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         EditorDetails.Visibility = editing ? Visibility.Visible : Visibility.Collapsed;
         SavePassword.IsEnabled = canSave;

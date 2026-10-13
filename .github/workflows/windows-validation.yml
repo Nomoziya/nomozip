@@ -125,6 +125,7 @@ jobs:
             artifacts/password-organization-preview/*.png
             artifacts/file-hash-preview/*.png
             artifacts/encoding-preview/*.png
+            artifacts/dpi-preview/*.png
             artifacts/shell-validation/**/*.log
             artifacts/origin-fat/**/*.log
             artifacts/origin-fat/**/disk-identity.json

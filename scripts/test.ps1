@@ -145,3 +145,6 @@ if ($taskEncodingGui.ExitCode -ne 0) { throw 'Desktop ZIP encoding validation fa
 
 $taskOriginGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-origin', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskOriginGui.ExitCode -ne 0) { throw 'Desktop origin metadata validation failed.' }
+
+$taskDpiGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-dpi', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskDpiGui.ExitCode -ne 0) { throw 'Desktop per-monitor DPI validation failed.' }

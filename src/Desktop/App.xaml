@@ -1,4 +1,4 @@
-<Application x:Class="ArchivePassword.Desktop.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Application x:Class="ArchivePassword.Desktop.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ArchivePassword.Desktop">
   <Application.Resources>
     <SolidColorBrush x:Key="CanvasBrush" Color="#F3F4F6" />
     <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="SelectionTextBrush" Color="#1D4ED8" />
     <SolidColorBrush x:Key="FocusBrush" Color="#1D4ED8" />
     <SolidColorBrush x:Key="ErrorBrush" Color="#B91C1C" />
-    <Style x:Key="AppWindow" TargetType="Window"><Setter Property="FontFamily" Value="Segoe UI, Microsoft YaHei"/><Setter Property="FontSize" Value="14"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="Background" Value="{DynamicResource CanvasBrush}"/></Style>
+    <Style x:Key="AppWindow" TargetType="Window"><Setter Property="local:WindowPlacement.AutoFit" Value="True"/><Setter Property="UseLayoutRounding" Value="True"/><Setter Property="SnapsToDevicePixels" Value="True"/><Setter Property="FontFamily" Value="Segoe UI, Microsoft YaHei"/><Setter Property="FontSize" Value="14"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="Background" Value="{DynamicResource CanvasBrush}"/></Style>
     <Style x:Key="Secondary" TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/><Setter Property="FontSize" Value="13"/><Setter Property="TextWrapping" Value="Wrap"/></Style>
     <Style x:Key="Heading" TargetType="TextBlock"><Setter Property="FontSize" Value="16"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Margin" Value="0,0,0,16"/></Style>
     <Style x:Key="FocusStyle" TargetType="Control"><Setter Property="Control.Template"><Setter.Value><ControlTemplate><Border BorderBrush="{DynamicResource FocusBrush}" BorderThickness="2" CornerRadius="4" Margin="2" SnapsToDevicePixels="True" IsHitTestVisible="False"/></ControlTemplate></Setter.Value></Setter></Style>
