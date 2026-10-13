@@ -30,6 +30,8 @@
 
 ## 设置与验证
 
+最终产品/验收代码 `e937e2d` 的 [Windows CI 38345617982](https://github.com/Nomoziya/nomozip/actions/runs/38345617982) 全部通过；32 份报告含新增双引擎 104 项、实际界面 58 项，以及原有功能、安装升级、真实右键菜单、备份迁移和软件更新回归。候选目录 `artifacts/release-0.2.0-preview.4/` 仅包含轻量 EXE/ZIP、源码和 SHA256SUMS；载荷 9301087 字节 / 43 文件。
+
 目录规则与最近位置保存在原有本机设置文件中，旧版缺少这些字段时使用原行为。未知设置版本或未知规则枚举保持原文件，不自动覆盖。右键逐包目标不持久化为目录规则。
 
 `tests/ExtractionToolsValidation` 使用 26.03/26.04 的真实引擎与合成压缩包，验证单文件、单根目录、多根、编号、合并/跳过/覆盖/取消、缺卷、损坏、多密码和无输出/无密码库修改。`ArchivePassword.exe --validate-extraction-tools <项目目录>` 使用独立合成资料验证实际 WPF/UIA 绑定、主题、窄窗口、规则保存、旧设置、手动密码、结果选择及完成触发；Explorer 调用使用替身，实际物理多屏和真实辅助语音的原有范围保持不变。报告分别为 `artifacts/extraction-tools-validation.json` 与 `artifacts/extraction-tools-ui-validation.json`，均接入 Windows CI。
