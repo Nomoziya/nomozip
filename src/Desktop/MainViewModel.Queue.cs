@@ -3,6 +3,14 @@ using System.Windows.Input;
 namespace ArchivePassword.Desktop;
 public sealed partial class MainViewModel
 {
+    private int queueConcurrency=1;
+    private readonly Dictionary<ArchiveTaskRow,(CancellationTokenSource Skip,bool Trying)> queueAttempts=[];
+    public int QueueConcurrency {get=>queueConcurrency;set {if(IsBusy) return;if(Set(ref queueConcurrency,value==2?2:1)) Changed(nameof(QueueConcurrencyIndex));}}
+    public int QueueConcurrencyIndex {get=>QueueConcurrency-1;set=>QueueConcurrency=value+1;}
+    private void RefreshQueuePasswordAction()
+    {CanSkipPasswords=SelectedTask is {} selected && queueAttempts.TryGetValue(selected,out var attempt) && attempt.Trying;CommandManager.InvalidateRequerySuggested();}
+    private void SkipSelectedPasswordAttempts()
+    {if(queueAttempts.Count>0){if(SelectedTask is {} selected && queueAttempts.TryGetValue(selected,out var attempt) && attempt.Trying) attempt.Skip.Cancel();}else skipPasswords?.Cancel();}
     public ICommand MoveTaskUpCommand {get;private set;}=null!;
     public ICommand MoveTaskDownCommand {get;private set;}=null!;
     public ICommand ExtractSelectedTaskCommand {get;private set;}=null!;
