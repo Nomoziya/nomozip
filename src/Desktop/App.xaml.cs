@@ -103,6 +103,14 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var applicationUiIndex = Array.IndexOf(e.Args, "--validate-application-updates");
+        if (applicationUiIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopApplicationUpdateValidation.RunAsync(window, theme, Path.GetFullPath(e.Args[applicationUiIndex+1]), baseDirectory);
+            Shutdown(passed ? 0 : 1); return;
+        }
         var shellUiIndex = Array.IndexOf(e.Args, "--validate-shell-ui");
         if (shellUiIndex >= 0)
         {
