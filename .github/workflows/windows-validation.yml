@@ -95,6 +95,8 @@ jobs:
           ./scripts/test.ps1 -SkipEngineValidation
           & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
+      - name: Verify actual Windows Shell menu enumeration and invocation
+        run: ./scripts/test-shell-live.ps1
       - name: Obtain synthetic backup from independent Windows machine
         uses: actions/download-artifact@v8
         with:

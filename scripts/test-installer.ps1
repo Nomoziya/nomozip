@@ -42,7 +42,19 @@ try {
     $taskOriginalCommand = '"' + (Join-Path $taskApplication 'ArchivePassword.exe') + '" "%1"'
     New-Item -Force $taskAssociationCommand | Out-Null
     Set-Item -LiteralPath $taskAssociationCommand -Value $taskOriginalCommand
+    $taskShellRoots = @('SystemFileAssociations\.7z\shell\nomozip','SystemFileAssociations\.zip\shell\nomozip','SystemFileAssociations\.rar\shell\nomozip','*\shell\nomozip','Directory\shell\nomozip',
+        'CLSID\{c708b15d-0d3e-47ab-8fc8-c22d21ff1171}','CLSID\{c708b15d-0d3e-47ab-8fc8-c22d21ff1172}','CLSID\{c708b15d-0d3e-47ab-8fc8-c22d21ff1173}')
+    foreach ($taskShellPath in $taskShellRoots) {
+        $taskShellKey = Join-Path $taskAssociationRoot $taskShellPath
+        New-Item -Force $taskShellKey | Out-Null
+        New-ItemProperty -LiteralPath $taskShellKey -Name NomozipOwner -Value (Join-Path $taskApplication 'ArchivePassword.exe') -Force | Out-Null
+        New-ItemProperty -LiteralPath $taskShellKey -Name SyntheticPayload -Value 'keep-this-registration' -Force | Out-Null
+    }
     Invoke-Installer $taskUpgrade @('/S')
+    $taskChecks.upgradePreservedShellMenu = @($taskShellRoots | Where-Object {
+        $taskValue = Get-ItemProperty -LiteralPath (Join-Path $taskAssociationRoot $_) -ErrorAction SilentlyContinue
+        $taskValue.NomozipOwner -ne (Join-Path $taskApplication 'ArchivePassword.exe') -or $taskValue.SyntheticPayload -ne 'keep-this-registration'
+    }).Count -eq 0
     $taskChecks.newVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.2'
     $taskPayload = if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }
     $taskChecks.upgradeReplacedOwnedPayload = (Get-FileHash (Join-Path $taskApplication '使用说明.txt')).Hash -eq (Get-FileHash (Join-Path $taskRoot "$taskPayload/使用说明.txt")).Hash
@@ -68,17 +80,23 @@ try {
     $taskChecks.defaultUninstallPreservedData = (Get-FileHash $taskVault).Hash -eq $taskVaultHash -and (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
     $taskChecks.uninstallPreservedUnrelatedFile = Test-Path (Join-Path $taskApplication 'keep-user-file.txt')
     $taskChecks.uninstallRemovedOwnedFileEntry = -not (Test-Path (Join-Path $taskAssociationRoot 'nomozip.Archive'))
+    $taskChecks.uninstallRemovedOwnedShellMenu = @($taskShellRoots | Where-Object { Test-Path -LiteralPath (Join-Path $taskAssociationRoot $_) }).Count -eq 0
     Invoke-Installer $taskUpgrade @('/S')
     $taskChecks.reinstallPreservedVault = (Get-FileHash $taskVault).Hash -eq $taskVaultHash
     New-Item -Force $taskAssociationCommand | Out-Null
     Set-Item -LiteralPath $taskAssociationCommand -Value '"C:\synthetic-other-copy\ArchivePassword.exe" "%1"'
+    foreach ($taskShellPath in $taskShellRoots) {
+        $taskShellKey = Join-Path $taskAssociationRoot $taskShellPath; New-Item -Force $taskShellKey | Out-Null
+        New-ItemProperty -LiteralPath $taskShellKey -Name NomozipOwner -Value 'C:\synthetic-other-copy\ArchivePassword.exe' -Force | Out-Null
+    }
     Invoke-Installer (Join-Path $taskApplication 'Uninstall.exe') @('/S','/DELETEDATA=1',('_?=' + $taskApplication))
     $taskChecks.explicitDataDeletion = -not (Test-Path $taskData)
     $taskChecks.uninstallPreservedOtherCopyFileEntry = Test-Path $taskAssociationCommand
+    $taskChecks.uninstallPreservedOtherCopyShellMenu = @($taskShellRoots | Where-Object { -not (Test-Path -LiteralPath (Join-Path $taskAssociationRoot $_)) }).Count -eq 0
     if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
     Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskExpectedChecks = if ($FrameworkDependent) { 18 } else { 17 }
+    $taskExpectedChecks = if ($FrameworkDependent) { 21 } else { 20 }
     $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
     [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8

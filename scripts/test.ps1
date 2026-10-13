@@ -6,12 +6,16 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
 & $taskDotnet (Join-Path $taskRoot 'tests/VaultTransferValidation/bin/Debug/net10.0-windows/VaultTransferValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Encrypted vault transfer validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/ShellValidation/bin/Debug/net10.0-windows/ShellValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Shell registration validation failed.' }
+& (Join-Path $PSScriptRoot 'test-shell.ps1')
+& (Join-Path $PSScriptRoot 'test-shell-modern-prototype.ps1')
 $taskPython = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $taskPython -or $taskPython -like '*WindowsApps*') {
     $taskPython = 'C:\Users\Nomozi\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
@@ -109,3 +113,5 @@ if ($taskGui.ExitCode -ne 0) { throw 'Desktop command validation failed.' }
 Write-Output 'Desktop command validation passed.'
 $taskVaultGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-vault-transfer', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskVaultGui.ExitCode -ne 0) { throw 'Desktop vault transfer command validation failed.' }
+$taskShellGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-shell-ui', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskShellGui.ExitCode -ne 0) { throw 'Desktop Shell settings and compression validation failed.' }

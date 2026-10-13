@@ -11,6 +11,7 @@ namespace ArchivePassword.Desktop;
 public partial class App : Application
 {
     private ThemeResources? theme;
+    private ShellCommandServer? shellServer;
     private void OnSystemParametersChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SystemParameters.HighContrast))
@@ -19,6 +20,7 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         SystemParameters.StaticPropertyChanged -= OnSystemParametersChanged;
+        shellServer?.Dispose();
         base.OnExit(e);
     }
     protected override async void OnStartup(StartupEventArgs e)
@@ -57,6 +59,43 @@ public partial class App : Application
             if (dataIndex < 0) dataDirectory = Path.Combine(validationRoot, "artifacts", "installed-validation", Guid.NewGuid().ToString("N"));
             else if (!dataDirectory.StartsWith(Path.Combine(validationRoot, "artifacts", "installer-validation") + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) { Shutdown(2); return; }
         }
+        if (e.Args.Contains("--shell-server"))
+        {
+            var testIndex = Array.IndexOf(e.Args, "--validate-shell-server");
+            var testRoot = testIndex >= 0 ? Path.GetFullPath(e.Args[testIndex + 1]) : null;
+            if (testRoot is not null) dataDirectory = Path.Combine(testRoot, "artifacts/shell-desktop", Guid.NewGuid().ToString("N"));
+            var shellDataDirectory = dataDirectory;
+            shellServer = new ShellCommandServer(Dispatcher, async selection =>
+            {
+                var shellWindow = new MainWindow();
+                var shellVault = new DpapiPasswordVault(Path.Combine(shellDataDirectory, "passwords.apv"));
+                var shellModel = new MainViewModel(baseDirectory, shellDataDirectory, shellVault, new WindowDialogs(shellWindow));
+                shellWindow.DataContext = shellModel; MainWindow = shellWindow;
+                if (testRoot is not null)
+                {
+                    shellWindow.WindowStartupLocation = WindowStartupLocation.Manual; shellWindow.Left = -32000; shellWindow.Top = -32000;
+                    shellWindow.ShowActivated = false; shellWindow.ShowInTaskbar = false;
+                }
+                else WindowPlacement.FitWorkArea(shellWindow, SystemParameters.WorkArea);
+                shellWindow.Show();
+                if (testRoot is not null) await shellVault.SaveAsync(new SavedPassword(Guid.NewGuid(), "synthetic shell acceptance", "测试密碼 ' $ & 空格", "", true, DateTimeOffset.UtcNow));
+                await shellModel.InitializeAsync();
+                await shellModel.ApplyShellSelectionAsync(selection);
+                if (testRoot is not null)
+                {
+                    await Dispatcher.InvokeAsync(shellWindow.UpdateLayout, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                    DesktopAccessibilityValidation.Render(shellWindow, Path.Combine(testRoot, "artifacts/shell-view-" + selection.Action + ".png"), 1.0);
+                    await File.WriteAllTextAsync(Path.Combine(testRoot, "artifacts/shell-server-" + selection.Action + "-validation.json"), JsonSerializer.Serialize(new
+                    { passed = selection.Action == ShellAction.Compress ? shellModel.Page == 3 && shellModel.CompressionSources.Count == selection.Paths.Count && !shellModel.CompressionRunning
+                        : shellModel.Tasks.Count == selection.Paths.Count && shellModel.Tasks.All(task => task.Completed),
+                        action = selection.Action.ToString(), selected = selection.Paths.Count, tasks = shellModel.Tasks.Select(task => new { task.Path, output = task.ShellOutputPath, task.Completed }),
+                        compressionSources = shellModel.CompressionSources.Select(source => source.Path), compressionOutput = shellModel.CompressionOutput, syntheticData = true }));
+                    Shutdown();
+                }
+            }, () => Shutdown());
+            if (testRoot is not null) await File.WriteAllTextAsync(Path.Combine(testRoot, "artifacts/shell-server-ready-" + Environment.ProcessId + ".json"), "{\"ready\":true}");
+            return;
+        }
         var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
         var window = new MainWindow();
         var model = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window, validationIndex >= 0 ? PrepareValidationDialog : null,
@@ -64,6 +103,14 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var shellUiIndex = Array.IndexOf(e.Args, "--validate-shell-ui");
+        if (shellUiIndex >= 0)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopShellUiValidation.RunAsync(window, theme, Path.GetFullPath(e.Args[shellUiIndex+1]), baseDirectory);
+            Shutdown(passed ? 0 : 1); return;
+        }
         if (vaultTransferValidationIndex >= 0)
         {
             window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;

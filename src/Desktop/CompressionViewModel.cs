@@ -27,7 +27,20 @@ public sealed partial class MainViewModel
     public ICommand SetCompressionPasswordCommand { get; private set; } = null!;
     public ICommand CreateArchiveCommand { get; private set; } = null!;
     public ICommand OpenCreatedArchiveFolderCommand { get; private set; } = null!;
-    public int CompressionFormat { get => compressionFormat; set { if (Set(ref compressionFormat, value)) { Changed(nameof(Is7zCompression)); Changed(nameof(CompressionHint)); } } }
+    public int CompressionFormat
+    {
+        get => compressionFormat;
+        set
+        {
+            var previousExtension = Is7zCompression ? ".7z" : ".zip";
+            if (Set(ref compressionFormat, value))
+            {
+                if (Path.GetExtension(CompressionOutput).Equals(previousExtension, StringComparison.OrdinalIgnoreCase))
+                    CompressionOutput = Path.ChangeExtension(CompressionOutput, Is7zCompression ? ".7z" : ".zip");
+                Changed(nameof(Is7zCompression)); Changed(nameof(CompressionHint));
+            }
+        }
+    }
     public bool Is7zCompression => CompressionFormat == 0;
     public string CompressionHint => Is7zCompression ? "7z 支持中文密码及文件名加密。" : "ZIP 使用 AES-256 加密；当前官方引擎仅支持 ASCII 密码，中文密码请选择 7z。";
     public int CompressionLevel { get => compressionLevel; set => Set(ref compressionLevel, value); }

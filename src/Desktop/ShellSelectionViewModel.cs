@@ -1,0 +1,41 @@
+using System.IO;
+using ArchivePassword.Core;
+
+namespace ArchivePassword.Desktop;
+public sealed partial class MainViewModel
+{
+    private string shellDestinationDescription = "";
+    private ShellAction? shellAction;
+    public string ShellDestinationDescription { get => shellDestinationDescription; private set => Set(ref shellDestinationDescription, value); }
+    public bool HasShellDestinations => ShellDestinationDescription.Length > 0;
+    private void ClearShellDestinations()
+    {
+        foreach (var task in Tasks) task.ShellOutputPath = null;
+        shellAction = null;
+        ShellDestinationDescription = ""; Changed(nameof(HasShellDestinations));
+    }
+    public async Task ApplyShellSelectionAsync(ShellSelection supplied)
+    {
+        var selection = supplied.Validate();
+        if (!IsIdle) throw new InvalidOperationException("Application is busy.");
+        if (selection.Action == ShellAction.Compress)
+        {
+            Page = 3; AddCompressionSources(selection.Paths);
+            var first = selection.Paths[0].TrimEnd(Path.DirectorySeparatorChar);
+            var parent = Path.GetDirectoryName(first);
+            var name = selection.Paths.Count == 1 && parent is not null ? Path.GetFileName(first) : "压缩文件";
+            CompressionOutput = Path.Combine(parent ?? selection.Paths[0], name + (Is7zCompression ? ".7z" : ".zip"));
+            CompressionMessage = $"已从右键菜单添加 {selection.Paths.Count} 个项目。确认格式、位置和密码后创建。";
+            return;
+        }
+        Page = 0; Tasks.Clear(); OutputPath = selection.OutputFor(selection.Paths[0]);
+        shellAction = selection.Action;
+        foreach (var path in selection.Paths) Tasks.Add(new ArchiveTaskRow(path) { ShellOutputPath = selection.OutputFor(path) });
+        ShellDestinationDescription = selection.Action == ShellAction.ExtractHere
+            ? "右键解压：各压缩包分别输出到其所在目录。上方显示首个任务目录；用“浏览目录”可统一修改。"
+            : "右键解压：每包输出到各自的同名文件夹。上方显示首个任务目录；用“浏览目录”可统一修改。";
+        Changed(nameof(HasShellDestinations));
+        if (!ExtractCommand.CanExecute(null)) { Banner = "未找到可用引擎，尚未解压。"; return; }
+        ExtractCommand.Execute(null); await WaitForIdleAsync();
+    }
+}

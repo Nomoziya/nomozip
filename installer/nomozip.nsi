@@ -39,6 +39,8 @@ Var DeleteCheckbox
 Var Dialog
 Var PreserveAssociations
 Var OriginalOpenCommand
+Var PreserveShellMenu
+!include "shell-menu.nsh"
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE "安装 nomozip"
 !ifdef FRAMEWORK_DEPENDENT
@@ -135,7 +137,11 @@ Section "安装"
   StrCpy $PreserveAssociations 1
   WriteRegStr HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" "" "$OriginalOpenCommand "
 runoldcleanup:
+  !insertmacro PrepareShellUpgrade
   ExecWait '"$INSTDIR\Uninstall.exe" /S _?=$INSTDIR' $1
+  ${If} $PreserveShellMenu == 1
+    !insertmacro SetShellOwners "$INSTDIR\ArchivePassword.exe"
+  ${EndIf}
   ${If} $PreserveAssociations == 1
     WriteRegStr HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" "" "$OriginalOpenCommand"
   ${EndIf}
@@ -174,6 +180,10 @@ Section "Uninstall"
     System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'
   !endif
 associationsdone:
+  !insertmacro RemoveOwnedShellMenu
+  !ifndef VALIDATION_ROOT
+    System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'
+  !endif
   ; Only remove files owned by this installer; preserve unrelated files in the chosen directory.
   !include "${OWNED_FILES}"
   Delete "$INSTDIR\Uninstall.exe"
