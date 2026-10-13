@@ -18,7 +18,7 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
 {
     public async Task<ArchiveVerificationOutcome> VerifyAsync(string archivePath, bool autoTry,
         Func<EngineResult, Task<PasswordPromptResponse?>> requestPassword, IProgress<TaskUpdate>? progress = null,
-        CancellationToken cancellationToken = default, CancellationToken skipSavedPasswordToken = default)
+        CancellationToken cancellationToken = default, CancellationToken skipSavedPasswordToken = default,IReadOnlyList<ArchiveEntry>? selection=null)
     {
         EngineResult result;
         string? secret = null, warning = null;
@@ -28,12 +28,13 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
         var currentState = "testing";
         var currentMessage = "正在检查压缩包";
         var engineProgress = new ForwardProgress<EngineProgress>(value => progress?.Report(new TaskUpdate(currentState, currentMessage, value)));
+        Task<EngineResult> TestAsync(string? password,IReadOnlyDictionary<uint,string> overrides,CancellationToken token) =>selection is not null
+            ? engine is IArchiveSelectionEngine selectedEngine ? selectedEngine.TestSelectionAsync(archivePath,selection,password,overrides,engineProgress,token) : Task.FromResult(new EngineResult {Code="unsupported_selection"})
+            : engine is IArchiveMultiPasswordEngine multi && overrides.Count>0 ? multi.TestWithPasswordsAsync(archivePath,password,overrides,engineProgress,token) : engine.TestAsync(archivePath,password,engineProgress,token);
         async Task<EngineResult> VerifyPasswordAsync(PasswordPromptResponse candidate, CancellationToken token)
         {
             var overrides = verifiedPasswords.Where(value => value.Value.Secret != candidate.Secret).ToDictionary(value => value.Key, value => value.Value.Secret);
-            var tested = engine is IArchiveMultiPasswordEngine multi && overrides.Count > 0
-                ? await multi.TestWithPasswordsAsync(archivePath, candidate.Secret, overrides, engineProgress, token)
-                : await engine.TestAsync(archivePath, candidate.Secret, engineProgress, token);
+            var tested = await TestAsync(candidate.Secret,overrides,token);
             if (tested.Status == "cancelled") return tested;
             foreach (var failed in tested.Failures) verifiedPasswords.Remove(failed.Index);
             foreach (var index in tested.VerifiedEncryptedItems)
@@ -41,7 +42,7 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
             return tested;
         }
         progress?.Report(new TaskUpdate("testing", "正在检查压缩包"));
-        result = await engine.TestAsync(archivePath, progress: engineProgress, cancellationToken: cancellationToken);
+        result = await TestAsync(null,new Dictionary<uint,string>(),cancellationToken);
         if (!result.IsSuccess && result.NeedsPassword && autoTry)
         {
             IReadOnlyList<PasswordCandidate> entries;
