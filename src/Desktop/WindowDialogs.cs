@@ -8,8 +8,14 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
-    Func<string, int, bool>? confirmPasswordOrganization = null)
+    Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null)
 {
+    public void ShowFileHashes(string? path, CancellationToken token = default)
+    {
+        var dialog = new FileHashDialog(path) { Owner = owner }; prepareHashes?.Invoke(dialog);
+        using var registration = token.Register(() => dialog.Dispatcher.BeginInvoke(() => { if (dialog.IsVisible) dialog.Close(); }));
+        dialog.ShowDialog();
+    }
     public ExtractionRulesEditor? EditExtractionRules(ExtractionDirectoryRules rules,string custom,IReadOnlyList<string> recent)
     {
         var dialog=new ExtractionRulesDialog(rules,custom,recent) {Owner=owner};prepareRules?.Invoke(dialog);
