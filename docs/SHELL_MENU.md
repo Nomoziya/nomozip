@@ -1,6 +1,6 @@
 # 右键解压与压缩
 
-此功能属于本地开发候选 0.2.0-preview.2；公开正式版 0.1.0 不包含此入口。基础菜单已实现，当前在等待最终云端验收。
+此功能属于本地开发候选 0.2.0-preview.2；公开正式版 0.1.0 不包含此入口。基础菜单已实现并完成代理验收，[最终 Windows CI 38340205265](https://github.com/Nomoziya/nomozip/actions/runs/38340205265) 全部成功，本地候选在 `artifacts/release-0.2.0-preview.2/`。
 
 ## 使用
 
@@ -18,7 +18,9 @@
 
 基础菜单使用 Windows 静态级联菜单、`MultiSelectModel=Player` 与 [IExecuteCommand / IObjectWithSelection](https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-iexecutecommand)。`ArchivePassword.exe --shell-server` 作为本地 COM 服务器，只在执行命令时启动；Explorer 不加载 .NET，无新增程序或运行组件。三种动作共享原有业务和官方引擎。登记采用 HKCU，不要求更改系统默认关联；参考[微软菜单登记与选择模型](https://learn.microsoft.com/en-us/windows/win32/shell/context-menu-handlers)和[静态级联菜单](https://learn.microsoft.com/en-us/windows/win32/shell/creating-static-cascading-menus)。
 
-本地隔离登记 31 项通过；原生 COM → 实际 WPF 流程 10 项通过，含中文/空格/特殊字符、不同父目录、真实输出和 300 个长路径项目（合计超过命令行上限）；实际设置按钮、窄窗口/模拟高对比度和压缩创建 21 项通过；安装升级/卸载 21 项通过。报告为 `artifacts/shell-registration-validation.json`、`shell-native-validation.json`、`shell-ui-validation.json` 和 `light-installer-validation.json`。测试使用合成数据与隔离登记，云端另验证真实 Windows Shell 菜单枚举和委托执行。
+本地及云端隔离登记 31 项通过；原生 COM → 实际 WPF 流程 10 项通过，含中文/空格/特殊字符、不同父目录、真实输出和 300 个长路径项目（合计超过命令行上限）；实际设置按钮、窄窗口/模拟高对比度和压缩创建 21 项通过；安装升级/卸载 21 项通过。真实 Windows Shell 已枚举三项命令并完成委托调用，级联子菜单在 WM_INITMENUPOPUP 后检查，没有将未初始化的空子菜单误判为产品失败。28 份云端报告位于 `artifacts/github-validation-38340205265/`，包括 `shell-live-validation.json`、`shell-registration-validation.json`、`shell-native-validation.json`、`shell-ui-validation.json` 和 `light-installer-validation.json`。测试使用合成数据；本地真实菜单复现仅登记随机测试扩展名并已清理，未更改真实格式的默认应用或实际菜单。
+
+轻量载荷 9210187 字节 / 43 文件，比 A1 候选增加 35776 字节（约 35 KiB），未新增运行组件；预览首帧重复启动约 0.91–0.93 秒，与 A1 相近，未包含真实引擎校验。官方 DLL、worker 和更新公钥保持一致。程序目录的云端隔离安装占用 9420981 字节（包含卸载器等安装文件）。
 
 ## Windows 11 原生菜单技术原型
 
