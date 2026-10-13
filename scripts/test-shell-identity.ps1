@@ -6,7 +6,7 @@ if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hoste
 }
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskId = [Guid]::NewGuid().ToString('N')
-$taskName = 'Nomoziya.NomozipShellTest' + $taskId
+$taskName = 'Nomoziya.NomozipShellTest' + $taskId.Substring(0,16)
 $taskPublisher = 'CN=' + $taskName
 $taskOriginalAppHash = (Get-FileHash -LiteralPath (Join-Path $taskRoot 'artifacts/app/ArchivePassword.exe')).Hash
 $taskOutput = & (Join-Path $PSScriptRoot 'build-shell-identity-prototype.ps1') -OutputDirectory ('artifacts/shell-identity/' + $taskId) -PackageName $taskName -Publisher $taskPublisher -IncludeValidationProbe
