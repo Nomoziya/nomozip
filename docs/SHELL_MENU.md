@@ -29,4 +29,7 @@
 [微软原生菜单说明](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/integrate-packaged-app-with-file-explorer)要求 IExplorerCommand 和包身份。当前未安装或验证该 sparse package，也未在真实 Windows 11 第一层菜单展示验收；没有把 XML 可读或接口通过当作部署成功。后续 B3 继续包身份、签名/部署、升级移除与真实 Windows 11 展示验收。本地未安装证书、启用开发者模式或重启 Explorer。
 
 
-2026-10-13 部署审计：原型清单已补充实际 SDK 模式验证，修复 COM 元素顺序和旧 EntryPoint 与 win32App 的冲突。小型 sparse identity 构建通过，临时 CI 签名/注册、包 COM 激活、升级移除正在验证；当前未启用产品原生菜单，Windows 11 第一层展示和公开签名仍未完成。详见 [部署审计](SHELL_IDENTITY.md)。
+2026-10-13 部署审计：原型清单已补充实际 SDK 模式验证，修复 COM 元素顺序和旧 EntryPoint 与 win32App 的冲突。小型 sparse identity 构建通过，临时 CI 的签名/注册、包 COM 激活、升级移除 18 项及菜单状态 17 项通过；当前未启用产品原生菜单，Windows 11 第一层展示和公开签名仍未完成。详见 [部署审计](SHELL_IDENTITY.md)。
+
+
+[Windows CI 38431690497](https://github.com/Nomoziya/nomozip/actions/runs/38431690497) 的 46 份报告全部通过。用户选择暂缓原生菜单公开启用，保留传统菜单并继续 B4；原生部署验证仅临时 Windows Server VM，真实 Windows 11 第一层显示尚未验收。
