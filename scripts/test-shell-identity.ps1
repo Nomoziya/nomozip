@@ -74,8 +74,20 @@ try {
         $taskArguments = @($taskClientReport,$taskClsid) + $taskPaths
         # Every value is a generated Windows path or fixed GUID; quote as data.
         $taskQuotedArguments = @($taskArguments | ForEach-Object { '"' + $_ + '"' })
-        $taskProcess = Start-Process -FilePath $taskProbe -ArgumentList $taskQuotedArguments -WindowStyle Hidden -PassThru -RedirectStandardError (Join-Path $taskOutput ($taskCase + '-probe-error.log')) -RedirectStandardOutput (Join-Path $taskOutput ($taskCase + '-probe-output.log'))
-        try { if (-not $taskProcess.WaitForExit(30000)) { throw 'Packaged command timed out.' }; if ($taskProcess.ExitCode -ne 0) { Get-Content -LiteralPath (Join-Path $taskOutput ($taskCase + '-probe-error.log')); throw "Packaged $taskCase probe failed ($($taskProcess.ExitCode))." } }
+        $taskStart = New-Object Diagnostics.ProcessStartInfo
+        $taskStart.FileName = $taskProbe; $taskStart.Arguments = $taskQuotedArguments -join ' '
+        $taskStart.UseShellExecute = $false; $taskStart.CreateNoWindow = $true
+        $taskStart.RedirectStandardError = $true; $taskStart.RedirectStandardOutput = $true
+        $taskStart.EnvironmentVariables['PATH'] = (Join-Path $env:SystemRoot 'System32') + ';' + $env:SystemRoot
+        $taskProcess = [Diagnostics.Process]::Start($taskStart)
+        $taskErrorDrain = $taskProcess.StandardError.ReadToEndAsync(); $taskOutputDrain = $taskProcess.StandardOutput.ReadToEndAsync()
+        try {
+            if (-not $taskProcess.WaitForExit(30000)) { throw 'Packaged command timed out.' }
+            $taskErrorText = $taskErrorDrain.GetAwaiter().GetResult(); $taskOutputText = $taskOutputDrain.GetAwaiter().GetResult()
+            [IO.File]::WriteAllText((Join-Path $taskOutput ($taskCase + '-probe-error.log')),$taskErrorText)
+            [IO.File]::WriteAllText((Join-Path $taskOutput ($taskCase + '-probe-output.log')),$taskOutputText)
+            if ($taskProcess.ExitCode -ne 0) { Write-Output $taskErrorText; throw "Packaged $taskCase probe failed ($($taskProcess.ExitCode))." }
+        }
         finally { if (-not $taskProcess.HasExited) { Stop-Process -Id $taskProcess.Id } }
         $taskClient = Get-Content -LiteralPath $taskClientReport -Raw | ConvertFrom-Json
         $taskChecks[$taskCase + 'IdentityAndPackagedCom'] = $taskClient.passed -and $taskClient.osIdentity -and $taskClient.packagedComActivation -and $taskClient.selected -eq $taskPaths.Count -and $taskClient.packageFullName.StartsWith($taskName + '_')
