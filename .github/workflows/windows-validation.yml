@@ -99,6 +99,9 @@ jobs:
         run: ./scripts/test-origin-fat.ps1
       - name: Verify actual Windows Shell menu enumeration and invocation
         run: ./scripts/test-shell-live.ps1
+      - name: Validate signed sparse identity on the disposable runner
+        # Test certificate trust is never installed on a developer/user machine.
+        run: powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File ./scripts/test-shell-identity.ps1
       - name: Obtain synthetic backup from independent Windows machine
         uses: actions/download-artifact@v8
         with:
@@ -129,5 +132,7 @@ jobs:
             artifacts/shell-validation/**/*.log
             artifacts/origin-fat/**/*.log
             artifacts/origin-fat/**/disk-identity.json
+            artifacts/shell-identity/**/*.log
+            artifacts/shell-identity/**/build.json
           if-no-files-found: ignore
       # This workflow does not publish or sign production updates.
