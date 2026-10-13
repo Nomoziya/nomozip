@@ -16,7 +16,7 @@ public sealed partial class MainViewModel
             var destination=task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
             Func<IReadOnlyList<ArchiveEntry>,string>? resolve=task.ShellOutputPath is null && directoryRules.Layout!=ExtractionLayout.Direct
                 ? entries=>ExtractionDirectoryPlanner.Resolve(task.Path,destination,directoryRules,entries,DateOnly.FromDateTime(DateTime.Today)):null;
-            var result=await new ExtractionService(client,vault,new PasswordCandidateProvider(vault)).ExtractAsync(task.Path,destination,AutoTry,
+            var result=await new ExtractionService(client,vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin()).ExtractAsync(task.Path,destination,AutoTry,
                 failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,vaultAvailable,cancellation.Token,previousFailure:failure),
                 path=>Task.FromResult(ConflictPolicy==1?ExistingFilePolicy.Skip:ConflictPolicy==2?ExistingFilePolicy.Replace:dialogs.ResolveConflict(path)),
                 new Progress<TaskUpdate>(value=>{status.Report(value.Message);Footer=$"{task.Name}：{value.Message}";CanSkipPasswords=value.State=="password";}),

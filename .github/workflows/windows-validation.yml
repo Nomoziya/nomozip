@@ -95,6 +95,8 @@ jobs:
           ./scripts/test.ps1 -SkipEngineValidation
           & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
+      - name: Validate origin preservation on an isolated exFAT virtual disk
+        run: ./scripts/test-origin-fat.ps1
       - name: Verify actual Windows Shell menu enumeration and invocation
         run: ./scripts/test-shell-live.ps1
       - name: Obtain synthetic backup from independent Windows machine
@@ -124,5 +126,7 @@ jobs:
             artifacts/file-hash-preview/*.png
             artifacts/encoding-preview/*.png
             artifacts/shell-validation/**/*.log
+            artifacts/origin-fat/**/*.log
+            artifacts/origin-fat/**/disk-identity.json
           if-no-files-found: ignore
       # This workflow does not publish or sign production updates.

@@ -192,7 +192,7 @@ public sealed partial class MainViewModel : ObservableObject
             await SaveSettingsAsync();
             foreach (var task in batch)
             {
-                var service = new ExtractionService(CreateReadClient(task), vault, new PasswordCandidateProvider(vault));
+                var service = new ExtractionService(CreateReadClient(task), vault, new PasswordCandidateProvider(vault), new WindowsExtractionOrigin());
                 if (cancellation.IsCancellationRequested) break;
                 skipPasswords.Dispose(); skipPasswords = new CancellationTokenSource();
                 task.Running = true; task.IsIndeterminate = true; task.Failure = null; SelectedTask = task;
@@ -377,6 +377,7 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private static string ErrorText(string code) => code switch
     {
+        "origin_read_failed" => "无法读取来源信息", "origin_write_failed" => "来源信息无法保留，未交付文件",
         "filename_encoding_not_zip" => "所选文件不是 ZIP", "filename_encoding_unsupported" => "引擎不支持文件名编码",
         "missing_volume" => "缺少分卷文件", "unsafe_path" => "压缩包包含不安全路径", "archive_read_failed" => "无法读取压缩包",
         "wrong_password" => "密码不匹配", "password_or_corrupt" => "密码不匹配或文件损坏", "corrupt_archive" => "压缩包已损坏",
