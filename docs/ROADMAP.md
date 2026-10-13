@@ -93,7 +93,7 @@
 
 ## 当前状态
 
-2026-10-13 B2 / F19：文件 SHA-256、比较和清单导入/实际计算值导出已实现，本地数据 34 / 界面 43 项通过，候选 0.2.0-preview.7，完整 CI 待核验。F20 未实施，B2 未整体完成。见 [文件 SHA-256](FILE_HASHES.md)。
+2026-10-13 B2 / F19：文件 SHA-256、比较和清单导入/实际计算值导出已实现，数据 34 / 界面 43 项及 [Windows CI 38368045548](https://github.com/Nomoziya/nomozip/actions/runs/38368045548) 全部通过，38 份报告已核对，候选 0.2.0-preview.7 仅在本地。F20 未实施，B2 未整体完成。见 [文件 SHA-256](FILE_HASHES.md)。
 
 2026-10-13 B2 / F06：密码分组、来源、重复提醒/合并和文件名优先规则已实现，数据 30 项、界面 30 项及 [Windows CI 38360550910](https://github.com/Nomoziya/nomozip/actions/runs/38360550910) 全部通过，36 份报告已核对，候选 0.2.0-preview.6 仅在本地。旧数据默认空元数据，合并迁移关联；其它自动候选保留。下一步 F19/F20，B2 未整体完成。见 [密码整理](PASSWORD_ORGANIZATION.md)。
 
