@@ -11,7 +11,7 @@ namespace ArchivePassword.Desktop;
 
 public sealed partial class MainViewModel : ObservableObject
 {
-    private readonly string baseDirectory, dataDirectory;
+    private readonly string baseDirectory, dataDirectory, shellClassesPath;
     private readonly IPasswordVault vault;
     private readonly WindowDialogs dialogs;
     private readonly EngineCatalog engines;
@@ -33,9 +33,10 @@ public sealed partial class MainViewModel : ObservableObject
     public ObservableCollection<string> EngineVersions { get; } = [];
     public string UpdateChannelDescription { get; private set; } = "仅安装本产品验证过的官方引擎更新包。此版本使用开发预览更新渠道。";
 
-    public MainViewModel(string baseDirectory, string dataDirectory, IPasswordVault vault, WindowDialogs dialogs)
+    public MainViewModel(string baseDirectory, string dataDirectory, IPasswordVault vault, WindowDialogs dialogs, string shellClassesPath = @"Software\Classes")
     {
         this.baseDirectory = baseDirectory; this.dataDirectory = dataDirectory; this.vault = vault; this.dialogs = dialogs;
+        this.shellClassesPath = shellClassesPath;
         var keyPath = Path.Combine(baseDirectory, "update-public-key.pem");
         var publicKey = File.Exists(keyPath) ? File.ReadAllText(keyPath) : null;
         engines = new EngineCatalog(Path.Combine(baseDirectory, "engines"), Path.Combine(dataDirectory, "engines"), publicKey);
@@ -56,7 +57,7 @@ public sealed partial class MainViewModel : ObservableObject
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
         OpenInputCommand = new RelayCommand(() => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else AddFilesCommand.Execute(null); }, () => IsIdle);
         RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is not null);
-        BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) OutputPath = path; }, () => IsIdle);
+        BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) { ClearShellDestinations(); OutputPath = path; } }, () => IsIdle);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
         BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page == 0 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
         ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
@@ -157,7 +158,8 @@ public sealed partial class MainViewModel : ObservableObject
     {
         if (IsBusy) return;
         foreach (var path in paths.Where(File.Exists))
-            if (!Tasks.Any(value => string.Equals(value.Path, Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase))) Tasks.Add(new ArchiveTaskRow(Path.GetFullPath(path)));
+            if (!Tasks.Any(value => string.Equals(value.Path, Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase)))
+                Tasks.Add(new ArchiveTaskRow(Path.GetFullPath(path)) { ShellOutputPath = shellAction is { } action ? new ShellSelection(action, []).OutputFor(Path.GetFullPath(path)) : null });
         Footer = "选择输出目录后开始解压。";
     }
     private async Task RefreshVaultAsync()
@@ -195,7 +197,8 @@ public sealed partial class MainViewModel : ObservableObject
                 });
                 try
                 {
-                    var outcome = await service.ExtractAsync(task.Path, OutputPath, AutoTry,
+                    var destination = task.ShellOutputPath ?? OutputPath;
+                    var outcome = await service.ExtractAsync(task.Path, destination, AutoTry,
                         failure => dialogs.AskPasswordAsync(task.Name, prompts++ > 0, allPasswords, vaultAvailable, cancellation.Token, previousFailure: failure),
                         path => Task.FromResult(ConflictPolicy == 1 ? ExistingFilePolicy.Skip : ConflictPolicy == 2 ? ExistingFilePolicy.Replace : dialogs.ResolveConflict(path)),
                         progress, cancellation.Token, skipPasswords.Token);

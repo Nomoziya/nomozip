@@ -37,6 +37,8 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? enabled = null)
 }
 public sealed class ArchiveTaskRow(string path, string? previewSize = null) : ObservableObject
 {
+    private string? shellOutputPath;
+    public string? ShellOutputPath { get => shellOutputPath; set => Set(ref shellOutputPath, value); }
     public string Path { get; } = path;
     public string Name => System.IO.Path.GetFileName(Path);
     public string SizeText => previewSize ?? FileSize();

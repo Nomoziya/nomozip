@@ -30,6 +30,7 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 - [当前支持范围、验证证据与交接](docs/ACCEPTANCE.md)
 - [后续任务与相关产品研究](docs/ROADMAP.md)
 - [密码库加密备份与迁移（0.2.0 开发候选）](docs/VAULT_BACKUP.md)
+- [右键解压与压缩（0.2.0 开发候选）](docs/SHELL_MENU.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
 - [解压主界面示意](design-system/extraction.svg)
 - [界面预览图](design-system/extraction.png)

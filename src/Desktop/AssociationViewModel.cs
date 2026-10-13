@@ -12,12 +12,28 @@ public sealed partial class MainViewModel
     public ICommand RegisterAssociationsCommand { get; private set; } = null!;
     public ICommand RemoveAssociationsCommand { get; private set; } = null!;
     public ICommand OpenDefaultAppsCommand { get; private set; } = null!;
+    public ICommand RegisterShellMenuCommand { get; private set; } = null!;
+    public ICommand RemoveShellMenuCommand { get; private set; } = null!;
+    private string shellMenuMessage = "尚未更改右键菜单。添加后可直接解压或打开压缩页。";
+    public string ShellMenuMessage { get => shellMenuMessage; set => Set(ref shellMenuMessage, value); }
     private FileAssociationService Associations => new(Path.Combine(baseDirectory, "ArchivePassword.exe"));
     private void InitializeAssociationCommands()
     {
         RegisterAssociationsCommand = new RelayCommand(() => ChangeAssociations(true), () => IsIdle);
         RemoveAssociationsCommand = new RelayCommand(() => ChangeAssociations(false), () => IsIdle);
+        RegisterShellMenuCommand = new RelayCommand(() => ChangeShellMenu(true), () => IsIdle);
+        RemoveShellMenuCommand = new RelayCommand(() => ChangeShellMenu(false), () => IsIdle);
         OpenDefaultAppsCommand = new RelayCommand(() => Process.Start(new ProcessStartInfo("ms-settings:defaultapps") { UseShellExecute = true }), () => IsIdle);
+    }
+    private void ChangeShellMenu(bool register)
+    {
+        try
+        {
+            var menu = new ShellMenuService(Path.Combine(baseDirectory, "ArchivePassword.exe"), shellClassesPath);
+            if (register) { menu.Register(); ShellMenuMessage = "已添加 nomozip 右键菜单。Windows 11 请在“显示更多选项”中使用；原默认应用保持不变。"; }
+            else ShellMenuMessage = menu.Unregister() ? "已移除本程序的右键菜单。" : "当前菜单不属于此程序位置，已保留原登记。";
+        }
+        catch (Exception error) when (error is UnauthorizedAccessException or SecurityException or IOException) { ShellMenuMessage = "右键菜单未能更改，请检查程序位置和当前用户权限。"; }
     }
     private void ChangeAssociations(bool register)
     {
