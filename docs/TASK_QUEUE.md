@@ -10,7 +10,7 @@
 
 复用官方引擎工作进程、DPAPI 密码库已有写入互斥及原解压/来源流程；自主实现轻量任务调度器，用 Task.WhenAny 等待完成和 SemaphoreSlim.WaitAsync 协调交互，不添加产品运行组件。采用 ui-ux-pro-max 的 WPF 异步命令、捕获 UI 上下文与逐项进度建议。参考[微软异步协调原语](https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/async-coordination-primitives-advanced)。
 
-隔离核心检查覆盖数量上限、顺序、路径重叠/源包保护、取消清理和失败清理；实际 WPF 入口使用官方 26.03/26.04 和合成归档，检查两个独立 native worker 同时运行、正确字节输出、共享目标顺序处理、取消、失败隔离、串行密码窗口、并发密码记录/关联、跳过隔离、设置兼容和普通/窄窗高对比度资源。证据为 `artifacts/queue-core-validation.json`、`artifacts/concurrency-ui-validation.json` 和 `artifacts/concurrency-preview/`；完整 CI 与轻量候选包结果完成后记入验收说明。
+隔离核心检查覆盖数量上限、顺序、路径重叠/源包保护、取消清理和失败清理；实际 WPF 入口使用官方 26.03/26.04 和合成归档，检查两个独立 native worker 同时运行、正确字节输出、共享目标顺序处理、取消、失败隔离、串行密码窗口、并发密码记录/关联、跳过隔离、设置兼容和普通/窄窗高对比度资源。证据为 `artifacts/queue-core-validation.json`、`artifacts/concurrency-ui-validation.json` 和 `artifacts/concurrency-preview/`；完整 CI 的 48 份报告均已核对通过，核心 37 / 界面 60 项。本地轻量载荷 9670273 字节 / 43 文件（增加 48982 字节），安装器 2259017 字节。四项本地候选资产位于 `artifacts/release-0.2.0-preview.12/`，复核见 `artifacts/concurrency-package-validation.json`。完整 [Windows CI 38442019776](https://github.com/Nomoziya/nomozip/actions/runs/38442019776) 和验收说明保留原有回归证据；未发布新正式版。
 
 运行中暂停和真正跨重启续作尚未实现。Windows 代码签名与原生菜单公开部署已移出验收范围，继续保留传统菜单与引擎更新真实性校验。
 
