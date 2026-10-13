@@ -19,12 +19,14 @@ internal static class DesktopApplicationUpdateValidation
         var checks = new Dictionary<string,bool>();
         void Check(string name,bool passed) => checks[name]=passed;
         async Task Layout() => await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
-        var mode = "new"; Uri? opened=null;
+        var mode = "new"; Uri? opened=null; var requests=0;
         try
         {
             var model = new MainViewModel(baseDirectory,data,new DpapiPasswordVault(Path.Combine(data,"passwords.apv")),new WindowDialogs(window));
-            model.ConfigureApplicationUpdateValidation(() => new HttpClient(new Handler(async (_,token) =>
+            model.ConfigureApplicationUpdateValidation(() => new HttpClient(new Handler(async (request,token) =>
             {
+                requests++;
+                Check("software repository fixed independently of engine setting",request.RequestUri!.AbsoluteUri.StartsWith("https://api.github.com/repos/Nomoziya/nomozip/releases?",StringComparison.Ordinal));
                 if (mode == "cancel") await Task.Delay(Timeout.Infinite,token);
                 if (mode == "offline") throw new HttpRequestException();
                 if (mode == "timeout") throw new TaskCanceledException();
@@ -35,9 +37,11 @@ internal static class DesktopApplicationUpdateValidation
                 return new HttpResponseMessage(HttpStatusCode.OK) { Content=new StringContent(JsonSerializer.Serialize(new[] { new { tag_name="v"+version,draft=false,prerelease=false,assets=new[] { new { name,size=1024,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/v{version}/{name}" } } } })) };
             })),uri=>opened=uri);
             window.DataContext=model; await model.InitializeAsync(); model.Page=2; await Layout();
+            model.UpdateRepository="other/engine-test";
             var before = model.UpdateMessage; var engine=model.EngineSummary;
-            Check("actual assembly version displayed",model.ApplicationVersion == "0.2.0-preview.3");
-            Check("no software request during initialization",model.ApplicationUpdateMessage.StartsWith("仅检查"));
+            var expectedVersion=System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(App).Assembly.Location).ProductVersion!.Split('+')[0];
+            Check("actual assembly version displayed",((TextBlock)window.FindName("ApplicationVersionText")).Text.Contains(expectedVersion));
+            Check("no software request during initialization",requests==0);
             Check("download disabled before check",!model.OpenApplicationDownloadCommand.CanExecute(null));
             foreach (var contrast in new[] {false,true})
             foreach (var width in new[] {1120,800})
