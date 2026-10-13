@@ -13,6 +13,7 @@ public sealed partial class MainViewModel
         foreach (var task in Tasks) task.ShellOutputPath = null;
         shellAction = null;
         ShellDestinationDescription = ""; Changed(nameof(HasShellDestinations));
+        Changed(nameof(IsOutputPathReadOnly));Changed(nameof(DisplayOutputPath));
     }
     public async Task ApplyShellSelectionAsync(ShellSelection supplied)
     {
@@ -35,6 +36,7 @@ public sealed partial class MainViewModel
             ? "各包分别解压到所在目录。右侧显示首个目标，“浏览目录”可统一修改。"
             : "各包分别解压到同名文件夹。右侧显示首个目标，“浏览目录”可统一修改。";
         Changed(nameof(HasShellDestinations));
+        Changed(nameof(IsOutputPathReadOnly));Changed(nameof(DisplayOutputPath));
         if (!ExtractCommand.CanExecute(null)) { Banner = "未找到可用引擎，尚未解压。"; return; }
         ExtractCommand.Execute(null); await WaitForIdleAsync();
     }

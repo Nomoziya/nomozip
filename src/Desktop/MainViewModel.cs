@@ -57,13 +57,13 @@ public sealed partial class MainViewModel : ObservableObject
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
         OpenInputCommand = new RelayCommand(() => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else AddFilesCommand.Execute(null); }, () => IsIdle);
         RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is not null);
-        BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) { ClearShellDestinations(); OutputPath = path; } }, () => IsIdle);
+        BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) SelectCustomOutput(path); }, () => IsIdle);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
         BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page == 0 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
         ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(() => skipPasswords?.Cancel(), () => IsBusy && CanSkipPasswords);
-        OpenOutputCommand = new RelayCommand(() => OpenFolder(OutputPath), () => Directory.Exists(OutputPath));
+        OpenOutputCommand = new RelayCommand(OpenSelectedOutput, () => IsIdle && (Directory.Exists(OutputPath) || Tasks.Any(task=>task.ResultOutputPath is {} path && Directory.Exists(path))));
         OpenVaultCommand = new RelayCommand(() => Page = 1);
         AddPasswordCommand = new AsyncCommand(() => EditPasswordAsync(null), () => IsIdle && vaultAvailable);
         EditPasswordCommand = new AsyncCommand(() => EditPasswordAsync(SelectedPassword), () => IsIdle && vaultAvailable && SelectedPassword is not null);
@@ -80,6 +80,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeCompressionCommands();
         InitializeAssociationCommands();
         InitializeApplicationUpdateCommands();
+        InitializeExtractionToolCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
@@ -112,7 +113,7 @@ public sealed partial class MainViewModel : ObservableObject
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
-    public string OutputPath { get => outputPath; set => Set(ref outputPath, value); }
+    public string OutputPath { get => outputPath; set { if(Set(ref outputPath,value)) Changed(nameof(DisplayOutputPath)); } }
     public bool AutoTry { get => autoTry; set => Set(ref autoTry, value); }
     public int ConflictPolicy { get => conflictPolicy; set => Set(ref conflictPolicy, value); }
     public string Banner { get => banner; set => Set(ref banner, value); }
@@ -126,7 +127,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string VaultSummary => vaultAvailable ? $"密码库中有 {allPasswords.Count(value => value.AutoTry)} 个可用密码" : "密码库无法读取，可手动输入密码";
     public string TaskSummary => $"{Tasks.Count(value => !value.Completed)} 个待处理 · {Tasks.Count(value => value.Completed)} 个已完成";
     public string ExtractButtonText => $"开始解压（{Tasks.Count(value => !value.Completed)}）";
-    public ArchiveTaskRow? SelectedTask { get => selectedTask; set => Set(ref selectedTask, value); }
+    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) Changed(nameof(DisplayOutputPath)); } }
     public SavedPassword? SelectedPassword { get => selectedPassword; set => Set(ref selectedPassword, value); }
 
     public async Task InitializeAsync()
@@ -161,7 +162,7 @@ public sealed partial class MainViewModel : ObservableObject
         foreach (var path in paths.Where(File.Exists))
             if (!Tasks.Any(value => string.Equals(value.Path, Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase)))
                 Tasks.Add(new ArchiveTaskRow(Path.GetFullPath(path)) { ShellOutputPath = shellAction is { } action ? new ShellSelection(action, []).OutputFor(Path.GetFullPath(path)) : null });
-        Footer = "选择输出目录后开始解压。";
+        Footer = "选择输出目录后开始解压。"; Changed(nameof(DisplayOutputPath));
     }
     private async Task RefreshVaultAsync()
     {
@@ -176,15 +177,17 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private async Task ExtractAsync()
     {
-        if (string.IsNullOrWhiteSpace(OutputPath)) { Banner = "请选择输出目录。"; return; }
+        if (directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = "请选择输出目录。"; return; }
         IsBusy = true; idle = new TaskCompletionSource(); Banner = "";
         cancellation = new CancellationTokenSource(); skipPasswords = new CancellationTokenSource();
+        var batch=Tasks.Where(value=>!value.Completed).ToArray();
+        var openResults=new List<string>();
         try
         {
             await SaveSettingsAsync();
             var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));
             var service = new ExtractionService(client, vault, new PasswordCandidateProvider(vault));
-            foreach (var task in Tasks.Where(value => !value.Completed).ToArray())
+            foreach (var task in batch)
             {
                 if (cancellation.IsCancellationRequested) break;
                 skipPasswords.Dispose(); skipPasswords = new CancellationTokenSource();
@@ -198,12 +201,16 @@ public sealed partial class MainViewModel : ObservableObject
                 });
                 try
                 {
-                    var destination = task.ShellOutputPath ?? OutputPath;
+                    var destination = task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
+                    Func<IReadOnlyList<ArchiveEntry>,string>? resolveDestination=task.ShellOutputPath is null && directoryRules.Layout!=ExtractionLayout.Direct
+                        ? items=>ExtractionDirectoryPlanner.Resolve(task.Path,destination,directoryRules,items,DateOnly.FromDateTime(DateTime.Today)) : null;
                     var outcome = await service.ExtractAsync(task.Path, destination, AutoTry,
                         failure => dialogs.AskPasswordAsync(task.Name, prompts++ > 0, allPasswords, vaultAvailable, cancellation.Token, previousFailure: failure),
                         path => Task.FromResult(ConflictPolicy == 1 ? ExistingFilePolicy.Skip : ConflictPolicy == 2 ? ExistingFilePolicy.Replace : dialogs.ResolveConflict(path)),
-                        progress, cancellation.Token, skipPasswords.Token);
+                        progress, cancellation.Token, skipPasswords.Token,resolveDestination);
                     task.Completed = outcome.Engine.IsSuccess;
+                    task.ResultOutputPath=outcome.Engine.IsSuccess?outcome.OutputPath:null;
+                    if(task.Completed) openResults.Add(outcome.OutputPath);
                     task.Status = outcome.Engine.IsSuccess ? "已解压" : outcome.Engine.Status == "cancelled" ? "已取消" : ErrorText(outcome.Engine.Code);
                     task.Failure = outcome.Engine.IsSuccess ? null : outcome.Engine;
                     if (task.Failure?.Failures.Count > 0) task.Status += $" · {task.Failure.Failures.Count} 项失败";
@@ -218,7 +225,13 @@ public sealed partial class MainViewModel : ObservableObject
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException)
         { Banner = "无法处理文件或写入设置，请检查输出目录与文件权限。"; }
-        finally { CanSkipPasswords = false; cancellation.Dispose(); skipPasswords.Dispose(); cancellation = null; skipPasswords = null; IsBusy = false; idle.TrySetResult(); }
+        finally
+        {
+            var shouldOpen=directoryRules.OpenAfterSuccess && !cancellation.IsCancellationRequested && batch.Length>0 && batch.All(task=>task.Completed);
+            CanSkipPasswords = false; cancellation.Dispose(); skipPasswords.Dispose(); cancellation = null; skipPasswords = null; IsBusy = false;
+            try { if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray()); }
+            finally {idle.TrySetResult();}
+        }
     }
     private async Task EditPasswordAsync(SavedPassword? existing)
     {
@@ -337,12 +350,18 @@ public sealed partial class MainViewModel : ObservableObject
         OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
+        directoryRules=settings.DirectoryRules ?? new();
+        if(!Enum.IsDefined(directoryRules.Location) || !Enum.IsDefined(directoryRules.Layout) || !Enum.IsDefined(directoryRules.Collision) || !Enum.IsDefined(directoryRules.Naming))
+        { directoryRules=new();settingsWritable=false;Banner="解压规则暂不可识别，已使用默认规则并保留设置文件。"; }
+        recentOutputPaths=settings.RecentOutputPaths?.Where(path=>!string.IsNullOrWhiteSpace(path) && Path.IsPathFullyQualified(path)).Distinct(StringComparer.OrdinalIgnoreCase).Take(5).ToList() ?? [];
+        Changed(nameof(DirectoryRules));Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(ExtractionSubtitle));
     }
     private async Task SaveSettingsAsync()
     {
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository)));
+        RememberCustomDirectory();
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths)));
     }
     private static void OpenFolder(string path)
     {
@@ -355,7 +374,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => "格式不支持或文件损坏", "output_write_failed" or "write_failed" => "输出目录无法写入",
         "worker_connection_failed" or "engine_load_failed" => "引擎无法启动", _ => "处理失败，请检查压缩包",
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", "文件夹"));

@@ -6,6 +6,7 @@ namespace ArchivePassword.Desktop;
 
 public partial class PasswordDialog : Window
 {
+    private readonly bool testing;
     private readonly SavedPassword? original;
     private readonly bool editing;
     private readonly string archiveName;
@@ -13,9 +14,10 @@ public partial class PasswordDialog : Window
     private readonly Action<ExtractionFailureDialog>? prepareFailure;
     public PasswordPromptResponse? Response { get; private set; }
     public SavedPassword? Edited { get; private set; }
-    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false, bool browsing = false, EngineResult? previousFailure = null, Action<ExtractionFailureDialog>? prepareFailure = null)
+    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false, bool browsing = false, EngineResult? previousFailure = null, Action<ExtractionFailureDialog>? prepareFailure = null,bool testing=false)
     {
         InitializeComponent(); original = existing; this.editing = editing;
+        this.testing=testing;
         this.archiveName = archiveName; this.previousFailure = previousFailure; this.prepareFailure = prepareFailure;
         WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
         SavedBox.ItemsSource = saved; SavedPanel.Visibility = !editing && saved.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -48,13 +50,19 @@ public partial class PasswordDialog : Window
             Description.Text = archiveName + (failed ? "\n密码可能不匹配，或压缩包已损坏。" : "\n此压缩包的文件名已加密，需要密码才能查看内容。")
                 + "\n本次仅查看内容；如需保存新密码，请在解压成功后保存。";
         }
+        if(testing)
+        {
+            Title=Heading.Text="输入校验密码";ContinueButton.Content="继续校验";
+            SavePassword.IsEnabled=false;SavePassword.Visibility=Visibility.Collapsed;
+            Description.Text=archiveName+(failed?"\n密码可能不匹配，或压缩包已损坏。":"\n需要密码以校验压缩包数据。")+"\n本次校验不输出文件，也不保存或更新密码库。";
+        }
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear(); SavedBox.ItemsSource = null; };
     }
     private void OnShowFailures(object sender, RoutedEventArgs e)
     {
         if (previousFailure is null) return;
-        var dialog = new ExtractionFailureDialog(archiveName, previousFailure) { Owner = this };
+        var dialog = new ExtractionFailureDialog(archiveName, previousFailure,testing) { Owner = this };
         prepareFailure?.Invoke(dialog);
         dialog.ShowDialog();
     }

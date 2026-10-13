@@ -12,65 +12,37 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         Func<string, Task<ExistingFilePolicy>> resolveConflict,
         IProgress<TaskUpdate>? progress = null,
         CancellationToken cancellationToken = default,
-        CancellationToken skipSavedPasswordToken = default)
+        CancellationToken skipSavedPasswordToken = default,
+        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null)
     {
         var destination = Path.GetFullPath(outputPath);
         Directory.CreateDirectory(destination);
-        EngineResult result;
-        string? secret = null, warning = null;
-        Guid? savedId = null;
-        PasswordPromptResponse? supplied = null;
-        var verifiedPasswords = new Dictionary<uint, PasswordPromptResponse>();
-        var currentState = "testing";
-        var currentMessage = "正在检查压缩包";
-        var engineProgress = new ForwardProgress<EngineProgress>(value => progress?.Report(new TaskUpdate(currentState, currentMessage, value)));
-        async Task<EngineResult> VerifyPasswordAsync(PasswordPromptResponse candidate, CancellationToken token)
-        {
-            var overrides = verifiedPasswords.Where(value => value.Value.Secret != candidate.Secret).ToDictionary(value => value.Key, value => value.Value.Secret);
-            var tested = engine is IArchiveMultiPasswordEngine multi && overrides.Count > 0
-                ? await multi.TestWithPasswordsAsync(archivePath, candidate.Secret, overrides, engineProgress, token)
-                : await engine.TestAsync(archivePath, candidate.Secret, engineProgress, token);
-            if (tested.Status == "cancelled") return tested;
-            foreach (var failed in tested.Failures) verifiedPasswords.Remove(failed.Index);
-            foreach (var index in tested.VerifiedEncryptedItems)
-                if (!verifiedPasswords.ContainsKey(index)) verifiedPasswords[index] = candidate;
-            return tested;
-        }
-        progress?.Report(new TaskUpdate("testing", "正在检查压缩包"));
-        result = await engine.TestAsync(archivePath, progress: engineProgress, cancellationToken: cancellationToken);
-        if (!result.IsSuccess && result.NeedsPassword && autoTry)
-        {
-            IReadOnlyList<PasswordCandidate> entries;
-            try { entries = await candidates.GetAsync(archivePath, cancellationToken); }
-            catch (VaultException) { entries = []; warning = "密码库暂时无法读取，请手动输入密码。"; }
-            for (var index = 0; index < entries.Count; ++index)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                if (skipSavedPasswordToken.IsCancellationRequested) break;
-                currentState = "password";
-                currentMessage = $"正在尝试保存的密码，{index + 1}/{entries.Count}";
-                progress?.Report(new TaskUpdate(currentState, currentMessage));
-                using var candidateCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, skipSavedPasswordToken);
-                result = await VerifyPasswordAsync(new(entries[index].Secret, false, "", entries[index].SavedId), candidateCancellation.Token);
-                if (skipSavedPasswordToken.IsCancellationRequested && !cancellationToken.IsCancellationRequested)
-                { result = new EngineResult { Code = "password_required" }; break; }
-                if (result.IsSuccess) { secret = entries[index].Secret; savedId = entries[index].SavedId; break; }
-                if (!result.NeedsPassword) break;
-            }
-        }
-        while (!result.IsSuccess && result.NeedsPassword)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            progress?.Report(new TaskUpdate("waiting", "请输入可用密码"));
-            supplied = await requestPassword(result);
-            if (supplied is null) return new ExtractionOutcome(result with { Status = "cancelled", Code = "cancelled" }, destination, warning);
-            secret = supplied.Secret;
-            currentState = "testing"; currentMessage = "正在验证输入的密码";
-            result = await VerifyPasswordAsync(supplied, cancellationToken);
-            if (result.IsSuccess) savedId = supplied.SavedId;
-            if (!result.IsSuccess && result.NeedsPassword) progress?.Report(new TaskUpdate("waiting", "密码可能不匹配，或压缩包已损坏"));
-        }
+        var verification = await new ArchiveVerificationService(engine, candidates).VerifyAsync(archivePath, autoTry,
+            requestPassword, progress, cancellationToken, skipSavedPasswordToken);
+        var result = verification.Engine;
+        var secret = verification.Secret;
+        var savedId = verification.SavedId;
+        var supplied = verification.Supplied;
+        var verifiedPasswords = verification.VerifiedPasswords;
+        var warning = verification.Warning;
         if (!result.IsSuccess) return new ExtractionOutcome(result, destination, warning);
+        if (resolveDestination is not null)
+        {
+            progress?.Report(new TaskUpdate("listing", "正在确定解压目录"));
+            var listed = await engine.ListAsync(archivePath, secret, cancellationToken);
+            if (!listed.IsSuccess) return new ExtractionOutcome(listed, destination, warning);
+            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                destination = Path.GetFullPath(resolveDestination(listed.Items));
+                Directory.CreateDirectory(destination);
+            }
+            catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
+            { return new ExtractionOutcome(new EngineResult {Code="output_write_failed"},destination,"无法建立解压目录，请检查同名文件和访问权限。"); }
+        }
+        var currentState = "extracting";
+        var currentMessage = "正在解压";
+        var engineProgress = new ForwardProgress<EngineProgress>(value => progress?.Report(new TaskUpdate(currentState, currentMessage, value)));
 
         var staging = Path.Combine(destination, ".archive-password-" + Guid.NewGuid().ToString("N"));
         if (!Path.GetFullPath(staging).StartsWith(destination.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) throw new IOException("Invalid staging directory.");

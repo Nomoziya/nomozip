@@ -7,8 +7,13 @@ namespace ArchivePassword.Desktop;
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
-    Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null)
+    Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null)
 {
+    public ExtractionRulesEditor? EditExtractionRules(ExtractionDirectoryRules rules,string custom,IReadOnlyList<string> recent)
+    {
+        var dialog=new ExtractionRulesDialog(rules,custom,recent) {Owner=owner};prepareRules?.Invoke(dialog);
+        return dialog.ShowDialog()==true?dialog.Editor:null;
+    }
     public string? SelectVaultBackup(bool exporting)
     {
         if (selectVaultBackup is not null) return selectVaultBackup(exporting);
@@ -73,16 +78,16 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         prepareContents?.Invoke(dialog);
         dialog.ShowDialog();
     }
-    public void ShowExtractionFailure(string name, EngineResult failure)
+    public void ShowExtractionFailure(string name, EngineResult failure,bool testing=false)
     {
-        var dialog = new ExtractionFailureDialog(name, failure) { Owner = owner };
+        var dialog = new ExtractionFailureDialog(name, failure,testing) { Owner = owner };
         prepareFailure?.Invoke(dialog);
         dialog.ShowDialog();
     }
-    public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token, bool browsing = false, EngineResult? previousFailure = null)
+    public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token, bool browsing = false, EngineResult? previousFailure = null,bool testing=false)
     {
         if (token.IsCancellationRequested) return Task.FromResult<PasswordPromptResponse?>(null);
-        var dialog = new PasswordDialog(name, failed, saved, canSave, browsing: browsing, previousFailure: previousFailure, prepareFailure: prepareFailure) { Owner = owner };
+        var dialog = new PasswordDialog(name, failed, saved, canSave, browsing: browsing, previousFailure: previousFailure, prepareFailure: prepareFailure,testing:testing) { Owner = owner };
         prepareDialog?.Invoke(dialog);
         using var registration = token.Register(() => dialog.Dispatcher.BeginInvoke(() => dialog.Close()));
         var accepted = dialog.ShowDialog();

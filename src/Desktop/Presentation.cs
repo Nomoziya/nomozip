@@ -37,6 +37,10 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? enabled = null)
 }
 public sealed class ArchiveTaskRow(string path, string? previewSize = null) : ObservableObject
 {
+    private string? resultOutputPath;
+    private EngineResult? verificationResult;
+    public string? ResultOutputPath { get=>resultOutputPath;set=>Set(ref resultOutputPath,value); }
+    public EngineResult? VerificationResult {get=>verificationResult;set=>Set(ref verificationResult,value);}
     private string? shellOutputPath;
     public string? ShellOutputPath { get => shellOutputPath; set => Set(ref shellOutputPath, value); }
     public string Path { get; } = path;
