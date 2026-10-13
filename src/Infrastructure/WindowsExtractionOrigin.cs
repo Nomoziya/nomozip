@@ -10,7 +10,8 @@ public sealed class WindowsExtractionOrigin(Func<SafeFileHandle, bool?>? streamS
 {
     private const string StreamName = ":Zone.Identifier";
     private const int MaximumBytes = 65536;
-    public async Task<IExtractionOriginMark?> ReadAsync(string archive, CancellationToken token)
+    public Task<IExtractionOriginMark?> ReadAsync(string archive, CancellationToken token) => Task.Run(() => ReadCoreAsync(archive, token), token);
+    private async Task<IExtractionOriginMark?> ReadCoreAsync(string archive, CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
         try
@@ -36,7 +37,8 @@ public sealed class WindowsExtractionOrigin(Func<SafeFileHandle, bool?>? streamS
     private static bool UnsupportedStreams(IOException error) => (error.HResult & 0xffff) is 1 or 50 or 123; // INVALID_FUNCTION, NOT_SUPPORTED, INVALID_NAME
     private sealed class Mark(byte[] bytes, Func<SafeFileHandle, bool?> supportsStreams) : IExtractionOriginMark
     {
-        public async Task<string?> ApplyAsync(IReadOnlyList<string> stagedFiles, CancellationToken token)
+        public Task<string?> ApplyAsync(IReadOnlyList<string> stagedFiles, CancellationToken token) => Task.Run(() => ApplyCoreAsync(stagedFiles, token), token);
+        private async Task<string?> ApplyCoreAsync(IReadOnlyList<string> stagedFiles, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             if (stagedFiles.Count == 0) return null;

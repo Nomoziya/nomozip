@@ -67,6 +67,11 @@ foreach(var version in versions) foreach(var format in new[] {"zip","7z"})
     var warningService=new ExtractionService(engine,vault,new PasswordCandidateProvider(vault),new StubReader(false));var warned=await warningService.ExtractAsync(archive,skipOut,true,_=>Task.FromResult<PasswordPromptResponse?>(null),_=>Task.FromResult(ExistingFilePolicy.Skip));
     // All files skipped: still keep all pre-existing files and both warnings produced by the stub.
     Check(tag+" skipped and origin warnings remain visible",warned.Engine.IsSuccess && warned.Warning!.Contains("来源标记测试") && warned.Warning.Contains("已跳过"));
+    using(var lockedVault=new FileStream(vaultPath,FileMode.Open,FileAccess.ReadWrite,FileShare.None))
+    {
+        var saveFailure=await warningService.ExtractAsync(archive,Path.Combine(data,tag+"-save-failure"),false,_=>Task.FromResult<PasswordPromptResponse?>(new("ascii-password",true,"test save")),_=>Task.FromResult(ExistingFilePolicy.Replace));
+        Check(tag+" origin warning retained when password save also fails",saveFailure.Engine.IsSuccess && saveFailure.Warning!.Contains("来源标记测试") && saveFailure.Warning.Contains("密码未能保存"));
+    }
     using var stop=new CancellationTokenSource();var cancelOut=Path.Combine(data,tag+"-cancel");var cancelled=false;
     try {await service.ExtractAsync(archive,cancelOut,true,_=>Task.FromResult<PasswordPromptResponse?>(null),_=>Task.FromResult(ExistingFilePolicy.Replace),new ForwardProgress<TaskUpdate>(update=>{if(update.State=="origin") stop.Cancel();}),stop.Token);}catch(OperationCanceledException) {cancelled=true;}
     Check(tag+" cancellation at origin phase commits no files",cancelled && Directory.GetFiles(cancelOut,"*",SearchOption.AllDirectories).Length==0 && Directory.GetDirectories(cancelOut,".archive-password-*").Length==0);

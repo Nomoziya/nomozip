@@ -24,6 +24,12 @@ internal static class DesktopOriginValidation
         var mode=0;
         try
         {
+            var uiThread=Environment.CurrentManagedThreadId;var queryThread=0;
+            var backgroundReader=new WindowsExtractionOrigin(_=>{queryThread=Environment.CurrentManagedThreadId;return null;});
+            var backgroundMark=await backgroundReader.ReadAsync(archive,CancellationToken.None);
+            Check("source metadata open and query execute off UI thread",queryThread!=uiThread);
+            var backgroundFile=Path.Combine(data,"background.txt");File.WriteAllText(backgroundFile,"thread test");queryThread=0;await backgroundMark!.ApplyAsync([backgroundFile],CancellationToken.None);
+            Check("target metadata open and query execute off UI thread",queryThread!=uiThread && File.ReadAllBytes(backgroundFile+":Zone.Identifier").SequenceEqual(mark));
             var model=new MainViewModel(baseDirectory,data,vault,new WindowDialogs(window,prepareContents:dialog=>
             {
                 dialog.ShowActivated=false;dialog.ShowInTaskbar=false;dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;
