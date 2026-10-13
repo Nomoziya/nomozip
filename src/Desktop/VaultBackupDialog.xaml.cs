@@ -18,7 +18,6 @@ public partial class VaultBackupDialog : Window
             : "输入导出时设置的备份密码。下一步预览记录并选择重复项处理方式，确认后才写入密码库。";
         FileLabel.Text = "备份文件：" + Path.GetFileName(path); FileLabel.ToolTip = path;
         ConfirmationPanel.Visibility = exporting ? Visibility.Visible : Visibility.Collapsed;
-        WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); ConfirmationBox.Clear(); };
     }

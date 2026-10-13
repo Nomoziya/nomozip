@@ -13,7 +13,6 @@ public partial class VaultImportDialog : Window
     {
         this.existing = existing; this.incoming = incoming;
         InitializeComponent(); RefreshPreview();
-        WindowPlacement.FitWorkArea(this, SystemParameters.WorkArea);
         Loaded += (_, _) => ModeBox.Focus();
         Closed += (_, _) => PreviewTable.ItemsSource = null;
     }

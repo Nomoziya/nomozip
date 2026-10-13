@@ -63,7 +63,7 @@ internal static class DesktopDpiValidation
                 // Explicit layout simulation; no DPI messages or OS scale changes are forged.
                 WindowPlacement.SetAutoFit(dialog,false);dialog.MinWidth=0;dialog.MinHeight=0;dialog.SizeToContent=SizeToContent.Manual;dialog.Width=512;dialog.Height=360;await Layout(dialog);
                 Check(name+" 512x360 simulated work-area controls reachable",Reachable(dialog,name+" simulated",failures));
-                if(name is "hashes" or "contents" or "encoding") {var table=Descendants(dialog).OfType<DataGrid>().First();table.ScrollIntoView(table.Items[0]);await Layout(dialog);var row=table.ItemContainerGenerator.ContainerFromIndex(0) as DataGridRow;var bounds=row?.TransformToAncestor(table).TransformBounds(new Rect(row.RenderSize));Check(name+" compact table shows one complete row",bounds is {} area && area.Bottom<=table.ActualHeight+1 && area.Top>=0);if(bounds is {} box && box.Bottom>table.ActualHeight+1) failures.Add(new {name,tableHeight=table.ActualHeight,row=box.ToString()});}
+                if(name is "hashes" or "contents" or "encoding" or "vault-import") {var table=Descendants(dialog).OfType<DataGrid>().First();table.ScrollIntoView(table.Items[0]);await Layout(dialog);var row=table.ItemContainerGenerator.ContainerFromIndex(0) as DataGridRow;row?.BringIntoView();await Layout(dialog);var visible=row is not null && FullyVisible(row,dialog);Check(name+" compact table shows one complete row",visible);if(!visible) failures.Add(new {name,tableHeight=table.ActualHeight,row=row?.RenderSize.ToString()});}
                 SetWindowPos(childHandle,0,-32000,-32000,0,0,0x0015);dialog.Opacity=1;await Layout(dialog);
                 if(dialog is FileHashDialog hash)
                 {
@@ -103,6 +103,16 @@ internal static class DesktopDpiValidation
         return passed;
     }
     private static string CreateHashFile(string data) {var path=Path.Combine(data,"hash.txt");File.WriteAllText(path,"abc");return path;}
+    private static bool FullyVisible(FrameworkElement element,Window window)
+    {
+        if(element.ActualHeight<=0 || element.ActualWidth<=0) return false;
+        for(var parent=VisualTreeHelper.GetParent(element);parent is not null && parent!=window;parent=VisualTreeHelper.GetParent(parent))
+        {
+            if(parent is FrameworkElement region && (region.ClipToBounds || region is ScrollContentPresenter))
+            {var bounds=element.TransformToAncestor(region).TransformBounds(new Rect(element.RenderSize));if(bounds.Left < -1 || bounds.Top < -1 || bounds.Right > region.ActualWidth+1 || bounds.Bottom > region.ActualHeight+1) return false;}
+        }
+        return true;
+    }
     private static bool InsideWorkArea(nint hwnd)
     {
         var info=new MonitorInfo {Size=Marshal.SizeOf<MonitorInfo>()};return GetMonitorInfoW(MonitorFromWindow(hwnd,2),ref info) && GetWindowRect(hwnd,out var rect) && rect.Left>=info.Work.Left && rect.Top>=info.Work.Top && rect.Right<=info.Work.Right && rect.Bottom<=info.Work.Bottom;
