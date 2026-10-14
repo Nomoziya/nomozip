@@ -10,8 +10,8 @@ import sys
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json')
-PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation', 'VolumeValidation', 'SfxValidation', 'FormatValidation')
+REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json', 'architecture-validation.json')
+PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation', 'VolumeValidation', 'SfxValidation', 'FormatValidation', 'ArchitectureValidation')
 
 
 def sha(path):
@@ -22,15 +22,17 @@ def load(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
-def official_asset(release):
+def official_asset(release, architecture='x64'):
     version = release['tag_name']
     if not re.fullmatch(r'\d{2}\.\d{2}', version) or release['prerelease'] or release.get('draft', False):
         raise ValueError('An official stable release is required.')
-    name = f'7z{version.replace(".", "")}-x64.exe'
+    if architecture not in ('x64','arm64'):
+        raise ValueError('Unsupported engine architecture.')
+    name = f'7z{version.replace(".", "")}-{architecture}.exe'
     assets = [asset for asset in release['assets'] if asset['name'] == name]
     source = f'https://github.com/ip7z/7zip/releases/download/{version}/{name}'
     if len(assets) != 1 or assets[0]['browser_download_url'] != source or not re.fullmatch(r'sha256:[0-9a-f]{64}', assets[0].get('digest') or ''):
-        raise ValueError('Official x64 asset URL and SHA-256 are required.')
+        raise ValueError('Official target architecture asset URL and SHA-256 are required.')
     return version, source, assets[0]['digest'][7:]
 
 
@@ -53,16 +55,19 @@ def bound_files(version):
 
 def validate_reports(workspace, version):
     dll_hash = sha(workspace / 'engines' / version / '7z.dll')
+    architecture = load(workspace / 'engines' / version / 'manifest.json')['architecture']
     totals = {}
-    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20, 20, 20, 20)):
+    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20, 20, 20, 20, 10)):
         report = load(workspace / 'artifacts' / name)
         values = cases(report)
         if sum(value['name'].startswith(version + ' ') for value in values) < minimum:
             raise ValueError('Required target-version coverage is missing: ' + name)
-        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json') and report['engineHashes'][version].lower() != dll_hash:
+        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json','architecture-validation.json') and report['engineHashes'][version].lower() != dll_hash:
             raise ValueError('Compatibility report belongs to another engine binary.')
         if name=='sfx-validation.json' and report['moduleHashes'][version].lower()!=sha(workspace/'engines'/version/'7z.sfx'):
             raise ValueError('Compatibility report belongs to another SFX module.')
+        if name=='architecture-validation.json' and (report.get('architecture')!=architecture or report.get('osArchitecture','').lower()!=architecture or report.get('nativeProcess') is not True):
+            raise ValueError('Native target architecture execution is required.')
         totals[name] = len(values)
     return totals
 
@@ -79,7 +84,7 @@ def review(candidate, public_key, worker, repository=None):
     if sha(public_key) != record['hashes']['public-key.pem'] or sha(worker) != record['hashes']['workspace/artifacts/worker/ArchiveEngineWorker.exe']:
         raise ValueError('Product public key or worker differs from the reviewed candidate.')
     manifest = load(candidate / 'workspace/engines' / version / 'manifest.json')
-    if manifest['version'] != version or manifest['protocol'] != 1 or manifest['architecture'] != 'x64' or manifest['dllSha256'].lower() != sha(candidate / 'workspace/engines' / version / '7z.dll') or manifest['sfxSha256'].lower()!=sha(candidate/'workspace/engines'/version/'7z.sfx'):
+    if manifest['version'] != version or manifest['protocol'] != 1 or manifest['architecture'] not in ('x64','arm64') or manifest['architecture'] != record.get('architecture') or manifest['dllSha256'].lower() != sha(candidate / 'workspace/engines' / version / '7z.dll') or manifest['sfxSha256'].lower()!=sha(candidate/'workspace/engines'/version/'7z.sfx'):
         raise ValueError('Candidate manifest is invalid.')
     validate_reports(candidate / 'workspace', version)
     return record
@@ -92,7 +97,7 @@ def command(arguments, log):
         raise RuntimeError('Compatibility command failed; candidate remains disabled. See ' + str(log))
 
 
-def prepare(source_root, tools_root, output, version=None, engine_directory=None, dotnet=None, worker=None):
+def prepare(source_root, tools_root, output, version=None, engine_directory=None, dotnet=None, worker=None, architecture='x64'):
     if output.exists():
         raise ValueError('Keep existing candidates immutable; choose a new output directory.')
     dotnet = dotnet or tools_root / '.tools/dotnet/dotnet.exe'
@@ -103,15 +108,15 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
     if engine_directory is not None:
         manifest = load(engine_directory / 'manifest.json')
         version = version or manifest['version']
-        source = f'https://github.com/ip7z/7zip/releases/download/{version}/7z{version.replace(".", "")}-x64.exe'
-        if not re.fullmatch(r'\d{2}\.\d{2}', version) or manifest['version'] != version or manifest['architecture'] != 'x64' or manifest['source'] != source or manifest['dllSha256'].lower() != sha(engine_directory / '7z.dll') or manifest['sfxSha256'].lower()!=sha(engine_directory/'7z.sfx'):
+        source = f'https://github.com/ip7z/7zip/releases/download/{version}/7z{version.replace(".", "")}-{architecture}.exe'
+        if architecture not in ('x64','arm64') or not re.fullmatch(r'\d{2}\.\d{2}', version) or manifest['version'] != version or manifest['architecture'] != architecture or manifest['source'] != source or manifest['dllSha256'].lower() != sha(engine_directory / '7z.dll') or manifest['sfxSha256'].lower()!=sha(engine_directory/'7z.sfx'):
             raise ValueError('Prepared local engine manifest and binary do not match.')
         origin = dict(mode='prepared-local', source=source)
     else:
         endpoint = 'https://api.github.com/repos/ip7z/7zip/releases/' + ('tags/' + version if version else 'latest')
         with urllib.request.urlopen(endpoint, timeout=30) as response:
             metadata = json.load(response)
-        actual, source, expected_hash = official_asset(metadata)
+        actual, source, expected_hash = official_asset(metadata,architecture)
         if version and version != actual:
             raise ValueError('Official release version mismatch.')
         version = actual; origin = dict(mode='official-download', source=source, installerSha256=expected_hash)
@@ -120,12 +125,13 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
     logs = output / 'logs'; logs.mkdir()
     shutil.copyfile(worker, workspace / 'artifacts/worker/ArchiveEngineWorker.exe')
     shutil.copyfile(source_root / 'config/update-public-key.pem', output / 'public-key.pem')
+    engine_root=tools_root/'engines' if architecture=='x64' else tools_root/'engines/arm64'
     for baseline in ('26.04', '26.03'):
         directory = workspace / 'engines' / baseline; directory.mkdir(parents=True)
         for name in ('7z.dll', '7z.exe', '7z.sfx', 'License.txt', 'manifest.json'):
-            shutil.copyfile(tools_root / 'engines' / baseline / name, directory / name)
+            shutil.copyfile(engine_root / baseline / name, directory / name)
     target = workspace / 'engines' / version; target.mkdir(parents=True, exist_ok=True)
-    (target / 'manifest.json').write_text(json.dumps(dict(version=version, architecture='x64', protocol=0, source=source,
+    (target / 'manifest.json').write_text(json.dumps(dict(version=version, architecture=architecture, protocol=0, source=source,
         dllSha256=sha(target / '7z.dll') if (target / '7z.dll').exists() else '0' * 64)), encoding='utf-8')
     if engine_directory is None:
         installer = output / 'official-installer.exe'
@@ -133,11 +139,11 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
             shutil.copyfileobj(response, destination)
         if sha(installer) != expected_hash:
             raise ValueError('Official download checksum mismatch.')
-        command([tools_root / 'engines/26.04/7z.exe', 'x', installer, '-o' + str(target), '-y', '7z.dll', '7z.exe', '7z.sfx', 'License.txt'], logs / 'official-extraction.log')
+        command([engine_root / '26.04/7z.exe', 'x', installer, '-o' + str(target), '-y', '7z.dll', '7z.exe', '7z.sfx', 'License.txt'], logs / 'official-extraction.log')
     else:
         for name in ('7z.dll', '7z.exe', '7z.sfx', 'License.txt'):
             shutil.copyfile(engine_directory / name, target / name)
-    manifest = dict(version=version, architecture='x64', protocol=0, source=source, dllSha256=sha(target / '7z.dll'),sfxSha256=sha(target/'7z.sfx'))
+    manifest = dict(version=version, architecture=architecture, protocol=0, source=source, dllSha256=sha(target / '7z.dll'),sfxSha256=sha(target/'7z.sfx'))
     (target / 'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     seeds = workspace / 'tests/fixtures/generated'; seeds.mkdir(parents=True)
     for file in (tools_root / 'tests/fixtures/generated').glob('*'):
@@ -151,7 +157,7 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
     totals = validate_reports(workspace, version)
     manifest['protocol'] = 1
     (target / 'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
-    record = dict(schema=1, status='ready-for-signing', version=version, repository=repository, origin=origin, totals=totals,
+    record = dict(schema=1, status='ready-for-signing', version=version, architecture=architecture, repository=repository, origin=origin, totals=totals,
                   hashes={name: sha(output / name) for name in bound_files(version)})
     (output / 'candidate-review.json').write_text(json.dumps(record, indent=2), encoding='utf-8')
     return review(output, source_root / 'config/update-public-key.pem', worker, repository)
@@ -167,9 +173,10 @@ if __name__ == '__main__':
     parser.add_argument('--engine-directory', type=Path)
     parser.add_argument('--dotnet', type=Path)
     parser.add_argument('--worker', type=Path)
+    parser.add_argument('--architecture',choices=('x64','arm64'),default='x64')
     args = parser.parse_args()
     if args.mode == 'prepare':
-        result = prepare(args.source_root.resolve(), args.tools_root.resolve(), args.candidate.resolve(), args.version, args.engine_directory, args.dotnet, args.worker)
+        result = prepare(args.source_root.resolve(), args.tools_root.resolve(), args.candidate.resolve(), args.version, args.engine_directory, args.dotnet, args.worker,args.architecture)
     else:
         result = review(args.candidate.resolve(), args.source_root / 'config/update-public-key.pem', args.worker or args.tools_root / 'artifacts/worker/ArchiveEngineWorker.exe', load(args.source_root / 'config/update-channel.json')['repository'])
     print(json.dumps(dict(status=result['status'], version=result['version'], totals=result['totals'])))

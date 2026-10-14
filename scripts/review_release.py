@@ -4,21 +4,24 @@ import hashlib
 import json
 from pathlib import Path
 import zipfile
-from package_preview import ROOT, application_files, source_files
+from package_preview import ROOT, application_files, source_files, validate_architecture
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def review(root, application, release, installer, version, published_source=None):
-    names = {f'nomozip-{version}-light-setup-win-x64.exe', f'nomozip-{version}-light-win-x64.zip', f'nomozip-source-{version}.zip'}
+def review(root, application, release, installer, version, published_source=None, architecture='x64'):
+    if architecture not in ('x64','arm64'):
+        raise ValueError('Unsupported release architecture.')
+    names = {f'nomozip-{version}-light-setup-win-{architecture}.exe', f'nomozip-{version}-light-win-{architecture}.zip', f'nomozip-source-{version}.zip'}
     checks = {'exact four lightweight assets': {p.name for p in release.iterdir()} == names | {'SHA256SUMS.txt'}}
+    checks['native payload matches architecture'] = validate_architecture(application, architecture)
     assets = {name: digest(release / name) for name in sorted(names)}
     lines = (release / 'SHA256SUMS.txt').read_text(encoding='utf-8').splitlines()
     checks['exact checksum lines'] = sorted(lines) == sorted(f'{value}  {name}' for name, value in assets.items())
-    checks['installer equals built input'] = (release / f'nomozip-{version}-light-setup-win-x64.exe').read_bytes() == installer.read_bytes()
-    with zipfile.ZipFile(release / f'nomozip-{version}-light-win-x64.zip') as archive:
+    checks['installer equals built input'] = (release / f'nomozip-{version}-light-setup-win-{architecture}.exe').read_bytes() == installer.read_bytes()
+    with zipfile.ZipFile(release / f'nomozip-{version}-light-win-{architecture}.zip') as archive:
         files = {p.relative_to(application).as_posix(): p for p in application_files(application)}
         checks['payload CRC'] = archive.testzip() is None
         checks['payload exact current files'] = len(archive.namelist()) == len(files) and set(archive.namelist()) == set(files) and all(archive.read(name) == path.read_bytes() for name, path in files.items())
@@ -42,9 +45,10 @@ def main():
     parser.add_argument('--version', required=True)
     parser.add_argument('--report', required=True, type=Path)
     parser.add_argument('--published-source', type=Path)
+    parser.add_argument('--architecture', choices=('x64','arm64'), default='x64')
     args = parser.parse_args()
     try:
-        result = review(ROOT, args.app_directory, args.release_directory, args.installer_path, args.version, args.published_source)
+        result = review(ROOT, args.app_directory, args.release_directory, args.installer_path, args.version, args.published_source, args.architecture)
     except (OSError, RuntimeError, ValueError, zipfile.BadZipFile) as error:
         result = dict(passed=False, error=type(error).__name__, validationScope='Local package review')
     args.report.parent.mkdir(parents=True, exist_ok=True)

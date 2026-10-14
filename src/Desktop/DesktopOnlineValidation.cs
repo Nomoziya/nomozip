@@ -28,7 +28,7 @@ internal static class DesktopOnlineValidation
             model.CheckUpdatesCommand.Execute(null); await model.WaitForIdleAsync();
             checks["publicReleaseDiscovered"] = model.InstallUpdateCommand.CanExecute(null);
             model.InstallUpdateCommand.Execute(null); await model.WaitForIdleAsync();
-            checks["downloadSignatureInstallAndActivation"] = model.EngineSummary.Contains("26.04") && File.Exists(Path.Combine(dataDirectory, "engines/26.04/update-manifest.sig"));
+            checks["downloadSignatureInstallAndActivation"] = model.EngineSummary.Contains("26.04") && File.Exists(Path.Combine(dataDirectory, $"{ArchivePassword.Core.EngineArchitecture.InstalledDirectoryName}/26.04/update-manifest.sig"));
             var after = await File.ReadAllBytesAsync(Path.Combine(dataDirectory, "passwords.apv"));
             checks["vaultUnchangedDuringUpdate"] = before.SequenceEqual(after);
             await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);

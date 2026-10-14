@@ -2,6 +2,8 @@
 from pathlib import Path
 import argparse
 import zipfile
+import json
+import struct
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -30,6 +32,32 @@ def application_files(application):
     return files
 
 
+def validate_architecture(application, architecture):
+    machines = {'x64': 0x8664, 'arm64': 0xaa64}
+    def native(path):
+        data = path.read_bytes()
+        if len(data) < 88 or data[:2] != b'MZ':
+            return False
+        offset = struct.unpack_from('<I', data, 60)[0]
+        return (64 <= offset <= len(data)-24 and data[offset:offset+4] == b'PE\0\0'
+                and struct.unpack_from('<H', data, offset+4)[0] == machines[architecture])
+    if architecture not in machines:
+        raise ValueError('Unsupported release architecture.')
+    images = [application/'ArchivePassword.exe', application/'ArchiveEngineWorker.exe']
+    engines = application/'engines'
+    directories = [entry for entry in engines.iterdir() if entry.is_dir()]
+    if not directories:
+        raise RuntimeError('Release must include a matching official engine.')
+    for entry in directories:
+        manifest = json.loads((entry/'manifest.json').read_text(encoding='utf-8-sig'))
+        if manifest['architecture'] != architecture or manifest['protocol'] != 1:
+            raise RuntimeError('Release engine architecture does not match its label.')
+        images.extend([entry/'7z.dll', entry/'7z.exe'])
+    if not all(native(path) for path in images):
+        raise RuntimeError('Release contains a native executable for another architecture.')
+    return True
+
+
 def source_files(root):
     files = []
     for folder in ('src', 'tests', 'tools', 'scripts', 'docs', 'config', 'resources', 'design-system', 'installer', '.github'):
@@ -45,13 +73,16 @@ def source_files(root):
     return files
 
 
-def package(root, application, output, version, source_name, skip_source=False):
+def package(root, application, output, version, source_name, skip_source=False, architecture='x64'):
     # Inspect both inputs and output names before creating either archive.
     if any(Path(name).name != name or '/' in name or '\\' in name for name in (version, source_name)):
         raise ValueError('Package names must be file names.')
+    if architecture not in ('x64', 'arm64'):
+        raise ValueError('Unsupported release architecture.')
     app_files = application_files(application)
+    validate_architecture(application, architecture)
     sources = [] if skip_source else source_files(root)
-    targets = [output / f'nomozip-{version}-win-x64.zip'] + ([] if skip_source else [output / source_name])
+    targets = [output / f'nomozip-{version}-win-{architecture}.zip'] + ([] if skip_source else [output / source_name])
     if len(set(targets)) != len(targets) or any(path.exists() for path in targets):
         raise RuntimeError('Keep release archives immutable; use a fresh output directory.')
     output.mkdir(parents=True, exist_ok=True)
@@ -68,8 +99,9 @@ def main():
     parser.add_argument('--version', default='0.1-preview')
     parser.add_argument('--skip-source', action='store_true')
     parser.add_argument('--source-name', default='nomozip-source-preview.zip')
+    parser.add_argument('--architecture', choices=('x64','arm64'), default='x64')
     args = parser.parse_args()
-    apps, sources = package(ROOT, ROOT / args.app_directory, ROOT / args.output_directory, args.version, args.source_name, args.skip_source)
+    apps, sources = package(ROOT, ROOT / args.app_directory, ROOT / args.output_directory, args.version, args.source_name, args.skip_source, args.architecture)
     print(f'Packaged {apps} app files and {sources} source files.')
 
 

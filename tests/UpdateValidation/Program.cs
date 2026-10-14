@@ -9,8 +9,8 @@ var root = Path.GetFullPath(args[0]);
 var testRoot = Path.Combine(root, "artifacts/update-validation", Guid.NewGuid().ToString("N")); Directory.CreateDirectory(testRoot);
 var publicKey = await File.ReadAllTextAsync(Path.Combine(root, "artifacts/update-test-assets/public.pem"));
 var privateKey = await File.ReadAllTextAsync(Path.Combine(root, "artifacts/update-test-assets/private.pem"));
-var package03 = Path.Combine(root, "artifacts/update-test-assets/ArchivePassword-engine-26.03-win-x64.zip");
-var package04 = Path.Combine(root, "artifacts/update-test-assets/ArchivePassword-engine-26.04-win-x64.zip");
+var package03 = Path.Combine(root, $"artifacts/update-test-assets/ArchivePassword-engine-26.03-win-{EngineArchitecture.Current}.zip");
+var package04 = Path.Combine(root, $"artifacts/update-test-assets/ArchivePassword-engine-26.04-win-{EngineArchitecture.Current}.zip");
 var installed = Path.Combine(testRoot, "engines"); var statePath = Path.Combine(testRoot, "active-engine.json");
 var catalog = new EngineCatalog(Path.Combine(root, "engines"), installed, publicKey);
 var worker = Path.Combine(root, "artifacts/worker/ArchiveEngineWorker.exe"); var archive = Path.Combine(root, "tests/fixtures/generated/encrypted-header.7z");
@@ -140,12 +140,13 @@ Console.WriteLine($"{checks.Count}/{checks.Count} passed."); return 0;
 
 sealed class FixtureHandler(string packagePath, bool notFound = false) : HttpMessageHandler
 {
+    private static object ChannelBody(object release) => EngineArchitecture.Current == "arm64" ? new[] { release } : release;
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         if (notFound) return new HttpResponseMessage(HttpStatusCode.NotFound);
         var package = await File.ReadAllBytesAsync(packagePath, cancellationToken);
         if (request.RequestUri!.Host == "api.github.com") return new HttpResponseMessage(HttpStatusCode.OK)
-        { Content = new StringContent(JsonSerializer.Serialize(new { draft = false, prerelease = false, assets = new[] { new { name = "ArchivePassword-engine-26.04-win-x64.zip", size = package.Length, browser_download_url = "https://github.com/Nomoziya/nomozip/releases/download/test/ArchivePassword-engine-26.04-win-x64.zip" } } })) };
+        { Content = new StringContent(JsonSerializer.Serialize(ChannelBody(new { draft = false, prerelease = false, assets = new[] { new { name = $"ArchivePassword-engine-26.04-win-{EngineArchitecture.Current}.zip", size = package.Length, browser_download_url = $"https://github.com/Nomoziya/nomozip/releases/download/test/ArchivePassword-engine-26.04-win-{EngineArchitecture.Current}.zip" } } }))) };
         return new HttpResponseMessage(HttpStatusCode.OK) { RequestMessage = request, Content = new ByteArrayContent(package) };
     }
 }
