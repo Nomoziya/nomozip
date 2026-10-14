@@ -75,6 +75,13 @@
         <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Page}" Value="2"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
         <StackPanel><TextBlock Text="设置" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,24"/>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
+            <TextBlock Text="解压完成通知" Style="{StaticResource Heading}"/>
+            <CheckBox x:Name="NotifyExtractionChoice" Content="整批解压成功后发送系统通知" IsChecked="{Binding NotifyExtractionSuccess}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="整批解压成功后发送系统通知"/>
+            <TextBlock Text="失败或取消时不发成功通知；点击通知返回任务列表。Windows 可能根据系统通知设置隐藏提醒。" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>
+            <Button x:Name="SaveNotificationAction" Content="保存通知设置" Command="{Binding SaveNotificationSettingsCommand}" HorizontalAlignment="Left" Margin="0,16,0,0"/>
+            <TextBlock x:Name="NotificationStatus" Text="{Binding NotificationMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
+          </StackPanel></Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
             <TextBlock Text="软件更新" Style="{StaticResource Heading}"/>
             <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,0,0,8"/>
             <TextBlock Text="软件正式版由 nomozip 发布，与 7-Zip 引擎更新分别检查。" Style="{StaticResource Secondary}"/>
