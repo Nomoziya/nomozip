@@ -32,4 +32,6 @@
 
 本地数据层 36 项通过，包含真实文件迁移、错密/篡改拒绝、实际写入失败回滚、锁定业务访问、真实引擎自动解压、主密码更改/关闭、本机受保护恢复及独立备份恢复。正式 WPF/UIA 入口 45 项通过：启用/更改/关闭、错密/取消、空闲阈值与真实任务延后、锁定时手动解压、待压缩密码清理、恢复预览/确认、设置持久化、关闭释放，以及两种尺寸/高对比度与小窗口对话框。
 
-首轮界面检查发现小窗列表高度不足，已将锁定操作放在标题右侧；保持完整首行可见，不降低列表空间标准。报告为 `artifacts/master-vault-validation.json` 和 `artifacts/master-vault-ui-validation.json`，虚构数据截图在 `artifacts/master-vault-preview/`。完整 Windows CI 与轻量候选打包待完成；尚未公开发布或修改用户安装，物理多屏及原有环境项保持原状态。
+首轮界面检查发现小窗列表高度不足，已将锁定操作放在标题右侧；保持完整首行可见，不降低列表空间标准。报告为 `artifacts/master-vault-validation.json` 和 `artifacts/master-vault-ui-validation.json`，虚构数据截图在 `artifacts/master-vault-preview/`。完整 [Windows CI 38521102578](https://github.com/Nomoziya/nomozip/actions/runs/38521102578) 两个作业成功，55 份报告逐项通过；数据 36 / WPF/UIA 45 项及暂停 52、原有安装升级/独立用户迁移等保持通过。首轮 CI 38519850192 的暂停等待超时已保留失败证据，补充阶段诊断后同一检查本地/完整复验通过；首轮具体原因未确认，未放宽条件。
+
+本地轻量候选 preview.15 载荷 9855759 字节 / 43 文件（+110663），四项资产在 `artifacts/release-0.2.0-preview.15/`；载荷、完整 CI 与打包一致性报告分别为 `artifacts/master-payload-validation.json`、`artifacts/master-ci-review.json`、`artifacts/release-0.2.0-preview.15-validation.json`。没有新增运行组件，未公开发布或修改用户安装，物理多屏及原有环境项保持原状态。
