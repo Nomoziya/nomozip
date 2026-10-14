@@ -36,6 +36,20 @@ foreach(var version in versions)
     for(var index=0;index<12;index++) {pause.Resume();pause.Pause();}pause.Resume();var result=await work.WaitAsync(TimeSpan.FromSeconds(20));Check(version+" rapid toggles resume actual validation correctly",result.IsSuccess && result.SuccessfulItems==1);Check(version+" resumed test releases native process",WorkerIds().Length==0);
     var longer=Path.Combine(data,"longer-"+version+".7z");var entries=Enumerable.Range(0,4).Select(index=>new CompressionEntry(Path.Combine(root,"tests/fixtures/generated/large.bin"),index==0?"large.bin":"extra-"+index+".bin",false)).ToArray();
     var created=await new ArchiveEngineClient(worker,dll).CreateAsync(new(entries,"7z",1,false),longer,null);if(!created.IsSuccess) throw new IOException("long-running synthetic archive creation failed");
+    if(EngineArchitecture.Current=="arm64")
+    {
+        // Native ARM64 can finish the original solid 256 MiB fixture before its
+        // first nonzero progress notification. Use independent blocks and enough
+        // real IO to exercise an in-flight pause rather than pausing completed work.
+        var inputs=Path.Combine(data,"pause-inputs-"+version);Directory.CreateDirectory(inputs);
+        var paths=Enumerable.Range(0,16).Select(index=>Path.Combine(inputs,index==0?"large.bin":"extra-"+index+".bin")).ToArray();
+        foreach(var path in paths) File.Copy(Path.Combine(root,"tests/fixtures/generated/large.bin"),path);
+        File.Delete(longer);
+        var start=new ProcessStartInfo(Path.Combine(root,"engines",version,"7z.exe")){UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true};
+        foreach(var value in new[]{"a","-t7z","-mx=1","-ms=off","-y",longer}.Concat(paths)) start.ArgumentList.Add(value);
+        using var build=Process.Start(start)!;var outputDrain=build.StandardOutput.ReadToEndAsync();var errorDrain=build.StandardError.ReadToEndAsync();await build.WaitForExitAsync();await outputDrain;await errorDrain;
+        if(build.ExitCode!=0) throw new IOException("Native non-solid pause fixture creation failed.");
+    }
     var output=Path.Combine(data,version,"resume");pause=new();ack=Gate();var requested=false;var resumed=0;var progressEvents=0;ulong maxCompleted=0;
     client=new(worker,dll,pause:pause);work=client.ExtractAsync(longer,output,progress:new ForwardProgress<EngineProgress>(value=>{if(value.PausedState==true) ack.TrySetResult();else if(value.PausedState==false) Interlocked.Increment(ref resumed);else {progressEvents++;maxCompleted=Math.Max(maxCompleted,value.Completed);if(value.Completed>0 && !requested){requested=true;pause.Pause();}}}));
     try {await ack.Task.WaitAsync(TimeSpan.FromSeconds(15));}
