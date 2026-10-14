@@ -11,6 +11,12 @@ await File.WriteAllTextAsync(Path.Combine(root,"artifacts/pause-validation.json"
 TaskCompletionSource Gate()=>new(TaskCreationOptions.RunContinuationsAsynchronously);
 string Hash(string file) {using var stream=File.OpenRead(file);return Convert.ToHexString(SHA256.HashData(stream));}
 int[] WorkerIds() {var values=new List<int>();foreach(var process in Process.GetProcessesByName("ArchiveEngineWorker")){using(process) try {if(process.MainModule?.FileName.Equals(worker,StringComparison.OrdinalIgnoreCase)==true) values.Add(process.Id);}catch(Exception error) when(error is System.ComponentModel.Win32Exception or InvalidOperationException){}}return values.ToArray();}
+async Task<bool> NoRemainingWorkersAsync()
+{
+    var deadline=DateTime.UtcNow.AddSeconds(2);
+    while(WorkerIds().Length!=0 && DateTime.UtcNow<deadline) await Task.Delay(20);
+    return WorkerIds().Length==0;
+}
 {
     var pause=new ExtractionPause();pause.Pause();var first=pause.WaitAsync();var second=pause.WaitAsync();pause.Pause();Check("pause holds all managed waiters",!first.IsCompleted && !second.IsCompleted);pause.Resume();await Task.WhenAll(first,second);Check("resume releases all managed waiters",first.IsCompletedSuccessfully && second.IsCompletedSuccessfully && !pause.IsRequested);
     pause.Resume();Check("resume without pause is harmless",pause.WaitAsync().IsCompletedSuccessfully);
@@ -44,7 +50,10 @@ foreach(var version in versions)
     Check(version+" paused output is stable without replacing worker",(File.Exists(file)?new FileInfo(file).Length:0)==length && WorkerIds().SequenceEqual(ids));pause.Resume();result=await work.WaitAsync(TimeSpan.FromSeconds(20));
     Check(version+" resume continues current extraction with correct bytes",result.IsSuccess && resumed>0 && Hash(file)==Hash(Path.Combine(root,"tests/fixtures/generated/large.bin")));Check(version+" resumed extraction releases worker",WorkerIds().Length==0);
     pause=new();pause.Pause();ack=Gate();using var cancellation=new CancellationTokenSource();client=new(worker,dll,pause:pause);work=client.TestAsync(archive,progress:new ForwardProgress<EngineProgress>(value=>{if(value.PausedState==true) ack.TrySetResult();}),cancellationToken:cancellation.Token);
-    await ack.Task.WaitAsync(TimeSpan.FromSeconds(15));cancellation.Cancel();result=await work.WaitAsync(TimeSpan.FromSeconds(5));Check(version+" cancel wakes paused native engine",result.Status=="cancelled" && result.Code=="cancelled" && WorkerIds().Length==0);
+    await ack.Task.WaitAsync(TimeSpan.FromSeconds(15));cancellation.Cancel();result=await work.WaitAsync(TimeSpan.FromSeconds(5));
+    var cancellationReleased=await NoRemainingWorkersAsync();
+    if(result.Status!="cancelled" || result.Code!="cancelled" || !cancellationReleased) Console.WriteLine(JsonSerializer.Serialize(new{phase="cancel paused engine",version,result.Status,result.Code,workers=WorkerIds()}));
+    Check(version+" cancel wakes paused native engine",result.Status=="cancelled" && result.Code=="cancelled" && cancellationReleased);
     var legacy=Path.Combine(root,"artifacts/concurrency-candidate/ArchiveEngineWorker.exe");if(File.Exists(legacy)) {pause=new();pause.Pause();result=await new ArchiveEngineClient(legacy,dll,pause:pause).TestAsync(archive).WaitAsync(TimeSpan.FromSeconds(5));Check(version+" previous worker rejects pausable operation",!result.IsSuccess);}
 }
 foreach(var cancelAtCommit in new[] {false,true})

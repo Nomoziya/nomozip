@@ -84,7 +84,7 @@ internal static class DesktopPasswordOrganizationValidation
             before = await File.ReadAllBytesAsync(vaultPath);
             Invoke((Button)window.FindName("MergePasswordsButton")); await Layout(window);
             Check("declined actual merge leaves vault unchanged", confirmation == "merge:1" && Enumerable.SequenceEqual(before, await File.ReadAllBytesAsync(vaultPath)));
-            allowMerge = true; await Layout(window); Invoke((Button)window.FindName("MergePasswordsButton")); await model.WaitForIdleAsync(); await Layout(window);
+            allowMerge = true; await Layout(window); Invoke((Button)window.FindName("MergePasswordsButton")); await Layout(window); await model.WaitForIdleAsync(); await Layout(window);
             Check("actual merge button removes duplicate and retains association", (await vault.ReadAsync()).Count == 2 && await vault.GetAssociatedPasswordAsync(Path.Combine(data, "association.zip")) == item.Id);
             Check("merge refreshes list and disables action with no duplicates", model.PasswordRows.Count == 2 && model.DuplicateSummary == "" && !model.MergePasswordsCommand.CanExecute(null));
             for (var index = 0; index < 16; index++) await vault.SaveAsync(other with { Id = Guid.NewGuid(), Name = "合成列表记录 " + index, Secret = "synthetic " + index });

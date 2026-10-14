@@ -1,4 +1,4 @@
-param([string]$ValidationRoot, [switch]$FrameworkDependent = $true, [ValidateSet('x64','arm64')][string]$Architecture = 'x64')
+param([string]$ValidationRoot, [switch]$FrameworkDependent = $true, [ValidateSet('x64','arm64')][string]$Architecture = 'x64', [string]$PreviousApplicationDirectory, [ValidateSet('x64','arm64')][string]$PreviousArchitecture = 'x64')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskParent = [IO.Path]::GetFullPath((Join-Path $taskRoot 'artifacts/installer-validation')).TrimEnd('\') + '\'
@@ -18,7 +18,11 @@ function Invoke-Installer([string]$Path,[string[]]$Arguments) {
     $taskProcess = Start-Process -FilePath $Path -ArgumentList $Arguments -WindowStyle Hidden -Wait -PassThru
     if ($taskProcess.ExitCode -ne 0) { throw "Installer returned $($taskProcess.ExitCode)." }
 }
-if (-not (Test-Path $taskFirst)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskFirst -Version '0.1.0.1' -ValidationRoot $taskValidation -FrameworkDependent:($Architecture -eq 'arm64') -ApplicationDirectory (Join-Path $taskRoot $(if ($Architecture -eq 'arm64') { 'artifacts/light-app' } else { 'artifacts/self-contained-app' })) -Architecture $Architecture }
+if (-not $PreviousApplicationDirectory) {
+    $PreviousApplicationDirectory = Join-Path $taskRoot $(if ($Architecture -eq 'arm64') { 'artifacts/light-app' } else { 'artifacts/self-contained-app' })
+    $PreviousArchitecture = $Architecture
+}
+if (-not (Test-Path $taskFirst)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskFirst -Version '0.1.0.1' -ValidationRoot $taskValidation -FrameworkDependent:($Architecture -eq 'arm64') -ApplicationDirectory $PreviousApplicationDirectory -Architecture $PreviousArchitecture }
 if (-not (Test-Path $taskUpgrade)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskUpgrade -Version '0.1.0.2' -ValidationRoot $taskValidation -FrameworkDependent:$FrameworkDependent -Architecture $Architecture }
 try {
     Invoke-Installer $taskFirst @('/S')
@@ -99,7 +103,7 @@ try {
     $taskExpectedChecks = if ($FrameworkDependent) { 21 } else { 20 }
     $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
-    [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8
+    [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;previousArchitecture=$PreviousArchitecture;architecture=$Architecture;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8
 }
 if (-not $taskPassed) { throw 'Installer acceptance failed; inspect artifacts/installer-validation.json.' }
 Write-Output 'Installer install/upgrade/offline extraction/uninstall acceptance passed.'
