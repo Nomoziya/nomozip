@@ -8,8 +8,14 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
-    Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null)
+    Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null,
+    Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null)
 {
+    public MasterPasswordResponse? AskMasterPassword(MasterPasswordAction action)
+    {
+        var dialog=new MasterPasswordDialog(action){Owner=owner};prepareMaster?.Invoke(dialog);return dialog.ShowDialog()==true?dialog.Response:null;
+    }
+    public bool ConfirmVaultRecovery(int count)=>confirmVaultRecovery?.Invoke(count) ?? MessageBox.Show(owner,$"用已验证备份中的 {count} 条密码创建新库？\n\n当前锁定库将另存原始加密副本。备份之后新增的记录不会出现在恢复结果中。下一步设置新主密码。","通过独立备份恢复",MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
     public bool NotifyExtractionComplete(int count) => owner is MainWindow window && window.NotifyExtractionComplete(count);
     public int? EditFilenameEncoding(string archive,int codePage,Func<int,CancellationToken,Task<EngineResult>> read,CancellationToken token)
     {

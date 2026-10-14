@@ -6,10 +6,12 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
+& $taskDotnet (Join-Path $taskRoot 'tests/MasterVaultValidation/bin/Debug/net10.0-windows/MasterVaultValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Master password vault validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/QueueValidation/bin/Debug/net10.0-windows/QueueValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Controlled queue scheduling validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/PauseValidation/bin/Debug/net10.0-windows/PauseValidation.dll') $taskRoot
@@ -161,3 +163,6 @@ $taskPauseGui = Start-Process -FilePath $taskApplication -ArgumentList @('--vali
 if ($taskPauseGui.ExitCode -ne 0) { throw 'Desktop pause and resume validation failed.' }
 $taskNotificationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-notifications', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskNotificationGui.ExitCode -ne 0) { throw 'Desktop result notification validation failed.' }
+
+$taskMasterGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-master-vault', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskMasterGui.ExitCode -ne 0) { throw 'Master password desktop validation failed.' }

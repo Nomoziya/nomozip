@@ -143,6 +143,7 @@ jobs:
             artifacts/concurrency-preview/*.png
             artifacts/pause-preview/*.png
             artifacts/notification-preview/*.png
+            artifacts/master-vault-preview/*.png
             artifacts/shell-validation/**/*.log
             artifacts/origin-fat/**/*.log
             artifacts/origin-fat/**/disk-identity.json

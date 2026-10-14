@@ -86,6 +86,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeFileHashCommands();
         InitializeFilenameEncodingCommands();
         InitializeNotificationCommands();
+        InitializeVaultProtectionCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
@@ -129,7 +130,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string SelectedEngineVersion { get => selectedEngine; set { if (value is not null && Set(ref selectedEngine, value)) Changed(nameof(EngineSummary)); } }
     public string EngineSummary => string.IsNullOrWhiteSpace(activeEngine) ? "没有可用的已验证引擎。" : $"现用引擎：7-Zip {activeEngine}";
     public string PreviousEngineSummary => string.IsNullOrWhiteSpace(previousEngine) ? "尚无可恢复的上一版本。" : $"上一版本：7-Zip {previousEngine}";
-    public string VaultSummary => vaultAvailable ? $"密码库中有 {allPasswords.Count(value => value.AutoTry)} 个可用密码" : "密码库无法读取，可手动输入密码";
+    public string VaultSummary => VaultLocked ? "密码库已锁定，可手动输入密码" : vaultAvailable ? $"密码库中有 {allPasswords.Count(value => value.AutoTry)} 个可用密码" : "密码库无法读取，可手动输入密码";
     public string TaskSummary => $"{Tasks.Count(value => !value.Completed)} 个待处理 · {Tasks.Count(value => value.Completed)} 个已完成";
     public string ExtractButtonText => $"开始解压（{Tasks.Count(value => !value.Completed)}）";
     public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
@@ -171,6 +172,8 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private async Task RefreshVaultAsync()
     {
+        await RefreshVaultProtectionAsync();
+        if (VaultLocked) { ClearVaultReferences(); CommandManager.InvalidateRequerySuggested(); return; }
         try { allPasswords = (await vault.ReadAsync()).ToList(); vaultAvailable = true; }
         catch (VaultException exception) { allPasswords = []; vaultAvailable = false; Banner = exception.BackupAvailable ? "密码库无法读取。你可以在设置中恢复备份，或先手动输入解压密码。" : "密码库无法读取，请保留原文件。你仍可手动输入解压密码。"; }
         RefreshPasswordGroups(); FilterPasswords(); Changed(nameof(VaultSummary)); CommandManager.InvalidateRequerySuggested();
@@ -271,12 +274,17 @@ public sealed partial class MainViewModel : ObservableObject
         try { await vault.DeleteAsync(item.Id); await RefreshVaultAsync(); }
         catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "密码未能删除，请检查密码库。"; }
     }
-    private async Task RestoreVaultAsync()
+    private async Task RestoreVaultAsync()=>await VaultOperationAsync(async()=>
     {
         if (!dialogs.ConfirmRestore()) return;
-        try { await vault.RestoreBackupAsync(); await RefreshVaultAsync(); Banner = "已恢复密码库备份。"; }
-        catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "备份不存在或无法读取，原密码库已保留。"; }
-    }
+        if (VaultMasterEnabled && vault is IPasswordVaultProtection protection)
+        {
+            var response=dialogs.AskMasterPassword(MasterPasswordAction.Unlock);if(response is null)return;
+            await Task.Run(()=>protection.RestoreMasterBackupAsync(response.Current));
+        }
+        else await vault.RestoreBackupAsync();
+        await RefreshVaultAsync();RecordVaultActivity();Banner="已恢复密码库备份。";
+    });
     private async Task CheckUpdatesAsync() => await RunUpdateOperationAsync(async token =>
     {
         UpdateMessage = "正在检查更新…"; availableUpdate = null;
@@ -372,7 +380,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!File.Exists(path)) return;
         var settings = JsonSerializer.Deserialize<Settings>(await File.ReadAllTextAsync(path));
         if (settings is null || settings.Version != 1) { settingsWritable = false; Banner = "设置文件版本无法识别，已使用默认设置并保留原文件。"; return; }
-        OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;
+        OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;VaultIdleIndex=settings.VaultIdleIndex;
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
         directoryRules=settings.DirectoryRules ?? new();
@@ -386,7 +394,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
         RememberCustomDirectory();
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess)));
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex)));
     }
     private static void OpenFolder(string path)
     {
@@ -401,7 +409,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => "格式不支持或文件损坏", "output_write_failed" or "write_failed" => "输出目录无法写入",
         "worker_connection_failed" or "engine_load_failed" => "引擎无法启动", _ => "处理失败，请检查压缩包",
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", "文件夹"));

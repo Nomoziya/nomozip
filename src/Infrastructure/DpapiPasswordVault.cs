@@ -4,7 +4,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed class DpapiPasswordVault(string path) : IPasswordVault, IPasswordOrganizationVault
+public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IPasswordOrganizationVault, IPasswordVaultProtection
 {
     private static readonly byte[] Magic = "APV1"u8.ToArray();
     private static readonly JsonSerializerOptions Options = new(JsonSerializerDefaults.Web);
@@ -91,6 +91,8 @@ public sealed class DpapiPasswordVault(string path) : IPasswordVault, IPasswordO
         try
         {
             if (!File.Exists(BackupPath)) throw new VaultException("backup_missing");
+            if (await IsMasterFileAsync(path, cancellationToken) && !await IsMasterFileAsync(BackupPath, cancellationToken))
+                throw new VaultException("invalid_protected_vault");
             await LoadAsync(BackupPath, cancellationToken); // Validate before replacing anything.
             var temporary = path + ".restore-" + Guid.NewGuid().ToString("N");
             try
@@ -122,8 +124,17 @@ public sealed class DpapiPasswordVault(string path) : IPasswordVault, IPasswordO
         try
         {
             var bytes = await File.ReadAllBytesAsync(source, token);
-            if (bytes.Length < Magic.Length || !bytes.AsSpan(0, Magic.Length).SequenceEqual(Magic)) throw new VaultException("unknown_vault_format", File.Exists(BackupPath));
-            plaintext = ProtectedData.Unprotect(bytes.AsSpan(Magic.Length).ToArray(), null, DataProtectionScope.CurrentUser);
+            if (MasterVaultCipher.IsProtected(bytes))
+            {
+                if (masterKey is null || masterSalt is null) throw new VaultException("vault_locked");
+                plaintext = MasterVaultCipher.Decrypt(bytes, masterKey, masterSalt);
+            }
+            else
+            {
+                if (masterKey is not null) throw new VaultException("vault_protection_changed");
+                if (bytes.Length < Magic.Length || !bytes.AsSpan(0, Magic.Length).SequenceEqual(Magic)) throw new VaultException("unknown_vault_format", File.Exists(BackupPath));
+                plaintext = ProtectedData.Unprotect(bytes.AsSpan(Magic.Length).ToArray(), null, DataProtectionScope.CurrentUser);
+            }
             var document = JsonSerializer.Deserialize<VaultDocument>(plaintext, Options) ?? throw new JsonException();
             if (document.Version != 1) throw new VaultException("unsupported_vault_version", File.Exists(BackupPath));
             return document;
@@ -137,7 +148,8 @@ public sealed class DpapiPasswordVault(string path) : IPasswordVault, IPasswordO
     {
         var plaintext = JsonSerializer.SerializeToUtf8Bytes(document, Options);
         byte[] encrypted;
-        try { encrypted = ProtectedData.Protect(plaintext, null, DataProtectionScope.CurrentUser); }
+        try { encrypted = masterKey is not null && masterSalt is not null ? MasterVaultCipher.Encrypt(plaintext, masterKey, masterSalt)
+            : [.. Magic, .. ProtectedData.Protect(plaintext, null, DataProtectionScope.CurrentUser)]; }
         finally { CryptographicOperations.ZeroMemory(plaintext); }
         var destination = Path.GetFullPath(path);
         Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
@@ -146,7 +158,6 @@ public sealed class DpapiPasswordVault(string path) : IPasswordVault, IPasswordO
         {
             await using (var file = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough))
             {
-                await file.WriteAsync(Magic, token);
                 await file.WriteAsync(encrypted, token);
                 await file.FlushAsync(token);
             }

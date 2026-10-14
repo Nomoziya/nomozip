@@ -73,8 +73,9 @@ public sealed partial class MainViewModel
     }
     private async Task SetCompressionPasswordAsync()
     {
-        compressionPassword = await dialogs.AskCompressionPasswordAsync(Path.GetFileName(CompressionOutput), allPasswords, vaultAvailable);
-        Changed(nameof(CompressionPasswordStatus));
+        var ownsBusy=IsIdle;if(ownsBusy){IsBusy=true;idle=new TaskCompletionSource();}
+        try { compressionPassword = await dialogs.AskCompressionPasswordAsync(Path.GetFileName(CompressionOutput), allPasswords, vaultAvailable); Changed(nameof(CompressionPasswordStatus)); }
+        finally {if(ownsBusy){IsBusy=false;idle.TrySetResult();}}
     }
     private async Task CreateArchiveAsync()
     {

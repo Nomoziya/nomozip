@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace ArchivePassword.Desktop;
 
@@ -23,7 +24,14 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        Closed += (_, _) => completionNotification?.Dispose();
+        var vaultTimer=new DispatcherTimer {Interval=TimeSpan.FromSeconds(1)};
+        vaultTimer.Tick+=async(_,_)=>{if(DataContext is MainViewModel model)await model.CheckVaultIdleAsync();};
+        Loaded+=(_,_)=>vaultTimer.Start();
+        PreviewKeyDown+=(_,_)=>{if(DataContext is MainViewModel model)model.RecordVaultActivity();};
+        PreviewMouseDown+=(_,_)=>{if(DataContext is MainViewModel model)model.RecordVaultActivity();};
+        PreviewMouseMove+=(_,_)=>{if(DataContext is MainViewModel model)model.RecordVaultActivity();};
+        PreviewMouseWheel+=(_,_)=>{if(DataContext is MainViewModel model)model.RecordVaultActivity();};
+        Closed += async (_, _) => {vaultTimer.Stop();completionNotification?.Dispose();if(DataContext is MainViewModel model)await model.ReleaseVaultSessionAsync();};
         void ArrangePanels()
         {
             var narrow = ActualWidth < 1000;
