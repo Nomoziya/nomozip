@@ -1,0 +1,57 @@
+name: Native Windows ARM64 validation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: windows-11-arm
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      PYTHONUTF8: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Native official engines and SDK
+        run: |
+          $env:PATH = 'C:\Program Files\7-Zip;' + $env:PATH
+          ./scripts/bootstrap.ps1 -Architecture arm64
+      - name: Native ARM64 worker
+        run: ./scripts/build-worker.ps1 -Architecture arm64
+      - name: Actual engine read and write
+        run: |
+          $env:DOTNET_CLI_HOME = Join-Path $PWD '.tools/dotnet-home'
+          foreach ($taskProject in @('EngineSmoke','CompressionValidation','FormatValidation','ArchitectureValidation')) {
+            & ./.tools/dotnet/dotnet.exe build "tests/$taskProject/$taskProject.csproj" --nologo -m:1 -nr:false -v:minimal
+            if ($LASTEXITCODE -ne 0) { throw 'Native test build failed.' }
+          }
+          $taskWorkspace=Join-Path $PWD 'artifacts/arm64-workspace'
+          New-Item -ItemType Directory -Force "$taskWorkspace/engines","$taskWorkspace/artifacts/worker" | Out-Null
+          Copy-Item engines/arm64/* "$taskWorkspace/engines" -Recurse
+          Copy-Item artifacts/worker/ArchiveEngineWorker.exe "$taskWorkspace/artifacts/worker"
+          python tests/engine_validation.py --root $taskWorkspace --dotnet "$PWD/.tools/dotnet/dotnet.exe" --smoke "$PWD/tests/EngineSmoke/bin/Debug/net10.0-windows/EngineSmoke.dll"
+          if ($LASTEXITCODE -ne 0) { throw 'Native engine validation failed.' }
+          & ./.tools/dotnet/dotnet.exe tests/CompressionValidation/bin/Debug/net10.0-windows/CompressionValidation.dll $taskWorkspace
+          if ($LASTEXITCODE -ne 0) { throw 'Native compression validation failed.' }
+          & ./.tools/dotnet/dotnet.exe tests/FormatValidation/bin/Debug/net10.0-windows/FormatValidation.dll $taskWorkspace
+          if ($LASTEXITCODE -ne 0) { throw 'Native format validation failed.' }
+          & ./.tools/dotnet/dotnet.exe tests/ArchitectureValidation/bin/Debug/net10.0-windows/ArchitectureValidation.dll $taskWorkspace arm64
+          if ($LASTEXITCODE -ne 0) { throw 'Native architecture and updates validation failed.' }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: arm64-validation-reports
+          path: |
+            artifacts/*validation.json
+            artifacts/arm64-workspace/artifacts/*validation.json
+            artifacts/worker/ArchiveEngineWorker.exe
+          if-no-files-found: ignore

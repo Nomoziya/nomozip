@@ -9,7 +9,7 @@ public sealed partial class GitHubEngineChannel(HttpClient client)
 {
     [GeneratedRegex(@"^[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9_.-]+$")]
     private static partial Regex RepositoryPattern();
-    [GeneratedRegex(@"^ArchivePassword-engine-(\d{2}\.\d{2})-win-x64\.zip$")]
+    [GeneratedRegex(@"^ArchivePassword-engine-(\d{2}\.\d{2})-win-(x64|arm64)\.zip$")]
     private static partial Regex AssetPattern();
     public static string NormalizeRepository(string value)
     {
@@ -33,7 +33,7 @@ public sealed partial class GitHubEngineChannel(HttpClient client)
         foreach (var asset in release.GetProperty("assets").EnumerateArray())
         {
             var match = AssetPattern().Match(asset.GetProperty("name").GetString() ?? "");
-            if (!match.Success) continue;
+            if (!match.Success || match.Groups[2].Value != EngineArchitecture.Current) continue;
             var uri = new Uri(asset.GetProperty("browser_download_url").GetString()!);
             if (uri.Scheme != "https" || uri.Host != "github.com" || !uri.AbsolutePath.StartsWith($"/{repository}/releases/download/", StringComparison.OrdinalIgnoreCase) || asset.GetProperty("size").GetInt64() > EngineUpdatePackage.MaximumPackageBytes) throw new UpdateException("invalid_download");
             candidates.Add(new(match.Groups[1].Value, uri, asset.GetProperty("size").GetInt64()));

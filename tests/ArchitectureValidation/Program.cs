@@ -1,0 +1,69 @@
+using System.Buffers.Binary;
+using System.IO.Compression;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text.Json;
+using ArchivePassword.Core;
+using ArchivePassword.Infrastructure;
+
+var root=Path.GetFullPath(args[0]);var expected=args.Length>1?args[1]:EngineArchitecture.Current;
+var folder=Path.Combine(root,"artifacts/architecture-"+Guid.NewGuid().ToString("N")[..8]);Directory.CreateDirectory(folder);
+var cases=new List<object>();int passed=0,total=0;
+void Check(string name,bool value) {total++;if(value)passed++;cases.Add(new{name,passed=value});Console.WriteLine((value?"PASS ":"FAIL ")+name);}
+Check("actual native OS and managed process",EngineArchitecture.Current==expected && RuntimeInformation.OSArchitecture.ToString().Equals(expected,StringComparison.OrdinalIgnoreCase));
+Check("worker native PE",EngineArchitecture.IsNativeImage(await File.ReadAllBytesAsync(Path.Combine(root,"artifacts/worker/ArchiveEngineWorker.exe"))));
+Check("profile directories preserve x64 layout and isolate ARM64",EngineArchitecture.InstalledDirectoryName==(expected=="x64"?"engines":"engines-arm64") && EngineArchitecture.SelectionFileName==(expected=="x64"?"active-engine.json":"active-engine-arm64.json"));
+using var key=RSA.Create(3072);var publicKey=key.ExportSubjectPublicKeyInfoPem();var foreign=expected=="x64"?"arm64":"x64";
+async Task<string> Package(string version,string architecture,byte[]? replacement=null,string? source=null)
+{
+    var payload=new Dictionary<string,byte[]>{["7z.dll"]=replacement??await File.ReadAllBytesAsync(Path.Combine(root,"engines",version,"7z.dll")),["License.txt"]="synthetic architecture test"u8.ToArray(),["compatibility-report.json"]="{}"u8.ToArray()};
+    var hashes=payload.ToDictionary(pair=>pair.Key,pair=>Convert.ToHexString(SHA256.HashData(pair.Value)).ToLowerInvariant());
+    var manifest=new EngineUpdateManifest(1,version,architecture,1,"0.1",source??$"https://github.com/ip7z/7zip/releases/download/{version}/7z{version.Replace(".","")}-{architecture}.exe",hashes);
+    var bytes=JsonSerializer.SerializeToUtf8Bytes(manifest,EngineUpdatePackage.JsonOptions);var signature=key.SignData(bytes,HashAlgorithmName.SHA256,RSASignaturePadding.Pss);
+    var file=Path.Combine(folder,Guid.NewGuid().ToString("N")+".zip");using var output=File.Create(file);using var zip=new ZipArchive(output,ZipArchiveMode.Create);
+    void Add(string name,byte[] value){using var stream=zip.CreateEntry(name).Open();stream.Write(value);}
+    Add("manifest.json",bytes);Add("manifest.sig",signature);foreach(var pair in payload)Add("engine/"+pair.Key,pair.Value);return file;
+}
+async Task Reject(string name,Func<Task> action,string code)
+{try {await action();Check(name,false);}catch(UpdateException error){Check(name,error.Code==code);}}
+var nativePackages=new Dictionary<string,string>();
+foreach(var version in new[]{"26.04","26.03"})
+{
+    var dll=await File.ReadAllBytesAsync(Path.Combine(root,"engines",version,"7z.dll"));
+    Check(version+" official DLL and CLI native PE",EngineArchitecture.IsNativeImage(dll) && EngineArchitecture.IsNativeImage(await File.ReadAllBytesAsync(Path.Combine(root,"engines",version,"7z.exe"))));
+    Check(version+" foreign image rejected by explicit target",!EngineArchitecture.IsNativeImage(dll,foreign));
+    var archive=await Package(version,expected);nativePackages[version]=archive;
+    var accepted=await EngineUpdatePackage.ReadAsync(archive,publicKey,CancellationToken.None);
+    Check(version+" actual signed native package accepted",accepted.Manifest.Architecture==expected && accepted.Payload["7z.dll"].SequenceEqual(dll));
+    var wrong=await Package(version,foreign);await Reject(version+" signed foreign manifest rejected",()=>EngineUpdatePackage.ReadAsync(wrong,publicKey,CancellationToken.None),"incompatible_update");
+    var wrongImage=dll.ToArray();var offset=BinaryPrimitives.ReadInt32LittleEndian(wrongImage.AsSpan(60));BinaryPrimitives.WriteUInt16LittleEndian(wrongImage.AsSpan(offset+4),foreign=="x64"?(ushort)0x8664:(ushort)0xaa64);
+    wrong=await Package(version,expected,wrongImage);await Reject(version+" native signed manifest with foreign PE rejected",()=>EngineUpdatePackage.ReadAsync(wrong,publicKey,CancellationToken.None),"incompatible_update");
+    wrong=await Package(version,expected,source:$"https://github.com/ip7z/7zip/releases/download/{version}/7z{version.Replace(".","")}-{foreign}.exe");
+    await Reject(version+" foreign official URL rejected",()=>EngineUpdatePackage.ReadAsync(wrong,publicKey,CancellationToken.None),"invalid_manifest");
+    var builtin=Path.Combine(folder,"catalog-"+version);var entry=Path.Combine(builtin,version);Directory.CreateDirectory(entry);await File.WriteAllBytesAsync(Path.Combine(entry,"7z.dll"),dll);
+    async Task SetManifest(string architecture,byte[] image){await File.WriteAllBytesAsync(Path.Combine(entry,"7z.dll"),image);await File.WriteAllTextAsync(Path.Combine(entry,"manifest.json"),JsonSerializer.Serialize(new{version,architecture,protocol=1,dllSha256=Convert.ToHexString(SHA256.HashData(image))}));}
+    await SetManifest(expected,dll);Check(version+" correct builtin catalog recognized",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).SequenceEqual(new[]{version}));
+    await SetManifest(foreign,dll);Check(version+" foreign catalog architecture ignored",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).Count==0);
+    await SetManifest(expected,wrongImage);Check(version+" incorrect PE despite matching manifest hash ignored",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).Count==0);
+}
+var installed=Path.Combine(folder,EngineArchitecture.InstalledDirectoryName);var state=Path.Combine(folder,EngineArchitecture.SelectionFileName);
+var catalog=new EngineCatalog(Path.Combine(root,"engines"),installed,publicKey);
+var updater=new EngineUpdateService(installed,state,publicKey,Path.Combine(root,"artifacts/worker/ArchiveEngineWorker.exe"),Path.Combine(root,"tests/fixtures/generated/encrypted-header.7z"),catalog);
+await updater.InstallAsync(nativePackages["26.03"]);await updater.ActivateAsync("26.03");await updater.InstallAsync(nativePackages["26.04"]);await updater.ActivateAsync("26.04");
+var selection=await updater.ReadSelectionAsync();Check("real native installation activation and previous version",selection?.Active=="26.04" && selection.Previous=="26.03");
+await updater.RollbackAsync();Check("native engine rollback preserves previous version",(await updater.ReadSelectionAsync())?.Active=="26.03");
+var before=File.ReadAllBytes(state);var otherPackage=await Package("26.04",foreign);await Reject("foreign install refused before state change",()=>updater.InstallAsync(otherPackage),"incompatible_update");Check("foreign install preserves state and clears preparation",before.SequenceEqual(File.ReadAllBytes(state)) && !Directory.GetDirectories(installed,".prepare-*").Any());
+var assets=new[]{foreign,expected}.Select(architecture=>new{name=$"ArchivePassword-engine-26.04-win-{architecture}.zip",size=10,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/engine-26.04/ArchivePassword-engine-26.04-win-{architecture}.zip"}).ToArray();
+using(var client=new HttpClient(new FixtureHandler(new{draft=false,prerelease=false,assets})))
+{var found=await new GitHubEngineChannel(client).CheckAsync("Nomoziya/nomozip");Check("channel selects only native asset in mixed release",found?.DownloadUrl.AbsoluteUri.EndsWith("win-"+expected+".zip")==true);}
+using(var client=new HttpClient(new FixtureHandler(new{draft=false,prerelease=false,assets=assets.Take(1).ToArray()})))
+{Check("foreign-only engine release is not offered",await new GitHubEngineChannel(client).CheckAsync("Nomoziya/nomozip") is null);}
+var softwareAsset=new{name=$"nomozip-0.3.0-light-setup-win-{expected}.exe",size=10,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/v0.3.0/nomozip-0.3.0-light-setup-win-{expected}.exe"};
+var softwareRelease=new{draft=false,prerelease=false,tag_name="v0.3.0",assets=new[]{softwareAsset}};
+using(var client=new HttpClient(new FixtureHandler(new[]{softwareRelease})))
+{Check("software channel offers matching lightweight architecture",(await new GitHubApplicationChannel(client).CheckAsync(expected))?.InstallerUrl.AbsoluteUri.EndsWith("win-"+expected+".exe")==true);}
+await File.WriteAllTextAsync(Path.Combine(root,"artifacts/architecture-validation.json"),JsonSerializer.Serialize(new{passed,total,cases,architecture=EngineArchitecture.Current,osArchitecture=RuntimeInformation.OSArchitecture.ToString(),nativeProcess=true,syntheticOnly=true},new JsonSerializerOptions{WriteIndented=true}));
+Console.WriteLine($"{passed}/{total} passed");return passed==total?0:1;
+sealed class FixtureHandler(object body):HttpMessageHandler
+{protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)=>Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(JsonSerializer.Serialize(body))});}

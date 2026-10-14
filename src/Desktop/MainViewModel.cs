@@ -39,8 +39,8 @@ public sealed partial class MainViewModel : ObservableObject
         this.shellClassesPath = shellClassesPath;
         var keyPath = Path.Combine(baseDirectory, "update-public-key.pem");
         var publicKey = File.Exists(keyPath) ? File.ReadAllText(keyPath) : null;
-        engines = new EngineCatalog(Path.Combine(baseDirectory, "engines"), Path.Combine(dataDirectory, "engines"), publicKey);
-        if (publicKey is not null) updater = new EngineUpdateService(Path.Combine(dataDirectory, "engines"), Path.Combine(dataDirectory, "active-engine.json"), publicKey,
+        engines = new EngineCatalog(Path.Combine(baseDirectory, "engines"), Path.Combine(dataDirectory, EngineArchitecture.InstalledDirectoryName), publicKey);
+        if (publicKey is not null) updater = new EngineUpdateService(Path.Combine(dataDirectory, EngineArchitecture.InstalledDirectoryName), Path.Combine(dataDirectory, EngineArchitecture.SelectionFileName), publicKey,
             Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), Path.Combine(baseDirectory, "update-probe/encrypted-header.7z"), engines);
         var channelPath = Path.Combine(baseDirectory, "update-channel.json");
         if (File.Exists(channelPath))
