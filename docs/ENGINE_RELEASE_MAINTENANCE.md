@@ -57,3 +57,5 @@ GitHub CLI 须已登录并有该仓库 Releases 写入权限。脚本使用 `con
 `tests/engine_release_validation.py` 在独立短路径下通过正式命令入口准备候选，实际跑五类矩阵，使用测试 RSA/DPAPI 身份生成更新包并由客户端验签。34 项覆盖篡改/失败阻断、临时私钥清理、原有程序/worker/公钥不变，以及模拟 GitHub 的草稿、重复标签、远端字节不一致、API 失败、批准门槛、稳定渠道和发布后复核。普通 Windows CI 加入该报告，密钥不会作为 CI 证据上传。
 
 官方下载入口另用现有 26.04 在隔离目录实测；当前官方稳定版仍为 26.04，原公开资产保持不变。尚未遇到真实未来版本，未使用产品私钥生成新公开包，也未在生产 GitHub 上创建或发布草稿；模拟发布通过不等于这些生产操作已实测。将来实际新版本仍需完成同样的兼容性、签名和维护者审阅步骤。每日 CI 保持发现、验证和保存报告，不自动签发或发布生产更新。
+
+完整 [Windows CI 38513508645](https://github.com/Nomoziya/nomozip/actions/runs/38513508645) 两个作业成功，53 份普通验收报告与此前 52 份加新维护报告的集合完全一致，逐项通过；新增维护 34/34，五类候选报告哈希与准备记录一致。证据：`artifacts/engine-release-validation.json`、`artifacts/engine-maintenance-ci-review.json`、`artifacts/engine-official-download-review.json`、`artifacts/engine-maintenance-local-review.json`。产品仍为 preview.14 的 9745096 字节 / 43 文件，旧候选资产保持原哈希；新维护源码快照在 `artifacts/engine-maintenance-final/`，一致性复核在 `artifacts/engine-maintenance-final-validation.json`。
