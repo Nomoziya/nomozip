@@ -109,6 +109,15 @@ foreach(var version in versions)
     var readOnly=await service.EditAsync(rar,rarItems,rarItems.Take(1).Select(item=>item.Index).ToArray(),[],false,_=>Task.FromResult<PasswordPromptResponse?>(null));
     Check(version+" RAR refuses write",readOnly.Engine.Code=="archive_edit_read_only");
     var fixtureSource=Path.Combine(folder,version+"-extra.txt");await File.WriteAllTextAsync(fixtureSource,"extra");
+    foreach(var format in new[]{"7z","zip"})
+    {
+        var embedded=Path.Combine(folder,version+"-embedded."+format);var plain=Path.Combine(folder,version+"-for-prefix."+format);
+        await client.CreateAsync(new([new(fixtureSource,"source.txt",false)],format,5,false),plain,null);
+        await File.WriteAllBytesAsync(embedded,new byte[64].Concat(File.ReadAllBytes(plain)).ToArray());var before=File.ReadAllBytes(embedded);
+        var content=await client.ListAsync(embedded);var readable=await client.TestAsync(embedded);
+        var edited=await service.EditAsync(embedded,content.Items,[],[new(fixtureSource,"extra.txt",false)],false,_=>Task.FromResult<PasswordPromptResponse?>(null));
+        Check(version+" "+format+" embedded prefix readable but modification refused",content.IsSuccess && readable.IsSuccess && edited.Engine.Code=="archive_edit_container_read_only" && before.SequenceEqual(File.ReadAllBytes(embedded)));
+    }
     foreach(var fixture in new[]{("encrypted.7z","测试密碼 ' $ & 空格"),("encrypted-legacy.zip","Fixture-Password-123")})
     {
         var target=Path.Combine(folder,version+"-"+fixture.Item1);File.Copy(Path.Combine(root,"tests/fixtures/generated",fixture.Item1),target);

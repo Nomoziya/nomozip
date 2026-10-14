@@ -21,7 +21,7 @@ public sealed partial class MainViewModel
                     if(selection.Count!=1 || selection[0].Directory || sources.Length!=1 || Directory.Exists(sources[0])) {status.Report("替换时请只选择一个包内文件和一个本地文件。");return null;}
                     additions=[new(sources[0],selection[0].Path,false)];removed=[selection[0].Index];
                 }
-                else additions=await Task.Run(()=>ArchiveEditingService.CollectSources(sources),token);
+                else additions=await Task.Run(()=>ArchiveEditingService.CollectSources(sources,token),token);
             }
             if(!dialogs.ConfirmArchiveEdit(action,removed.Count,additions.Count)) return null;
             var prompts=0;
@@ -31,6 +31,7 @@ public sealed partial class MainViewModel
             var message=outcome.Engine.IsSuccess?"修改完成，原包副本已保留。":outcome.Engine.Status=="cancelled"?"已取消修改，原包保持不变。":outcome.Engine.Code switch
             {
                 "archive_edit_read_only"=>"此格式仅支持查看与解压。",
+                "archive_edit_container_read_only"=>"分卷或带自解压前缀的包暂不支持修改。原包未修改。",
                 "archive_edit_mixed_passwords"=>"此包包含多个密码，暂不支持修改；可继续查看与解压。",
                 "archive_edit_empty_encrypted"=>"不能删空已加密文件名的包，否则会失去文件名加密。原包未修改。",
                 "selection_changed"=>"压缩包已变化，请关闭并重新查看内容。",
