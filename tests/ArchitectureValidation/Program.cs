@@ -7,7 +7,11 @@ using System.Text.Json;
 using ArchivePassword.Core;
 using ArchivePassword.Infrastructure;
 
-var root=Path.GetFullPath(args[0]);var expected=args.Length>1?args[1]:EngineArchitecture.Current;
+if(args.Length>1 && args[1].Contains("vault",StringComparison.Ordinal)) return await CrossArchitectureVault.RunAsync(args);
+var root=Path.GetFullPath(args[0]);var expected=args.Length>1 && args[1] is "x64" or "arm64"?args[1]:EngineArchitecture.Current;
+var versions=args.Skip(1).Where(value=>value is not ("x64" or "arm64")).SelectMany(value=>value.Split(',')).Distinct().ToArray();
+if(versions.Length==0) versions=["26.04","26.03"];
+if(versions.Any(value=>!EngineUpdatePackage.VersionPattern().IsMatch(value))) throw new ArgumentException("Invalid engine version.");
 var folder=Path.Combine(root,"artifacts/architecture-"+Guid.NewGuid().ToString("N")[..8]);Directory.CreateDirectory(folder);
 var cases=new List<object>();int passed=0,total=0;
 void Check(string name,bool value) {total++;if(value)passed++;cases.Add(new{name,passed=value});Console.WriteLine((value?"PASS ":"FAIL ")+name);}
@@ -28,7 +32,7 @@ async Task<string> Package(string version,string architecture,byte[]? replacemen
 async Task Reject(string name,Func<Task> action,string code)
 {try {await action();Check(name,false);}catch(UpdateException error){Check(name,error.Code==code);}}
 var nativePackages=new Dictionary<string,string>();
-foreach(var version in new[]{"26.04","26.03"})
+foreach(var version in versions)
 {
     var dll=await File.ReadAllBytesAsync(Path.Combine(root,"engines",version,"7z.dll"));
     Check(version+" official DLL and CLI native PE",EngineArchitecture.IsNativeImage(dll) && EngineArchitecture.IsNativeImage(await File.ReadAllBytesAsync(Path.Combine(root,"engines",version,"7z.exe"))));
@@ -46,6 +50,11 @@ foreach(var version in new[]{"26.04","26.03"})
     await SetManifest(expected,dll);Check(version+" correct builtin catalog recognized",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).SequenceEqual(new[]{version}));
     await SetManifest(foreign,dll);Check(version+" foreign catalog architecture ignored",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).Count==0);
     await SetManifest(expected,wrongImage);Check(version+" incorrect PE despite matching manifest hash ignored",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).Count==0);
+    var noExports=dll.ToArray();Array.Clear(noExports,offset+24+112,8);
+    var broken=await Package(version,expected,noExports);
+    var brokenUpdater=new EngineUpdateService(Path.Combine(folder,"broken-"+version),Path.Combine(folder,"broken-state-"+version),publicKey,
+        Path.Combine(root,"artifacts/worker/ArchiveEngineWorker.exe"),Path.Combine(root,"tests/fixtures/generated/encrypted-header.7z"),new EngineCatalog(Path.Combine(root,"engines")));
+    await Reject(version+" native signed PE with missing exports fails real worker probe",()=>brokenUpdater.InstallAsync(broken),"engine_validation_failed");
 }
 var installed=Path.Combine(folder,EngineArchitecture.InstalledDirectoryName);var state=Path.Combine(folder,EngineArchitecture.SelectionFileName);
 var catalog=new EngineCatalog(Path.Combine(root,"engines"),installed,publicKey);
@@ -55,15 +64,29 @@ var selection=await updater.ReadSelectionAsync();Check("real native installation
 await updater.RollbackAsync();Check("native engine rollback preserves previous version",(await updater.ReadSelectionAsync())?.Active=="26.03");
 var before=File.ReadAllBytes(state);var otherPackage=await Package("26.04",foreign);await Reject("foreign install refused before state change",()=>updater.InstallAsync(otherPackage),"incompatible_update");Check("foreign install preserves state and clears preparation",before.SequenceEqual(File.ReadAllBytes(state)) && !Directory.GetDirectories(installed,".prepare-*").Any());
 var assets=new[]{foreign,expected}.Select(architecture=>new{name=$"ArchivePassword-engine-26.04-win-{architecture}.zip",size=10,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/engine-26.04/ArchivePassword-engine-26.04-win-{architecture}.zip"}).ToArray();
-using(var client=new HttpClient(new FixtureHandler(new{draft=false,prerelease=false,assets})))
+object ChannelBody(object release)=>expected=="arm64"?new[]{release}:release;
+using(var client=new HttpClient(new FixtureHandler(ChannelBody(new{draft=false,prerelease=false,assets}))))
 {var found=await new GitHubEngineChannel(client).CheckAsync("Nomoziya/nomozip");Check("channel selects only native asset in mixed release",found?.DownloadUrl.AbsoluteUri.EndsWith("win-"+expected+".zip")==true);}
-using(var client=new HttpClient(new FixtureHandler(new{draft=false,prerelease=false,assets=assets.Take(1).ToArray()})))
+using(var client=new HttpClient(new FixtureHandler(ChannelBody(new{draft=false,prerelease=false,assets=assets.Take(1).ToArray()}))))
 {Check("foreign-only engine release is not offered",await new GitHubEngineChannel(client).CheckAsync("Nomoziya/nomozip") is null);}
 var softwareAsset=new{name=$"nomozip-0.3.0-light-setup-win-{expected}.exe",size=10,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/v0.3.0/nomozip-0.3.0-light-setup-win-{expected}.exe"};
+if(expected=="arm64")
+{
+    var page=new PageHandler(Enumerable.Repeat<object>(new{draft=false,prerelease=false,assets=assets.Take(1).ToArray()},100).ToArray(),new object[]{new{draft=false,prerelease=false,assets}});
+    using var client=new HttpClient(page);
+    Check("ARM64 release behind full x64 history page is discovered",(await new GitHubEngineChannel(client).CheckAsync("Nomoziya/nomozip"))?.Version=="26.04" && page.Requests==2);
+}
 var softwareRelease=new{draft=false,prerelease=false,tag_name="v0.3.0",assets=new[]{softwareAsset}};
 using(var client=new HttpClient(new FixtureHandler(new[]{softwareRelease})))
 {Check("software channel offers matching lightweight architecture",(await new GitHubApplicationChannel(client).CheckAsync(expected))?.InstallerUrl.AbsoluteUri.EndsWith("win-"+expected+".exe")==true);}
-await File.WriteAllTextAsync(Path.Combine(root,"artifacts/architecture-validation.json"),JsonSerializer.Serialize(new{passed,total,cases,architecture=EngineArchitecture.Current,osArchitecture=RuntimeInformation.OSArchitecture.ToString(),nativeProcess=true,syntheticOnly=true},new JsonSerializerOptions{WriteIndented=true}));
+var engineHashes=versions.ToDictionary(version=>version,version=>Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(root,"engines",version,"7z.dll")))).ToLowerInvariant());
+await File.WriteAllTextAsync(Path.Combine(root,"artifacts/architecture-validation.json"),JsonSerializer.Serialize(new{passed,total,cases,architecture=EngineArchitecture.Current,osArchitecture=RuntimeInformation.OSArchitecture.ToString(),nativeProcess=true,syntheticOnly=true,engineHashes},new JsonSerializerOptions{WriteIndented=true}));
 Console.WriteLine($"{passed}/{total} passed");return passed==total?0:1;
 sealed class FixtureHandler(object body):HttpMessageHandler
 {protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)=>Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(JsonSerializer.Serialize(body))});}
+sealed class PageHandler(object first,object second):HttpMessageHandler
+{
+    public int Requests{get;private set;}
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
+    {Requests++;return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(JsonSerializer.Serialize(Requests==1?first:second))});}
+}

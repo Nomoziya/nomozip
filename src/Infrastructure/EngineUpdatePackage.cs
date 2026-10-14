@@ -13,14 +13,15 @@ public static partial class EngineUpdatePackage
     public static readonly string[] PayloadNames = ["7z.dll", "License.txt", "compatibility-report.json"];
     [GeneratedRegex(@"^\d{2}\.\d{2}$")]
     public static partial Regex VersionPattern();
-    public static EngineUpdateManifest Verify(byte[] manifest, byte[] signature, string publicKey)
+    public static EngineUpdateManifest Verify(byte[] manifest, byte[] signature, string publicKey, string? architecture = null)
     {
         try
         {
             using var rsa = RSA.Create(); rsa.ImportFromPem(publicKey);
             if (!rsa.VerifyData(manifest, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss)) throw new UpdateException("invalid_signature");
             var value = JsonSerializer.Deserialize<EngineUpdateManifest>(manifest, JsonOptions) ?? throw new UpdateException("invalid_manifest");
-            if (value.Schema != 1 || value.Protocol != 1 || value.Architecture != EngineArchitecture.Current || value.Version is null || !VersionPattern().IsMatch(value.Version) ||
+            var target = architecture ?? EngineArchitecture.Current;
+            if (target is not ("x64" or "arm64") || value.Schema != 1 || value.Protocol != 1 || value.Architecture != target || value.Version is null || !VersionPattern().IsMatch(value.Version) ||
                 !Version.TryParse(value.MinimumAppVersion, out var minimum) || minimum > new Version(0, 1)) throw new UpdateException("incompatible_update");
             if (!Uri.TryCreate(value.Source, UriKind.Absolute, out var source) || source.Scheme != "https" || source.Host != "github.com" ||
                 source.AbsolutePath != $"/ip7z/7zip/releases/download/{value.Version}/7z{value.Version.Replace(".", "")}-{value.Architecture}.exe") throw new UpdateException("invalid_manifest");
@@ -30,7 +31,7 @@ public static partial class EngineUpdatePackage
         catch (Exception exception) when (exception is CryptographicException or ArgumentException or JsonException or NullReferenceException)
         { throw new UpdateException("invalid_manifest", exception); }
     }
-    public static async Task<(EngineUpdateManifest Manifest, byte[] ManifestBytes, byte[] Signature, Dictionary<string, byte[]> Payload)> ReadAsync(string path, string publicKey, CancellationToken token)
+    public static async Task<(EngineUpdateManifest Manifest, byte[] ManifestBytes, byte[] Signature, Dictionary<string, byte[]> Payload)> ReadAsync(string path, string publicKey, CancellationToken token, string? architecture = null)
     {
         if (new FileInfo(path).Length > MaximumPackageBytes) throw new UpdateException("invalid_package");
         await using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -49,7 +50,7 @@ public static partial class EngineUpdatePackage
         }
         var manifestBytes = await Read("manifest.json", 64 * 1024);
         var signature = await Read("manifest.sig", 1024);
-        var manifest = Verify(manifestBytes, signature, publicKey);
+        var manifest = Verify(manifestBytes, signature, publicKey, architecture);
         var payload = new Dictionary<string, byte[]>();
         foreach (var name in PayloadNames)
         {
@@ -57,7 +58,7 @@ public static partial class EngineUpdatePackage
             if (!Convert.ToHexString(SHA256.HashData(bytes)).Equals(manifest.Files[name], StringComparison.OrdinalIgnoreCase)) throw new UpdateException("hash_mismatch");
             payload.Add(name, bytes);
         }
-        if (!EngineArchitecture.IsNativeImage(payload["7z.dll"])) throw new UpdateException("incompatible_update");
+        if (!EngineArchitecture.IsNativeImage(payload["7z.dll"],architecture)) throw new UpdateException("incompatible_update");
         return (manifest, manifestBytes, signature, payload);
     }
     public static async Task<EngineUpdateManifest> VerifyInstalledAsync(string directory, string publicKey, CancellationToken token = default)

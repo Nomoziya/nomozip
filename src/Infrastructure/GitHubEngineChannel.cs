@@ -23,11 +23,36 @@ public sealed partial class GitHubEngineChannel(HttpClient client)
     public async Task<AvailableEngineUpdate?> CheckAsync(string repository, CancellationToken token = default)
     {
         repository = NormalizeRepository(repository);
+        if (EngineArchitecture.Current == "arm64")
+        {
+            AvailableEngineUpdate? best = null;
+            // ARM64 releases do not replace the established x64 latest channel.
+            for (var page = 1; page <= 20; page++)
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.github.com/repos/{repository}/releases?per_page=100&page={page}");
+                request.Headers.Accept.ParseAdd("application/vnd.github+json");
+                request.Headers.UserAgent.ParseAdd("nomozip-update-check");
+                using var listed = await client.SendAsync(request, token);
+                if (listed.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+                listed.EnsureSuccessStatusCode();
+                using var list = JsonDocument.Parse(await listed.Content.ReadAsStringAsync(token));
+                foreach (var item in list.RootElement.EnumerateArray())
+                {
+                    var candidate = ReadRelease(item, repository);
+                    if (candidate is not null && (best is null || Version.Parse(candidate.Version) > Version.Parse(best.Version))) best = candidate;
+                }
+                if (list.RootElement.GetArrayLength() < 100) return best;
+            }
+            throw new HttpRequestException("Release history exceeds the supported page limit; check the release page manually.");
+        }
         using var response = await client.GetAsync($"https://api.github.com/repos/{repository}/releases/latest", token);
         if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
         response.EnsureSuccessStatusCode();
         using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync(token));
-        var release = document.RootElement;
+        return ReadRelease(document.RootElement, repository);
+    }
+    private static AvailableEngineUpdate? ReadRelease(JsonElement release, string repository)
+    {
         if (release.GetProperty("draft").GetBoolean() || release.GetProperty("prerelease").GetBoolean()) return null;
         var candidates = new List<AvailableEngineUpdate>();
         foreach (var asset in release.GetProperty("assets").EnumerateArray())
@@ -35,7 +60,7 @@ public sealed partial class GitHubEngineChannel(HttpClient client)
             var match = AssetPattern().Match(asset.GetProperty("name").GetString() ?? "");
             if (!match.Success || match.Groups[2].Value != EngineArchitecture.Current) continue;
             var uri = new Uri(asset.GetProperty("browser_download_url").GetString()!);
-            if (uri.Scheme != "https" || uri.Host != "github.com" || !uri.AbsolutePath.StartsWith($"/{repository}/releases/download/", StringComparison.OrdinalIgnoreCase) || asset.GetProperty("size").GetInt64() > EngineUpdatePackage.MaximumPackageBytes) throw new UpdateException("invalid_download");
+            if (uri.Scheme != "https" || uri.Host != "github.com" || !uri.AbsolutePath.StartsWith($"/{repository}/releases/download/", StringComparison.OrdinalIgnoreCase) || asset.GetProperty("size").GetInt64() <= 0 || asset.GetProperty("size").GetInt64() > EngineUpdatePackage.MaximumPackageBytes) throw new UpdateException("invalid_download");
             candidates.Add(new(match.Groups[1].Value, uri, asset.GetProperty("size").GetInt64()));
         }
         return candidates.OrderByDescending(value => Version.Parse(value.Version)).FirstOrDefault();

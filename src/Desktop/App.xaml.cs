@@ -99,7 +99,7 @@ public partial class App : Application
         var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
         var window = new MainWindow();
         var model = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window, validationIndex >= 0 ? PrepareValidationDialog : null,
-            validationIndex >= 0 ? () => Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), "artifacts/update-test-assets/ArchivePassword-engine-26.03-win-x64.zip") : null,
+            validationIndex >= 0 ? () => Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), $"artifacts/update-test-assets/ArchivePassword-engine-26.03-win-{EngineArchitecture.Current}.zip") : null,
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;

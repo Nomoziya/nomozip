@@ -2,7 +2,7 @@ param([ValidateSet('Prepare','Sign','Draft','Publish')][string]$Mode = 'Prepare'
     [Parameter(Mandatory)][string]$CandidateDirectory, [ValidatePattern('^\d{2}\.\d{2}$')][string]$Version,
     [string]$EngineDirectory, [string]$Python = 'python', [string]$Dotnet, [string]$ToolsRoot,
     [string]$PrivateKey, [string]$ProtectedPrivateKey, [string]$GitHubCli = 'gh',
-    [ValidatePattern('^[0-9a-fA-F]{40}$')][string]$TargetCommit, [switch]$ApprovePublish)
+    [ValidatePattern('^[0-9a-fA-F]{40}$')][string]$TargetCommit, [switch]$ApprovePublish, [ValidateSet('x64','arm64')][string]$Architecture = 'x64')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 if (-not $ToolsRoot) { $ToolsRoot = $taskRoot }
@@ -26,7 +26,7 @@ function Invoke-Channel([string[]]$Arguments) {
 }
 if ($Mode -eq 'Prepare') {
     if (Test-Path -LiteralPath $taskCandidate) { throw 'Keep prior candidates immutable; choose a new directory.' }
-    foreach ($taskProject in @('EngineSmoke','CompressionValidation','SelectionValidation','EncodingValidation','PauseValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','UpdatePackager')) {
+    foreach ($taskProject in @('EngineSmoke','CompressionValidation','SelectionValidation','EncodingValidation','PauseValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','UpdatePackager')) {
         $taskFolder = if ($taskProject -eq 'UpdatePackager') { 'tools' } else { 'tests' }
         & $Dotnet build (Join-Path $ToolsRoot "$taskFolder/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
         if ($LASTEXITCODE -ne 0) { throw 'Maintenance tool build failed before candidate preparation.' }
@@ -34,6 +34,7 @@ if ($Mode -eq 'Prepare') {
     $taskArguments = @((Join-Path $PSScriptRoot 'engine_release.py'),'prepare','--candidate',$taskCandidate,'--source-root',$taskRoot,'--tools-root',$ToolsRoot,'--dotnet',$Dotnet)
     if ($Version) { $taskArguments += @('--version',$Version) }
     if ($EngineDirectory) { $taskArguments += @('--engine-directory',[IO.Path]::GetFullPath($EngineDirectory)) }
+    $taskArguments += @('--architecture',$Architecture)
     & $Python @taskArguments
     if ($LASTEXITCODE -ne 0) { throw 'Candidate preparation failed; review the isolated logs. No app was rebuilt.' }
     Write-Output "Prepared review: $(Join-Path $taskCandidate 'candidate-review.json')"
@@ -44,9 +45,10 @@ if ($Mode -eq 'Prepare') {
 if ($LASTEXITCODE -ne 0) { throw 'Prepared candidate review failed.' }
 $taskReview = Get-Content -LiteralPath (Join-Path $taskCandidate 'candidate-review.json') -Raw | ConvertFrom-Json
 $taskVersion = $taskReview.version
+$taskArchitecture = $taskReview.architecture
 if ($Version -and $Version -ne $taskVersion) { throw 'Version differs from the reviewed candidate.' }
 $taskPublic = Join-Path $taskRoot 'config/update-public-key.pem'
-$taskPackageName = "ArchivePassword-engine-$taskVersion-win-x64.zip"
+$taskPackageName = "ArchivePassword-engine-$taskVersion-win-$taskArchitecture.zip"
 $taskPackage = Join-Path $taskCandidate "assets/$taskPackageName"
 if ($Mode -eq 'Sign') {
     if (($PrivateKey -and $ProtectedPrivateKey) -or (-not $PrivateKey -and -not $ProtectedPrivateKey)) { throw 'Supply exactly one explicitly selected engine RSA key.' }
@@ -62,11 +64,11 @@ if ($Mode -eq 'Sign') {
         Invoke-EngineTool @('pack-maintenance',(Join-Path $taskCandidate "workspace/engines/$taskVersion"),$taskVersion,
             (Join-Path $taskCandidate 'workspace/artifacts/engine-validation.json'),[IO.Path]::GetFullPath($PrivateKey),$taskPackage,$taskPublic,
             (Join-Path $taskCandidate 'workspace/artifacts/compression-validation.json'),(Join-Path $taskCandidate 'candidate-review.json'))
-        Invoke-EngineTool @('inspect',$taskPackage,$taskPublic)
+        Invoke-EngineTool @('inspect',$taskPackage,$taskPublic,$taskArchitecture)
         $taskHash = (Get-FileHash -LiteralPath $taskPackage -Algorithm SHA256).Hash.ToLowerInvariant()
         [IO.File]::WriteAllText((Join-Path $taskCandidate 'assets/SHA256SUMS.txt'),"$taskHash  $taskPackageName`n",[Text.UTF8Encoding]::new($false))
         @{schema=1;version=$taskVersion;packageSha256=$taskHash;publicKeySha256=(Get-FileHash -LiteralPath $taskPublic).Hash.ToLowerInvariant();repository=$taskReview.repository} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $taskCandidate 'signed-review.json') -Encoding utf8
-        $taskNotes = "Official 7-Zip $taskVersion engine for nomozip (Windows x64).`n`nValidated extraction/listing, mixed passwords, compression, selection, filename encoding, pause, editing, split-volume and standalone SFX matrices. Matching official Windows SFX module is included in the signed compatibility record; legacy five-entry ZIP format is retained. Import using nomozip engine update; existing engine rollback remains available.`n"
+        $taskNotes = "Official 7-Zip $taskVersion engine for nomozip (Windows $taskArchitecture).`n`nValidated native process, extraction/listing, mixed passwords, compression, selection, filename encoding, pause, editing, split-volume, standalone SFX and TAR/GZIP/XZ matrices. Matching official Windows SFX module is included in the signed compatibility record; legacy five-entry ZIP format is retained. Import using nomozip engine update; existing engine rollback remains available.`n"
         [IO.File]::WriteAllText((Join-Path $taskCandidate 'release-notes.md'),$taskNotes,[Text.UTF8Encoding]::new($false))
     } finally {
         if ($taskTemporaryKey -and (Test-Path -LiteralPath $taskTemporaryKey)) { Remove-Item -LiteralPath $taskTemporaryKey }
@@ -77,10 +79,10 @@ if ($Mode -eq 'Sign') {
 $taskSigned = Get-Content -LiteralPath (Join-Path $taskCandidate 'signed-review.json') -Raw | ConvertFrom-Json
 $taskHash = (Get-FileHash -LiteralPath $taskPackage).Hash.ToLowerInvariant()
 if ($taskSigned.schema -ne 1 -or $taskSigned.version -ne $taskVersion -or $taskSigned.repository -ne $taskReview.repository -or $taskSigned.packageSha256 -ne $taskHash -or $taskSigned.publicKeySha256 -ne (Get-FileHash -LiteralPath $taskPublic).Hash.ToLowerInvariant()) { throw 'Signed candidate changed after review.' }
-Invoke-EngineTool @('inspect',$taskPackage,$taskPublic)
+Invoke-EngineTool @('inspect',$taskPackage,$taskPublic,$taskArchitecture)
 $taskChecksum = Join-Path $taskCandidate 'assets/SHA256SUMS.txt'
 if ([IO.File]::ReadAllText($taskChecksum).Trim() -ne "$taskHash  $taskPackageName") { throw 'Signed checksum differs from package.' }
-$taskRepo = $taskReview.repository; $taskTag = "engine-$taskVersion"
+$taskRepo = $taskReview.repository; $taskTag = if ($taskArchitecture -eq 'x64') { "engine-$taskVersion" } else { "engine-$taskVersion-arm64" }
 if ($Mode -eq 'Draft') {
     if (-not $TargetCommit) { throw 'Supply the reviewed full source commit for the draft tag.' }
     $taskPages = (Invoke-Channel @('api',"repos/$taskRepo/releases",'--paginate','--slurp') | Out-String) | ConvertFrom-Json
@@ -98,9 +100,12 @@ function Read-ReviewedRemote([bool]$Draft) {
 }
 $taskRemote = Read-ReviewedRemote $true
 if ($Mode -eq 'Publish') {
-    Invoke-Channel @('release','edit',$taskTag,'--repo',$taskRepo,'--draft=false','--prerelease=false','--latest') | Out-Null
-    $taskLatest = (Invoke-Channel @('api',"repos/$taskRepo/releases/latest") | Out-String) | ConvertFrom-Json
-    if ($taskLatest.tag_name -ne $taskTag -or $taskLatest.draft -or $taskLatest.prerelease) { throw 'Published release does not own the stable engine channel; inspect it manually.' }
+    $taskLatestFlag = if ($taskArchitecture -eq 'x64') { '--latest' } else { '--latest=false' }
+    Invoke-Channel @('release','edit',$taskTag,'--repo',$taskRepo,'--draft=false','--prerelease=false',$taskLatestFlag) | Out-Null
+    if ($taskArchitecture -eq 'x64') {
+        $taskLatest = (Invoke-Channel @('api',"repos/$taskRepo/releases/latest") | Out-String) | ConvertFrom-Json
+        if ($taskLatest.tag_name -ne $taskTag -or $taskLatest.draft -or $taskLatest.prerelease) { throw 'Published release does not own the stable engine channel; inspect it manually.' }
+    }
     $taskRemote = Read-ReviewedRemote $false
 }
 @{schema=1;status=$(if($Mode -eq 'Publish'){'published'}else{'draft-verified'});tag=$taskTag;repository=$taskRepo;packageSha256=$taskHash;url=$taskRemote.url} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $taskCandidate ($Mode.ToLowerInvariant()+'-review.json')) -Encoding utf8

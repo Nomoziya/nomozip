@@ -1,0 +1,8 @@
+{
+  "version": "26.03",
+  "architecture": "arm64",
+  "protocol": 1,
+  "source": "https://github.com/ip7z/7zip/releases/download/26.03/7z2603-arm64.exe",
+  "dllSha256": "a1f2e41eaf7ad40f5b1aa66a73e7fe327e64e0b7d65638a863c1e3a6fe64e667",
+  "sfxSha256": "9598f3bbca8e95391b8a356aee2e4cab93d9ac26eea47159ec725a55cf3bb32f"
+}

@@ -37,24 +37,24 @@ def call(arguments):
 def run(candidate, mode, *arguments):
     return call([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-File', HARNESS / 'scripts/maintain-engine-release.ps1',
         '-Mode', mode, '-CandidateDirectory', candidate, '-ToolsRoot', ROOT, '-Dotnet', DOTNET, '-Python', sys.executable,
-        '-GitHubCli', HARNESS / 'gh-fixture.ps1', *arguments])
+        '-GitHubCli', HARNESS / 'gh-fixture.ps1', '-Architecture', ARCH, *arguments])
 
 
 def clone(candidate):
     destination = HARNESS / 'artifacts' / uuid.uuid4().hex[:8]
-    for name in bound_files('26.04') + ['candidate-review.json', 'signed-review.json', 'release-notes.md', 'assets/ArchivePassword-engine-26.04-win-x64.zip', 'assets/SHA256SUMS.txt']:
+    for name in bound_files('26.04') + ['candidate-review.json', 'signed-review.json', 'release-notes.md', f'assets/ArchivePassword-engine-26.04-win-{ARCH}.zip', 'assets/SHA256SUMS.txt']:
         path = destination / name; path.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(candidate / name, path)
     return destination
 
 
 def reset(candidate, **flags):
-    value = dict(candidate=str(candidate), exists=False, published=False, corrupt=False, extra=False, apiFailure=False, wrongLatest=False)
+    value = dict(architecture=ARCH,tag=TAG,candidate=str(candidate), exists=False, published=False, corrupt=False, extra=False, apiFailure=False, wrongLatest=False)
     value.update(flags); (HARNESS / 'gh-state.json').write_text(json.dumps(value), encoding='utf-8')
     (HARNESS / 'gh-calls.jsonl').write_text('', encoding='utf-8')
 
 
 def remove_test_assets(candidate):
-    for name in ('ArchivePassword-engine-26.04-win-x64.zip', 'SHA256SUMS.txt'):
+    for name in (f'ArchivePassword-engine-26.04-win-{ARCH}.zip', 'SHA256SUMS.txt'):
         (candidate / 'assets' / name).unlink()
     (candidate / 'assets').rmdir()
     (candidate / 'signed-review.json').unlink()
@@ -72,35 +72,35 @@ def validate():
         shutil.copyfile(ROOT / 'scripts' / name, scripts / name)
     key = OWN / 'test-private.pem'; public = config / 'update-public-key.pem'
     generated = call([DOTNET, PACKAGER, 'keygen', key, public]); check('isolated RSA identity created', generated.returncode == 0)
-    fixed = [ROOT / 'config/update-public-key.pem', ROOT / 'artifacts/worker/ArchiveEngineWorker.exe', ROOT / 'artifacts/app/ArchivePassword.exe', ROOT / 'engines/26.04/manifest.json']
+    fixed = [ROOT / 'config/update-public-key.pem', ROOT / 'artifacts/worker/ArchiveEngineWorker.exe', ROOT / 'artifacts/app/ArchivePassword.exe', ENGINE / 'manifest.json']
     fixed_hashes = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in fixed}
-    metadata = dict(tag_name='26.04', prerelease=False, assets=[dict(name='7z2604-x64.exe', browser_download_url='https://github.com/ip7z/7zip/releases/download/26.04/7z2604-x64.exe', digest='sha256:' + 'a' * 64)])
-    check('stable official asset exact URL and digest accepted', official_asset(metadata)[0] == '26.04')
+    metadata = dict(tag_name='26.04', prerelease=False, assets=[dict(name=f'7z2604-{ARCH}.exe', browser_download_url=f'https://github.com/ip7z/7zip/releases/download/26.04/7z2604-{ARCH}.exe', digest='sha256:' + 'a' * 64)])
+    check('stable official asset exact URL and digest accepted', official_asset(metadata,ARCH)[0] == '26.04')
     for name, changed in [('prerelease', dict(metadata, prerelease=True)), ('foreign source', dict(metadata, assets=[dict(metadata['assets'][0], browser_download_url='https://example.com/file.exe')])), ('missing digest', dict(metadata, assets=[dict(metadata['assets'][0], digest=None)]))]:
-        check('upstream rejection ' + name, rejected(lambda: official_asset(changed)))
+        check('upstream rejection ' + name, rejected(lambda: official_asset(changed,ARCH)))
     candidate = HARNESS / 'artifacts/c'
-    prepared = run(candidate, 'Prepare', '-Version', '26.04', '-EngineDirectory', ROOT / 'engines/26.04')
+    prepared = run(candidate, 'Prepare', '-Version', '26.04', '-EngineDirectory', ENGINE)
     if prepared.returncode:
         raise RuntimeError('Actual Prepare command failed; inspect owned command logs.')
     record = review(candidate, public, WORKER, 'Synthetic/nomozip-tests')
-    check('real nine-matrix candidate prepared in isolated workspace', record['status'] == 'ready-for-signing' and len(record['totals']) == 9 and set(record['totals']) == set(REPORTS))
+    check('real ten-matrix candidate prepared in isolated workspace', record['status'] == 'ready-for-signing' and len(record['totals']) == 10 and set(record['totals']) == set(REPORTS))
     check('matrix versions deduplicated and extraction baseline still complete', record['totals']['engine-validation.json'] == 101)
-    duplicate = run(candidate, 'Prepare', '-Version', '26.04', '-EngineDirectory', ROOT / 'engines/26.04')
+    duplicate = run(candidate, 'Prepare', '-Version', '26.04', '-EngineDirectory', ENGINE)
     check('existing prepared candidate cannot be overwritten', duplicate.returncode != 0 and 'Keep prior candidates immutable' in duplicate.stdout + duplicate.stderr)
     signed = run(candidate, 'Sign', '-PrivateKey', key)
     if signed.returncode:
         raise RuntimeError('Actual Sign command failed; inspect owned command logs.')
-    package = candidate / 'assets/ArchivePassword-engine-26.04-win-x64.zip'
-    check('real signed package accepted by client verifier', call([DOTNET, PACKAGER, 'inspect', package, public]).returncode == 0)
+    package = candidate / f'assets/ArchivePassword-engine-26.04-win-{ARCH}.zip'
+    check('real signed package accepted by client verifier', call([DOTNET, PACKAGER, 'inspect', package, public, ARCH]).returncode == 0)
     with zipfile.ZipFile(package) as archive:
         report = json.loads(archive.read('engine/compatibility-report.json'))
-        check('signed compatibility includes selection encoding pause editing volumes SFX formats and worker binding', set(report['maintenance']) == {'workerSha256', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json','sfx-validation.json','format-validation.json'})
+        check('signed compatibility includes selection encoding pause editing volumes SFX formats architecture and worker binding', set(report['maintenance']) == {'workerSha256', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json','sfx-validation.json','format-validation.json','architecture-validation.json'})
         module=__import__('base64').b64decode(report['sfx']['moduleBase64'])
-        check('official module is inside existing signed compatibility payload',report['sfx']['version']=='26.04' and hashlib.sha256(module).hexdigest()==report['sfx']['sha256']==hashlib.sha256((ROOT/'engines/26.04/7z.sfx').read_bytes()).hexdigest())
+        check('official module is inside existing signed compatibility payload',report['sfx']['version']=='26.04' and hashlib.sha256(module).hexdigest()==report['sfx']['sha256']==hashlib.sha256((ENGINE/'7z.sfx').read_bytes()).hexdigest())
         check('package retains legacy five-entry client format', len(archive.namelist()) == 5 and archive.testzip() is None)
     second = run(candidate, 'Sign', '-PrivateKey', key)
     check('signed assets never overwritten', second.returncode != 0 and 'Keep signed candidate assets immutable' in second.stdout + second.stderr)
-    for relative, name in [('workspace/engines/26.04/7z.dll', 'changed DLL'), ('workspace/artifacts/pause-validation.json', 'changed pause evidence'), ('workspace/artifacts/archive-editing-validation.json', 'changed editing evidence'), ('workspace/artifacts/volume-validation.json', 'changed volume evidence'),('workspace/engines/26.04/7z.sfx','changed SFX module'),('workspace/artifacts/sfx-validation.json','changed SFX evidence'),('workspace/artifacts/format-validation.json','changed format evidence')]:
+    for relative, name in [('workspace/engines/26.04/7z.dll', 'changed DLL'), ('workspace/artifacts/pause-validation.json', 'changed pause evidence'), ('workspace/artifacts/archive-editing-validation.json', 'changed editing evidence'), ('workspace/artifacts/volume-validation.json', 'changed volume evidence'),('workspace/engines/26.04/7z.sfx','changed SFX module'),('workspace/artifacts/sfx-validation.json','changed SFX evidence'),('workspace/artifacts/format-validation.json','changed format evidence'),('workspace/artifacts/architecture-validation.json','changed architecture evidence')]:
         altered = clone(candidate); path = altered / relative; path.write_bytes(path.read_bytes() + b'changed')
         check('review rejects ' + name, rejected(lambda: review(altered, public, WORKER, 'Synthetic/nomozip-tests')))
         refused = run(altered, 'Sign', '-PrivateKey', OWN / 'absent-private.pem')
@@ -128,7 +128,7 @@ def validate():
     check('wrong RSA identity produces no update package', run(wrong_candidate, 'Sign', '-PrivateKey', wrong_key).returncode != 0 and not (wrong_candidate / 'assets').exists())
     wrong_key.unlink()
     broken = OWN / 'invalid-worker.exe'; broken.write_bytes(b'not an executable'); failed = HARNESS / 'artifacts/failed-matrix'
-    check('real worker failure stops candidate enablement', rejected(lambda: prepare(HARNESS, ROOT, failed, '26.04', ROOT / 'engines/26.04', DOTNET, broken)) and json.loads((failed / 'workspace/engines/26.04/manifest.json').read_text())['protocol'] == 0 and not (failed / 'candidate-review.json').exists())
+    check('real worker failure stops candidate enablement', rejected(lambda: prepare(HARNESS, ROOT, failed, '26.04', ENGINE, DOTNET, broken, architecture=ARCH)) and json.loads((failed / 'workspace/engines/26.04/manifest.json').read_text())['protocol'] == 0 and not (failed / 'candidate-review.json').exists())
     reset(candidate)
     draft = run(candidate, 'Draft', '-TargetCommit', 'a' * 40)
     check('offline CLI draft uploads only exact signed assets', draft.returncode == 0 and (candidate / 'draft-review.json').exists())
@@ -147,16 +147,17 @@ def validate():
     published = run(candidate, 'Publish', '-ApprovePublish')
     check('offline approved publish switches stable engine channel', published.returncode == 0 and json.loads((candidate / 'publish-review.json').read_text(encoding='utf-8-sig'))['status'] == 'published')
     edits = [args for args in calls() if args[:2] == ['release', 'edit']]
-    check('publish targets engine tag with stable latest flags', len(edits) == 1 and edits[0][2] == 'engine-26.04' and '--latest' in edits[0] and '--draft=false' in edits[0] and '--prerelease=false' in edits[0])
+    check('publish targets engine tag with stable latest flags', len(edits) == 1 and edits[0][2] == TAG and ('--latest' if ARCH=='x64' else '--latest=false') in edits[0] and '--draft=false' in edits[0] and '--prerelease=false' in edits[0])
     check('remote assets downloaded again after publication', len([args for args in calls() if args[:2] == ['release', 'download']]) == 2)
     reset(candidate, exists=True, wrongLatest=True)
-    check('wrong latest channel is reported as publication failure', run(candidate, 'Publish', '-ApprovePublish').returncode != 0)
+    check('wrong latest channel is reported as publication failure', (run(candidate, 'Publish', '-ApprovePublish').returncode != 0) == (ARCH=='x64'))
     check('main program worker pinned key and engine manifest unchanged', all(hashlib.sha256(path.read_bytes()).hexdigest() == value for path, value in fixed_hashes.items()))
     return candidate
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(); parser.add_argument('--powershell', default='pwsh'); args = parser.parse_args(); PS = args.powershell
+    parser = argparse.ArgumentParser(); parser.add_argument('--powershell', default='pwsh'); parser.add_argument('--architecture',choices=('x64','arm64'),default='x64'); args = parser.parse_args(); PS = args.powershell
+    ARCH=args.architecture;TAG='engine-26.04'+('-arm64' if ARCH=='arm64' else '');ENGINE=ROOT/('engines/arm64/26.04' if ARCH=='arm64' else 'engines/26.04')
     DOTNET = ROOT / '.tools/dotnet/dotnet.exe'; WORKER = ROOT / 'artifacts/worker/ArchiveEngineWorker.exe'; PACKAGER = ROOT / 'tools/UpdatePackager/bin/Debug/net10.0-windows/UpdatePackager.dll'
     OWN = ROOT / 'artifacts' / ('er-' + uuid.uuid4().hex[:8]); OWN.mkdir(parents=True); HARNESS = OWN / 's'; HARNESS.mkdir()
     shutil.copyfile(ROOT / 'tests/fixtures/engine-release-gh.ps1', HARNESS / 'gh-fixture.ps1')

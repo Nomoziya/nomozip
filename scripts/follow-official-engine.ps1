@@ -1,74 +1,24 @@
-param([switch]$Update)
+param([switch]$Update, [ValidateSet('x64','arm64')][string]$Architecture = 'x64', [string]$OutputDirectory)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskRelease = Invoke-RestMethod 'https://api.github.com/repos/ip7z/7zip/releases/latest'
 $taskVersion = $taskRelease.tag_name
 if ($taskVersion -notmatch '^\d{2}\.\d{2}$' -or $taskRelease.prerelease) { throw 'Unrecognized official stable release.' }
-Write-Output "Official stable engine: $taskVersion"
-$taskEngine = Join-Path $taskRoot "engines/$taskVersion"
-$taskManifestPath = Join-Path $taskEngine 'manifest.json'
-if (Test-Path $taskManifestPath) {
-    $taskExisting = Get-Content -Raw $taskManifestPath | ConvertFrom-Json
-    if ($taskExisting.protocol -eq 1) { Write-Output 'This version is already available locally. No update needed.'; return }
+Write-Output "Official stable engine: $taskVersion ($Architecture)"
+$taskEngine = Join-Path $taskRoot $(if ($Architecture -eq 'arm64') { "engines/arm64/$taskVersion" } else { "engines/$taskVersion" })
+if (Test-Path (Join-Path $taskEngine 'manifest.json')) {
+    $taskExisting = Get-Content (Join-Path $taskEngine 'manifest.json') -Raw | ConvertFrom-Json
+    if ($taskExisting.protocol -eq 1 -and $taskExisting.architecture -eq $Architecture) { Write-Output 'This native version is already available. No update needed.'; return }
 }
-if (-not $Update) { Write-Output 'A new engine is available. Run with -Update to download, validate and rebuild the local product.'; return }
-$taskAsset = $taskRelease.assets | Where-Object name -Match '^7z\d+-x64\.exe$' | Select-Object -First 1
-$taskUri = [uri]$taskAsset.browser_download_url
-if ($taskUri.Host -ne 'github.com' -or -not $taskUri.AbsolutePath.StartsWith('/ip7z/7zip/releases/download/')) { throw 'Unexpected upstream asset source.' }
-$taskDownload = Join-Path $taskRoot ".tools/$($taskAsset.name)"
-Invoke-WebRequest $taskUri.AbsoluteUri -OutFile $taskDownload
-$taskDigest = (Get-FileHash $taskDownload -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($taskAsset.digest -and $taskAsset.digest -ne "sha256:$taskDigest") { throw 'Upstream download checksum mismatch.' }
-New-Item -ItemType Directory -Force $taskEngine | Out-Null
-& (Get-Command 7z -ErrorAction Stop).Source x $taskDownload "-o$taskEngine" -y 7z.dll 7z.exe 7z.sfx License.txt | Out-Null
-if ($LASTEXITCODE -ne 0) { throw 'Official engine extraction failed.' }
-$taskManifest = [ordered]@{
-    version = $taskVersion; architecture = 'x64'; protocol = 0
-    source = $taskUri.AbsoluteUri
-    dllSha256 = (Get-FileHash (Join-Path $taskEngine '7z.dll') -Algorithm SHA256).Hash.ToLowerInvariant()
-    sfxSha256 = (Get-FileHash (Join-Path $taskEngine '7z.sfx') -Algorithm SHA256).Hash.ToLowerInvariant()
-}
-# Protocol 0 keeps a candidate out of the desktop catalog until its tests pass.
-$taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
+if (-not $Update) { Write-Output 'A new engine is available. Run with -Update on the matching native Windows environment to validate it.'; return }
 $taskPython = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $taskPython -or $taskPython -like '*WindowsApps*') { $taskPython = 'C:\Users\Nomozi\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' }
-& $taskPython (Join-Path $taskRoot 'tests/engine_validation.py') --versions "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Compatibility checks failed. The candidate remains disabled; the existing app is unchanged.' }
-$taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-$env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
-& $taskDotnet build (Join-Path $taskRoot 'tests/CompressionValidation/CompressionValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'Compression compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/CompressionValidation/bin/Debug/net10.0-windows/CompressionValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Compression compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/SelectionValidation/SelectionValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'Selection compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/SelectionValidation/bin/Debug/net10.0-windows/SelectionValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Selection compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/EncodingValidation/EncodingValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'ZIP encoding compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/EncodingValidation/bin/Debug/net10.0-windows/EncodingValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'ZIP encoding compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/PauseValidation/PauseValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'Pause compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/PauseValidation/bin/Debug/net10.0-windows/PauseValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Pause compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/ArchiveEditingValidation/ArchiveEditingValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'Archive editing compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/ArchiveEditingValidation/bin/Debug/net10.0-windows/ArchiveEditingValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Archive editing compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/VolumeValidation/VolumeValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/VolumeValidation/bin/Debug/net10.0-windows/VolumeValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/SfxValidation/SfxValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'SFX compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/SfxValidation/bin/Debug/net10.0-windows/SfxValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'SFX compatibility checks failed; the candidate remains disabled.' }
-& $taskDotnet build (Join-Path $taskRoot 'tests/FormatValidation/FormatValidation.csproj') --nologo -m:1 -nr:false -v:minimal
-if ($LASTEXITCODE -ne 0) { throw 'Creation format compatibility test build failed; the candidate remains disabled.' }
-& $taskDotnet (Join-Path $taskRoot 'tests/FormatValidation/bin/Debug/net10.0-windows/FormatValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
-if ($LASTEXITCODE -ne 0) { throw 'Creation format compatibility checks failed; the candidate remains disabled.' }
-$taskManifest.protocol = 1
-$taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
-& (Join-Path $PSScriptRoot 'build.ps1') -SkipWorker
-Write-Output 'The validated engine is now in the rebuilt local product. Select it in Settings.'
+$taskCandidate = Join-Path $taskRoot ('artifacts/upstream-' + $Architecture + '-' + [Guid]::NewGuid().ToString('N'))
+# Check the official digest and all ten native matrices without signing or publishing.
+& (Join-Path $PSScriptRoot 'maintain-engine-release.ps1') -Mode Prepare -CandidateDirectory $taskCandidate -Version $taskVersion -Architecture $Architecture -Python $taskPython
+if (Test-Path $taskEngine) { throw 'A prior disabled engine exists; review it before replacing it. The isolated validated candidate was retained.' }
+New-Item -ItemType Directory -Force (Split-Path $taskEngine -Parent) | Out-Null
+Copy-Item -LiteralPath (Join-Path $taskCandidate "workspace/engines/$taskVersion") -Destination $taskEngine -Recurse
+if (-not $OutputDirectory) { $OutputDirectory = Join-Path $taskCandidate 'product' }
+& (Join-Path $PSScriptRoot 'build.ps1') -SkipWorker -Architecture $Architecture -OutputDirectory $OutputDirectory
+Write-Output "Native engine validated; rebuilt candidate product: $OutputDirectory"

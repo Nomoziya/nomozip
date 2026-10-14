@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','ArchitectureValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -131,6 +131,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Selection validation failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'ZIP encoding validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/OriginValidation/bin/Debug/net10.0-windows/OriginValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Origin metadata validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/ArchitectureValidation/bin/Debug/net10.0-windows/ArchitectureValidation.dll') $taskRoot x64
+if ($LASTEXITCODE -ne 0) { throw 'Native architecture validation failed.' }
 $taskTestApp = Join-Path $taskRoot 'artifacts/test-app'
 New-Item -ItemType Directory -Force $taskTestApp | Out-Null
 Copy-Item (Join-Path $taskRoot 'artifacts/app/*') $taskTestApp -Recurse -Force

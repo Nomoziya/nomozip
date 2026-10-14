@@ -9,6 +9,7 @@ import sys
 import uuid
 import xml.etree.ElementTree as ET
 import zipfile
+import struct
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -67,6 +68,10 @@ def validate(app_directory, powershell):
     for name in ('src/main.cs', 'config/update-public-key.pem', 'engines/26.04/manifest.json', 'engines/26.04/License.txt', 'engines/26.04/7z.dll', 'src/bin/ignored.dll', 'tests/fixtures/generated/ignored.apv', '.tools/ignored.key'):
         path = fixture / name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text('synthetic', encoding='utf-8')
     application = OWN / 'app'; application.mkdir(); (application / 'ArchivePassword.exe').write_bytes(b'synthetic exe'); (application / '使用说明.txt').write_text('测试说明', encoding='utf-8')
+    image=bytearray(128);image[:2]=b'MZ';struct.pack_into('<I',image,60,64);image[64:68]=b'PE\0\0';struct.pack_into('<H',image,68,0x8664)
+    for name in ('ArchivePassword.exe','ArchiveEngineWorker.exe','engines/26.04/7z.dll','engines/26.04/7z.exe'):
+        path=application/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(image)
+    (application/'engines/26.04/manifest.json').write_text(json.dumps(dict(architecture='x64',protocol=1)))
     installer = OWN / 'fixture-installer.exe'; installer.write_bytes(b'synthetic installer')
     version = '1.2.3-preview.4'
 
@@ -77,7 +82,7 @@ def validate(app_directory, powershell):
         return release
 
     release = fresh(); result = review(fixture, application, release, installer, version, fixture)
-    check('complete Unicode lightweight and source packages review', result['passed'] and result['payloadFiles'] == 2)
+    check('complete Unicode lightweight and source packages review', result['passed'] and result['payloadFiles'] == 6)
     selected = {p.relative_to(fixture).as_posix() for p in source_files(fixture)}
     check('source excludes tool secrets build outputs and generated vault fixtures', not any(name.startswith('.tools/') or '/bin/' in name or '/generated/' in name or name.endswith('7z.dll') for name in selected) and 'engines/26.04/manifest.json' in selected)
     before = hashes(release)

@@ -1,3 +1,4 @@
+param([ValidateSet('x64','arm64')][string]$Architecture = 'x64')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskTools = Join-Path $taskRoot '.tools'
@@ -16,7 +17,7 @@ if (-not (Test-Path $taskCompiler)) {
 }
 $taskRuntimeVersion = (Get-ChildItem (Join-Path $taskTools 'dotnet/shared/Microsoft.NETCore.App') -Directory | Sort-Object { [Version]$_.Name } -Descending | Select-Object -First 1).Name
 if (-not $taskRuntimeVersion) { throw 'Bootstrap the pinned SDK first.' }
-foreach ($taskPackageId in @('microsoft.netcore.app.runtime.win-x64','microsoft.windowsdesktop.app.runtime.win-x64','microsoft.aspnetcore.app.runtime.win-x64')) {
+foreach ($taskPackageId in $(if ($Architecture -eq 'x64') { @('microsoft.netcore.app.runtime.win-x64','microsoft.windowsdesktop.app.runtime.win-x64','microsoft.aspnetcore.app.runtime.win-x64') } else { @() })) {
     $taskPackage = Join-Path $taskTools "nuget-source/$taskPackageId.$taskRuntimeVersion.nupkg"
     if (-not (Test-Path $taskPackage)) {
         Invoke-WebRequest "https://api.nuget.org/v3-flatcontainer/$taskPackageId/$taskRuntimeVersion/$taskPackageId.$taskRuntimeVersion.nupkg" -OutFile $taskPackage

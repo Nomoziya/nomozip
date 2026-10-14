@@ -4,9 +4,9 @@ using System.Text.Json;
 using ArchivePassword.Core;
 using ArchivePassword.Infrastructure;
 
-if (args.Length == 3 && args[0] == "inspect")
+if (args.Length is 3 or 4 && args[0] == "inspect")
 {
-    var package = await EngineUpdatePackage.ReadAsync(args[1], await File.ReadAllTextAsync(args[2]), CancellationToken.None);
+    var package = await EngineUpdatePackage.ReadAsync(args[1], await File.ReadAllTextAsync(args[2]), CancellationToken.None, args.Length == 4 ? args[3] : null);
     Console.WriteLine("Verified signed engine package: " + package.Manifest.Version); return 0;
 }
 if (args.Length == 3 && args[0] == "keygen")
@@ -59,12 +59,12 @@ hashes["compatibility-report.json"] = Convert.ToHexString(SHA256.HashData(payloa
 if (!hashes["7z.dll"].Equals(localManifest.RootElement.GetProperty("dllSha256").GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Engine hash does not match the validated local manifest.");
 if (!hashes["7z.dll"].Equals(evidence.RootElement.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Report belongs to a different engine binary.");
 var architecture = localManifest.RootElement.GetProperty("architecture").GetString()!;
-if (architecture != EngineArchitecture.Current || !EngineArchitecture.IsNativeImage(payload["7z.dll"])) throw new InvalidOperationException("Only the native validated engine can be signed by this tool.");
+if (!EngineArchitecture.IsNativeImage(payload["7z.dll"],architecture)) throw new InvalidOperationException("Engine PE architecture differs from the validated manifest.");
 var manifest = new EngineUpdateManifest(1, version, architecture, 1, "0.1", localManifest.RootElement.GetProperty("source").GetString()!, hashes);
 var bytes = JsonSerializer.SerializeToUtf8Bytes(manifest, EngineUpdatePackage.JsonOptions);
 using var key = RSA.Create(); key.ImportFromPem(await File.ReadAllTextAsync(args[4]));
 var signature = key.SignData(bytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
-EngineUpdatePackage.Verify(bytes, signature, await File.ReadAllTextAsync(args[6]));
+EngineUpdatePackage.Verify(bytes, signature, await File.ReadAllTextAsync(args[6]), architecture);
 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[5]))!);
 using (var output = new FileStream(args[5], FileMode.CreateNew, FileAccess.Write))
 using (var zip = new ZipArchive(output, ZipArchiveMode.Create))

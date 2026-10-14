@@ -5,6 +5,9 @@ Unicode true
 !include FileFunc.nsh
 !include x64.nsh
 !include nsDialogs.nsh
+!ifndef ARCHITECTURE
+  !define ARCHITECTURE "x64"
+!endif
 
 Name "nomozip"
 OutFile "${OUTPUT_FILE}"
@@ -44,7 +47,7 @@ Var PreserveShellMenu
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE "安装 nomozip"
 !ifdef FRAMEWORK_DEPENDENT
-  !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n这是轻量版，使用系统共享的 .NET 10 Windows Desktop Runtime x64（10.0.12 或更高的 10.0 补丁版），无需 SDK。未安装运行库时，请先从 dotnet.microsoft.com 下载并安装。$\r$\n$\r$\n升级保留密码库、设置和下载的引擎，并清理上一安装的程序文件。安装前请关闭 nomozip。"
+  !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n这是 ${ARCHITECTURE} 轻量版，使用系统共享的 .NET 10 Windows Desktop Runtime ${ARCHITECTURE}（10.0.12 或更高的 10.0 补丁版），无需 SDK。未安装运行库时，请先从 dotnet.microsoft.com 下载并安装。$\r$\n$\r$\n升级保留密码库、设置和下载的引擎，并清理上一安装的程序文件。安装前请关闭 nomozip。"
 !else
   !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n仅为当前 Windows 用户安装，已包含 .NET 运行组件。升级会保留密码库、设置和已下载的引擎。$\r$\n$\r$\n软件仍为开发预览。安装前请关闭正在运行的 nomozip。"
 !endif
@@ -77,12 +80,21 @@ ${PREFIX}end:
 
 Function .onInit
   SetShellVarContext current
+!if "${ARCHITECTURE}" == "arm64"
+  ${IfNot} ${IsNativeARM64}
+    IfSilent +2
+    MessageBox MB_OK|MB_ICONSTOP "此版本需要 ARM64 Windows。"
+    SetErrorLevel 2
+    Abort
+  ${EndIf}
+!else
   ${IfNot} ${RunningX64}
     IfSilent +2
     MessageBox MB_OK|MB_ICONSTOP "此版本需要 64 位 Windows。"
     SetErrorLevel 2
     Abort
   ${EndIf}
+!endif
 FunctionEnd
 
 Function un.onInit

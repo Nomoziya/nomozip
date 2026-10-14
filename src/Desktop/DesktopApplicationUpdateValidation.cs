@@ -56,7 +56,7 @@ internal static class DesktopApplicationUpdateValidation
                 var downloadPeer=UIElementAutomationPeer.CreatePeerForElement(download)!;
                 ((IInvokeProvider)downloadPeer.GetPattern(PatternInterface.Invoke)).Invoke(); await Layout();
                 Check($"opens canonical release page {width} {contrast}",opened?.AbsoluteUri=="https://github.com/Nomoziya/nomozip/releases/tag/v99.0.0");
-                Check($"download text explains architecture {width} {contrast}",model.ApplicationUpdateMessage.Contains("win-x64") && model.ApplicationUpdateMessage.Contains("关闭软件"));
+                Check($"download text explains architecture {width} {contrast}",model.ApplicationUpdateMessage.Contains("win-" + ArchivePassword.Core.EngineArchitecture.Current) && model.ApplicationUpdateMessage.Contains("关闭软件"));
                 Check($"status announced politely {width} {contrast}",AutomationProperties.GetLiveSetting((TextBlock)window.FindName("ApplicationUpdateStatus"))==AutomationLiveSetting.Polite);
                 DesktopAccessibilityValidation.Render(window,Path.Combine(root,$"artifacts/application-update-{width}-{contrast}.png"),1.0);
             }

@@ -1,5 +1,5 @@
 param([ValidatePattern('^\d{2}\.\d{2}$')][string]$Version = '26.04', [string]$PrivateKey,
-    [string]$ProtectedPrivateKey, [string]$OutputDirectory, [switch]$Development)
+    [string]$ProtectedPrivateKey, [string]$OutputDirectory, [switch]$Development, [ValidateSet('x64','arm64')][string]$Architecture = 'x64')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
@@ -24,7 +24,7 @@ if (-not $PrivateKey -and -not $ProtectedPrivateKey) { throw 'Supply a release p
 $taskPublicKey = Join-Path $taskRoot 'config/update-public-key.pem'
 if (-not (Test-Path $taskPublicKey)) { throw 'A product public key must be pinned in config/update-public-key.pem before signing.' }
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $taskRoot 'artifacts/updates' }
-$taskOutput = Join-Path $OutputDirectory "ArchivePassword-engine-$Version-win-x64.zip"
+$taskOutput = Join-Path $OutputDirectory "ArchivePassword-engine-$Version-win-$Architecture.zip"
 if (Test-Path $taskOutput) { throw 'An update package already exists. Keep it immutable; choose a different artifact directory or remove it explicitly.' }
 $taskKeyBytes = $null
 $taskTemporaryKey = $null
@@ -37,7 +37,7 @@ try {
         [IO.File]::WriteAllBytes($taskTemporaryKey, $taskKeyBytes)
         $PrivateKey = $taskTemporaryKey
     }
-    & $taskDotnet $taskPackager pack (Join-Path $taskRoot "engines/$Version") $Version (Join-Path $taskRoot 'artifacts/engine-validation.json') $PrivateKey $taskOutput $taskPublicKey (Join-Path $taskRoot 'artifacts/compression-validation.json')
+    & $taskDotnet $taskPackager pack (Join-Path $taskRoot $(if ($Architecture -eq 'arm64') { "engines/arm64/$Version" } else { "engines/$Version" })) $Version (Join-Path $taskRoot 'artifacts/engine-validation.json') $PrivateKey $taskOutput $taskPublicKey (Join-Path $taskRoot 'artifacts/compression-validation.json')
     if ($LASTEXITCODE -ne 0) { throw 'Signed update packaging failed.' }
 } finally {
     if ($taskTemporaryKey -and (Test-Path -LiteralPath $taskTemporaryKey)) { Remove-Item -LiteralPath $taskTemporaryKey }
