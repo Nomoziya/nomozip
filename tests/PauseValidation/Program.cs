@@ -30,9 +30,16 @@ foreach(var version in versions)
     for(var index=0;index<12;index++) {pause.Resume();pause.Pause();}pause.Resume();var result=await work.WaitAsync(TimeSpan.FromSeconds(20));Check(version+" rapid toggles resume actual validation correctly",result.IsSuccess && result.SuccessfulItems==1);Check(version+" resumed test releases native process",WorkerIds().Length==0);
     var longer=Path.Combine(data,"longer-"+version+".7z");var entries=Enumerable.Range(0,4).Select(index=>new CompressionEntry(Path.Combine(root,"tests/fixtures/generated/large.bin"),index==0?"large.bin":"extra-"+index+".bin",false)).ToArray();
     var created=await new ArchiveEngineClient(worker,dll).CreateAsync(new(entries,"7z",1,false),longer,null);if(!created.IsSuccess) throw new IOException("long-running synthetic archive creation failed");
-    var output=Path.Combine(data,version,"resume");pause=new();ack=Gate();var requested=false;var resumed=0;
-    client=new(worker,dll,pause:pause);work=client.ExtractAsync(longer,output,progress:new ForwardProgress<EngineProgress>(value=>{if(value.PausedState==true) ack.TrySetResult();else if(value.PausedState==false) Interlocked.Increment(ref resumed);else if(value.Completed>0 && !requested){requested=true;pause.Pause();}}));
-    await ack.Task.WaitAsync(TimeSpan.FromSeconds(15));ids=WorkerIds();var file=Path.Combine(output,"large.bin");await Task.Delay(80);var length=File.Exists(file)?new FileInfo(file).Length:0;await Task.Delay(180);
+    var output=Path.Combine(data,version,"resume");pause=new();ack=Gate();var requested=false;var resumed=0;var progressEvents=0;ulong maxCompleted=0;
+    client=new(worker,dll,pause:pause);work=client.ExtractAsync(longer,output,progress:new ForwardProgress<EngineProgress>(value=>{if(value.PausedState==true) ack.TrySetResult();else if(value.PausedState==false) Interlocked.Increment(ref resumed);else {progressEvents++;maxCompleted=Math.Max(maxCompleted,value.Completed);if(value.Completed>0 && !requested){requested=true;pause.Pause();}}}));
+    try {await ack.Task.WaitAsync(TimeSpan.FromSeconds(15));}
+    catch(TimeoutException)
+    {
+        var diagnostic=new{passed=false,phase="running pause acknowledgement",version,architecture=EngineArchitecture.Current,requested,progressEvents,maxCompleted,workStatus=work.Status.ToString(),workers=WorkerIds(),outputBytes=Directory.Exists(output)?Directory.GetFiles(output).Sum(path=>new FileInfo(path).Length):0,engineResult=work.IsCompletedSuccessfully?work.Result:null};
+        await File.WriteAllTextAsync(Path.Combine(root,"artifacts/pause-validation.json"),JsonSerializer.Serialize(diagnostic));
+        Console.WriteLine(JsonSerializer.Serialize(diagnostic));pause.Resume();throw;
+    }
+    ids=WorkerIds();var file=Path.Combine(output,"large.bin");await Task.Delay(80);var length=File.Exists(file)?new FileInfo(file).Length:0;await Task.Delay(180);
     Check(version+" running extraction actually pauses",requested && ids.Length==1 && !work.IsCompleted);
     Check(version+" paused output is stable without replacing worker",(File.Exists(file)?new FileInfo(file).Length:0)==length && WorkerIds().SequenceEqual(ids));pause.Resume();result=await work.WaitAsync(TimeSpan.FromSeconds(20));
     Check(version+" resume continues current extraction with correct bytes",result.IsSuccess && resumed>0 && Hash(file)==Hash(Path.Combine(root,"tests/fixtures/generated/large.bin")));Check(version+" resumed extraction releases worker",WorkerIds().Length==0);

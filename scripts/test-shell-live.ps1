@@ -1,10 +1,10 @@
+param([ValidateSet('x64','arm64')][string]$Architecture = 'x64')
 $ErrorActionPreference = 'Stop'
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'Live menu verification only runs on disposable GitHub VMs.' }
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskApp = Join-Path $taskRoot 'artifacts/app/ArchivePassword.exe'
 $taskClient = Join-Path $taskRoot 'artifacts/ShellMenuProbe.exe'
-& g++ -std=c++17 -O2 -municode -static -static-libgcc -static-libstdc++ (Join-Path $taskRoot 'tests/ShellValidation/menu.cpp') -lshell32 -lole32 -luuid -o $taskClient
-if ($LASTEXITCODE -ne 0) { throw 'Windows Shell menu probe compilation failed.' }
+& (Join-Path $PSScriptRoot 'build-shell-test-client.ps1') -Source (Join-Path $taskRoot 'tests/ShellValidation/menu.cpp') -Output $taskClient -Architecture $Architecture
 $taskTest = Join-Path $taskRoot 'tests/ShellValidation/bin/Debug/net10.0-windows/ShellValidation.dll'
 $taskServer = $null
 try {
