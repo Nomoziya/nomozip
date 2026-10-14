@@ -26,7 +26,7 @@ public sealed partial class MainViewModel
             if(!dialogs.ConfirmArchiveEdit(action,removed.Count,additions.Count)) return null;
             var prompts=0;
             var outcome=await new ArchiveEditingService(client,client,new PasswordCandidateProvider(vault)).EditAsync(task.Path,snapshot,removed,additions,AutoTry,
-                failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,false,token,previousFailure:failure,browsing:true),
+                failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,false,token,previousFailure:failure,testing:true),
                 new Progress<TaskUpdate>(value=>{status.Report(value.Message);Footer=$"{task.Name}：{value.Message}";}),token);
             var message=outcome.Engine.IsSuccess?"修改完成，原包副本已保留。":outcome.Engine.Status=="cancelled"?"已取消修改，原包保持不变。":outcome.Engine.Code switch
             {

@@ -28,10 +28,20 @@ internal static class DesktopArchiveEditingValidation
         {
             foreach(var version in new[]{"26.04","26.03"})
             {
+                int manualPrompts=0;
                 var client=new ArchiveEngineClient(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(baseDirectory,"engines",version,"7z.dll"));
                 var archive=Path.Combine(data,version+".7z");await client.CreateAsync(new([new(original,"keep.txt",false)],"7z",5,true),archive,"fixture-password");
                 var bytes=File.ReadAllBytes(archive);
-                var dialogs=new WindowDialogs(window,selectArchiveEditSources:action=>action==ArchiveEditAction.AddFolder?[folder]:action==ArchiveEditAction.Replace?[replacement]:[added],
+                var dialogs=new WindowDialogs(window,prepareDialog:password=>
+                {
+                    password.WindowStartupLocation=WindowStartupLocation.Manual;password.Left=-32000;password.Top=-32000;password.Opacity=0;password.ShowActivated=false;password.ShowInTaskbar=false;
+                    password.Loaded+=(_,_)=>password.Dispatcher.BeginInvoke(()=>
+                    {
+                        Check(version+" actual manual verification prompt "+(++manualPrompts),password.Title=="输入校验密码" && password.SavePassword.Visibility==Visibility.Collapsed && password.SecretBox.IsVisible);
+                        password.SecretBox.Password="fixture-password";
+                        ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(password.ContinueButton)!.GetPattern(PatternInterface.Invoke)).Invoke();
+                    });
+                },selectArchiveEditSources:action=>action==ArchiveEditAction.AddFolder?[folder]:action==ArchiveEditAction.Replace?[replacement]:[added],
                     confirmArchiveEdit:(action,remove,add)=>approved,prepareContents:dialog=>
                 {
                     dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;dialog.ShowInTaskbar=false;
@@ -48,12 +58,13 @@ internal static class DesktopArchiveEditingValidation
                             await Execute("AddEntryFilesAction");Check(version+" real add refreshes content and clears selection",view.Rows.Count==2 && view.Rows.Any(row=>row.Path=="added.txt") && !view.DeleteSelectedCommand.CanExecute(null));
                             Check(version+" actual original backup retained",Directory.GetFiles(data,version+".7z.before-edit-*").Any(path=>bytes.SequenceEqual(File.ReadAllBytes(path))));
                             view.Rows.Single(row=>row.Path=="keep.txt").Selected=true;await Execute("ReplaceEntryAction");Check(version+" actual replacement keeps path",view.Rows.Count==2 && view.Rows.Single(row=>row.Path=="keep.txt").Entry.Size==(ulong)new FileInfo(replacement).Length);
-                            await Execute("AddEntryFolderAction");Check(version+" actual folder add contains child and empty folder",view.Rows.Any(row=>row.Path.Replace('\\','/')=="folder/child.txt") && view.Rows.Any(row=>row.Path.Replace('\\','/').TrimEnd('/')=="folder/empty"));
+                            model!.AutoTry=false;await Execute("AddEntryFolderAction");Check(version+" actual folder add contains child and empty folder",view.Rows.Any(row=>row.Path.Replace('\\','/')=="folder/child.txt") && view.Rows.Any(row=>row.Path.Replace('\\','/').TrimEnd('/')=="folder/empty"));
                             view.Rows.Single(row=>row.Path.Replace('\\','/').TrimEnd('/')=="folder").Selected=true;view.Search="keep";Check(version+" hidden folder selections include descendants",view.SelectedEntries.Count==3 && view.Rows.Count==1);
                             await Execute("DeleteEntriesAction");Check(version+" folder delete refreshes filtered view",view.Rows.Count==1 && view.Summary.Contains("2 项") && !view.DeleteSelectedCommand.CanExecute(null));view.Search="";
                             var output=Path.Combine(data,"output-"+version);await client.ExtractAsync(archive,output,"fixture-password");Check(version+" actual edited bytes and kept password",File.ReadAllText(Path.Combine(output,"keep.txt"))=="replacement" && File.ReadAllText(Path.Combine(output,"added.txt"))=="added 中文" && (await client.ListAsync(archive)).NeedsPassword);
                             Check(version+" modified task resets previous result",!model!.Tasks.Single().Completed && model.Tasks.Single().Status.Contains("待解压"));
                             await Execute("AddEntryFilesAction");Check(version+" name collision visible without changing archive",view.OperationMessage.Contains("路径冲突") && view.Rows.Count==2);
+                            Check(version+" all manual verification flows completed",manualPrompts==3);
                             foreach(var contrast in new[]{false,true}) foreach(var size in new[]{(900d,600d),(640d,400d)})
                             {
                                 theme.Apply(contrast);dialog.Width=size.Item1;dialog.Height=size.Item2;await Layout(dialog);
