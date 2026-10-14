@@ -146,7 +146,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     public string? SelectEngineUpdate()
     {
         if (selectEngineUpdate is not null) return selectEngineUpdate();
-        var dialog = new OpenFileDialog { Title = "导入引擎更新包", Filter = "引擎更新包|ArchivePassword-engine-*-win-x64.zip|ZIP 文件|*.zip" };
+        var dialog = new OpenFileDialog { Title = "导入引擎更新包", Filter = $"引擎更新包|ArchivePassword-engine-*-win-{EngineArchitecture.Current}.zip|ZIP 文件|*.zip" };
         return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
     }
     public bool ConfirmEngineUpdate(string version, string current) => confirmEngineUpdate?.Invoke(version, current) ?? (MessageBox.Show(owner,

@@ -20,7 +20,8 @@ public sealed class EngineCatalog(string directory, string? installedDirectory =
                 using var manifest = JsonDocument.Parse(await File.ReadAllTextAsync(manifestPath));
                 var root = manifest.RootElement;
                 var version = root.GetProperty("version").GetString();
-                if (root.GetProperty("protocol").GetInt32() != 1 || root.GetProperty("architecture").GetString() != "x64" || version != Path.GetFileName(folder) || !Version.TryParse(version, out _)) continue;
+                if (root.GetProperty("protocol").GetInt32() != 1 || root.GetProperty("architecture").GetString() != EngineArchitecture.Current || version != Path.GetFileName(folder) || !Version.TryParse(version, out _)) continue;
+                if (!EngineArchitecture.IsNativeImage(await File.ReadAllBytesAsync(dll))) continue;
                 await using var input = File.OpenRead(dll);
                 var hash = Convert.ToHexString(await SHA256.HashDataAsync(input));
                 if (string.Equals(hash, root.GetProperty("dllSha256").GetString(), StringComparison.OrdinalIgnoreCase)) paths[version] = dll;

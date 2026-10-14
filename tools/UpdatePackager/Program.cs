@@ -58,7 +58,9 @@ if(payload["compatibility-report.json"].Length>1024*1024) throw new InvalidOpera
 hashes["compatibility-report.json"] = Convert.ToHexString(SHA256.HashData(payload["compatibility-report.json"])).ToLowerInvariant();
 if (!hashes["7z.dll"].Equals(localManifest.RootElement.GetProperty("dllSha256").GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Engine hash does not match the validated local manifest.");
 if (!hashes["7z.dll"].Equals(evidence.RootElement.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Report belongs to a different engine binary.");
-var manifest = new EngineUpdateManifest(1, version, "x64", 1, "0.1", localManifest.RootElement.GetProperty("source").GetString()!, hashes);
+var architecture = localManifest.RootElement.GetProperty("architecture").GetString()!;
+if (architecture != EngineArchitecture.Current || !EngineArchitecture.IsNativeImage(payload["7z.dll"])) throw new InvalidOperationException("Only the native validated engine can be signed by this tool.");
+var manifest = new EngineUpdateManifest(1, version, architecture, 1, "0.1", localManifest.RootElement.GetProperty("source").GetString()!, hashes);
 var bytes = JsonSerializer.SerializeToUtf8Bytes(manifest, EngineUpdatePackage.JsonOptions);
 using var key = RSA.Create(); key.ImportFromPem(await File.ReadAllTextAsync(args[4]));
 var signature = key.SignData(bytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);

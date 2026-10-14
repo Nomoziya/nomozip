@@ -20,10 +20,10 @@ public static partial class EngineUpdatePackage
             using var rsa = RSA.Create(); rsa.ImportFromPem(publicKey);
             if (!rsa.VerifyData(manifest, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss)) throw new UpdateException("invalid_signature");
             var value = JsonSerializer.Deserialize<EngineUpdateManifest>(manifest, JsonOptions) ?? throw new UpdateException("invalid_manifest");
-            if (value.Schema != 1 || value.Protocol != 1 || value.Architecture != "x64" || value.Version is null || !VersionPattern().IsMatch(value.Version) ||
+            if (value.Schema != 1 || value.Protocol != 1 || value.Architecture != EngineArchitecture.Current || value.Version is null || !VersionPattern().IsMatch(value.Version) ||
                 !Version.TryParse(value.MinimumAppVersion, out var minimum) || minimum > new Version(0, 1)) throw new UpdateException("incompatible_update");
             if (!Uri.TryCreate(value.Source, UriKind.Absolute, out var source) || source.Scheme != "https" || source.Host != "github.com" ||
-                source.AbsolutePath != $"/ip7z/7zip/releases/download/{value.Version}/7z{value.Version.Replace(".", "")}-x64.exe") throw new UpdateException("invalid_manifest");
+                source.AbsolutePath != $"/ip7z/7zip/releases/download/{value.Version}/7z{value.Version.Replace(".", "")}-{value.Architecture}.exe") throw new UpdateException("invalid_manifest");
             if (value.Files is null || value.Files.Count != PayloadNames.Length || PayloadNames.Any(name => !value.Files.TryGetValue(name, out var hash) || hash is null || hash.Length != 64 || !hash.All(Uri.IsHexDigit))) throw new UpdateException("invalid_manifest");
             return value;
         }
@@ -57,6 +57,7 @@ public static partial class EngineUpdatePackage
             if (!Convert.ToHexString(SHA256.HashData(bytes)).Equals(manifest.Files[name], StringComparison.OrdinalIgnoreCase)) throw new UpdateException("hash_mismatch");
             payload.Add(name, bytes);
         }
+        if (!EngineArchitecture.IsNativeImage(payload["7z.dll"])) throw new UpdateException("incompatible_update");
         return (manifest, manifestBytes, signature, payload);
     }
     public static async Task<EngineUpdateManifest> VerifyInstalledAsync(string directory, string publicKey, CancellationToken token = default)
@@ -67,6 +68,7 @@ public static partial class EngineUpdatePackage
             await using var file = File.OpenRead(Path.Combine(directory, name));
             if (!Convert.ToHexString(await SHA256.HashDataAsync(file, token)).Equals(manifest.Files[name], StringComparison.OrdinalIgnoreCase)) throw new UpdateException("hash_mismatch");
         }
+        if (!EngineArchitecture.IsNativeImage(await File.ReadAllBytesAsync(Path.Combine(directory,"7z.dll"),token))) throw new UpdateException("incompatible_update");
         return manifest;
     }
 }

@@ -109,7 +109,7 @@ var broken = await Mutate("broken-engine", values =>
     manifest.Files["7z.dll"] = Convert.ToHexString(SHA256.HashData(values["engine/7z.dll"]));
     values["manifest.json"] = JsonSerializer.SerializeToUtf8Bytes(manifest, EngineUpdatePackage.JsonOptions);
 }, true);
-await Reject("signed but non-working engine rejected by real worker", () => updater.InstallAsync(broken), "engine_validation_failed");
+await Reject("signed non-PE engine rejected before worker load", () => updater.InstallAsync(broken), "incompatible_update");
 Check("failed preparations cleaned", !Directory.EnumerateDirectories(installed, ".prepare-*").Any());
 using (var cancellation = new CancellationTokenSource())
 {

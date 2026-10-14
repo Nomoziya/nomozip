@@ -1,4 +1,4 @@
-param([switch]$SkipSdk)
+param([switch]$SkipSdk, [ValidateSet('x64','arm64')][string]$Architecture = 'x64')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskTools = Join-Path $taskRoot '.tools'
@@ -6,17 +6,17 @@ New-Item -ItemType Directory -Force -Path $taskTools | Out-Null
 $taskSevenZip = (Get-Command 7z -ErrorAction Stop).Source
 foreach ($taskVersion in @('26.04', '26.03')) {
     $taskDigits = $taskVersion.Replace('.', '')
-    $taskEngine = Join-Path $taskRoot "engines/$taskVersion"
-    $taskInstaller = Join-Path $taskTools "7z$taskDigits-x64.exe"
+    $taskEngine = Join-Path $taskRoot $(if ($Architecture -eq 'x64') { "engines/$taskVersion" } else { "engines/arm64/$taskVersion" })
+    $taskInstaller = Join-Path $taskTools "7z$taskDigits-$Architecture.exe"
     if (-not (Test-Path $taskInstaller)) {
-        Invoke-WebRequest "https://github.com/ip7z/7zip/releases/download/$taskVersion/7z$taskDigits-x64.exe" -OutFile $taskInstaller
+        Invoke-WebRequest "https://github.com/ip7z/7zip/releases/download/$taskVersion/7z$taskDigits-$Architecture.exe" -OutFile $taskInstaller
     }
     New-Item -ItemType Directory -Force -Path $taskEngine | Out-Null
     & $taskSevenZip x $taskInstaller "-o$taskEngine" -y 7z.dll 7z.exe 7z.sfx License.txt | Out-Null
     if ($LASTEXITCODE -ne 0) { throw 'Engine extraction failed.' }
     $taskManifest = [ordered]@{
-        version = $taskVersion; architecture = 'x64'; protocol = 1
-        source = "https://github.com/ip7z/7zip/releases/download/$taskVersion/7z$taskDigits-x64.exe"
+        version = $taskVersion; architecture = $Architecture; protocol = 1
+        source = "https://github.com/ip7z/7zip/releases/download/$taskVersion/7z$taskDigits-$Architecture.exe"
         dllSha256 = (Get-FileHash (Join-Path $taskEngine '7z.dll') -Algorithm SHA256).Hash.ToLowerInvariant()
         sfxSha256 = (Get-FileHash (Join-Path $taskEngine '7z.sfx') -Algorithm SHA256).Hash.ToLowerInvariant()
     }
@@ -48,7 +48,8 @@ if (-not $SkipSdk) {
         $taskPinnedSdk = (Get-Content -Raw (Join-Path $taskRoot 'global.json') | ConvertFrom-Json).sdk.version
         $taskSdk = $taskRelease.releases | ForEach-Object { $_.sdk; $_.sdks } | Where-Object { $_.version -eq $taskPinnedSdk } | Select-Object -First 1
         if (-not $taskSdk) { throw 'Pinned SDK was not found in official release metadata.' }
-        $taskPackage = $taskSdk.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name.EndsWith('.zip') } | Select-Object -First 1
+        $taskPackage = $taskSdk.files | Where-Object { $_.rid -eq "win-$Architecture" -and $_.name.EndsWith('.zip') } | Select-Object -First 1
+        if (-not $taskPackage) { throw 'Native SDK package was not found.' }
         $taskZip = Join-Path $taskTools 'dotnet-sdk.zip'
         Write-Output "Downloading local .NET SDK $($taskSdk.version)"
         Invoke-WebRequest $taskPackage.url -OutFile $taskZip
@@ -58,4 +59,9 @@ if (-not $SkipSdk) {
         $taskSdk.version | Set-Content (Join-Path $taskTools 'sdk-version.txt')
     }
     & $taskDotnet --version
+    $taskHostBytes = [IO.File]::ReadAllBytes($taskDotnet)
+    $taskHostOffset = [BitConverter]::ToInt32($taskHostBytes,60)
+    $taskHostMachine = [BitConverter]::ToUInt16($taskHostBytes,$taskHostOffset+4)
+    $taskExpectedMachine = if ($Architecture -eq 'arm64') { 0xaa64 } else { 0x8664 }
+    if ($taskHostMachine -ne $taskExpectedMachine) { throw 'Existing SDK architecture differs; use a fresh isolated tools directory.' }
 }
