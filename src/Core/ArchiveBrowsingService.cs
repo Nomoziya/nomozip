@@ -17,7 +17,7 @@ public sealed class ArchiveBrowsingService(IArchiveEngine engine, IPasswordCandi
         {
             IReadOnlyList<PasswordCandidate> saved;
             try { saved = await candidates.GetAsync(archivePath, cancellationToken); }
-            catch (VaultException) { saved = []; warning = "密码库暂时无法读取，请手动输入密码。"; }
+            catch (VaultException error) { saved = []; warning = error.Code == "vault_locked" ? "密码库已锁定，请手动输入密码。" : "密码库暂时无法读取，请手动输入密码。"; }
             for (var index = 0; index < saved.Count; index++)
             {
                 cancellationToken.ThrowIfCancellationRequested();

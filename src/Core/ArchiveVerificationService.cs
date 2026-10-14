@@ -47,7 +47,7 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
         {
             IReadOnlyList<PasswordCandidate> entries;
             try { entries = await candidates.GetAsync(archivePath, cancellationToken); }
-            catch (VaultException) { entries = []; warning = "密码库暂时无法读取，请手动输入密码。"; }
+            catch (VaultException error) { entries = []; warning = error.Code == "vault_locked" ? "密码库已锁定，请手动输入密码。" : "密码库暂时无法读取，请手动输入密码。"; }
             for (var index = 0; index < entries.Count; ++index)
             {
                 cancellationToken.ThrowIfCancellationRequested();

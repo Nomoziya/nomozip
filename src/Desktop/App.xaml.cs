@@ -103,6 +103,15 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var masterIndex=Array.IndexOf(e.Args,"--validate-master-vault");
+        if(masterIndex>=0)
+        {
+            window.SuppressExitConfirmationForValidation=true;
+            var report=Path.Combine(Path.GetFullPath(e.Args[masterIndex+1]),"artifacts/master-vault-ui-validation.json");File.WriteAllText(report,"{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new{passed=false,exceptionType=failure.Exception.GetType().Name,stack=failure.Exception.StackTrace}));failure.Handled=true;Shutdown(1);};
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopMasterVaultValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[masterIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
+        }
         var notificationIndex=Array.IndexOf(e.Args,"--validate-notifications");
         if(notificationIndex>=0)
         {
