@@ -12,7 +12,7 @@ internal static class MaintenanceEvidence
         if (root.GetProperty("schema").GetInt32() != 1 || root.GetProperty("status").GetString() != "ready-for-signing" || root.GetProperty("version").GetString() != version
             || !Path.GetFullPath(engineDirectory).Equals(Path.Combine(candidate, "workspace", "engines", version), StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("A prepared candidate for this exact engine is required.");
-        var reports = new[] { "engine-validation.json", "compression-validation.json", "selection-validation.json", "encoding-validation.json", "pause-validation.json", "archive-editing-validation.json", "volume-validation.json", "sfx-validation.json" };
+        var reports = new[] { "engine-validation.json", "compression-validation.json", "selection-validation.json", "encoding-validation.json", "pause-validation.json", "archive-editing-validation.json", "volume-validation.json", "sfx-validation.json", "format-validation.json" };
         var names = new[] { "7z.dll", "7z.exe", "7z.sfx", "License.txt", "manifest.json" }.Select(name => $"workspace/engines/{version}/{name}")
             .Concat(new[] { "public-key.pem", "workspace/artifacts/worker/ArchiveEngineWorker.exe" })
             .Concat(reports.Select(name => "workspace/artifacts/" + name)).ToArray();
@@ -39,7 +39,7 @@ internal static class MaintenanceEvidence
                 || !(passed.ValueKind == JsonValueKind.True || passed.ValueKind == JsonValueKind.Number && passed.GetInt32() == total)
                 || values.Count(value => value.Name.StartsWith(version + " ", StringComparison.Ordinal)) < minimum)
                 throw new InvalidOperationException("Passing target-version maintenance coverage is required.");
-            if ((name is "pause-validation.json" or "archive-editing-validation.json" or "volume-validation.json" or "sfx-validation.json") && !dllHash.Equals(report.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase))
+            if ((name is "pause-validation.json" or "archive-editing-validation.json" or "volume-validation.json" or "sfx-validation.json" or "format-validation.json") && !dllHash.Equals(report.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("Maintenance evidence belongs to another engine binary.");
             if(name=="sfx-validation.json" && !hashes.GetProperty($"workspace/engines/{version}/7z.sfx").GetString()!.Equals(report.GetProperty("moduleHashes").GetProperty(version).GetString(),StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("SFX evidence belongs to another module.");
             result[name] = JsonNode.Parse(bytes);

@@ -36,9 +36,10 @@ class CreateCallback final : public IArchiveUpdateCallback, public ICryptoGetTex
     const std::vector<CreateEntry>& entries;
     UInt64 total = 0;
     const std::vector<UInt32>* previous;
+    bool omitPath;
 public:
     std::string error;
-    CreateCallback(Context& value, const std::vector<CreateEntry>& items, const std::vector<UInt32>* old = nullptr) : context(value), entries(items), previous(old) {}
+    CreateCallback(Context& value, const std::vector<CreateEntry>& items, const std::vector<UInt32>* old = nullptr, bool noPath = false) : context(value), entries(items), previous(old), omitPath(noPath) {}
     REFCOUNT_IMPL
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID id, void** object) noexcept override {
         *object = nullptr;
@@ -68,7 +69,7 @@ public:
         if (index >= entries.size()) return E_INVALIDARG;
         const auto& entry = entries[index];
         switch (propertyId) {
-            case kpidPath: value->vt = VT_BSTR; value->bstrVal = SysAllocStringLen(entry.name.data(), (UINT)entry.name.size()); return value->bstrVal ? S_OK : E_OUTOFMEMORY;
+            case kpidPath: if (omitPath) return S_OK; value->vt = VT_BSTR; value->bstrVal = SysAllocStringLen(entry.name.data(), (UINT)entry.name.size()); return value->bstrVal ? S_OK : E_OUTOFMEMORY;
             case kpidIsDir: value->vt = VT_BOOL; value->boolVal = entry.directory ? VARIANT_TRUE : VARIANT_FALSE; break;
             case kpidSize: value->vt = VT_UI8; value->uhVal.QuadPart = entry.size; break;
             case kpidMTime: value->vt = VT_FILETIME; value->filetime = entry.attributes.ftLastWriteTime; break;
@@ -102,8 +103,8 @@ public:
 using CreateArchiveFactory = HRESULT (WINAPI*)(const GUID*, const GUID*, void**);
 static json createArchive(json& request, const std::vector<Format>& formats, CreateArchiveFactory factory) {
     auto formatName = request.at("format").get<std::string>();
-    if (formatName != "7z" && formatName != "zip") throw std::runtime_error("unsupported_format");
-    auto format = std::find_if(formats.begin(), formats.end(), [&](const Format& value) { return utf8(value.name) == (formatName == "zip" ? "zip" : "7z"); });
+    if (formatName != "7z" && formatName != "zip" && formatName != "tar" && formatName != "gzip" && formatName != "xz") throw std::runtime_error("unsupported_format");
+    auto format = std::find_if(formats.begin(), formats.end(), [&](const Format& value) { return utf8(value.name) == formatName; });
     if (format == formats.end()) throw std::runtime_error("unsupported_format");
     Context context;
     if (request.contains("password") && !request["password"].is_null()) {
@@ -112,6 +113,9 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
         request.erase("password");
     }
     if (formatName == "zip" && std::any_of(context.password.begin(), context.password.end(), [](wchar_t value) { return value > 127; })) return {{"kind", "result"}, {"status", "error"}, {"code", "zip_password_ascii_only"}};
+    const bool traditional = formatName == "7z" || formatName == "zip";
+    if (!traditional && context.passwordDefined) return {{"kind","result"},{"status","error"},{"code","format_encryption_unsupported"}};
+    if (!traditional && request.value("volumeSize", static_cast<UInt64>(0))) return {{"kind","result"},{"status","error"},{"code","format_volumes_unsupported"}};
     std::vector<CreateEntry> entries;
     for (const auto& item : request.at("sourceEntries")) {
         auto source = fs::absolute(wide(item.at("sourcePath").get<std::string>()));
@@ -122,10 +126,11 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
         entries.push_back({source, name, directory, directory ? 0 : ((UInt64)attributes.nFileSizeHigh << 32) | attributes.nFileSizeLow, attributes});
     }
     if (entries.empty()) throw std::runtime_error("empty_sources");
+    if ((formatName == "gzip" || formatName == "xz") && (entries.size() != 1 || entries.front().directory)) return {{"kind","result"},{"status","error"},{"code","format_single_file_required"}};
     ComPtr<IOutArchive> archive;
     if (factory(&format->id, &IID_IOutArchive, reinterpret_cast<void**>(&archive.ptr)) != S_OK) throw std::runtime_error("compression_not_supported");
     ComPtr<ISetProperties> properties;
-    if (archive->QueryInterface(IID_ISetProperties, reinterpret_cast<void**>(&properties.ptr)) != S_OK) throw std::runtime_error("compression_not_supported");
+    if (formatName != "tar" && archive->QueryInterface(IID_ISetProperties, reinterpret_cast<void**>(&properties.ptr)) != S_OK) throw std::runtime_error("compression_not_supported");
     const wchar_t* names[3] = {L"x", L"he", L"em"};
     Variant level, encryption;
     level.value.vt = VT_UI4; level.value.ulVal = request.value("compressionLevel", 5);
@@ -133,7 +138,7 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
     UInt32 propertyCount = 1;
     if (formatName == "7z") { values[1].vt = VT_BOOL; values[1].boolVal = context.passwordDefined && request.value("encryptHeaders", true) ? VARIANT_TRUE : VARIANT_FALSE; propertyCount = 2; }
     else if (context.passwordDefined) { names[1] = names[2]; encryption.value.vt = VT_BSTR; encryption.value.bstrVal = SysAllocString(L"AES256"); values[1] = encryption.value; propertyCount = 2; }
-    if (properties->SetProperties(names, values, propertyCount) != S_OK) throw std::runtime_error("invalid_compression_options");
+    if (formatName != "tar" && properties->SetProperties(names, values, propertyCount) != S_OK) throw std::runtime_error("invalid_compression_options");
     auto outputPath = fs::absolute(wide(request.at("outputPath").get<std::string>()));
     const auto volumeSize=request.value("volumeSize",static_cast<UInt64>(0));VolumeOutputStream* split=nullptr;
     ComPtr<IOutStream> stream;
@@ -143,7 +148,9 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
         if(handle==INVALID_HANDLE_VALUE) return {{"kind","result"},{"status","error"},{"code","output_write_failed"}};
         stream.ptr=new ArchiveOutputStream(handle);
     }
-    auto* callback = new CreateCallback(context, entries);
+    // GZIP's optional filename uses the machine ANSI code page. Omit it so Unicode
+    // names survive transfer across locales, using the .gz filename like XZ.
+    auto* callback = new CreateCallback(context, entries, nullptr, formatName == "gzip");
     ComPtr<IArchiveUpdateCallback> callbacks; callbacks.ptr = callback;
     auto result = archive->UpdateItems(stream.ptr, (UInt32)entries.size(), callbacks.ptr);
     if(result==S_OK && split) result=split->Finish();

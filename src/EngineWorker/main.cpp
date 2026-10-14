@@ -187,6 +187,10 @@ static Variant property(IInArchive* archive, UInt32 index, PROPID id) {
     if (archive->GetProperty(index, id, &result.value) != S_OK) throw std::runtime_error("property_failed");
     return result;
 }
+static std::wstring itemPath(IInArchive* archive, UInt32 index, const fs::path& archivePath) {
+    auto name = property(archive, index, kpidPath).text();
+    return name.empty() ? archivePath.stem().wstring() : name;
+}
 static fs::path safeRelative(std::wstring name) {
     std::replace(name.begin(), name.end(), L'/', L'\\');
     fs::path path(name);
@@ -246,8 +250,7 @@ public:
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
         try {
             if (!currentRequested || mode != NArchive::NExtract::NAskMode::kExtract) return S_OK;
-            auto pathName = property(archive, index, kpidPath).text();
-            if (pathName.empty()) pathName = context.archivePath.stem().wstring();
+            auto pathName = itemPath(archive, index, context.archivePath);
             if (!property(archive, index, kpidSymLink).text().empty() || !property(archive, index, kpidHardLink).text().empty() || property(archive, index, kpidIsAltStream).boolean()) { error = "unsafe_path"; return E_ACCESSDENIED; }
             auto relative = safeRelative(pathName);
             auto target = output / relative;
@@ -279,8 +282,7 @@ public:
                     result == NArchive::NExtract::NOperationResult::kUnsupportedMethod ? "unsupported_method" :
                     context.passwordRequested && (result == NArchive::NExtract::NOperationResult::kCRCError || result == NArchive::NExtract::NOperationResult::kDataError) ? "password_or_corrupt" : "corrupt_archive";
                 if (error.empty()) error = code;
-                auto pathName = property(archive, currentIndex, kpidPath).text();
-                if (pathName.empty()) pathName = context.archivePath.stem().wstring();
+                auto pathName = itemPath(archive, currentIndex, context.archivePath);
                 failures.push_back({{"index", currentIndex}, {"code", code}, {"path", utf8(pathName)}});
             }
         } catch (...) { return E_FAIL; }
@@ -414,7 +416,7 @@ static json run(json& request, const wchar_t* dllPath) {
             return {{"kind","result"},{"status","error"},{"code","invalid_selection"}};
         for(const auto& entry : request["selection"]) {
             auto index=entry.at("index").get<UInt32>();
-            if(index>=itemCount || property(archive.ptr,index,kpidPath).text()!=wide(entry.at("path").get<std::string>())
+            if(index>=itemCount || itemPath(archive.ptr,index,context.archivePath)!=wide(entry.at("path").get<std::string>())
                 || property(archive.ptr,index,kpidSize).number()!=entry.at("size").get<UInt64>()
                 || property(archive.ptr,index,kpidIsDir).boolean()!=entry.at("directory").get<bool>()
                 || property(archive.ptr,index,kpidEncrypted).boolean()!=entry.at("encrypted").get<bool>())
@@ -427,7 +429,7 @@ static json run(json& request, const wchar_t* dllPath) {
     }
     if (operation == "list") {
         json items = json::array();
-        for (UInt32 index = 0; index < itemCount && !cancelled; ++index) items.push_back({{"index", index}, {"path", utf8(property(archive.ptr, index, kpidPath).text())}, {"size", property(archive.ptr, index, kpidSize).number()}, {"directory", property(archive.ptr, index, kpidIsDir).boolean()}, {"encrypted", property(archive.ptr, index, kpidEncrypted).boolean()}});
+        for (UInt32 index = 0; index < itemCount && !cancelled; ++index) items.push_back({{"index", index}, {"path", utf8(itemPath(archive.ptr, index, context.archivePath))}, {"size", property(archive.ptr, index, kpidSize).number()}, {"directory", property(archive.ptr, index, kpidIsDir).boolean()}, {"encrypted", property(archive.ptr, index, kpidEncrypted).boolean()}});
         archive->Close();
         return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "success"}, {"format", utf8(usedFormat)}, {"items", items}};
     }
