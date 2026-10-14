@@ -135,12 +135,18 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
     else if (context.passwordDefined) { names[1] = names[2]; encryption.value.vt = VT_BSTR; encryption.value.bstrVal = SysAllocString(L"AES256"); values[1] = encryption.value; propertyCount = 2; }
     if (properties->SetProperties(names, values, propertyCount) != S_OK) throw std::runtime_error("invalid_compression_options");
     auto outputPath = fs::absolute(wide(request.at("outputPath").get<std::string>()));
-    HANDLE handle = CreateFileW(outputPath.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (handle == INVALID_HANDLE_VALUE) return {{"kind", "result"}, {"status", "error"}, {"code", "output_write_failed"}};
-    ComPtr<IOutStream> stream; stream.ptr = new ArchiveOutputStream(handle);
+    const auto volumeSize=request.value("volumeSize",static_cast<UInt64>(0));VolumeOutputStream* split=nullptr;
+    ComPtr<IOutStream> stream;
+    if(volumeSize) {split=new VolumeOutputStream(outputPath,volumeSize);stream.ptr=split;}
+    else {
+        HANDLE handle=CreateFileW(outputPath.c_str(),GENERIC_WRITE,0,nullptr,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,nullptr);
+        if(handle==INVALID_HANDLE_VALUE) return {{"kind","result"},{"status","error"},{"code","output_write_failed"}};
+        stream.ptr=new ArchiveOutputStream(handle);
+    }
     auto* callback = new CreateCallback(context, entries);
     ComPtr<IArchiveUpdateCallback> callbacks; callbacks.ptr = callback;
     auto result = archive->UpdateItems(stream.ptr, (UInt32)entries.size(), callbacks.ptr);
+    if(result==S_OK && split) result=split->Finish();
     auto code = cancelled ? "cancelled" : !callback->error.empty() ? callback->error : result != S_OK ? "compression_failed" : "ok";
-    return {{"kind", "result"}, {"status", cancelled ? "cancelled" : std::string(code) == "ok" ? "success" : "error"}, {"code", code}, {"format", formatName}, {"itemCount", entries.size()}, {"hresult", (uint32_t)result}};
+    return {{"kind", "result"}, {"status", cancelled ? "cancelled" : std::string(code) == "ok" ? "success" : "error"}, {"code", code}, {"format", formatName}, {"itemCount", entries.size()}, {"volumeCount",split ? split->Count() : 0}, {"hresult", (uint32_t)result}};
 }

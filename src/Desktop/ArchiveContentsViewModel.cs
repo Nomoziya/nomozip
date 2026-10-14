@@ -30,7 +30,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         },()=>extract is not null && !IsWorking && allRows.Any(row=>row.Selected));
         CancelCommand=new RelayCommand(()=>cancel?.Invoke(),()=>IsWorking);
         OpenResultCommand=new RelayCommand(()=>open?.Invoke(OutputPath),()=>!IsWorking && OutputPath.Length>0 && open is not null);
-        EditingAvailable=edit is not null && format?.ToLowerInvariant() is "7z" or "zip";
+        EditingAvailable=edit is not null && !VolumeCompressionService.IsVolumePath(archivePath) && format?.ToLowerInvariant() is "7z" or "zip";
         AsyncCommand EditingCommand(ArchiveEditAction action,Func<bool> allowed)=>new(async()=>
         {
             IsWorking=true;idle=new TaskCompletionSource();OutputPath="";

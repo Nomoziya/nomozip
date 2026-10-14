@@ -26,7 +26,7 @@ function Invoke-Channel([string[]]$Arguments) {
 }
 if ($Mode -eq 'Prepare') {
     if (Test-Path -LiteralPath $taskCandidate) { throw 'Keep prior candidates immutable; choose a new directory.' }
-    foreach ($taskProject in @('EngineSmoke','CompressionValidation','SelectionValidation','EncodingValidation','PauseValidation','ArchiveEditingValidation','UpdatePackager')) {
+    foreach ($taskProject in @('EngineSmoke','CompressionValidation','SelectionValidation','EncodingValidation','PauseValidation','ArchiveEditingValidation','VolumeValidation','UpdatePackager')) {
         $taskFolder = if ($taskProject -eq 'UpdatePackager') { 'tools' } else { 'tests' }
         & $Dotnet build (Join-Path $ToolsRoot "$taskFolder/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
         if ($LASTEXITCODE -ne 0) { throw 'Maintenance tool build failed before candidate preparation.' }
@@ -66,7 +66,7 @@ if ($Mode -eq 'Sign') {
         $taskHash = (Get-FileHash -LiteralPath $taskPackage -Algorithm SHA256).Hash.ToLowerInvariant()
         [IO.File]::WriteAllText((Join-Path $taskCandidate 'assets/SHA256SUMS.txt'),"$taskHash  $taskPackageName`n",[Text.UTF8Encoding]::new($false))
         @{schema=1;version=$taskVersion;packageSha256=$taskHash;publicKeySha256=(Get-FileHash -LiteralPath $taskPublic).Hash.ToLowerInvariant();repository=$taskReview.repository} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $taskCandidate 'signed-review.json') -Encoding utf8
-        $taskNotes = "Official 7-Zip $taskVersion engine for nomozip (Windows x64).`n`nValidated extraction/listing, mixed passwords, compression, selection, filename encoding and pause matrices. Import using nomozip engine update; existing engine rollback remains available.`n"
+        $taskNotes = "Official 7-Zip $taskVersion engine for nomozip (Windows x64).`n`nValidated extraction/listing, mixed passwords, compression, selection, filename encoding, pause, editing and split-volume matrices. Import using nomozip engine update; existing engine rollback remains available.`n"
         [IO.File]::WriteAllText((Join-Path $taskCandidate 'release-notes.md'),$taskNotes,[Text.UTF8Encoding]::new($false))
     } finally {
         if ($taskTemporaryKey -and (Test-Path -LiteralPath $taskTemporaryKey)) { Remove-Item -LiteralPath $taskTemporaryKey }

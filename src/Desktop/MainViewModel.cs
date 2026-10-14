@@ -404,7 +404,7 @@ public sealed partial class MainViewModel : ObservableObject
     {
         "origin_read_failed" => "无法读取来源信息", "origin_write_failed" => "来源信息无法保留，未交付文件",
         "filename_encoding_not_zip" => "所选文件不是 ZIP", "filename_encoding_unsupported" => "引擎不支持文件名编码",
-        "missing_volume" => "缺少分卷文件", "unsafe_path" => "压缩包包含不安全路径", "archive_read_failed" => "无法读取压缩包",
+        "missing_volume" => "缺少分卷文件", "first_volume_required"=>"请选择 .001 首卷，并将全部分卷放在同一目录", "unsafe_path" => "压缩包包含不安全路径", "archive_read_failed" => "无法读取压缩包",
         "wrong_password" => "密码不匹配", "password_or_corrupt" => "密码不匹配或文件损坏", "corrupt_archive" => "压缩包已损坏",
         "unsupported_or_corrupt" => "格式不支持或文件损坏", "output_write_failed" or "write_failed" => "输出目录无法写入",
         "worker_connection_failed" or "engine_load_failed" => "引擎无法启动", _ => "处理失败，请检查压缩包",

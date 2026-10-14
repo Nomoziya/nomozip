@@ -7,6 +7,7 @@ public sealed record EngineFormat(string Name, string Extensions);
 
 public sealed record EngineResult
 {
+    public ulong VolumeCount {get;init;}
     public int Protocol { get; init; }
     public string Kind { get; init; } = "result";
     public string Status { get; init; } = "error";

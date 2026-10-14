@@ -19,6 +19,14 @@ public sealed partial class MainViewModel
     private string compressionOutput = "", compressionMessage = "添加文件或文件夹，选择新压缩包的位置。";
     private CompressionSourceRow? selectedCompressionSource;
     private PasswordPromptResponse? compressionPassword;
+    private int volumeOption,volumeUnit;private string volumeCustom="100",createdCompressionPath="";
+    public int CompressionVolumeOption {get=>volumeOption;set {if(Set(ref volumeOption,value)) VolumeOptionsChanged();}}
+    public int CompressionVolumeUnit {get=>volumeUnit;set {if(Set(ref volumeUnit,value)) VolumeOptionsChanged();}}
+    public string CompressionVolumeCustom {get=>volumeCustom;set {if(Set(ref volumeCustom,value)) VolumeOptionsChanged();}}
+    private bool ValidVolumeSize=>VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out _);
+    private void VolumeOptionsChanged() {Changed(nameof(CompressionVolumeError));Changed(nameof(CompressionVolumeHint));CommandManager.InvalidateRequerySuggested();}
+    public string CompressionVolumeError=>ValidVolumeSize?"":"请输入大于 0 的整数，分卷上限为 1 TiB。";
+    public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?"生成 .001 起的连续分卷；全部放在同一目录，选择首卷解压。已有分卷不覆盖。":"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
     public ICommand AddCompressionFilesCommand { get; private set; } = null!;
     public ICommand AddCompressionFolderCommand { get; private set; } = null!;
@@ -47,7 +55,7 @@ public sealed partial class MainViewModel
     public bool CompressionEncrypt { get => compressionEncrypt; set { if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
     public string CompressionPasswordStatus => compressionPassword is null ? "尚未设置，创建时可输入或选择已保存的密码。" : "已设置本次压缩密码，内容保持隐藏。";
-    public string CompressionOutput { get => compressionOutput; set => Set(ref compressionOutput, value); }
+    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) createdCompressionPath="";} }
     public string CompressionMessage { get => compressionMessage; set => Set(ref compressionMessage, value); }
     public double CompressionPercent { get => compressionPercent; private set => Set(ref compressionPercent, value); }
     public bool CompressionIndeterminate { get => compressionIndeterminate; private set => Set(ref compressionIndeterminate, value); }
@@ -61,8 +69,8 @@ public sealed partial class MainViewModel
         RemoveCompressionSourceCommand = new RelayCommand(() => { if (SelectedCompressionSource is { } item) CompressionSources.Remove(item); }, () => IsIdle && SelectedCompressionSource is not null);
         BrowseCompressionOutputCommand = new RelayCommand(() => { if (dialogs.SelectArchiveOutput(CompressionFormatName) is { } path) CompressionOutput = path; }, () => IsIdle);
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionEncrypt);
-        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && EngineVersions.Count > 0);
-        OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(CompressionOutput))!), () => !string.IsNullOrWhiteSpace(CompressionOutput) && File.Exists(CompressionOutput));
+        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && EngineVersions.Count > 0 && ValidVolumeSize);
+        OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
         CompressionSources.CollectionChanged += (_, _) => CommandManager.InvalidateRequerySuggested();
     }
     public void AddCompressionSources(IEnumerable<string> paths)
@@ -79,12 +87,14 @@ public sealed partial class MainViewModel
     }
     private async Task CreateArchiveAsync()
     {
+        if(!VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out var volumeSize)) {CompressionMessage=CompressionVolumeError;return;}
         if (!Path.GetExtension(CompressionOutput).Equals("." + CompressionFormatName, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = "目标扩展名与格式不一致，请重新选择保存位置。"; return; }
+        if(volumeSize>0 && VolumeCompressionService.HasExistingTarget(CompressionOutput)) {CompressionMessage="已有同名文件或分卷，已保留。请使用新名称或新目录。";return;}
         if (CompressionEncrypt && compressionPassword is null) await SetCompressionPasswordAsync();
         if (CompressionEncrypt && compressionPassword is null) { CompressionMessage = "已取消设置密码，未创建压缩包。"; return; }
-        var replace = File.Exists(CompressionOutput);
+        var replace = volumeSize==0 && File.Exists(CompressionOutput);
         if (replace && !dialogs.ConfirmArchiveReplacement(CompressionOutput)) { CompressionMessage = "已保留原压缩包。"; return; }
-        IsBusy = true; CompressionRunning = true; idle = new TaskCompletionSource(); cancellation = new CancellationTokenSource(); CompressionPercent = 0; CompressionIndeterminate = true;
+        createdCompressionPath="";IsBusy = true; CompressionRunning = true; idle = new TaskCompletionSource(); cancellation = new CancellationTokenSource(); CompressionPercent = 0; CompressionIndeterminate = true;
         try
         {
             var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));
@@ -95,15 +105,16 @@ public sealed partial class MainViewModel
                 else CompressionIndeterminate = true;
             });
             var outcome = await new CompressionService(client, client).CreateAsync(CompressionSources.Select(value => value.Path).ToArray(), CompressionOutput,
-                CompressionFormatName, new[] { 0, 1, 5, 7, 9 }[CompressionLevel], CompressionEncrypt ? compressionPassword?.Secret : null, CompressionHeaders, replace, progress, cancellation.Token);
-            CompressionMessage = outcome.Engine.IsSuccess ? "已创建并校验压缩包。" : outcome.Engine.Status == "cancelled" ? "已取消，本次半成品已清理。" : CompressionError(outcome.Engine.Code);
+                CompressionFormatName, new[] { 0, 1, 5, 7, 9 }[CompressionLevel], CompressionEncrypt ? compressionPassword?.Secret : null, CompressionHeaders, replace, progress, cancellation.Token,volumeSize);
+            if(outcome.Engine.IsSuccess) createdCompressionPath=outcome.OutputPath;
+            CompressionMessage = outcome.Engine.IsSuccess ? outcome.Volumes is { } volumes ? $"已创建并校验 {volumes.Count} 个分卷。首卷：{outcome.OutputPath}" : "已创建并校验压缩包。" : outcome.Engine.Status == "cancelled" ? "已取消，本次半成品已清理。" : CompressionError(outcome.Engine.Code);
             if (outcome.Engine.IsSuccess && CompressionEncrypt && compressionPassword is { } supplied && (supplied.Save || supplied.SavedId is not null))
             {
                 try
                 {
                     var savedId = supplied.SavedId ?? Guid.NewGuid();
                     if (supplied.SavedId is null) await vault.SaveAsync(new SavedPassword(savedId, string.IsNullOrWhiteSpace(supplied.Name) ? Path.GetFileName(CompressionOutput) : supplied.Name, supplied.Secret, "", true, DateTimeOffset.UtcNow));
-                    await vault.RecordSuccessAsync(savedId, CompressionOutput); await RefreshVaultAsync();
+                    await vault.RecordSuccessAsync(savedId, outcome.OutputPath); await RefreshVaultAsync();
                 }
                 catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "压缩包已创建，但密码未能保存，请保留你使用的密码。"; }
             }
@@ -122,6 +133,8 @@ public sealed partial class MainViewModel
         "unsupported_link" => "当前压缩不支持链接或联接点，请选择原始文件。",
         "output_exists" => "目标文件已存在，未覆盖。",
         "empty_sources" => "没有可压缩的文件，请重新选择。",
+        "invalid_volume_size"=>"分卷大小无效，请检查数值与单位。",
+        "invalid_volume_set"=>"分卷未能通过完整校验，未交付目标文件。",
         _ => "未能创建完整压缩包。请检查源文件、保存位置和可用空间。"
     };
 }

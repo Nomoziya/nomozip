@@ -55,6 +55,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Pause compatibility checks failed; the candida
 if ($LASTEXITCODE -ne 0) { throw 'Archive editing compatibility test build failed; the candidate remains disabled.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/ArchiveEditingValidation/bin/Debug/net10.0-windows/ArchiveEditingValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
 if ($LASTEXITCODE -ne 0) { throw 'Archive editing compatibility checks failed; the candidate remains disabled.' }
+& $taskDotnet build (Join-Path $taskRoot 'tests/VolumeValidation/VolumeValidation.csproj') --nologo -m:1 -nr:false -v:minimal
+if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility test build failed; the candidate remains disabled.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/VolumeValidation/bin/Debug/net10.0-windows/VolumeValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
+if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility checks failed; the candidate remains disabled.' }
 $taskManifest.protocol = 1
 $taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
 & (Join-Path $PSScriptRoot 'build.ps1') -SkipWorker

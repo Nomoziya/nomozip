@@ -18,7 +18,7 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
     public Task<EngineResult> ExtractWithPasswordsAsync(string archivePath, string outputPath, string? password, IReadOnlyDictionary<uint, string> itemPasswords, IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default) => RunAsync("extract", archivePath, outputPath, password, progress, cancellationToken, itemPasswords: itemPasswords);
     public Task<EngineResult> CreateAsync(CompressionRequest request, string outputPath, string? password,
         IProgress<EngineProgress>? progress = null, CancellationToken cancellationToken = default) =>
-        RunAsync("create", null, outputPath, password, progress, cancellationToken, request);
+        RunAsync(request.VolumeSize>0?"create-split":"create", null, outputPath, password, progress, cancellationToken, request);
 
     public Task<EngineResult> TestSelectionAsync(string archive,IReadOnlyList<ArchiveEntry> selection,string? password,IReadOnlyDictionary<uint,string> itemPasswords,IProgress<EngineProgress>? progress=null,CancellationToken token=default)
         =>RunAsync("test-selection",archive,null,password,progress,token,itemPasswords:itemPasswords,selection:selection);
@@ -31,8 +31,8 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
         if (!ZipFilenameEncoding.IsSupported(filenameCodePage)) throw new ArgumentOutOfRangeException(nameof(filenameCodePage));
         if (token.IsCancellationRequested) return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" };
         // Separate operations make older workers reject an override instead of silently ignoring it.
-        if (filenameCodePage != 0 && operation is not ("create" or "capabilities")) operation += "-encoded";
-        if(pause is not null && operation is not ("create" or "capabilities")) operation+="-pausable";
+        if (filenameCodePage != 0 && operation is not ("create" or "create-split" or "capabilities")) operation += "-encoded";
+        if(pause is not null && operation is not ("create" or "create-split" or "capabilities")) operation+="-pausable";
         var start = new ProcessStartInfo(Path.GetFullPath(workerPath))
         {
             UseShellExecute = false, CreateNoWindow = true,
@@ -66,7 +66,7 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
             // Sensitive request data stays in the parent/child pipe and is never logged.
             await JsonSerializer.SerializeAsync(process.StandardInput.BaseStream, new { protocol = 1, operation, archivePath, outputPath, password, filenameCodePage,paused=pause?.IsRequested==true,
                 itemPasswords = itemPasswords?.Select(value => new { index = value.Key, password = value.Value }),selection,removedIndices=removed,
-                sourceEntries = creation?.Entries, format = creation?.Format, compressionLevel = creation?.Level, encryptHeaders = creation?.EncryptHeaders }, JsonOptions, token);
+                sourceEntries = creation?.Entries, format = creation?.Format, compressionLevel = creation?.Level, encryptHeaders = creation?.EncryptHeaders,volumeSize=creation?.VolumeSize ?? 0 }, JsonOptions, token);
             await process.StandardInput.BaseStream.WriteAsync("\n"u8.ToArray(), token);
             await process.StandardInput.BaseStream.FlushAsync(token);
             if(pause is not null) pump=PumpAsync();
