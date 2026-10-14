@@ -11,11 +11,12 @@ public sealed record ArchiveEditOutcome(EngineResult Engine,IReadOnlyList<Archiv
 
 public sealed class ArchiveEditingService(IArchiveEngine engine,IArchiveEditor editor,IPasswordCandidateProvider candidates)
 {
-    public static IReadOnlyList<CompressionEntry> CollectSources(IEnumerable<string> sources)
+    public static IReadOnlyList<CompressionEntry> CollectSources(IEnumerable<string> sources,CancellationToken token=default)
     {
         var entries=new List<CompressionEntry>();
         void Include(string source,string name)
         {
+            token.ThrowIfCancellationRequested();
             var attributes=File.GetAttributes(source);
             if((attributes&FileAttributes.ReparsePoint)!=0) throw new InvalidDataException("unsupported_link");
             var directory=(attributes&FileAttributes.Directory)!=0;

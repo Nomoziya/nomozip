@@ -2,6 +2,9 @@
 // use the SDK's copy-data-and-properties path; no extracted plaintext staging.
 static json updateArchive(json& request,IInArchive* input,const std::wstring& format,Context& context,UInt32 count) {
     if(format!=L"7z" && _wcsicmp(format.c_str(),L"zip")!=0) throw std::runtime_error("archive_edit_read_only");
+    Variant offset,stub,volume;
+    input->GetArchiveProperty(kpidOffset,&offset.value);input->GetArchiveProperty(kpidEmbeddedStubSize,&stub.value);input->GetArchiveProperty(kpidIsVolume,&volume.value);
+    if(offset.number()!=0 || stub.number()!=0 || volume.boolean()) return {{"kind","result"},{"status","error"},{"code","archive_edit_container_read_only"}};
     const auto& snapshot=request.at("selection");
     if(!snapshot.is_array() || snapshot.size()!=count) throw std::runtime_error("selection_changed");
     for(UInt32 i=0;i<count;++i) {
