@@ -1,0 +1,27 @@
+name: Isolated native Shell notification diagnostic
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: windows-11-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Compile and run standalone SDK probe without a balloon
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          ./scripts/build-shell-test-client.ps1 -Architecture arm64 -Source tests/ArchitectureValidation/notification.cpp -Output "$PWD/artifacts/NotificationSdkProbe.exe"
+          & ./artifacts/NotificationSdkProbe.exe | Set-Content artifacts/native-shell-diagnostic.json
+          if ($LASTEXITCODE -ne 0) { throw 'Standalone window or icon creation failed.' }
+          Get-Content artifacts/native-shell-diagnostic.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: native-shell-diagnostic
+          path: artifacts/native-shell-diagnostic.json
+          if-no-files-found: error

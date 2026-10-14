@@ -181,6 +181,6 @@ internal static class DesktopNotificationValidation
     [DllImport("user32.dll", ExactSpelling = true)] private static extern IntPtr SendMessageW(IntPtr window, int message, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Unicode)] private static extern uint RegisterWindowMessageW(string name);
     [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Unicode)] private static extern IntPtr FindWindowW(string className, string? title);
-    [StructLayout(LayoutKind.Sequential)] private struct NativeNotificationResult { public uint Size,InfoOffset,Accepted,Error,ValidWindow,ValidIcon; }
+    [StructLayout(LayoutKind.Sequential)] private struct NativeNotificationResult { public uint Size,InfoOffset,Accepted,Error,ValidWindow,ValidIcon,FreshAccepted,FreshError; }
     [DllImport("NativeNotificationProbe.dll", ExactSpelling=true,CallingConvention=CallingConvention.Cdecl)] private static extern void ProbeNotification(IntPtr window,out NativeNotificationResult result);
 }
