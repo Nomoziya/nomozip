@@ -1,17 +1,20 @@
 param([string]$ApplicationDirectory, [string]$OutputFile,
-    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version = '0.1.0.11', [string]$ValidationRoot, [switch]$FrameworkDependent = $true,
+    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')][string]$Version, [string]$ValidationRoot, [switch]$FrameworkDependent = $true,
     [string]$DisplayVersion)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 if (-not $FrameworkDependent -and -not $ValidationRoot) { throw 'Bundled runtime installers are only allowed for isolated legacy-upgrade validation.' }
 if (-not $ApplicationDirectory) { $ApplicationDirectory = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }) }
-if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { 'artifacts/nomozip-0.1.0-light-setup-win-x64.exe' } else { 'artifacts/nomozip-legacy-fixture-setup-win-x64.exe' }) }
 $ApplicationDirectory = [IO.Path]::GetFullPath($ApplicationDirectory)
-$OutputFile = [IO.Path]::GetFullPath($OutputFile)
 if (-not (Test-Path (Join-Path $ApplicationDirectory 'ArchivePassword.exe'))) { throw 'Build the application first.' }
+$taskApplicationVersion = (Get-Item -LiteralPath (Join-Path $ApplicationDirectory 'ArchivePassword.exe')).VersionInfo
+if (-not $Version) { $Version = $taskApplicationVersion.FileVersion }
 if (-not $DisplayVersion) {
-    $DisplayVersion = if ($ValidationRoot) { $Version } else { (Get-Item -LiteralPath (Join-Path $ApplicationDirectory 'ArchivePassword.exe')).VersionInfo.ProductVersion.Split('+')[0] }
+    $DisplayVersion = if ($ValidationRoot) { $Version } else { $taskApplicationVersion.ProductVersion.Split('+')[0] }
 }
+if (-not $ValidationRoot -and ($Version -ne $taskApplicationVersion.FileVersion -or $DisplayVersion -ne $taskApplicationVersion.ProductVersion.Split('+')[0])) { throw 'Installer version must match the application; version overrides are reserved for isolated upgrade fixtures.' }
+if (-not $OutputFile) { $OutputFile = Join-Path $taskRoot $(if ($FrameworkDependent) { "artifacts/nomozip-$DisplayVersion-light-setup-win-x64.exe" } else { 'artifacts/nomozip-legacy-fixture-setup-win-x64.exe' }) }
+$OutputFile = [IO.Path]::GetFullPath($OutputFile)
 if ((Test-Path (Join-Path $ApplicationDirectory 'coreclr.dll')) -eq $FrameworkDependent.IsPresent) { throw 'Application payload does not match the selected runtime mode.' }
 if (Test-Path $OutputFile) { throw 'Keep installers immutable; choose a new output file.' }
 if ($ValidationRoot) {
