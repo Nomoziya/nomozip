@@ -19,9 +19,9 @@ if (args.Length == 3 && args[0] == "keygen")
     await File.WriteAllTextAsync(args[2], rsa.ExportSubjectPublicKeyInfoPem());
     Console.WriteLine("Signing key created. Keep the private key out of Git and release packages."); return 0;
 }
-if (args.Length != 8 || args[0] != "pack")
+if (!(args.Length == 8 && args[0] == "pack") && !(args.Length == 9 && args[0] == "pack-maintenance"))
 {
-    Console.WriteLine("keygen PRIVATE.pem PUBLIC.pem | inspect PACKAGE.zip PUBLIC.pem | pack ENGINE_DIR VERSION REPORT.json PRIVATE.pem OUTPUT.zip TRUSTED_PUBLIC.pem COMPRESSION_REPORT.json"); return 2;
+    Console.WriteLine("keygen PRIVATE.pem PUBLIC.pem | inspect PACKAGE.zip PUBLIC.pem | pack ENGINE_DIR VERSION REPORT.json PRIVATE.pem OUTPUT.zip TRUSTED_PUBLIC.pem COMPRESSION_REPORT.json | pack-maintenance (same arguments) CANDIDATE_REVIEW.json"); return 2;
 }
 var directory = Path.GetFullPath(args[1]); var version = args[2];
 if (!EngineUpdatePackage.VersionPattern().IsMatch(version)) throw new ArgumentException("Invalid version.");
@@ -44,6 +44,8 @@ if (compressionEvidence.RootElement.GetProperty("passed").GetInt32() != compress
     || !hashes["7z.dll"].Equals(compressionEvidence.RootElement.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Passing compression evidence for this exact engine binary is required.");
 var combinedReport = System.Text.Json.Nodes.JsonNode.Parse(report)!;
 combinedReport["compression"] = System.Text.Json.Nodes.JsonNode.Parse(compressionEvidence.RootElement.GetRawText());
+if (args[0] == "pack-maintenance")
+    combinedReport["maintenance"] = await MaintenanceEvidence.ReadAsync(args[8], directory, version, args[6]);
 payload["compatibility-report.json"] = JsonSerializer.SerializeToUtf8Bytes(combinedReport);
 hashes["compatibility-report.json"] = Convert.ToHexString(SHA256.HashData(payload["compatibility-report.json"])).ToLowerInvariant();
 if (!hashes["7z.dll"].Equals(localManifest.RootElement.GetProperty("dllSha256").GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Engine hash does not match the validated local manifest.");

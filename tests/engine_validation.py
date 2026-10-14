@@ -15,6 +15,8 @@ FIXTURES = ROOT / "tests/fixtures/generated"
 WORKER = ROOT / "artifacts/worker/ArchiveEngineWorker.exe"
 PASSWORD = "测试密碼 ' $ & 空格"
 VERSIONS = ("26.04", "26.03")
+DOTNET_EXECUTABLE = None
+SMOKE_EXECUTABLE = None
 REPORT = []
 
 
@@ -188,8 +190,8 @@ def main():
     events = [json.loads(line) for line in (first_progress + tail).splitlines()]
     check("26.04 cooperative cancellation", events[-1].get("status") == "cancelled", events[-1])
 
-    dotnet = ROOT / ".tools/dotnet/dotnet.exe"
-    smoke = ROOT / "tests/EngineSmoke/bin/Debug/net10.0-windows/EngineSmoke.dll"
+    dotnet = DOTNET_EXECUTABLE or ROOT / ".tools/dotnet/dotnet.exe"
+    smoke = SMOKE_EXECUTABLE or ROOT / "tests/EngineSmoke/bin/Debug/net10.0-windows/EngineSmoke.dll"
     smoke_output = FIXTURES / "outputs" / ("managed-" + str(time.time_ns()))
     managed = subprocess.run([str(dotnet), str(smoke), str(WORKER), str(ROOT / "engines/26.04/7z.dll"), str(fixtures[3][0]), str(smoke_output)], input=PASSWORD + "\n", encoding="utf-8", capture_output=True, timeout=30)
     check("C# client pipe round trip", managed.returncode == 0 and (smoke_output / source.name).read_bytes() == source.read_bytes(), managed.stdout[-1000:])
@@ -206,6 +208,14 @@ def main():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--versions", default="26.04,26.03")
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--dotnet", type=Path)
+    parser.add_argument("--smoke", type=Path)
     options = parser.parse_args()
-    VERSIONS = tuple(options.versions.split(","))
+    ROOT = options.root.resolve()
+    FIXTURES = ROOT / "tests/fixtures/generated"
+    WORKER = ROOT / "artifacts/worker/ArchiveEngineWorker.exe"
+    DOTNET_EXECUTABLE = options.dotnet
+    SMOKE_EXECUTABLE = options.smoke
+    VERSIONS = tuple(dict.fromkeys(options.versions.split(",")))
     raise SystemExit(main())
