@@ -124,6 +124,8 @@ jobs:
           ./scripts/test-installer.ps1
           python tests/release_maintenance_validation.py --app-directory artifacts/light-app
           if ($LASTEXITCODE -ne 0) { throw 'Lightweight release maintenance validation failed.' }
+          python tests/engine_release_validation.py
+          if ($LASTEXITCODE -ne 0) { throw 'Isolated engine release maintenance validation failed.' }
       - name: Keep validation evidence
         if: always()
         uses: actions/upload-artifact@v7
@@ -144,6 +146,10 @@ jobs:
             artifacts/shell-validation/**/*.log
             artifacts/origin-fat/**/*.log
             artifacts/origin-fat/**/disk-identity.json
+            artifacts/er-*/command-*.log
+            artifacts/er-*/s/artifacts/c/candidate-review.json
+            artifacts/er-*/s/artifacts/c/logs/*.log
+            artifacts/er-*/s/artifacts/c/workspace/artifacts/*validation.json
             artifacts/shell-identity/**/*.log
             artifacts/shell-identity/**/build.json
           if-no-files-found: ignore
