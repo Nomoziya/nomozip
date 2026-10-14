@@ -62,6 +62,8 @@ Python 测试在本轮使用 Codex 自带 Python。其它机器需可用 Python 
 
 ## 官方更新跟进
 
+F09 的统一维护入口见 [引擎维护发布](ENGINE_RELEASE_MAINTENANCE.md)：隔离准备及五类矩阵、绑定复核、本地 RSA 签名、草稿回下载验证与维护者批准发布。它不重建主程序；下面的既有脚本保留用于本机开发和每日官方版本检查。
+
 ```powershell
 ./scripts/follow-official-engine.ps1
 ./scripts/follow-official-engine.ps1 -Update

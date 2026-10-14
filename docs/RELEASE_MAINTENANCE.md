@@ -28,4 +28,4 @@
 上述范围完成后可继续 F09 引擎维护发布一键化；不把技术原型说成完整预览，不把当前进程暂停说成跨重启恢复，也不把代理的几何/回调检查说成真实多屏或实际通知体验。待环境项独立保留，不要求用户重复全部已通过的功能测试。公开正式版仍为 0.1.0，所有 0.2.0 候选只在本地；正式发行另行决定。
 
 
-验收：本地/CI 26 项，[完整 Windows CI 38509356682](https://github.com/Nomoziya/nomozip/actions/runs/38509356682) 的 52 份报告逐项通过。报告为 `artifacts/release-maintenance-validation.json` 和 `artifacts/release-maintenance-ci-review.json`；最终维护演练在 `artifacts/release-maintenance-final/`，与当前源码及上传 checkout 的复核为 `artifacts/release-maintenance-final-validation.json`。产品载荷仍 9745096 字节 / 43 文件；第十四候选四项资产保持原 SHA-256。F09 尚未完成；F08 是可选主密码与空闲锁定，仍需确定加密/恢复方案。
+本节 B4 验收：本地/CI 26 项，[完整 Windows CI 38509356682](https://github.com/Nomoziya/nomozip/actions/runs/38509356682) 的 52 份报告逐项通过。报告为 `artifacts/release-maintenance-validation.json` 和 `artifacts/release-maintenance-ci-review.json`；最终维护演练在 `artifacts/release-maintenance-final/`，与当时源码及上传 checkout 的复核为 `artifacts/release-maintenance-final-validation.json`。产品载荷仍 9745096 字节 / 43 文件；第十四候选四项资产保持原 SHA-256。后续 F09 的实施及验证见 [引擎维护发布](ENGINE_RELEASE_MAINTENANCE.md)，F08 的已确认恢复方案与源码审计见 [主密码规划](MASTER_PASSWORD_PLAN.md)。

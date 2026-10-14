@@ -31,6 +31,8 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 - [项目规划与阶段验收](PROJECT_PLAN.md)
 - [当前支持范围、验证证据与交接](docs/ACCEPTANCE.md)
 - [后续任务与相关产品研究](docs/ROADMAP.md)
+- [轻量候选打包与维护](docs/RELEASE_MAINTENANCE.md)
+- [官方引擎候选、签名与发布维护](docs/ENGINE_RELEASE_MAINTENANCE.md)
 - [密码库加密备份与迁移（0.2.0 开发候选）](docs/VAULT_BACKUP.md)
 - [右键解压与压缩（0.2.0 开发候选）](docs/SHELL_MENU.md)
 - [界面设计规范与操作流程](design-system/MASTER.md)
