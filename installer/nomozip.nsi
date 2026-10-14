@@ -89,6 +89,7 @@ Function .onInit
   ${EndIf}
 !else
   ${IfNot} ${RunningX64}
+  ${AndIfNot} ${IsNativeARM64}
     IfSilent +2
     MessageBox MB_OK|MB_ICONSTOP "此版本需要 64 位 Windows。"
     SetErrorLevel 2
