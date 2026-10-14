@@ -115,7 +115,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand OpenLicensesCommand { get; }
     public int Page { get => page; set { if (Set(ref page, value)) Changed(nameof(NavigationIndex)); } }
     public int NavigationIndex { get => Page switch { 3 => 1, 1 => 2, 2 => 3, _ => 0 }; set => Page = value switch { 1 => 3, 2 => 1, 3 => 2, _ => 0 }; }
-    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) Changed(nameof(IsIdle)); } }
+    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanUseSfx));} } }
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
@@ -155,12 +155,13 @@ public sealed partial class MainViewModel : ObservableObject
                 catch (UpdateException) { Banner = "引擎选择记录无法使用，已保留原记录。可先使用随包引擎。"; }
             }
             Changed(nameof(EngineSummary));
+            await RefreshSfxAvailabilityAsync();
             await RefreshVaultAsync();
             if (EngineVersions.Count == 0) Banner = "未找到通过校验的解压引擎，请重新取得完整产品包。";
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
         { Banner = "设置或引擎文件无法读取，请检查产品包和文件权限。"; }
-        finally { initializing = false; Changed(nameof(IsIdle)); CommandManager.InvalidateRequerySuggested(); }
+        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanUseSfx)); CommandManager.InvalidateRequerySuggested(); }
     }
     public void AddFiles(IEnumerable<string> paths)
     {
@@ -352,6 +353,7 @@ public sealed partial class MainViewModel : ObservableObject
             previousEngine = state.Previous ?? "";
         }
         SelectedEngineVersion = activeEngine; Changed(nameof(EngineSummary)); Changed(nameof(PreviousEngineSummary));
+        await RefreshSfxAvailabilityAsync();
     }
     private async Task RunUpdateOperationAsync(Func<CancellationToken, Task> operation)
     {

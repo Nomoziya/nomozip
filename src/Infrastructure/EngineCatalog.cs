@@ -40,4 +40,33 @@ public sealed class EngineCatalog(string directory, string? installedDirectory =
         return paths.Keys.OrderByDescending(value => Version.Parse(value)).ToArray();
     }
     public string DllPath(string version) => paths.TryGetValue(version, out var path) ? path : throw new UpdateException("engine_not_available");
+    public async Task<SfxModule> ReadSfxModuleAsync(string version,CancellationToken token=default)
+    {
+        var selectedDll=Path.GetFullPath(DllPath(version));var selectedFolder=Path.GetDirectoryName(selectedDll)!;
+        if(installedDirectory is not null && publicKey is not null && selectedDll.StartsWith(Path.GetFullPath(installedDirectory).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))
+        {
+            var manifest=await EngineUpdatePackage.VerifyInstalledAsync(selectedFolder,publicKey,token);
+            var bytes=await File.ReadAllBytesAsync(Path.Combine(selectedFolder,"compatibility-report.json"),token);
+            if(!Convert.ToHexString(SHA256.HashData(bytes)).Equals(manifest.Files["compatibility-report.json"],StringComparison.OrdinalIgnoreCase)) throw new UpdateException("hash_mismatch");
+            using var report=JsonDocument.Parse(bytes);
+            if(report.RootElement.TryGetProperty("sfx",out var sfx))
+            {
+                try
+                {
+                    var module=new SfxModule(sfx.GetProperty("version").GetString()!,sfx.GetProperty("sha256").GetString()!,Convert.FromBase64String(sfx.GetProperty("moduleBase64").GetString()!));
+                    if(module.Version!=version || !module.IsValid()) throw new UpdateException("sfx_module_invalid");return module;
+                }
+                catch(Exception error) when(error is JsonException or KeyNotFoundException or FormatException or InvalidOperationException or ArgumentException) {throw new UpdateException("sfx_module_invalid",error);}
+            }
+        }
+        // Legacy signed packages can reuse an identical bundled engine's module, never another engine version.
+        var bundled=Path.Combine(directory,version);var manifestPath=Path.Combine(bundled,"manifest.json");var path=Path.Combine(bundled,"7z.sfx");
+        if(!File.Exists(manifestPath) || !File.Exists(path)) throw new UpdateException("sfx_module_unavailable");
+        using var local=JsonDocument.Parse(await File.ReadAllBytesAsync(manifestPath,token));var root=local.RootElement;
+        var selectedHash=Convert.ToHexString(SHA256.HashData(await File.ReadAllBytesAsync(selectedDll,token)));
+        if(root.GetProperty("version").GetString()!=version || !selectedHash.Equals(root.GetProperty("dllSha256").GetString(),StringComparison.OrdinalIgnoreCase)
+            || !root.TryGetProperty("sfxSha256",out var expected)) throw new UpdateException("sfx_module_unavailable");
+        var result=new SfxModule(version,expected.GetString()!,await File.ReadAllBytesAsync(path,token));
+        if(!result.IsValid() || !Version.TryParse(System.Diagnostics.FileVersionInfo.GetVersionInfo(path).FileVersion,out var actual) || actual!=Version.Parse(version)) throw new UpdateException("sfx_module_invalid");return result;
+    }
 }

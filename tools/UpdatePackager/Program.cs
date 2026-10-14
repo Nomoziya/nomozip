@@ -46,7 +46,15 @@ var combinedReport = System.Text.Json.Nodes.JsonNode.Parse(report)!;
 combinedReport["compression"] = System.Text.Json.Nodes.JsonNode.Parse(compressionEvidence.RootElement.GetRawText());
 if (args[0] == "pack-maintenance")
     combinedReport["maintenance"] = await MaintenanceEvidence.ReadAsync(args[8], directory, version, args[6]);
+var sfxPath=Path.Combine(directory,"7z.sfx");
+if(File.Exists(sfxPath) && localManifest.RootElement.TryGetProperty("sfxSha256",out var sfxHash))
+{
+    var sfx=new SfxModule(version,sfxHash.GetString()!,await File.ReadAllBytesAsync(sfxPath));
+    if(!sfx.IsValid() || !Version.TryParse(System.Diagnostics.FileVersionInfo.GetVersionInfo(sfxPath).FileVersion,out var actualVersion) || actualVersion!=Version.Parse(version)) throw new InvalidOperationException("SFX module does not match its official engine version.");
+    combinedReport["sfx"]=new System.Text.Json.Nodes.JsonObject { ["version"]=version,["sha256"]=sfx.Sha256,["moduleBase64"]=Convert.ToBase64String(sfx.Bytes) };
+}
 payload["compatibility-report.json"] = JsonSerializer.SerializeToUtf8Bytes(combinedReport);
+if(payload["compatibility-report.json"].Length>1024*1024) throw new InvalidOperationException("Signed compatibility record exceeds the existing client limit.");
 hashes["compatibility-report.json"] = Convert.ToHexString(SHA256.HashData(payload["compatibility-report.json"])).ToLowerInvariant();
 if (!hashes["7z.dll"].Equals(localManifest.RootElement.GetProperty("dllSha256").GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Engine hash does not match the validated local manifest.");
 if (!hashes["7z.dll"].Equals(evidence.RootElement.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Report belongs to a different engine binary.");

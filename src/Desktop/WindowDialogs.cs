@@ -85,7 +85,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     }
     public string? SelectArchiveOutput(string format)
     {
-        var dialog = new SaveFileDialog { Title = "保存新压缩包", Filter = format == "7z" ? "7z 压缩包|*.7z" : "ZIP 压缩包|*.zip", DefaultExt = "." + format, AddExtension = true, OverwritePrompt = false };
+        var dialog = new SaveFileDialog { Title = "保存新压缩包", Filter = format=="sfx"?"7z 自解压包|*.exe":format == "7z" ? "7z 压缩包|*.7z" : "ZIP 压缩包|*.zip", DefaultExt = format=="sfx"?".exe":"." + format, AddExtension = true, OverwritePrompt = false };
         return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
     }
     public bool ConfirmArchiveReplacement(string path) => confirmEngineUpdate?.Invoke(path, "archive") ?? (MessageBox.Show(owner,
@@ -98,7 +98,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     }
     public string[] SelectArchives()
     {
-        var dialog = new OpenFileDialog { Multiselect = true, Title = "添加压缩包", Filter = "常用压缩包|*.7z;*.zip;*.rar;*.001;*.tar;*.gz;*.bz2;*.xz|所有文件|*.*" };
+        var dialog = new OpenFileDialog { Multiselect = true, Title = "添加压缩包", Filter = "常用压缩包与自解压包|*.7z;*.zip;*.rar;*.001;*.exe;*.tar;*.gz;*.bz2;*.xz|所有文件|*.*" };
         return dialog.ShowDialog(owner) == true ? dialog.FileNames : [];
     }
     public string? SelectOutput(string current)

@@ -20,12 +20,13 @@ Invoke-WebRequest $taskUri.AbsoluteUri -OutFile $taskDownload
 $taskDigest = (Get-FileHash $taskDownload -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($taskAsset.digest -and $taskAsset.digest -ne "sha256:$taskDigest") { throw 'Upstream download checksum mismatch.' }
 New-Item -ItemType Directory -Force $taskEngine | Out-Null
-& (Get-Command 7z -ErrorAction Stop).Source x $taskDownload "-o$taskEngine" -y 7z.dll 7z.exe License.txt | Out-Null
+& (Get-Command 7z -ErrorAction Stop).Source x $taskDownload "-o$taskEngine" -y 7z.dll 7z.exe 7z.sfx License.txt | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'Official engine extraction failed.' }
 $taskManifest = [ordered]@{
     version = $taskVersion; architecture = 'x64'; protocol = 0
     source = $taskUri.AbsoluteUri
     dllSha256 = (Get-FileHash (Join-Path $taskEngine '7z.dll') -Algorithm SHA256).Hash.ToLowerInvariant()
+    sfxSha256 = (Get-FileHash (Join-Path $taskEngine '7z.sfx') -Algorithm SHA256).Hash.ToLowerInvariant()
 }
 # Protocol 0 keeps a candidate out of the desktop catalog until its tests pass.
 $taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
@@ -59,6 +60,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Archive editing compatibility checks failed; t
 if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility test build failed; the candidate remains disabled.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/VolumeValidation/bin/Debug/net10.0-windows/VolumeValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
 if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility checks failed; the candidate remains disabled.' }
+& $taskDotnet build (Join-Path $taskRoot 'tests/SfxValidation/SfxValidation.csproj') --nologo -m:1 -nr:false -v:minimal
+if ($LASTEXITCODE -ne 0) { throw 'SFX compatibility test build failed; the candidate remains disabled.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/SfxValidation/bin/Debug/net10.0-windows/SfxValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
+if ($LASTEXITCODE -ne 0) { throw 'SFX compatibility checks failed; the candidate remains disabled.' }
 $taskManifest.protocol = 1
 $taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
 & (Join-Path $PSScriptRoot 'build.ps1') -SkipWorker
