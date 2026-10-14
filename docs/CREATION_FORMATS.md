@@ -23,3 +23,5 @@
 `tests/FormatValidation` 使用实际 26.03/26.04 DLL 与官方命令行双向读写、精确字节、中文/长 TAR 名称、空文件/目录、独立 .NET TAR/GZIP 解码、真实文件锁、取消和错误清单检查。`--validate-formats` 在隔离库和不可见 WPF 窗口中操作真实格式下拉、创建、解压、替换拒绝，并复核普通/高对比度和窄窗口。报告为 `artifacts/format-validation.json` 与 `artifacts/format-ui-validation.json`。
 
 未来官方引擎的维护候选必须额外通过格式矩阵，并将该报告与精确 DLL、worker、公钥一起绑定；未通过不启用或签发。当前原更新 ZIP schema / 五条目格式保留，新增证据进入原有签名兼容性记录。尚未对实际未来引擎版本作兼容承诺。
+
+2026-10-14 本期验收完成：双引擎数据 294 / 实际 WPF/UIA 70、原压缩 38、九矩阵维护 45 项本地及 CI 通过。最终产品源码 `f0916263ff690caa5836289199c8900c35ed9ed7` 的完整 [Windows CI 38551360865](https://github.com/Nomoziya/nomozip/actions/runs/38551360865) 两个作业成功，63 份普通报告全部通过。轻量 preview.19 载荷 10486779 字节 / 45 文件，增加约 31 KiB；未新增运行组件。源码已上传，最终本地交付快照在 `artifacts/release-0.2.0-preview.19-final/`，以其独立 validation.json 全部通过为交付依据。公开正式版仍为 0.1.0；Windows 代码签名和原生菜单公开部署不在本期门槛中。
