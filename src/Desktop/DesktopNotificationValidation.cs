@@ -135,6 +135,15 @@ internal static class DesktopNotificationValidation
             var rejectCalls = new List<uint>();
             bool RejectModify(uint operation, ref CompletionNotification.IconData _) { rejectCalls.Add(operation); return operation != 1; }
             using (var rejected = new CompletionNotification(window, () => activations++, RejectModify)) Check("Shell send rejection cleans up icon", !rejected.Show(1) && rejectCalls.SequenceEqual(new uint[] { 0, 1, 2 }));
+            var closingWindow = new Window { WindowStartupLocation = WindowStartupLocation.Manual, Left = -32000, Top = -32000, Width = 300, Height = 300, Opacity = 0, ShowActivated = false, ShowInTaskbar = false };
+            closingWindow.Show(); var closingHandle = new System.Windows.Interop.WindowInteropHelper(closingWindow).Handle;
+            var closingCalls = new List<(uint Operation, IntPtr Window)>();
+            bool ClosingShell(uint operation, ref CompletionNotification.IconData icon) { closingCalls.Add((operation, icon.Window)); return true; }
+            using (var closing = new CompletionNotification(closingWindow, () => activations++, ClosingShell))
+            {
+                closing.Show(1); closingWindow.Closed += (_, _) => closing.Dispose(); closingWindow.Close();
+                Check("actual Window Closed cleanup retains original HWND", closingCalls.Last() == (2u, closingHandle) && closingHandle != IntPtr.Zero);
+            }
             if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" && Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") == "github-hosted")
             {
                 using var real = new CompletionNotification(window, () => activations++);

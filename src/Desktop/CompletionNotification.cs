@@ -12,6 +12,7 @@ internal sealed class CompletionNotification : IDisposable
     internal const uint IconId = 1;
     internal delegate bool ShellCall(uint operation, ref IconData data);
     private readonly HwndSource source;
+    private readonly IntPtr windowHandle;
     private readonly ShellCall shell;
     private readonly Action activate;
     private readonly DispatcherTimer expiry;
@@ -22,7 +23,8 @@ internal sealed class CompletionNotification : IDisposable
     {
         this.activate = activate;
         this.shell = shell ?? Shell_NotifyIconW;
-        source = HwndSource.FromHwnd(new WindowInteropHelper(window).EnsureHandle())!;
+        windowHandle = new WindowInteropHelper(window).EnsureHandle();
+        source = HwndSource.FromHwnd(windowHandle)!;
         source.AddHook(OnMessage);
         taskbarCreated = RegisterWindowMessageW("TaskbarCreated");
         expiry = new DispatcherTimer(TimeSpan.FromSeconds(60), DispatcherPriority.Background,
@@ -58,7 +60,7 @@ internal sealed class CompletionNotification : IDisposable
         return true; // Accepted by the Shell; this does not guarantee visible delivery.
     }
 
-    private IconData Data() => new() { Size = (uint)Marshal.SizeOf<IconData>(), Window = source.Handle, Id = IconId,
+    private IconData Data() => new() { Size = (uint)Marshal.SizeOf<IconData>(), Window = windowHandle, Id = IconId,
         Tip = "", Info = "", Title = "" };
 
     private IntPtr OnMessage(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
