@@ -17,6 +17,8 @@ internal static class DesktopNotificationValidation
         var data = Path.Combine(root, "artifacts/notification-ui", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(data);
         var checks = new Dictionary<string, bool>();
+        var taskbarAvailable = FindWindowW("Shell_TrayWnd", null) != IntPtr.Zero;
+        var nativeRegistrationTested = false;
         void Check(string name, bool passed) => checks.Add(name, passed);
         try
         {
@@ -106,7 +108,7 @@ internal static class DesktopNotificationValidation
             bool Capture(uint operation, ref CompletionNotification.IconData icon) { calls.Add((operation, icon)); return true; }
             using (var native = new CompletionNotification(window, () => activations++, Capture))
             {
-                Check("native structure matches Windows x64 layout", Marshal.SizeOf<CompletionNotification.IconData>() == 976 && Marshal.OffsetOf<CompletionNotification.IconData>(nameof(CompletionNotification.IconData.Info)).ToInt32() == 304);
+                Check("native structure matches Windows 64-bit layout", Marshal.SizeOf<CompletionNotification.IconData>() == 976 && Marshal.OffsetOf<CompletionNotification.IconData>(nameof(CompletionNotification.IconData.Info)).ToInt32() == 304);
                 Check("invalid count never registers icon", !native.Show(0) && calls.Count == 0);
                 Check("single native registration and submit", native.Show(2) && calls.Select(call => call.Operation).SequenceEqual(new uint[] { 0, 1 }));
                 var notice = calls.Last().Data;
@@ -147,8 +149,17 @@ internal static class DesktopNotificationValidation
             if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" && Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") == "github-hosted")
             {
                 using var real = new CompletionNotification(window, () => activations++);
-                Check("isolated Windows Shell accepts native icon without balloon", real.EnsureIcon());
-                real.RemoveIcon(); Check("isolated Windows Shell icon can register after cleanup", real.EnsureIcon());
+                if (taskbarAvailable)
+                {
+                    nativeRegistrationTested = true;
+                    Check("isolated Windows Shell accepts native icon without balloon", real.EnsureIcon());
+                    real.RemoveIcon(); Check("isolated Windows Shell icon can register after cleanup", real.EnsureIcon());
+                }
+                else
+                {
+                    Check("headless native Windows rejects icon without claiming delivery", !real.EnsureIcon());
+                    real.RemoveIcon(); Check("headless native Windows cleanup and retry remain safe", !real.EnsureIcon());
+                }
             }
         }
         catch (Exception error) { checks["exception " + error] = false; }
@@ -156,11 +167,12 @@ internal static class DesktopNotificationValidation
         await File.WriteAllTextAsync(Path.Combine(root, "artifacts/notification-ui-validation.json"), JsonSerializer.Serialize(new
         { passed = checks.Count(pair => pair.Value), total = checks.Count, cases = checks.Select(pair => new { name = pair.Key, passed = pair.Value }),
             syntheticData = true, actualVisibleNotificationDeliveryTested = false,
-            nativeShellRegistrationOnIsolatedRunner = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" && Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") == "github-hosted" }, new JsonSerializerOptions { WriteIndented = true }));
+            taskbarAvailable, nativeShellRegistrationOnIsolatedRunner = nativeRegistrationTested }, new JsonSerializerOptions { WriteIndented = true }));
         return checks.Count > 0 && checks.Values.All(value => value);
     }
     private static async Task Layout(Window window) { await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.ApplicationIdle); System.Windows.Input.CommandManager.InvalidateRequerySuggested(); await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle); }
     private static void Invoke(System.Windows.Controls.Button button) => ((IInvokeProvider)new ButtonAutomationPeer(button).GetPattern(PatternInterface.Invoke)!).Invoke();
     [DllImport("user32.dll", ExactSpelling = true)] private static extern IntPtr SendMessageW(IntPtr window, int message, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Unicode)] private static extern uint RegisterWindowMessageW(string name);
+    [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Unicode)] private static extern IntPtr FindWindowW(string className, string? title);
 }

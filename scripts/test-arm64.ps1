@@ -4,6 +4,7 @@ if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ARCH -ne 'ARM64' -or $env:RUN
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
+$taskFailures = [Collections.Generic.List[string]]::new()
 $taskProjects = @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation')
 foreach ($taskProject in $taskProjects + @('UpdatePackager')) {
     $taskPrefix = if ($taskProject -eq 'UpdatePackager') { 'tools' } else { 'tests' }
@@ -19,7 +20,7 @@ python "$taskRoot/tests/engine_validation.py"
 if ($LASTEXITCODE -ne 0) { throw 'Native baseline engine matrix failed.' }
 foreach ($taskProject in $taskProjects | Where-Object { $_ -notin @('EngineSmoke','UpdateValidation','CoreValidation') }) {
     & $taskDotnet "$taskRoot/tests/$taskProject/bin/Debug/net10.0-windows/$taskProject.dll" $taskRoot
-    if ($LASTEXITCODE -ne 0) { throw "Native data acceptance failed: $taskProject" }
+    if ($LASTEXITCODE -ne 0) { $taskFailures.Add("data: $taskProject") }
 }
 $taskAssets=Join-Path $taskRoot 'artifacts/update-test-assets';New-Item -ItemType Directory -Force $taskAssets | Out-Null
 $taskPackager=Join-Path $taskRoot 'tools/UpdatePackager/bin/Debug/net10.0-windows/UpdatePackager.dll'
@@ -38,7 +39,7 @@ Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
 foreach ($taskFlag in @('validate','validate-vault-transfer','validate-password-organization','validate-file-hashes','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-selection','validate-encoding','validate-origin','validate-dpi','validate-queue','validate-concurrency','validate-pause','validate-notifications','validate-sfx','validate-formats','validate-volumes','validate-archive-editing','validate-master-vault')) {
     $taskGui=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot) -WindowStyle Hidden -Wait -PassThru
-    if ($taskGui.ExitCode -ne 0) { throw "Native desktop acceptance failed: $taskFlag" }
+    if ($taskGui.ExitCode -ne 0) { $taskFailures.Add("desktop: $taskFlag") }
 }
 # ARM64 SDK builds AnyCPU fixture code; the separately verified x64 runtime actually writes old vaults.
 $taskMetadata=Invoke-RestMethod 'https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json'
@@ -54,4 +55,5 @@ if ($LASTEXITCODE -ne 0) { throw 'Actual x64 vault export on ARM64 Windows faile
 if ($LASTEXITCODE -ne 0) { throw 'Actual native vault reuse failed.' }
 & "$taskRuntimeRoot/dotnet.exe" $taskVaultTest $taskRoot verify-vault-x64
 if ($LASTEXITCODE -ne 0) { throw 'x64 reread of native edits failed.' }
+if ($taskFailures.Count) { throw "Native acceptance failures: $($taskFailures -join ', ')" }
 Write-Output 'Native ARM64 data, desktop, update and cross-architecture vault acceptance passed.'
