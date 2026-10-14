@@ -11,7 +11,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from engine_release import official_asset, bound_files, review, prepare
+from engine_release import official_asset, bound_files, review, prepare, REPORTS
 
 checks = {}
 
@@ -83,7 +83,7 @@ def validate():
     if prepared.returncode:
         raise RuntimeError('Actual Prepare command failed; inspect owned command logs.')
     record = review(candidate, public, WORKER, 'Synthetic/nomozip-tests')
-    check('real eight-matrix candidate prepared in isolated workspace', record['status'] == 'ready-for-signing' and len(record['totals']) == 8)
+    check('real nine-matrix candidate prepared in isolated workspace', record['status'] == 'ready-for-signing' and len(record['totals']) == 9 and set(record['totals']) == set(REPORTS))
     check('matrix versions deduplicated and extraction baseline still complete', record['totals']['engine-validation.json'] == 101)
     duplicate = run(candidate, 'Prepare', '-Version', '26.04', '-EngineDirectory', ROOT / 'engines/26.04')
     check('existing prepared candidate cannot be overwritten', duplicate.returncode != 0 and 'Keep prior candidates immutable' in duplicate.stdout + duplicate.stderr)
