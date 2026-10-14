@@ -11,7 +11,7 @@ if ($Architecture -eq 'arm64') {
     Import-Module $taskModule
     $taskHost = if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') { 'arm64' } else { 'amd64' }
     Enter-VsDevShell -VsInstallPath $taskVs -SkipAutomaticLocation -DevCmdArguments "-arch=arm64 -host_arch=$taskHost" | Out-Null
-    & cl.exe /nologo /std:c++17 /EHsc /O2 /MT /W3 "/I$(Join-Path $taskRoot '.tools/7zip-src/CPP')" "/I$(Join-Path $taskRoot '.tools')" "/Fo$(Join-Path $taskOutput 'worker.obj')" "/Fe$(Join-Path $taskOutput 'ArchiveEngineWorker.exe')" (Join-Path $taskRoot 'src/EngineWorker/main.cpp') /link ole32.lib oleaut32.lib uuid.lib
+    & cl.exe /nologo /utf-8 /std:c++17 /EHsc /O2 /MT /W3 "/I$(Join-Path $taskRoot '.tools/7zip-src/CPP')" "/I$(Join-Path $taskRoot '.tools')" "/Fo$(Join-Path $taskOutput 'worker.obj')" "/Fe$(Join-Path $taskOutput 'ArchiveEngineWorker.exe')" (Join-Path $taskRoot 'src/EngineWorker/main.cpp') /link ole32.lib oleaut32.lib uuid.lib
 } else {
     $taskCompiler = (Get-Command g++ -ErrorAction Stop).Source
     & $taskCompiler -std=c++17 -O2 -Wall -Wextra -municode -static -static-libgcc -static-libstdc++ "-I$(Join-Path $taskRoot '.tools/7zip-src/CPP')" "-I$(Join-Path $taskRoot '.tools')" (Join-Path $taskRoot 'src/EngineWorker/main.cpp') -lole32 -loleaut32 -luuid -o (Join-Path $taskOutput 'ArchiveEngineWorker.exe')

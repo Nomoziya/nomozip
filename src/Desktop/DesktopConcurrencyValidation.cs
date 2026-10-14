@@ -66,7 +66,7 @@ internal static class DesktopConcurrencyValidation
                 var model=await Model(folder,vault,version);Check(version+" old settings default to sequential",model.QueueConcurrency==1);
                 window.QueueConcurrencyChoice.SelectedIndex=1;await Layout(window);Check(version+" actual choice enables two tasks",model.QueueConcurrency==2);
                 model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
-                var inputs=new[] {"a.7z","b.7z","c.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var file in inputs) File.Copy(Path.Combine(root,"tests/fixtures/generated/large.7z"),file);
+                var inputs=new[] {"a.7z","b.7z","c.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var file in inputs) File.Copy(Path.Combine(root,ArchivePassword.Core.EngineArchitecture.Current=="arm64"?"tests/fixtures/generated/large-ui.7z":"tests/fixtures/generated/large.7z"),file);
                 model.AddFiles(inputs);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"independent-"+index);
                 var launches=new List<ArchiveTaskRow>();foreach(var row in rows) row.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(ArchiveTaskRow.Running) && row.Running) launches.Add(row);};
                 model.ExtractCommand.Execute(null);await Layout(window);Check(version+" choice and queue edits disabled during work",!window.QueueConcurrencyChoice.IsEnabled && !model.MoveTaskUpCommand.CanExecute(null));model.QueueConcurrency=1;Check(version+" active limit cannot change",model.QueueConcurrency==2);

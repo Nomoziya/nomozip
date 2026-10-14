@@ -30,7 +30,7 @@ internal static class DesktopPauseValidation
                 var folder=Path.Combine(data,version+"-"+cancel);Directory.CreateDirectory(folder);var vaultPath=Path.Combine(folder,"passwords.apv");var vault=new DpapiPasswordVault(vaultPath);await vault.SaveAsync(new(Guid.NewGuid(),"unused synthetic","unused-secret","",true,DateTimeOffset.UtcNow));var vaultBefore=File.ReadAllBytes(vaultPath);
                 model=new MainViewModel(baseDirectory,folder,vault,new WindowDialogs(window));window.DataContext=model;await model.InitializeAsync();model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();await Layout(window);
                 Check(version+" idle has no pause entry "+cancel,!window.QueuePauseAction.IsVisible && !model.ToggleQueuePauseCommand.CanExecute(null));model.QueueConcurrency=2;model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
-                var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(Path.Combine(root,"tests/fixtures/generated/large.7z"),path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
+                var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(Path.Combine(root,ArchivePassword.Core.EngineArchitecture.Current=="arm64"?"tests/fixtures/generated/large-ui.7z":"tests/fixtures/generated/large.7z"),path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
                 var launches=new List<ArchiveTaskRow>();foreach(var row in rows) row.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(ArchiveTaskRow.Running) && row.Running) launches.Add(row);};
                 await Layout(window);Invoke(window.ExtractAction);await Layout(window);await Wait("two active native workers",()=>WorkerIds().Length==2 && rows.Take(2).All(row=>row.Running));Invoke(window.QueuePauseAction);await Layout(window);
                 await Wait("two native pause acknowledgements",()=>rows.Take(2).All(row=>row.Status=="已暂停"));var ids=WorkerIds();var percents=rows.Select(row=>row.Percent).ToArray();await Task.Delay(200);await Layout(window);
@@ -60,7 +60,7 @@ internal static class DesktopPauseValidation
                     Check(version+" cancelled pause leaves no successful output",rows.All(row=>!row.Completed) && !Directory.EnumerateDirectories(folder,".archive-password-*",SearchOption.AllDirectories).Any());
                 }
                 Check(version+" pause resets after ending "+cancel,!model.CanPauseQueue && model.QueuePauseCaption=="暂停队列" && !window.QueuePauseAction.IsVisible && WorkerIds().Length==0);
-                Check(version+" source archives unchanged "+cancel,paths.All(path=>Hash(path)==Hash(Path.Combine(root,"tests/fixtures/generated/large.7z")))) ;
+                Check(version+" source archives unchanged "+cancel,paths.All(path=>Hash(path)==Hash(Path.Combine(root,ArchivePassword.Core.EngineArchitecture.Current=="arm64"?"tests/fixtures/generated/large-ui.7z":"tests/fixtures/generated/large.7z")))) ;
             }
         }
         catch(Exception error) {Check("exception "+error.GetType().Name+" "+error.Message,false);}

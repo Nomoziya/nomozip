@@ -19,6 +19,7 @@ internal static class DesktopNotificationValidation
         var checks = new Dictionary<string, bool>();
         var taskbarAvailable = FindWindowW("Shell_TrayWnd", null) != IntPtr.Zero;
         var nativeRegistrationTested = false;
+        NativeNotificationResult? nativeSdkProbe = null;
         void Check(string name, bool passed) => checks.Add(name, passed);
         try
         {
@@ -149,6 +150,11 @@ internal static class DesktopNotificationValidation
             if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" && Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") == "github-hosted")
             {
                 using var real = new CompletionNotification(window, () => activations++);
+                if (File.Exists(Path.Combine(baseDirectory,"NativeNotificationProbe.dll")))
+                {
+                    ProbeNotification(new System.Windows.Interop.WindowInteropHelper(window).Handle,out var result);
+                    nativeSdkProbe = result;
+                }
                 if (taskbarAvailable)
                 {
                     nativeRegistrationTested = true;
@@ -167,7 +173,7 @@ internal static class DesktopNotificationValidation
         await File.WriteAllTextAsync(Path.Combine(root, "artifacts/notification-ui-validation.json"), JsonSerializer.Serialize(new
         { passed = checks.Count(pair => pair.Value), total = checks.Count, cases = checks.Select(pair => new { name = pair.Key, passed = pair.Value }),
             syntheticData = true, actualVisibleNotificationDeliveryTested = false,
-            taskbarAvailable, nativeShellRegistrationOnIsolatedRunner = nativeRegistrationTested }, new JsonSerializerOptions { WriteIndented = true }));
+            taskbarAvailable, nativeSdkProbe, nativeShellRegistrationOnIsolatedRunner = nativeRegistrationTested }, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true }));
         return checks.Count > 0 && checks.Values.All(value => value);
     }
     private static async Task Layout(Window window) { await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.ApplicationIdle); System.Windows.Input.CommandManager.InvalidateRequerySuggested(); await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle); }
@@ -175,4 +181,6 @@ internal static class DesktopNotificationValidation
     [DllImport("user32.dll", ExactSpelling = true)] private static extern IntPtr SendMessageW(IntPtr window, int message, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Unicode)] private static extern uint RegisterWindowMessageW(string name);
     [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Unicode)] private static extern IntPtr FindWindowW(string className, string? title);
+    [StructLayout(LayoutKind.Sequential)] private struct NativeNotificationResult { public uint Size,InfoOffset,Accepted,Error,ValidWindow,ValidIcon; }
+    [DllImport("NativeNotificationProbe.dll", ExactSpelling=true,CallingConvention=CallingConvention.Cdecl)] private static extern void ProbeNotification(IntPtr window,out NativeNotificationResult result);
 }
