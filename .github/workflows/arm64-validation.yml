@@ -28,20 +28,25 @@ jobs:
       - name: Native ARM64 worker
         run: ./scripts/build-worker.ps1 -Architecture arm64
       - name: Native lightweight desktop build
+        id: native_build
         run: ./scripts/build.ps1 -Architecture arm64 -Configuration Release -SkipWorker
       - name: Native data desktop updates and x64 vault migration
         run: ./scripts/test-arm64.ps1
       - name: Native traditional Shell selection and Explorer menu
+        if: always() && steps.native_build.outcome == 'success'
         run: |
           ./scripts/test-shell.ps1 -Architecture arm64
           ./scripts/test-shell-live.ps1 -Architecture arm64
       - name: Native origin behavior on disposable exFAT virtual disk
+        if: always() && steps.native_build.outcome == 'success'
         run: ./scripts/test-origin-fat.ps1
       - name: Native engine maintenance with isolated test keys and offline GitHub
+        if: always() && steps.native_build.outcome == 'success'
         run: |
           python tests/engine_release_validation.py --architecture arm64
           if ($LASTEXITCODE -ne 0) { throw 'Native ten-matrix maintenance acceptance failed.' }
       - name: Native lightweight install upgrade extraction and uninstall
+        if: always() && steps.native_build.outcome == 'success'
         run: |
           ./scripts/bootstrap-installer.ps1 -Architecture arm64
           ./scripts/build.ps1 -Architecture arm64 -Configuration Release -SkipWorker -OutputDirectory artifacts/light-app
@@ -69,4 +74,9 @@ jobs:
             artifacts/*validation.json
             artifacts/arm64-workspace/artifacts/*validation.json
             artifacts/worker/ArchiveEngineWorker.exe
+            artifacts/er-*/command-*.log
+            artifacts/er-*/s/artifacts/c/candidate-review.json
+            artifacts/er-*/s/artifacts/c/logs/*.log
+            artifacts/er-*/s/artifacts/c/workspace/artifacts/*validation.json
+            artifacts/*-preview/*.png
           if-no-files-found: ignore
