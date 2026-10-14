@@ -289,6 +289,7 @@ public:
 };
 struct Format { GUID id; std::wstring name, extensions; };
 #include "Compression.h"
+#include "ArchiveUpdate.h"
 template<class T> static T exported(HMODULE library, const char* name) {
     auto address = GetProcAddress(library, name);
     T result = nullptr;
@@ -326,7 +327,7 @@ static json run(json& request, const wchar_t* dllPath) {
         return {{"kind", "result"}, {"status", "success"}, {"formats", result}};
     }
     if (operation == "create") return createArchive(request, formats, createFunc);
-    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded";
+    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded" || operation=="update-encoded";
     UInt32 codePage=0;
     if(encoded) {
         codePage=request.value("filenameCodePage",0u);
@@ -335,7 +336,7 @@ static json run(json& request, const wchar_t* dllPath) {
     } else if(request.value("filenameCodePage",0u)!=0) return {{"kind","result"},{"status","error"},{"code","invalid_filename_encoding"}};
     const bool selective = operation=="test-selection" || operation=="extract-selection";
     if (selective) operation=operation=="test-selection" ? "test" : "extract";
-    if (operation != "list" && operation != "test" && operation != "extract") throw std::runtime_error("unsupported_operation");
+    if (operation != "list" && operation != "test" && operation != "extract" && operation != "update") throw std::runtime_error("unsupported_operation");
     Context context;
     context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));
     if (request.contains("itemPasswords") && !request["itemPasswords"].is_null()) {
@@ -384,6 +385,7 @@ static json run(json& request, const wchar_t* dllPath) {
     if (!archive.ptr) return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "error"}, {"code", cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordRequested ? context.passwordDefined ? "password_or_corrupt" : "password_required" : "unsupported_or_corrupt"}};
     if(encoded && _wcsicmp(usedFormat.c_str(),L"zip")!=0) return {{"kind","result"},{"status","error"},{"code","filename_encoding_not_zip"}};
     UInt32 itemCount = 0; archive->GetNumberOfItems(&itemCount);
+    if(operation=="update") return updateArchive(request,archive.ptr,usedFormat,context,itemCount);
     std::vector<UInt32> selected;
     if(selective) {
         if(!request.contains("selection") || !request["selection"].is_array() || request["selection"].empty())

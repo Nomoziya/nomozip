@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -34,6 +34,8 @@ if (-not $SkipEngineValidation) {
     & $taskPython (Join-Path $taskRoot 'tests/engine_validation.py')
     if ($LASTEXITCODE -ne 0) { throw 'Engine validation failed.' }
 }
+& $taskDotnet (Join-Path $taskRoot 'tests/ArchiveEditingValidation/bin/Debug/net10.0-windows/ArchiveEditingValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Archive editing validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/CompressionValidation/bin/Debug/net10.0-windows/CompressionValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Compression validation failed.' }
 & $taskDotnet build (Join-Path $taskRoot 'tools/UpdatePackager/UpdatePackager.csproj') --nologo -m:1 -nr:false -v:minimal
@@ -164,5 +166,7 @@ if ($taskPauseGui.ExitCode -ne 0) { throw 'Desktop pause and resume validation f
 $taskNotificationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-notifications', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskNotificationGui.ExitCode -ne 0) { throw 'Desktop result notification validation failed.' }
 
+$taskEditingGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-archive-editing', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskEditingGui.ExitCode -ne 0) { throw 'Archive editing desktop validation failed.' }
 $taskMasterGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-master-vault', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskMasterGui.ExitCode -ne 0) { throw 'Master password desktop validation failed.' }

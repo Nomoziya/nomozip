@@ -16,4 +16,6 @@ public partial class ArchiveContentsDialog : Window
         };
     }
     private void OnClose(object sender, RoutedEventArgs e) => Close();
+    private void OnEditContents(object sender,RoutedEventArgs e)
+    {EditContentsMenu.PlacementTarget=EditContentsButton;EditContentsMenu.IsOpen=true;}
 }

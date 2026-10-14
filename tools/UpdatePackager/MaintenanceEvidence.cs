@@ -12,7 +12,7 @@ internal static class MaintenanceEvidence
         if (root.GetProperty("schema").GetInt32() != 1 || root.GetProperty("status").GetString() != "ready-for-signing" || root.GetProperty("version").GetString() != version
             || !Path.GetFullPath(engineDirectory).Equals(Path.Combine(candidate, "workspace", "engines", version), StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("A prepared candidate for this exact engine is required.");
-        var reports = new[] { "engine-validation.json", "compression-validation.json", "selection-validation.json", "encoding-validation.json", "pause-validation.json" };
+        var reports = new[] { "engine-validation.json", "compression-validation.json", "selection-validation.json", "encoding-validation.json", "pause-validation.json", "archive-editing-validation.json" };
         var names = new[] { "7z.dll", "7z.exe", "License.txt", "manifest.json" }.Select(name => $"workspace/engines/{version}/{name}")
             .Concat(new[] { "public-key.pem", "workspace/artifacts/worker/ArchiveEngineWorker.exe" })
             .Concat(reports.Select(name => "workspace/artifacts/" + name)).ToArray();
@@ -30,15 +30,17 @@ internal static class MaintenanceEvidence
         {
             var bytes = await File.ReadAllBytesAsync(Path.Combine(candidate, "workspace", "artifacts", name));
             using var document = JsonDocument.Parse(bytes); var report = document.RootElement;
-            var values = report.GetProperty("checks").EnumerateObject().ToArray();
+            var values = report.TryGetProperty("checks",out var checks)
+                ? checks.EnumerateObject().Select(value=>(Name:value.Name,Passed:value.Value.ValueKind==JsonValueKind.True)).ToArray()
+                : report.GetProperty("cases").EnumerateArray().Select(value=>(Name:value.GetProperty("name").GetString()!,Passed:value.GetProperty("passed").ValueKind==JsonValueKind.True)).ToArray();
             var passed = report.GetProperty("passed"); var total = report.GetProperty("total").GetInt32();
             var minimum = name == "pause-validation.json" ? 4 : 20;
-            if (total < 1 || total != values.Length || values.Any(value => value.Value.ValueKind != JsonValueKind.True)
+            if (total < 1 || total != values.Length || values.Any(value => !value.Passed)
                 || !(passed.ValueKind == JsonValueKind.True || passed.ValueKind == JsonValueKind.Number && passed.GetInt32() == total)
                 || values.Count(value => value.Name.StartsWith(version + " ", StringComparison.Ordinal)) < minimum)
                 throw new InvalidOperationException("Passing target-version maintenance coverage is required.");
-            if (name == "pause-validation.json" && !dllHash.Equals(report.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException("Pause evidence belongs to another engine binary.");
+            if ((name is "pause-validation.json" or "archive-editing-validation.json") && !dllHash.Equals(report.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("Maintenance evidence belongs to another engine binary.");
             result[name] = JsonNode.Parse(bytes);
         }
         return result;
