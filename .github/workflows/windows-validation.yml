@@ -137,6 +137,7 @@ jobs:
             artifacts/dpi-preview/*.png
             artifacts/queue-preview/*.png
             artifacts/concurrency-preview/*.png
+            artifacts/pause-preview/*.png
             artifacts/shell-validation/**/*.log
             artifacts/origin-fat/**/*.log
             artifacts/origin-fat/**/disk-identity.json

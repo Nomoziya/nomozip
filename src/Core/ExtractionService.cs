@@ -5,7 +5,7 @@ public sealed record ExtractionOutcome(EngineResult Engine, string OutputPath, s
 public sealed record TaskUpdate(string State, string Message, EngineProgress? Progress = null);
 public enum ExistingFilePolicy { Ask, Skip, Replace }
 
-public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vault, IPasswordCandidateProvider candidates, IExtractionOriginReader? origin = null)
+public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vault, IPasswordCandidateProvider candidates, IExtractionOriginReader? origin = null,ExtractionPause? pause=null)
 {
     public async Task<ExtractionOutcome> ExtractAsync(string archivePath, string outputPath, bool autoTry,
         Func<EngineResult, Task<PasswordPromptResponse?>> requestPassword,
@@ -20,6 +20,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         try { originMark = origin is null ? null : await origin.ReadAsync(archivePath, cancellationToken); }
         catch (ExtractionOriginException error) { return new(new EngineResult { Code = error.Code }, destination, error.Message); }
         catch (OperationCanceledException) { return new(new EngineResult { Status = "cancelled", Code = "cancelled" }, destination); }
+        if(pause is not null) await pause.WaitAsync(cancellationToken);
         Directory.CreateDirectory(destination);
         var verification = await new ArchiveVerificationService(engine, candidates).VerifyAsync(archivePath, autoTry,
             requestPassword, progress, cancellationToken, skipSavedPasswordToken,selection);
@@ -33,6 +34,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         if (resolveDestination is not null)
         {
             progress?.Report(new TaskUpdate("listing", "正在确定解压目录"));
+            if(pause is not null) await pause.WaitAsync(cancellationToken);
             var listed = await engine.ListAsync(archivePath, secret, cancellationToken);
             if (!listed.IsSuccess) return new ExtractionOutcome(listed, destination, warning);
             cancellationToken.ThrowIfCancellationRequested();
@@ -76,6 +78,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             // No final files are moved until extraction and all conflict decisions complete.
             if (originMark is not null)
             {
+                if(pause is not null) await pause.WaitAsync(cancellationToken);
                 currentState = "origin"; currentMessage = "正在保留下载来源信息";
                 progress?.Report(new TaskUpdate(currentState, currentMessage));
                 warning = CombineWarnings(warning, await originMark.ApplyAsync(decisions.Where(value => value.Policy != ExistingFilePolicy.Skip).Select(value => value.Source).ToArray(), cancellationToken));
@@ -83,6 +86,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             }
             foreach (var (source, target, policy) in decisions)
             {
+                if(pause is not null) await pause.WaitAsync(cancellationToken);
                 if (policy == ExistingFilePolicy.Skip) continue;
                 ValidateOutputPath(destination, target);
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);

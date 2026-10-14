@@ -47,6 +47,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Selection compatibility checks failed; the can
 if ($LASTEXITCODE -ne 0) { throw 'ZIP encoding compatibility test build failed; the candidate remains disabled.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/EncodingValidation/bin/Debug/net10.0-windows/EncodingValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
 if ($LASTEXITCODE -ne 0) { throw 'ZIP encoding compatibility checks failed; the candidate remains disabled.' }
+& $taskDotnet build (Join-Path $taskRoot 'tests/PauseValidation/PauseValidation.csproj') --nologo -m:1 -nr:false -v:minimal
+if ($LASTEXITCODE -ne 0) { throw 'Pause compatibility test build failed; the candidate remains disabled.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/PauseValidation/bin/Debug/net10.0-windows/PauseValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
+if ($LASTEXITCODE -ne 0) { throw 'Pause compatibility checks failed; the candidate remains disabled.' }
 $taskManifest.protocol = 1
 $taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
 & (Join-Path $PSScriptRoot 'build.ps1') -SkipWorker
