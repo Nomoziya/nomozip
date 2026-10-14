@@ -10,6 +10,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
     Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null)
 {
+    public bool NotifyExtractionComplete(int count) => owner is MainWindow window && window.NotifyExtractionComplete(count);
     public int? EditFilenameEncoding(string archive,int codePage,Func<int,CancellationToken,Task<EngineResult>> read,CancellationToken token)
     {
         var dialog=new FilenameEncodingDialog(new(archive,codePage,read,token)) {Owner=owner};prepareEncoding?.Invoke(dialog);

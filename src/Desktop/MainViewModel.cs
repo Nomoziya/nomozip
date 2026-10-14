@@ -85,6 +85,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializePasswordOrganizationCommands();
         InitializeFileHashCommands();
         InitializeFilenameEncodingCommands();
+        InitializeNotificationCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
@@ -246,9 +247,10 @@ public sealed partial class MainViewModel : ObservableObject
         {Banner="无法处理文件或写入设置，请检查输出目录与文件权限。";}
         finally
         {
-            var shouldOpen=directoryRules.OpenAfterSuccess && !cancellation.IsCancellationRequested && batch.Count>0 && batch.All(task=>task.Completed);
+            var batchSucceeded=!cancellation.IsCancellationRequested && batch.Count>0 && batch.All(task=>task.Completed);
+            var shouldOpen=directoryRules.OpenAfterSuccess && batchSucceeded;
             CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
-            try {if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray());}
+            try {if(batchSucceeded) NotifyCompletedBatch(batch.Count);if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray());}
             finally {idle.TrySetResult();}
         }
     }
@@ -370,7 +372,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!File.Exists(path)) return;
         var settings = JsonSerializer.Deserialize<Settings>(await File.ReadAllTextAsync(path));
         if (settings is null || settings.Version != 1) { settingsWritable = false; Banner = "设置文件版本无法识别，已使用默认设置并保留原文件。"; return; }
-        OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;
+        OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
         directoryRules=settings.DirectoryRules ?? new();
@@ -384,7 +386,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
         RememberCustomDirectory();
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency)));
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess)));
     }
     private static void OpenFolder(string path)
     {
@@ -399,7 +401,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => "格式不支持或文件损坏", "output_write_failed" or "write_failed" => "输出目录无法写入",
         "worker_connection_failed" or "engine_load_failed" => "引擎无法启动", _ => "处理失败，请检查压缩包",
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", "文件夹"));

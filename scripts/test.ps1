@@ -159,3 +159,5 @@ $taskConcurrencyGui = Start-Process -FilePath $taskApplication -ArgumentList @('
 if ($taskConcurrencyGui.ExitCode -ne 0) { throw 'Desktop controlled concurrency validation failed.' }
 $taskPauseGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-pause', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskPauseGui.ExitCode -ne 0) { throw 'Desktop pause and resume validation failed.' }
+$taskNotificationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-notifications', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskNotificationGui.ExitCode -ne 0) { throw 'Desktop result notification validation failed.' }

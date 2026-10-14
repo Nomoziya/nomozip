@@ -7,10 +7,23 @@ namespace ArchivePassword.Desktop;
 public partial class MainWindow : Window
 {
     private bool closingApproved;
+    private CompletionNotification? completionNotification;
+    internal bool NotifyExtractionComplete(int count)
+    {
+        completionNotification ??= new CompletionNotification(this, ReturnToExtractionResults);
+        return completionNotification.Show(count);
+    }
+    internal void ReturnToExtractionResults()
+    {
+        if (DataContext is MainViewModel model) model.Page = 0;
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        if (!WindowPlacement.ValidationMode) Activate();
+    }
     internal bool SuppressExitConfirmationForValidation { get; set; }
     public MainWindow()
     {
         InitializeComponent();
+        Closed += (_, _) => completionNotification?.Dispose();
         void ArrangePanels()
         {
             var narrow = ActualWidth < 1000;
