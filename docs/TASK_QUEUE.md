@@ -10,7 +10,7 @@
 
 复用官方 7-Zip 的 IProgress 和输入/输出流回调，自建条件变量检查点；控制消息只走父子进程管道，不使用进程强制挂起。托管队列和交付前也等待同一暂停门，取消独立生效。新增 pausable 操作名称使旧 worker 明确拒绝，不允许旧工作程序忽略暂停后误报正常。原有请求、压缩、编码和选择操作继续兼容。官方 SDK 说明进度回调可能来自其它线程，检查点与输出消息使用互斥协调；已核对 bootstrap 固定下载的官方源码 `CPP/7zip/Archive/IArchive.h` 与 `CPP/7zip/IProgress.h`。未来官方候选启用前增加暂停兼容矩阵，失败时保留 protocol 0。
 
-证据：`artifacts/pause-validation.json`、`artifacts/pause-ui-validation.json`、`artifacts/pause-preview/`。检查包含实际 native worker 的暂停确认、进程身份/进度与文件大小稳定、继续后字节正确、暂停中取消、快速切换、旧 worker 拒绝、交付前覆盖等待及取消清理，以及实际 UI 按钮、双任务/排队项、密码记录不变、两种窗口尺寸和高对比度资源。完整 CI 与轻量包复核完成后更新验收记录。
+证据：`artifacts/pause-validation.json`、`artifacts/pause-ui-validation.json`、`artifacts/pause-preview/`。检查包含实际 native worker 的暂停确认、进程身份/进度与文件大小稳定、继续后字节正确、暂停中取消、快速切换、旧 worker 拒绝、交付前覆盖等待及取消清理，以及实际 UI 按钮、双任务/排队项、密码记录不变、两种窗口尺寸和高对比度资源。完整 [Windows CI 38501929794](https://github.com/Nomoziya/nomozip/actions/runs/38501929794) 的 50 份报告已逐项核对通过；新增基础/引擎 31 项（本地含旧 worker 2 项共 33）与 UI 52 项。轻量载荷 9709766 字节 / 43 文件（增加 39493 字节），安装器 2272156 字节，无新增运行组件，worker 随控制升级。四项本地候选资产在 `artifacts/release-0.2.0-preview.13/`，复核见 `artifacts/pause-package-validation.json`。未发布新正式版。
 
 ## 受控并发（0.2.0-preview.12）
 
