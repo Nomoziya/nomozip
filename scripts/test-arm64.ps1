@@ -37,13 +37,17 @@ foreach ($taskProject in @('CoreValidation','UpdateValidation')) {
 $taskApp=Join-Path $taskRoot 'artifacts/test-app';New-Item -ItemType Directory -Force $taskApp | Out-Null
 Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
+& "$taskRoot/scripts/build-shell-test-client.ps1" -Architecture arm64 -Library -Source "$taskRoot/tests/ArchitectureValidation/notification.cpp" -Output "$taskApp/NativeNotificationProbe.dll"
+$taskUiFixture=Get-ChildItem "$taskRoot/artifacts/pause-data" -Recurse -File -Filter 'longer-26.04.7z' | Select-Object -First 1
+if (-not $taskUiFixture) { throw 'Native in-flight UI fixture was not prepared.' }
+Copy-Item $taskUiFixture.FullName "$taskRoot/tests/fixtures/generated/large-ui.7z"
 foreach ($taskFlag in @('validate','validate-vault-transfer','validate-password-organization','validate-file-hashes','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-selection','validate-encoding','validate-origin','validate-dpi','validate-queue','validate-concurrency','validate-pause','validate-notifications','validate-sfx','validate-formats','validate-volumes','validate-archive-editing','validate-master-vault')) {
     $taskGui=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot) -WindowStyle Hidden -Wait -PassThru
     if ($taskGui.ExitCode -ne 0) { $taskFailures.Add("desktop: $taskFlag") }
 }
 # ARM64 SDK builds AnyCPU fixture code; the separately verified x64 runtime actually writes old vaults.
 $taskMetadata=Invoke-RestMethod 'https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json'
-$taskRuntime=($taskMetadata.releases | Where-Object { $_.runtime.version -eq '10.0.12' } | Select-Object -First 1).runtime.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name.EndsWith('.zip') } | Select-Object -First 1
+$taskRuntime=($taskMetadata.releases | Where-Object { $_.runtime.version -eq '10.0.12' } | Select-Object -First 1).runtime.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name -eq 'dotnet-runtime-win-x64.zip' } | Select-Object -First 1
 if (-not $taskRuntime) { throw 'Pinned synthetic x64 runtime not found in official metadata.' }
 $taskZip=Join-Path $taskRoot '.tools/cross-architecture-runtime.zip';Invoke-WebRequest $taskRuntime.url -OutFile $taskZip
 if ((Get-FileHash $taskZip -Algorithm SHA512).Hash -ne $taskRuntime.hash) { throw 'Synthetic x64 runtime checksum mismatch.' }
