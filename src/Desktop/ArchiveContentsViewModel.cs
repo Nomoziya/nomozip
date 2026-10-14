@@ -8,17 +8,18 @@ namespace ArchivePassword.Desktop;
 public sealed class ArchiveContentsViewModel : ObservableObject
 {
     private readonly string archivePath;
-    private readonly IReadOnlyList<ArchiveEntry> items;
-    private readonly IReadOnlyList<ArchiveContentRow> allRows;
+    private IReadOnlyList<ArchiveEntry> items;
+    private IReadOnlyList<ArchiveContentRow> allRows;
     private bool selecting,working;
     private string operationMessage="勾选文件或文件夹；文件夹包含其全部子项。",outputPath="";
     private TaskCompletionSource idle=CompletedSource();
     private readonly Action? cancel;
-    public ArchiveContentsViewModel(string archivePath,IReadOnlyList<ArchiveEntry> items,Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<string?>>? extract=null,Action? cancel=null,Action<string>? open=null)
+    public ArchiveContentsViewModel(string archivePath,IReadOnlyList<ArchiveEntry> items,Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<string?>>? extract=null,Action? cancel=null,Action<string>? open=null,
+        string? format=null,Func<ArchiveEditAction,IReadOnlyList<ArchiveEntry>,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveEditOutcome?>>? edit=null)
     {
         this.archivePath=archivePath;this.items=items;this.cancel=cancel;
         allRows=items.Select(entry=>new ArchiveContentRow(entry)).ToArray();Rows=new(allRows);
-        foreach(var row in allRows) row.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(ArchiveContentRow.Selected) && !selecting) SelectionChanged();};
+        AttachRows();
         SelectVisibleCommand=new RelayCommand(()=>Select(true),()=>!IsWorking && Rows.Count>0);
         ClearSelectionCommand=new RelayCommand(()=>Select(false),()=>!IsWorking && allRows.Any(row=>row.Selected));
         ExtractSelectedCommand=new AsyncCommand(async()=>
@@ -29,7 +30,36 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         },()=>extract is not null && !IsWorking && allRows.Any(row=>row.Selected));
         CancelCommand=new RelayCommand(()=>cancel?.Invoke(),()=>IsWorking);
         OpenResultCommand=new RelayCommand(()=>open?.Invoke(OutputPath),()=>!IsWorking && OutputPath.Length>0 && open is not null);
+        EditingAvailable=edit is not null && format?.ToLowerInvariant() is "7z" or "zip";
+        AsyncCommand EditingCommand(ArchiveEditAction action,Func<bool> allowed)=>new(async()=>
+        {
+            IsWorking=true;idle=new TaskCompletionSource();OutputPath="";
+            try
+            {
+                var outcome=await edit!(action,this.items,allRows.Any(row=>row.Selected)?SelectedEntries:[],new Progress<string>(value=>OperationMessage=value));
+                if(outcome?.Engine.IsSuccess==true)
+                {
+                    this.items=outcome.Items;allRows=this.items.Select(entry=>new ArchiveContentRow(entry)).ToArray();AttachRows();FilterRows();
+                    Changed(nameof(Summary));SelectionChanged();
+                    OutputPath=Path.GetDirectoryName(archivePath)!;
+                    OperationMessage="修改完成。原包副本："+outcome.BackupPath;
+                }
+            }
+            finally {IsWorking=false;idle.TrySetResult();}
+        },()=>EditingAvailable && !IsWorking && allowed());
+        AddFilesCommand=EditingCommand(ArchiveEditAction.AddFiles,()=>true);
+        AddFolderCommand=EditingCommand(ArchiveEditAction.AddFolder,()=>true);
+        DeleteSelectedCommand=EditingCommand(ArchiveEditAction.Delete,()=>allRows.Any(row=>row.Selected));
+        ReplaceSelectedCommand=EditingCommand(ArchiveEditAction.Replace,()=>allRows.Count(row=>row.Selected)==1 && allRows.Single(row=>row.Selected).Entry.Directory==false);
     }
+    private void AttachRows() {foreach(var row in allRows) row.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(ArchiveContentRow.Selected) && !selecting) SelectionChanged();};}
+    private void FilterRows() {Rows.Clear();foreach(var row in allRows.Where(row=>row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase))) Rows.Add(row);}
+    public bool EditingAvailable {get;}
+    public string EditingHint=>EditingAvailable?"添加到包根目录；替换保留原路径。校验后替换，并保留原包副本。":"此格式仅支持查看与解压。";
+    public ICommand AddFilesCommand {get;}
+    public ICommand AddFolderCommand {get;}
+    public ICommand DeleteSelectedCommand {get;}
+    public ICommand ReplaceSelectedCommand {get;}
     private static TaskCompletionSource CompletedSource() {var source=new TaskCompletionSource();source.SetResult();return source;}
     public Task WaitForIdleAsync()=>idle.Task;
     public void Cancel()=>cancel?.Invoke();
@@ -53,9 +83,10 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public string ArchivePath => archivePath;
     public string ArchiveName => Path.GetFileName(archivePath);
     public ObservableCollection<ArchiveContentRow> Rows { get; }
-    public string Search { get => search; set { if (Set(ref search, value)) { Rows.Clear(); foreach (var row in allRows.Where(row => row.Path.Contains(search, StringComparison.CurrentCultureIgnoreCase))) Rows.Add(row); Changed(nameof(Summary)); } } }
+    public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary)); } } }
     public string Summary => $"显示 {Rows.Count} / {allRows.Count} 项 · {items.Count(value => !value.Directory)} 个文件 · {items.Count(value => value.Directory)} 个文件夹";
 }
+public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace}
 
 public sealed class ArchiveContentRow(ArchiveEntry entry) : ObservableObject
 {

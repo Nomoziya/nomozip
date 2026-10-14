@@ -31,18 +31,20 @@ public:
         return SetFilePointerEx(file, previous, nullptr, FILE_BEGIN) ? S_OK : HRESULT_FROM_WIN32(GetLastError());
     }
 };
-class CreateCallback final : public IArchiveUpdateCallback, public ICryptoGetTextPassword2 {
+class CreateCallback final : public IArchiveUpdateCallback, public ICryptoGetTextPassword2, public ICryptoGetTextPassword {
     Context& context;
     const std::vector<CreateEntry>& entries;
     UInt64 total = 0;
+    const std::vector<UInt32>* previous;
 public:
     std::string error;
-    CreateCallback(Context& value, const std::vector<CreateEntry>& items) : context(value), entries(items) {}
+    CreateCallback(Context& value, const std::vector<CreateEntry>& items, const std::vector<UInt32>* old = nullptr) : context(value), entries(items), previous(old) {}
     REFCOUNT_IMPL
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID id, void** object) noexcept override {
         *object = nullptr;
         if (id == IID_IUnknown || id == IID_IArchiveUpdateCallback || id == IID_IProgress) *object = static_cast<IArchiveUpdateCallback*>(this);
         else if (id == IID_ICryptoGetTextPassword2) *object = static_cast<ICryptoGetTextPassword2*>(this);
+        else if (id == IID_ICryptoGetTextPassword) *object = static_cast<ICryptoGetTextPassword*>(this);
         if (!*object) return E_NOINTERFACE;
         AddRef(); return S_OK;
     }
@@ -52,10 +54,12 @@ public:
         try { emit({{"kind", "progress"}, {"completed", value ? *value : 0}, {"total", total}}); } catch (...) { return E_FAIL; }
         return S_OK;
     }
-    HRESULT STDMETHODCALLTYPE GetUpdateItemInfo(UInt32, Int32* data, Int32* properties, UInt32* index) noexcept override {
-        if (data) *data = 1;
-        if (properties) *properties = 1;
-        if (index) *index = 0xFFFFFFFF;
+    HRESULT STDMETHODCALLTYPE GetUpdateItemInfo(UInt32 item, Int32* data, Int32* properties, UInt32* index) noexcept override {
+        if(item>=entries.size()) return E_INVALIDARG;
+        const auto old=previous ? (*previous)[item] : 0xFFFFFFFF;
+        if (data) *data = old==0xFFFFFFFF;
+        if (properties) *properties = old==0xFFFFFFFF;
+        if (index) *index = old;
         return checkpoint();
     }
     HRESULT STDMETHODCALLTYPE GetProperty(UInt32 index, PROPID propertyId, PROPVARIANT* value) noexcept override {
@@ -93,6 +97,7 @@ public:
         *password = nullptr; *defined = context.passwordDefined ? 1 : 0;
         return context.passwordDefined ? context.getPassword(password) : cancelled ? E_ABORT : S_OK;
     }
+    HRESULT STDMETHODCALLTYPE CryptoGetTextPassword(BSTR* password) noexcept override {return context.getPassword(password);}
 };
 using CreateArchiveFactory = HRESULT (WINAPI*)(const GUID*, const GUID*, void**);
 static json createArchive(json& request, const std::vector<Format>& formats, CreateArchiveFactory factory) {

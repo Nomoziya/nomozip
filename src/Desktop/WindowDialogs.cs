@@ -9,8 +9,22 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
     Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null,
-    Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null)
+    Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null,
+    Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null)
 {
+    public string[] SelectArchiveEditSources(ArchiveEditAction action)
+    {
+        if(selectArchiveEditSources is not null) return selectArchiveEditSources(action);
+        if(action==ArchiveEditAction.AddFolder)
+        {
+            var folder=new OpenFolderDialog {Title="添加文件夹到压缩包根目录"};return folder.ShowDialog(owner)==true?[folder.FolderName]:[];
+        }
+        var files=new OpenFileDialog {Title=action==ArchiveEditAction.Replace?"选择替换文件（保留包内路径）":"添加文件到压缩包根目录",Multiselect=action!=ArchiveEditAction.Replace,Filter="所有文件|*.*"};
+        return files.ShowDialog(owner)==true?files.FileNames:[];
+    }
+    public bool ConfirmArchiveEdit(ArchiveEditAction action,int removed,int added)=>confirmArchiveEdit?.Invoke(action,removed,added) ?? MessageBox.Show(owner,
+        $"删除或替换 {removed} 项，写入 {added} 项（文件夹包含子项）。\n\n新包完整校验成功后才替换，并在原包旁保留修改前的 .bak 副本。副本包含被删除和替换的旧内容。\n\n新增或替换的文件沿用本次验证的密码；混合多个密码的包暂不支持修改。是否继续？",
+        "确认修改压缩包",MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
     public MasterPasswordResponse? AskMasterPassword(MasterPasswordAction action)
     {
         var dialog=new MasterPasswordDialog(action){Owner=owner};prepareMaster?.Invoke(dialog);return dialog.ShowDialog()==true?dialog.Response:null;

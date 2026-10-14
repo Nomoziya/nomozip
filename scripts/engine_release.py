@@ -10,8 +10,8 @@ import sys
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json')
-PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation')
+REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json')
+PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation')
 
 
 def sha(path):
@@ -54,12 +54,12 @@ def bound_files(version):
 def validate_reports(workspace, version):
     dll_hash = sha(workspace / 'engines' / version / '7z.dll')
     totals = {}
-    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4)):
+    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20)):
         report = load(workspace / 'artifacts' / name)
         values = cases(report)
         if sum(value['name'].startswith(version + ' ') for value in values) < minimum:
             raise ValueError('Required target-version coverage is missing: ' + name)
-        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json') and report['engineHashes'][version].lower() != dll_hash:
+        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json') and report['engineHashes'][version].lower() != dll_hash:
             raise ValueError('Compatibility report belongs to another engine binary.')
         totals[name] = len(values)
     return totals

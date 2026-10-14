@@ -24,7 +24,8 @@ public sealed partial class MainViewModel
             if (outcome.Warning is not null) Banner = outcome.Warning;
             Footer = outcome.Engine.IsSuccess ? $"{task.Name}：已读取 {outcome.Engine.Items.Count} 项内容" : outcome.Engine.Status == "cancelled" ? "已取消查看内容。" : ErrorText(outcome.Engine.Code);
             if (outcome.Engine.IsSuccess) dialogs.ShowArchiveContents(new ArchiveContentsViewModel(task.Path,outcome.Engine.Items,
-                (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path])));
+                (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path]),
+                outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status)));
         }
         catch (OperationCanceledException) { Footer = "已取消查看内容。"; }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException)
