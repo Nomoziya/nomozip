@@ -103,6 +103,14 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var formatsIndex=Array.IndexOf(e.Args,"--validate-formats");
+        if(formatsIndex>=0)
+        {
+            window.SuppressExitConfirmationForValidation=true;var report=Path.Combine(Path.GetFullPath(e.Args[formatsIndex+1]),"artifacts/format-ui-validation.json");File.WriteAllText(report,"{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new{passed=false,exception=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopFormatValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[formatsIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
+        }
         var sfxIndex=Array.IndexOf(e.Args,"--validate-sfx");
         if(sfxIndex>=0)
         {

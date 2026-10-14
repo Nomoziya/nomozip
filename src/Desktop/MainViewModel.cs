@@ -115,7 +115,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand OpenLicensesCommand { get; }
     public int Page { get => page; set { if (Set(ref page, value)) Changed(nameof(NavigationIndex)); } }
     public int NavigationIndex { get => Page switch { 3 => 1, 1 => 2, 2 => 3, _ => 0 }; set => Page = value switch { 1 => 3, 2 => 1, 3 => 2, _ => 0 }; }
-    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanUseSfx));} } }
+    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
@@ -161,7 +161,7 @@ public sealed partial class MainViewModel : ObservableObject
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
         { Banner = "设置或引擎文件无法读取，请检查产品包和文件权限。"; }
-        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanUseSfx)); CommandManager.InvalidateRequerySuggested(); }
+        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanUseSfx)); CompressionCapabilitiesChanged(); CommandManager.InvalidateRequerySuggested(); }
     }
     public void AddFiles(IEnumerable<string> paths)
     {

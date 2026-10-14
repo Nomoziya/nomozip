@@ -64,6 +64,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Split volume compatibility checks failed; the 
 if ($LASTEXITCODE -ne 0) { throw 'SFX compatibility test build failed; the candidate remains disabled.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/SfxValidation/bin/Debug/net10.0-windows/SfxValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
 if ($LASTEXITCODE -ne 0) { throw 'SFX compatibility checks failed; the candidate remains disabled.' }
+& $taskDotnet build (Join-Path $taskRoot 'tests/FormatValidation/FormatValidation.csproj') --nologo -m:1 -nr:false -v:minimal
+if ($LASTEXITCODE -ne 0) { throw 'Creation format compatibility test build failed; the candidate remains disabled.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/FormatValidation/bin/Debug/net10.0-windows/FormatValidation.dll') $taskRoot "$taskVersion,26.04,26.03"
+if ($LASTEXITCODE -ne 0) { throw 'Creation format compatibility checks failed; the candidate remains disabled.' }
 $taskManifest.protocol = 1
 $taskManifest | ConvertTo-Json | Set-Content $taskManifestPath -Encoding utf8
 & (Join-Path $PSScriptRoot 'build.ps1') -SkipWorker

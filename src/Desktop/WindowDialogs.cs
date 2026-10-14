@@ -85,7 +85,9 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     }
     public string? SelectArchiveOutput(string format)
     {
-        var dialog = new SaveFileDialog { Title = "保存新压缩包", Filter = format=="sfx"?"7z 自解压包|*.exe":format == "7z" ? "7z 压缩包|*.7z" : "ZIP 压缩包|*.zip", DefaultExt = format=="sfx"?".exe":"." + format, AddExtension = true, OverwritePrompt = false };
+        var options = CompressionFormats.Find(format);
+        var extension = format == "sfx" ? ".exe" : options?.Extension ?? throw new ArgumentException("Unsupported compression format.", nameof(format));
+        var dialog = new SaveFileDialog { Title = "保存新压缩包", Filter = (format=="sfx"?"7z 自解压包":options!.Label+" 压缩包")+"|*"+extension, DefaultExt = extension, AddExtension = true, OverwritePrompt = false };
         return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
     }
     public bool ConfirmArchiveReplacement(string path) => confirmEngineUpdate?.Invoke(path, "archive") ?? (MessageBox.Show(owner,

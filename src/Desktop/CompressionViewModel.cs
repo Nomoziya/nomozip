@@ -26,9 +26,20 @@ public sealed partial class MainViewModel
         set {if(value && (!Is7zCompression || volumeOption!=0 || !sfxAvailable)) return;var previous=CompressionExtension;
             if(Set(ref compressionSfx,value)) {AlignCompressionExtension(previous);Changed(nameof(CompressionSfxHint));}}
     }
-    private string CompressionExtension=>CompressionSfx?".exe":Is7zCompression?".7z":".zip";
+    private CompressionFormatInfo CompressionOptions => CompressionFormats.All[CompressionFormat];
+    private string CompressionExtension=>CompressionSfx?".exe":CompressionOptions.Extension;
+    public bool CanEncryptCompression => IsIdle && CompressionOptions.Encryption;
+    public bool CanSetCompressionLevel => IsIdle && CompressionOptions.CompressionLevel;
+    public bool CanSplitCompression => IsIdle && CompressionOptions.Encryption;
+    public string CompressionSourceError => CompressionOptions.SingleFile && CompressionSources.Count > 0
+        && (CompressionSources.Count != 1 || !File.Exists(CompressionSources[0].Path)) ? "仅支持一个文件。文件夹或多个文件请先创建 TAR。" : "";
+    private void CompressionCapabilitiesChanged()
+    {
+        Changed(nameof(CanEncryptCompression));Changed(nameof(CanSetCompressionLevel));Changed(nameof(CanSplitCompression));
+        Changed(nameof(CompressionSourceError));CommandManager.InvalidateRequerySuggested();
+    }
     public bool CanUseSfx=>IsIdle && Is7zCompression && volumeOption==0 && sfxAvailable;
-    public string CompressionSfxHint=>!Is7zCompression?"自解压仅支持 7z。":volumeOption!=0?"自解压不能与分卷同时使用。":!sfxAvailable?"当前引擎没有匹配的自解压模块；可选择随包引擎。":CompressionSfx?"生成 Windows EXE，接收者无需安装 7-Zip 或 .NET；只解压，不自动运行包内文件。":"";
+    public string CompressionSfxHint=>!Is7zCompression?(CompressionFormat==1?"自解压仅支持 7z。":""):volumeOption!=0?"自解压不能与分卷同时使用。":!sfxAvailable?"当前引擎没有匹配的自解压模块；可选择随包引擎。":CompressionSfx?"生成 Windows EXE，接收者无需安装 7-Zip 或 .NET；只解压，不自动运行包内文件。":"";
     private void AlignCompressionExtension(string previous) {if(Path.GetExtension(CompressionOutput).Equals(previous,StringComparison.OrdinalIgnoreCase)) CompressionOutput=Path.ChangeExtension(CompressionOutput,CompressionExtension);CommandManager.InvalidateRequerySuggested();}
     private async Task RefreshSfxAvailabilityAsync()
     {
@@ -37,7 +48,7 @@ public sealed partial class MainViewModel
         if(!sfxAvailable) CompressionSfx=false;Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));
     }
     private int volumeOption,volumeUnit;private string volumeCustom="100",createdCompressionPath="";
-    public int CompressionVolumeOption {get=>volumeOption;set {if(Set(ref volumeOption,value)) VolumeOptionsChanged();}}
+    public int CompressionVolumeOption {get=>volumeOption;set {if(value!=0 && !CompressionOptions.Encryption) return;if(Set(ref volumeOption,value)) VolumeOptionsChanged();}}
     public int CompressionVolumeUnit {get=>volumeUnit;set {if(Set(ref volumeUnit,value)) VolumeOptionsChanged();}}
     public string CompressionVolumeCustom {get=>volumeCustom;set {if(Set(ref volumeCustom,value)) VolumeOptionsChanged();}}
     private bool ValidVolumeSize=>VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out _);
@@ -57,19 +68,28 @@ public sealed partial class MainViewModel
         get => compressionFormat;
         set
         {
+            if (value < 0 || value >= CompressionFormats.All.Count) return;
             var previousExtension = CompressionExtension;
             if (Set(ref compressionFormat, value))
             {
                 if(!Is7zCompression && compressionSfx) {compressionSfx=false;Changed(nameof(CompressionSfx));}
+                if (!CompressionOptions.Encryption) {CompressionEncrypt=false;CompressionVolumeOption=0;}
                 AlignCompressionExtension(previousExtension);Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));
                 Changed(nameof(Is7zCompression)); Changed(nameof(CompressionHint));
+                CompressionCapabilitiesChanged();
             }
         }
     }
     public bool Is7zCompression => CompressionFormat == 0;
-    public string CompressionHint => Is7zCompression ? "7z 支持中文密码及文件名加密。" : "ZIP 使用 AES-256 加密；当前官方引擎仅支持 ASCII 密码，中文密码请选择 7z。";
+    public string CompressionHint => CompressionFormatName switch
+    {
+        "7z" => "7z 支持中文密码及文件名加密。",
+        "zip" => "ZIP 使用 AES-256 加密；当前官方引擎仅支持 ASCII 密码，中文密码请选择 7z。",
+        "tar" => "TAR 仅打包，不压缩；不支持加密、分卷或 EXE。",
+        _ => $"单文件压缩，不支持加密、分卷或 EXE。建议保存为“原文件名{CompressionOptions.Extension}”；解压名称来自包名。"
+    };
     public int CompressionLevel { get => compressionLevel; set => Set(ref compressionLevel, value); }
-    public bool CompressionEncrypt { get => compressionEncrypt; set { if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); } } }
+    public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
     public string CompressionPasswordStatus => compressionPassword is null ? "尚未设置，创建时可输入或选择已保存的密码。" : "已设置本次压缩密码，内容保持隐藏。";
     public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) createdCompressionPath="";} }
@@ -78,7 +98,7 @@ public sealed partial class MainViewModel
     public bool CompressionIndeterminate { get => compressionIndeterminate; private set => Set(ref compressionIndeterminate, value); }
     public bool CompressionRunning { get => compressionRunning; private set => Set(ref compressionRunning, value); }
     public CompressionSourceRow? SelectedCompressionSource { get => selectedCompressionSource; set => Set(ref selectedCompressionSource, value); }
-    private string CompressionFormatName => Is7zCompression ? "7z" : "zip";
+    private string CompressionFormatName => CompressionOptions.Name;
     private void InitializeCompressionCommands()
     {
         AddCompressionFilesCommand = new RelayCommand(() => AddCompressionSources(dialogs.SelectCompressionFiles()), () => IsIdle);
@@ -86,9 +106,9 @@ public sealed partial class MainViewModel
         RemoveCompressionSourceCommand = new RelayCommand(() => { if (SelectedCompressionSource is { } item) CompressionSources.Remove(item); }, () => IsIdle && SelectedCompressionSource is not null);
         BrowseCompressionOutputCommand = new RelayCommand(() => { if (dialogs.SelectArchiveOutput(CompressionSfx?"sfx":CompressionFormatName) is { } path) CompressionOutput = path; }, () => IsIdle);
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionEncrypt);
-        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && EngineVersions.Count > 0 && ValidVolumeSize);
+        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
         OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
-        CompressionSources.CollectionChanged += (_, _) => CommandManager.InvalidateRequerySuggested();
+        CompressionSources.CollectionChanged += (_, _) => CompressionCapabilitiesChanged();
     }
     public void AddCompressionSources(IEnumerable<string> paths)
     {
@@ -104,6 +124,7 @@ public sealed partial class MainViewModel
     }
     private async Task CreateArchiveAsync()
     {
+        if (CompressionSourceError.Length > 0) {CompressionMessage=CompressionSourceError;return;}
         if(!VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out var volumeSize)) {CompressionMessage=CompressionVolumeError;return;}
         if (!Path.GetExtension(CompressionOutput).Equals(CompressionExtension, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = "目标扩展名与格式不一致，请重新选择保存位置。"; return; }
         if(volumeSize>0 && VolumeCompressionService.HasExistingTarget(CompressionOutput)) {CompressionMessage="已有同名文件或分卷，已保留。请使用新名称或新目录。";return;}
@@ -157,6 +178,9 @@ public sealed partial class MainViewModel
     private static string CompressionError(string code) => code switch
     {
         "zip_password_ascii_only" => "ZIP 加密仅支持 ASCII 密码；中文密码请改用 7z。",
+        "format_single_file_required" => "此格式只允许一个文件；文件夹或多个文件请先打包为 TAR。",
+        "format_encryption_unsupported" => "此格式不支持加密，请选择 7z 或 ZIP。",
+        "format_validation_failed" => "新包内容清单未通过校验，目标文件保持不变。",
         "duplicate_archive_path" => "选中的不同文件或文件夹具有相同名称，请分开压缩。",
         "unsupported_link" => "当前压缩不支持链接或联接点，请选择原始文件。",
         "output_exists" => "目标文件已存在，未覆盖。",
