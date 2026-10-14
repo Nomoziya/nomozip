@@ -11,3 +11,6 @@
 实现参考 [Microsoft 通知区域指南](https://learn.microsoft.com/en-us/windows/win32/shell/notification-area) 与 [NOTIFYICONDATAW](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataw)。现代 Windows App SDK 也支持未打包通知；本轮为保持轻量和既有 WPF 技术栈选择系统接口，不引入该依赖。
 
 代理验收使用独立合成数据、真实 26.03/26.04 引擎、真实 WPF/UIA 设置入口与 HWND 回调，替身仅截取系统通知提交以避免在用户桌面弹窗。原生通知图标登记/删除在独立 GitHub Windows VM 验证且不提交可见通知。普通/高对比度、800/1120 DIP 布局截图以及成功/失败/取消、并发单条、单项重试、旧设置/重启、系统拒绝与清理均有报告。实际可见通知投递与用户系统通知策略尚未体验；不把回调测试或图标登记宣称为实际投递通过。
+
+
+验收记录：本地 63 / CI 65 项通过，[完整 Windows CI 38505385610](https://github.com/Nomoziya/nomozip/actions/runs/38505385610) 的 51 份报告全部通过，新增真实窗口关闭后原 HWND 保留回归；完整证据见 `artifacts/notification-ui-validation.json` 与 `artifacts/notification-ci-review.json`。本地轻量候选 0.2.0-preview.14 为 9745096 字节 / 43 文件，安装器 2277654 字节；四项资产在 `artifacts/release-0.2.0-preview.14/`，固定引擎/worker/公钥/渠道均未变。未发布新正式版或更换实际安装。
