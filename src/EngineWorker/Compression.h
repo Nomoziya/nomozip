@@ -13,7 +13,7 @@ public:
     }
     HRESULT STDMETHODCALLTYPE Write(const void* data, UInt32 size, UInt32* processed) noexcept override {
         if (processed) *processed = 0;
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         DWORD count = 0;
         if (!WriteFile(file, data, size, &count, nullptr)) return HRESULT_FROM_WIN32(GetLastError());
         if (processed) *processed = count;
@@ -46,9 +46,9 @@ public:
         if (!*object) return E_NOINTERFACE;
         AddRef(); return S_OK;
     }
-    HRESULT STDMETHODCALLTYPE SetTotal(UInt64 value) noexcept override { total = value; return cancelled ? E_ABORT : S_OK; }
+    HRESULT STDMETHODCALLTYPE SetTotal(UInt64 value) noexcept override { total = value; return checkpoint(); }
     HRESULT STDMETHODCALLTYPE SetCompleted(const UInt64* value) noexcept override {
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         try { emit({{"kind", "progress"}, {"completed", value ? *value : 0}, {"total", total}}); } catch (...) { return E_FAIL; }
         return S_OK;
     }
@@ -56,11 +56,11 @@ public:
         if (data) *data = 1;
         if (properties) *properties = 1;
         if (index) *index = 0xFFFFFFFF;
-        return cancelled ? E_ABORT : S_OK;
+        return checkpoint();
     }
     HRESULT STDMETHODCALLTYPE GetProperty(UInt32 index, PROPID propertyId, PROPVARIANT* value) noexcept override {
         PropVariantInit(value);
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         if (index >= entries.size()) return E_INVALIDARG;
         const auto& entry = entries[index];
         switch (propertyId) {
@@ -75,7 +75,7 @@ public:
     }
     HRESULT STDMETHODCALLTYPE GetStream(UInt32 index, ISequentialInStream** stream) noexcept override {
         *stream = nullptr;
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         if (index >= entries.size()) return E_INVALIDARG;
         const auto& entry = entries[index];
         if (entry.directory) return S_OK;
@@ -87,7 +87,7 @@ public:
     }
     HRESULT STDMETHODCALLTYPE SetOperationResult(Int32 result) noexcept override {
         if (result != 0) error = "compression_failed";
-        return cancelled ? E_ABORT : S_OK;
+        return checkpoint();
     }
     HRESULT STDMETHODCALLTYPE CryptoGetTextPassword2(Int32* defined, BSTR* password) noexcept override {
         *password = nullptr; *defined = context.passwordDefined ? 1 : 0;

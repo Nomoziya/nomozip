@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <iostream>
 #include <mutex>
+#include <condition_variable>
 #include <thread>
 #include <vector>
 #include <algorithm>
@@ -25,6 +26,21 @@ static void emit(json value) {
     value["protocol"] = 1;
     std::lock_guard<std::mutex> lock(outputMutex);
     std::cout << value.dump() << '\n' << std::flush;
+}
+static std::mutex pauseMutex;
+static std::condition_variable pauseCondition;
+static bool pauseRequested=false, pauseAcknowledged=false;
+static HRESULT checkpoint() {
+    std::unique_lock<std::mutex> lock(pauseMutex);
+    if(pauseRequested && !cancelled) {
+        if(!pauseAcknowledged) { pauseAcknowledged=true;emit({{"kind","pause-state"},{"paused",true}}); }
+        pauseCondition.wait(lock,[]{return !pauseRequested || cancelled.load();});
+    }
+    return cancelled ? E_ABORT : S_OK;
+}
+static void controlPause(bool value) {
+    {std::lock_guard<std::mutex> lock(pauseMutex);pauseRequested=value;if(!value) pauseAcknowledged=false;}
+    if(!value) {emit({{"kind","pause-state"},{"paused",false}});pauseCondition.notify_all();}
 }
 static std::wstring wide(const std::string& text) {
     if (text.empty()) return {};
@@ -77,7 +93,7 @@ public:
     }
     HRESULT STDMETHODCALLTYPE Read(void* data, UInt32 size, UInt32* processed) noexcept override {
         if (processed) *processed = 0;
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         DWORD count = 0;
         if (!ReadFile(file, data, size, &count, nullptr)) return HRESULT_FROM_WIN32(GetLastError());
         if (processed) *processed = count;
@@ -104,7 +120,7 @@ public:
     }
     HRESULT STDMETHODCALLTYPE Write(const void* data, UInt32 size, UInt32* processed) noexcept override {
         if (processed) *processed = 0;
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         DWORD count = 0;
         if (!WriteFile(file, data, size, &count, nullptr)) return HRESULT_FROM_WIN32(GetLastError());
         if (processed) *processed = count;
@@ -122,7 +138,7 @@ struct Context {
     }
     HRESULT getPassword(BSTR* result, const std::wstring* itemPassword = nullptr) noexcept {
         *result = nullptr; passwordRequested = true;
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         if (!itemPassword && !passwordDefined) { passwordMissing = true; return E_ABORT; }
         const auto& value = itemPassword ? *itemPassword : password;
         *result = SysAllocStringLen(value.data(), (UINT)value.size());
@@ -142,8 +158,8 @@ public:
         if (!*object) return E_NOINTERFACE;
         AddRef(); return S_OK;
     }
-    HRESULT STDMETHODCALLTYPE SetTotal(const UInt64*, const UInt64*) noexcept override { return cancelled ? E_ABORT : S_OK; }
-    HRESULT STDMETHODCALLTYPE SetCompleted(const UInt64*, const UInt64*) noexcept override { return cancelled ? E_ABORT : S_OK; }
+    HRESULT STDMETHODCALLTYPE SetTotal(const UInt64*, const UInt64*) noexcept override { return checkpoint(); }
+    HRESULT STDMETHODCALLTYPE SetCompleted(const UInt64*, const UInt64*) noexcept override { return checkpoint(); }
     HRESULT STDMETHODCALLTYPE CryptoGetTextPassword(BSTR* result) noexcept override { return context.getPassword(result); }
     HRESULT STDMETHODCALLTYPE GetProperty(PROPID id, PROPVARIANT* value) noexcept override {
         PropVariantInit(value);
@@ -209,9 +225,9 @@ public:
         if (!*object) return E_NOINTERFACE;
         AddRef(); return S_OK;
     }
-    HRESULT STDMETHODCALLTYPE SetTotal(UInt64 value) noexcept override { total = value; return cancelled ? E_ABORT : S_OK; }
+    HRESULT STDMETHODCALLTYPE SetTotal(UInt64 value) noexcept override { total = value; return checkpoint(); }
     HRESULT STDMETHODCALLTYPE SetCompleted(const UInt64* completed) noexcept override {
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         try {
             auto now = GetTickCount64();
             if (now - lastProgress >= 100) { lastProgress = now; emit({{"kind", "progress"}, {"completed", completed ? *completed : 0}, {"total", total}}); }
@@ -226,7 +242,7 @@ public:
         *stream = nullptr; currentIndex = index;
         currentMode = mode;
         currentRequested = !requested || std::binary_search(requested->begin(),requested->end(),index);
-        if (cancelled) return E_ABORT;
+        if (checkpoint() != S_OK) return E_ABORT;
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
         try {
             if (!currentRequested || mode != NArchive::NExtract::NAskMode::kExtract) return S_OK;
@@ -249,10 +265,10 @@ public:
             *stream = currentStream; currentStream->AddRef(); return S_OK;
         } catch (const std::exception& e) { error = std::string(e.what()) == "unsafe_path" ? "unsafe_path" : "write_failed"; return E_FAIL; }
     }
-    HRESULT STDMETHODCALLTYPE PrepareOperation(Int32 mode) noexcept override { currentMode=mode; return cancelled ? E_ABORT : S_OK; }
+    HRESULT STDMETHODCALLTYPE PrepareOperation(Int32 mode) noexcept override { currentMode=mode; return checkpoint(); }
     HRESULT STDMETHODCALLTYPE SetOperationResult(Int32 result) noexcept override {
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
-        if(requested && (!currentRequested || currentMode==NArchive::NExtract::NAskMode::kSkip)) return cancelled ? E_ABORT : S_OK;
+        if(requested && (!currentRequested || currentMode==NArchive::NExtract::NAskMode::kSkip)) return checkpoint();
         try {
             if (result == NArchive::NExtract::NOperationResult::kOK) {
                 ++successfulItems;
@@ -268,7 +284,7 @@ public:
                 failures.push_back({{"index", currentIndex}, {"code", code}, {"path", utf8(pathName)}});
             }
         } catch (...) { return E_FAIL; }
-        return cancelled ? E_ABORT : S_OK;
+        return checkpoint();
     }
 };
 struct Format { GUID id; std::wstring name, extensions; };
@@ -304,6 +320,7 @@ static json run(json& request, const wchar_t* dllPath) {
         formats.push_back(format);
     }
     auto operation = request.at("operation").get<std::string>();
+    if(operation.size()>9 && operation.compare(operation.size()-9,9,"-pausable")==0) operation.erase(operation.size()-9);
     if (operation == "capabilities") {
         json result = json::array(); for (auto& format : formats) result.push_back({{"name", utf8(format.name)}, {"extensions", utf8(format.extensions)}});
         return {{"kind", "result"}, {"status", "success"}, {"formats", result}};
@@ -406,12 +423,18 @@ int wmain(int argc, wchar_t** argv) {
         std::string line; if (!std::getline(std::cin, line)) return 1;
         json request = json::parse(line);
         if (!line.empty()) SecureZeroMemory(line.data(), line.size());
+        pauseRequested=request.value("paused",false);
         std::thread([] {
             std::string control;
             while (std::getline(std::cin, control)) {
                 auto value = json::parse(control, nullptr, false);
-                if (!value.is_discarded() && value.value("operation", "") == "cancel") cancelled = true;
+                if(value.is_discarded() || value.value("protocol",0)!=1) continue;
+                auto operation=value.value("operation","");
+                if(operation=="cancel") {{std::lock_guard<std::mutex> lock(pauseMutex);cancelled=true;}pauseCondition.notify_all();}
+                else if(operation=="pause") controlPause(true);
+                else if(operation=="resume") controlPause(false);
             }
+            {std::lock_guard<std::mutex> lock(pauseMutex);if(pauseRequested) cancelled=true;}pauseCondition.notify_all();
         }).detach();
         auto result = run(request, argv[1]);
         bool success = result.value("status", "") == "success";

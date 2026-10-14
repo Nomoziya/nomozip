@@ -6,12 +6,14 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
 & $taskDotnet (Join-Path $taskRoot 'tests/QueueValidation/bin/Debug/net10.0-windows/QueueValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Controlled queue scheduling validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/PauseValidation/bin/Debug/net10.0-windows/PauseValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Cooperative pause validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/VaultTransferValidation/bin/Debug/net10.0-windows/VaultTransferValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Encrypted vault transfer validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/PasswordOrganizationValidation/bin/Debug/net10.0-windows/PasswordOrganizationValidation.dll') $taskRoot
@@ -155,3 +157,5 @@ $taskQueueGui = Start-Process -FilePath $taskApplication -ArgumentList @('--vali
 if ($taskQueueGui.ExitCode -ne 0) { throw 'Desktop task queue validation failed.' }
 $taskConcurrencyGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-concurrency', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskConcurrencyGui.ExitCode -ne 0) { throw 'Desktop controlled concurrency validation failed.' }
+$taskPauseGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-pause', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskPauseGui.ExitCode -ne 0) { throw 'Desktop pause and resume validation failed.' }

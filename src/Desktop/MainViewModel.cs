@@ -185,14 +185,14 @@ public sealed partial class MainViewModel : ObservableObject
     private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch)
     {
         if (directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = "请选择输出目录。"; return; }
-        IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();
+        IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
         using var prompts=new SemaphoreSlim(1,1);
         var openResults=new List<string>();
         string Destination(ArchiveTaskRow task)=>task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
         async Task<T> PromptAsync<T>(Func<Task<T>> show,CancellationToken token)
         {
             await prompts.WaitAsync(token);
-            try {token.ThrowIfCancellationRequested();return await show();}
+            try {token.ThrowIfCancellationRequested();await queuePause.WaitAsync(token);return await show();}
             finally {prompts.Release();}
         }
         async Task RunTaskAsync(ArchiveTaskRow task,CancellationToken token)
@@ -204,16 +204,17 @@ public sealed partial class MainViewModel : ObservableObject
             var progress=new Progress<TaskUpdate>(value=>
             {
                 if(!task.Running) return;
-                task.Status=value.Message;Footer=$"{task.Name}：{value.Message}";
+                task.Status=value.Progress?.PausedState==true?"已暂停":value.Message;Footer=$"{task.Name}：{task.Status}";
                 queueAttempts[task]=(skip,value.State=="password");RefreshQueuePasswordAction();
-                if(value.Progress is {} details) {task.IsIndeterminate=details.Total==0;task.Percent=details.Total==0?0:Math.Min(100,details.Completed*100.0/details.Total);}
+                if(value.Progress is {PausedState:null} details) {task.IsIndeterminate=details.Total==0;task.Percent=details.Total==0?0:Math.Min(100,details.Completed*100.0/details.Total);}
+                else if(value.Progress is {PausedState:{} paused} state) task.IsIndeterminate=!paused && state.Total==0;
             });
             try
             {
                 var destination=Destination(task);
                 Func<IReadOnlyList<ArchiveEntry>,string>? resolveDestination=task.ShellOutputPath is null && directoryRules.Layout!=ExtractionLayout.Direct
                     ? items=>ExtractionDirectoryPlanner.Resolve(task.Path,destination,directoryRules,items,DateOnly.FromDateTime(DateTime.Today)) : null;
-                var service=new ExtractionService(CreateReadClient(task),vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin());
+                var service=new ExtractionService(CreateReadClient(task,queuePause),vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin(),queuePause);
                 var outcome=await service.ExtractAsync(task.Path,destination,AutoTry,
                     failure=>PromptAsync(()=>dialogs.AskPasswordAsync(task.Name,attempts++>0,allPasswords,vaultAvailable,token,previousFailure:failure),token),
                     path=>ConflictPolicy==1?Task.FromResult(ExistingFilePolicy.Skip):ConflictPolicy==2?Task.FromResult(ExistingFilePolicy.Replace)
@@ -237,15 +238,16 @@ public sealed partial class MainViewModel : ObservableObject
         try
         {
             await SaveSettingsAsync();
-            await ExtractionQueue.RunAsync(batch,QueueConcurrency,task=>new(task.Path,Destination(task)),RunTaskAsync,cancellation.Token);
+            await ExtractionQueue.RunAsync(batch,QueueConcurrency,task=>new(task.Path,Destination(task)),RunTaskAsync,cancellation.Token,queuePause);
             await RefreshVaultAsync();
         }
+        catch(OperationCanceledException) {Footer="队列已取消，未开始的任务保留。";}
         catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
         {Banner="无法处理文件或写入设置，请检查输出目录与文件权限。";}
         finally
         {
             var shouldOpen=directoryRules.OpenAfterSuccess && !cancellation.IsCancellationRequested && batch.Count>0 && batch.All(task=>task.Completed);
-            CanSkipPasswords=false;cancellation.Dispose();cancellation=null;IsBusy=false;
+            CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
             try {if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray());}
             finally {idle.TrySetResult();}
         }

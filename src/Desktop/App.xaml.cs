@@ -103,6 +103,15 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var pauseIndex=Array.IndexOf(e.Args,"--validate-pause");
+        if(pauseIndex>=0)
+        {
+            window.SuppressExitConfirmationForValidation=true;
+            var report=Path.Combine(Path.GetFullPath(e.Args[pauseIndex+1]),"artifacts/pause-ui-validation.json");File.WriteAllText(report,"{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new {passed=false,exception=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopPauseValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[pauseIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
+        }
         var concurrencyIndex=Array.IndexOf(e.Args,"--validate-concurrency");
         if(concurrencyIndex>=0)
         {

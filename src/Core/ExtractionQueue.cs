@@ -13,7 +13,7 @@ public sealed record ExtractionLease(string InputPath,string OutputRoot)
 public static class ExtractionQueue
 {
     public static async Task RunAsync<T>(IReadOnlyList<T> items,int concurrency,Func<T,ExtractionLease> reserve,
-        Func<T,CancellationToken,Task> run,CancellationToken cancellationToken=default)
+        Func<T,CancellationToken,Task> run,CancellationToken cancellationToken=default,ExtractionPause? pause=null)
     {
         if(concurrency is not (1 or 2)) throw new ArgumentOutOfRangeException(nameof(concurrency));
         using var cancellation=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -22,6 +22,7 @@ public static class ExtractionQueue
         {
             while(next<items.Count || active.Count>0)
             {
+                if(pause?.IsRequested==true && !cancellation.IsCancellationRequested) await pause.WaitAsync(cancellation.Token);
                 while(next<items.Count && active.Count<concurrency && !cancellation.IsCancellationRequested)
                 {
                     var item=items[next];var lease=reserve(item);

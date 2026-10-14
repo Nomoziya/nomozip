@@ -6,7 +6,7 @@ namespace ArchivePassword.Desktop;
 public sealed partial class MainViewModel
 {
     public ICommand FilenameEncodingCommand { get; private set; } = null!;
-    private ArchiveEngineClient CreateReadClient(ArchiveTaskRow task) => new(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),engines.DllPath(activeEngine),task.FilenameCodePage);
+    private ArchiveEngineClient CreateReadClient(ArchiveTaskRow task,ArchivePassword.Core.ExtractionPause? pause=null) => new(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),engines.DllPath(activeEngine),task.FilenameCodePage,pause);
     private void InitializeFilenameEncodingCommands() => FilenameEncodingCommand = new AsyncCommand(EditFilenameEncodingAsync,
         () => Page==0 && IsIdle && activeEngine.Length>0 && SelectedTask is {} task && Path.GetExtension(task.Path).Equals(".zip",StringComparison.OrdinalIgnoreCase));
     private Task EditFilenameEncodingAsync()
