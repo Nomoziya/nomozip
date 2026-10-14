@@ -1,12 +1,11 @@
-param([string]$ApplicationDirectory = 'artifacts/app')
+param([string]$ApplicationDirectory = 'artifacts/app', [ValidateSet('x64','arm64')][string]$Architecture = 'x64')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskApp = Join-Path ([IO.Path]::GetFullPath((Join-Path $taskRoot $ApplicationDirectory))) 'ArchivePassword.exe'
 $taskValidation = Join-Path $taskRoot ('artifacts/shell-validation/' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Force $taskValidation | Out-Null
 $taskClient = Join-Path $taskValidation 'ShellClient.exe'
-& g++ -std=c++17 -O2 -Wall -Wextra -municode -static -static-libgcc -static-libstdc++ ("-I" + (Join-Path $taskRoot '.tools')) (Join-Path $taskRoot 'tests/ShellValidation/client.cpp') -lshell32 -lole32 -luuid -o $taskClient
-if ($LASTEXITCODE -ne 0) { throw 'Native Shell client build failed.' }
+& (Join-Path $PSScriptRoot 'build-shell-test-client.ps1') -Source (Join-Path $taskRoot 'tests/ShellValidation/client.cpp') -Output $taskClient -Architecture $Architecture
 $taskChecks = [ordered]@{}
 foreach ($taskCase in @('ExtractHere','ExtractFolder','Compress','LargeCompress')) {
     $taskAction = if ($taskCase -eq 'LargeCompress') { 'Compress' } else { $taskCase }

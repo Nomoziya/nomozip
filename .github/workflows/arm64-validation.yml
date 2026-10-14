@@ -31,6 +31,10 @@ jobs:
         run: ./scripts/build.ps1 -Architecture arm64 -Configuration Release -SkipWorker
       - name: Native data desktop updates and x64 vault migration
         run: ./scripts/test-arm64.ps1
+      - name: Native traditional Shell selection and Explorer menu
+        run: |
+          ./scripts/test-shell.ps1 -Architecture arm64
+          ./scripts/test-shell-live.ps1 -Architecture arm64
       - name: Native engine maintenance with isolated test keys and offline GitHub
         run: |
           python tests/engine_release_validation.py --architecture arm64
