@@ -19,6 +19,8 @@ internal static class DesktopNotificationValidation
         var checks = new Dictionary<string, bool>();
         var taskbarAvailable = FindWindowW("Shell_TrayWnd", null) != IntPtr.Zero;
         var nativeRegistrationTested = false;
+        var nativeRegistrationAttempted = false;
+        var nativeShellUnavailable = false;
         NativeNotificationResult? nativeSdkProbe = null;
         void Check(string name, bool passed) => checks.Add(name, passed);
         try
@@ -155,7 +157,14 @@ internal static class DesktopNotificationValidation
                     ProbeNotification(new System.Windows.Interop.WindowInteropHelper(window).Handle,out var result);
                     nativeSdkProbe = result;
                 }
-                if (taskbarAvailable)
+                nativeRegistrationAttempted = true;
+                // The independent SDK probe uses a fresh Win32 window and stock icon.
+                // Record environment unavailability only when both native calls reject
+                // valid inputs with the same E_FAIL; this never establishes delivery.
+                nativeShellUnavailable = nativeSdkProbe is { Size: 976, InfoOffset: 304,
+                    ValidWindow: 1, ValidIcon: 1, Accepted: 0, FreshAccepted: 0,
+                    Error: 0x80004005, FreshError: 0x80004005 };
+                if (taskbarAvailable && !nativeShellUnavailable)
                 {
                     nativeRegistrationTested = true;
                     Check("isolated Windows Shell accepts native icon without balloon", real.EnsureIcon());
@@ -163,8 +172,8 @@ internal static class DesktopNotificationValidation
                 }
                 else
                 {
-                    Check("headless native Windows rejects icon without claiming delivery", !real.EnsureIcon());
-                    real.RemoveIcon(); Check("headless native Windows cleanup and retry remain safe", !real.EnsureIcon());
+                    Check("unavailable native Windows Shell rejects icon without claiming delivery", !real.EnsureIcon());
+                    real.RemoveIcon(); Check("unavailable native Windows Shell cleanup and retry remain safe", !real.EnsureIcon());
                 }
             }
         }
@@ -173,7 +182,8 @@ internal static class DesktopNotificationValidation
         await File.WriteAllTextAsync(Path.Combine(root, "artifacts/notification-ui-validation.json"), JsonSerializer.Serialize(new
         { passed = checks.Count(pair => pair.Value), total = checks.Count, cases = checks.Select(pair => new { name = pair.Key, passed = pair.Value }),
             syntheticData = true, actualVisibleNotificationDeliveryTested = false,
-            taskbarAvailable, nativeSdkProbe, nativeShellRegistrationOnIsolatedRunner = nativeRegistrationTested }, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true }));
+            taskbarAvailable, nativeSdkProbe, nativeShellRegistrationAttempted = nativeRegistrationAttempted,
+            nativeShellUnavailable, nativeShellRegistrationOnIsolatedRunner = nativeRegistrationTested }, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true }));
         return checks.Count > 0 && checks.Values.All(value => value);
     }
     private static async Task Layout(Window window) { await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.ApplicationIdle); System.Windows.Input.CommandManager.InvalidateRequerySuggested(); await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle); }
