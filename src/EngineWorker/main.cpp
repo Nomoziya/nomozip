@@ -288,6 +288,7 @@ public:
     }
 };
 struct Format { GUID id; std::wstring name, extensions; };
+#include "VolumeStreams.h"
 #include "Compression.h"
 #include "ArchiveUpdate.h"
 template<class T> static T exported(HMODULE library, const char* name) {
@@ -326,7 +327,10 @@ static json run(json& request, const wchar_t* dllPath) {
         json result = json::array(); for (auto& format : formats) result.push_back({{"name", utf8(format.name)}, {"extensions", utf8(format.extensions)}});
         return {{"kind", "result"}, {"status", "success"}, {"formats", result}};
     }
-    if (operation == "create") return createArchive(request, formats, createFunc);
+    if (operation == "create" || operation=="create-split") {
+        if(operation=="create-split" && request.value("volumeSize",static_cast<UInt64>(0))<128) return {{"kind","result"},{"status","error"},{"code","invalid_volume_size"}};
+        return createArchive(request, formats, createFunc);
+    }
     const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded" || operation=="update-encoded";
     UInt32 codePage=0;
     if(encoded) {
@@ -355,10 +359,22 @@ static json run(json& request, const wchar_t* dllPath) {
         if (!secret.empty()) SecureZeroMemory(secret.data(), secret.size());
         request.erase("password");
     }
-    HANDLE handle = CreateFileW(context.archivePath.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (handle == INVALID_HANDLE_VALUE) return {{"kind", "result"}, {"status", "error"}, {"code", "archive_read_failed"}};
-    ComPtr<IInStream> input; input.ptr = new InputStream(handle);
+    auto inner=context.archivePath.stem().extension().wstring();std::transform(inner.begin(),inner.end(),inner.begin(),towlower);
+    const bool volumes=(inner==L".7z" || inner==L".zip") && context.archivePath.extension()==L".001";
+    const auto volumeExtension=context.archivePath.extension().wstring();
+    if((inner==L".7z" || inner==L".zip") && volumeExtension!=L".001" && volumeExtension.size()>=4 && volumeExtension.substr(1).find_first_not_of(L"0123456789")==std::wstring::npos)
+        return {{"kind","result"},{"status","error"},{"code","first_volume_required"}};
+    ComPtr<IInStream> input;
+    if(volumes) {
+        try {input.ptr=new VolumeInputStream(context.archivePath);}
+        catch(const std::exception& error) {const auto code=std::string(error.what());return {{"kind","result"},{"status","error"},{"code",code=="missing_volume" ? "missing_volume" : "archive_read_failed"}};}
+    } else {
+        HANDLE handle=CreateFileW(context.archivePath.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);
+        if(handle==INVALID_HANDLE_VALUE) return {{"kind","result"},{"status","error"},{"code","archive_read_failed"}};
+        input.ptr=new InputStream(handle);
+    }
     std::wstring extension = context.archivePath.extension().wstring(); if (!extension.empty()) extension.erase(0, 1);
+    if(volumes) extension=inner.substr(1);
     std::transform(extension.begin(), extension.end(), extension.begin(), towlower);
     auto matches = [&](const Format& value) { return !extension.empty() && (L" " + value.extensions + L" ").find(L" " + extension + L" ") != std::wstring::npos; };
     std::stable_sort(formats.begin(), formats.end(), [&](const Format& a, const Format& b) { return matches(a) > matches(b); });
@@ -380,10 +396,16 @@ static json run(json& request, const wchar_t* dllPath) {
         HRESULT opened = archive->Open(input.ptr, &maxCheck, open.ptr);
         if (opened == S_OK) { usedFormat = format.name; break; }
         archive->Close(); archive.reset();
+        if(volumes && matches(format)) {if(!context.passwordRequested) context.missingVolume=true;break;}
         if (context.passwordRequested || context.missingVolume || (matches(format) && opened != S_FALSE)) break;
     }
     if (!archive.ptr) return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "error"}, {"code", cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordRequested ? context.passwordDefined ? "password_or_corrupt" : "password_required" : "unsupported_or_corrupt"}};
     if(encoded && _wcsicmp(usedFormat.c_str(),L"zip")!=0) return {{"kind","result"},{"status","error"},{"code","filename_encoding_not_zip"}};
+    if(volumes) {
+        Variant flags;archive->GetArchiveProperty(kpidErrorFlags,&flags.value);
+        if(flags.number()&(kpv_ErrorFlags_UnexpectedEnd|kpv_ErrorFlags_UnconfirmedStart)) return {{"kind","result"},{"status","error"},{"code","missing_volume"}};
+        if(operation=="update") return {{"kind","result"},{"status","error"},{"code","archive_edit_container_read_only"}};
+    }
     UInt32 itemCount = 0; archive->GetNumberOfItems(&itemCount);
     if(operation=="update") return updateArchive(request,archive.ptr,usedFormat,context,itemCount);
     std::vector<UInt32> selected;

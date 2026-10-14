@@ -42,6 +42,7 @@ public sealed class ArchiveEditingService(IArchiveEngine engine,IArchiveEditor e
         try
         {
             archive=Path.GetFullPath(archive);
+            if(VolumeCompressionService.IsVolumePath(archive)) return Failure("archive_edit_container_read_only");
             // Block writers throughout verification and creation. Release only for atomic replacement.
             sourceLock=new FileStream(archive,FileMode.Open,FileAccess.Read,FileShare.Read);
             var verified=await new ArchiveVerificationService(engine,candidates).VerifyAsync(archive,autoTry,askPassword,progress,token);
