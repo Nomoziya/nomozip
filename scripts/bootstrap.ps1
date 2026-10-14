@@ -12,12 +12,13 @@ foreach ($taskVersion in @('26.04', '26.03')) {
         Invoke-WebRequest "https://github.com/ip7z/7zip/releases/download/$taskVersion/7z$taskDigits-x64.exe" -OutFile $taskInstaller
     }
     New-Item -ItemType Directory -Force -Path $taskEngine | Out-Null
-    & $taskSevenZip x $taskInstaller "-o$taskEngine" -y 7z.dll 7z.exe License.txt | Out-Null
+    & $taskSevenZip x $taskInstaller "-o$taskEngine" -y 7z.dll 7z.exe 7z.sfx License.txt | Out-Null
     if ($LASTEXITCODE -ne 0) { throw 'Engine extraction failed.' }
     $taskManifest = [ordered]@{
         version = $taskVersion; architecture = 'x64'; protocol = 1
         source = "https://github.com/ip7z/7zip/releases/download/$taskVersion/7z$taskDigits-x64.exe"
         dllSha256 = (Get-FileHash (Join-Path $taskEngine '7z.dll') -Algorithm SHA256).Hash.ToLowerInvariant()
+        sfxSha256 = (Get-FileHash (Join-Path $taskEngine '7z.sfx') -Algorithm SHA256).Hash.ToLowerInvariant()
     }
     $taskManifest | ConvertTo-Json | Set-Content (Join-Path $taskEngine 'manifest.json') -Encoding utf8
     Write-Output "Prepared official engine $taskVersion"

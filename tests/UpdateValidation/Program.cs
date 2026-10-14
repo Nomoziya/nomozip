@@ -31,6 +31,14 @@ await unchangedVault.SaveAsync(new SavedPassword(Guid.NewGuid(), "synthetic upda
 var vaultBefore = await File.ReadAllBytesAsync(Path.Combine(testRoot, "passwords.apv"));
 await updater.InstallAsync(package03); await updater.ActivateAsync("26.03");
 Check("new engine installed separately and activated", File.Exists(Path.Combine(installed, "26.03/7z.dll")) && (await updater.ReadSelectionAsync()) is { Active: "26.03", Previous: "26.04" } && catalog.DllPath("26.03").StartsWith(installed, StringComparison.OrdinalIgnoreCase));
+var installedOnly=new EngineCatalog(Path.Combine(testRoot,"no-bundled-engine"),installed,publicKey);await installedOnly.ReadVerifiedVersionsAsync();
+var installedModule=await installedOnly.ReadSfxModuleAsync("26.03");
+var officialModule=await File.ReadAllBytesAsync(Path.Combine(root,"engines/26.03/7z.sfx"));
+Check("signed module is available without any bundled engine fallback",installedModule.IsValid() && installedModule.Version=="26.03" && installedModule.Bytes.SequenceEqual(officialModule));
+var sfxInput=Path.Combine(testRoot,"sfx-input.txt");await File.WriteAllTextAsync(sfxInput,"signed update SFX");var signedExe=Path.Combine(testRoot,"signed-module.exe");
+var signedClient=new ArchiveEngineClient(worker,installedOnly.DllPath("26.03"));
+var signedCreated=await new SfxCompressionService(signedClient,signedClient).CreateAsync([sfxInput],signedExe,installedModule);
+Check("installed signed engine module actually creates valid EXE",signedCreated.Engine.IsSuccess && (await signedClient.TestAsync(signedExe)).IsSuccess);
 var reopened = new EngineUpdateService(installed, statePath, publicKey, worker, archive, new EngineCatalog(Path.Combine(root, "engines"), installed, publicKey));
 Check("active selection survives reopen", (await reopened.ReadSelectionAsync())?.Active == "26.03");
 var engine = new ArchiveEngineClient(worker, catalog.DllPath("26.03"));
@@ -53,6 +61,30 @@ async Task<string> Mutate(string name, Action<Dictionary<string, byte[]>> change
     { using var output = zip.CreateEntry(entryName).Open(); output.Write(bytes); }
     return target;
 }
+async Task<string> SfxVariant(string name,Action<System.Text.Json.Nodes.JsonObject> change)
+{
+    return await Mutate(name,values=>
+    {
+        var report=(System.Text.Json.Nodes.JsonObject)System.Text.Json.Nodes.JsonNode.Parse(values["engine/compatibility-report.json"])!;change(report);
+        values["engine/compatibility-report.json"]=JsonSerializer.SerializeToUtf8Bytes(report);
+        var manifest=JsonSerializer.Deserialize<EngineUpdateManifest>(values["manifest.json"],EngineUpdatePackage.JsonOptions)!;
+        manifest.Files["compatibility-report.json"]=Convert.ToHexString(SHA256.HashData(values["engine/compatibility-report.json"]));values["manifest.json"]=JsonSerializer.SerializeToUtf8Bytes(manifest,EngineUpdatePackage.JsonOptions);
+    },true);
+}
+foreach(var kind in new[]{"hash","version","encoding"})
+{
+    var variant=await SfxVariant("sfx-"+kind,report=>{var module=report["sfx"]!;if(kind=="hash") module["sha256"]=new string('0',64);else if(kind=="version") module["version"]="26.04";else module["moduleBase64"]="invalid base64";});
+    var invalidStore=Path.Combine(testRoot,"bad-"+kind);var invalidCatalog=new EngineCatalog(Path.Combine(testRoot,"no-bundle"),invalidStore,publicKey);
+    var invalidUpdater=new EngineUpdateService(invalidStore,Path.Combine(testRoot,"bad-"+kind+".json"),publicKey,worker,archive,invalidCatalog);await invalidUpdater.InstallAsync(variant);
+    bool refused=false;try {await invalidCatalog.ReadSfxModuleAsync("26.03");} catch(UpdateException error) {refused=error.Code=="sfx_module_invalid";}
+    Check("signed invalid SFX "+kind+" cannot provide a module",refused);
+}
+var legacyPackage=await SfxVariant("sfx-legacy",report=>report.Remove("sfx"));var legacyFolder=Path.Combine(testRoot,"legacy");
+var legacyCatalog=new EngineCatalog(Path.Combine(root,"engines"),legacyFolder,publicKey);var legacyUpdater=new EngineUpdateService(legacyFolder,Path.Combine(testRoot,"legacy.json"),publicKey,worker,archive,legacyCatalog);await legacyUpdater.InstallAsync(legacyPackage);
+Check("legacy signed package reuses only matching bundled module",(await legacyCatalog.ReadSfxModuleAsync("26.03")).Bytes.SequenceEqual(officialModule));
+var noFallback=new EngineCatalog(Path.Combine(testRoot,"absent-bundle"),legacyFolder,publicKey);await noFallback.ReadVerifiedVersionsAsync();bool unavailable=false;
+try {await noFallback.ReadSfxModuleAsync("26.03");} catch(UpdateException error) {unavailable=error.Code=="sfx_module_unavailable";}
+Check("legacy engine without matching module stays usable but SFX unavailable",unavailable && (await new ArchiveEngineClient(worker,noFallback.DllPath("26.03")).TestAsync(archive,"测试密碼 ' $ & 空格")).IsSuccess);
 var changedManifest = await Mutate("changed-manifest", values => values["manifest.json"][8] ^= 1);
 await Reject("manifest tampering rejected without switch", () => updater.InstallAsync(changedManifest), "invalid_signature");
 var changedDll = await Mutate("changed-dll", values => values["engine/7z.dll"][100] ^= 1);

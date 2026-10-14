@@ -10,8 +10,8 @@ import sys
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json')
-PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation', 'VolumeValidation')
+REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json')
+PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation', 'VolumeValidation', 'SfxValidation')
 
 
 def sha(path):
@@ -47,20 +47,22 @@ def cases(report):
 
 
 def bound_files(version):
-    return [f'workspace/engines/{version}/{name}' for name in ('7z.dll', '7z.exe', 'License.txt', 'manifest.json')] + [
+    return [f'workspace/engines/{version}/{name}' for name in ('7z.dll', '7z.exe', '7z.sfx', 'License.txt', 'manifest.json')] + [
         'workspace/artifacts/worker/ArchiveEngineWorker.exe', 'public-key.pem'] + ['workspace/artifacts/' + name for name in REPORTS]
 
 
 def validate_reports(workspace, version):
     dll_hash = sha(workspace / 'engines' / version / '7z.dll')
     totals = {}
-    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20, 20)):
+    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20, 20, 20)):
         report = load(workspace / 'artifacts' / name)
         values = cases(report)
         if sum(value['name'].startswith(version + ' ') for value in values) < minimum:
             raise ValueError('Required target-version coverage is missing: ' + name)
-        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json') and report['engineHashes'][version].lower() != dll_hash:
+        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json') and report['engineHashes'][version].lower() != dll_hash:
             raise ValueError('Compatibility report belongs to another engine binary.')
+        if name=='sfx-validation.json' and report['moduleHashes'][version].lower()!=sha(workspace/'engines'/version/'7z.sfx'):
+            raise ValueError('Compatibility report belongs to another SFX module.')
         totals[name] = len(values)
     return totals
 
@@ -77,7 +79,7 @@ def review(candidate, public_key, worker, repository=None):
     if sha(public_key) != record['hashes']['public-key.pem'] or sha(worker) != record['hashes']['workspace/artifacts/worker/ArchiveEngineWorker.exe']:
         raise ValueError('Product public key or worker differs from the reviewed candidate.')
     manifest = load(candidate / 'workspace/engines' / version / 'manifest.json')
-    if manifest['version'] != version or manifest['protocol'] != 1 or manifest['architecture'] != 'x64' or manifest['dllSha256'].lower() != sha(candidate / 'workspace/engines' / version / '7z.dll'):
+    if manifest['version'] != version or manifest['protocol'] != 1 or manifest['architecture'] != 'x64' or manifest['dllSha256'].lower() != sha(candidate / 'workspace/engines' / version / '7z.dll') or manifest['sfxSha256'].lower()!=sha(candidate/'workspace/engines'/version/'7z.sfx'):
         raise ValueError('Candidate manifest is invalid.')
     validate_reports(candidate / 'workspace', version)
     return record
@@ -102,7 +104,7 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
         manifest = load(engine_directory / 'manifest.json')
         version = version or manifest['version']
         source = f'https://github.com/ip7z/7zip/releases/download/{version}/7z{version.replace(".", "")}-x64.exe'
-        if not re.fullmatch(r'\d{2}\.\d{2}', version) or manifest['version'] != version or manifest['architecture'] != 'x64' or manifest['source'] != source or manifest['dllSha256'].lower() != sha(engine_directory / '7z.dll'):
+        if not re.fullmatch(r'\d{2}\.\d{2}', version) or manifest['version'] != version or manifest['architecture'] != 'x64' or manifest['source'] != source or manifest['dllSha256'].lower() != sha(engine_directory / '7z.dll') or manifest['sfxSha256'].lower()!=sha(engine_directory/'7z.sfx'):
             raise ValueError('Prepared local engine manifest and binary do not match.')
         origin = dict(mode='prepared-local', source=source)
     else:
@@ -120,7 +122,7 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
     shutil.copyfile(source_root / 'config/update-public-key.pem', output / 'public-key.pem')
     for baseline in ('26.04', '26.03'):
         directory = workspace / 'engines' / baseline; directory.mkdir(parents=True)
-        for name in ('7z.dll', '7z.exe', 'License.txt', 'manifest.json'):
+        for name in ('7z.dll', '7z.exe', '7z.sfx', 'License.txt', 'manifest.json'):
             shutil.copyfile(tools_root / 'engines' / baseline / name, directory / name)
     target = workspace / 'engines' / version; target.mkdir(parents=True, exist_ok=True)
     (target / 'manifest.json').write_text(json.dumps(dict(version=version, architecture='x64', protocol=0, source=source,
@@ -131,11 +133,11 @@ def prepare(source_root, tools_root, output, version=None, engine_directory=None
             shutil.copyfileobj(response, destination)
         if sha(installer) != expected_hash:
             raise ValueError('Official download checksum mismatch.')
-        command([tools_root / 'engines/26.04/7z.exe', 'x', installer, '-o' + str(target), '-y', '7z.dll', '7z.exe', 'License.txt'], logs / 'official-extraction.log')
+        command([tools_root / 'engines/26.04/7z.exe', 'x', installer, '-o' + str(target), '-y', '7z.dll', '7z.exe', '7z.sfx', 'License.txt'], logs / 'official-extraction.log')
     else:
-        for name in ('7z.dll', '7z.exe', 'License.txt'):
+        for name in ('7z.dll', '7z.exe', '7z.sfx', 'License.txt'):
             shutil.copyfile(engine_directory / name, target / name)
-    manifest = dict(version=version, architecture='x64', protocol=0, source=source, dllSha256=sha(target / '7z.dll'))
+    manifest = dict(version=version, architecture='x64', protocol=0, source=source, dllSha256=sha(target / '7z.dll'),sfxSha256=sha(target/'7z.sfx'))
     (target / 'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     seeds = workspace / 'tests/fixtures/generated'; seeds.mkdir(parents=True)
     for file in (tools_root / 'tests/fixtures/generated').glob('*'):

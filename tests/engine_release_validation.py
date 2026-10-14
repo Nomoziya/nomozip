@@ -83,7 +83,7 @@ def validate():
     if prepared.returncode:
         raise RuntimeError('Actual Prepare command failed; inspect owned command logs.')
     record = review(candidate, public, WORKER, 'Synthetic/nomozip-tests')
-    check('real seven-matrix candidate prepared in isolated workspace', record['status'] == 'ready-for-signing' and len(record['totals']) == 7)
+    check('real eight-matrix candidate prepared in isolated workspace', record['status'] == 'ready-for-signing' and len(record['totals']) == 8)
     check('matrix versions deduplicated and extraction baseline still complete', record['totals']['engine-validation.json'] == 101)
     duplicate = run(candidate, 'Prepare', '-Version', '26.04', '-EngineDirectory', ROOT / 'engines/26.04')
     check('existing prepared candidate cannot be overwritten', duplicate.returncode != 0 and 'Keep prior candidates immutable' in duplicate.stdout + duplicate.stderr)
@@ -94,11 +94,13 @@ def validate():
     check('real signed package accepted by client verifier', call([DOTNET, PACKAGER, 'inspect', package, public]).returncode == 0)
     with zipfile.ZipFile(package) as archive:
         report = json.loads(archive.read('engine/compatibility-report.json'))
-        check('signed compatibility includes selection encoding pause editing volumes and worker binding', set(report['maintenance']) == {'workerSha256', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json'})
+        check('signed compatibility includes selection encoding pause editing volumes SFX and worker binding', set(report['maintenance']) == {'workerSha256', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json','sfx-validation.json'})
+        module=__import__('base64').b64decode(report['sfx']['moduleBase64'])
+        check('official module is inside existing signed compatibility payload',report['sfx']['version']=='26.04' and hashlib.sha256(module).hexdigest()==report['sfx']['sha256']==hashlib.sha256((ROOT/'engines/26.04/7z.sfx').read_bytes()).hexdigest())
         check('package retains legacy five-entry client format', len(archive.namelist()) == 5 and archive.testzip() is None)
     second = run(candidate, 'Sign', '-PrivateKey', key)
     check('signed assets never overwritten', second.returncode != 0 and 'Keep signed candidate assets immutable' in second.stdout + second.stderr)
-    for relative, name in [('workspace/engines/26.04/7z.dll', 'changed DLL'), ('workspace/artifacts/pause-validation.json', 'changed pause evidence'), ('workspace/artifacts/archive-editing-validation.json', 'changed editing evidence'), ('workspace/artifacts/volume-validation.json', 'changed volume evidence')]:
+    for relative, name in [('workspace/engines/26.04/7z.dll', 'changed DLL'), ('workspace/artifacts/pause-validation.json', 'changed pause evidence'), ('workspace/artifacts/archive-editing-validation.json', 'changed editing evidence'), ('workspace/artifacts/volume-validation.json', 'changed volume evidence'),('workspace/engines/26.04/7z.sfx','changed SFX module'),('workspace/artifacts/sfx-validation.json','changed SFX evidence')]:
         altered = clone(candidate); path = altered / relative; path.write_bytes(path.read_bytes() + b'changed')
         check('review rejects ' + name, rejected(lambda: review(altered, public, WORKER, 'Synthetic/nomozip-tests')))
         refused = run(altered, 'Sign', '-PrivateKey', OWN / 'absent-private.pem')

@@ -4,5 +4,6 @@ artifacts/
 **/obj/
 engines/**/7z.dll
 engines/**/7z.exe
+engines/**/7z.sfx
 tests/fixtures/generated/
 *.user

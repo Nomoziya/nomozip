@@ -1,6 +1,6 @@
 # Third-party components and sources
 
-The product uses official, unmodified x64 7-Zip engines 26.04 and 26.03. Their DLLs and executables are distributed with the corresponding license text. Source packages are available from the official release links:
+The product uses official, unmodified x64 7-Zip engines 26.04 and 26.03. Their DLLs and executables are distributed with the corresponding license text. It also includes the unmodified Windows `7z.sfx` modules from those same installers; these official modules are x86 executables, independent of the x64 engine DLL. Source packages are available from the official release links:
 
 - https://github.com/ip7z/7zip/releases/tag/26.04
 - https://github.com/ip7z/7zip/releases/tag/26.03
@@ -14,6 +14,6 @@ The native worker is built with MinGW and static runtime libraries. GCC runtime,
 
 The C# password store uses Microsoft's System.Security.Cryptography.ProtectedData 10.0.12 package (MIT): https://www.nuget.org/packages/System.Security.Cryptography.ProtectedData/10.0.12. Runtime and framework dependencies are Microsoft's .NET 10 / WPF.
 
-The self-contained Windows x64 distribution includes Microsoft .NET 10.0.12 and WPF runtime files from Microsoft's official NuGet runtime packs. Its runtime updates require a new application package. The per-user installer uses NSIS 3.13, obtained from the official MSYS2 3.13-2 package with the published SHA-256 verified: https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-nsis. NSIS copyright and applicable license notices are included as `licenses/NSIS-COPYING.txt`.
+Current Windows x64 distributions use the system's shared .NET 10 Desktop Runtime and do not bundle .NET or WPF runtime files. Older self-contained payloads are used only as isolated upgrade test fixtures and are excluded from release assets. The per-user installer uses NSIS 3.13, obtained from the official MSYS2 3.13-2 package with the published SHA-256 verified: https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-nsis. NSIS copyright and applicable license notices are included as `licenses/NSIS-COPYING.txt`.
 
 Integration tests download RAR fixtures from libarchive's test suite, and do not include them in the application package: https://github.com/libarchive/libarchive/tree/master/libarchive/test. The tests use the fixture content and passwords documented in test_read_format_rar_encryption.c. Test fixture provenance is independent from the product license.

@@ -36,6 +36,8 @@
               <TextBlock x:Name="VolumeError" Text="{Binding CompressionVolumeError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
             </StackPanel>
             <TextBlock Text="{Binding CompressionVolumeHint}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Style.Triggers><DataTrigger Binding="{Binding CompressionVolumeHint}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+            <CheckBox x:Name="SfxBox" Content="创建自解压包（EXE）" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="创建 7z 自解压包，EXE"/>
+            <TextBlock Text="{Binding CompressionSfxHint}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Style.Triggers><DataTrigger Binding="{Binding CompressionSfxHint}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
             <CheckBox Content="使用密码加密" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding IsIdle}"/>
             <StackPanel><StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CompressionEncrypt}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></StackPanel.Style>
               <TextBlock Text="{Binding CompressionPasswordStatus}" Style="{StaticResource Secondary}"/><Button Content="设置或更换密码" Command="{Binding SetCompressionPasswordCommand}" HorizontalAlignment="Left" Margin="0,8,0,0"/>
