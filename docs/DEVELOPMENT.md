@@ -1,5 +1,7 @@
 # 构建、验证与维护
 
+0.2.0 的本地候选可通过 [轻量发行维护](RELEASE_MAINTENANCE.md) 中的 `build-release.ps1` 一次生成安装 EXE、ZIP、源码和校验清单，并复核版本与当前输入。该命令不发布、不签名、不覆盖用户安装或旧候选；完整产品 CI 仍独立验收。
+
 当前公开正式版为 0.1.0；0.2.0 开发候选只在本地准备，当前范围与逐项证据见 [验收与交接](ACCEPTANCE.md) 和 [后续规划](ROADMAP.md)。只分发共享运行库轻量版；带运行库载荷仅作为隔离 VM 的旧版升级夹具。Windows 代码签名和原生菜单公开部署已移出实施与验收，相关身份原型只在手动选做工作流运行；引擎 RSA 更新真实性校验仍保留。下方发布、准备和修复记录保留当时状态，不代表已发布开发候选或仍分发完整版本。
 
 第九公开预览 [v0.1.0-preview.9](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0-preview.9) 已发布，标签 `8a86c4062d4567daef7dcdc8cc0c518abb7cd1aa`（产品代码 `7bea5ae6ebc0aeb0ce78e2553bc590272b8f9eae` 已通过最终 CI，之后仅增加文档）。四项轻量资产均无登录公开下载，SHA-256 与本地及 GitHub 摘要一致；报告 `artifacts/public-preview-9-validation.json`。43 文件载荷 9085627 字节，100 文件源码快照、包 CRC/私密材料排除/固定公钥及仅轻量发布检查通过，报告 `artifacts/preview-9-package-validation.json`。首次准备的未发布安装器保留在原 staging 目录，实际发布使用修复后 `artifacts/release-preview-9-final-fixed/`。稳定引擎仍为 `engine-26.04`，历史资产不覆盖。本机启动入口为第九预览。新增功能的代理检查已完成，不等待用户逐版重复测试；第八预览人工未测试及其它真正依赖用户环境的状态保持不变。

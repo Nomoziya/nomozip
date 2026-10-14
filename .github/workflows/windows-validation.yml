@@ -122,6 +122,8 @@ jobs:
           ./scripts/build.ps1 -Configuration Release -SkipWorker -SelfContained -OutputDirectory artifacts/self-contained-app
           ./scripts/build.ps1 -Configuration Release -SkipWorker -OutputDirectory artifacts/light-app
           ./scripts/test-installer.ps1
+          python tests/release_maintenance_validation.py --app-directory artifacts/light-app
+          if ($LASTEXITCODE -ne 0) { throw 'Lightweight release maintenance validation failed.' }
       - name: Keep validation evidence
         if: always()
         uses: actions/upload-artifact@v7
