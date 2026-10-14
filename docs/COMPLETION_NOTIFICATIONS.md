@@ -14,3 +14,5 @@
 
 
 验收记录：本地 63 / CI 65 项通过，[完整 Windows CI 38505385610](https://github.com/Nomoziya/nomozip/actions/runs/38505385610) 的 51 份报告全部通过，新增真实窗口关闭后原 HWND 保留回归；完整证据见 `artifacts/notification-ui-validation.json` 与 `artifacts/notification-ci-review.json`。本地轻量候选 0.2.0-preview.14 为 9745096 字节 / 43 文件，安装器 2277654 字节；四项资产在 `artifacts/release-0.2.0-preview.14/`，固定引擎/worker/公钥/渠道均未变。未发布新正式版或更换实际安装。
+
+2026-10-14 F14 补充：最新 x64 CI 38588623164 的真实图标登记、清理和全部 65 项通过。ARM64 CI 38588623992 的任务栏存在，但原生接口和独立 Win32 SDK 新窗口对照均返回 E_FAIL；报告记录 nativeShellUnavailable=true、nativeShellRegistrationOnIsolatedRunner=false，验证实际拒绝及清理，而非登记成功。具体系统原因未定位，实际可见投递仍未验证。详见 [ARM64 验收边界](ARM64.md)。

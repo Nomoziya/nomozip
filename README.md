@@ -2,13 +2,13 @@
 
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
 
-最新本地候选还支持 [修改已有 7z/ZIP](docs/ARCHIVE_EDITING.md)、[分卷创建](docs/SPLIT_VOLUMES.md)、[官方 7z 自解压包](docs/SELF_EXTRACTING.md) 和 [TAR、单文件 GZIP/XZ 创建](docs/CREATION_FORMATS.md)。公开正式版的功能与下载入口见下文；开发候选未自动公开发布。
+最新本地候选还支持 [修改已有 7z/ZIP](docs/ARCHIVE_EDITING.md)、[分卷创建](docs/SPLIT_VOLUMES.md)、[官方 7z 自解压包](docs/SELF_EXTRACTING.md)、[TAR、单文件 GZIP/XZ 创建](docs/CREATION_FORMATS.md) 和 [Windows ARM64 原生轻量包](docs/ARM64.md)。公开正式版的功能与下载入口见下文；开发候选未自动公开发布。
 
 0.2.0 开发候选已加入 [密码库加密备份](docs/VAULT_BACKUP.md)、[基础右键菜单](docs/SHELL_MENU.md)、[软件正式版检查与下载页](docs/APPLICATION_UPDATES.md)、[解压规则、独立校验及结果目录操作](docs/EXTRACTION_TOOLS.md) 、[选择性解压](docs/SELECTIVE_EXTRACTION.md) 、[密码分组、来源及重复整理](docs/PASSWORD_ORGANIZATION.md) 和 [文件 SHA-256 与校验清单](docs/FILE_HASHES.md)、[ZIP 文件名编码](docs/ZIP_FILENAME_ENCODING.md)、[解压后的下载来源标记](docs/DOWNLOAD_ORIGIN.md)、[每显示器 DPI 与小窗口适配](docs/DISPLAY_SCALING.md)、[任务重排、单项解压、并发和暂停](docs/TASK_QUEUE.md)、[可选解压完成通知](docs/COMPLETION_NOTIFICATIONS.md)、[可选主密码与空闲锁定](docs/MASTER_PASSWORD.md)，仍仅提供轻量版。公开正式版保持 0.1.0，候选功能不表示已公开发布。
 
 首个正式版 0.1.0 已公开，Windows x64，仅提供共享运行库轻量版。支持密码库、自动尝试和手动补充、7z/ZIP 创建及加密、7z/ZIP/RAR 内容浏览与解压，以及经本产品签名验证的官方引擎更新与回退。传统 ZIP、AES ZIP、RAR5 的同包多密码组合解压已专项验证；完整解压后才保存已验证的新密码。焦点框、任务文件朗读和极小工作区布局已修复，用户复验确认没有问题。正式版 [Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38270823087)、预览到正式版升级和四项公开发行资产 SHA-256 校验全部通过。
 
-发布约定：用户于第七预览发布后要求后续只发布共享运行库轻量版。历史完整版本保持不变；未来安装 EXE 和 ZIP 均依赖 .NET 10 Desktop Runtime x64。
+发布约定：用户于第七预览发布后要求后续只发布共享运行库轻量版。历史完整版本保持不变；未来安装 EXE 和 ZIP 均依赖与软件架构匹配的 .NET 10 Desktop Runtime，x64 与 ARM64 分包。
 
 下载：[Windows x64 正式版 0.1.0](https://github.com/Nomoziya/nomozip/releases/tag/v0.1.0)。安装 EXE 约 2 MB，软件目录约 9 MB；依赖系统共享的 [.NET 10 Windows Desktop Runtime x64](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)（10.0.12 或更高的 10.0 补丁版），不需要 SDK。关闭软件后使用安装器升级，会保留密码库、设置和已下载的引擎。ZIP 请解压到新的空目录，运行 `ArchivePassword.exe`；约 9 MB 不包括共享运行库。历史完整独立版保持不变，不再发布新完整包。`engine-XX.XX` Release 仅用于引擎更新，不能单独当软件运行。
 
