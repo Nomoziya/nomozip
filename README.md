@@ -4,7 +4,7 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 
 最新本地候选还支持 [修改已有 7z/ZIP](docs/ARCHIVE_EDITING.md)、[分卷创建](docs/SPLIT_VOLUMES.md)、[官方 7z 自解压包](docs/SELF_EXTRACTING.md)、[TAR、单文件 GZIP/XZ 创建](docs/CREATION_FORMATS.md)、[Windows ARM64 原生轻量包](docs/ARM64.md)、[简体中文/英语界面](docs/LOCALIZATION.md) 和 [跟随系统/浅色/深色主题](docs/APPEARANCE.md)。语言保存后重启，主题保存后立即生效且系统高对比度优先；用户密码和文件名保持原文。公开正式版的功能与下载入口见下文；开发候选未自动公开发布。
 
-0.2.0 开发候选已加入 [密码库加密备份](docs/VAULT_BACKUP.md)、[基础右键菜单](docs/SHELL_MENU.md)、[软件正式版检查与下载页](docs/APPLICATION_UPDATES.md)、[解压规则、独立校验及结果目录操作](docs/EXTRACTION_TOOLS.md) 、[选择性解压](docs/SELECTIVE_EXTRACTION.md) 、[密码分组、来源及重复整理](docs/PASSWORD_ORGANIZATION.md) 和 [文件 SHA-256 与校验清单](docs/FILE_HASHES.md)、[ZIP 文件名编码](docs/ZIP_FILENAME_ENCODING.md)、[解压后的下载来源标记](docs/DOWNLOAD_ORIGIN.md)、[每显示器 DPI 与小窗口适配](docs/DISPLAY_SCALING.md)、[任务重排、单项解压、并发和暂停](docs/TASK_QUEUE.md)、[可选解压完成通知](docs/COMPLETION_NOTIFICATIONS.md)、[可选主密码与空闲锁定](docs/MASTER_PASSWORD.md)，仍仅提供轻量版。公开正式版保持 0.1.0，候选功能不表示已公开发布。
+0.2.0 开发候选已加入 [密码库加密备份](docs/VAULT_BACKUP.md)、[基础右键菜单](docs/SHELL_MENU.md)、[软件正式版检查、下载安装及重启](docs/APPLICATION_UPDATES.md)、[解压规则、独立校验及结果目录操作](docs/EXTRACTION_TOOLS.md) 、[选择性解压](docs/SELECTIVE_EXTRACTION.md) 、[密码分组、来源及重复整理](docs/PASSWORD_ORGANIZATION.md) 和 [文件 SHA-256 与校验清单](docs/FILE_HASHES.md)、[ZIP 文件名编码](docs/ZIP_FILENAME_ENCODING.md)、[解压后的下载来源标记](docs/DOWNLOAD_ORIGIN.md)、[每显示器 DPI 与小窗口适配](docs/DISPLAY_SCALING.md)、[任务重排、单项解压、并发和暂停](docs/TASK_QUEUE.md)、[可选解压完成通知](docs/COMPLETION_NOTIFICATIONS.md)、[可选主密码与空闲锁定](docs/MASTER_PASSWORD.md)，仍仅提供轻量版。公开正式版保持 0.1.0，候选功能不表示已公开发布。
 
 首个正式版 0.1.0 已公开，Windows x64，仅提供共享运行库轻量版。支持密码库、自动尝试和手动补充、7z/ZIP 创建及加密、7z/ZIP/RAR 内容浏览与解压，以及经本产品签名验证的官方引擎更新与回退。传统 ZIP、AES ZIP、RAR5 的同包多密码组合解压已专项验证；完整解压后才保存已验证的新密码。焦点框、任务文件朗读和极小工作区布局已修复，用户复验确认没有问题。正式版 [Windows CI](https://github.com/Nomoziya/nomozip/actions/runs/38270823087)、预览到正式版升级和四项公开发行资产 SHA-256 校验全部通过。
 
@@ -54,3 +54,6 @@ F22 已完成本地及完整双架构 CI 验收：转换数据 196、实际界�
 
 
 包内文本/图片只读预览已完成本地与完整双架构 CI 验收：在“查看内容”中高亮一行，点击“预览文件”或 Ctrl+P。支持纯文本和 PNG/JPEG/BMP/GIF 首帧，读取后清理临时文件，密码库与解压任务状态不改写。数据 100 / WPF/UIA 174 项、完整 79 / 78 份报告通过，范围和限制见 [只读预览](docs/CONTENT_PREVIEW.md)。preview.25 两架构仅本地轻量候选：`artifacts/release-0.2.0-preview.25-final/` 与 `artifacts/release-0.2.0-preview.25-arm64-final/`；x64 11133997 字节 / 54 文件（+78676），无新增依赖或运行组件。源码已上传，未发布或替换实际安装。剩余 3 项开发子项及 F23 物理验收，下一项 F03 软件自动安装更新。
+
+
+0.2.0-preview.26 完成 [软件下载安装与重启](docs/APPLICATION_UPDATES.md)：登记安装版可下载匹配架构的轻量安装包、校验并明确确认后升级；ZIP 保留下载页。最终产品源码 `11de81db88bee0638dde54133fe4c0ac88c3b512` 的 [x64 CI 38744221783](https://github.com/Nomoziya/nomozip/actions/runs/38744221783) / [原生 ARM64 CI 38744250096](https://github.com/Nomoziya/nomozip/actions/runs/38744250096) 全部通过，80 / 79 份报告与维护绑定复核通过；新增数据 55、中英文 UI 各 81、两架构隔离升级各 31 项。两种本地轻量候选未公开发布，不替换实际安装；x64 增加 37364 字节、无新增运行组件。剩余开发为 F04 拖出内容与 F07 跨重启续作，物理环境边界保留。

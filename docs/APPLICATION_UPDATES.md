@@ -29,7 +29,7 @@ ZIP 或未登记的副本不能自动覆盖其它安装，继续使用下载页�
 
 ## 验证
 
-本期验证仍在进行，最终提交、双架构 CI 和候选资产的状态见 PROJECT_PLAN.md。
+最终产品源码 `11de81db88bee0638dde54133fe4c0ac88c3b512` 的 [x64 CI 38744221783](https://github.com/Nomoziya/nomozip/actions/runs/38744221783) / [原生 ARM64 CI 38744250096](https://github.com/Nomoziya/nomozip/actions/runs/38744250096) 全部成功；80 / 79 份报告集合及逐项结果、十二矩阵/19 文件维护绑定已复核。下载/版本数据 55、中英文 WPF/UIA 各 81、资源 37、两架构隔离安装升级各 31 项通过。12 个主题/语言/尺寸样本已复核；本地另用真实匿名 GitHub API/CDN 下载现有正式安装包，五项校验/锁/清理通过，未执行安装器。具体交付状态见 PROJECT_PLAN.md。
 
 - `tests/ApplicationUpdateValidation`：原版本/架构/分页/来源判断，新增 digest、实际流大小、SHA-256、失败清理、下载中途取消、重试、不相关文件保留、安装前文件变更拒绝、只读锁和含空格/中文路径参数。
 - `ArchivePassword.exe --validate-application-updates <项目目录> zh-CN|en`：实际 WPF / UIA，隔离 HTTP、启动与退出替身，验证可取消/重试、ZIP 降级入口、确认拒绝、进程失败不退出、资料字节不变及三种主题/两种尺寸。不会安装真实软件或操作实际密码库。
