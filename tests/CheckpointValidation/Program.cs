@@ -123,7 +123,7 @@ async Task<int[]> StopChild(string mode,string folder,string archive,string vers
     var ids=natives.Select(process=>process.Id).ToArray();
     var activeRecord=new ExtractionCheckpointStore(Path.Combine(folder,"records")).ReadPending().Single();
     var lease=Path.Combine(activeRecord.Destination,".nomozip-checkpoint-"+activeRecord.Id.ToString("N"),".nomozip-checkpoint-writer");
-    Check(Path.GetFileName(folder)+" "+mode+" actual native lease blocks recovery I/O",ThrowsIo(()=>{using var held=new FileStream(lease,FileMode.Open,FileAccess.ReadWrite,FileShare.None);}));
+    Check(Path.GetFileName(folder)+" "+mode+" active writer lease blocks recovery I/O",ThrowsIo(()=>{using var held=new FileStream(lease,FileMode.Open,FileAccess.ReadWrite,FileShare.None);}));
     // Kill only the actual managed owner, deliberately leave the native child alive.
     child.Kill();await child.WaitForExitAsync();
     foreach(var native in natives)
@@ -214,6 +214,17 @@ try
             Check(label+" origin retained after independent resume",Directory.GetFiles(record.Destination,"*",SearchOption.AllDirectories).All(path=>File.ReadAllText(path+":Zone.Identifier").Contains("ZoneId=3")));
             Check(label+" final cleanup removes owned session only",store.ReadPending().Count==0 && !Directory.GetDirectories(record.Destination,".nomozip-checkpoint-*").Any() && File.Exists(archive) && File.Exists(Path.Combine(folder,"vault.apv")));
         }
+        {
+            var label=version+" persistence drain";var folder=await NewCase(version+"-drain");var archive=Path.Combine(folder,"input.zip");
+            using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create)) foreach(var name in new[]{"a.txt","b.txt"}){using var writer=new StreamWriter(zip.CreateEntry(name).Open());writer.Write(name);}
+            var listed=await client.ListAsync(archive);var entered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);var release=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);using var cancel=new CancellationTokenSource();
+            var callbackFinished=false;
+            var work=client.ExtractCheckpointAsync(archive,Path.Combine(folder,"files"),listed.Items,null,new Dictionary<uint,string>(),async(_,_)=>{entered.SetResult();await release.Task;callbackFinished=true;},token:cancel.Token);
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(8));cancel.Cancel();await Task.Delay(2400);
+            Check(label+" cancellation cannot release a live persistence callback",!work.IsCompleted && !callbackFinished);
+            release.SetResult();var result=await work.WaitAsync(TimeSpan.FromSeconds(8));
+            Check(label+" cancellation returns only after callback drains",result.Status=="cancelled" && callbackFinished);
+        }
         foreach(var fixture in new[]{"mixed-traditional.zip","mixed-aes.zip","test_read_format_rar5_encrypted.rar"})
         {
             var label=version+" "+fixture;var folder=await NewCase(version+"-"+fixture);var archive=Path.Combine(project,"tests/fixtures/generated",fixture);
@@ -283,7 +294,7 @@ try
             else if(scenario=="changed-delivery")
             {
                 var delivered=record.Receipts.Single(receipt=>receipt.State=="delivered");var entry=record.Entries.Single(entry=>entry.Index==delivered.Index);
-                File.WriteAllText(Path.Combine(record.Destination,entry.Path),"user modified");
+                await ReplaceAfterExitAsync(Path.Combine(record.Destination,entry.Path),"user modified");
                 var conflicts=0;
                 var engine=new ObservedEngine(new ArchiveEngineClient(Path.Combine(folder,"ArchiveEngineWorker.exe"),Path.Combine(project,"engines",version,"7z.dll")));
                 var vault=new DpapiPasswordVault(Path.Combine(folder,"vault.apv"));
@@ -341,6 +352,21 @@ await File.WriteAllTextAsync(Path.Combine(project,"artifacts/checkpoint-validati
 return checks.Values.All(value=>value)?0:1;
 
 bool ThrowsIo(Action action){try{action();return false;}catch(IOException){return true;}}
+async Task ReplaceAfterExitAsync(string path,string text)
+{
+    var deadline=DateTime.UtcNow.AddSeconds(5);
+    while(true)
+    {
+        try
+        {
+            await using var stream=new FileStream(path,FileMode.Open,FileAccess.Write,FileShare.None);
+            stream.SetLength(0);await using var writer=new StreamWriter(stream,new UTF8Encoding(false));await writer.WriteAsync(text);return;
+        }
+        catch(IOException error) when((error.HResult & 0xffff) is 32 or 33 && DateTime.UtcNow<deadline)
+        {await Task.Delay(20);}
+    }
+}
+
 
 sealed class ObservedEngine(ArchiveEngineClient client):IArchiveEngine,IArchiveSelectionEngine,IArchiveMultiPasswordEngine,IArchiveCheckpointEngine
 {
