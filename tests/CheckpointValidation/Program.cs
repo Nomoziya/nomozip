@@ -40,6 +40,34 @@ if(args[0]=="--child")
     return result.Engine.IsSuccess || result.Engine.Status=="cancelled"?0:1;
 }
 
+if(args[0]=="--verify-normal-cancellation")
+{
+    var cancelProject=Path.GetFullPath(args[1]);var cancelData=Path.Combine(cancelProject,"artifacts/checkpoint-normal-cancel-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(cancelData);
+    var contractChecks=new Dictionary<string,bool>();
+    try
+    {
+        foreach(var cancelAtCommit in new[]{false,true})
+        {
+            var output=Path.Combine(cancelData,cancelAtCommit.ToString());Directory.CreateDirectory(output);var target=Path.Combine(output,"file.txt");File.WriteAllText(target,"old bytes");
+            var pause=new ExtractionPause();var stopped=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);using var cancel=new CancellationTokenSource();
+            var vault=new DpapiPasswordVault(Path.Combine(cancelData,"unused.apv"));
+            var service=new ExtractionService(new NormalCommitEngine(()=>{pause.Pause();stopped.TrySetResult();}),vault,new PasswordCandidateProvider(vault),pause:pause);
+            var work=service.ExtractAsync(Path.Combine(cancelData,"synthetic.zip"),output,false,_=>Task.FromResult<PasswordPromptResponse?>(null),Replace,cancellationToken:cancel.Token);
+            await stopped.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            contractChecks["commit waits before overwrite "+cancelAtCommit]=!work.IsCompleted && File.ReadAllText(target)=="old bytes";
+            if(cancelAtCommit)cancel.Cancel();else pause.Resume();
+            try {var result=await work;contractChecks["original completion contract "+cancelAtCommit]=!cancelAtCommit && result.Engine.IsSuccess && File.ReadAllText(target)=="new bytes";}
+            catch(OperationCanceledException){contractChecks["original cancellation contract "+cancelAtCommit]=cancelAtCommit && File.ReadAllText(target)=="old bytes";}
+            contractChecks["private staging cleaned "+cancelAtCommit]=!Directory.EnumerateDirectories(output,".archive-password-*").Any();
+        }
+    }
+    finally {Directory.Delete(cancelData,true);}
+    var passed=contractChecks.Values.All(value=>value);
+    var report=new{passed,total=contractChecks.Count,checks=contractChecks,largeFixtureUsed=false};
+    File.WriteAllText(Path.Combine(cancelProject,"artifacts/checkpoint-normal-cancellation-validation.json"),JsonSerializer.Serialize(report,options));
+    Console.WriteLine(JsonSerializer.Serialize(report));return passed?0:1;
+}
+
 if(args[0]=="--seed")
 {
     var profile=Path.GetFullPath(args[1]);var output=Path.GetFullPath(args[2]);var app=Path.GetFullPath(args[3]);
@@ -327,4 +355,13 @@ sealed class ObservedEngine(ArchiveEngineClient client):IArchiveEngine,IArchiveS
     public Task<EngineResult> ExtractWithPasswordsAsync(string archive,string output,string? password,IReadOnlyDictionary<uint,string> passwords,IProgress<EngineProgress>? progress=null,CancellationToken cancellationToken=default)=>client.ExtractWithPasswordsAsync(archive,output,password,passwords,progress,cancellationToken);
     public Task<EngineResult> ExtractCheckpointAsync(string archive,string output,IReadOnlyList<ArchiveEntry> entries,string? password,IReadOnlyDictionary<uint,string> passwords,Func<uint,CancellationToken,Task> saved,IProgress<EngineProgress>? progress=null,CancellationToken token=default)
         =>client.ExtractCheckpointAsync(archive,output,entries,password,passwords,async(index,ct)=>{Completed.Add(index);await saved(index,ct);},progress,token);
+}
+
+sealed class NormalCommitEngine(Action paused):IArchiveEngine
+{
+    public Task<EngineResult> GetCapabilitiesAsync(CancellationToken token=default)=>Task.FromResult(new EngineResult{Status="success"});
+    public Task<EngineResult> ListAsync(string archive,string? password=null,CancellationToken cancellationToken=default)=>Task.FromResult(new EngineResult{Status="success"});
+    public Task<EngineResult> TestAsync(string archive,string? password=null,IProgress<EngineProgress>? progress=null,CancellationToken cancellationToken=default)=>Task.FromResult(new EngineResult{Status="success"});
+    public async Task<EngineResult> ExtractAsync(string archive,string output,string? password=null,IProgress<EngineProgress>? progress=null,CancellationToken cancellationToken=default)
+    {Directory.CreateDirectory(output);await File.WriteAllTextAsync(Path.Combine(output,"file.txt"),"new bytes");paused();return new EngineResult{Status="success"};}
 }

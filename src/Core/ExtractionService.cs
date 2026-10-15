@@ -207,7 +207,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         }
         catch(CheckpointException error)
         {return new(new EngineResult {Code=error.Code},destination,UiText.Get("Checkpoint.Error."+error.Code));}
-        catch(OperationCanceledException)
+        catch(OperationCanceledException) when(checkpoint is not null)
         {return new(new EngineResult {Status="cancelled",Code="cancelled"},destination);}
         finally {if(session is not null) await session.DisposeAsync();}
     }
