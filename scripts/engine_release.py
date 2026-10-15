@@ -10,8 +10,8 @@ import sys
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json', 'architecture-validation.json', 'conversion-validation.json')
-PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation', 'VolumeValidation', 'SfxValidation', 'FormatValidation', 'ArchitectureValidation', 'ConversionValidation')
+REPORTS = ('engine-validation.json', 'compression-validation.json', 'selection-validation.json', 'encoding-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json', 'architecture-validation.json', 'conversion-validation.json', 'preview-validation.json')
+PROJECTS = ('CompressionValidation', 'SelectionValidation', 'EncodingValidation', 'PauseValidation', 'ArchiveEditingValidation', 'VolumeValidation', 'SfxValidation', 'FormatValidation', 'ArchitectureValidation', 'ConversionValidation', 'PreviewValidation')
 
 
 def sha(path):
@@ -57,12 +57,12 @@ def validate_reports(workspace, version):
     dll_hash = sha(workspace / 'engines' / version / '7z.dll')
     architecture = load(workspace / 'engines' / version / 'manifest.json')['architecture']
     totals = {}
-    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20, 20, 20, 20, 10, 20)):
+    for name, minimum in zip(REPORTS, (20, 17, 20, 20, 4, 20, 20, 20, 20, 10, 20, 20)):
         report = load(workspace / 'artifacts' / name)
         values = cases(report)
         if sum(value['name'].startswith(version + ' ') for value in values) < minimum:
             raise ValueError('Required target-version coverage is missing: ' + name)
-        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json','architecture-validation.json', 'conversion-validation.json') and report['engineHashes'][version].lower() != dll_hash:
+        if name in ('engine-validation.json', 'compression-validation.json', 'pause-validation.json', 'archive-editing-validation.json', 'volume-validation.json', 'sfx-validation.json', 'format-validation.json','architecture-validation.json', 'conversion-validation.json', 'preview-validation.json') and report['engineHashes'][version].lower() != dll_hash:
             raise ValueError('Compatibility report belongs to another engine binary.')
         if name=='sfx-validation.json' and report['moduleHashes'][version].lower()!=sha(workspace/'engines'/version/'7z.sfx'):
             raise ValueError('Compatibility report belongs to another SFX module.')

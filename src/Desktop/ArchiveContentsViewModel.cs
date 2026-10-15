@@ -15,7 +15,8 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     private TaskCompletionSource idle=CompletedSource();
     private readonly Action? cancel;
     public ArchiveContentsViewModel(string archivePath,IReadOnlyList<ArchiveEntry> items,Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<string?>>? extract=null,Action? cancel=null,Action<string>? open=null,
-        string? format=null,Func<ArchiveEditAction,IReadOnlyList<ArchiveEntry>,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveEditOutcome?>>? edit=null)
+        string? format=null,Func<ArchiveEditAction,IReadOnlyList<ArchiveEntry>,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveEditOutcome?>>? edit=null,
+        Func<ArchiveEntry,IProgress<string>,Task>? preview=null)
     {
         this.archivePath=archivePath;this.items=items;this.cancel=cancel;
         allRows=items.Select(entry=>new ArchiveContentRow(entry)).ToArray();Rows=new(allRows);
@@ -29,6 +30,12 @@ public sealed class ArchiveContentsViewModel : ObservableObject
             finally {IsWorking=false;idle.TrySetResult();}
         },()=>extract is not null && !IsWorking && allRows.Any(row=>row.Selected));
         CancelCommand=new RelayCommand(()=>cancel?.Invoke(),()=>IsWorking);
+        PreviewCommand=new AsyncCommand(async()=>
+        {
+            var entry=CurrentRow!.Entry;IsWorking=true;idle=new TaskCompletionSource();
+            try {await preview!(entry,new Progress<string>(value=>OperationMessage=value));}
+            finally {IsWorking=false;idle.TrySetResult();}
+        },()=>preview is not null && !IsWorking && CurrentRow is not null && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
         OpenResultCommand=new RelayCommand(()=>open?.Invoke(OutputPath),()=>!IsWorking && OutputPath.Length>0 && open is not null);
         EditingAvailable=edit is not null && !VolumeCompressionService.IsVolumePath(archivePath) && !Path.GetExtension(archivePath).Equals(".exe",StringComparison.OrdinalIgnoreCase) && format?.ToLowerInvariant() is "7z" or "zip";
         AsyncCommand EditingCommand(ArchiveEditAction action,Func<bool> allowed)=>new(async()=>
@@ -71,6 +78,11 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ICommand ClearSelectionCommand {get;}
     public ICommand ExtractSelectedCommand {get;}
     public ICommand CancelCommand {get;}
+    public ICommand PreviewCommand {get;}
+    private ArchiveContentRow? currentRow;
+    public ArchiveContentRow? CurrentRow {get=>currentRow;set {if(Set(ref currentRow,value)) {Changed(nameof(PreviewHint));CommandManager.InvalidateRequerySuggested();}}}
+    public string PreviewHint=>CurrentRow is null?UiText.Get("Preview.SelectOne"):ArchivePreviewPolicy.Rejection(CurrentRow.Entry) switch
+    {"preview_too_large"=>UiText.Get("Preview.TooLarge"),"preview_unsupported"=>UiText.Get("Preview.Unsupported"),_=>UiText.Get("Preview.Shortcut")};
     public ICommand OpenResultCommand {get;}
     public IReadOnlyList<ArchiveEntry> SelectedEntries=>ArchiveSelection.Expand(items,allRows.Where(row=>row.Selected).Select(row=>row.Entry.Index));
     public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");

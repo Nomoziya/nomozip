@@ -198,6 +198,15 @@ public partial class App : Application
             window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
             var passed=await DesktopVolumeValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[volumesIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
         }
+        var contentPreviewIndex=Array.IndexOf(e.Args,"--validate-content-preview");
+        if(contentPreviewIndex>=0)
+        {
+            window.SuppressExitConfirmationForValidation=true;
+            var report=Path.Combine(Path.GetFullPath(e.Args[contentPreviewIndex+1]),"artifacts/preview-ui-validation.json");File.WriteAllText(report,"{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new{passed=false,exception=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopPreviewValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[contentPreviewIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
+        }
         var conversionIndex=Array.IndexOf(e.Args,"--validate-conversion");
         if(conversionIndex>=0)
         {

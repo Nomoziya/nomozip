@@ -3041,4 +3041,22 @@ A password is required to validate the archive data.</value>
   <data name="Conversion.ZipPassword" xml:space="preserve"><value>ZIP passwords must use ASCII characters. Choose 7z for other characters.</value></data>
   <data name="Conversion.Failed" xml:space="preserve"><value>Conversion failed. The original and any existing target are preserved.</value></data>
   <data name="Conversion.ReplacePrompt" xml:space="preserve"><value>The target exists. Replace it after successful conversion and verification? The source is always preserved.</value></data>
+  <data name="Preview.Title" xml:space="preserve"><value>File preview</value></data>
+  <data name="Preview.Action" xml:space="preserve"><value>Preview file</value></data>
+  <data name="Preview.SelectOne" xml:space="preserve"><value>Select a text or image row first.</value></data>
+  <data name="Preview.Shortcut" xml:space="preserve"><value>Read-only preview of the current row (Ctrl+P); extraction checkboxes are unchanged.</value></data>
+  <data name="Preview.Loading" xml:space="preserve"><value>Reading preview…</value></data>
+  <data name="Preview.Notice" xml:space="preserve"><value>Read-only · Temporary files cleaned after reading · No password or extraction status saved</value></data>
+  <data name="Preview.ReadOnly" xml:space="preserve"><value>Preview finished; vault and extraction selection are unchanged.</value></data>
+  <data name="Preview.Cancelled" xml:space="preserve"><value>Preview cancelled.</value></data>
+  <data name="Preview.TooLarge" xml:space="preserve"><value>Preview limit: text 1 MiB, images 8 MiB. Use Extract selected instead.</value></data>
+  <data name="Preview.Unsupported" xml:space="preserve"><value>Select a supported text, PNG, JPEG, BMP or GIF file.</value></data>
+  <data name="Preview.TextName" xml:space="preserve"><value>File text content (read-only)</value></data>
+  <data name="Preview.TextDetails" xml:space="preserve"><value>Text · {0} bytes · {1}</value></data>
+  <data name="Preview.ImageDetails" xml:space="preserve"><value>Image · {0} × {1} pixels · {2} bytes</value></data>
+  <data name="Preview.FirstFrame" xml:space="preserve"><value>First frame only</value></data>
+  <data name="Preview.TextInvalid" xml:space="preserve"><value>Not valid UTF-8 or BOM-marked Unicode text. Extract and use an appropriate editor.</value></data>
+  <data name="Preview.ImageInvalid" xml:space="preserve"><value>Cannot read this image. It may be corrupt or its format may not match its extension.</value></data>
+  <data name="Preview.ImageTooLarge" xml:space="preserve"><value>Image exceeds the preview limit (16 million pixels, 16384 per side). Extract to view it.</value></data>
+  <data name="Preview.CleanupWarning" xml:space="preserve"><value>Preview temporary files could not be removed. Close any program using them, then delete this directory:</value></data>
 </root>

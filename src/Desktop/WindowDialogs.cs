@@ -10,8 +10,14 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
     Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null,
     Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null,
-    Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null)
+    Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null,
+    Action<ArchivePreviewDialog>? preparePreview=null)
 {
+    public void ShowArchivePreview(ArchivePreviewViewModel model)
+    {
+        var dialog=new ArchivePreviewDialog(model) {Owner=owner.OwnedWindows.OfType<ArchiveContentsDialog>().FirstOrDefault() ?? owner};
+        preparePreview?.Invoke(dialog);dialog.ShowDialog();
+    }
     public void ShowArchiveConversion(ArchiveConversionViewModel model)
     {
         var dialog=new ArchiveConversionDialog(model) {Owner=owner};prepareConversion?.Invoke(dialog);dialog.ShowDialog();

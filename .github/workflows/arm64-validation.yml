@@ -44,7 +44,7 @@ jobs:
         if: always() && steps.native_build.outcome == 'success'
         run: |
           python tests/engine_release_validation.py --architecture arm64
-          if ($LASTEXITCODE -ne 0) { throw 'Native eleven-matrix maintenance acceptance failed.' }
+          if ($LASTEXITCODE -ne 0) { throw 'Native twelve-matrix maintenance acceptance failed.' }
       - name: Native lightweight install upgrade extraction and uninstall
         if: always() && steps.native_build.outcome == 'success'
         run: |
@@ -60,11 +60,11 @@ jobs:
       - name: Restore canonical source metadata and package native local candidate
         run: |
           git restore --worktree -- engines
-          ./scripts/build-release.ps1 -Architecture arm64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.2.0-preview.24-arm64 -Python python
+          ./scripts/build-release.ps1 -Architecture arm64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.2.0-preview.25-arm64 -Python python
       - uses: actions/upload-artifact@v7
         with:
           name: native-arm64-lightweight-candidate
-          path: artifacts/release-0.2.0-preview.24-arm64/*
+          path: artifacts/release-0.2.0-preview.25-arm64/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         if: always()

@@ -25,7 +25,8 @@ public sealed partial class MainViewModel
             Footer = outcome.Engine.IsSuccess ? UiText.Format("T_58db5ae70926", task.Name, outcome.Engine.Items.Count) : outcome.Engine.Status == "cancelled" ? UiText.Get("T_f23f6d1addfc") : ErrorText(outcome.Engine.Code);
             if (outcome.Engine.IsSuccess) dialogs.ShowArchiveContents(new ArchiveContentsViewModel(task.Path,outcome.Engine.Items,
                 (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path]),
-                outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status)));
+                outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status),
+                (entry,status)=>PreviewEntryAsync(task,client,entry,status)));
         }
         catch (OperationCanceledException) { Footer = UiText.Get("T_f23f6d1addfc"); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException)
