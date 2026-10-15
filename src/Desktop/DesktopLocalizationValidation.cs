@@ -132,6 +132,16 @@ internal static class DesktopLocalizationValidation
             Check("actual WPF selection and UIA save persist next language",LanguagePreferenceStore.Read(profile).Language==(english?"zh-CN":"en") && model.LanguageMessage==UiText.Get("Language.Saved"));
             Check("saving language waits for restart",UiText.LanguageCode==language && ((ListBoxItem)window.Navigation.Items[0]).Content?.ToString()==(english?"Extract":"解压"));
             Check("saving language preserves settings and vault bytes",Hash(settings)==settingsHash && Hash(vaultPath)==vaultHash);
+            var preferencePath=Path.Combine(profile,LanguagePreferenceStore.FileName);var savedPreference=await File.ReadAllBytesAsync(preferencePath);
+            try
+            {
+                await File.WriteAllTextAsync(preferencePath,"{\"Version\":99,\"Language\":\"future\"}");var unknownHash=Hash(preferencePath);
+                Invoke(window.SaveLanguageAction);await Layout(window);
+                deadline=DateTime.UtcNow.AddSeconds(5);while(model.LanguageMessage!=UiText.Get("Language.SaveFailed") && DateTime.UtcNow<deadline)await Task.Delay(10);
+                Check("unknown preference save reports a localized error without crashing",model.LanguageMessage==UiText.Get("Language.SaveFailed"));
+                Check("unknown preference UI save preserves file and existing user data",Hash(preferencePath)==unknownHash && Hash(settings)==settingsHash && Hash(vaultPath)==vaultHash);
+            }
+            finally {await File.WriteAllBytesAsync(preferencePath,savedPreference);}
         }
         catch(Exception error){checks["exception "+error]=false;}
         finally{theme.Apply(SystemParameters.HighContrast);window.Opacity=0;}
