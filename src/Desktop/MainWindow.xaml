@@ -82,6 +82,14 @@
             <TextBlock x:Name="LanguageStatus" Text="{Binding LanguageMessage}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
           </StackPanel></Border>
           <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
+            <TextBlock Text="{loc:Text Appearance.Title}" Style="{StaticResource Heading}"/>
+            <TextBlock Text="{loc:Text Appearance.Label}" Margin="0,4,0,6"/>
+            <ComboBox x:Name="AppearanceChoice" ItemsSource="{Binding AppearanceOptions}" SelectedItem="{Binding SelectedAppearance}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" MinWidth="220" HorizontalAlignment="Left"/>
+            <Button x:Name="SaveAppearanceAction" Content="{loc:Text Appearance.Save}" Command="{Binding SaveAppearanceCommand}" HorizontalAlignment="Left" Margin="0,16,0,0"/>
+            <TextBlock Text="{loc:Text Appearance.Hint}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>
+            <TextBlock x:Name="AppearanceStatus" Text="{Binding AppearanceMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
+          </StackPanel></Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
             <TextBlock Text="{loc:Text T_abe63dd52a99}" Style="{StaticResource Heading}"/>
             <CheckBox x:Name="NotifyExtractionChoice" Content="{loc:Text T_d791cd25027a}" IsChecked="{Binding NotifyExtractionSuccess}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_d791cd25027a}"/>
             <TextBlock Text="{loc:Text T_73cca7f7d0fc}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>

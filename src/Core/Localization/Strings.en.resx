@@ -2969,4 +2969,47 @@ A password is required to validate the archive data.</value>
     <value>Show password</value>
     <comment>src/Desktop/PasswordDialog.xaml</comment>
   </data>
+  <data xml:space="preserve" name="Appearance.Title">
+    <value>Appearance</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Label">
+    <value>Theme</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Save">
+    <value>Save theme</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.System">
+    <value>Follow system</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Light">
+    <value>Light</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Dark">
+    <value>Dark</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Hint">
+    <value>Applies immediately after saving. System contrast themes take priority; your choice resumes when contrast mode is off.</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Saved">
+    <value>Theme saved and applied. When system contrast mode is on, system colors are used.</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Failed">
+    <value>Could not save the theme. The original preference file and current theme were preserved. Check directory permissions or file version.</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Preserved">
+    <value>Appearance preference could not be read or recognized. System mode is in use; the original file was preserved.</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.HorizontalScroll">
+    <value>Horizontal scroll thumb</value>
+  </data>
 </root>

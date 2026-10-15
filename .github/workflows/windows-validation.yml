@@ -149,6 +149,8 @@ jobs:
             artifacts/sfx-preview/*.png
             artifacts/formats-preview/*.png
             artifacts/localization-preview/*.png
+            artifacts/theme-preview/*.png
+            artifacts/theme-controls-preview/*.png
             artifacts/shell-validation/**/*.log
             artifacts/origin-fat/**/*.log
             artifacts/origin-fat/**/disk-identity.json

@@ -31,3 +31,5 @@ are separate lightweight packages; no .NET runtime is bundled.
 Context menus are optional and do not change default apps. On Windows 11, use
 Show more options for the traditional menu. Windows decides its own dialog language.
 Downloads and support: https://github.com/Nomoziya/nomozip
+
+Appearance: in Settings, choose Follow system, Light, or Dark and save. It applies immediately. System contrast themes take priority; your choice resumes when contrast mode is off.

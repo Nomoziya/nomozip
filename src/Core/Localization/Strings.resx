@@ -2969,4 +2969,47 @@
     <value>显示密码</value>
     <comment>src/Desktop/PasswordDialog.xaml</comment>
   </data>
+  <data xml:space="preserve" name="Appearance.Title">
+    <value>外观</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Label">
+    <value>主题</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Save">
+    <value>保存主题</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.System">
+    <value>跟随系统</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Light">
+    <value>浅色</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Dark">
+    <value>深色</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Hint">
+    <value>保存后立即生效。系统高对比度始终优先，关闭后恢复所选主题。</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Saved">
+    <value>主题已保存并生效；系统高对比度开启时使用系统配色。</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Failed">
+    <value>主题未能保存，原偏好文件和当前主题保持不变。请检查目录权限或文件版本。</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.Preserved">
+    <value>外观偏好无法识别或读取，已跟随系统，原文件保持不变。</value>
+    <comment>Appearance settings</comment>
+  </data>
+  <data xml:space="preserve" name="Appearance.HorizontalScroll">
+    <value>水平滚动条拖动块</value>
+  </data>
 </root>
