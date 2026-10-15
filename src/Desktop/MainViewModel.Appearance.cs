@@ -10,7 +10,7 @@ public sealed partial class MainViewModel
     public IReadOnlyList<AppearanceOption> AppearanceOptions { get; } = [new("system", UiText.Get("Appearance.System")), new("light", UiText.Get("Appearance.Light")), new("dark", UiText.Get("Appearance.Dark"))];
     private AppearanceOption selectedAppearance = null!;
     public AppearanceOption SelectedAppearance { get => selectedAppearance; set { if (value is not null && AppearanceOptions.Contains(value)) Set(ref selectedAppearance, value); } }
-    private string appearanceMessage = UiText.Get("Appearance.Hint");
+    private string appearanceMessage = "";
     public string AppearanceMessage { get => appearanceMessage; private set => Set(ref appearanceMessage, value); }
     public ICommand SaveAppearanceCommand { get; private set; } = null!;
     private void InitializeAppearanceCommands()
