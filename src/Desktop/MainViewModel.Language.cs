@@ -24,7 +24,7 @@ public sealed partial class MainViewModel
                 await LanguagePreferenceStore.SaveAsync(dataDirectory, SelectedLanguage.Code);
                 LanguageMessage = UiText.Get("Language.Saved");
             }
-            catch (Exception error) when (error is System.IO.IOException or UnauthorizedAccessException)
+            catch (Exception error) when (error is System.IO.IOException or System.IO.InvalidDataException or UnauthorizedAccessException)
             { LanguageMessage = UiText.Get("Language.SaveFailed"); }
         }, () => IsIdle);
     }
