@@ -84,6 +84,15 @@ internal static class DesktopDragValidation
                                 await view.DragAsync(paths=>{Check(language+" unmarked highlighted row supported",paths.Count==1 && Path.GetFileName(paths.Single())=="other.txt");return false;});
                                 Check(language+" rejected target cleans staging",!Directory.EnumerateFileSystemEntries(temporary).Any() && view.OperationMessage==UiText.Get("Drag.Cancelled"));
                                 diagnostics.Add(new{language,stage="after rejection",view.OperationMessage,view.IsWorking,current=view.CurrentRow?.Path,paths=Directory.GetFileSystemEntries(temporary)});
+                                FileStream? held=null;string? heldPath=null;
+                                try
+                                {
+                                    await view.DragAsync(paths=>{heldPath=paths.Single();held=new FileStream(heldPath,FileMode.Open,FileAccess.Read,FileShare.Read);return false;});
+                                    Check(language+" cleanup failure retains path on browser and main window",heldPath is not null && view.OperationMessage.Contains(Path.GetDirectoryName(heldPath)!) && main.Banner==view.OperationMessage && view.OperationMessage.Contains(UiText.Get("Drag.CleanupWarning")));
+                                }
+                                finally {held?.Dispose();}
+                                view.CancelCommand.Execute(null);
+                                Check(language+" retry cancel cleans previously locked preparation",!Directory.EnumerateFileSystemEntries(temporary).Any() && view.OperationMessage==UiText.Get("Drag.Cancelled"));
                                 await view.DragAsync(_=>null);dialog.Close();await Layout(dialog);
                                 Check(language+" close ready browser cleans staging",!Directory.EnumerateFileSystemEntries(temporary).Any());
                                 diagnostics.Add(new{language,stage="after closing",view.OperationMessage,view.IsWorking,current=view.CurrentRow?.Path,paths=Directory.GetFileSystemEntries(temporary),dialog.IsVisible});
