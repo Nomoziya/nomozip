@@ -21,7 +21,8 @@ Check("all numbered placeholders preserved",chinese.All(pair=>placeholder.Matche
 foreach(var language in new[]{"zh-CN","en"})
 {
     UiText.Configure(language);var expected=language=="en"?english:chinese;
-    Check(language+" actual ResourceManager resolves every translated value",expected.All(pair=>UiText.Get(pair.Key)==pair.Value));
+    Check(language+" actual ResourceManager resolves every translated value",expected.All(pair=>UiText.Get(pair.Key)==pair.Value.Replace("\r\n","\n")));
+    Check(language+" resource newlines preserve original LF display semantics",UiText.Get("T_c950f8f2b8e0").StartsWith('\n') && expected.Keys.All(key=>!UiText.Get(key).Contains('\r')));
     Check(language+" all composite messages format without lost arguments",expected.All(pair=>{try{UiText.Format(pair.Key,Enumerable.Repeat<object?>(1234.5,8).ToArray());return true;}catch(FormatException){return false;}}));
     Check(language+" UI and numeric cultures agree",CultureInfo.CurrentCulture.Name==(language=="en"?"en-US":"zh-CN") && CultureInfo.CurrentUICulture.Name==CultureInfo.CurrentCulture.Name && CultureInfo.DefaultThreadCurrentCulture?.Name==CultureInfo.CurrentCulture.Name);
     var date=new DateTime(2026,10,15,13,25,0).ToString("g");

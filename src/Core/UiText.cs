@@ -18,7 +18,7 @@ public static class UiText
         CultureInfo.CurrentCulture = resourceCulture;
         CultureInfo.CurrentUICulture = resourceCulture;
     }
-    public static string Get(string key) => Resources.GetString(key, resourceCulture)
-        ?? throw new MissingManifestResourceException("Missing application text: " + key);
+    public static string Get(string key) => (Resources.GetString(key, resourceCulture)
+        ?? throw new MissingManifestResourceException("Missing application text: " + key)).Replace("\r\n", "\n");
     public static string Format(string key, params object?[] values) => string.Format(CultureInfo.CurrentCulture, Get(key), values);
 }
