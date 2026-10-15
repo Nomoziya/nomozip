@@ -18,6 +18,10 @@ internal static class DesktopPauseValidation
         var data=Path.Combine(root,"artifacts/pause-ui",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(data);var preview=Path.Combine(root,"artifacts/pause-preview");Directory.CreateDirectory(preview);
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);MainViewModel? model=null;
         var worker=Path.Combine(baseDirectory,"ArchiveEngineWorker.exe");
+        var fixture=Path.Combine(root,"tests/fixtures/generated/large-ui.7z");if(!File.Exists(fixture)) fixture=Path.Combine(root,"tests/fixtures/generated/large.7z");
+        var sourceLength=new FileInfo(Path.Combine(root,"tests/fixtures/generated/large.bin")).Length;
+        bool HasPartialExtraction(ArchiveTaskRow row)=>Directory.Exists(row.ShellOutputPath) && Directory.GetDirectories(row.ShellOutputPath,".archive-password-*")
+            .SelectMany(path=>Directory.GetFiles(path,"*",SearchOption.AllDirectories)).Any(path=>new FileInfo(path).Length is var length && length>0 && length<sourceLength);
         async Task Wait(string phase,Func<bool> condition,bool layout=true)
         {var deadline=DateTime.UtcNow.AddSeconds(30);while(!condition()){if(DateTime.UtcNow>deadline) throw new TimeoutException("pause UI condition timed out: "+JsonSerializer.Serialize(new {phase,workers=WorkerIds(),page=model?.Page,busy=model?.IsBusy,concurrency=model?.QueueConcurrency,tasks=model?.Tasks.Select(row=>new {row.Name,row.Running,row.Completed,row.Status,row.Percent})}));await Task.Delay(5);}if(layout) await Layout(window);}
         int[] WorkerIds() {var ids=new List<int>();foreach(var process in Process.GetProcessesByName("ArchiveEngineWorker")){using(process) try {if(process.MainModule?.FileName.Equals(worker,StringComparison.OrdinalIgnoreCase)==true) ids.Add(process.Id);}catch(Exception error) when(error is System.ComponentModel.Win32Exception or InvalidOperationException){}}return ids.Order().ToArray();}
@@ -30,9 +34,12 @@ internal static class DesktopPauseValidation
                 var folder=Path.Combine(data,version+"-"+cancel);Directory.CreateDirectory(folder);var vaultPath=Path.Combine(folder,"passwords.apv");var vault=new DpapiPasswordVault(vaultPath);await vault.SaveAsync(new(Guid.NewGuid(),"unused synthetic","unused-secret","",true,DateTimeOffset.UtcNow));var vaultBefore=File.ReadAllBytes(vaultPath);
                 model=new MainViewModel(baseDirectory,folder,vault,new WindowDialogs(window));window.DataContext=model;await model.InitializeAsync();model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();await Layout(window);
                 Check(version+" idle has no pause entry "+cancel,!window.QueuePauseAction.IsVisible && !model.ToggleQueuePauseCommand.CanExecute(null));model.QueueConcurrency=2;model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
-                var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(Path.Combine(root,ArchivePassword.Core.EngineArchitecture.Current=="arm64"?"tests/fixtures/generated/large-ui.7z":"tests/fixtures/generated/large.7z"),path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
+                var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(fixture,path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
                 var launches=new List<ArchiveTaskRow>();foreach(var row in rows) row.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(ArchiveTaskRow.Running) && row.Running) launches.Add(row);};
-                await Layout(window);Invoke(window.ExtractAction);await Layout(window);await Wait("two active native workers",()=>WorkerIds().Length==2 && rows.Take(2).All(row=>row.Running),layout:false);model.ToggleQueuePauseCommand.Execute(null);await Layout(window);
+                await Layout(window);Invoke(window.ExtractAction);await Layout(window);
+                // Verification also launches workers. Wait for actual partial extraction files,
+                // otherwise pausing between phases can legitimately leave only managed waiters.
+                await Wait("two active extraction workers with partial output",()=>WorkerIds().Length==2 && rows.Take(2).All(row=>row.Running && HasPartialExtraction(row)),layout:false);model.ToggleQueuePauseCommand.Execute(null);
                 await Wait("two native pause acknowledgements",()=>rows.Take(2).All(row=>row.Status=="已暂停"));var ids=WorkerIds();var percents=rows.Select(row=>row.Percent).ToArray();await Task.Delay(200);await Layout(window);
                 Check(version+" actual pause entry changes to continue "+cancel,window.QueuePauseAction.IsVisible && window.QueuePauseAction.IsEnabled && model.QueuePauseCaption=="继续队列");
                 Check(version+" two acknowledged workers remain paused "+cancel,ids.Length==2 && WorkerIds().SequenceEqual(ids) && rows.Take(2).All(row=>row.Status=="已暂停" && !row.IsIndeterminate));
@@ -60,7 +67,7 @@ internal static class DesktopPauseValidation
                     Check(version+" cancelled pause leaves no successful output",rows.All(row=>!row.Completed) && !Directory.EnumerateDirectories(folder,".archive-password-*",SearchOption.AllDirectories).Any());
                 }
                 Check(version+" pause resets after ending "+cancel,!model.CanPauseQueue && model.QueuePauseCaption=="暂停队列" && !window.QueuePauseAction.IsVisible && WorkerIds().Length==0);
-                Check(version+" source archives unchanged "+cancel,paths.All(path=>Hash(path)==Hash(Path.Combine(root,ArchivePassword.Core.EngineArchitecture.Current=="arm64"?"tests/fixtures/generated/large-ui.7z":"tests/fixtures/generated/large.7z")))) ;
+                Check(version+" source archives unchanged "+cancel,paths.All(path=>Hash(path)==Hash(fixture))) ;
             }
         }
         catch(Exception error) {Check("exception "+error.GetType().Name+" "+error.Message,false);}
