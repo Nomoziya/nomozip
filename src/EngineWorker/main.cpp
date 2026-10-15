@@ -108,8 +108,10 @@ public:
 };
 class OutputStream final : public ISequentialOutStream {
     HANDLE file;
+    UInt64 remaining;
+    bool* limitExceeded;
 public:
-    explicit OutputStream(HANDLE handle) : file(handle) {}
+    explicit OutputStream(HANDLE handle,UInt64 limit=~static_cast<UInt64>(0),bool* exceeded=nullptr) : file(handle),remaining(limit),limitExceeded(exceeded) {}
     ~OutputStream() { CloseHandle(file); }
     REFCOUNT_IMPL
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID id, void** object) noexcept override {
@@ -121,13 +123,17 @@ public:
     HRESULT STDMETHODCALLTYPE Write(const void* data, UInt32 size, UInt32* processed) noexcept override {
         if (processed) *processed = 0;
         if (checkpoint() != S_OK) return E_ABORT;
+        if(size>remaining) {if(limitExceeded) *limitExceeded=true;return E_ABORT;}
         DWORD count = 0;
         if (!WriteFile(file, data, size, &count, nullptr)) return HRESULT_FROM_WIN32(GetLastError());
+        remaining-=count;
         if (processed) *processed = count;
         return S_OK;
     }
 };
 struct Context {
+    UInt64 previewLimit=0;
+    bool previewLimitExceeded=false;
     bool passwordDefined = false, passwordRequested = false, passwordMissing = false, missingVolume = false;
     std::wstring password;
     std::map<UInt32, std::wstring> itemPasswords;
@@ -264,7 +270,7 @@ public:
             fs::create_directories(target.parent_path());
             HANDLE handle = CreateFileW(target.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);
             if (handle == INVALID_HANDLE_VALUE) { error = GetLastError() == ERROR_FILE_EXISTS ? "file_exists" : "write_failed"; return HRESULT_FROM_WIN32(GetLastError()); }
-            currentStream = new OutputStream(handle);
+            currentStream = context.previewLimit ? new OutputStream(handle,context.previewLimit,&context.previewLimitExceeded) : new OutputStream(handle);
             *stream = currentStream; currentStream->AddRef(); return S_OK;
         } catch (const std::exception& e) { error = std::string(e.what()) == "unsafe_path" ? "unsafe_path" : "write_failed"; return E_FAIL; }
     }
@@ -333,17 +339,23 @@ static json run(json& request, const wchar_t* dllPath) {
         if(operation=="create-split" && request.value("volumeSize",static_cast<UInt64>(0))<128) return {{"kind","result"},{"status","error"},{"code","invalid_volume_size"}};
         return createArchive(request, formats, createFunc);
     }
-    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded" || operation=="update-encoded";
+    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded" || operation=="preview-selection-encoded" || operation=="update-encoded";
     UInt32 codePage=0;
     if(encoded) {
         codePage=request.value("filenameCodePage",0u);
         if((codePage!=936 && codePage!=932 && codePage!=437 && codePage!=65001) || !IsValidCodePage(codePage)) return {{"kind","result"},{"status","error"},{"code","invalid_filename_encoding"}};
         operation.erase(operation.size()-8);
     } else if(request.value("filenameCodePage",0u)!=0) return {{"kind","result"},{"status","error"},{"code","invalid_filename_encoding"}};
-    const bool selective = operation=="test-selection" || operation=="extract-selection";
+    const bool preview = operation=="preview-selection";
+    const bool selective = operation=="test-selection" || operation=="extract-selection" || preview;
     if (selective) operation=operation=="test-selection" ? "test" : "extract";
     if (operation != "list" && operation != "test" && operation != "extract" && operation != "update") throw std::runtime_error("unsupported_operation");
     Context context;
+    if(preview) {
+        context.previewLimit=request.value("previewLimit",static_cast<UInt64>(0));
+        if(context.previewLimit==0 || context.previewLimit>8*1024*1024 || !request.contains("selection") || !request["selection"].is_array() || request["selection"].size()!=1)
+            return {{"kind","result"},{"status","error"},{"code","invalid_preview"}};
+    }
     context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));
     if (request.contains("itemPasswords") && !request["itemPasswords"].is_null()) {
         for (auto& entry : request["itemPasswords"]) {
@@ -422,6 +434,8 @@ static json run(json& request, const wchar_t* dllPath) {
                 || property(archive.ptr,index,kpidEncrypted).boolean()!=entry.at("encrypted").get<bool>())
                 return {{"kind","result"},{"status","error"},{"code","selection_changed"}};
             selected.push_back(index);
+            if(preview && (property(archive.ptr,index,kpidIsDir).boolean() || property(archive.ptr,index,kpidSize).number()>context.previewLimit))
+                return {{"kind","result"},{"status","error"},{"code","preview_too_large"}};
         }
         std::sort(selected.begin(),selected.end());
         if(std::adjacent_find(selected.begin(),selected.end())!=selected.end())
@@ -439,7 +453,7 @@ static json run(json& request, const wchar_t* dllPath) {
     auto* extract = new ExtractCallback(context, archive.ptr, output,selective ? &selected : nullptr); callback.ptr = extract;
     HRESULT result = archive->Extract(selective ? selected.data() : nullptr,selective ? static_cast<UInt32>(selected.size()) : 0xFFFFFFFF, operation == "test" ? 1 : 0, callback.ptr);
     archive->Close();
-    std::string code = cancelled ? "cancelled" : context.missingVolume ? "missing_volume" : context.passwordMissing ? "password_required" : !extract->error.empty() ? extract->error : result != S_OK ? "engine_error" : "ok";
+    std::string code = cancelled ? "cancelled" : context.previewLimitExceeded ? "preview_too_large" : context.missingVolume ? "missing_volume" : context.passwordMissing ? "password_required" : !extract->error.empty() ? extract->error : result != S_OK ? "engine_error" : "ok";
     return {{"kind", "result"}, {"status", cancelled ? "cancelled" : code == "ok" ? "success" : "error"}, {"code", code}, {"hresult", (uint32_t)result}, {"format", utf8(usedFormat)}, {"itemCount", itemCount}, {"successfulItems", extract->successfulItems}, {"failures", extract->failures}, {"verifiedEncryptedItems", extract->verifiedEncryptedItems}};
 }
 int wmain(int argc, wchar_t** argv) {

@@ -15,7 +15,7 @@ internal static class MaintenanceEvidence
         using var manifest=JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(engineDirectory,"manifest.json")));
         var architecture=manifest.RootElement.GetProperty("architecture").GetString()!;
         if(root.GetProperty("architecture").GetString()!=architecture || architecture is not ("x64" or "arm64")) throw new InvalidOperationException("Candidate architecture differs from the engine.");
-        var reports = new[] { "engine-validation.json", "compression-validation.json", "selection-validation.json", "encoding-validation.json", "pause-validation.json", "archive-editing-validation.json", "volume-validation.json", "sfx-validation.json", "format-validation.json", "architecture-validation.json", "conversion-validation.json" };
+        var reports = new[] { "engine-validation.json", "compression-validation.json", "selection-validation.json", "encoding-validation.json", "pause-validation.json", "archive-editing-validation.json", "volume-validation.json", "sfx-validation.json", "format-validation.json", "architecture-validation.json", "conversion-validation.json", "preview-validation.json" };
         var names = new[] { "7z.dll", "7z.exe", "7z.sfx", "License.txt", "manifest.json" }.Select(name => $"workspace/engines/{version}/{name}")
             .Concat(new[] { "public-key.pem", "workspace/artifacts/worker/ArchiveEngineWorker.exe" })
             .Concat(reports.Select(name => "workspace/artifacts/" + name)).ToArray();
@@ -43,7 +43,7 @@ internal static class MaintenanceEvidence
                 || !(passed.ValueKind == JsonValueKind.True || passed.ValueKind == JsonValueKind.Number && passed.GetInt32() == total)
                 || values.Count(value => value.Name.StartsWith(version + " ", StringComparison.Ordinal)) < minimum)
                 throw new InvalidOperationException("Passing target-version maintenance coverage is required.");
-            if ((name is "pause-validation.json" or "archive-editing-validation.json" or "volume-validation.json" or "sfx-validation.json" or "format-validation.json" or "architecture-validation.json" or "conversion-validation.json") && !dllHash.Equals(report.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase))
+            if ((name is "pause-validation.json" or "archive-editing-validation.json" or "volume-validation.json" or "sfx-validation.json" or "format-validation.json" or "architecture-validation.json" or "conversion-validation.json" or "preview-validation.json") && !dllHash.Equals(report.GetProperty("engineHashes").GetProperty(version).GetString(), StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("Maintenance evidence belongs to another engine binary.");
             if(name=="sfx-validation.json" && !hashes.GetProperty($"workspace/engines/{version}/7z.sfx").GetString()!.Equals(report.GetProperty("moduleHashes").GetProperty(version).GetString(),StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("SFX evidence belongs to another module.");
             if(name=="architecture-validation.json" && (report.GetProperty("architecture").GetString()!=architecture || !architecture.Equals(report.GetProperty("osArchitecture").GetString(),StringComparison.OrdinalIgnoreCase) || !report.GetProperty("nativeProcess").GetBoolean())) throw new InvalidOperationException("Actual native target execution is required.");

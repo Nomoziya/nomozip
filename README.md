@@ -51,3 +51,6 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 F22 已完成本地及完整双架构 CI 验收：转换数据 196、实际界面 80，完整报告 76 / 75 份通过。preview.23 两架构仅本地轻量候选，见 `artifacts/release-0.2.0-preview.23-final/` 和 `artifacts/release-0.2.0-preview.23-arm64-final/`；未发布或替换安装。其后的命令行验收见下段。
 
 命令行与批处理入口已完成本地及完整双架构 CI 验收：独立 `nomozip-cli.exe` 提供解压、测试、创建和密码库编号查询，复用 GUI 业务/引擎；稳定 JSON/退出码、标准输入或遮罩输入密码、只读密码库引用。CLI 84 项、完整报告 77 / 76 份、安装升级各 26 项通过，见 [命令行说明](docs/COMMAND_LINE.md)。preview.24 两架构仅本地轻量候选：`artifacts/release-0.2.0-preview.24-final/` 与 `artifacts/release-0.2.0-preview.24-arm64-final/`；x64 载荷 11055321 字节 / 54 文件，比上一候选增加约 271 KiB，不增加用户运行组件安装。源码已上传，未发布或替换实际安装。下一项为 F26 包内文本/图片只读预览；还剩 4 项开发子项及 F23 物理环境验收。
+
+
+包内文本/图片预览正在验收：在“查看内容”中高亮一行，点击“预览文件”或 Ctrl+P。支持纯文本和 PNG/JPEG/BMP/GIF 首帧，读取后清理临时文件，密码库与解压任务状态不改写。范围和限制见 [只读预览](docs/CONTENT_PREVIEW.md)。
