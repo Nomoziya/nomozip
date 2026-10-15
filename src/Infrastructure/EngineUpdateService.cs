@@ -49,8 +49,19 @@ public sealed class EngineUpdateService(string installedDirectory, string select
         }
         finally
         {
-            if (Directory.Exists(staging)) Directory.Delete(staging, true);
-            gate.Release();
+            try { await DeletePreparationAsync(staging); }
+            finally { gate.Release(); }
+        }
+    }
+    private static async Task DeletePreparationAsync(string staging)
+    {
+        // A just-probed DLL can still have a transient Windows image/file handle.
+        // Limit this wait to preparation cleanup; permanent errors still propagate.
+        for(var attempt=0;;attempt++)
+        {
+            try { if(Directory.Exists(staging)) Directory.Delete(staging,true);return; }
+            catch(Exception error) when(error is IOException or UnauthorizedAccessException && (error.HResult&0xffff) is 5 or 32 or 33 && attempt<20)
+            { await Task.Delay(100); }
         }
     }
     public async Task ActivateAsync(string version, CancellationToken cancellationToken = default)

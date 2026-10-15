@@ -30,8 +30,17 @@ async Task<string> Package(string version,string architecture,byte[]? replacemen
     Add("manifest.json",bytes);Add("manifest.sig",signature);foreach(var pair in payload)Add("engine/"+pair.Key,pair.Value);return file;
 }
 async Task Reject(string name,Func<Task> action,string code)
-{try {await action();Check(name,false);}catch(UpdateException error){Check(name,error.Code==code);}}
-var nativePackages=new Dictionary<string,string>();
+{
+    try {await action();Check(name,false);}
+    catch(UpdateException error){Check(name,error.Code==code);}
+    catch(Exception error)
+    {
+        Console.WriteLine(JsonSerializer.Serialize(new{name,exception=error.ToString(),win32Code=error.HResult&0xffff,
+            retainedDlls=Directory.GetFiles(folder,"7z.dll",SearchOption.AllDirectories).Select(path=>new{path,attributes=File.GetAttributes(path).ToString()})}));
+        Check(name,false);
+    }
+}
+var nativePackages=new Dictionary<string,string>();var brokenPackages=new Dictionary<string,string>();
 foreach(var version in versions)
 {
     var dll=await File.ReadAllBytesAsync(Path.Combine(root,"engines",version,"7z.dll"));
@@ -52,9 +61,26 @@ foreach(var version in versions)
     await SetManifest(expected,wrongImage);Check(version+" incorrect PE despite matching manifest hash ignored",(await new EngineCatalog(builtin).ReadVerifiedVersionsAsync()).Count==0);
     var noExports=dll.ToArray();Array.Clear(noExports,offset+24+112,8);
     var broken=await Package(version,expected,noExports);
+    brokenPackages[version]=broken;
     var brokenUpdater=new EngineUpdateService(Path.Combine(folder,"broken-"+version),Path.Combine(folder,"broken-state-"+version),publicKey,
         Path.Combine(root,"artifacts/worker/ArchiveEngineWorker.exe"),Path.Combine(root,"tests/fixtures/generated/encrypted-header.7z"),new EngineCatalog(Path.Combine(root,"engines")));
     await Reject(version+" native signed PE with missing exports fails real worker probe",()=>brokenUpdater.InstallAsync(broken),"engine_validation_failed");
+}
+{
+    var cleanupRoot=Path.Combine(folder,"cleanup-lock");FileStream? held=null;Task release=Task.CompletedTask;
+    var cleanupUpdater=new EngineUpdateService(cleanupRoot,Path.Combine(folder,"cleanup-state"),publicKey,
+        Path.Combine(root,"artifacts/worker/ArchiveEngineWorker.exe"),Path.Combine(root,"tests/fixtures/generated/encrypted-header.7z"),new EngineCatalog(Path.Combine(root,"engines"),cleanupRoot,publicKey));
+    var progress=new InlineProgress<string>(message=>
+    {
+        if(message!=UiText.Get("T_5679ccc535d2"))return;
+        var dll=Directory.GetFiles(cleanupRoot,"7z.dll",SearchOption.AllDirectories).Single();
+        held=new FileStream(dll,FileMode.Open,FileAccess.Read,FileShare.Read);
+        release=Task.Run(async()=>{await Task.Delay(300);held.Dispose();});
+    });
+    try {await Reject("temporary preparation DLL lock preserves validation failure",()=>cleanupUpdater.InstallAsync(brokenPackages["26.04"],progress),"engine_validation_failed");}
+    finally {await release;held?.Dispose();}
+    var installedAfterFailure=await cleanupUpdater.InstallAsync(nativePackages["26.04"]).WaitAsync(TimeSpan.FromSeconds(15));
+    Check("failed preparation releases gate and cleans directory before next install",Directory.Exists(installedAfterFailure) && !Directory.GetDirectories(cleanupRoot,".prepare-*").Any());
 }
 var installed=Path.Combine(folder,EngineArchitecture.InstalledDirectoryName);var state=Path.Combine(folder,EngineArchitecture.SelectionFileName);
 var catalog=new EngineCatalog(Path.Combine(root,"engines"),installed,publicKey);
@@ -90,3 +116,4 @@ sealed class PageHandler(object first,object second):HttpMessageHandler
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
     {Requests++;return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(JsonSerializer.Serialize(Requests==1?first:second))});}
 }
+sealed class InlineProgress<T>(Action<T> report):IProgress<T>{public void Report(T value)=>report(value);}
