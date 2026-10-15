@@ -3069,4 +3069,18 @@
   <data name="Contents.CompactEdit" xml:space="preserve"><value>修改</value></data>
   <data name="Contents.CompactPick" xml:space="preserve"><value>选择</value></data>
   <data name="Contents.CompactSize" xml:space="preserve"><value>大小</value></data>
+  <data name="SoftwareUpdate.Download" xml:space="preserve"><value>下载安装包</value></data>
+  <data name="SoftwareUpdate.Install" xml:space="preserve"><value>安装并重启</value></data>
+  <data name="SoftwareUpdate.Progress" xml:space="preserve"><value>软件安装包下载进度</value></data>
+  <data name="SoftwareUpdate.InstalledHint" xml:space="preserve"><value>下载校验完成后，可安装并重启。升级保留密码库、设置及已下载的引擎。</value></data>
+  <data name="SoftwareUpdate.PortableHint" xml:space="preserve"><value>当前为 ZIP 或未登记副本。请从下载页获取新版；自动安装仅用于当前用户登记的安装版。</value></data>
+  <data name="SoftwareUpdate.NoDigest" xml:space="preserve"><value>发行包缺少有效校验信息，暂不能自动下载；可打开下载页。</value></data>
+  <data name="SoftwareUpdate.Downloading" xml:space="preserve"><value>正在下载安装包，可以取消。</value></data>
+  <data name="SoftwareUpdate.Ready" xml:space="preserve"><value>版本 {0} 已下载并通过 SHA-256 校验。点击“安装并重启”继续。</value></data>
+  <data name="SoftwareUpdate.Cancelled" xml:space="preserve"><value>已取消下载；当前版本和密码库未更改。</value></data>
+  <data name="SoftwareUpdate.InvalidDownload" xml:space="preserve"><value>安装包大小或校验值不匹配，已拒绝安装。请重新检查更新。</value></data>
+  <data name="SoftwareUpdate.DownloadFailed" xml:space="preserve"><value>下载失败，请检查网络或本地可用空间后重试。当前软件仍可使用。</value></data>
+  <data name="SoftwareUpdate.Confirm" xml:space="preserve"><value>将关闭 nomozip，安装版本 {0}，完成后重新打开。密码库、设置和已下载的引擎会保留。请先结束其它 nomozip 命令行任务。是否继续？</value></data>
+  <data name="SoftwareUpdate.Started" xml:space="preserve"><value>已启动安装程序，正在退出。</value></data>
+  <data name="SoftwareUpdate.InstallFailed" xml:space="preserve"><value>无法启动安装，或已下载的文件发生变化。当前软件保持打开，请重新检查更新。</value></data>
 </root>

@@ -1,14 +1,15 @@
 using System.Net;
 using System.Text.Json;
 using ArchivePassword.Infrastructure;
+using System.Security.Cryptography;
 
 var root = Path.GetFullPath(args[0]);
 var checks = new Dictionary<string,bool>();
 void Check(string name, bool passed) { checks[name] = passed; Console.WriteLine($"{(passed ? "PASS" : "FAIL")} {name}"); }
-object Release(string tag, string arch = "x64", bool preview = false, bool draft = false, string? url = null, long size = 1024, bool bundled = false)
+object Release(string tag, string arch = "x64", bool preview = false, bool draft = false, string? url = null, long size = 1024, bool bundled = false, string? digest = null)
 {
     var name = $"nomozip-{tag[1..]}-{(bundled ? "" : "light-")}setup-win-{arch}.exe";
-    return new { tag_name=tag, prerelease=preview, draft, assets=new[] { new { name, size, browser_download_url=url ?? $"https://github.com/Nomoziya/nomozip/releases/download/{tag}/{name}" } } };
+    return new { tag_name=tag, prerelease=preview, draft, assets=new[] { new { name, size, digest, browser_download_url=url ?? $"https://github.com/Nomoziya/nomozip/releases/download/{tag}/{name}" } } };
 }
 async Task<AvailableApplicationRelease?> Find(object[] releases, string arch = "x64")
 {
@@ -53,6 +54,80 @@ using (var client = new HttpClient(new Handler(async (_,token) => { await Task.D
     try { await new GitHubApplicationChannel(client).CheckAsync("x64",cancel.Token); Check("cancellation",false); }
     catch (OperationCanceledException) { Check("cancellation",true); }
 }
+var cache=Path.Combine(root,"artifacts/application-update-data",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(cache);
+try
+{
+    var bytes=Enumerable.Range(0,130000).Select(v=>(byte)(v%251)).ToArray();
+    var sha=Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+    var good=(await Find([Release("v99.0.0",size:bytes.Length,digest:"sha256:"+sha)]))!;
+    Check("release digest and exact size retained",good.CanDownload && good.InstallerSha256==sha && good.InstallerSize==bytes.Length);
+    foreach(var digest in new string?[]{null,"sha1:"+sha,"sha256:bad","sha256:"+new string('z',64)})
+    {
+        var metadata=(await Find([Release("v99.0.0",digest:digest)]))!;
+        Check("legacy or malformed digest still offers page only "+(digest??"null"),!metadata.CanDownload && metadata.ReleaseUrl==good.ReleaseUrl);
+    }
+    Check("unreasonably large installer not automatically downloadable",!(await Find([Release("v99.0.0",size:ApplicationInstallerDownload.MaximumBytes+1,digest:"sha256:"+sha)]))!.CanDownload);
+    using var client=new HttpClient(new Handler((request,_)=>
+    {
+        Check("download exact fixed product asset anonymous",request.RequestUri==good.InstallerUrl && request.Headers.Authorization is null && request.Headers.UserAgent.Any());
+        return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new ByteArrayContent(bytes)});
+    }));
+    var progress=new List<int>();
+    var path=await new ApplicationInstallerDownload(client).DownloadAsync(good,"x64",cache,new InlineProgress(v=>progress.Add(v)));
+    Check("actual downloaded file exact bytes",File.ReadAllBytes(path).SequenceEqual(bytes));
+    Check("progress advances to 100 monotonically",progress.Count>1 && progress[^1]==100 && progress.SequenceEqual(progress.Order()));
+    using(var locked=ApplicationInstallerDownload.OpenVerified(path,good))
+    {
+        var refused=false;try{using var overwrite=new FileStream(path,FileMode.Create,FileAccess.Write);}catch(IOException){refused=true;}
+        Check("reverified installer held against replacement",refused && locked.Position==0);
+    }
+    File.WriteAllBytes(path,[1,2,3]);
+    var tampered=false;try{using var locked=ApplicationInstallerDownload.OpenVerified(path,good);}catch(InvalidDataException){tampered=true;}
+    Check("changed prepared file refused at install time",tampered);File.Delete(path);
+    var wrongSize=false;try{await new ApplicationInstallerDownload(client).DownloadAsync(good with {InstallerSize=bytes.Length+1},"x64",cache);}catch(InvalidDataException){wrongSize=true;}
+    Check("header length mismatch rejected and partial removed",wrongSize && !Directory.EnumerateFiles(cache).Any());
+    var wrongHash=false;try{await new ApplicationInstallerDownload(client).DownloadAsync(good with {InstallerSha256=new string('0',64)},"x64",cache);}catch(InvalidDataException){wrongHash=true;}
+    Check("SHA mismatch rejected and partial removed",wrongHash && !Directory.EnumerateFiles(cache).Any());
+    using var unbounded=new HttpClient(new Handler((_,_)=>Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StreamContent(new NonSeekable(bytes))})));
+    foreach(var declared in new[]{bytes.Length-1,bytes.Length+1})
+    {
+        var refused=false;try{await new ApplicationInstallerDownload(unbounded).DownloadAsync(good with {InstallerSize=declared},"x64",cache);}catch(InvalidDataException){refused=true;}
+        Check("stream actual size enforced without Content-Length "+declared,refused && !Directory.EnumerateFiles(cache).Any());
+    }
+    using var cancelling=new HttpClient(new Handler(async(_,token)=>{await Task.Delay(Timeout.Infinite,token);return new HttpResponseMessage();}));
+    using(var stop=new CancellationTokenSource(30))
+    {
+        var refused=false;try{await new ApplicationInstallerDownload(cancelling).DownloadAsync(good,"x64",cache,token:stop.Token);}catch(OperationCanceledException){refused=true;}
+        Check("download cancellation cleans own partial",refused && !Directory.EnumerateFiles(cache).Any());
+    }
+    using(var stop=new CancellationTokenSource())
+    {
+        var wrote=false;var refused=false;
+        try{await new ApplicationInstallerDownload(unbounded).DownloadAsync(good,"x64",cache,new InlineProgress(_=>{wrote=Directory.EnumerateFiles(cache,"*.partial").Any();stop.Cancel();}),stop.Token);}catch(OperationCanceledException){refused=true;}
+        Check("mid-stream cancellation removes actual partial file",wrote && refused && !Directory.EnumerateFiles(cache).Any());
+    }
+    using(var failed=new HttpClient(new Handler((_,_)=>Task.FromResult(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable)))))
+    {
+        var refused=false;try{await new ApplicationInstallerDownload(failed).DownloadAsync(good,"x64",cache);}catch(HttpRequestException){refused=true;}
+        Check("HTTP download failure keeps cache empty",refused && !Directory.EnumerateFiles(cache).Any());
+    }
+    var blocked=Path.Combine(cache,"blocked-cache");File.WriteAllText(blocked,"unrelated");
+    var diskFailure=false;try{await new ApplicationInstallerDownload(client).DownloadAsync(good,"x64",blocked);}catch(IOException){diskFailure=true;}
+    Check("unavailable cache preserves existing unrelated file",diskFailure && File.ReadAllText(blocked)=="unrelated");File.Delete(blocked);
+    foreach(var bad in new[]{good with {InstallerUrl=new Uri("https://example.com/setup.exe")},good with {InstallerSha256=null},good with {InstallerSize=0}})
+    {
+        var refused=false;try{await new ApplicationInstallerDownload(client).DownloadAsync(bad,"x64",cache);}catch(InvalidDataException){refused=true;}
+        Check("unsupported download metadata refused "+bad,refused && !Directory.EnumerateFiles(cache).Any());
+    }
+    var install=Path.Combine(cache,"a directory with 空格");var start=ApplicationInstallation.CreateStart(Path.Combine(cache,"setup.exe"),install);
+    Check("installer launch explicit executable no shell correct NSIS path semantics",!start.UseShellExecute && start.Arguments=="/S /UPDATE /D="+Path.GetFullPath(install) && start.FileName==Path.GetFullPath(Path.Combine(cache,"setup.exe")));
+    Check("registered installation exact own executable",ApplicationInstallation.Matches(Path.Combine(install,"ArchivePassword.exe"),install));
+    Check("portable different copy cannot upgrade registered installation",!ApplicationInstallation.Matches(Path.Combine(cache,"ArchivePassword.exe"),install));
+    var unrelated=Path.Combine(cache,"unrelated.txt");File.WriteAllText(unrelated,"keep");
+    path=await new ApplicationInstallerDownload(client).DownloadAsync(good,"x64",cache);
+    Check("successful retry keeps unrelated cache content",File.ReadAllText(unrelated)=="keep" && File.Exists(path));
+}
+finally {Directory.Delete(cache,true);}
 if (args.Contains("--online"))
 {
     using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
@@ -65,3 +140,5 @@ return checks.Values.All(value=>value) ? 0 : 1;
 
 sealed class Handler(Func<HttpRequestMessage,CancellationToken,Task<HttpResponseMessage>> action) : HttpMessageHandler
 { protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token) => action(request,token); }
+sealed class InlineProgress(Action<int> report):IProgress<int>{public void Report(int value)=>report(value);}
+sealed class NonSeekable(byte[] bytes):MemoryStream(bytes){public override bool CanSeek=>false;}

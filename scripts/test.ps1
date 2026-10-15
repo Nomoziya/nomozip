@@ -165,6 +165,8 @@ $taskShellGui = Start-Process -FilePath $taskApplication -ArgumentList @('--vali
 if ($taskShellGui.ExitCode -ne 0) { throw 'Desktop Shell settings and compression validation failed.' }
 $taskApplicationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-application-updates', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskApplicationGui.ExitCode -ne 0) { throw 'Desktop application update validation failed.' }
+$taskApplicationEnglishGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-application-updates', $taskRoot, 'en') -WindowStyle Hidden -Wait -PassThru
+if ($taskApplicationEnglishGui.ExitCode -ne 0) { throw 'English desktop application update validation failed.' }
 $taskExtractionToolsGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-extraction-tools', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskExtractionToolsGui.ExitCode -ne 0) { throw 'Desktop extraction tools validation failed.' }
 $taskSelectionGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-selection', $taskRoot) -WindowStyle Hidden -Wait -PassThru
