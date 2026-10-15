@@ -77,6 +77,11 @@ try {
     if ($FrameworkDependent) { $taskSmokeArguments += '--shared-runtime' }
     $taskSmoke = Start-Process -FilePath (Join-Path $taskApplication 'ArchivePassword.exe') -ArgumentList $taskSmokeArguments -WindowStyle Hidden -Wait -PassThru
     $taskChecks.installedOfflinePasswordExtraction = $taskSmoke.ExitCode -eq 0
+    $taskCliInfo = & (Join-Path $taskApplication 'nomozip-cli.exe') --version | ConvertFrom-Json
+    $taskChecks.installedConsoleRunsWithNativeArchitecture = $LASTEXITCODE -eq 0 -and $taskCliInfo.architecture -eq $Architecture
+    $taskCliResult = & (Join-Path $taskApplication 'nomozip-cli.exe') test (Join-Path $taskRoot 'tests/fixtures/generated/plain.7z') --data-dir $taskData | ConvertFrom-Json
+    $taskChecks.installedConsoleTestsActualArchive = $LASTEXITCODE -eq 0 -and $taskCliResult.exitCode -eq 0
+
     $taskSmokeReportName = if ($FrameworkDependent) { 'light-installed-smoke-validation.json' } else { 'installed-smoke-validation.json' }
     $taskSmokeReport = Get-Content -Raw (Join-Path $taskRoot "artifacts/$taskSmokeReportName") | ConvertFrom-Json
     $taskChecks.expectedRuntimeActuallyLoaded = $taskSmokeReport.runtimeLocal -eq (-not $FrameworkDependent)
@@ -87,6 +92,7 @@ try {
     Set-Item -LiteralPath $taskAssociationCommand -Value ('"' + (Join-Path $taskApplication 'ArchivePassword.exe') + '" "%1"')
     Invoke-Installer (Join-Path $taskApplication 'Uninstall.exe') @('/S',('_?=' + $taskApplication))
     $taskChecks.uninstallRemovedProgramAndRegistration = -not (Test-Path (Join-Path $taskApplication 'ArchivePassword.exe')) -and -not (Test-Path $taskRegistry)
+    $taskChecks.uninstallRemovedConsole = -not (Test-Path (Join-Path $taskApplication 'nomozip-cli.exe'))
     $taskChecks.defaultUninstallPreservedData = (Get-FileHash $taskVault).Hash -eq $taskVaultHash -and (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
     $taskChecks.uninstallPreservedUnrelatedFile = Test-Path (Join-Path $taskApplication 'keep-user-file.txt')
     $taskChecks.uninstallRemovedOwnedFileEntry = -not (Test-Path (Join-Path $taskAssociationRoot 'nomozip.Archive'))
@@ -106,7 +112,7 @@ try {
     if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
     Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskExpectedChecks = if ($FrameworkDependent) { 23 } else { 22 }
+    $taskExpectedChecks = if ($FrameworkDependent) { 26 } else { 25 }
     $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
     [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;previousArchitecture=$PreviousArchitecture;architecture=$Architecture;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8

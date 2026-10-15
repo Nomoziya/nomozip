@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','CliValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -144,6 +144,8 @@ New-Item -ItemType Directory -Force $taskTestApp | Out-Null
 Copy-Item (Join-Path $taskRoot 'artifacts/app/*') $taskTestApp -Recurse -Force
 Copy-Item $taskTestPublic (Join-Path $taskTestApp 'update-public-key.pem') -Force
 $taskApplication = Join-Path $taskTestApp 'ArchivePassword.exe'
+& $taskDotnet (Join-Path $taskRoot 'tests/CliValidation/bin/Debug/net10.0-windows/CliValidation.dll') $taskRoot $taskTestApp
+if ($LASTEXITCODE -ne 0) { throw 'Console and batch entry validation failed.' }
 $taskGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskGui.ExitCode -ne 0) { throw 'Desktop command validation failed.' }
 Write-Output 'Desktop command validation passed.'

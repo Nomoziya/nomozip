@@ -49,3 +49,5 @@ Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供�
 归档格式转换：普通 7z/ZIP/RAR → 新 7z/ZIP，原包保留，重新选择新包加密；逐文件 SHA-256 验证后交付。见 [转换指南](docs/ARCHIVE_CONVERSION.md)。
 
 F22 已完成本地及完整双架构 CI 验收：转换数据 196、实际界面 80，完整报告 76 / 75 份通过。preview.23 两架构仅本地轻量候选，见 `artifacts/release-0.2.0-preview.23-final/` 和 `artifacts/release-0.2.0-preview.23-arm64-final/`；未发布或替换安装。下一项为命令行入口。
+
+命令行与批处理入口正在验收：独立 nomozip-cli.exe 与 GUI 共用业务/引擎和共享运行库，提供稳定 JSON/退出码、只读密码库引用。见 [命令行说明](docs/COMMAND_LINE.md)。
