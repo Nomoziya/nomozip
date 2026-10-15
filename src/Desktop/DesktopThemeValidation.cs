@@ -30,6 +30,7 @@ internal static class DesktopThemeValidation
             Check("startup reads saved dark mode before window display",theme.Mode=="dark" && AppearancePreferenceStore.Read(profile).Mode=="dark" && (theme.IsHighContrast || theme.IsDark));
             Check("both languages actual encrypted tasks and dialogs in dark and contrast modes",await DesktopLocalizationValidation.RunAsync(window,theme,root,baseDirectory,profile,"theme"));
             var model=(MainViewModel)window.DataContext;model.Page=2;window.Width=800;window.Height=760;await Layout(window);window.AppearanceChoice.BringIntoView();await Layout(window);
+            window.SaveAppearanceAction.BringIntoView();await Layout(window);window.Opacity=1;DesktopAccessibilityValidation.Render(window,Path.Combine(samples,language+"-settings-dark.png"),1,clientOnly:true);window.Opacity=0;
             Check("theme selection and save have translated accessible labels",UIElementAutomationPeer.CreatePeerForElement(window.AppearanceChoice)!.GetName()==UiText.Get("Appearance.Label") && new ButtonAutomationPeer(window.SaveAppearanceAction).GetName()==UiText.Get("Appearance.Save"));
             Check("theme controls keyboard focusable and stored mode selected",new ButtonAutomationPeer(window.SaveAppearanceAction).IsKeyboardFocusable() && model.SelectedAppearance.Code=="dark");
             Check("record based dropdown displays its label rather than record type",Descendants(window.AppearanceChoice).OfType<TextBlock>().Any(v=>v.Text==model.SelectedAppearance.Label));
