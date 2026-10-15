@@ -29,6 +29,13 @@ internal static class DesktopCheckpointValidation
                 try
                 {
                     var profile=Path.Combine(data,language);Directory.CreateDirectory(profile);var archive=Path.Combine(profile,"input.zip");
+                    var liveSizeProbe=Path.Combine(profile,"live-size.bin");
+                    using(var writer=new FileStream(liveSizeProbe,FileMode.Create,FileAccess.Write,FileShare.None))
+                    {
+                        writer.Write(new byte[64*1024]);writer.Flush();
+                        Check(language+" metadata-only size query observes exclusive active writer",DesktopPauseValidation.LiveLength(liveSizeProbe)==64*1024);
+                    }
+                    File.Delete(liveSizeProbe);
                     using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create)) foreach(var name in new[]{"a.txt","nested/b.txt","c.txt"}) {using var writer=new StreamWriter(zip.CreateEntry(name).Open());writer.Write(name+" original");}
                     var output=Path.Combine(profile,"output");var store=new ExtractionCheckpointStore(Path.Combine(profile,"extraction-progress"));
                     var vault=new DpapiPasswordVault(Path.Combine(profile,"passwords.apv"));

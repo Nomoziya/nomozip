@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -9,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using ArchivePassword.Core;
 using ArchivePassword.Infrastructure;
+using Microsoft.Win32.SafeHandles;
 
 namespace ArchivePassword.Desktop;
 internal static class DesktopPauseValidation
@@ -28,12 +30,10 @@ internal static class DesktopPauseValidation
                 // Query the live handle, keeping the original partial-file criterion.
                 try
                 {
-                    using var handle=File.OpenHandle(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite|FileShare.Delete);
-                    var length=RandomAccess.GetLength(handle);sizeSamples++;maximumLiveLength=Math.Max(maximumLiveLength,length);
+                    var length=LiveLength(path);sizeSamples++;maximumLiveLength=Math.Max(maximumLiveLength,length);
                     return length>0 && length<sourceLength;
                 }
-                catch(FileNotFoundException){return false;}
-                catch(DirectoryNotFoundException){return false;}
+                catch(IOException error) when((error.HResult&0xffff) is 2 or 3){return false;}
             });
         async Task Wait(string phase,Func<bool> condition,bool layout=true)
         {var deadline=DateTime.UtcNow.AddSeconds(30);while(!condition()){if(DateTime.UtcNow>deadline) throw new TimeoutException("pause UI condition timed out: "+JsonSerializer.Serialize(new {phase,workers=WorkerIds(),sizeSamples,maximumLiveLength,sourceLength,page=model?.Page,busy=model?.IsBusy,concurrency=model?.QueueConcurrency,tasks=model?.Tasks.Select(row=>new {row.Name,row.Running,row.Completed,row.Status,row.Percent})}));await Task.Delay(5);}if(layout) await Layout(window);}
@@ -95,5 +95,19 @@ internal static class DesktopPauseValidation
         var report=new {passed=checks.Count>0 && checks.Values.All(value=>value),total=checks.Count,checks,syntheticData=true,usesActualCommandsAndEngines=true};await File.WriteAllTextAsync(Path.Combine(root,"artifacts/pause-ui-validation.json"),JsonSerializer.Serialize(report,new JsonSerializerOptions {WriteIndented=true}));return report.passed;
     }
     private static void Invoke(UIElement element)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(element)!.GetPattern(PatternInterface.Invoke)).Invoke();
+    internal static long LiveLength(string path)
+    {
+        // FILE_READ_ATTRIBUTES is compatible with the worker's exclusive data
+        // writer; GENERIC_READ is not. This handle never reads file contents.
+        using var handle=CreateFileW(path,0x80,7,IntPtr.Zero,3,0x80,IntPtr.Zero);
+        if(handle.IsInvalid) throw new IOException("Cannot query live file size ("+Marshal.GetLastWin32Error()+").",Marshal.GetHRForLastWin32Error());
+        if(!GetFileSizeEx(handle,out var length)) throw new IOException("Cannot query live file size ("+Marshal.GetLastWin32Error()+").",Marshal.GetHRForLastWin32Error());
+        return length;
+    }
+    [DllImport("kernel32.dll",CharSet=CharSet.Unicode,SetLastError=true,ExactSpelling=true)]
+    private static extern SafeFileHandle CreateFileW(string path,uint access,uint share,IntPtr security,uint disposition,uint flags,IntPtr template);
+    [DllImport("kernel32.dll",SetLastError=true)]
+    [return:MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetFileSizeEx(SafeFileHandle handle,out long size);
     private static async Task Layout(Window window)=>await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
 }
