@@ -3083,4 +3083,5 @@
   <data name="SoftwareUpdate.Confirm" xml:space="preserve"><value>将关闭 nomozip，安装版本 {0}，完成后重新打开。密码库、设置和已下载的引擎会保留。请先结束其它 nomozip 命令行任务。是否继续？</value></data>
   <data name="SoftwareUpdate.Started" xml:space="preserve"><value>已启动安装程序，正在退出。</value></data>
   <data name="SoftwareUpdate.InstallFailed" xml:space="preserve"><value>无法启动安装，或已下载的文件发生变化。当前软件保持打开，请重新检查更新。</value></data>
+  <data name="SoftwareUpdate.DownloadTimeout" xml:space="preserve"><value>安装包下载超时，请检查网络后重试。当前版本未更改。</value></data>
 </root>

@@ -4,12 +4,16 @@ using System.Security.Cryptography;
 namespace ArchivePassword.Infrastructure;
 
 // A release digest from GitHub's HTTPS API checks download integrity, not publisher signing.
-public sealed class ApplicationInstallerDownload(HttpClient client)
+public sealed class ApplicationInstallerDownload(HttpClient client, TimeSpan? timeout = null)
 {
     public const long MaximumBytes = 64 * 1024 * 1024;
     public async Task<string> DownloadAsync(AvailableApplicationRelease release, string architecture, string cache,
         IProgress<int>? progress = null, CancellationToken token = default)
     {
+        // ResponseHeadersRead does not apply HttpClient.Timeout to body reads.
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+        deadline.CancelAfter(timeout ?? TimeSpan.FromMinutes(10));
+        token = deadline.Token;
         var expected = new Uri($"https://github.com/{GitHubApplicationChannel.Repository}/releases/download/v{release.Version}/nomozip-{release.Version}-light-setup-win-{architecture}.exe");
         if (architecture is not ("x64" or "arm64") || !release.CanDownload || release.InstallerUrl != expected)
             throw new InvalidDataException("The release has no supported verified installer.");
