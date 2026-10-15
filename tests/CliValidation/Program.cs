@@ -110,7 +110,10 @@ try
     var extraCreate=await Run(["create",content,"--output",extra,"--encrypt","--password-stdin"],separate+"\n");
     var twoLines=await Run(["test",extra,"--use-vault","--password-stdin","--master-password-stdin","--data-dir",profile],separate+"\n"+master+"\n");
     Check("two stdin secrets have deterministic archive-then-master ordering",extraCreate.Exit==0 && twoLines.Exit==0 && !twoLines.Out.Contains(separate) && !twoLines.Out.Contains(master));
-    var emptyProfile=Path.Combine(own,"never-created-profile");var info=await Run(["--version"]);Check("console version reports native process architecture",info.Exit==0 && info.Json.GetProperty("architecture").GetString()==EngineArchitecture.Current && info.Json.GetProperty("version").GetString()=="0.2.0-preview.24");
+    var emptyProfile=Path.Combine(own,"never-created-profile");var info=await Run(["--version"]);
+    var expectedVersion=System.Xml.Linq.XDocument.Load(Path.Combine(root,"src/Desktop/ArchivePassword.Desktop.csproj")).Root!.Element("PropertyGroup")!.Element("Version")!.Value;
+    var binaryVersion=FileVersionInfo.GetVersionInfo(Path.Combine(app,"ArchivePassword.exe")).ProductVersion!.Split('+')[0];
+    Check("console version reports native process architecture",info.Exit==0 && info.Json.GetProperty("architecture").GetString()==EngineArchitecture.Current && info.Json.GetProperty("version").GetString()==expectedVersion && binaryVersion==expectedVersion);
     var emptyList=await Run(["vault-list","--data-dir",emptyProfile]);Check("reading absent vault does not create profile files",emptyList.Exit==0 && !Directory.Exists(emptyProfile));
     var help=await Run(["--help"]);Check("help is available without any engine or vault access",help.Exit==0 && help.Out.Contains("--password-stdin") && help.Out.Contains("255"));
     await File.WriteAllTextAsync(Path.Combine(own,"-dash.txt"),"dash input");var dashed=await Run(["create","--output",Path.Combine(own,"-dash.7z"),"--","-dash.txt"]);var dashTest=await Run(["test","--","-dash.7z"]);Check("end-of-options supports literal leading-dash relative filenames",dashed.Exit==0 && dashTest.Exit==0);
