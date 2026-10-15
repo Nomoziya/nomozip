@@ -36,9 +36,11 @@ internal static class DesktopPauseValidation
                 Check(version+" idle has no pause entry "+cancel,!window.QueuePauseAction.IsVisible && !model.ToggleQueuePauseCommand.CanExecute(null));model.QueueConcurrency=2;model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
                 var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(fixture,path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
                 var launches=new List<ArchiveTaskRow>();foreach(var row in rows) row.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(ArchiveTaskRow.Running) && row.Running) launches.Add(row);};
-                await Layout(window);Invoke(window.ExtractAction);await Layout(window);
+                await Layout(window);Invoke(window.ExtractAction);
                 // Verification also launches workers. Wait for actual partial extraction files,
                 // otherwise pausing between phases can legitimately leave only managed waiters.
+                // Start observing immediately: an idle-priority layout wait can run after
+                // every fast native task has finished, losing the pause boundary entirely.
                 await Wait("two active extraction workers with partial output",()=>WorkerIds().Length==2 && rows.Take(2).All(row=>row.Running && HasPartialExtraction(row)),layout:false);model.ToggleQueuePauseCommand.Execute(null);
                 await Wait("two native pause acknowledgements",()=>rows.Take(2).All(row=>row.Status=="已暂停"));var ids=WorkerIds();var percents=rows.Select(row=>row.Percent).ToArray();await Task.Delay(200);await Layout(window);
                 Check(version+" actual pause entry changes to continue "+cancel,window.QueuePauseAction.IsVisible && window.QueuePauseAction.IsEnabled && model.QueuePauseCaption=="继续队列");
