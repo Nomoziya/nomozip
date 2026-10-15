@@ -13,7 +13,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         IProgress<TaskUpdate>? progress = null,
         CancellationToken cancellationToken = default,
         CancellationToken skipSavedPasswordToken = default,
-        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null,IReadOnlyList<ArchiveEntry>? selection=null)
+        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null,IReadOnlyList<ArchiveEntry>? selection=null,bool recordPasswordSuccess=true)
     {
         var destination = Path.GetFullPath(outputPath);
         IExtractionOriginMark? originMark;
@@ -106,7 +106,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 var usedPasswords = verifiedPasswords.Where(value => result.VerifiedEncryptedItems.Contains(value.Key)).Select(value => value.Value).DistinctBy(value => value.Secret, StringComparer.Ordinal).ToArray();
                 // Engines without per-item evidence keep the established single-password behavior.
                 if (verifiedPasswords.Count == 0 && secret is not null) usedPasswords = [supplied ?? new(secret, false, "", savedId)];
-                foreach (var used in usedPasswords)
+                foreach (var used in recordPasswordSuccess?usedPasswords:[])
                 {
                     if (used.SavedId is { } id) await vault.RecordSuccessAsync(id, archivePath, CancellationToken.None);
                     else if (used.Save)
