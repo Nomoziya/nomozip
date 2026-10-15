@@ -10,8 +10,13 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<bool, string?>? selectVaultBackup = null, Action<VaultBackupDialog>? prepareVaultBackup = null, Action<VaultImportDialog>? prepareVaultImport = null,Action<ExtractionRulesDialog>? prepareRules=null,
     Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null,
     Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null,
-    Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null)
+    Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null)
 {
+    public void ShowArchiveConversion(ArchiveConversionViewModel model)
+    {
+        var dialog=new ArchiveConversionDialog(model) {Owner=owner};prepareConversion?.Invoke(dialog);dialog.ShowDialog();
+    }
+    public bool ConfirmConversionReplace(string path)=>confirmConversionReplace?.Invoke(path) ?? MessageBox.Show(owner,UiText.Get("Conversion.ReplacePrompt")+"\n"+path,UiText.Get("Conversion.Title"),MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
     public string[] SelectArchiveEditSources(ArchiveEditAction action)
     {
         if(selectArchiveEditSources is not null) return selectArchiveEditSources(action);

@@ -3012,4 +3012,33 @@ A password is required to validate the archive data.</value>
   <data xml:space="preserve" name="Appearance.HorizontalScroll">
     <value>Horizontal scroll thumb</value>
   </data>
+  <data name="Conversion.Title" xml:space="preserve"><value>Convert archive</value></data>
+  <data name="Conversion.Subtitle" xml:space="preserve"><value>Convert all contents of the selected archive into a new archive. Keep the original.</value></data>
+  <data name="Conversion.Source" xml:space="preserve"><value>Source archive</value></data>
+  <data name="Conversion.Output" xml:space="preserve"><value>New archive path</value></data>
+  <data name="Conversion.Browse" xml:space="preserve"><value>Browse…</value></data>
+  <data name="Conversion.Format" xml:space="preserve"><value>Output format</value></data>
+  <data name="Conversion.Level" xml:space="preserve"><value>Compression level (0–9)</value></data>
+  <data name="Conversion.Encrypt" xml:space="preserve"><value>Encrypt the new archive</value></data>
+  <data name="Conversion.Password" xml:space="preserve"><value>New archive password</value></data>
+  <data name="Conversion.ConfirmPassword" xml:space="preserve"><value>Confirm new password</value></data>
+  <data name="Conversion.EncryptHeaders" xml:space="preserve"><value>Encrypt filenames (7z only)</value></data>
+  <data name="Conversion.TemporaryNote" xml:space="preserve"><value>The source password is not inherited. Conversion temporarily stores two extracted copies beside the output and deletes them normally afterwards. Allow enough disk space. Supports ordinary 7z, ZIP and RAR inputs; 7z or ZIP outputs.</value></data>
+  <data name="Conversion.Start" xml:space="preserve"><value>Convert</value></data>
+  <data name="Conversion.Cancel" xml:space="preserve"><value>Cancel conversion</value></data>
+  <data name="Conversion.Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Conversion.Extracting" xml:space="preserve"><value>Extracting the source to temporary storage…</value></data>
+  <data name="Conversion.Creating" xml:space="preserve"><value>Creating the new archive…</value></data>
+  <data name="Conversion.Verifying" xml:space="preserve"><value>Verifying the new archive and file contents…</value></data>
+  <data name="Conversion.Delivering" xml:space="preserve"><value>Delivering the verified archive…</value></data>
+  <data name="Conversion.CleanupWarning" xml:space="preserve"><value>Temporary cleanup failed. Extracted contents remain; delete this directory manually:</value></data>
+  <data name="Conversion.OutputRequired" xml:space="preserve"><value>Choose a path for the new archive.</value></data>
+  <data name="Conversion.PasswordMismatch" xml:space="preserve"><value>Enter and confirm a matching new archive password.</value></data>
+  <data name="Conversion.Cancelled" xml:space="preserve"><value>Conversion cancelled. The original archive is preserved.</value></data>
+  <data name="Conversion.Success" xml:space="preserve"><value>Conversion complete. Contents verified; original archive preserved.</value></data>
+  <data name="Conversion.SamePath" xml:space="preserve"><value>Use a different path or name for the new archive.</value></data>
+  <data name="Conversion.Unsupported" xml:space="preserve"><value>Only ordinary 7z, ZIP and RAR inputs are supported. Split volumes and self-extracting archives cannot be converted yet.</value></data>
+  <data name="Conversion.ZipPassword" xml:space="preserve"><value>ZIP passwords must use ASCII characters. Choose 7z for other characters.</value></data>
+  <data name="Conversion.Failed" xml:space="preserve"><value>Conversion failed. The original and any existing target are preserved.</value></data>
+  <data name="Conversion.ReplacePrompt" xml:space="preserve"><value>The target exists. Replace it after successful conversion and verification? The source is always preserved.</value></data>
 </root>
