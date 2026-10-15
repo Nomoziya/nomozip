@@ -1,3 +1,9 @@
+2026-10-16 C / F07 第五轮失败定位及本地修复：cf114b5的x64 CI38796913491通过业务/界面/安装35后，在维护CheckpointValidation的26.03 RAR停止状态断言失败，进度及独立恢复/精确字节仍通过；ARM64 CI38796915484的维护53/安装35通过，旧暂停UI冷态首项通过、暖态第二项仍在观察两部分输出时超时。补足RAR停止的Status/Code/Warning诊断，原取消与剩余范围判定不变。200次同夹具直接停止未复现；新增真实worker退出后以只读句柄占用gate，两个引擎稳定复现取消结果被EndExtraction抢锁错误覆盖，修复前256报告两失败保留checkpoint-post-reader-before-fix-validation.json。现仅成功交付前重取锁，取消/失败保留原结果；修复后256数据与普通取消6通过。原CI无Code，不宣称已证明当时具体占用来源。
+
+暂停UI保持两活动worker/部分输出/ACK/字节等要求，继续移除启动后闲置布局等待，并改用File.OpenHandle+RandomAccess.GetLength避免目录项尺寸可能滞后；增加采样数/最大句柄长度诊断。Microsoft依据 https://devblogs.microsoft.com/oldnewthing/20111226-00/?p=8813 及 https://learn.microsoft.com/en-us/dotnet/api/system.io.randomaccess.getlength?view=net-10.0 。本机64KiB原生打开写入测量未出现目录差异（checkpoint-file-length-probe.json），不假称本机已重现ARM64缓存，需最终原生CI验证。接着重建候选并验UI56、上传一次完整双架构CI；本轮未完成交接，自动任务ACTIVE。只推进F07，不使用本地GiB夹具/安装注册表、不公开发行/替换实际安装。
+
+2026-10-16 C / F07 最新待验收：产品源码cf114b5b44c85afd8b50eaab81bc9566d578f782已上传，x64 CI38796913491 / 原生ARM64 CI38796915484执行中；诊断源码2b1803b的CI38795925440亦未结束，保留其取消诊断。当前本地250数据、56UI、6普通取消及24次坏导出探测6项通过；私有候选11320872字节/54文件，增加101543字节，实际app/公钥/旧候选仍保留。18样本已复核；重建UI后截图需刷新最终哈希记录。待CI完整通过并精确复核84/83报告/13矩阵20绑定/安装35，再执行artifacts/write-checkpoint-final-docs.py、封存preview.28双架构候选、五文档交接和暂停自动任务；当前不能宣称完成。工作区按排除联接口径约5.221GiB，无本地GiB夹具。
+
 2026-10-16 C / F07 第四轮ARM64失败已查证：数据续作250通过；旧暂停UI在等待ApplicationIdle布局后才观察部分输出，此时三项已完成，超时。现去掉启动后额外布局等待，保持两真实worker/部分文件/暂停ACK/继续字节等原判定。维护ArchitectureValidation拒绝缺导出DLL时，7z.dll在清理时仍被子进程占用；ArchiveEngineClient所有已启动路径均等待进程退出后再返回，检查点仍另等持久回调。24次独立原生坏导出探测/即刻删除验证6项、本地续作250和普通取消6项通过；重建轻量载荷11320872字节/54文件，增加101543，无依赖变动。x64偶发取消诊断源码2b1803b对应CI38795925440正在执行，尚未复现原因。新修复需完整双架构CI，不把第四轮或局部通过当完整验收。
 
 2026-10-16 C / F07 第四轮CI偶发失败定位：b5d0ad1 的x64 CI38793240677仅在26.03正常停止保留进度断言失败，独立恢复仍通过；原报告无退出细节，不能确定原因。新增只在失败时输出退出码、结果、收据及stdout/stderr的诊断，验收条件不变。本地70次双引擎小文件停止均通过（checkpoint-cancel-stress-before-fix.json），不能据此宣称CI问题已修复。ARM64 38793241945数据步骤亦失败、后续独立步骤尚在执行；待原始日志查证，不推断同因。自动任务保持ACTIVE，交接未完成。

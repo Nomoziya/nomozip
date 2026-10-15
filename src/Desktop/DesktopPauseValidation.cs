@@ -20,10 +20,23 @@ internal static class DesktopPauseValidation
         var worker=Path.Combine(baseDirectory,"ArchiveEngineWorker.exe");
         var fixture=Path.Combine(root,"tests/fixtures/generated/large-ui.7z");if(!File.Exists(fixture)) fixture=Path.Combine(root,"tests/fixtures/generated/large.7z");
         var sourceLength=new FileInfo(Path.Combine(root,"tests/fixtures/generated/large.bin")).Length;
+        var sizeSamples=0;long maximumLiveLength=0;
         bool HasPartialExtraction(ArchiveTaskRow row)=>Directory.Exists(row.ShellOutputPath) && Directory.GetDirectories(row.ShellOutputPath,".archive-password-*")
-            .SelectMany(path=>Directory.GetFiles(path,"*",SearchOption.AllDirectories)).Any(path=>new FileInfo(path).Length is var length && length>0 && length<sourceLength);
+            .SelectMany(path=>Directory.GetFiles(path,"*",SearchOption.AllDirectories)).Any(path=>
+            {
+                // Directory-entry sizes can lag behind an open writer on NTFS.
+                // Query the live handle, keeping the original partial-file criterion.
+                try
+                {
+                    using var handle=File.OpenHandle(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite|FileShare.Delete);
+                    var length=RandomAccess.GetLength(handle);sizeSamples++;maximumLiveLength=Math.Max(maximumLiveLength,length);
+                    return length>0 && length<sourceLength;
+                }
+                catch(FileNotFoundException){return false;}
+                catch(DirectoryNotFoundException){return false;}
+            });
         async Task Wait(string phase,Func<bool> condition,bool layout=true)
-        {var deadline=DateTime.UtcNow.AddSeconds(30);while(!condition()){if(DateTime.UtcNow>deadline) throw new TimeoutException("pause UI condition timed out: "+JsonSerializer.Serialize(new {phase,workers=WorkerIds(),page=model?.Page,busy=model?.IsBusy,concurrency=model?.QueueConcurrency,tasks=model?.Tasks.Select(row=>new {row.Name,row.Running,row.Completed,row.Status,row.Percent})}));await Task.Delay(5);}if(layout) await Layout(window);}
+        {var deadline=DateTime.UtcNow.AddSeconds(30);while(!condition()){if(DateTime.UtcNow>deadline) throw new TimeoutException("pause UI condition timed out: "+JsonSerializer.Serialize(new {phase,workers=WorkerIds(),sizeSamples,maximumLiveLength,sourceLength,page=model?.Page,busy=model?.IsBusy,concurrency=model?.QueueConcurrency,tasks=model?.Tasks.Select(row=>new {row.Name,row.Running,row.Completed,row.Status,row.Percent})}));await Task.Delay(5);}if(layout) await Layout(window);}
         int[] WorkerIds() {var ids=new List<int>();foreach(var process in Process.GetProcessesByName("ArchiveEngineWorker")){using(process) try {if(process.MainModule?.FileName.Equals(worker,StringComparison.OrdinalIgnoreCase)==true) ids.Add(process.Id);}catch(Exception error) when(error is System.ComponentModel.Win32Exception or InvalidOperationException){}}return ids.Order().ToArray();}
         string Hash(string file) {using var stream=File.OpenRead(file);return Convert.ToHexString(SHA256.HashData(stream));}
         try
@@ -36,6 +49,7 @@ internal static class DesktopPauseValidation
                 Check(version+" idle has no pause entry "+cancel,!window.QueuePauseAction.IsVisible && !model.ToggleQueuePauseCommand.CanExecute(null));model.QueueConcurrency=2;model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
                 var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(fixture,path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
                 var launches=new List<ArchiveTaskRow>();foreach(var row in rows) row.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(ArchiveTaskRow.Running) && row.Running) launches.Add(row);};
+                sizeSamples=0;maximumLiveLength=0;
                 await Layout(window);Invoke(window.ExtractAction);
                 // Verification also launches workers. Wait for actual partial extraction files,
                 // otherwise pausing between phases can legitimately leave only managed waiters.
