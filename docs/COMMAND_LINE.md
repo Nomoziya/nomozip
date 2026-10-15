@@ -30,9 +30,9 @@ Default: unattended, no vault access and no overwrite. Missing passwords fail im
 
 `--password-stdin` reads one UTF-8 line; EOF or an empty line is an argument error. `--password-id GUID` references an exact vault record. `--use-vault` enables existing auto-try rules for extraction/testing only. `vault-list` outputs IDs and metadata only. APV2 requires `--master-password-stdin` or an interactive master password; unlocking lasts only for this process.
 
-同时使用两种标准输入开关时，固定第一行为归档密码、第二行为主密码，不受开关先后顺序影响。密码不能包含换行；交互字符串不承诺立即从全部托管内存擦除，主密码派生密钥按现有库实现清理。库仍遵守本 Windows 用户的 DPAPI/APV2 边界。
+同时使用两种标准输入开关时，固定第一行为归档密码、第二行为主密码，不受开关先后顺序影响。密码不能包含换行；交互字符串不承诺立即从全部托管内存擦除，主密码派生密钥按现有库实现清理。APV1 由当前 Windows 用户的 DPAPI 保护，APV2 由主密码派生密钥加密；命令行不改变这两种保护方式。
 
-When both stdin switches are present, line 1 is always the archive password and line 2 the master password, regardless of option order. Passwords cannot contain line breaks. DPAPI/APV2 Windows-user restrictions still apply.
+When both stdin switches are present, line 1 is always the archive password and line 2 the master password, regardless of option order. Passwords cannot contain line breaks. APV1 uses current-user DPAPI protection; APV2 uses master-password-derived encryption. The CLI preserves these existing protections.
 
 ```powershell
 .\nomozip-cli.exe vault-list

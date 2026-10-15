@@ -20,13 +20,13 @@ if (-not $ApplicationDirectory) {
 } else { $ApplicationDirectory = [IO.Path]::GetFullPath($ApplicationDirectory) }
 $taskApp = Join-Path $ApplicationDirectory 'ArchivePassword.exe'
 if (-not (Test-Path -LiteralPath $taskApp)) { throw 'Application payload is missing.' }
-$taskCli = Join-Path $ApplicationDirectory 'nomozip-cli.exe'
-if (-not (Test-Path -LiteralPath $taskCli) -or (Get-Item -LiteralPath $taskCli).VersionInfo.FileVersion -ne $taskFileVersion -or (Get-Item -LiteralPath $taskCli).VersionInfo.ProductVersion.Split('+')[0] -ne $taskVersion) { throw 'Console entry is missing or its version differs from the source.' }
 $taskBinary = (Get-Item -LiteralPath $taskApp).VersionInfo
 if ($taskBinary.ProductVersion.Split('+')[0] -ne $taskVersion -or $taskBinary.FileVersion -ne $taskFileVersion) { throw 'Application payload version differs from the current source project.' }
 # Both collectors run before building an installer, so private/source/runtime failures create no release assets.
 & $Python -c 'import sys;from pathlib import Path;sys.path.insert(0,sys.argv[1]);from package_preview import application_files,source_files,validate_architecture;application_files(Path(sys.argv[2]));validate_architecture(Path(sys.argv[2]),sys.argv[4]);source_files(Path(sys.argv[3]))' $PSScriptRoot $ApplicationDirectory $taskRoot $Architecture
 if ($LASTEXITCODE -ne 0) { throw 'Release input review failed.' }
+$taskCli = Join-Path $ApplicationDirectory 'nomozip-cli.exe'
+if (-not (Test-Path -LiteralPath $taskCli) -or (Get-Item -LiteralPath $taskCli).VersionInfo.FileVersion -ne $taskFileVersion -or (Get-Item -LiteralPath $taskCli).VersionInfo.ProductVersion.Split('+')[0] -ne $taskVersion) { throw 'Console entry is missing or its version differs from the source.' }
 $taskInstallerName = "nomozip-$taskVersion-light-setup-win-$Architecture.exe"
 $taskInstaller = Join-Path $taskBuild $taskInstallerName
 & (Join-Path $PSScriptRoot 'build-installer.ps1') -ApplicationDirectory $ApplicationDirectory -OutputFile $taskInstaller -FrameworkDependent -Architecture $Architecture

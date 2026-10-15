@@ -145,6 +145,15 @@ def validate(app_directory, powershell):
     rejected_output = OWN / 'bundled-reject'
     reject = run(powershell, ROOT / 'scripts/build-release.ps1', '-ApplicationDirectory', bundled, '-OutputDirectory', rejected_output, '-Python', sys.executable)
     check('real release command rejects bundled payload before output', reject.returncode != 0 and 'Release input review failed' in reject.stdout + reject.stderr and not rejected_output.exists())
+    console_fixture = OWN / 'console-entry-app'; shutil.copytree(app_directory, console_fixture)
+    (console_fixture / 'nomozip-cli.exe').unlink()
+    missing_output = OWN / 'missing-console-reject'
+    reject = run(powershell, ROOT / 'scripts/build-release.ps1', '-ApplicationDirectory', console_fixture, '-OutputDirectory', missing_output, '-Python', sys.executable)
+    check('missing console companion fails before release assets', reject.returncode != 0 and 'Console entry is missing' in reject.stdout + reject.stderr and not missing_output.exists())
+    shutil.copyfile(ROOT / '.tools/dotnet/dotnet.exe', console_fixture / 'nomozip-cli.exe')
+    wrong_output = OWN / 'wrong-console-version-reject'
+    reject = run(powershell, ROOT / 'scripts/build-release.ps1', '-ApplicationDirectory', console_fixture, '-OutputDirectory', wrong_output, '-Python', sys.executable)
+    check('wrong console version fails before release assets', reject.returncode != 0 and 'Console entry is missing or its version differs' in reject.stdout + reject.stderr and not wrong_output.exists())
     report_inside = OWN / 'report-inside'; reject = run(powershell, ROOT / 'scripts/build-release.ps1', '-ApplicationDirectory', app_directory, '-OutputDirectory', report_inside, '-ValidationReport', report_inside / 'report.json', '-Python', sys.executable)
     check('review report cannot pollute four-asset directory', reject.returncode != 0 and 'Keep the review report outside' in reject.stdout + reject.stderr and not report_inside.exists())
 
