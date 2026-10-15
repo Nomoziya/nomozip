@@ -27,7 +27,7 @@ public sealed partial class MainViewModel
                 (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path]),
                 outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status),
                 (entry,status)=>PreviewEntryAsync(task,client,entry,status),
-                (selection,status)=>PrepareDragAsync(task,client,selection,status)));
+                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning));
         }
         catch (OperationCanceledException) { Footer = UiText.Get("T_f23f6d1addfc"); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException)

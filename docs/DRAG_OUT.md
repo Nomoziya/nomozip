@@ -19,7 +19,7 @@
 
 ## 临时文件生命周期
 
-拖放数据只导出同步 COM `IDataObject` 的 `CF_HDROP` 绝对路径，不导出 `IDataObjectAsyncCapability`。按 [Microsoft Shell 同步/异步数据传输约定](https://learn.microsoft.com/en-us/windows/win32/shell/datascenarios#dragging-and-dropping-shell-objects-asynchronously)，同步接收程序在 `DoDragDrop` 返回前完成读取，返回后清理当前准备目录。拒绝目标、Esc 取消和拖放错误也清理。临时目录清理失败时显示实际路径，便于手动处理。
+拖放数据只导出同步 COM `IDataObject` 的 `CF_HDROP` 绝对路径，不导出 `IDataObjectAsyncCapability`。按 [Microsoft Shell 同步/异步数据传输约定](https://learn.microsoft.com/en-us/windows/win32/shell/datascenarios#dragging-and-dropping-shell-objects-asynchronously)，同步接收程序在 `DoDragDrop` 返回前完成读取，返回后清理当前准备目录。拒绝目标、Esc 取消和拖放错误也清理。临时目录清理失败时，在内容窗口和主界面显示实际路径；当前窗口保留取消清理的重试状态，关闭后仍可按路径手动处理。
 
 长时间的同步目标复制可能阻塞拖放循环；大批量解压仍推荐原有“解压所选”，其进度和取消由软件控制。目标若自行违规异步读取普通路径，不属于本协议支持的接收方式。临时文件不是安全擦除；进程崩溃、断电或被强制结束可能留下准备文件，未宣称这类情形自动清理。
 
