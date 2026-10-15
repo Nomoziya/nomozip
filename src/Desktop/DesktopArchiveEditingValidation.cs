@@ -71,7 +71,7 @@ internal static class DesktopArchiveEditingValidation
                                 var first=(DataGridRow)dialog.EntryTable.ItemContainerGenerator.ContainerFromIndex(0);
                                 Check($"{version} complete row {size.Item1} {contrast}",first is not null && Fits(dialog.EntryTable,first));
                                 Check($"{version} editing and primary buttons fit {size.Item1} {contrast}",Fits((FrameworkElement)dialog.Content,dialog.EditContentsButton) && Fits((FrameworkElement)dialog.Content,dialog.ExtractSelectedButton));
-                                Check($"{version} edit button keyboard and accessible label {size.Item1} {contrast}",UIElementAutomationPeer.CreatePeerForElement(dialog.EditContentsButton)!.IsKeyboardFocusable() && UIElementAutomationPeer.CreatePeerForElement(dialog.EditContentsButton)!.GetName().Contains("修改"));
+                                Check($"{version} edit button keyboard and accessible label {size.Item1} {contrast}",UIElementAutomationPeer.CreatePeerForElement(dialog.EditContentsButton)!.IsKeyboardFocusable() && UIElementAutomationPeer.CreatePeerForElement(dialog.EditContentsButton)!.GetName()==UiText.Get("Drag.Actions"));
                                 await Capture(dialog,Path.Combine(screenshots,$"{version}-{size.Item1}-{contrast}.png"));
                             }
                         }
