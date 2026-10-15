@@ -27,7 +27,7 @@ public sealed partial class MainViewModel
     public ICommand ShowTestResultCommand { get;private set; }=null!;
     private void InitializeExtractionToolCommands()
     {
-        EditExtractionRulesCommand=new AsyncCommand(EditExtractionRulesAsync,()=>IsIdle);
+        EditExtractionRulesCommand=new AsyncCommand(EditExtractionRulesAsync,()=>IsIdle && SelectedTask?.Checkpoint is null);
         TestArchiveCommand=new AsyncCommand(TestSelectedArchiveAsync,()=>Page==0 && IsIdle && SelectedTask is not null && activeEngine.Length>0);
         ShowTestResultCommand=new RelayCommand(()=>dialogs.ShowExtractionFailure(SelectedTask!.Name,SelectedTask.VerificationResult!,testing:true),()=>IsIdle && SelectedTask?.VerificationResult is not null);
     }

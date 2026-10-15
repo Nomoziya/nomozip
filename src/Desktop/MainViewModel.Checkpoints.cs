@@ -47,7 +47,7 @@ public sealed partial class MainViewModel
         try
         {
             await CheckpointStore.DiscardAsync(record.Id,cancellation.Token);
-            var task=SelectedTask!;task.Checkpoint=null;
+            var task=SelectedTask!;task.Checkpoint=null;Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));
             if(!task.Completed) task.Status=UiText.Get("T_1bd1893c0900");
             Footer=UiText.Get("Checkpoint.Discarded");Banner="";
         }

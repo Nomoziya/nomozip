@@ -159,7 +159,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 ValidateOutputPath(destination, target);
                 Directory.CreateDirectory(target);
             }
-            var skipped = decisions.Count(value => value.Policy == ExistingFilePolicy.Skip);
+            var skipped = session?.Record.Receipts.Count(value=>value.State=="skipped") ?? decisions.Count(value => value.Policy == ExistingFilePolicy.Skip);
             if (skipped > 0) warning = CombineWarnings(warning, UiText.Format("T_33624dd36711", skipped));
             committed = true;
             try

@@ -58,6 +58,7 @@ internal static class DesktopCheckpointValidation
                     var task=model.Tasks.Single();model.SelectedTask=task;await Layout(window);
                     Check(language+" startup reconstructs saved task",task.Checkpoint is not null && task.Status==UiText.Format("Checkpoint.Available",1,3) && !task.Completed && !model.RetainExtractionProgress);
                     Check(language+" destination is bound and encoding editing disabled",model.DisplayOutputPath==output && model.IsOutputPathReadOnly && !model.FilenameEncodingCommand.CanExecute(null));
+                    Check(language+" bound destination pickers disabled",!model.BrowseOutputCommand.CanExecute(null) && !model.EditExtractionRulesCommand.CanExecute(null));
                     Check(language+" retained row cannot silently be removed",!model.RemoveFileCommand.CanExecute(null) && model.ResumeCheckpointCommand.CanExecute(null) && model.DiscardCheckpointCommand.CanExecute(null));
                     foreach(var mode in new[]{"light","dark","high-contrast"}) foreach(var width in new[]{1120d,800d})
                     {
@@ -89,6 +90,8 @@ internal static class DesktopCheckpointValidation
                     var unrelated=Path.Combine(output,"unrelated.txt");File.WriteAllText(unrelated,"keep");
                     model.DiscardCheckpointCommand.Execute(null);await model.WaitForIdleAsync();await Layout(window);
                     Check(language+" actual discard removes private progress and keeps archive",store.ReadPending().Count==0 && model.SelectedTask.Checkpoint is null && !model.SelectedTask.Completed && File.ReadAllText(unrelated)=="keep" && File.Exists(archive));
+                    var resetOutput=(TextBox)window.FindName("OutputBox");
+                    Check(language+" discard refreshes displayed destination and editability",resetOutput.Text==model.OutputPath && !resetOutput.IsReadOnly && model.BrowseOutputCommand.CanExecute(null) && model.EditExtractionRulesCommand.CanExecute(null));
                     Check(language+" final actions disable after discard",!model.ResumeCheckpointCommand.CanExecute(null) && !model.DiscardCheckpointCommand.CanExecute(null) && model.RemoveFileCommand.CanExecute(null));
                 }
                 finally {window.Close();}
