@@ -5,8 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed record AvailableApplicationRelease(string Version, Uri ReleaseUrl, Uri InstallerUrl)
+public sealed record AvailableApplicationRelease(string Version, Uri ReleaseUrl, Uri InstallerUrl, long InstallerSize = 0, string? InstallerSha256 = null)
 {
+    public bool CanDownload => InstallerSize is > 0 and <= ApplicationInstallerDownload.MaximumBytes &&
+        InstallerSha256 is { Length: 64 } hash && hash.All(Uri.IsHexDigit);
     public bool IsNewerThan(string current)
     {
         var core = current.Split('+')[0].Split('-')[0];
@@ -50,7 +52,11 @@ public sealed partial class GitHubApplicationChannel(HttpClient client)
                     if (asset.GetProperty("name").GetString() != name || asset.GetProperty("size").GetInt64() <= 0) continue;
                     if (!Uri.TryCreate(asset.GetProperty("browser_download_url").GetString(), UriKind.Absolute, out var url) || url != expectedUrl) continue;
                     if (best is null || version > System.Version.Parse(best.Version))
-                        best = new(tag[1..], new Uri($"https://github.com/{Repository}/releases/tag/{tag}"), expectedUrl);
+                    {
+                        var digest = asset.TryGetProperty("digest", out var value) && value.ValueKind == JsonValueKind.String ? value.GetString() : null;
+                        best = new(tag[1..], new Uri($"https://github.com/{Repository}/releases/tag/{tag}"), expectedUrl,
+                            asset.GetProperty("size").GetInt64(), digest?.StartsWith("sha256:", StringComparison.Ordinal) == true ? digest[7..] : null);
+                    }
                 }
             }
             if (releases.GetArrayLength() < 100) return best;

@@ -48,6 +48,8 @@ Var Dialog
 Var PreserveAssociations
 Var OriginalOpenCommand
 Var PreserveShellMenu
+Var UpdateMode
+Var UpdateAttempts
 !include "shell-menu.nsh"
 !define MUI_LANGDLL_REGISTRY_ROOT HKCU
 !define MUI_LANGDLL_REGISTRY_KEY "${REG_KEY}"
@@ -74,6 +76,10 @@ UninstPage custom un.DataPage un.DataPageLeave
   FileOpen $0 "$INSTDIR\ArchivePassword.exe" a
   IfErrors ${PREFIX}locked
   FileClose $0
+  IfFileExists "$INSTDIR\nomozip-cli.exe" 0 ${PREFIX}end
+  FileOpen $0 "$INSTDIR\nomozip-cli.exe" a
+  IfErrors ${PREFIX}locked
+  FileClose $0
   Goto ${PREFIX}end
 ${PREFIX}locked:
   IfSilent ${PREFIX}abort
@@ -86,6 +92,39 @@ ${PREFIX}end:
 
 Function .onInit
   SetShellVarContext current
+  StrCpy $UpdateMode 0
+  ${GetParameters} $0
+  ClearErrors
+  ${GetOptions} $0 "/UPDATE" $1
+  ${IfNot} ${Errors}
+    StrCpy $UpdateMode 1
+    ; Automatic updates may only replace this user's registered installation.
+    ReadRegStr $0 HKCU "${REG_KEY}" "InstallLocation"
+    StrCmp $0 $INSTDIR 0 updateabort
+    IfFileExists "$INSTDIR\ArchivePassword.exe" 0 updateabort
+    StrCpy $UpdateAttempts 200
+updatewait:
+    ClearErrors
+    FileOpen $0 "$INSTDIR\ArchivePassword.exe" a
+    IfErrors updatebusy
+    FileClose $0
+    IfFileExists "$INSTDIR\nomozip-cli.exe" 0 updateready
+    FileOpen $0 "$INSTDIR\nomozip-cli.exe" a
+    IfErrors updatebusy
+    FileClose $0
+    Goto updateready
+updatebusy:
+    Sleep 100
+    IntOp $UpdateAttempts $UpdateAttempts - 1
+    IntCmp $UpdateAttempts 0 updateabort updateabort updatewait
+updateabort:
+    !ifndef VALIDATION_ROOT
+      MessageBox MB_OK|MB_ICONSTOP "$(UpdateBlocked)"
+    !endif
+    SetErrorLevel 2
+    Abort
+updateready:
+  ${EndIf}
   !insertmacro MUI_LANGDLL_DISPLAY
 !if "${ARCHITECTURE}" == "arm64"
   ${IfNot} ${IsNativeARM64}
@@ -191,6 +230,40 @@ cleanupdone:
   WriteRegDWORD HKCU "${REG_KEY}" "NoModify" 1
   WriteRegDWORD HKCU "${REG_KEY}" "NoRepair" 1
 SectionEnd
+
+Function .onInstSuccess
+  ${If} $UpdateMode == 1
+    !ifdef VALIDATION_ROOT
+      ; Exercise real restart with the existing isolated installed-app validation.
+      !ifdef FRAMEWORK_DEPENDENT
+        ExecWait '"$INSTDIR\ArchivePassword.exe" --validate-installed "${VALIDATION_ROOT}\..\..\.." --data-dir "${VALIDATION_ROOT}\data-update-restart" --shared-runtime' $1
+      !else
+        ExecWait '"$INSTDIR\ArchivePassword.exe" --validate-installed "${VALIDATION_ROOT}\..\..\.." --data-dir "${VALIDATION_ROOT}\data-update-restart"' $1
+      !endif
+      ${If} $1 != 0
+        SetErrorLevel 2
+        Return
+      ${EndIf}
+      FileOpen $0 "${VALIDATION_ROOT}\update-completed.txt" w
+      FileWrite $0 "$INSTDIR"
+      FileClose $0
+    !else
+      ClearErrors
+      Exec '"$INSTDIR\ArchivePassword.exe"'
+      ${If} ${Errors}
+        MessageBox MB_OK|MB_ICONEXCLAMATION "$(UpdateRestartFailed)"
+      ${EndIf}
+    !endif
+  ${EndIf}
+FunctionEnd
+
+Function .onInstFailed
+  !ifndef VALIDATION_ROOT
+    ${If} $UpdateMode == 1
+      MessageBox MB_OK|MB_ICONSTOP "$(UpdateFailed)"
+    ${EndIf}
+  !endif
+FunctionEnd
 
 Section "Uninstall"
   !insertmacro CheckNotRunning "uninstall"

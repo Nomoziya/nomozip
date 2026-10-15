@@ -3069,4 +3069,18 @@ A password is required to validate the archive data.</value>
   <data name="Contents.CompactEdit" xml:space="preserve"><value>Edit</value></data>
   <data name="Contents.CompactPick" xml:space="preserve"><value>Pick</value></data>
   <data name="Contents.CompactSize" xml:space="preserve"><value>Size</value></data>
+  <data name="SoftwareUpdate.Download" xml:space="preserve"><value>Download installer</value></data>
+  <data name="SoftwareUpdate.Install" xml:space="preserve"><value>Install and restart</value></data>
+  <data name="SoftwareUpdate.Progress" xml:space="preserve"><value>Installer download progress</value></data>
+  <data name="SoftwareUpdate.InstalledHint" xml:space="preserve"><value>After download verification, install and restart. Your vault, settings, and downloaded engines are preserved.</value></data>
+  <data name="SoftwareUpdate.PortableHint" xml:space="preserve"><value>This is a ZIP or unregistered copy. Use the download page. Automatic installation requires a registered per-user installation.</value></data>
+  <data name="SoftwareUpdate.NoDigest" xml:space="preserve"><value>The release has no usable checksum. Automatic download is unavailable; use the download page.</value></data>
+  <data name="SoftwareUpdate.Downloading" xml:space="preserve"><value>Downloading the installer. You can cancel.</value></data>
+  <data name="SoftwareUpdate.Ready" xml:space="preserve"><value>Version {0} is downloaded and SHA-256 verified. Select Install and restart to continue.</value></data>
+  <data name="SoftwareUpdate.Cancelled" xml:space="preserve"><value>Download cancelled. Your installed version and vault are unchanged.</value></data>
+  <data name="SoftwareUpdate.InvalidDownload" xml:space="preserve"><value>Installer size or checksum does not match. Installation is blocked. Check for updates again.</value></data>
+  <data name="SoftwareUpdate.DownloadFailed" xml:space="preserve"><value>Download failed. Check your network and free disk space, then retry. You can continue using this version.</value></data>
+  <data name="SoftwareUpdate.Confirm" xml:space="preserve"><value>nomozip will close, install version {0}, and reopen. Your vault, settings, and downloaded engines will be kept. Finish any other nomozip command-line tasks first. Continue?</value></data>
+  <data name="SoftwareUpdate.Started" xml:space="preserve"><value>The installer has started. Closing nomozip.</value></data>
+  <data name="SoftwareUpdate.InstallFailed" xml:space="preserve"><value>The installer could not start or the downloaded file changed. nomozip will stay open. Check for updates again.</value></data>
 </root>

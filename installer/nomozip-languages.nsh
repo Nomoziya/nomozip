@@ -1,4 +1,10 @@
 ; Application-owned setup text. MUI supplies standard navigation in both languages.
+LangString UpdateBlocked ${LANG_SIMPCHINESE} "无法自动升级：请关闭 nomozip 和命令行任务，并确认这是当前用户安装的目录。可重新运行下载的安装包。"
+LangString UpdateBlocked ${LANG_ENGLISH} "Automatic upgrade could not start. Close nomozip and its command-line tasks, and check the registered installation directory. You can run the downloaded installer again."
+LangString UpdateFailed ${LANG_SIMPCHINESE} "软件升级未完成。请重新运行下载的安装包修复安装；密码库和设置保留。"
+LangString UpdateFailed ${LANG_ENGLISH} "The upgrade did not finish. Run the downloaded installer again to repair the installation. Your vault and settings are kept."
+LangString UpdateRestartFailed ${LANG_SIMPCHINESE} "升级完成，但未能自动打开软件。请从开始菜单启动 nomozip。"
+LangString UpdateRestartFailed ${LANG_ENGLISH} "The upgrade is complete, but nomozip could not reopen. Start it from the Start menu."
 LangString Branding ${LANG_SIMPCHINESE} "nomozip · 解压与密码管理"
 LangString Branding ${LANG_ENGLISH} "nomozip · Extraction and passwords"
 LangString WelcomeTitle ${LANG_SIMPCHINESE} "安装 nomozip"

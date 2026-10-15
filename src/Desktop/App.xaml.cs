@@ -20,6 +20,7 @@ public partial class App : Application
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-language-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme-restart");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-application-updates");
         var isolated = arguments.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
         var directoryIndex = Array.IndexOf(arguments, "--data-dir");
         var directory = directoryIndex >= 0 && directoryIndex + 1 < arguments.Length ? Path.GetFullPath(arguments[directoryIndex + 1])
@@ -349,6 +350,9 @@ public partial class App : Application
         var applicationUiIndex = Array.IndexOf(e.Args, "--validate-application-updates");
         if (applicationUiIndex >= 0)
         {
+            var report = Path.Combine(Path.GetFullPath(e.Args[applicationUiIndex+1]), UiText.LanguageCode=="en"?"artifacts/application-update-en-ui-validation.json":"artifacts/application-update-ui-validation.json");
+            File.WriteAllText(report, "{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException += (_, failure) => { File.WriteAllText(report,JsonSerializer.Serialize(new {passed=false,error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1); };
             window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
             window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
             var passed = await DesktopApplicationUpdateValidation.RunAsync(window, theme, Path.GetFullPath(e.Args[applicationUiIndex+1]), baseDirectory);
