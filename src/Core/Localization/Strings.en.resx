@@ -3083,4 +3083,5 @@ A password is required to validate the archive data.</value>
   <data name="SoftwareUpdate.Confirm" xml:space="preserve"><value>nomozip will close, install version {0}, and reopen. Your vault, settings, and downloaded engines will be kept. Finish any other nomozip command-line tasks first. Continue?</value></data>
   <data name="SoftwareUpdate.Started" xml:space="preserve"><value>The installer has started. Closing nomozip.</value></data>
   <data name="SoftwareUpdate.InstallFailed" xml:space="preserve"><value>The installer could not start or the downloaded file changed. nomozip will stay open. Check for updates again.</value></data>
+  <data name="SoftwareUpdate.DownloadTimeout" xml:space="preserve"><value>Installer download timed out. Check your network and retry. Your installed version is unchanged.</value></data>
 </root>

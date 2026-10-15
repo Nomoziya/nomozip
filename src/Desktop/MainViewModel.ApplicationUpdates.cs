@@ -115,7 +115,7 @@ public sealed partial class MainViewModel
                 RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant(), Path.Combine(dataDirectory, "application-updates"), progress, cancellation.Token);
             ApplicationDownloadProgress = 100; ApplicationUpdateMessage = UiText.Format("SoftwareUpdate.Ready", release.Version);
         }
-        catch (OperationCanceledException) { ApplicationUpdateMessage = UiText.Get(cancellation.IsCancellationRequested ? "SoftwareUpdate.Cancelled" : "T_dbf2ce470c29"); }
+        catch (OperationCanceledException) { ApplicationUpdateMessage = UiText.Get(cancellation.IsCancellationRequested ? "SoftwareUpdate.Cancelled" : "SoftwareUpdate.DownloadTimeout"); }
         catch (InvalidDataException) { ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.InvalidDownload"); }
         catch (Exception error) when (error is HttpRequestException or IOException or UnauthorizedAccessException)
         { ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.DownloadFailed"); }

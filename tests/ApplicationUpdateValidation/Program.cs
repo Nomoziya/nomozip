@@ -111,6 +111,11 @@ try
         var refused=false;try{await new ApplicationInstallerDownload(failed).DownloadAsync(good,"x64",cache);}catch(HttpRequestException){refused=true;}
         Check("HTTP download failure keeps cache empty",refused && !Directory.EnumerateFiles(cache).Any());
     }
+    using(var stalled=new HttpClient(new Handler((_,_)=>Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StreamContent(new StalledContent(bytes))}))))
+    {
+        var refused=false;try{await new ApplicationInstallerDownload(stalled,TimeSpan.FromMilliseconds(200)).DownloadAsync(good,"x64",cache);}catch(OperationCanceledException){refused=true;}
+        Check("whole download deadline covers stalled response body after headers",refused && !Directory.EnumerateFiles(cache).Any());
+    }
     var blocked=Path.Combine(cache,"blocked-cache");File.WriteAllText(blocked,"unrelated");
     var diskFailure=false;try{await new ApplicationInstallerDownload(client).DownloadAsync(good,"x64",blocked);}catch(IOException){diskFailure=true;}
     Check("unavailable cache preserves existing unrelated file",diskFailure && File.ReadAllText(blocked)=="unrelated");File.Delete(blocked);
@@ -142,3 +147,9 @@ sealed class Handler(Func<HttpRequestMessage,CancellationToken,Task<HttpResponse
 { protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token) => action(request,token); }
 sealed class InlineProgress(Action<int> report):IProgress<int>{public void Report(int value)=>report(value);}
 sealed class NonSeekable(byte[] bytes):MemoryStream(bytes){public override bool CanSeek=>false;}
+sealed class StalledContent(byte[] bytes):MemoryStream(bytes)
+{
+    public override bool CanSeek=>false;
+    public override async ValueTask<int> ReadAsync(Memory<byte> buffer,CancellationToken token=default)
+    {if(Position>0){await Task.Delay(Timeout.Infinite,token);return 0;}return await base.ReadAsync(buffer,token);}
+}

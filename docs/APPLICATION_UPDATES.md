@@ -17,6 +17,7 @@ ZIP 或未登记的副本不能自动覆盖其它安装，继续使用下载页�
 - 自动下载要求有效的 `sha256:` digest、正数大小，且不超过 64 MiB。没有可用校验信息或超过限制时仍提供发行页面，不自动下载。
 - [GitHub 发布资产 digest](https://github.blog/changelog/2025-06-03-releases-now-expose-digests-for-release-assets/) 是通过 GitHub HTTPS 元数据取得的下载完整性依据，**不是独立发行者签名**。Windows 商业代码签名已由用户移出范围；现有引擎 RSA 签名校验继续保留。
 - 不完整下载删除本次 `.partial`。成功文件在当前用户资料的 `application-updates` 缓存内；重新检查会删除本会话准备的文件。实际安装交接后的安装包保留供故障修复，不在安装器运行时强行删除，可在不用时删除该缓存目录。
+- 下载全程上限 10 分钟，包括收到响应头后的内容流；按 [Microsoft HttpCompletionOption 文档](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpcompletionoption?view=net-10.0) 单独使用关联取消计时，不依赖仅覆盖响应头的客户端超时。超时与用户取消分别反馈。
 
 ## 安装交接与失败边界
 

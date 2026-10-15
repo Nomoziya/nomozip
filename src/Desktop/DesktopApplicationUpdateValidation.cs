@@ -35,6 +35,7 @@ internal static class DesktopApplicationUpdateValidation
                 {
                     if(mode=="download-cancel") await Task.Delay(Timeout.Infinite,token);
                     if(mode=="download-offline") throw new HttpRequestException();
+                    if(mode=="download-timeout") throw new TaskCanceledException();
                     return new HttpResponseMessage(HttpStatusCode.OK){Content=new ByteArrayContent(mode=="bad-download"?[1,2,3]:payload)};
                 }
                 Check("software repository fixed independently of engine setting",request.RequestUri!.AbsoluteUri.StartsWith("https://api.github.com/repos/Nomoziya/nomozip/releases?",StringComparison.Ordinal));
@@ -93,7 +94,7 @@ internal static class DesktopApplicationUpdateValidation
             mode="no-digest";model.CheckApplicationUpdatesCommand.Execute(null);await model.WaitForIdleAsync();
             Check("missing digest leaves page fallback and clear message",model.OpenApplicationDownloadCommand.CanExecute(null) && !model.DownloadApplicationUpdateCommand.CanExecute(null) && model.ApplicationUpdateMessage.Contains(UiText.Get("SoftwareUpdate.NoDigest")));
             mode="new";model.CheckApplicationUpdatesCommand.Execute(null);await model.WaitForIdleAsync();
-            foreach(var failure in new[]{"bad-download","download-offline","download-cancel"})
+            foreach(var failure in new[]{"bad-download","download-offline","download-timeout","download-cancel"})
             {
                 mode=failure;model.DownloadApplicationUpdateCommand.Execute(null);
                 if(failure=="download-cancel")
@@ -104,6 +105,7 @@ internal static class DesktopApplicationUpdateValidation
                 }
                 await model.WaitForIdleAsync();await Layout();
                 Check("failed download stays open with retry "+failure,model.IsIdle && exits==0 && !model.InstallApplicationUpdateCommand.CanExecute(null) && model.DownloadApplicationUpdateCommand.CanExecute(null));
+                if(failure=="download-timeout") Check("download timeout distinguished from user cancellation",model.ApplicationUpdateMessage==UiText.Get("SoftwareUpdate.DownloadTimeout"));
                 Check("failed download has no partial "+failure,!Directory.Exists(Path.Combine(data,"application-updates")) || !Directory.EnumerateFiles(Path.Combine(data,"application-updates")).Any());
             }
             mode="new";
