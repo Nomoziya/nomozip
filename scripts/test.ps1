@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','PreviewValidation','DragValidation','CliValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','PreviewValidation','DragValidation','CheckpointValidation','CliValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -46,6 +46,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Additional creation format validation failed.'
 if ($LASTEXITCODE -ne 0) { throw 'Split volume validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/PreviewValidation/bin/Debug/net10.0-windows/PreviewValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Archive preview validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/CheckpointValidation/bin/Debug/net10.0-windows/CheckpointValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Cross-process checkpoint validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/DragValidation/bin/Debug/net10.0-windows/DragValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Archive drag preparation validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/ConversionValidation/bin/Debug/net10.0-windows/ConversionValidation.dll') $taskRoot
@@ -195,6 +197,8 @@ $taskFormatsGui = Start-Process -FilePath $taskApplication -ArgumentList @('--va
 if ($taskFormatsGui.ExitCode -ne 0) { throw 'Additional creation format desktop validation failed.' }
 $taskVolumeGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-volumes', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskVolumeGui.ExitCode -ne 0) { throw 'Split volume desktop validation failed.' }
+$taskCheckpointGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-checkpoints', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskCheckpointGui.ExitCode -ne 0) { throw 'Extraction checkpoint desktop validation failed.' }
 $taskDragGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-drag-out', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskDragGui.ExitCode -ne 0) { throw 'Archive drag desktop validation failed.' }
 $taskPreviewGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-content-preview', $taskRoot) -WindowStyle Hidden -Wait -PassThru

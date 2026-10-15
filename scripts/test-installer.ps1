@@ -43,6 +43,16 @@ try {
     @{version=1;outputPath=(Join-Path $taskValidation 'output');autoTry=$true;conflictPolicy=1;engineVersion='26.04';updateRepository='Nomoziya/nomozip'} | ConvertTo-Json | Set-Content -LiteralPath $taskSettings -Encoding utf8
     $taskVaultHash = (Get-FileHash $taskVault -Algorithm SHA256).Hash
     $taskSettingsHash = (Get-FileHash $taskSettings -Algorithm SHA256).Hash
+    $taskSeedApp=Join-Path $taskRoot $(if($FrameworkDependent){'artifacts/light-app'}else{'artifacts/self-contained-app'})
+    $taskProgressSeed=& (Join-Path $taskRoot '.tools/dotnet/dotnet.exe') (Join-Path $taskRoot 'tests/CheckpointValidation/bin/Debug/net10.0-windows/CheckpointValidation.dll') --seed $taskData (Join-Path $taskValidation 'checkpoint-output') $taskSeedApp | ConvertFrom-Json
+    if($LASTEXITCODE -ne 0){throw 'Actual persisted extraction progress seed failed.'}
+    function Test-RetainedProgress {
+        foreach($taskProgressFile in $taskProgressSeed.files) {
+            if(-not(Test-Path -LiteralPath $taskProgressFile.path) -or (Get-FileHash -LiteralPath $taskProgressFile.path).Hash.ToLowerInvariant() -ne $taskProgressFile.sha256){return $false}
+        }
+        return $true
+    }
+
     'old release instruction' | Set-Content (Join-Path $taskApplication '使用说明.txt')
     'unrelated user file' | Set-Content (Join-Path $taskApplication 'keep-user-file.txt')
     $taskAssociationRoot = 'HKCU:\Software\nomozip-validation\InstallerAssociations'
@@ -115,6 +125,7 @@ try {
     if ($FrameworkDependent) { $taskChecks.upgradeRemovedBundledRuntime = -not (Test-Path (Join-Path $taskApplication 'coreclr.dll')) -and $taskInstalledBytes -lt 12MB }
     $taskChecks.upgradePreservedVault = (Get-FileHash $taskVault).Hash -eq $taskVaultHash
     $taskChecks.upgradePreservedSettings = (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
+    $taskChecks.upgradePreservedActualProgress = Test-RetainedProgress
     $taskSmokeArguments = @('--validate-installed',$taskRoot,'--data-dir',$taskData)
     if ($FrameworkDependent) { $taskSmokeArguments += '--shared-runtime' }
     $taskSmoke = Start-Process -FilePath (Join-Path $taskApplication 'ArchivePassword.exe') -ArgumentList $taskSmokeArguments -WindowStyle Hidden -Wait -PassThru
@@ -124,6 +135,7 @@ try {
     $taskCliResult = & (Join-Path $taskApplication 'nomozip-cli.exe') test (Join-Path $taskRoot 'tests/fixtures/generated/plain.7z') --data-dir $taskData | ConvertFrom-Json
     $taskChecks.installedConsoleTestsActualArchive = $LASTEXITCODE -eq 0 -and $taskCliResult.exitCode -eq 0
 
+    $taskChecks.installedSmokeKeptPendingProgress = Test-RetainedProgress
     $taskSmokeReportName = if ($FrameworkDependent) { 'light-installed-smoke-validation.json' } else { 'installed-smoke-validation.json' }
     $taskSmokeReport = Get-Content -Raw (Join-Path $taskRoot "artifacts/$taskSmokeReportName") | ConvertFrom-Json
     $taskChecks.expectedRuntimeActuallyLoaded = $taskSmokeReport.runtimeLocal -eq (-not $FrameworkDependent)
@@ -136,10 +148,12 @@ try {
     $taskChecks.uninstallRemovedProgramAndRegistration = -not (Test-Path (Join-Path $taskApplication 'ArchivePassword.exe')) -and -not (Test-Path $taskRegistry)
     $taskChecks.uninstallRemovedConsole = -not (Test-Path (Join-Path $taskApplication 'nomozip-cli.exe'))
     $taskChecks.defaultUninstallPreservedData = (Get-FileHash $taskVault).Hash -eq $taskVaultHash -and (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
+    $taskChecks.defaultUninstallKeptActualProgress = Test-RetainedProgress
     $taskChecks.uninstallPreservedUnrelatedFile = Test-Path (Join-Path $taskApplication 'keep-user-file.txt')
     $taskChecks.uninstallRemovedOwnedFileEntry = -not (Test-Path (Join-Path $taskAssociationRoot 'nomozip.Archive'))
     $taskChecks.uninstallRemovedOwnedShellMenu = @($taskShellRoots | Where-Object { Test-Path -LiteralPath (Join-Path $taskAssociationRoot $_) }).Count -eq 0
     Invoke-Installer $taskUpgrade @('/S')
+    $taskChecks.reinstallKeptActualProgress = Test-RetainedProgress
     $taskChecks.reinstallPreservedVault = (Get-FileHash $taskVault).Hash -eq $taskVaultHash
     New-Item -Force $taskAssociationCommand | Out-Null
     Set-Item -LiteralPath $taskAssociationCommand -Value '"C:\synthetic-other-copy\ArchivePassword.exe" "%1"'
@@ -154,7 +168,7 @@ try {
     if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
     Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskExpectedChecks = if ($FrameworkDependent) { 31 } else { 30 }
+    $taskExpectedChecks = if ($FrameworkDependent) { 35 } else { 34 }
     $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
     [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;previousArchitecture=$PreviousArchitecture;architecture=$Architecture;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8

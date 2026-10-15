@@ -26,7 +26,7 @@ function Invoke-Channel([string[]]$Arguments) {
 }
 if ($Mode -eq 'Prepare') {
     if (Test-Path -LiteralPath $taskCandidate) { throw 'Keep prior candidates immutable; choose a new directory.' }
-    foreach ($taskProject in @('EngineSmoke','CompressionValidation','SelectionValidation','EncodingValidation','PauseValidation','ArchiveEditingValidation','ConversionValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','UpdatePackager')) {
+    foreach ($taskProject in @('EngineSmoke','CompressionValidation','SelectionValidation','EncodingValidation','PauseValidation','ArchiveEditingValidation','ConversionValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','PreviewValidation','CheckpointValidation','UpdatePackager')) {
         $taskFolder = if ($taskProject -eq 'UpdatePackager') { 'tools' } else { 'tests' }
         & $Dotnet build (Join-Path $ToolsRoot "$taskFolder/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
         if ($LASTEXITCODE -ne 0) { throw 'Maintenance tool build failed before candidate preparation.' }

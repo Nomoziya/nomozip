@@ -16,6 +16,7 @@ public sealed record EngineResult
     public uint ItemCount { get; init; }
     public uint SuccessfulItems { get; init; }
     public IReadOnlyList<ArchiveEntry> Items { get; init; } = [];
+    public IReadOnlyList<string> SourcePaths { get; init; } = [];
     public IReadOnlyList<EngineFailure> Failures { get; init; } = [];
     public IReadOnlyList<uint> VerifiedEncryptedItems { get; init; } = [];
     public IReadOnlyList<EngineFormat> Formats { get; init; } = [];

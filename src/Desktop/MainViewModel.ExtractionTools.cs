@@ -13,10 +13,10 @@ public sealed partial class MainViewModel
     private Action<IReadOnlyList<string>>? openResultOverride;
     public ExtractionDirectoryRules DirectoryRules=>directoryRules;
     public IReadOnlyList<string> RecentOutputPaths=>recentOutputPaths;
-    public bool IsOutputPathReadOnly=>HasShellDestinations || directoryRules.Location!=ExtractionLocation.Custom;
+    public bool IsOutputPathReadOnly=>SelectedTask?.Checkpoint is not null || HasShellDestinations || directoryRules.Location!=ExtractionLocation.Custom;
     public string DisplayOutputPath
     {
-        get => HasShellDestinations || directoryRules.Location==ExtractionLocation.Custom ? OutputPath
+        get => SelectedTask?.Checkpoint is {} checkpoint ? checkpoint.Destination : HasShellDestinations || directoryRules.Location==ExtractionLocation.Custom ? OutputPath
             : directoryRules.Location==ExtractionLocation.ArchiveParent && Tasks.Count==0 ? UiText.Get("T_7567f17ec844")
             : ExtractionDirectoryPlanner.BaseDirectory(SelectedTask?.Path ?? Tasks.FirstOrDefault()?.Path ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"archive.7z"),OutputPath,directoryRules.Location);
         set { if(!IsOutputPathReadOnly) OutputPath=value; }

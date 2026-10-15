@@ -33,7 +33,7 @@ public sealed partial class MainViewModel
         MoveTaskUpCommand=new RelayCommand(()=>MoveTask(-1),()=>CanMoveTask(-1));
         MoveTaskDownCommand=new RelayCommand(()=>MoveTask(1),()=>CanMoveTask(1));
         ExtractSelectedTaskCommand=new AsyncCommand(()=>ExtractTasksAsync([SelectedTask!]),()=>Page==0 && IsIdle && SelectedTask is {Completed:false} selected && Tasks.Contains(selected) && !string.IsNullOrWhiteSpace(selectedEngine));
-        RemoveCompletedTasksCommand=new RelayCommand(RemoveCompletedTasks,()=>IsIdle && Tasks.Any(task=>task.Completed));
+        RemoveCompletedTasksCommand=new RelayCommand(RemoveCompletedTasks,()=>IsIdle && Tasks.Any(task=>task.Completed && task.Checkpoint is null));
     }
     private bool CanMoveTask(int direction)
     {var index=SelectedTask is {} selected?Tasks.IndexOf(selected):-1;return IsIdle && index>=0 && index+direction>=0 && index+direction<Tasks.Count;}
@@ -46,7 +46,7 @@ public sealed partial class MainViewModel
     private void RemoveCompletedTasks()
     {
         if(!IsIdle) return;
-        var completed=Tasks.Where(task=>task.Completed).ToArray();foreach(var task in completed) Tasks.Remove(task);
+        var completed=Tasks.Where(task=>task.Completed && task.Checkpoint is null).ToArray();foreach(var task in completed) Tasks.Remove(task);
         if(SelectedTask is {} selected && !Tasks.Contains(selected)) SelectedTask=Tasks.FirstOrDefault();
         Footer=UiText.Format("T_1e50592d591a", completed.Length);
     }

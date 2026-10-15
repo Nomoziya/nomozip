@@ -3095,4 +3095,30 @@
   <data name="Drag.Actions" xml:space="preserve"><value>内容操作</value></data>
   <data name="Drag.CompactActions" xml:space="preserve"><value>操作</value></data>
   <data name="Drag.ActionsHint" xml:space="preserve"><value>准备拖出所选内容，或修改 7z/ZIP 压缩包。</value></data>
+  <data name="Checkpoint.Saved" xml:space="preserve"><value>已保存进度：{0} / {1} 项</value></data>
+  <data name="Checkpoint.Committing" xml:space="preserve"><value>正在交付已校验文件</value></data>
+  <data name="Checkpoint.Cleanup" xml:space="preserve"><value>解压已完成，但临时文件未能全部清理。可在任务操作中重试丢弃：{0}</value></data>
+  <data name="Checkpoint.Error.checkpoint_binding_changed" xml:space="preserve"><value>续作所需的引擎、架构或文件名编码不匹配。请恢复原组件和设置，或丢弃进度重新解压。</value></data>
+  <data name="Checkpoint.Error.checkpoint_source_changed" xml:space="preserve"><value>压缩包或分卷已改变、缺失或不可读。保留了进度，请恢复原文件后重试，或丢弃进度。</value></data>
+  <data name="Checkpoint.Error.checkpoint_invalid" xml:space="preserve"><value>进度记录无法识别。未使用其中的文件；请保留记录以便排查。</value></data>
+  <data name="Checkpoint.Error.checkpoint_busy" xml:space="preserve"><value>此进度仍被另一个进程使用，请等待该进程退出后重试。</value></data>
+  <data name="Checkpoint.Error.checkpoint_missing" xml:space="preserve"><value>此进度记录已不存在。</value></data>
+  <data name="Checkpoint.Error.checkpoint_sources_unavailable" xml:space="preserve"><value>当前工作进程未提供完整源文件清单，请使用随软件提供的工作进程。</value></data>
+  <data name="Checkpoint.Error.checkpoint_unsafe_path" xml:space="preserve"><value>进度路径包含链接，已停止以保护其他文件。请移除链接后重试。</value></data>
+  <data name="Checkpoint.Error.checkpoint_output_changed" xml:space="preserve"><value>已完成文件的校验失败，进度已保留。请检查磁盘和文件权限后重试。</value></data>
+  <data name="Checkpoint.Error.checkpoint_incomplete" xml:space="preserve"><value>工作进程未确认全部条目完成，进度已保留，可恢复重试。</value></data>
+  <data name="Checkpoint.Enable" xml:space="preserve"><value>保留解压进度</value></data>
+  <data name="Checkpoint.Hint" xml:space="preserve"><value>停止或退出后可续作。已解密的临时文件及路径会保留到完成或丢弃；不保存密码。中断文件需重新解压。</value></data>
+  <data name="Checkpoint.Resume" xml:space="preserve"><value>恢复所选任务</value></data>
+  <data name="Checkpoint.Discard" xml:space="preserve"><value>丢弃所选进度</value></data>
+  <data name="Checkpoint.DiscardPrompt" xml:space="preserve"><value>丢弃“{0}”的解压进度并删除保留的临时文件？已经交付的文件保持不变。</value></data>
+  <data name="Checkpoint.Discarded" xml:space="preserve"><value>已丢弃进度，保留原压缩包和已交付文件。</value></data>
+  <data name="Checkpoint.DiscardFailed" xml:space="preserve"><value>未能清理全部临时文件，进度记录已保留。请关闭占用文件的程序后重试丢弃。</value></data>
+  <data name="Checkpoint.ReadFailed" xml:space="preserve"><value>以下进度记录无法读取，其文件未被删除：{0}</value></data>
+  <data name="Checkpoint.ScanFailed" xml:space="preserve"><value>无法读取保存的解压进度，请检查资料目录权限后重试。</value></data>
+  <data name="Checkpoint.Available" xml:space="preserve"><value>可续作 · 已保存 {0} / {1} 项</value></data>
+  <data name="Checkpoint.CleanupPending" xml:space="preserve"><value>已解压 · 待清理进度</value></data>
+  <data name="Checkpoint.Found" xml:space="preserve"><value>保留了 {0} 项任务进度，可在“任务操作”中恢复或丢弃。</value></data>
+  <data name="Checkpoint.Checking" xml:space="preserve"><value>正在核对源文件和已保存进度…</value></data>
+  <data name="Checkpoint.Error.checkpoint_save_failed" xml:space="preserve"><value>无法保存解压进度，已停止后续写入并保留已有记录。请检查磁盘空间和资料目录权限后恢复。</value></data>
 </root>

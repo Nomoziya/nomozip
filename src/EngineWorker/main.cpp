@@ -30,7 +30,11 @@ static void emit(json value) {
 static std::mutex pauseMutex;
 static std::condition_variable pauseCondition;
 static bool pauseRequested=false, pauseAcknowledged=false;
+static std::atomic_bool checkpointMode{false}, inputClosed{false};
+static UInt32 checkpointIndex=~static_cast<UInt32>(0);
+static bool checkpointSaved=false;
 static HRESULT checkpoint() {
+    if(checkpointMode && inputClosed) cancelled=true;
     std::unique_lock<std::mutex> lock(pauseMutex);
     if(pauseRequested && !cancelled) {
         if(!pauseAcknowledged) { pauseAcknowledged=true;emit({{"kind","pause-state"},{"paused",true}}); }
@@ -112,7 +116,14 @@ class OutputStream final : public ISequentialOutStream {
     bool* limitExceeded;
 public:
     explicit OutputStream(HANDLE handle,UInt64 limit=~static_cast<UInt64>(0),bool* exceeded=nullptr) : file(handle),remaining(limit),limitExceeded(exceeded) {}
-    ~OutputStream() { CloseHandle(file); }
+    ~OutputStream() { if(file!=INVALID_HANDLE_VALUE) CloseHandle(file); }
+    HRESULT CloseForCheckpoint() noexcept {
+        if(file==INVALID_HANDLE_VALUE) return S_OK;
+        const bool flushed=FlushFileBuffers(file)!=FALSE;
+        const DWORD error=flushed?ERROR_SUCCESS:GetLastError();
+        CloseHandle(file);file=INVALID_HANDLE_VALUE;
+        return flushed?S_OK:HRESULT_FROM_WIN32(error);
+    }
     REFCOUNT_IMPL
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID id, void** object) noexcept override {
         *object = nullptr;
@@ -138,6 +149,8 @@ struct Context {
     std::wstring password;
     std::map<UInt32, std::wstring> itemPasswords;
     fs::path archivePath;
+    std::vector<fs::path> sourcePaths;
+    json Sources() const {json paths=json::array();for(const auto& path:sourcePaths) paths.push_back(utf8(path.wstring()));return paths;}
     ~Context() {
         if (!password.empty()) SecureZeroMemory(password.data(), password.size() * sizeof(wchar_t));
         for (auto& entry : itemPasswords) if (!entry.second.empty()) SecureZeroMemory(entry.second.data(), entry.second.size() * sizeof(wchar_t));
@@ -183,6 +196,8 @@ public:
             if (relative.has_parent_path() || relative.is_absolute()) return E_ACCESSDENIED;
             HANDLE handle = CreateFileW((context.archivePath.parent_path() / relative).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
             if (handle == INVALID_HANDLE_VALUE) { context.missingVolume = true; return S_FALSE; }
+            auto path=fs::absolute(context.archivePath.parent_path()/relative);
+            if(std::find(context.sourcePaths.begin(),context.sourcePaths.end(),path)==context.sourcePaths.end()) context.sourcePaths.push_back(path);
             *stream = new InputStream(handle); return S_OK;
         } catch (...) { return E_FAIL; }
     }
@@ -276,12 +291,18 @@ public:
     }
     HRESULT STDMETHODCALLTYPE PrepareOperation(Int32 mode) noexcept override { currentMode=mode; return checkpoint(); }
     HRESULT STDMETHODCALLTYPE SetOperationResult(Int32 result) noexcept override {
+        if(checkpointMode && currentStream && FAILED(currentStream->CloseForCheckpoint())) {error="write_failed";return E_FAIL;}
         if (currentStream) { currentStream->Release(); currentStream = nullptr; }
         if(requested && (!currentRequested || currentMode==NArchive::NExtract::NAskMode::kSkip)) return checkpoint();
         try {
             if (result == NArchive::NExtract::NOperationResult::kOK) {
                 ++successfulItems;
                 if (property(archive, currentIndex, kpidEncrypted).boolean() && !property(archive, currentIndex, kpidIsDir).boolean()) verifiedEncryptedItems.push_back(currentIndex);
+                if(checkpointMode && currentMode==NArchive::NExtract::NAskMode::kExtract) {
+                    {std::lock_guard<std::mutex> lock(pauseMutex);checkpointIndex=currentIndex;checkpointSaved=false;}
+                    emit({{"kind","entry-complete"},{"index",currentIndex}});
+                    {std::unique_lock<std::mutex> lock(pauseMutex);pauseCondition.wait(lock,[]{return checkpointSaved || cancelled.load() || inputClosed.load();});checkpointIndex=~static_cast<UInt32>(0);}
+                }
             }
             else {
                 std::string code = result == NArchive::NExtract::NOperationResult::kWrongPassword ? "wrong_password" :
@@ -339,7 +360,7 @@ static json run(json& request, const wchar_t* dllPath) {
         if(operation=="create-split" && request.value("volumeSize",static_cast<UInt64>(0))<128) return {{"kind","result"},{"status","error"},{"code","invalid_volume_size"}};
         return createArchive(request, formats, createFunc);
     }
-    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded" || operation=="preview-selection-encoded" || operation=="update-encoded";
+    const bool encoded = operation=="list-encoded" || operation=="test-encoded" || operation=="extract-encoded" || operation=="test-selection-encoded" || operation=="extract-selection-encoded" || operation=="preview-selection-encoded" || operation=="update-encoded" || operation=="checkpoint-selection-encoded";
     UInt32 codePage=0;
     if(encoded) {
         codePage=request.value("filenameCodePage",0u);
@@ -347,7 +368,18 @@ static json run(json& request, const wchar_t* dllPath) {
         operation.erase(operation.size()-8);
     } else if(request.value("filenameCodePage",0u)!=0) return {{"kind","result"},{"status","error"},{"code","invalid_filename_encoding"}};
     const bool preview = operation=="preview-selection";
-    const bool selective = operation=="test-selection" || operation=="extract-selection" || preview;
+    checkpointMode=operation=="checkpoint-selection";
+    // This lease outlives the managed owner if that owner is killed. Recovery and
+    // discard must acquire the same file before inspecting retained plaintext.
+    HANDLE checkpointLease=INVALID_HANDLE_VALUE;
+    if(checkpointMode) {
+        const auto output=fs::absolute(wide(request.at("outputPath").get<std::string>()));
+        const auto gate=output.parent_path()/L".nomozip-checkpoint-writer";
+        checkpointLease=CreateFileW(gate.c_str(),GENERIC_READ|GENERIC_WRITE,0,nullptr,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);
+        if(checkpointLease==INVALID_HANDLE_VALUE) return {{"kind","result"},{"status","error"},{"code","checkpoint_busy"}};
+        // Single-request process: ExitProcess releases the lease after all I/O.
+    }
+    const bool selective = operation=="test-selection" || operation=="extract-selection" || preview || checkpointMode;
     if (selective) operation=operation=="test-selection" ? "test" : "extract";
     if (operation != "list" && operation != "test" && operation != "extract" && operation != "update") throw std::runtime_error("unsupported_operation");
     Context context;
@@ -357,6 +389,7 @@ static json run(json& request, const wchar_t* dllPath) {
             return {{"kind","result"},{"status","error"},{"code","invalid_preview"}};
     }
     context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));
+    context.sourcePaths.push_back(context.archivePath);
     if (request.contains("itemPasswords") && !request["itemPasswords"].is_null()) {
         for (auto& entry : request["itemPasswords"]) {
             auto index = entry.at("index").get<UInt32>();
@@ -380,7 +413,7 @@ static json run(json& request, const wchar_t* dllPath) {
         return {{"kind","result"},{"status","error"},{"code","first_volume_required"}};
     ComPtr<IInStream> input;
     if(volumes) {
-        try {input.ptr=new VolumeInputStream(context.archivePath);}
+        try {auto* joined=new VolumeInputStream(context.archivePath);input.ptr=joined;context.sourcePaths=joined->Paths();}
         catch(const std::exception& error) {const auto code=std::string(error.what());return {{"kind","result"},{"status","error"},{"code",code=="missing_volume" ? "missing_volume" : "archive_read_failed"}};}
     } else {
         HANDLE handle=CreateFileW(context.archivePath.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);
@@ -445,7 +478,7 @@ static json run(json& request, const wchar_t* dllPath) {
         json items = json::array();
         for (UInt32 index = 0; index < itemCount && !cancelled; ++index) items.push_back({{"index", index}, {"path", utf8(itemPath(archive.ptr, index, context.archivePath))}, {"size", property(archive.ptr, index, kpidSize).number()}, {"directory", property(archive.ptr, index, kpidIsDir).boolean()}, {"encrypted", property(archive.ptr, index, kpidEncrypted).boolean()}});
         archive->Close();
-        return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "success"}, {"format", utf8(usedFormat)}, {"items", items}};
+        return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "success"}, {"format", utf8(usedFormat)}, {"items", items},{"sourcePaths",context.Sources()}};
     }
     fs::path output = operation == "extract" ? fs::absolute(wide(request.at("outputPath").get<std::string>())) : fs::path();
     if (operation == "extract") fs::create_directories(output);
@@ -454,7 +487,7 @@ static json run(json& request, const wchar_t* dllPath) {
     HRESULT result = archive->Extract(selective ? selected.data() : nullptr,selective ? static_cast<UInt32>(selected.size()) : 0xFFFFFFFF, operation == "test" ? 1 : 0, callback.ptr);
     archive->Close();
     std::string code = cancelled ? "cancelled" : context.previewLimitExceeded ? "preview_too_large" : context.missingVolume ? "missing_volume" : context.passwordMissing ? "password_required" : !extract->error.empty() ? extract->error : result != S_OK ? "engine_error" : "ok";
-    return {{"kind", "result"}, {"status", cancelled ? "cancelled" : code == "ok" ? "success" : "error"}, {"code", code}, {"hresult", (uint32_t)result}, {"format", utf8(usedFormat)}, {"itemCount", itemCount}, {"successfulItems", extract->successfulItems}, {"failures", extract->failures}, {"verifiedEncryptedItems", extract->verifiedEncryptedItems}};
+    return {{"kind", "result"}, {"status", cancelled ? "cancelled" : code == "ok" ? "success" : "error"}, {"code", code}, {"hresult", (uint32_t)result}, {"format", utf8(usedFormat)}, {"itemCount", itemCount}, {"successfulItems", extract->successfulItems}, {"failures", extract->failures}, {"verifiedEncryptedItems", extract->verifiedEncryptedItems},{"sourcePaths",context.Sources()}};
 }
 int wmain(int argc, wchar_t** argv) {
     _setmode(_fileno(stdin), _O_BINARY); _setmode(_fileno(stdout), _O_BINARY);
@@ -473,7 +506,12 @@ int wmain(int argc, wchar_t** argv) {
                 if(operation=="cancel") {{std::lock_guard<std::mutex> lock(pauseMutex);cancelled=true;}pauseCondition.notify_all();}
                 else if(operation=="pause") controlPause(true);
                 else if(operation=="resume") controlPause(false);
+                else if(operation=="checkpoint-ack" && value.contains("index") && value["index"].is_number_unsigned()) {
+                    {std::lock_guard<std::mutex> lock(pauseMutex);if(value["index"].get<UInt32>()==checkpointIndex) checkpointSaved=true;}
+                    pauseCondition.notify_all();
+                }
             }
+            inputClosed=true;
             {std::lock_guard<std::mutex> lock(pauseMutex);if(pauseRequested) cancelled=true;}pauseCondition.notify_all();
         }).detach();
         auto result = run(request, argv[1]);
