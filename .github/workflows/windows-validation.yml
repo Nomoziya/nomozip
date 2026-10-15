@@ -145,6 +145,7 @@ jobs:
             artifacts/notification-preview/*.png
             artifacts/master-vault-preview/*.png
             artifacts/archive-editing-preview/*.png
+            artifacts/conversion-preview/*.png
             artifacts/volume-preview/*.png
             artifacts/sfx-preview/*.png
             artifacts/formats-preview/*.png

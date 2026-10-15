@@ -33,3 +33,5 @@ Show more options for the traditional menu. Windows decides its own dialog langu
 Downloads and support: https://github.com/Nomoziya/nomozip
 
 Appearance: in Settings, choose Follow system, Light, or Dark and save. It applies immediately. System contrast themes take priority; your choice resumes when contrast mode is off.
+
+Convert archive: select an ordinary 7z/ZIP/RAR on Extract, then Convert archive. Output a separate 7z/ZIP with explicit new encryption. Keep the original; allow space for two extracted copies.

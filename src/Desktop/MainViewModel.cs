@@ -77,6 +77,7 @@ public sealed partial class MainViewModel : ObservableObject
         ApplyEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.ActivateAsync(SelectedEngineVersion, token); await RefreshEngineSelectionAsync(); UpdateMessage = UiText.Get("T_918e0ce2177e"); }), () => IsIdle && updater is not null && SelectedEngineVersion != activeEngine && EngineVersions.Contains(SelectedEngineVersion));
         RollbackEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.RollbackAsync(token); await RefreshEngineSelectionAsync(); UpdateMessage = UiText.Get("T_17c4979ce5bf"); }), () => IsIdle && updater is not null && EngineVersions.Contains(previousEngine));
         OpenLicensesCommand = new RelayCommand(() => OpenFolder(Path.Combine(baseDirectory, "licenses")));
+        InitializeConversionCommands();
         InitializeCompressionCommands();
         InitializeAssociationCommands();
         InitializeApplicationUpdateCommands();

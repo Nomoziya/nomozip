@@ -1,0 +1,24 @@
+<Window x:Class="ArchivePassword.Desktop.ArchiveConversionDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="clr-namespace:ArchivePassword.Desktop" Style="{StaticResource AppWindow}" Title="{loc:Text Conversion.Title}" Width="700" Height="660" MinWidth="540" MinHeight="420" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+  <Grid Margin="16" Background="{DynamicResource CanvasBrush}" KeyboardNavigation.TabNavigation="Cycle">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel Margin="0,0,0,12"><TextBlock Text="{loc:Text Conversion.Title}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="{loc:Text Conversion.Subtitle}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,6,0,0"/></StackPanel>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="2,2,8,4">
+      <StackPanel IsEnabled="{Binding CanEdit}">
+        <Border Style="{StaticResource Card}" Padding="16" Margin="0,0,0,12"><StackPanel>
+          <TextBlock Text="{loc:Text Conversion.Source}" FontWeight="SemiBold"/><TextBlock Text="{Binding ArchivePath}" TextWrapping="Wrap" Margin="0,6,0,12"/>
+          <Label Content="{loc:Text Conversion.Output}" Target="{Binding ElementName=OutputBox}" Padding="0" Margin="0,0,0,6"/>
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox x:Name="OutputBox" Text="{Binding Output,UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{loc:Text Conversion.Output}"/><Button Grid.Column="1" x:Name="BrowseButton" Content="{loc:Text Conversion.Browse}" Click="OnBrowse" Margin="8,0,0,0"/></Grid>
+          <WrapPanel Margin="0,12,0,0"><StackPanel Width="150" Margin="0,0,16,0"><Label Content="{loc:Text Conversion.Format}" Target="{Binding ElementName=FormatBox}" Padding="0" Margin="0,0,0,6"/><ComboBox x:Name="FormatBox" ItemsSource="{Binding Formats}" SelectedItem="{Binding Format}" AutomationProperties.Name="{loc:Text Conversion.Format}"/></StackPanel><StackPanel Width="180"><Label Content="{loc:Text Conversion.Level}" Target="{Binding ElementName=LevelBox}" Padding="0" Margin="0,0,0,6"/><ComboBox x:Name="LevelBox" ItemsSource="{Binding Levels}" SelectedItem="{Binding Level}" AutomationProperties.Name="{loc:Text Conversion.Level}"/></StackPanel></WrapPanel>
+        </StackPanel></Border>
+        <Border Style="{StaticResource Card}" Padding="16"><StackPanel>
+          <CheckBox x:Name="EncryptBox" Content="{loc:Text Conversion.Encrypt}" IsChecked="{Binding Encrypt,UpdateSourceTrigger=PropertyChanged}" Unchecked="OnEncryptionOff"/>
+          <Grid IsEnabled="{Binding Encrypt}" Margin="0,12,0,0"><Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding Encrypt}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Grid.Style><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><StackPanel Margin="0,0,12,0"><Label Content="{loc:Text Conversion.Password}" Target="{Binding ElementName=SecretBox}" Padding="0" Margin="0,0,0,6"/><PasswordBox x:Name="SecretBox" AutomationProperties.Name="{loc:Text Conversion.Password}"/></StackPanel><StackPanel Grid.Column="1"><Label Content="{loc:Text Conversion.ConfirmPassword}" Target="{Binding ElementName=ConfirmBox}" Padding="0" Margin="0,0,0,6"/><PasswordBox x:Name="ConfirmBox" AutomationProperties.Name="{loc:Text Conversion.ConfirmPassword}"/></StackPanel></Grid>
+          <CheckBox x:Name="HeadersBox" Content="{loc:Text Conversion.EncryptHeaders}" IsChecked="{Binding EncryptHeaders}" IsEnabled="{Binding CanEncryptHeaders}" Margin="0,12,0,0"/>
+          <TextBlock Text="{loc:Text Conversion.TemporaryNote}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+        </StackPanel></Border>
+      </StackPanel>
+    </ScrollViewer>
+    <StackPanel Grid.Row="2" Margin="0,10,0,10"><ProgressBar Height="4" IsIndeterminate="{Binding IsWorking}"/><TextBlock x:Name="StatusText" Text="{Binding Message}" TextWrapping="Wrap" Margin="0,6,0,0" AutomationProperties.LiveSetting="Polite"/></StackPanel>
+    <WrapPanel Grid.Row="3" HorizontalAlignment="Right"><Button x:Name="StartButton" Content="{loc:Text Conversion.Start}" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding CanEdit}" Click="OnStart" Margin="0,0,8,0"/><Button x:Name="CancelButton" Content="{loc:Text Conversion.Cancel}" IsEnabled="{Binding IsWorking}" Click="OnCancel" Margin="0,0,8,0"/><Button x:Name="CloseButton" Content="{loc:Text Conversion.Close}" IsCancel="True" Click="OnClose"/></WrapPanel>
+  </Grid>
+</Window>

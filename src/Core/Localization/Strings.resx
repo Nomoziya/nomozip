@@ -3012,4 +3012,33 @@
   <data xml:space="preserve" name="Appearance.HorizontalScroll">
     <value>水平滚动条拖动块</value>
   </data>
+  <data name="Conversion.Title" xml:space="preserve"><value>转换格式</value></data>
+  <data name="Conversion.Subtitle" xml:space="preserve"><value>将所选压缩包的全部内容转为新包，保留原包。</value></data>
+  <data name="Conversion.Source" xml:space="preserve"><value>原压缩包</value></data>
+  <data name="Conversion.Output" xml:space="preserve"><value>新压缩包路径</value></data>
+  <data name="Conversion.Browse" xml:space="preserve"><value>浏览…</value></data>
+  <data name="Conversion.Format" xml:space="preserve"><value>输出格式</value></data>
+  <data name="Conversion.Level" xml:space="preserve"><value>压缩级别（0–9）</value></data>
+  <data name="Conversion.Encrypt" xml:space="preserve"><value>加密新压缩包</value></data>
+  <data name="Conversion.Password" xml:space="preserve"><value>新包密码</value></data>
+  <data name="Conversion.ConfirmPassword" xml:space="preserve"><value>确认新包密码</value></data>
+  <data name="Conversion.EncryptHeaders" xml:space="preserve"><value>加密文件名（仅 7z）</value></data>
+  <data name="Conversion.TemporaryNote" xml:space="preserve"><value>原包密码不会自动成为新包密码。转换会在目标目录临时存放两份解压内容，完成后普通删除；请预留磁盘空间。首期支持普通 7z、ZIP、RAR 输入，输出 7z 或 ZIP。</value></data>
+  <data name="Conversion.Start" xml:space="preserve"><value>开始转换</value></data>
+  <data name="Conversion.Cancel" xml:space="preserve"><value>取消转换</value></data>
+  <data name="Conversion.Close" xml:space="preserve"><value>关闭</value></data>
+  <data name="Conversion.Extracting" xml:space="preserve"><value>正在解压原包到临时目录…</value></data>
+  <data name="Conversion.Creating" xml:space="preserve"><value>正在创建新压缩包…</value></data>
+  <data name="Conversion.Verifying" xml:space="preserve"><value>正在验证新包和逐文件内容…</value></data>
+  <data name="Conversion.Delivering" xml:space="preserve"><value>正在交付已验证的新包…</value></data>
+  <data name="Conversion.CleanupWarning" xml:space="preserve"><value>临时目录清理失败，内含解压内容，请手动删除：</value></data>
+  <data name="Conversion.OutputRequired" xml:space="preserve"><value>请选择新压缩包的保存路径。</value></data>
+  <data name="Conversion.PasswordMismatch" xml:space="preserve"><value>请填写新包密码，并确保两次输入一致。</value></data>
+  <data name="Conversion.Cancelled" xml:space="preserve"><value>转换已取消，原包保留。</value></data>
+  <data name="Conversion.Success" xml:space="preserve"><value>转换完成，内容已验证，原包保留。</value></data>
+  <data name="Conversion.SamePath" xml:space="preserve"><value>新包不能与原包使用同一路径，请更换保存位置或名称。</value></data>
+  <data name="Conversion.Unsupported" xml:space="preserve"><value>首期仅支持普通 7z、ZIP、RAR 输入；分卷和自解压包暂不转换。</value></data>
+  <data name="Conversion.ZipPassword" xml:space="preserve"><value>ZIP 新包密码仅支持 ASCII 字符；中文密码请选择 7z。</value></data>
+  <data name="Conversion.Failed" xml:space="preserve"><value>转换失败，原包和已有目标保留。</value></data>
+  <data name="Conversion.ReplacePrompt" xml:space="preserve"><value>目标已存在。转换并验证成功后替换它？原压缩包始终保留。</value></data>
 </root>

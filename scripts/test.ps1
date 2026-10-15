@@ -6,7 +6,7 @@ $env:NUGET_HTTP_CACHE_PATH = Join-Path $taskRoot '.tools/nuget-http'
 $env:NUGET_SCRATCH = Join-Path $taskRoot '.tools/nuget-scratch'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')) {
+foreach ($taskProject in @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')) {
     & $taskDotnet build (Join-Path $taskRoot "tests/$taskProject/$taskProject.csproj") --nologo -m:1 -nr:false -v:minimal
     if ($LASTEXITCODE -ne 0) { throw "$taskProject build failed." }
 }
@@ -44,6 +44,8 @@ if ($LASTEXITCODE -ne 0) { throw 'SFX validation failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'Additional creation format validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/VolumeValidation/bin/Debug/net10.0-windows/VolumeValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Split volume validation failed.' }
+& $taskDotnet (Join-Path $taskRoot 'tests/ConversionValidation/bin/Debug/net10.0-windows/ConversionValidation.dll') $taskRoot
+if ($LASTEXITCODE -ne 0) { throw 'Archive conversion validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/ArchiveEditingValidation/bin/Debug/net10.0-windows/ArchiveEditingValidation.dll') $taskRoot
 if ($LASTEXITCODE -ne 0) { throw 'Archive editing validation failed.' }
 & $taskDotnet (Join-Path $taskRoot 'tests/CompressionValidation/bin/Debug/net10.0-windows/CompressionValidation.dll') $taskRoot
@@ -184,6 +186,8 @@ $taskFormatsGui = Start-Process -FilePath $taskApplication -ArgumentList @('--va
 if ($taskFormatsGui.ExitCode -ne 0) { throw 'Additional creation format desktop validation failed.' }
 $taskVolumeGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-volumes', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskVolumeGui.ExitCode -ne 0) { throw 'Split volume desktop validation failed.' }
+$taskConversionGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-conversion', $taskRoot) -WindowStyle Hidden -Wait -PassThru
+if ($taskConversionGui.ExitCode -ne 0) { throw 'Archive conversion desktop validation failed.' }
 $taskEditingGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-archive-editing', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskEditingGui.ExitCode -ne 0) { throw 'Archive editing desktop validation failed.' }
 $taskMasterGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-master-vault', $taskRoot) -WindowStyle Hidden -Wait -PassThru
