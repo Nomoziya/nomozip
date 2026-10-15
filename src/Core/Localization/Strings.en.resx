@@ -3059,4 +3059,14 @@ A password is required to validate the archive data.</value>
   <data name="Preview.ImageInvalid" xml:space="preserve"><value>Cannot read this image. It may be corrupt or its format may not match its extension.</value></data>
   <data name="Preview.ImageTooLarge" xml:space="preserve"><value>Image exceeds the preview limit (16 million pixels, 16384 per side). Extract to view it.</value></data>
   <data name="Preview.CleanupWarning" xml:space="preserve"><value>Preview temporary files could not be removed. Close any program using them, then delete this directory:</value></data>
+  <data name="Preview.CompactAction" xml:space="preserve"><value>Preview</value></data>
+  <data name="Contents.CompactExtract" xml:space="preserve"><value>Extract</value></data>
+  <data name="Contents.CompactCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Contents.CompactOpen" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Contents.CompactSearch" xml:space="preserve"><value>Search</value></data>
+  <data name="Contents.CompactSelect" xml:space="preserve"><value>Select visible</value></data>
+  <data name="Contents.CompactClear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Contents.CompactEdit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Contents.CompactPick" xml:space="preserve"><value>Pick</value></data>
+  <data name="Contents.CompactSize" xml:space="preserve"><value>Size</value></data>
 </root>
