@@ -57,7 +57,7 @@ internal static class DesktopAccessibilityValidation
                             && !Ancestors(action).Any(parent => parent is ScrollViewer));
                         Check($"extraction width {width} one form scroll region", width == 1120
                             ? ((ScrollViewer)window.FindName("ExtractionViewport")).VerticalScrollBarVisibility == ScrollBarVisibility.Disabled
-                              && settings.ComputedVerticalScrollBarVisibility == Visibility.Collapsed
+                              && settings.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
                             : settings.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled);
                     }
                     if (page == 3)

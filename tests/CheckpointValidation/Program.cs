@@ -258,7 +258,7 @@ try
             }
             Check(label+" exact bytes agree with independent official CLI",exact && store.ReadPending().Count==0);
         }
-        foreach(var scenario in new[]{"corrupt","missing-source","changed-source","commit","intent-gap","changed-delivery","save-failure","discard","cancel"})
+        foreach(var scenario in new[]{"corrupt","missing-source","changed-source","commit","intent-gap","skip-intent-gap","changed-delivery","save-failure","discard","cancel"})
         {
             var label=version+" "+scenario;var folder=await NewCase(version+"-"+scenario);var archive=Path.Combine(folder,"input.zip");
             using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create)) foreach(var name in new[]{"a.txt","b.txt","c.txt"}) {using var writer=new StreamWriter(zip.CreateEntry(name).Open());writer.Write(name+" original");}
@@ -309,6 +309,17 @@ try
                 File.WriteAllText(Path.Combine(Stage(record),unfinished.Path),"uncommitted partial bytes");
                 using var result=await FinishChild(folder,archive,version);
                 Check(label+" corrupt checkpoint re-extracted",result.RootElement.GetProperty("completed").GetArrayLength()==3 && File.ReadAllText(Path.Combine(record.Destination,entry.Path))==entry.Path+" original");
+            }
+            else if(scenario=="skip-intent-gap")
+            {
+                string kept;
+                await using(var session=await store.ResumeAsync(record.Id,Binding(project,version)))
+                {
+                    var entry=session.Record.Entries.Single(entry=>entry.Index==session.Record.Receipts.Single().Index);kept=session.Target(entry);File.WriteAllText(kept,"keep existing");
+                    await session.SetIntentAsync(session.Source(entry),ExistingFilePolicy.Skip,CancellationToken.None);
+                }
+                using var result=await FinishChild(folder,archive,version);
+                Check(label+" saved skip decision retains bytes and completion warning",File.ReadAllText(kept)=="keep existing" && result.RootElement.GetProperty("warning").GetString()==UiText.Format("T_33624dd36711",1) && result.RootElement.GetProperty("completed").GetArrayLength()==2);
             }
             else if(scenario=="intent-gap")
             {
