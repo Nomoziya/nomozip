@@ -80,7 +80,9 @@ foreach(var version in versions)
     try {await Reject("temporary preparation DLL lock preserves validation failure",()=>cleanupUpdater.InstallAsync(brokenPackages["26.04"],progress),"engine_validation_failed");}
     finally {await release;held?.Dispose();}
     var installedAfterFailure=await cleanupUpdater.InstallAsync(nativePackages["26.04"]).WaitAsync(TimeSpan.FromSeconds(15));
-    Check("failed preparation releases gate and cleans directory before next install",Directory.Exists(installedAfterFailure) && !Directory.GetDirectories(cleanupRoot,".prepare-*").Any());
+    Check("failed preparation releases gate and cleans directory before next install",installedAfterFailure=="26.04" &&
+        File.ReadAllBytes(Path.Combine(cleanupRoot,installedAfterFailure,"7z.dll")).SequenceEqual(File.ReadAllBytes(Path.Combine(root,"engines/26.04/7z.dll"))) &&
+        !Directory.GetDirectories(cleanupRoot,".prepare-*").Any());
 }
 var installed=Path.Combine(folder,EngineArchitecture.InstalledDirectoryName);var state=Path.Combine(folder,EngineArchitecture.SelectionFileName);
 var catalog=new EngineCatalog(Path.Combine(root,"engines"),installed,publicKey);
