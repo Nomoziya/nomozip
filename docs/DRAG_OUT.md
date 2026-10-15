@@ -30,3 +30,5 @@
 `--validate-drag-out <项目目录>` 使用隐藏合成资料检查生产浏览入口、实际菜单绑定、搜索隐藏的勾选范围、未勾选高亮项、双语言与三种主题的 900×600 / 640×400 / 512×360 布局、原生 `CF_HDROP` 解码并复制至自有目标、COM 不导出异步接口、原生 OLE 取消、关闭等待及临时目录清理。原生取消测试只向自己的线程投递消息，不移动桌面鼠标。
 
 报告为 `artifacts/drag-validation.json` / `drag-ui-validation.json`，截图在 `artifacts/drag-preview`。实际 Explorer 鼠标拖放、外部目标的冲突弹窗和物理多屏体验未由隐藏测试替代。
+
+本期新增数据110、界面56项通过；[完整x64 CI 38772592760](https://github.com/Nomoziya/nomozip/actions/runs/38772592760) 与 [原生ARM64 CI 38772595268](https://github.com/Nomoziya/nomozip/actions/runs/38772595268) 全部通过。82 / 81 份报告、十二维护矩阵/19文件绑定、828条资源及两架构隔离升级各31项已复核。候选仅在本地，不表示已公开发行；实际 Explorer 鼠标拖放仍需真实系统体验。临时解压再由 Explorer 复制的整体方式也见 [7-Zip 官方 FAQ](https://www.7-zip.org/faq.html)。
