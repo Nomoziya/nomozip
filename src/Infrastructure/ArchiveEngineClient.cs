@@ -107,11 +107,13 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
             if (started)
             {
                 if (!process.HasExited) process.Kill(entireProcessTree: true);
+                // Even an ordinary failed probe can still have its DLL mapped.
+                // Callers may remove that DLL as soon as this operation returns.
+                await process.WaitForExitAsync(CancellationToken.None);
                 // A checkpoint owner may only release its journal after the writer
                 // is gone, including callback or persistence failures.
                 if(saveCompleted is not null)
                 {
-                    await process.WaitForExitAsync(CancellationToken.None);
                     // A slow flush can outlive the native cancellation timeout.
                     // Do not release the session while its persistence callback runs.
                     if(pendingResponse is {IsCompleted:false})
