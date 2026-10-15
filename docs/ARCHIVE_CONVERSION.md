@@ -17,3 +17,5 @@
 验收入口：`tests/ConversionValidation` 使用两版真实 DLL 和官方 CLI 检查不同源/目标格式与加密组合、精确内容和空条目、不同源/目标密码、多密码源、RAR、NTFS 来源、取消、覆盖及真实共享锁失败，并拒绝内容被替换但可完整测试的候选。`--validate-conversion` 使用隔离测试库，通过实际工具栏和 UIA 按钮执行转换，检查双语、两引擎、三种主题、窄窗及密码清理。完整 x64 和原生 ARM64 CI 完成后以项目计划中的最终记录为准；未完成的物理体验验收不据此宣称通过。
 
 引擎维护加入第十一类 `conversion-validation.json` 矩阵。候选准备、复核及签发均要求目标版本覆盖、实际 DLL 摘要和完整通过结果，十一份报告及引擎/worker/公钥共 18 项绑定；兼容记录仍在既有 RSA 签名载荷内，更新 ZIP 五条目格式不变。
+
+2026-10-15 最终验收：产品源码 `59d8e025cfb086537e8693d10a20ffbbe2a26b92`，完整 [x64 CI](https://github.com/Nomoziya/nomozip/actions/runs/38697572814) / [原生 ARM64 CI](https://github.com/Nomoziya/nomozip/actions/runs/38697575377) 成功；76 / 75 份报告逐项及精确集合通过。新增数据 196、实际界面 80、资源 37 和安装升级各 23 项通过；十一矩阵维护 49 项和 18 项摘要绑定通过。24 个转换样本包含双语、三种主题及 700/540 DIP 两种宽度。证据 `artifacts/conversion-x64-ci-review.json`、`artifacts/conversion-arm64-ci-review.json`、`artifacts/conversion-payload-validation.json`。最终四项轻量资产分别在 preview.23 的 x64 / ARM64 final 目录，各有独立包外校验报告；源码交接只补本文、计划、路线图和 README，不改变已测产品代码。ARM64 安装器/载荷保留 CI 字节，未在本地 x64 冒称原生执行。未公开发布或替换实际安装。
