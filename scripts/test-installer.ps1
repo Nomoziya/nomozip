@@ -106,7 +106,7 @@ try {
     if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
     Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskExpectedChecks = if ($FrameworkDependent) { 21 } else { 20 }
+    $taskExpectedChecks = if ($FrameworkDependent) { 23 } else { 22 }
     $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
     [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;previousArchitecture=$PreviousArchitecture;architecture=$Architecture;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8
