@@ -68,6 +68,10 @@ internal static class DesktopPauseValidation
                 }
                 Check(version+" pause resets after ending "+cancel,!model.CanPauseQueue && model.QueuePauseCaption=="暂停队列" && !window.QueuePauseAction.IsVisible && WorkerIds().Length==0);
                 Check(version+" source archives unchanged "+cancel,paths.All(path=>Hash(path)==Hash(fixture))) ;
+                // Reports retain the assertions; successful cases need no GiB-sized outputs.
+                var cleanup=Path.GetFullPath(folder);var scope=Path.GetFullPath(data).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar;
+                if(!cleanup.StartsWith(scope,StringComparison.OrdinalIgnoreCase)) throw new IOException("Pause validation cleanup escaped its owned directory.");
+                Directory.Delete(cleanup,recursive:true);
             }
         }
         catch(Exception error) {Check("exception "+error.GetType().Name+" "+error.Message,false);}

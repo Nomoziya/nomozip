@@ -148,10 +148,7 @@ Copy-Item $taskTestPublic (Join-Path $taskTestApp 'update-public-key.pem') -Forc
 $taskApplication = Join-Path $taskTestApp 'ArchivePassword.exe'
 & $taskDotnet (Join-Path $taskRoot 'tests/CliValidation/bin/Debug/net10.0-windows/CliValidation.dll') $taskRoot $taskTestApp
 if ($LASTEXITCODE -ne 0) { throw 'Console and batch entry validation failed.' }
-$taskPauseFixtures=Join-Path $taskRoot 'artifacts/pause-data'
-$taskUiFixture=Get-ChildItem -LiteralPath $taskPauseFixtures -Recurse -File -Filter 'longer-26.04.7z' | Select-Object -First 1
-if (-not $taskUiFixture) { throw 'In-flight UI fixture was not prepared.' }
-Copy-Item -LiteralPath $taskUiFixture.FullName -Destination (Join-Path $taskRoot 'tests/fixtures/generated/large-ui.7z')
+& (Join-Path $PSScriptRoot 'prepare-pause-ui-fixture.ps1')
 $taskGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskGui.ExitCode -ne 0) { throw 'Desktop command validation failed.' }
 Write-Output 'Desktop command validation passed.'
