@@ -52,6 +52,7 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
         Action changed=()=>controls.Writer.TryWrite(pause!.IsRequested);
         if(pause is not null) pause.Changed+=changed;
         Task pump=Task.CompletedTask;
+        Task<EngineResult>? pendingResponse=null;
         async Task WriteControlAsync(string command,uint? index=null)
         {
             await inputGate.WaitAsync();
@@ -75,7 +76,7 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
             await process.StandardInput.BaseStream.WriteAsync("\n"u8.ToArray(), token);
             await process.StandardInput.BaseStream.FlushAsync(token);
             if(pause is not null) pump=PumpAsync();
-            var response = ReadResultAsync(process, progress,saveCompleted,index=>WriteControlAsync("checkpoint-ack",index),token);
+            var response = pendingResponse = ReadResultAsync(process, progress,saveCompleted,index=>WriteControlAsync("checkpoint-ack",index),token);
             EngineResult result;
             try { result = await response.WaitAsync(token); }
             catch (OperationCanceledException)
@@ -108,7 +109,17 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
                 if (!process.HasExited) process.Kill(entireProcessTree: true);
                 // A checkpoint owner may only release its journal after the writer
                 // is gone, including callback or persistence failures.
-                if(saveCompleted is not null) await process.WaitForExitAsync(CancellationToken.None);
+                if(saveCompleted is not null)
+                {
+                    await process.WaitForExitAsync(CancellationToken.None);
+                    // A slow flush can outlive the native cancellation timeout.
+                    // Do not release the session while its persistence callback runs.
+                    if(pendingResponse is {IsCompleted:false})
+                    {
+                        try {await pendingResponse;}
+                        catch(Exception error) when(error is OperationCanceledException or IOException or UnauthorizedAccessException or InvalidOperationException or JsonException) { }
+                    }
+                }
             }
         }
     }
