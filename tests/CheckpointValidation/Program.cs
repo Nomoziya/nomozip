@@ -95,6 +95,7 @@ var workerOption=Array.IndexOf(args,"--worker");
 var worker=Path.GetFullPath(workerOption>=0?args[workerOption+1]:Path.Combine(project,"artifacts/worker/ArchiveEngineWorker.exe"));
 var versions=args.Skip(1).TakeWhile(value=>!value.StartsWith("--")).SelectMany(value=>value.Split(',')).ToArray();
 if(versions.Length==0) versions=["26.04","26.03"];
+var diagnostics=new List<object>();
 var checks=new Dictionary<string,bool>();void Check(string name,bool value){checks.Add(name,value);Console.WriteLine((value?"PASS ":"FAIL ")+name);}
 Process Child(string mode,string folder,string archive,string version)
 {
@@ -265,7 +266,15 @@ try
             if(scenario=="cancel")
             {
                 using var child=Child("cancel",folder,archive,version);await child.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(20));
-                Check(label+" cooperative stop retains progress",child.ExitCode==0 && new ExtractionCheckpointStore(Path.Combine(folder,"records")).ReadPending().Single().Receipts.Count==1);
+                var stoppedRecords=new ExtractionCheckpointStore(Path.Combine(folder,"records")).ReadPending();
+                var stoppedCorrectly=child.ExitCode==0 && stoppedRecords.Count==1 && stoppedRecords.Single().Receipts.Count==1;
+                if(!stoppedCorrectly)
+                {
+                    var resultPath=Path.Combine(folder,"result.json");
+                    var detail=new{phase="cooperative stop",version,exitCode=child.ExitCode,receipts=stoppedRecords.Select(record=>record.Receipts.Count),result=File.Exists(resultPath)?File.ReadAllText(resultPath):null,stdout=await child.StandardOutput.ReadToEndAsync(),stderr=await child.StandardError.ReadToEndAsync()};
+                    diagnostics.Add(detail);Console.WriteLine(JsonSerializer.Serialize(detail));
+                }
+                Check(label+" cooperative stop retains progress",stoppedCorrectly);
             }
             else await StopChild(scenario is "commit" or "changed-delivery"?"commit-stop":"stop",folder,archive,version);
             var store=new ExtractionCheckpointStore(Path.Combine(folder,"records"));var record=store.ReadPending().Single();
@@ -359,7 +368,7 @@ finally
     if(Directory.Exists(data)) Directory.Delete(data,true);
 }
 var hashes=versions.ToDictionary(version=>version,version=>Hash(Path.Combine(project,"engines",version,"7z.dll")));
-await File.WriteAllTextAsync(Path.Combine(project,"artifacts/checkpoint-validation.json"),JsonSerializer.Serialize(new{passed=checks.Values.All(value=>value),total=checks.Count,checks,engineHashes=hashes},options));
+await File.WriteAllTextAsync(Path.Combine(project,"artifacts/checkpoint-validation.json"),JsonSerializer.Serialize(new{passed=checks.Values.All(value=>value),total=checks.Count,checks,diagnostics,engineHashes=hashes},options));
 return checks.Values.All(value=>value)?0:1;
 
 bool ThrowsIo(Action action){try{action();return false;}catch(IOException){return true;}}
