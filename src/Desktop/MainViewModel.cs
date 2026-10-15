@@ -56,7 +56,7 @@ public sealed partial class MainViewModel : ObservableObject
         Tasks.CollectionChanged += (_, _) => { Changed(nameof(TaskSummary)); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
         OpenInputCommand = new RelayCommand(() => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else AddFilesCommand.Execute(null); }, () => IsIdle);
-        RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is not null);
+        RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is {Checkpoint:null});
         BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) SelectCustomOutput(path); }, () => IsIdle);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
         BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page == 0 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
@@ -83,6 +83,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeApplicationUpdateCommands();
         InitializeExtractionToolCommands();
         InitializeQueueCommands();
+        InitializeCheckpointCommands();
         InitializePasswordOrganizationCommands();
         InitializeFileHashCommands();
         InitializeFilenameEncodingCommands();
@@ -136,7 +137,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string VaultSummary => VaultLocked ? UiText.Get("T_b4caab65183a") : vaultAvailable ? UiText.Format("T_357176e2a16d", allPasswords.Count(value => value.AutoTry)) : UiText.Get("T_98b23dcfbd8c");
     public string TaskSummary => UiText.Format("T_3292893c1e67", Tasks.Count(value => !value.Completed), Tasks.Count(value => value.Completed));
     public string ExtractButtonText => UiText.Format("T_ab3ecbe376c2", Tasks.Count(value => !value.Completed));
-    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
+    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
     public SavedPassword? SelectedPassword { get => selectedPassword; set { if (Set(ref selectedPassword, value)) { Changed(nameof(DuplicateSummary)); CommandManager.InvalidateRequerySuggested(); } } }
 
     public async Task InitializeAsync()
@@ -160,6 +161,7 @@ public sealed partial class MainViewModel : ObservableObject
             Changed(nameof(EngineSummary));
             await RefreshSfxAvailabilityAsync();
             await RefreshVaultAsync();
+            RefreshCheckpointRows();
             if (EngineVersions.Count == 0) Banner = UiText.Get("T_e274b7537023");
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
@@ -192,11 +194,11 @@ public sealed partial class MainViewModel : ObservableObject
     private Task ExtractAsync()=>ExtractTasksAsync(Tasks.Where(value=>!value.Completed).ToArray());
     private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch)
     {
-        if (directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = UiText.Get("T_36711b07451f"); return; }
+        if (batch.Any(task=>task.Checkpoint is null) && directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = UiText.Get("T_36711b07451f"); return; }
         IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
         using var prompts=new SemaphoreSlim(1,1);
         var openResults=new List<string>();
-        string Destination(ArchiveTaskRow task)=>task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
+        string Destination(ArchiveTaskRow task)=>task.Checkpoint?.Destination ?? task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
         async Task<T> PromptAsync<T>(Func<Task<T>> show,CancellationToken token)
         {
             await prompts.WaitAsync(token);
@@ -220,14 +222,15 @@ public sealed partial class MainViewModel : ObservableObject
             try
             {
                 var destination=Destination(task);
-                Func<IReadOnlyList<ArchiveEntry>,string>? resolveDestination=task.ShellOutputPath is null && directoryRules.Layout!=ExtractionLayout.Direct
+                Func<IReadOnlyList<ArchiveEntry>,string>? resolveDestination=task.Checkpoint is null && task.ShellOutputPath is null && directoryRules.Layout!=ExtractionLayout.Direct
                     ? items=>ExtractionDirectoryPlanner.Resolve(task.Path,destination,directoryRules,items,DateOnly.FromDateTime(DateTime.Today)) : null;
-                var service=new ExtractionService(CreateReadClient(task,queuePause),vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin(),queuePause);
+                var (client,checkpoint)=ExtractionClient(task,queuePause);
+                var service=new ExtractionService(client,vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin(),queuePause);
                 var outcome=await service.ExtractAsync(task.Path,destination,AutoTry,
                     failure=>PromptAsync(()=>dialogs.AskPasswordAsync(task.Name,attempts++>0,allPasswords,vaultAvailable,token,previousFailure:failure),token),
                     path=>ConflictPolicy==1?Task.FromResult(ExistingFilePolicy.Skip):ConflictPolicy==2?Task.FromResult(ExistingFilePolicy.Replace)
                         :PromptAsync(()=>Task.FromResult(dialogs.ResolveConflict(path)),token),
-                    progress,token,skip.Token,resolveDestination);
+                    progress,token,skip.Token,resolveDestination,checkpoint:checkpoint);
                 task.Completed=outcome.Engine.IsSuccess;
                 task.ResultOutputPath=task.Completed?outcome.OutputPath:null;task.SelectedOutputPath=null;
                 if(task.Completed) openResults.Add(outcome.OutputPath);
@@ -238,6 +241,7 @@ public sealed partial class MainViewModel : ObservableObject
                 Footer=UiText.Format("Common.TaskMessage", task.Name, task.Status);
                 if(outcome.Engine.Status=="cancelled") cancellation.Cancel();
             }
+            catch(CheckpointException error) {task.Failure=new EngineResult {Code=error.Code};task.Status=UiText.Get("Checkpoint.Error."+error.Code);Banner=task.Status;}
             catch(OperationCanceledException) {task.Status=UiText.Get("T_a37778f17c5f");Footer=UiText.Format("T_39f2e118230d", task.Name);}
             catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
             {task.Failure=new EngineResult {Code="output_write_failed"};task.Status=UiText.Get("T_9719b364c066");Banner+=(Banner.Length>0?"\n":"")+task.Name+UiText.Get("T_51bf39e5552c");}
@@ -256,6 +260,8 @@ public sealed partial class MainViewModel : ObservableObject
         {
             var batchSucceeded=!cancellation.IsCancellationRequested && batch.Count>0 && batch.All(task=>task.Completed);
             var shouldOpen=directoryRules.OpenAfterSuccess && batchSucceeded;
+            try {RefreshCheckpointRows();}
+            catch(Exception error) when(error is IOException or UnauthorizedAccessException) {Banner=UiText.Get("Checkpoint.ScanFailed");}
             CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
             try {if(batchSucceeded) NotifyCompletedBatch(batch.Count);if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray());}
             finally {idle.TrySetResult();}
@@ -385,7 +391,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!File.Exists(path)) return;
         var settings = JsonSerializer.Deserialize<Settings>(await File.ReadAllTextAsync(path));
         if (settings is null || settings.Version != 1) { settingsWritable = false; Banner = UiText.Get("T_14703b3eea3e"); return; }
-        OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;VaultIdleIndex=settings.VaultIdleIndex;
+        OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;VaultIdleIndex=settings.VaultIdleIndex;RetainExtractionProgress=settings.RetainExtractionProgress;
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
         directoryRules=settings.DirectoryRules ?? new();
@@ -399,7 +405,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
         RememberCustomDirectory();
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex)));
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress)));
     }
     private static void OpenFolder(string path)
     {
@@ -407,6 +413,8 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private static string ErrorText(string code) => code switch
     {
+        "checkpoint_busy" or "checkpoint_binding_changed" or "checkpoint_source_changed" or "checkpoint_invalid" or "checkpoint_missing" or "checkpoint_sources_unavailable" or "checkpoint_unsafe_path" or "checkpoint_output_changed" or "checkpoint_incomplete" or "checkpoint_save_failed"=>UiText.Get("Checkpoint.Error."+code),
+        "unsupported_checkpoint"=>UiText.Get("Checkpoint.Error.checkpoint_sources_unavailable"),
         "origin_read_failed" => UiText.Get("T_893970c571a4"), "origin_write_failed" => UiText.Get("T_0a521f1e9069"),
         "filename_encoding_not_zip" => UiText.Get("T_85d4df741e35"), "filename_encoding_unsupported" => UiText.Get("T_7ffb2c276490"),
         "missing_volume" => UiText.Get("T_a2e6438fa7e0"), "first_volume_required"=>UiText.Get("T_6d06665b464f"), "unsafe_path" => UiText.Get("T_7aeb3a3773e5"), "archive_read_failed" => UiText.Get("T_0cc98408032b"),
@@ -414,7 +422,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => UiText.Get("T_21777c1adb09"), "output_write_failed" or "write_failed" => UiText.Get("T_736922310835"),
         "worker_connection_failed" or "engine_load_failed" => UiText.Get("T_ffcd45757108"), _ => UiText.Get("T_54d74bc17776"),
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", "文件夹"));

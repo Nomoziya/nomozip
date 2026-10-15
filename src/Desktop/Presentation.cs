@@ -37,6 +37,8 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? enabled = null)
 }
 public sealed class ArchiveTaskRow(string path, string? previewSize = null) : ObservableObject
 {
+    private CheckpointRecord? checkpoint;
+    public CheckpointRecord? Checkpoint {get=>checkpoint;set=>Set(ref checkpoint,value);}
     private string? resultOutputPath;
     public string? SelectedOutputPath {get;set;}
     public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;

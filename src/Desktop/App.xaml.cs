@@ -199,6 +199,16 @@ public partial class App : Application
             window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
             var passed=await DesktopVolumeValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[volumesIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
         }
+        var checkpointIndex=Array.IndexOf(e.Args,"--validate-checkpoints");
+        if(checkpointIndex>=0)
+        {
+            window.SuppressExitConfirmationForValidation=true;
+            var checkpointRoot=Path.GetFullPath(e.Args[checkpointIndex+1]);
+            var report=Path.Combine(checkpointRoot,"artifacts/checkpoint-ui-validation.json");File.WriteAllText(report,"{\"passed\":false,\"state\":\"running\"}");
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new{passed=false,exception=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopCheckpointValidation.RunAsync(window,theme!,checkpointRoot,baseDirectory);Shutdown(passed?0:1);return;
+        }
         var dragIndex=Array.IndexOf(e.Args,"--validate-drag-out");
         if(dragIndex>=0)
         {

@@ -3095,4 +3095,30 @@ A password is required to validate the archive data.</value>
   <data name="Drag.Actions" xml:space="preserve"><value>Content actions</value></data>
   <data name="Drag.CompactActions" xml:space="preserve"><value>Actions</value></data>
   <data name="Drag.ActionsHint" xml:space="preserve"><value>Prepare selected items for dragging, or edit a 7z/ZIP archive.</value></data>
+  <data name="Checkpoint.Saved" xml:space="preserve"><value>Progress saved: {0} / {1} items</value></data>
+  <data name="Checkpoint.Committing" xml:space="preserve"><value>Delivering verified files</value></data>
+  <data name="Checkpoint.Cleanup" xml:space="preserve"><value>Extraction completed, but temporary files could not all be removed. Retry discard in Task actions: {0}</value></data>
+  <data name="Checkpoint.Error.checkpoint_binding_changed" xml:space="preserve"><value>The required engine, architecture, or filename encoding does not match. Restore the original components and settings, or discard progress and extract again.</value></data>
+  <data name="Checkpoint.Error.checkpoint_source_changed" xml:space="preserve"><value>The archive or a volume has changed, is missing, or cannot be read. Progress was retained. Restore the original files or discard progress.</value></data>
+  <data name="Checkpoint.Error.checkpoint_invalid" xml:space="preserve"><value>The progress record could not be recognized. Its files were not used. Keep the record for investigation.</value></data>
+  <data name="Checkpoint.Error.checkpoint_busy" xml:space="preserve"><value>Another process is still using this progress. Wait for it to exit and try again.</value></data>
+  <data name="Checkpoint.Error.checkpoint_missing" xml:space="preserve"><value>This saved progress no longer exists.</value></data>
+  <data name="Checkpoint.Error.checkpoint_sources_unavailable" xml:space="preserve"><value>The worker did not provide the source-file set. Use the worker supplied with this application.</value></data>
+  <data name="Checkpoint.Error.checkpoint_unsafe_path" xml:space="preserve"><value>A progress path contains a link. The operation stopped to protect other files. Remove the link and retry.</value></data>
+  <data name="Checkpoint.Error.checkpoint_output_changed" xml:space="preserve"><value>A completed file failed verification. Progress was retained. Check the disk and file permissions before retrying.</value></data>
+  <data name="Checkpoint.Error.checkpoint_incomplete" xml:space="preserve"><value>The worker did not confirm every item. Progress was retained and can be resumed.</value></data>
+  <data name="Checkpoint.Enable" xml:space="preserve"><value>Keep extraction progress</value></data>
+  <data name="Checkpoint.Hint" xml:space="preserve"><value>Resume after stopping or exiting. Decrypted temporary files and paths remain until completion or discard; passwords are not saved. Incomplete files restart.</value></data>
+  <data name="Checkpoint.Resume" xml:space="preserve"><value>Resume selected task</value></data>
+  <data name="Checkpoint.Discard" xml:space="preserve"><value>Discard selected progress</value></data>
+  <data name="Checkpoint.DiscardPrompt" xml:space="preserve"><value>Discard extraction progress and delete retained temporary files for “{0}”? Files already delivered will be kept.</value></data>
+  <data name="Checkpoint.Discarded" xml:space="preserve"><value>Progress discarded. The archive and files already delivered were kept.</value></data>
+  <data name="Checkpoint.DiscardFailed" xml:space="preserve"><value>Some temporary files could not be removed. The progress record was kept. Close applications using those files and retry discard.</value></data>
+  <data name="Checkpoint.ReadFailed" xml:space="preserve"><value>A progress record could not be read. Its files were kept: {0}</value></data>
+  <data name="Checkpoint.ScanFailed" xml:space="preserve"><value>Saved extraction progress could not be read. Check access to the data directory and retry.</value></data>
+  <data name="Checkpoint.Available" xml:space="preserve"><value>Ready to resume · {0} / {1} items saved</value></data>
+  <data name="Checkpoint.CleanupPending" xml:space="preserve"><value>Extracted · progress cleanup pending</value></data>
+  <data name="Checkpoint.Found" xml:space="preserve"><value>Tasks with saved progress: {0}. Resume or discard it in Task actions.</value></data>
+  <data name="Checkpoint.Checking" xml:space="preserve"><value>Checking source files and saved progress…</value></data>
+  <data name="Checkpoint.Error.checkpoint_save_failed" xml:space="preserve"><value>Extraction progress could not be saved. Further writes stopped and previous records were kept. Check free disk space and data-directory access before resuming.</value></data>
 </root>

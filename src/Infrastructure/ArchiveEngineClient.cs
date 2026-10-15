@@ -6,7 +6,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed class ArchiveEngineClient(string workerPath, string enginePath, int filenameCodePage = 0,ExtractionPause? pause=null) : IArchiveEngine, IArchiveCreator, IArchiveMultiPasswordEngine,IArchiveSelectionEngine,IArchiveEditor,IArchivePreviewEngine
+public sealed class ArchiveEngineClient(string workerPath, string enginePath, int filenameCodePage = 0,ExtractionPause? pause=null) : IArchiveEngine, IArchiveCreator, IArchiveMultiPasswordEngine,IArchiveSelectionEngine,IArchiveEditor,IArchivePreviewEngine,IArchiveCheckpointEngine
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
@@ -28,7 +28,10 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
         =>RunAsync("update",archive,output,password,progress,token,creation:new(request.Additions,"",5,request.EncryptHeaders),selection:request.Snapshot,removed:request.RemovedIndices);
     public Task<EngineResult> ExtractPreviewAsync(string archive,string output,ArchiveEntry entry,ulong limit,string? password,IReadOnlyDictionary<uint,string> itemPasswords,IProgress<EngineProgress>? progress=null,CancellationToken token=default)
         =>RunAsync("preview-selection",archive,output,password,progress,token,itemPasswords:itemPasswords,selection:[entry],previewLimit:limit);
-    private async Task<EngineResult> RunAsync(string operation, string? archivePath, string? outputPath, string? password, IProgress<EngineProgress>? progress, CancellationToken token, CompressionRequest? creation = null, IReadOnlyDictionary<uint, string>? itemPasswords = null,IReadOnlyList<ArchiveEntry>? selection=null,IReadOnlyList<uint>? removed=null,ulong previewLimit=0)
+    public Task<EngineResult> ExtractCheckpointAsync(string archive,string output,IReadOnlyList<ArchiveEntry> selection,string? password,IReadOnlyDictionary<uint,string> itemPasswords,
+        Func<uint,CancellationToken,Task> saveCompleted,IProgress<EngineProgress>? progress=null,CancellationToken token=default)
+        =>RunAsync("checkpoint-selection",archive,output,password,progress,token,itemPasswords:itemPasswords,selection:selection,saveCompleted:saveCompleted);
+    private async Task<EngineResult> RunAsync(string operation, string? archivePath, string? outputPath, string? password, IProgress<EngineProgress>? progress, CancellationToken token, CompressionRequest? creation = null, IReadOnlyDictionary<uint, string>? itemPasswords = null,IReadOnlyList<ArchiveEntry>? selection=null,IReadOnlyList<uint>? removed=null,ulong previewLimit=0,Func<uint,CancellationToken,Task>? saveCompleted=null)
     {
         if (!ZipFilenameEncoding.IsSupported(filenameCodePage)) throw new ArgumentOutOfRangeException(nameof(filenameCodePage));
         if (token.IsCancellationRequested) return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" };
@@ -49,10 +52,10 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
         Action changed=()=>controls.Writer.TryWrite(pause!.IsRequested);
         if(pause is not null) pause.Changed+=changed;
         Task pump=Task.CompletedTask;
-        async Task WriteControlAsync(string command)
+        async Task WriteControlAsync(string command,uint? index=null)
         {
             await inputGate.WaitAsync();
-            try {await process.StandardInput.WriteLineAsync("{\"protocol\":1,\"operation\":\""+command+"\"}");await process.StandardInput.FlushAsync();}
+            try {await process.StandardInput.WriteLineAsync(index.HasValue?JsonSerializer.Serialize(new{protocol=1,operation=command,index=index.Value},JsonOptions):"{\"protocol\":1,\"operation\":\""+command+"\"}");await process.StandardInput.FlushAsync();}
             finally {inputGate.Release();}
         }
         async Task PumpAsync()
@@ -72,7 +75,7 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
             await process.StandardInput.BaseStream.WriteAsync("\n"u8.ToArray(), token);
             await process.StandardInput.BaseStream.FlushAsync(token);
             if(pause is not null) pump=PumpAsync();
-            var response = ReadResultAsync(process, progress);
+            var response = ReadResultAsync(process, progress,saveCompleted,index=>WriteControlAsync("checkpoint-ack",index),token);
             EngineResult result;
             try { result = await response.WaitAsync(token); }
             catch (OperationCanceledException)
@@ -90,15 +93,28 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
             return token.IsCancellationRequested ? new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" } : result;
         }
         catch (OperationCanceledException) { return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" }; }
+        catch(CheckpointException) {throw;}
         catch (Exception exception) when (exception is IOException or InvalidOperationException or System.ComponentModel.Win32Exception or JsonException)
         {
             if (token.IsCancellationRequested) return new EngineResult { Protocol = 1, Status = "cancelled", Code = "cancelled" };
             return new EngineResult { Protocol = 1, Code = "worker_connection_failed" };
         }
-        finally {if(pause is not null) pause.Changed-=changed;controls.Writer.TryComplete();await pump;if (started && !process.HasExited) process.Kill(entireProcessTree: true);}
+        finally
+        {
+            if(pause is not null) pause.Changed-=changed;
+            controls.Writer.TryComplete();await pump;
+            if (started)
+            {
+                if (!process.HasExited) process.Kill(entireProcessTree: true);
+                // A checkpoint owner may only release its journal after the writer
+                // is gone, including callback or persistence failures.
+                if(saveCompleted is not null) await process.WaitForExitAsync(CancellationToken.None);
+            }
+        }
     }
 
-    private static async Task<EngineResult> ReadResultAsync(Process process, IProgress<EngineProgress>? progress)
+    private static async Task<EngineResult> ReadResultAsync(Process process, IProgress<EngineProgress>? progress,Func<uint,CancellationToken,Task>? saveCompleted,
+        Func<uint,Task> acknowledge,CancellationToken token)
     {
         ulong completed=0,total=0;
         while (await process.StandardOutput.ReadLineAsync() is { } line)
@@ -109,6 +125,11 @@ public sealed class ArchiveEngineClient(string workerPath, string enginePath, in
             if (root.GetProperty("kind").GetString() == "progress")
             {completed=root.GetProperty("completed").GetUInt64();total=root.GetProperty("total").GetUInt64();progress?.Report(new EngineProgress(completed,total));}
             else if(root.GetProperty("kind").GetString()=="pause-state") progress?.Report(new EngineProgress(completed,total,root.GetProperty("paused").GetBoolean()));
+            else if(root.GetProperty("kind").GetString()=="entry-complete")
+            {
+                if(saveCompleted is null) return new EngineResult {Code="unexpected_checkpoint"};
+                var index=root.GetProperty("index").GetUInt32();await saveCompleted(index,token);token.ThrowIfCancellationRequested();await acknowledge(index);
+            }
             else if (root.GetProperty("kind").GetString() == "result")
                 return root.Deserialize<EngineResult>(JsonOptions) ?? new EngineResult { Code = "invalid_response" };
         }

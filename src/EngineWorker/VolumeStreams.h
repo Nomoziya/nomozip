@@ -90,6 +90,7 @@ public:
         }
     }
     ~VolumeInputStream() {close();}
+    std::vector<fs::path> Paths() const {std::vector<fs::path> result;for(const auto& part:parts) result.push_back(part.path);return result;}
     REFCOUNT_IMPL
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID id,void** object) noexcept override {*object=nullptr;if(id==IID_IUnknown || id==IID_IInStream || id==IID_ISequentialInStream) *object=static_cast<IInStream*>(this);if(!*object) return E_NOINTERFACE;AddRef();return S_OK;}
     HRESULT STDMETHODCALLTYPE Read(void* data,UInt32 size,UInt32* processed) noexcept override {
