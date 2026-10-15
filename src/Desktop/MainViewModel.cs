@@ -88,6 +88,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeNotificationCommands();
         InitializeVaultProtectionCommands();
         InitializeLanguageCommands();
+        InitializeAppearanceCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;

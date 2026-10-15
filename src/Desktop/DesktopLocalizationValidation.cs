@@ -16,7 +16,7 @@ namespace ArchivePassword.Desktop;
 
 internal static class DesktopLocalizationValidation
 {
-    internal static async Task<bool> RunAsync(MainWindow window,ThemeResources theme,string root,string baseDirectory,string profile)
+    internal static async Task<bool> RunAsync(MainWindow window,ThemeResources theme,string root,string baseDirectory,string profile,string reportPrefix="localization")
     {
         var language=UiText.LanguageCode;var english=language=="en";
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);
@@ -36,7 +36,7 @@ internal static class DesktopLocalizationValidation
                 var text=new FormattedText(block.Text,CultureInfo.CurrentCulture,block.FlowDirection,new Typeface(block.FontFamily,block.FontStyle,block.FontWeight,block.FontStretch),block.FontSize,Brushes.Black,VisualTreeHelper.GetDpi(block).PixelsPerDip);
                 if(text.WidthIncludingTrailingWhitespace>block.ActualWidth+3)clipped.Add(name+": "+block.Text+" ("+text.WidthIncludingTrailingWhitespace.ToString("F1")+" > "+block.ActualWidth.ToString("F1")+")");
             }
-            var preview=Path.Combine(root,"artifacts/localization-preview");Directory.CreateDirectory(preview);
+            var preview=Path.Combine(root,"artifacts/"+reportPrefix+"-preview");Directory.CreateDirectory(preview);
             target.Opacity=1;DesktopAccessibilityValidation.Render(target,Path.Combine(preview,language+"-"+name+".png"),1,clientOnly:true);target.Opacity=0;
         }
         try
@@ -145,8 +145,8 @@ internal static class DesktopLocalizationValidation
         }
         catch(Exception error){checks["exception "+error]=false;}
         finally{theme.Apply(SystemParameters.HighContrast);window.Opacity=0;}
-        var result=new{passed=checks.Count>0 && checks.Values.All(v=>v),total=checks.Count,checks,language,windowLanguage=window.Language.IetfLanguageTag,threadCulture=CultureInfo.CurrentCulture.Name,samples,clipped,syntheticData=true,actualVisibleNarratorTested=false};
-        await File.WriteAllTextAsync(Path.Combine(root,"artifacts/localization-"+language+"-ui-validation.json"),JsonSerializer.Serialize(result,new JsonSerializerOptions{WriteIndented=true}));
+        var result=new{passed=checks.Count>0 && checks.Values.All(v=>v),total=checks.Count,checks,language,themeMode=theme.Mode,windowLanguage=window.Language.IetfLanguageTag,threadCulture=CultureInfo.CurrentCulture.Name,samples,clipped,syntheticData=true,actualVisibleNarratorTested=false};
+        await File.WriteAllTextAsync(Path.Combine(root,"artifacts/"+reportPrefix+"-"+language+"-ui-validation.json"),JsonSerializer.Serialize(result,new JsonSerializerOptions{WriteIndented=true}));
         return result.passed;
     }
     private static async Task Layout(Window window){await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);System.Windows.Input.CommandManager.InvalidateRequerySuggested();await window.Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);}

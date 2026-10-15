@@ -18,6 +18,8 @@ public partial class App : Application
         var arguments = Environment.GetCommandLineArgs().Skip(1).ToArray();
         var localeIndex = Array.IndexOf(arguments, "--validate-localization");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-language-restart");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme-restart");
         var isolated = arguments.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
         var directoryIndex = Array.IndexOf(arguments, "--data-dir");
         var directory = directoryIndex >= 0 && directoryIndex + 1 < arguments.Length ? Path.GetFullPath(arguments[directoryIndex + 1])
@@ -33,6 +35,7 @@ public partial class App : Application
         UiText.Configure(language);
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
     }
+    internal void ApplyAppearanceMode(string mode) => theme?.SetMode(mode);
     private void OnSystemParametersChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SystemParameters.HighContrast))
@@ -84,6 +87,16 @@ public partial class App : Application
             if (dataIndex < 0) dataDirectory = Path.Combine(validationRoot, "artifacts", "installed-validation", Guid.NewGuid().ToString("N"));
             else if (!dataDirectory.StartsWith(Path.Combine(validationRoot, "artifacts", "installer-validation") + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) { Shutdown(2); return; }
         }
+        var themeValidationIndex = Array.IndexOf(e.Args, "--validate-theme");
+        var themeRestartIndex = Array.IndexOf(e.Args, "--validate-theme-restart");
+        if (!WindowPlacement.ValidationMode) theme.SetMode(AppearancePreferenceStore.Read(dataDirectory).Mode);
+        else if (themeValidationIndex >= 0 || themeRestartIndex >= 0)
+        {
+            var index = themeValidationIndex >= 0 ? themeValidationIndex : themeRestartIndex;
+            var scope = Path.Combine(Path.GetFullPath(e.Args[index + 1]), "artifacts") + Path.DirectorySeparatorChar;
+            if (!dataDirectory.StartsWith(scope, StringComparison.OrdinalIgnoreCase)) { Shutdown(2); return; }
+            theme.SetMode(AppearancePreferenceStore.Read(dataDirectory).Mode);
+        }
         if (e.Args.Contains("--shell-server"))
         {
             var testIndex = Array.IndexOf(e.Args, "--validate-shell-server");
@@ -122,6 +135,22 @@ public partial class App : Application
         }
         var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
         var window = new MainWindow();
+        if (themeValidationIndex >= 0 || themeRestartIndex >= 0)
+        {
+            var index = themeValidationIndex >= 0 ? themeValidationIndex : themeRestartIndex;
+            var root = Path.GetFullPath(e.Args[index + 1]);
+            window.SuppressExitConfirmationForValidation = true;
+            if (themeRestartIndex >= 0)
+            {
+                var passed = AppearancePreferenceStore.Read(dataDirectory).Mode == theme.Mode && theme.Mode == "dark";
+                await File.WriteAllTextAsync(Path.Combine(dataDirectory,"theme-restart-result.json"),JsonSerializer.Serialize(new{passed,mode=theme.Mode,dark=theme.IsDark,highContrast=theme.IsHighContrast}));
+                Shutdown(passed?0:1);return;
+            }
+            var report=Path.Combine(root,"artifacts/theme-"+UiText.LanguageCode+"-settings-validation.json");
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new{passed=false,error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var success=await DesktopThemeValidation.RunAsync(window,theme,root,baseDirectory,dataDirectory);Shutdown(success?0:1);return;
+        }
         if (languageValidationIndex >= 0 || languageRestartIndex >= 0)
         {
             var index = languageValidationIndex >= 0 ? languageValidationIndex : languageRestartIndex;
