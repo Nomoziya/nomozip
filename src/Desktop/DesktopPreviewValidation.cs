@@ -57,10 +57,12 @@ internal static class DesktopPreviewValidation
                                         Invoke(dialog.PreviewEntryButton);await Layout(dialog);await view.WaitForIdleAsync();await Layout(dialog);
                                         Check(label+suffix+" return restores browser and extraction checkboxes",!view.IsWorking && marked.Selected && !row.Selected && last?.Text=="" && last.Picture is null);
                                     }
-                                    foreach(var mode in new[]{"light","dark","high-contrast"}) foreach(var size in new[]{(900d,600d),(640d,400d)})
+                                    foreach(var mode in new[]{"light","dark","high-contrast"}) foreach(var size in new[]{(900d,600d),(640d,400d),(512d,360d)})
                                     {
-                                        theme.SetMode(mode=="dark"?"dark":"light");theme.Apply(mode=="high-contrast");dialog.Width=size.Item1;dialog.Height=size.Item2;await Layout(dialog);
-                                        Check(label+mode+size.Item1+" browser actions and row stay visible",Fits(dialog,dialog.PreviewEntryButton) && Fits(dialog,dialog.ExtractSelectedButton) && table.ActualHeight>=48);
+                                        theme.SetMode(mode=="dark"?"dark":"light");theme.Apply(mode=="high-contrast");dialog.MinWidth=0;dialog.MinHeight=0;dialog.Width=size.Item1;dialog.Height=size.Item2;await Layout(dialog);table.ScrollIntoView(view.CurrentRow);await Layout(dialog);
+                                        var visibleRow=table.ItemContainerGenerator.ContainerFromItem(view.CurrentRow) as DataGridRow;
+                                        Check(label+mode+size.Item1+" browser actions and row stay visible",Fits(dialog,dialog.PreviewEntryButton) && Fits(dialog,dialog.ExtractSelectedButton) && Fits(dialog,dialog.EntrySearch) && dialog.EntrySearch.ActualWidth>=80 && Fits(dialog,dialog.SelectVisibleButton) && Fits(dialog,dialog.ClearSelectionButton) && Fits(dialog,dialog.EditContentsButton) && visibleRow is not null && FullyVisible(visibleRow,dialog));
+                                        if(version=="26.04") {dialog.Opacity=1;Render(dialog,Path.Combine(screenshots,language+"-contents-"+mode+size.Item1+".png"));dialog.Opacity=0;}
                                     }
                                     Check(label+" preview leaves extraction and library untouched",view.OutputPath=="" && before.SequenceEqual(File.ReadAllBytes(vaultPath)) && archiveBefore.SequenceEqual(File.ReadAllBytes(archive)));
                                 }
@@ -156,4 +158,12 @@ internal static class DesktopPreviewValidation
     private static void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
     private static async Task Layout(Window window)=>await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
     private static bool Fits(Window window,FrameworkElement element) {if(!element.IsVisible || element.ActualHeight<=0) return false;var client=(FrameworkElement)window.Content;var bounds=element.TransformToAncestor(client).TransformBounds(new Rect(element.RenderSize));return bounds.Top>=-1 && bounds.Left>=-1 && bounds.Right<=client.ActualWidth+1 && bounds.Bottom<=client.ActualHeight+1;}
+    private static bool FullyVisible(FrameworkElement element,Window window)
+    {
+        if(element.ActualWidth<=0 || element.ActualHeight<=0) return false;
+        for(var parent=VisualTreeHelper.GetParent(element);parent is not null && parent!=window;parent=VisualTreeHelper.GetParent(parent))
+            if(parent is FrameworkElement region && (region.ClipToBounds || region is ScrollContentPresenter))
+            {var bounds=element.TransformToAncestor(region).TransformBounds(new Rect(element.RenderSize));if(bounds.Left < -1 || bounds.Top < -1 || bounds.Right>region.ActualWidth+1 || bounds.Bottom>region.ActualHeight+1) return false;}
+        return true;
+    }
 }
