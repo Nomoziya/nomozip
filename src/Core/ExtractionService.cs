@@ -92,15 +92,15 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 if(selection!.Count>0)
                 {
                     session.BeginExtraction();
-                    try
+                    result=await ((IArchiveCheckpointEngine)engine).ExtractCheckpointAsync(archivePath,staging,selection,secret,overrides,async (index,token)=>
                     {
-                        result=await ((IArchiveCheckpointEngine)engine).ExtractCheckpointAsync(archivePath,staging,selection,secret,overrides,async (index,token)=>
-                        {
-                            await session.SaveCompletedAsync(index,token);
-                            progress?.Report(new TaskUpdate("checkpoint",UiText.Format("Checkpoint.Saved",session.CompletedCount,session.EntryCount)));
-                        },engineProgress,cancellationToken);
-                    }
-                    finally {session.EndExtraction();}
+                        await session.SaveCompletedAsync(index,token);
+                        progress?.Report(new TaskUpdate("checkpoint",UiText.Format("Checkpoint.Saved",session.CompletedCount,session.EntryCount)));
+                    },engineProgress,cancellationToken);
+                    // Only a successful extraction proceeds to read or move staged files.
+                    // Cancellation/failure retains the journal; reacquiring an unused
+                    // write lease could otherwise replace that result with a sharing error.
+                    if(result.IsSuccess) session.EndExtraction();
                 }
                 else result=new EngineResult {Status="success",Code="ok"};
                 if(result.IsSuccess && session.Remaining.Count>0) throw new CheckpointException("checkpoint_incomplete");

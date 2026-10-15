@@ -226,6 +226,24 @@ try
             release.SetResult();var result=await work.WaitAsync(TimeSpan.FromSeconds(8));
             Check(label+" cancellation returns only after callback drains",result.Status=="cancelled" && callbackFinished);
         }
+        {
+            var label=version+" cancellation lease";var folder=await NewCase(version+"-cancel-lease");var archive=Path.Combine(folder,"input.zip");
+            using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create)) foreach(var name in new[]{"a.txt","b.txt","c.txt"}) {using var writer=new StreamWriter(zip.CreateEntry(name).Open());writer.Write(name+" retained bytes");}
+            var store=new ExtractionCheckpointStore(Path.Combine(folder,"records"));var vault=new DpapiPasswordVault(Path.Combine(folder,"vault.apv"));FileStream? reader=null;
+            using var stop=new CancellationTokenSource();
+            var observed=new ObservedEngine(client,output=>reader=new FileStream(Path.Combine(Path.GetDirectoryName(output)!,".nomozip-checkpoint-writer"),FileMode.Open,FileAccess.Read,FileShare.Read));
+            try
+            {
+                var stopped=await new ExtractionService(observed,vault,new PasswordCandidateProvider(vault)).ExtractAsync(archive,Path.Combine(folder,"output"),false,_=>Task.FromResult<PasswordPromptResponse?>(null),Replace,
+                    new ForwardProgress<TaskUpdate>(update=>{if(update.State=="checkpoint")stop.Cancel();}),stop.Token,checkpoint:new(store,Binding(project,version)));
+                Check(label+" cancelled result is not masked by a post-worker reader",stopped.Engine.Status=="cancelled");
+                var record=store.ReadPending().Single();var receipt=record.Receipts.Single();var entry=record.Entries.Single(entry=>entry.Index==receipt.Index);
+                Check(label+" durable receipt and staged bytes survive contention",File.ReadAllText(Path.Combine(Stage(record),entry.Path))==entry.Path+" retained bytes");
+            }
+            finally {reader?.Dispose();}
+            using var resumed=await FinishChild(folder,archive,version);
+            Check(label+" released reader allows independent remaining recovery",resumed.RootElement.GetProperty("status").GetString()=="success" && Directory.GetFiles(Path.Combine(folder,"output")).Length==3 && store.ReadPending().Count==0);
+        }
         foreach(var fixture in new[]{"mixed-traditional.zip","mixed-aes.zip","test_read_format_rar5_encrypted.rar"})
         {
             var label=version+" "+fixture;var folder=await NewCase(version+"-"+fixture);var archive=Path.Combine(project,"tests/fixtures/generated",fixture);
@@ -236,7 +254,14 @@ try
             using(var stop=new CancellationTokenSource())
             {
                 var stopped=await new ExtractionService(client,vault,new PasswordCandidateProvider(vault)).ExtractAsync(archive,output,true,_=>Task.FromResult<PasswordPromptResponse?>(null),Replace,new ForwardProgress<TaskUpdate>(update=>{if(update.State=="checkpoint") stop.Cancel();}),stop.Token,checkpoint:new(store,Binding(project,version)));
-                Check(label+" multiple-password progress retained",stopped.Engine.Status=="cancelled" && store.ReadPending().Single().Receipts.Count==1);
+                var stoppedRecords=store.ReadPending();
+                var stoppedCorrectly=stopped.Engine.Status=="cancelled" && stoppedRecords.Count==1 && stoppedRecords.Single().Receipts.Count==1;
+                if(!stoppedCorrectly)
+                {
+                    var detail=new{phase="password fixture stop",version,fixture,stopped.Engine.Status,stopped.Engine.Code,stopped.Warning,receipts=stoppedRecords.Select(record=>record.Receipts.Count)};
+                    diagnostics.Add(detail);Console.WriteLine(JsonSerializer.Serialize(detail));
+                }
+                Check(label+" multiple-password progress retained",stoppedCorrectly);
             }
             Check(label+" failed run leaves vault byte-exact",before.SequenceEqual(File.ReadAllBytes(Path.Combine(folder,"vault.apv"))));
             var record=store.ReadPending().Single();var observed=new ObservedEngine(client);
@@ -388,7 +413,7 @@ async Task ReplaceAfterExitAsync(string path,string text)
 }
 
 
-sealed class ObservedEngine(ArchiveEngineClient client):IArchiveEngine,IArchiveSelectionEngine,IArchiveMultiPasswordEngine,IArchiveCheckpointEngine
+sealed class ObservedEngine(ArchiveEngineClient client,Action<string>? afterCheckpoint=null):IArchiveEngine,IArchiveSelectionEngine,IArchiveMultiPasswordEngine,IArchiveCheckpointEngine
 {
     public List<uint> Completed {get;}=[];
     public Task<EngineResult> GetCapabilitiesAsync(CancellationToken token=default)=>client.GetCapabilitiesAsync(token);
@@ -399,8 +424,11 @@ sealed class ObservedEngine(ArchiveEngineClient client):IArchiveEngine,IArchiveS
     public Task<EngineResult> ExtractSelectionAsync(string archive,string output,IReadOnlyList<ArchiveEntry> entries,string? password,IReadOnlyDictionary<uint,string> passwords,IProgress<EngineProgress>? progress=null,CancellationToken token=default)=>client.ExtractSelectionAsync(archive,output,entries,password,passwords,progress,token);
     public Task<EngineResult> TestWithPasswordsAsync(string archive,string? password,IReadOnlyDictionary<uint,string> passwords,IProgress<EngineProgress>? progress=null,CancellationToken cancellationToken=default)=>client.TestWithPasswordsAsync(archive,password,passwords,progress,cancellationToken);
     public Task<EngineResult> ExtractWithPasswordsAsync(string archive,string output,string? password,IReadOnlyDictionary<uint,string> passwords,IProgress<EngineProgress>? progress=null,CancellationToken cancellationToken=default)=>client.ExtractWithPasswordsAsync(archive,output,password,passwords,progress,cancellationToken);
-    public Task<EngineResult> ExtractCheckpointAsync(string archive,string output,IReadOnlyList<ArchiveEntry> entries,string? password,IReadOnlyDictionary<uint,string> passwords,Func<uint,CancellationToken,Task> saved,IProgress<EngineProgress>? progress=null,CancellationToken token=default)
-        =>client.ExtractCheckpointAsync(archive,output,entries,password,passwords,async(index,ct)=>{Completed.Add(index);await saved(index,ct);},progress,token);
+    public async Task<EngineResult> ExtractCheckpointAsync(string archive,string output,IReadOnlyList<ArchiveEntry> entries,string? password,IReadOnlyDictionary<uint,string> passwords,Func<uint,CancellationToken,Task> saved,IProgress<EngineProgress>? progress=null,CancellationToken token=default)
+    {
+        var result=await client.ExtractCheckpointAsync(archive,output,entries,password,passwords,async(index,ct)=>{Completed.Add(index);await saved(index,ct);},progress,token);
+        afterCheckpoint?.Invoke(output);return result;
+    }
 }
 
 sealed class NormalCommitEngine(Action paused):IArchiveEngine
