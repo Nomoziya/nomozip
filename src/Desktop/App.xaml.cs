@@ -12,6 +12,27 @@ public partial class App : Application
 {
     private ThemeResources? theme;
     private ShellCommandServer? shellServer;
+    public App()
+    {
+        // Configure before InitializeComponent loads application-level XAML resources.
+        var arguments = Environment.GetCommandLineArgs().Skip(1).ToArray();
+        var localeIndex = Array.IndexOf(arguments, "--validate-localization");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-language-restart");
+        var isolated = arguments.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
+        var directoryIndex = Array.IndexOf(arguments, "--data-dir");
+        var directory = directoryIndex >= 0 && directoryIndex + 1 < arguments.Length ? Path.GetFullPath(arguments[directoryIndex + 1])
+            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArchivePassword");
+        var language = isolated ? "zh-CN" : LanguagePreferenceStore.Read(directory).Language;
+        if (localeIndex >= 0 && localeIndex + 2 < arguments.Length)
+        {
+            var requested = arguments[localeIndex + 2];
+            var scope = Path.Combine(Path.GetFullPath(arguments[localeIndex + 1]), "artifacts") + Path.DirectorySeparatorChar;
+            language = requested == "stored" && directory.StartsWith(scope, StringComparison.OrdinalIgnoreCase)
+                ? LanguagePreferenceStore.Read(directory).Language : requested;
+        }
+        UiText.Configure(language);
+        FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag)));
+    }
     private void OnSystemParametersChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SystemParameters.HighContrast))
@@ -25,6 +46,8 @@ public partial class App : Application
     }
     protected override async void OnStartup(StartupEventArgs e)
     {
+        var languageValidationIndex = Array.IndexOf(e.Args, "--validate-localization");
+        var languageRestartIndex = Array.IndexOf(e.Args, "--validate-language-restart");
         base.OnStartup(e);
         WindowPlacement.ValidationMode = e.Args.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
         theme = new ThemeResources(Resources);
@@ -32,6 +55,7 @@ public partial class App : Application
         SystemParameters.StaticPropertyChanged += OnSystemParametersChanged;
         var baseDirectory = AppContext.BaseDirectory;
         var dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArchivePassword");
+        if (WindowPlacement.ValidationMode) dataDirectory = Path.Combine(baseDirectory, "validation-startup", Guid.NewGuid().ToString("N"));
         var previewIndex = Array.IndexOf(e.Args, "--preview");
         var validationIndex = Array.IndexOf(e.Args, "--validate");
         var onlineValidationIndex = Array.IndexOf(e.Args, "--validate-online");
@@ -98,6 +122,23 @@ public partial class App : Application
         }
         var vault = new DpapiPasswordVault(Path.Combine(dataDirectory, "passwords.apv"));
         var window = new MainWindow();
+        if (languageValidationIndex >= 0 || languageRestartIndex >= 0)
+        {
+            var index = languageValidationIndex >= 0 ? languageValidationIndex : languageRestartIndex;
+            var root = Path.GetFullPath(e.Args[index + 1]);
+            window.SuppressExitConfirmationForValidation = true;
+            if (languageRestartIndex >= 0)
+            {
+                var passed = LanguagePreferenceStore.Read(dataDirectory).Language == UiText.LanguageCode;
+                await File.WriteAllTextAsync(Path.Combine(dataDirectory,"restart-result.json"), JsonSerializer.Serialize(new { passed, culture = UiText.LanguageCode }));
+                Shutdown(passed ? 0 : 1); return;
+            }
+            var report = Path.Combine(root,"artifacts/localization-"+UiText.LanguageCode+"-ui-validation.json");
+            DispatcherUnhandledException += (_,failure) => { File.WriteAllText(report,JsonSerializer.Serialize(new{passed=false,error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1); };
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var success=await DesktopLocalizationValidation.RunAsync(window,theme!,root,baseDirectory,dataDirectory);
+            Shutdown(success?0:1);return;
+        }
         var model = new MainViewModel(baseDirectory, dataDirectory, vault, new WindowDialogs(window, validationIndex >= 0 ? PrepareValidationDialog : null,
             validationIndex >= 0 ? () => Path.Combine(Path.GetFullPath(e.Args[validationIndex + 1]), $"artifacts/update-test-assets/ArchivePassword-engine-26.03-win-{EngineArchitecture.Current}.zip") : null,
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));

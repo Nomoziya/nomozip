@@ -1,0 +1,33 @@
+nomozip — lightweight Windows archive tool
+
+Requires the .NET 10 Windows Desktop Runtime matching this package's architecture
+(10.0.12 or a later 10.0 patch). The SDK is not required. Install the runtime from:
+https://dotnet.microsoft.com/download/dotnet/10.0
+
+Interface language: Settings → Interface language → choose English or 简体中文 →
+Save language. Finish current work and restart nomozip. Existing installations
+keep Chinese by default. Setup has its own English/Chinese language selection.
+
+Extract: add archives, choose an output directory and conflict policy, then start.
+Saved passwords are tried automatically. You can enter another password when needed.
+Browse contents and Test archive do not mean that files have been extracted.
+
+Compress: add files or folders and choose a destination. 7z supports non-ASCII
+passwords and filename encryption; ZIP encryption requires ASCII passwords.
+TAR bundles files without compression. GZIP/XZ accept one file; bundle folders
+as TAR first. Volumes must stay together; select .001 to extract. A self-extracting
+EXE only extracts files and does not automatically run archived content.
+
+Vault: passwords are local to your Windows account. Export an independent encrypted
+.nvault backup to transfer them to another account or PC. Keep its separate password.
+An optional master password adds protection and idle locking. If forgotten, only
+a previously exported independent backup and its password can restore its contents;
+there is no reset channel. Records added after that backup are not included.
+
+Engine updates and nomozip software releases are separate. Only validated, signed
+engine packages for this application's architecture are accepted. x64 and ARM64
+are separate lightweight packages; no .NET runtime is bundled.
+
+Context menus are optional and do not change default apps. On Windows 11, use
+Show more options for the traditional menu. Windows decides its own dialog language.
+Downloads and support: https://github.com/Nomoziya/nomozip

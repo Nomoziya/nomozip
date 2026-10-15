@@ -74,7 +74,7 @@ public partial class MainWindow : Window
         if (!closingApproved && !SuppressExitConfirmationForValidation && DataContext is MainViewModel { IsBusy: true } model)
         {
             e.Cancel = true;
-            if (MessageBox.Show(this, "正在处理任务。取消任务并退出？", "退出", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show(this, UiText.Get("T_6b1b473569fa"), UiText.Get("T_498e1d59b4d7"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 model.CancelCommand.Execute(null);
                 await model.WaitForIdleAsync();

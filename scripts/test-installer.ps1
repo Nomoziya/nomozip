@@ -25,10 +25,14 @@ if (-not $PreviousApplicationDirectory) {
 if (-not (Test-Path $taskFirst)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskFirst -Version '0.1.0.1' -ValidationRoot $taskValidation -FrameworkDependent:($Architecture -eq 'arm64') -ApplicationDirectory $PreviousApplicationDirectory -Architecture $PreviousArchitecture }
 if (-not (Test-Path $taskUpgrade)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskUpgrade -Version '0.1.0.2' -ValidationRoot $taskValidation -FrameworkDependent:$FrameworkDependent -Architecture $Architecture }
 try {
+    $taskRegistry = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\nomozip-validation'
+    New-Item -Path $taskRegistry -Force | Out-Null
+    New-ItemProperty -LiteralPath $taskRegistry -Name InstallerLanguage -Value '2052' -PropertyType String -Force | Out-Null
     Invoke-Installer $taskFirst @('/S')
     $taskChecks.firstInstall = (Test-Path (Join-Path $taskApplication 'ArchivePassword.exe')) -and (Test-Path (Join-Path $taskValidation 'shortcuts/nomozip.lnk'))
     $taskRegistry = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\nomozip-validation'
     $taskChecks.oldVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.1'
+    $taskChecks.chineseInstallerLanguagePersisted = (Get-ItemProperty -LiteralPath $taskRegistry).InstallerLanguage -eq '2052'
     New-Item -ItemType Directory -Force $taskData | Out-Null
     $taskDocument = @{version=1;passwords=@(@{id=[Guid]::NewGuid().ToString();name='synthetic previous install';secret='测试密碼 '' $ & 空格';notes='';autoTry=$true;createdAt=[DateTimeOffset]::UtcNow.ToString('o')});associations=@{}}
     $taskFakeSecret = [Text.Encoding]::UTF8.GetBytes(($taskDocument | ConvertTo-Json -Depth 4 -Compress))
@@ -54,7 +58,9 @@ try {
         New-ItemProperty -LiteralPath $taskShellKey -Name NomozipOwner -Value (Join-Path $taskApplication 'ArchivePassword.exe') -Force | Out-Null
         New-ItemProperty -LiteralPath $taskShellKey -Name SyntheticPayload -Value 'keep-this-registration' -Force | Out-Null
     }
+    Set-ItemProperty -LiteralPath $taskRegistry -Name InstallerLanguage -Value '1033'
     Invoke-Installer $taskUpgrade @('/S')
+    $taskChecks.englishInstallerLanguageSurvivesUpgradeCleanup = (Get-ItemProperty -LiteralPath $taskRegistry).InstallerLanguage -eq '1033'
     $taskChecks.upgradePreservedShellMenu = @($taskShellRoots | Where-Object {
         $taskValue = Get-ItemProperty -LiteralPath (Join-Path $taskAssociationRoot $_) -ErrorAction SilentlyContinue
         $taskValue.NomozipOwner -ne (Join-Path $taskApplication 'ArchivePassword.exe') -or $taskValue.SyntheticPayload -ne 'keep-this-registration'

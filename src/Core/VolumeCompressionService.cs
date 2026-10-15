@@ -29,21 +29,21 @@ public sealed class VolumeCompressionService(IArchiveCreator creator,IArchiveEng
             if(format=="zip" && password?.Any(c=>c>127)==true) return Failure("zip_password_ascii_only");
             output=Path.GetFullPath(output);parent=Path.GetDirectoryName(output)!;
             if(HasExistingTarget(output)) return Failure("output_exists");
-            progress?.Report(new("preparing","正在准备分卷压缩内容…"));
+            progress?.Report(new("preparing",UiText.Get("T_0a82b3e79473")));
             var entries=await CompressionSources.CollectAsync(sources,output,token);
             if(entries.Count==0) return Failure("empty_sources");
             Directory.CreateDirectory(parent);staging=Path.Combine(parent,".nomozip-volumes-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(staging);
             var stagedBase=Path.Combine(staging,Path.GetFileName(output));
-            progress?.Report(new("compressing","正在创建分卷，目标文件保持不变…"));
+            progress?.Report(new("compressing",UiText.Get("T_6341079415f8")));
             var created=await creator.CreateAsync(new(entries,format,level,format=="7z" && headers,size),stagedBase,password,
-                new ForwardProgress<EngineProgress>(value=>progress?.Report(new("compressing","正在创建分卷…",value))),token);
+                new ForwardProgress<EngineProgress>(value=>progress?.Report(new("compressing",UiText.Get("T_31799ff93944"),value))),token);
             if(!created.IsSuccess) return new(created,output);
             token.ThrowIfCancellationRequested();
             var files=Directory.GetFiles(staging);if(created.VolumeCount==0 || created.VolumeCount>(ulong)int.MaxValue || files.Length!=(long)created.VolumeCount) return Failure("invalid_volume_set");
             var parts=Enumerable.Range(1,files.Length).Select(index=>PartPath(stagedBase,index)).ToArray();
             if(parts.Any(path=>!File.Exists(path) || new FileInfo(path).Length<=0 || (ulong)new FileInfo(path).Length>size)
                 || parts.Take(parts.Length-1).Any(path=>(ulong)new FileInfo(path).Length!=size)) return Failure("invalid_volume_set");
-            progress?.Report(new("testing","正在完整校验全部分卷…"));
+            progress?.Report(new("testing",UiText.Get("T_667e8db76038")));
             var tested=await validator.TestAsync(parts[0],password,cancellationToken:token);
             if(!tested.IsSuccess) return new(tested,output);
             var listed=await validator.ListAsync(parts[0],password,token);
@@ -57,7 +57,7 @@ public sealed class VolumeCompressionService(IArchiveCreator creator,IArchiveEng
             for(var index=0;index<parts.Length;index++)
             {
                 token.ThrowIfCancellationRequested();File.Move(parts[index],targets[index]);committed.Add(targets[index]);
-                progress?.Report(new("committing",$"正在交付分卷 {index+1}/{parts.Length}…"));
+                progress?.Report(new("committing",UiText.Format("T_85f2e2eaa295", index+1, parts.Length)));
             }
             token.ThrowIfCancellationRequested();delivered=true;return new(tested,targets[0],targets);
         }

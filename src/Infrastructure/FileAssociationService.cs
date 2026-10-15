@@ -16,8 +16,8 @@ public sealed class FileAssociationService(string executable, string classesPath
     {
         using var root = Registry.CurrentUser.CreateSubKey(classesPath);
         using var program = root.CreateSubKey(ProgId);
-        program.SetValue("", "nomozip 压缩包");
-        program.SetValue("FriendlyTypeName", "nomozip 压缩包");
+        program.SetValue("", UiText.Get("T_e25466fdb9be"));
+        program.SetValue("FriendlyTypeName", UiText.Get("T_e25466fdb9be"));
         using (var application = program.CreateSubKey("Application")) application.SetValue("ApplicationName", "nomozip");
         using (var icon = program.CreateSubKey("DefaultIcon")) icon.SetValue("", $"\"{Path.GetFullPath(executable)}\",0");
         using (var command = program.CreateSubKey(@"shell\open\command")) command.SetValue("", Command);

@@ -32,7 +32,7 @@ internal sealed class CompletionNotification : IDisposable
         expiry.Stop();
     }
 
-    internal static string Body(int count) => $"已处理 {count} 个压缩包。点击返回任务列表，查看结果与提醒。";
+    internal static string Body(int count) => UiText.Format("T_16ad9673c5f8", count);
 
     internal bool EnsureIcon()
     {
@@ -42,7 +42,7 @@ internal sealed class CompletionNotification : IDisposable
         data.Flags = 1 | 2 | 4; // NIF_MESSAGE | NIF_ICON | NIF_TIP; never displays a balloon.
         data.Callback = CallbackMessage;
         data.Icon = LoadIconW(IntPtr.Zero, new IntPtr(32512)); // Shared Windows application icon.
-        data.Tip = "nomozip · 解压完成通知";
+        data.Tip = UiText.Get("T_e5bce8324529");
         registered = shell(0, ref data); // NIM_ADD, legacy callback layout.
         return registered;
     }
@@ -53,7 +53,7 @@ internal sealed class CompletionNotification : IDisposable
         var data = Data();
         data.Flags = 0x10 | 0x40; // NIF_INFO | NIF_REALTIME: discard if not immediately useful.
         data.Info = Body(count);
-        data.Title = "nomozip · 解压完成";
+        data.Title = UiText.Get("T_cab1a449f534");
         data.InfoFlags = 1 | 0x10 | 0x80; // Information, no sound, respect first-login quiet time.
         if (!shell(1, ref data)) { RemoveIcon(); return false; }
         expiry.Stop(); expiry.Start();

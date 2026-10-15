@@ -9,7 +9,7 @@ public partial class FilenameEncodingDialog : Window
     public FilenameEncodingDialog(FilenameEncodingViewModel model)
     {
         InitializeComponent();Model=model;DataContext=model;
-        void Arrange() {var compact=ActualHeight<420;EncodingArchiveName.Visibility=compact?Visibility.Collapsed:Visibility.Visible;EncodingHelp.Text=compact?"UTF-8 名称优先；不改变密码编码。":"仅用于旧 ZIP 名称乱码；UTF-8 标记和有效 Unicode 名称优先。密码编码保持原样。";}
+        void Arrange() {var compact=ActualHeight<420;EncodingArchiveName.Visibility=compact?Visibility.Collapsed:Visibility.Visible;EncodingHelp.Text=compact?UiText.Get("T_6ddbd4ca96f6"):UiText.Get("T_65c10d80f1f3");}
         SizeChanged+=(_,_)=>Arrange();
         Loaded+=(_,_)=>{Arrange();EncodingChoice.Focus();Model.PreviewCommand.Execute(null);};
         Closing+=OnClosing;

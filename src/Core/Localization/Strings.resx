@@ -1,0 +1,2972 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <data xml:space="preserve" name="Common.Colon">
+    <value>：</value>
+    <comment>Task result messages</comment>
+  </data>
+  <data xml:space="preserve" name="Common.TaskMessage">
+    <value>{0}：{1}</value>
+    <comment>Task result messages</comment>
+  </data>
+  <data xml:space="preserve" name="Extraction.Subtitle">
+    <value>添加压缩包，{0} · {1}。</value>
+    <comment>Extraction page</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Label">
+    <value>语言</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Preserved">
+    <value>语言偏好无法识别或读取，已使用中文，原文件保持不变。</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.RestartHint">
+    <value>保存后重启 nomozip 生效；当前任务和密码库保持不变。</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Save">
+    <value>保存语言</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.SaveFailed">
+    <value>语言未能保存，原偏好文件保持不变。请检查目录权限或文件版本。</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Saved">
+    <value>语言已保存。请结束当前任务后重启 nomozip。</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Title">
+    <value>界面语言</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="T_0006d696d8e1">
+    <value>新增</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_0072b72a230a">
+    <value>自解压仅支持不分卷的 7z。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:137</comment>
+  </data>
+  <data xml:space="preserve" name="T_00882210530c">
+    <value>无法读取压缩包，请检查文件位置与访问权限。</value>
+    <comment>src\Desktop\ArchiveBrowsingViewModel.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_015feae6f8e4">
+    <value>15 分钟</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_01a43920a4e9">
+    <value>已关闭主密码，恢复 Windows 用户加密保护。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:63</comment>
+  </data>
+  <data xml:space="preserve" name="T_01ed3640ba1d">
+    <value>每个压缩包所在目录</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_027d5093d92e">
+    <value>此备份版本暂不支持，请使用支持该版本的 nomozip。密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:49</comment>
+  </data>
+  <data xml:space="preserve" name="T_0346e5dcf690">
+    <value>压缩包已创建，但密码未能保存，请保留你使用的密码。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:167</comment>
+  </data>
+  <data xml:space="preserve" name="T_034a1bc397c6">
+    <value>此格式只允许一个文件；文件夹或多个文件请先打包为 TAR。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:181</comment>
+  </data>
+  <data xml:space="preserve" name="T_0475bef77baa">
+    <value>添加文件到根目录</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0492995d7555">
+    <value>清单超过 4 MB，未导入或写入。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:174</comment>
+  </data>
+  <data xml:space="preserve" name="T_04c3e1fec3f5">
+    <value>主密码保护已开启，本次已解锁。请定期导出独立加密备份。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_04e76a15f886">
+    <value>本次解压未完成。以下为最后一次检查或暂存处理的结果，不能计为解压完成。</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_051c6d0c19aa">
+    <value>正在组合官方自解压模块…</value>
+    <comment>src\Core\SfxCompressionService.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_05c3b270a0e1">
+    <value>ZIP 文件名编码</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml; src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0680a4a36ca8">
+    <value>一致</value>
+    <comment>src\Desktop\FileHashViewModel.cs:33; src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_06e5d870ebce">
+    <value>校验未通过 · </value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:97</comment>
+  </data>
+  <data xml:space="preserve" name="T_0797085a2170">
+    <value>文件校验</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_08d0dacf3299">
+    <value>查看所选任务失败条目</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_08f316ab8225">
+    <value>选择可见项</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_09dc19185a68">
+    <value>已勾选 {0} 项 · 包含 {1} 项（含子项和隐藏项）</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:76</comment>
+  </data>
+  <data xml:space="preserve" name="T_09eb6850c88c">
+    <value>正在解压</value>
+    <comment>src\Core\ExtractionService.cs:50; src\Core\ExtractionService.cs:59</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a0eaf72b488">
+    <value>7z 自解压包</value>
+    <comment>src\Desktop\WindowDialogs.cs:90</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a2b7a9840b4">
+    <value>使用最近一次有效备份替换当前密码库？最近的新增或修改可能需要重新保存。</value>
+    <comment>src\Desktop\WindowDialogs.cs:145</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a3e6b6afda3">
+    <value>正在创建自解压内容…</value>
+    <comment>src\Core\SfxCompressionService.cs:17; src\Core\SfxCompressionService.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a521f1e9069">
+    <value>来源信息无法保留，未交付文件</value>
+    <comment>src\Desktop\MainViewModel.cs:407</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a82b3e79473">
+    <value>正在准备分卷压缩内容…</value>
+    <comment>src\Core\VolumeCompressionService.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_0b0191c79534">
+    <value>请输入当前主密码。</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_0b848fcf77fa">
+    <value>输入解压密码</value>
+    <comment>src/Desktop/PasswordDialog.xaml; src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0b9cbc023a91">
+    <value>Windows 默认应用设置</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0be3e9aaa9fa">
+    <value>无法检查软件正式版，请检查网络后重试，或访问 GitHub 发布页。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:62</comment>
+  </data>
+  <data xml:space="preserve" name="T_0c3a93b2ceab">
+    <value>自解压模块无法通过校验；请重新取得产品包或切换引擎。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:139</comment>
+  </data>
+  <data xml:space="preserve" name="T_0c62ba8e3d49">
+    <value>正在写入临时新包…</value>
+    <comment>src\Core\ArchiveEditingService.cs:84</comment>
+  </data>
+  <data xml:space="preserve" name="T_0cc98408032b">
+    <value>无法读取压缩包</value>
+    <comment>src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_0d7d878fe5ad">
+    <value>压缩包任务列表</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0da2931b10ac">
+    <value>
+本次校验不输出文件，也不保存或更新密码库。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_0dce8699aebd">
+    <value>未填期望值的文件仅计算，不作一致判断。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_0e5e1daffc91">
+    <value>所选 {0} 项已解压，保留包内目录结构。</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_0e8b1c78c5f3">
+    <value>格式</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0f39ab20ad82">
+    <value>ZIP 加密仅支持 ASCII 密码；中文密码请改用 7z。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:180</comment>
+  </data>
+  <data xml:space="preserve" name="T_1015b5abe5e7">
+    <value>各包分别解压到同名文件夹。右侧显示首个目标，“浏览目录”可统一修改。</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_101b04070436">
+    <value>无法读取压缩包的来源信息，未开始解压。请检查文件权限。</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_1109737d1829">
+    <value>解锁密码库</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1174cb4266e5">
+    <value>引擎选择记录无法使用，已保留原记录。可先使用随包引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:155</comment>
+  </data>
+  <data xml:space="preserve" name="T_1213fe7f3fbd">
+    <value>密码库操作未完成，请检查文件权限。原数据未被清空。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_121d1465121a">
+    <value>不支持的压缩方法</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_1277dd53f347">
+    <value>{0}/{1} · {2} · {3:N0} / {4:N0} 字节</value>
+    <comment>src\Desktop\FileHashViewModel.cs:119</comment>
+  </data>
+  <data xml:space="preserve" name="T_131f0bc8b9ac">
+    <value>每包新建目录</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_13fa566b385e">
+    <value>不分卷</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_140e85a15cfe">
+    <value>全部分组</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_144cae45601e">
+    <value>正在验证输入的密码</value>
+    <comment>src\Core\ArchiveVerificationService.cs:73</comment>
+  </data>
+  <data xml:space="preserve" name="T_14703b3eea3e">
+    <value>设置文件版本无法识别，已使用默认设置并保留原文件。</value>
+    <comment>src\Desktop\MainViewModel.cs:384</comment>
+  </data>
+  <data xml:space="preserve" name="T_1513262149a4">
+    <value>密码，当前显示明文</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1554396888e3">
+    <value>密码可能不匹配，或压缩包已损坏</value>
+    <comment>src\Core\ArchiveVerificationService.cs:76</comment>
+  </data>
+  <data xml:space="preserve" name="T_15626f6b2b4d">
+    <value>名称与来源</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_16ad9673c5f8">
+    <value>已处理 {0} 个压缩包。点击返回任务列表，查看结果与提醒。</value>
+    <comment>src\Desktop\CompletionNotification.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_16fa87f9fdef">
+    <value>修改压缩包内容，添加、删除或替换</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_172e96123d51">
+    <value>也可以将内容拖入此窗口</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_176f8887e229">
+    <value>删除所选密码</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_17a8f74d32e3">
+    <value>开始解压，Control E</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_17c4979ce5bf">
+    <value>已恢复上一版本。</value>
+    <comment>src\Desktop\MainViewModel.cs:78</comment>
+  </data>
+  <data xml:space="preserve" name="T_18653fc51f17">
+    <value>导入加密密码备份</value>
+    <comment>src\Desktop\WindowDialogs.cs:61</comment>
+  </data>
+  <data xml:space="preserve" name="T_18a17ee1b961">
+    <value>删除或替换 {0} 项，写入 {1} 项（文件夹包含子项）。
+
+新包完整校验成功后才替换，并在原包旁保留修改前的 .bak 副本。副本包含被删除和替换的旧内容。
+
+新增或替换的文件沿用本次验证的密码；混合多个密码的包暂不支持修改。是否继续？</value>
+    <comment>src\Desktop\WindowDialogs.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_18cd155e6e88">
+    <value>已取消修改，原包保持不变。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:31; src\Desktop\MainViewModel.ArchiveEditing.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_18ce943d8b00">
+    <value>校验未通过</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_18e6101f922f">
+    <value>正在读取文件名…</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_19686d32f96f">
+    <value>目标已有压缩包：
+</value>
+    <comment>src\Desktop\WindowDialogs.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_1a1507a7dc64">
+    <value>添加文件或导入 UTF-8 的 SHA256SUMS 清单。</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1ad4833d7451">
+    <value>仅检查正式版。点击检查后连接 GitHub，不会自动安装。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_1adbe504ab1f">
+    <value>尚未更改右键菜单。添加后可直接解压或打开压缩页。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_1ae486278078">
+    <value>恢复备份</value>
+    <comment>src\Desktop\WindowDialogs.cs:145</comment>
+  </data>
+  <data xml:space="preserve" name="T_1b210b6e4fb0">
+    <value>未选择内容</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:76</comment>
+  </data>
+  <data xml:space="preserve" name="T_1b44be05dd6e">
+    <value>备份数据超过支持范围，未覆盖原备份。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_1bb010c7351a">
+    <value>已创建并校验压缩包。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_1bd1893c0900">
+    <value>准备就绪</value>
+    <comment>src\Desktop\Presentation.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_1c5e6e08253a">
+    <value> 压缩包</value>
+    <comment>src\Desktop\WindowDialogs.cs:90</comment>
+  </data>
+  <data xml:space="preserve" name="T_1c6e594d100e">
+    <value>剪贴板暂时不可用，请稍后重试。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:84</comment>
+  </data>
+  <data xml:space="preserve" name="T_1c7107214dba">
+    <value>已从右键菜单添加 {0} 个项目。确认格式、位置和密码后创建。</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_1cc5ae49da18">
+    <value>请选择或输入完整的自定义目录。</value>
+    <comment>src\Desktop\ExtractionRulesDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_1cdcd2c700d0">
+    <value>新主密码</value>
+    <comment>src/Desktop/MasterPasswordDialog.xaml; src/Desktop/MasterPasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1dafbd6917de">
+    <value>校验压缩包</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1db01e54aa3c">
+    <value>正在准备文件…</value>
+    <comment>src\Core\CompressionContracts.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_1e332f6db100">
+    <value>没有可压缩的文件，请重新选择。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:187</comment>
+  </data>
+  <data xml:space="preserve" name="T_1e50592d591a">
+    <value>已移除 {0} 个完成任务；输出文件保留。</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_1e906c12d00b">
+    <value>只显示名称和备注，不显示密码。现有记录、自动尝试设置及压缩包关联保持不变。</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1f45f5276e0b">
+    <value>失败条目</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2027f78d6e16">
+    <value>添加打开方式入口</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_20b5563e0a94">
+    <value>正在打开加密备份…</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_211371dafb84">
+    <value>密码库保护</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_21777c1adb09">
+    <value>格式不支持或文件损坏</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.cs:411</comment>
+  </data>
+  <data xml:space="preserve" name="T_218e758854ee">
+    <value>未命名密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:92</comment>
+  </data>
+  <data xml:space="preserve" name="T_21a07234feb3">
+    <value>任务操作</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_21bc9141d482">
+    <value>已通过独立备份恢复 {0} 条密码。原锁定库保存在：{1}</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:89</comment>
+  </data>
+  <data xml:space="preserve" name="T_21c7bcd0de0a">
+    <value>压缩包来源信息超过 64 KiB，未开始解压。请检查来源标记。</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_2207abf5d6fe">
+    <value>自解压模块未通过校验，未创建目标文件。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:190</comment>
+  </data>
+  <data xml:space="preserve" name="T_2243e0ec8b00">
+    <value>自动尝试</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2273a2975767">
+    <value>ZIP 文件名</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_229445d7c9f8">
+    <value>已导出 {0} 条密码的加密备份。导入时需要备份密码。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_22c2a744aea2">
+    <value>7z 支持中文密码及文件名加密。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:86</comment>
+  </data>
+  <data xml:space="preserve" name="T_2381499164c4">
+    <value>打开软件下载页</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_238288d05599">
+    <value>仅支持一个文件。文件夹或多个文件请先创建 TAR。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_23a051575c7a">
+    <value>规则已在本次使用，但设置未能保存。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_248fdf1896ba">
+    <value>密码名称</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_24d6194b0a28">
+    <value>无法预览此 ZIP，请检查格式、文件位置与访问权限。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_24dcae0d9315">
+    <value>当前版本：{0}（{1} 轻量版）</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_2575b9f84805">
+    <value>包含不支持的路径或链接，原包未修改。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:39</comment>
+  </data>
+  <data xml:space="preserve" name="T_2604bd11a6e8">
+    <value>检查引擎更新</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2687ccdbb1d2">
+    <value>文档</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2751de2a936d">
+    <value>压缩包名_日期</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_27b9b12b34a0">
+    <value>安装并使用 7-Zip {0}？
+
+当前引擎：{1}。密码库保持不变；完成后可以恢复上一版本。</value>
+    <comment>src\Desktop\WindowDialogs.cs:153</comment>
+  </data>
+  <data xml:space="preserve" name="T_28295bf98b81">
+    <value>确认导入（{0}）</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_282d839a46b1">
+    <value>计算文件指纹，或与期望值比较是否一致。</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2874c26396a2">
+    <value>重复密码处理</value>
+    <comment>src/Desktop/VaultImportDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2890ec1b2f04">
+    <value>待计算</value>
+    <comment>src\Desktop\FileHashViewModel.cs:13; src\Desktop\FileHashViewModel.cs:26; src\Desktop\FileHashViewModel.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_28a8e216754d">
+    <value>计算中</value>
+    <comment>src\Desktop\FileHashViewModel.cs:113</comment>
+  </data>
+  <data xml:space="preserve" name="T_290f973e5ae3">
+    <value>跳过重复密码，保留本机记录（推荐）</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2a3c4bfdd294">
+    <value>多个不同目录会显示结果位置列表，由你选择打开；失败或取消不自动打开。</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2aea093e5709">
+    <value>选择需要计算 SHA-256 的文件</value>
+    <comment>src\Desktop\FileHashViewModel.cs:39</comment>
+  </data>
+  <data xml:space="preserve" name="T_2b219f77f72a">
+    <value>为此备份设置至少 12 个字符的密码，可使用中文。换电脑或换 Windows 用户后，凭此密码导入。请记住备份密码，忘记后无法恢复。</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_2b4c6e7a2c92">
+    <value>清单超过 10000 项，原列表保留。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:175</comment>
+  </data>
+  <data xml:space="preserve" name="T_2bf33abd7e1e">
+    <value>新包内容清单未通过校验，目标文件保持不变。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:183</comment>
+  </data>
+  <data xml:space="preserve" name="T_2c2b32da9ad3">
+    <value>删除本机保存的密码“{0}”？</value>
+    <comment>src\Desktop\WindowDialogs.cs:144</comment>
+  </data>
+  <data xml:space="preserve" name="T_2cbc0219e82d">
+    <value>所选内容已解压</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_2cd0f3be8738">
+    <value>取消</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/FilenameEncodingDialog.xaml; src/Desktop/MasterPasswordDialog.xaml; src/Desktop/PasswordDialog.xaml; src/Desktop/VaultBackupDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2d678603a0b6">
+    <value>密码库已锁定，请先解锁。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_2e537d66280c">
+    <value>nomozip 加密密码备份|*.nvault</value>
+    <comment>src\Desktop\WindowDialogs.cs:54</comment>
+  </data>
+  <data xml:space="preserve" name="T_2e9a859d8486">
+    <value>计算值（SHA-256）</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2e9f4819e064">
+    <value>保存密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_2ff4ef3cb27c">
+    <value>搜索名称、备注或来源</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_301a69c74dfc">
+    <value>原始大小</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_3051a776eaa5">
+    <value>校验通过</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.ExtractionTools.cs:97</comment>
+  </data>
+  <data xml:space="preserve" name="T_309cb972a002">
+    <value>添加压缩包</value>
+    <comment>src\Desktop\WindowDialogs.cs:103; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_30d420c8637f">
+    <value>期望值无效</value>
+    <comment>src\Desktop\FileHashViewModel.cs:30</comment>
+  </data>
+  <data xml:space="preserve" name="T_313a3f58a787">
+    <value>最新正式版：{0}。当前为较新的开发预览，无需降级。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_31799ff93944">
+    <value>正在创建分卷…</value>
+    <comment>src\Core\VolumeCompressionService.cs:39</comment>
+  </data>
+  <data xml:space="preserve" name="T_317cb00c1275">
+    <value>压缩进度</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_31f7ee87ce42">
+    <value>通过独立备份恢复</value>
+    <comment>src\Desktop\WindowDialogs.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_320c254572c4">
+    <value>加密</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_326093a3324d">
+    <value>解压所选压缩包</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_327149af926b">
+    <value>解压到所选目录</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_3292893c1e67">
+    <value>{0} 个待处理 · {1} 个已完成</value>
+    <comment>src\Desktop\MainViewModel.cs:134</comment>
+  </data>
+  <data xml:space="preserve" name="T_32993c531afb">
+    <value>跳过尝试，输入密码</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_32a49d3fb90e">
+    <value>要压缩的内容</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_33624dd36711">
+    <value>已跳过 {0} 个同名文件。</value>
+    <comment>src\Core\ExtractionService.cs:102</comment>
+  </data>
+  <data xml:space="preserve" name="T_33838fbc8ea5">
+    <value>密码库无法读取。你可以在设置中恢复备份，或先手动输入解压密码。</value>
+    <comment>src\Desktop\MainViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_33e9a9f2b109">
+    <value>密码库无法读取，请保留原文件。你仍可手动输入解压密码。</value>
+    <comment>src\Desktop\MainViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_343f89b343d4">
+    <value>本次仅校验，没有输出文件或更新密码库。格式未提供校验值时，仅验证数据可读取性。</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_348e2fde4e19">
+    <value>打开所在目录</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_34a6bbd80e45">
+    <value>内容已修改 · 待解压</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_3514845d4419">
+    <value>待压缩内容</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_357176e2a16d">
+    <value>密码库中有 {0} 个可用密码</value>
+    <comment>src\Desktop\MainViewModel.cs:133</comment>
+  </data>
+  <data xml:space="preserve" name="T_357e9c21398d">
+    <value>添加文件夹到压缩包根目录</value>
+    <comment>src\Desktop\WindowDialogs.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_35e82ca44119">
+    <value>已取消导入，原列表保留。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:152</comment>
+  </data>
+  <data xml:space="preserve" name="T_362133bf383f">
+    <value>已解压</value>
+    <comment>src\Desktop\MainViewModel.cs:231</comment>
+  </data>
+  <data xml:space="preserve" name="T_362754cb43df">
+    <value>查看许可证与来源</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_36711b07451f">
+    <value>请选择输出目录。</value>
+    <comment>src\Desktop\MainViewModel.cs:192</comment>
+  </data>
+  <data xml:space="preserve" name="T_369f392371ab">
+    <value>已完成解压，但暂存目录未能清理</value>
+    <comment>src\Core\ExtractionService.cs:136</comment>
+  </data>
+  <data xml:space="preserve" name="T_36b2403fa140">
+    <value>添加密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:34; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_3751e3763d93">
+    <value>密码库已锁定；自动尝试不可用，可手动输入解压密码。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_37b278fca0db">
+    <value>添加压缩包，Control O</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_37ef7113fe3c">
+    <value>跳过同名文件</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_38af3ab9fef1">
+    <value>本次设置已生效，原设置文件保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_38f0ec2e02b3">
+    <value>校验所选压缩包，不解压文件</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_393dd8a7f29e">
+    <value>查看内容</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:48; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_397dc2bf2897">
+    <value>显示 {0} / {1} 条</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_39932f24fe11">
+    <value>文件</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:97; src\Desktop\CompressionViewModel.cs:12; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_399ee6934772">
+    <value>分组</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_39a9046f9c8c">
+    <value>最近使用</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_39d754d63791">
+    <value>产品渠道尚无较新的引擎更新包。</value>
+    <comment>src\Desktop\MainViewModel.cs:305</comment>
+  </data>
+  <data xml:space="preserve" name="T_39f2e118230d">
+    <value>{0}：已取消</value>
+    <comment>src\Desktop\MainViewModel.cs:238</comment>
+  </data>
+  <data xml:space="preserve" name="T_3a3e31cae862">
+    <value>解压到文档</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_3b1b95cffc07">
+    <value>替换时请只选择一个包内文件和一个本地文件。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:21</comment>
+  </data>
+  <data xml:space="preserve" name="T_3bca99f1c692">
+    <value>已解压 · 校验通过</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:97</comment>
+  </data>
+  <data xml:space="preserve" name="T_3cb0bad98799">
+    <value>已取消预览，原编码保持不变。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:40; src\Desktop\FilenameEncodingViewModel.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_3da8a8f7933a">
+    <value>整批解压成功后打开结果目录</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_3dcae718826e">
+    <value>尚无适用于当前架构的正式版轻量安装包。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_3e0c4202739b">
+    <value>无法打开浏览器。请访问 https://github.com/Nomoziya/nomozip/releases 查看软件正式版。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:38</comment>
+  </data>
+  <data xml:space="preserve" name="T_3e40ded6412e">
+    <value>
+上一个密码未能完整验证。密码可能不匹配，或压缩包已损坏。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_3ec6f6baa17d">
+    <value>尚未检查更新。</value>
+    <comment>src\Desktop\MainViewModel.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_3eda1af52f71">
+    <value>已取消导出，原清单保留。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:167</comment>
+  </data>
+  <data xml:space="preserve" name="T_3fd47edce45b">
+    <value>关闭</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml; src/Desktop/ExtractionFailureDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_408fc90e4db5">
+    <value>保存新压缩包</value>
+    <comment>src\Desktop\WindowDialogs.cs:90</comment>
+  </data>
+  <data xml:space="preserve" name="T_4122031c2fec">
+    <value>正在校验新压缩包…</value>
+    <comment>src\Core\CompressionContracts.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_418a8ca65a39">
+    <value>预览密码导入</value>
+    <comment>src/Desktop/VaultImportDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_422af596a866">
+    <value>所选文件的 SHA-256 期望值</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_42893dea38ad">
+    <value>此更新包与当前软件不兼容，请先更新软件。</value>
+    <comment>src\Desktop\MainViewModel.cs:372</comment>
+  </data>
+  <data xml:space="preserve" name="T_43349fa473cb">
+    <value>智能目录：单个文件或已有一个根目录时直接放入所选位置；多项散放时新建容器。已有根目录按同名文件策略合并。</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_43cf63c5c302">
+    <value>第 {0} 行</value>
+    <comment>src\Desktop\FileHashViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_43d1355757d4">
+    <value>不同基础输出位置可同时处理；相同或重叠位置仍按列表顺序执行。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_43dec518571d">
+    <value>保存锁定设置</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_440f5cfd4823">
+    <value>开启主密码</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_441ac4c7443f">
+    <value>日文 · Shift-JIS / CP932</value>
+    <comment>src\Core\ZipFilenameEncoding.cs:7</comment>
+  </data>
+  <data xml:space="preserve" name="T_446518e7ac65">
+    <value>计算 / 校验</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_449136abb0a6">
+    <value>压缩包已损坏</value>
+    <comment>src\Desktop\MainViewModel.cs:410</comment>
+  </data>
+  <data xml:space="preserve" name="T_449c0abb4f19">
+    <value>修改完成。原包副本：</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:45</comment>
+  </data>
+  <data xml:space="preserve" name="T_45da2d9c85d1">
+    <value>添加文件夹</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4628f73171ac">
+    <value>新压缩包位置</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_46482d9011f6">
+    <value>当前文件 SHA-256 计算进度</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4796f4576711">
+    <value>GitHub 暂时限制请求，请稍后再检查软件更新。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:60</comment>
+  </data>
+  <data xml:space="preserve" name="T_47b1d013205f">
+    <value>移除本程序入口</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_47c6a0bd6bc3">
+    <value>无法准备修改，请检查文件、目录和权限。原包未修改。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:47</comment>
+  </data>
+  <data xml:space="preserve" name="T_4828c2a4bf97">
+    <value>清单未能写入，原文件保留。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:169</comment>
+  </data>
+  <data xml:space="preserve" name="T_488a647c5714">
+    <value>新建目录重名时</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_49012ae3beb3">
+    <value>添加文件或导入清单，然后点击计算。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_4922bfc42b52">
+    <value>备份未能导入，请检查文件与权限。密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_4927a97ee0e8">
+    <value>发现软件正式版 {0}。可打开下载页查看说明并下载安装。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_498e1d59b4d7">
+    <value>退出</value>
+    <comment>src\Desktop\MainWindow.xaml.cs:77</comment>
+  </data>
+  <data xml:space="preserve" name="T_49a64a97cdbb">
+    <value>1 分钟</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_49c8ef416bd3">
+    <value>恢复上一版本</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_49d677742458">
+    <value>可将 nomozip 添加到 7z、ZIP、RAR 的打开方式。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_49f546094d96">
+    <value>Windows 文件入口</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4a8d6841b402">
+    <value>确认导入</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4ac1c3d04751">
+    <value>用已验证备份中的 {0} 条密码创建新库？
+
+当前锁定库将另存原始加密副本。备份之后新增的记录不会出现在恢复结果中。下一步设置新主密码。</value>
+    <comment>src\Desktop\WindowDialogs.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_4b1aa2b0c024">
+    <value>导入 SHA-256 校验清单</value>
+    <comment>src\Desktop\FileHashViewModel.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_4b67ce3665b0">
+    <value>需要当前主密码。关闭后，本机密码改由当前 Windows 用户加密保护。</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:16</comment>
+  </data>
+  <data xml:space="preserve" name="T_4ca923709bb9">
+    <value>移除右键菜单</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4d9ff0ad6b7c">
+    <value>复制所选 SHA-256 计算值</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4e3a77b660b6">
+    <value>打开所选目录</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4e66c76ffe75">
+    <value>添加文件或文件夹，选择格式和保存位置后开始。</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4eafa9e925b3">
+    <value>自定义</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4fa012ab89e1">
+    <value>请输入密码以查看内容</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_4fd9ef5e6208">
+    <value>只从任务列表移除，输出文件保留。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_50fcfc7f7af4">
+    <value>保存主密码</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_51697b367131">
+    <value>添加右键菜单</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_519368274ae1">
+    <value>正在确定解压目录</value>
+    <comment>src\Core\ExtractionService.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_51bf39e5552c">
+    <value>：无法处理文件或写入输出，请检查位置与访问权限。</value>
+    <comment>src\Desktop\MainViewModel.cs:240</comment>
+  </data>
+  <data xml:space="preserve" name="T_51cf0d31ab02">
+    <value>搜索包内路径</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_51e878e93241">
+    <value>正在完整校验自解压包…</value>
+    <comment>src\Core\SfxCompressionService.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_523a85904c77">
+    <value>输出目录</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5266972ebb28">
+    <value>默认（沿用引擎）</value>
+    <comment>src\Core\ZipFilenameEncoding.cs:6</comment>
+  </data>
+  <data xml:space="preserve" name="T_52d25a9e30ba">
+    <value>关于</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_537bdbd1e894">
+    <value>选择输出目录</value>
+    <comment>src\Desktop\WindowDialogs.cs:108</comment>
+  </data>
+  <data xml:space="preserve" name="T_54036ebd63cd">
+    <value>正在保留下载来源信息</value>
+    <comment>src\Core\ExtractionService.cs:82</comment>
+  </data>
+  <data xml:space="preserve" name="T_5473b9b24a75">
+    <value>分卷</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_54d74bc17776">
+    <value>处理失败，请检查压缩包</value>
+    <comment>src\Desktop\MainViewModel.cs:412</comment>
+  </data>
+  <data xml:space="preserve" name="T_55373b6437b7">
+    <value>解压到桌面</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_554ae194934c">
+    <value>最多添加 10000 个文件。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:93</comment>
+  </data>
+  <data xml:space="preserve" name="T_5554bde4849d">
+    <value>忘记主密码：从独立备份恢复</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_55f9d9c65be9">
+    <value>显示 {0} / {1} 项 · {2} 个文件 · {3} 个文件夹</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:87</comment>
+  </data>
+  <data xml:space="preserve" name="T_5679ccc535d2">
+    <value>正在验证新引擎能否正常解压…</value>
+    <comment>src\Infrastructure\EngineUpdateService.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_56bba533e12e">
+    <value>正在检查软件正式版…</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_56d81aa40608">
+    <value>官方版本暂时无法查询。</value>
+    <comment>src\Desktop\MainViewModel.cs:294</comment>
+  </data>
+  <data xml:space="preserve" name="T_571579b0c6a1">
+    <value>解压规则…</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_57212d030f7e">
+    <value>选择已验证的本地引擎</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_57f456082416">
+    <value>压缩包名</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_57f471c35128">
+    <value>已复制所选文件的 SHA-256。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:83</comment>
+  </data>
+  <data xml:space="preserve" name="T_583afe53968f">
+    <value>正在导出实际计算值…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:160</comment>
+  </data>
+  <data xml:space="preserve" name="T_58a15ee482f7">
+    <value>已保存空闲锁定设置。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_58be85ec225f">
+    <value>使用所选版本</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_58c5744db746">
+    <value>
+本次仅查看内容；如需保存新密码，请在解压成功后保存。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_58db5ae70926">
+    <value>{0}：已读取 {1} 项内容</value>
+    <comment>src\Desktop\ArchiveBrowsingViewModel.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_5905071d43b5">
+    <value>应用到此任务</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_596d7d8dbed2">
+    <value>已取消更新，当前引擎保持可用。</value>
+    <comment>src\Desktop\MainViewModel.cs:362</comment>
+  </data>
+  <data xml:space="preserve" name="T_598941f23ed0">
+    <value>再次输入新主密码</value>
+    <comment>src/Desktop/MasterPasswordDialog.xaml; src/Desktop/MasterPasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_599d258c41d7">
+    <value>新建解压目录重名处理</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_59a916550385">
+    <value>勾选文件或文件夹；文件夹包含其全部子项。</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_5a21ce30671c">
+    <value>{0}：已应用{1}，仅影响此任务的文件名。</value>
+    <comment>src\Desktop\MainViewModel.FilenameEncoding.cs:23</comment>
+  </data>
+  <data xml:space="preserve" name="T_5a2d65d7ef82">
+    <value>正在下载更新包：{0:N0} KB…</value>
+    <comment>src\Infrastructure\GitHubEngineChannel.cs:80</comment>
+  </data>
+  <data xml:space="preserve" name="T_5a4540c9b21b">
+    <value>浏览目录</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5b249813df54">
+    <value>同名文件</value>
+    <comment>src\Desktop\WindowDialogs.cs:142; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5b76f8110c9e">
+    <value>删除勾选内容（包含子项）</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5b79de668b3b">
+    <value>当前引擎没有匹配的自解压模块；可选择随包引擎。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_5c6b348e7c5f">
+    <value>
+
+新压缩包校验成功后才替换。是否继续？</value>
+    <comment>src\Desktop\WindowDialogs.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_5d8111695438">
+    <value>尚未设置，创建时可输入或选择已保存的密码。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_5d83503a78bc">
+    <value>取消队列</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_5d89c8f8c810">
+    <value>压缩成功后保存到密码库</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_5db8427e5209">
+    <value>压缩包内容列表</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5dcf192a65bc">
+    <value>可用引擎</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5e30948d6a8b">
+    <value>压缩格式</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5e541773a96b">
+    <value>任务操作菜单</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5e556d867f29">
+    <value>修改压缩包内容菜单</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5ee7b0789fb7">
+    <value>当前主密码</value>
+    <comment>src/Desktop/MasterPasswordDialog.xaml; src/Desktop/MasterPasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5f5069faffe1">
+    <value>此文件不是 ZIP 压缩包。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_5fe1672f7244">
+    <value>正在读取压缩包内容</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_61375d555d33">
+    <value>校验结果</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_619d8d493bd0">
+    <value>密码备份与导入操作已结束。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:59</comment>
+  </data>
+  <data xml:space="preserve" name="T_61a734266cbd">
+    <value>请选择编码，再预览名称。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:12</comment>
+  </data>
+  <data xml:space="preserve" name="T_61e8ff181802">
+    <value>导出加密备份</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_62dc5851e8e4">
+    <value>已添加 nomozip 右键菜单。Windows 11 请在“显示更多选项”中使用；原默认应用保持不变。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:33</comment>
+  </data>
+  <data xml:space="preserve" name="T_6320b4a8722a">
+    <value>状态</value>
+    <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6326197fcda1">
+    <value>应用规则</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_633e63054e43">
+    <value>更新完成，可继续解压。需要时可恢复上一版本。</value>
+    <comment>src\Desktop\MainViewModel.cs:342</comment>
+  </data>
+  <data xml:space="preserve" name="T_6341079415f8">
+    <value>正在创建分卷，目标文件保持不变…</value>
+    <comment>src\Core\VolumeCompressionService.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_63d90d977348">
+    <value>复制</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_640f915421fe">
+    <value>解压失败条目列表</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_642a46d4d83a">
+    <value>已请求暂停：排队任务停止启动，运行任务在下一个检查点暂停。</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_6452568341e4">
+    <value>条目 {0}（引擎未提供路径）</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:23</comment>
+  </data>
+  <data xml:space="preserve" name="T_64acf7e7c429">
+    <value>密码不匹配或文件损坏</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\ExtractionFailureDialog.xaml.cs:27; src\Desktop\MainViewModel.cs:410</comment>
+  </data>
+  <data xml:space="preserve" name="T_64b8cce1d2f1">
+    <value>当前引擎未通过校验，已使用上一可用版本。请在设置中确认引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:351</comment>
+  </data>
+  <data xml:space="preserve" name="T_651f27447015">
+    <value>软件更新</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_652879ddcefd">
+    <value>备份密码至少需要 12 个字符。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:50; src\Desktop\VaultBackupDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_6586bdce46a3">
+    <value>成功解压的结果目录</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_65c10d80f1f3">
+    <value>仅用于旧 ZIP 名称乱码；UTF-8 标记和有效 Unicode 名称优先。密码编码保持原样。</value>
+    <comment>src\Desktop\FilenameEncodingDialog.xaml.cs:12; src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_65c90110f894">
+    <value>添加文件夹到根目录</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_65e10632e6f4">
+    <value>分卷大小无效，请检查数值与单位。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:188</comment>
+  </data>
+  <data xml:space="preserve" name="T_6629a0133704">
+    <value>仅安装本产品验证过的官方引擎更新包。</value>
+    <comment>src\Desktop\MainViewModel.cs:52</comment>
+  </data>
+  <data xml:space="preserve" name="T_667e8db76038">
+    <value>正在完整校验全部分卷…</value>
+    <comment>src\Core\VolumeCompressionService.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_67c260d2140d">
+    <value>压缩包内容已变化或选择无效，请重新查看内容后选择。</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_6809b15a9372">
+    <value>{0}，{1}，{2}</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_687847379040">
+    <value>{0}，{1}：{2}</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_692c042a909e">
+    <value>正在读取校验清单…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:138</comment>
+  </data>
+  <data xml:space="preserve" name="T_6a2d72e11b34">
+    <value>此包包含多个密码，暂不支持修改；可继续查看与解压。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_6b1b473569fa">
+    <value>正在处理任务。取消任务并退出？</value>
+    <comment>src\Desktop\MainWindow.xaml.cs:77</comment>
+  </data>
+  <data xml:space="preserve" name="T_6b444e0f3275">
+    <value>更改主密码</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6bd33a03586f">
+    <value>管理密码库</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6bea77acefb3">
+    <value>标准</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6c93c9b1cf76">
+    <value>选择替换文件（保留包内路径）</value>
+    <comment>src\Desktop\WindowDialogs.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_6d06665b464f">
+    <value>请选择 .001 首卷，并将全部分卷放在同一目录</value>
+    <comment>src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_6d5d0fcd5f97">
+    <value>输入主密码后才可读取和自动尝试密码库。取消后仍可手动输入解压密码。</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:16</comment>
+  </data>
+  <data xml:space="preserve" name="T_6d9f3b6f019c">
+    <value>锁定密码库</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6dd88ad49bac">
+    <value>解压到各包所在目录</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_6ddbd4ca96f6">
+    <value>UTF-8 名称优先；不改变密码编码。</value>
+    <comment>src\Desktop\FilenameEncodingDialog.xaml.cs:12</comment>
+  </data>
+  <data xml:space="preserve" name="T_6df0322e460d">
+    <value>加密文件名（仅 7z）</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6e2433d1240e">
+    <value>导入校验清单</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6e38ffe34b8b">
+    <value>恢复并加密</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_6e7687ea3b36">
+    <value>同时处理的解压任务数</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_70ad689f1006">
+    <value>密码库操作未完成，请保留原文件或使用独立加密备份。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_70b6cd556861">
+    <value>正在检查压缩包</value>
+    <comment>src\Core\ArchiveVerificationService.cs:29; src\Core\ArchiveVerificationService.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_70dee1e7db4e">
+    <value>垂直滚动滑块</value>
+    <comment>src/Desktop/App.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_70e9460bb754">
+    <value>分卷或带自解压前缀的包暂不支持修改。原包未修改。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_70fba17fffb7">
+    <value>解锁</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_71b6e7bd57a8">
+    <value>已取消校验。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:101</comment>
+  </data>
+  <data xml:space="preserve" name="T_720075fc0e18">
+    <value>已添加打开方式入口，未更改默认应用。Windows 可能在首次双击时询问打开方式；若要保留原默认应用，请在系统窗口选择原应用。也可右键选择 nomozip，仅打开一次。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_724d7a12cc56">
+    <value>压缩包文件名包含</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_736922310835">
+    <value>输出目录无法写入</value>
+    <comment>src\Desktop\MainViewModel.cs:411</comment>
+  </data>
+  <data xml:space="preserve" name="T_73cca7f7d0fc">
+    <value>失败或取消时不发成功通知；点击通知返回任务列表。Windows 可能根据系统通知设置隐藏提醒。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_73d97e01d24e">
+    <value>没有匹配的文件或文件夹</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_74953ee22008">
+    <value>直接放入</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_7567f17ec844">
+    <value>各压缩包所在目录</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_7600be19c5ac">
+    <value>解压已完成，但系统未接受通知；结果可在任务列表查看。</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_76756534e51e">
+    <value>已取消，目标文件保持不变。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:171</comment>
+  </data>
+  <data xml:space="preserve" name="T_76aca1ff80df">
+    <value>已解压 · </value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_7701884823bd">
+    <value>
+此压缩包的文件名已加密，需要密码才能查看内容。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:50</comment>
+  </data>
+  <data xml:space="preserve" name="T_77176f743984">
+    <value>正在生成加密密码备份…</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_77316765ebb8">
+    <value>请输入备份密码。</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_776af38fd768">
+    <value>添加文件到压缩包根目录</value>
+    <comment>src\Desktop\WindowDialogs.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_77c11f78b11a">
+    <value>预览密码</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_77e1ea5c5688">
+    <value>路径</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7811b89425d9">
+    <value>目录格式无效，请重新输入。</value>
+    <comment>src\Desktop\ExtractionRulesDialog.xaml.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_78deea3a0b97">
+    <value>创建压缩包，Control Shift C</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_79bedfdfce1a">
+    <value>确认修改压缩包</value>
+    <comment>src\Desktop\WindowDialogs.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_7a325297a9db">
+    <value>主密码需要 12 至 16384 个字符。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_7a4c72a941be">
+    <value>清单{0}格式或路径无效。请使用 UTF-8 的 SHA256SUMS 格式。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_7ab82fcea02a">
+    <value>新引擎无法通过解压验证，仍使用当前引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:373</comment>
+  </data>
+  <data xml:space="preserve" name="T_7aeb3a3773e5">
+    <value>压缩包包含不安全路径</value>
+    <comment>src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_7b9e83a283ae">
+    <value>取消压缩</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7c568abbd672">
+    <value>未加密</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:99</comment>
+  </data>
+  <data xml:space="preserve" name="T_7c7802d8adae">
+    <value>文件夹</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:97; src\Desktop\CompressionViewModel.cs:12</comment>
+  </data>
+  <data xml:space="preserve" name="T_7d59743b0281">
+    <value>查看失败条目</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7de7bf85254d">
+    <value>解压到同名文件夹</value>
+    <comment>src\Infrastructure\ShellMenuService.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_7e41da13f3e7">
+    <value>替换所选文件（保留路径）</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7e6b31a9f368">
+    <value>包内路径</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7e7357ef4c49">
+    <value>导入引擎更新包</value>
+    <comment>src\Desktop\WindowDialogs.cs:149</comment>
+  </data>
+  <data xml:space="preserve" name="T_7eb10fe1ce8c">
+    <value>为恢复的密码库设置主密码</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_7f8c82c8d8b8">
+    <value>TAR 仅打包，不压缩；不支持加密、分卷或 EXE。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:88</comment>
+  </data>
+  <data xml:space="preserve" name="T_7ffb2c276490">
+    <value>引擎不支持文件名编码</value>
+    <comment>src\Desktop\MainViewModel.cs:408</comment>
+  </data>
+  <data xml:space="preserve" name="T_807416f416c4">
+    <value>仅解压任务列表中选中的一个压缩包；失败或取消后可再次尝试。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_80eae77ee4ed">
+    <value>期望值（可选，64 位十六进制）</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8154b012eaf1">
+    <value>使用此密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_815a722179ba">
+    <value>输入导出时设置的备份密码。下一步预览记录并选择重复项处理方式，确认后才写入密码库。</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_817bc97cce36">
+    <value>入口未能更改，请检查当前 Windows 用户的权限。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:45</comment>
+  </data>
+  <data xml:space="preserve" name="T_825e66873fc3">
+    <value>处理通过 {0} 项 · 失败 {1} 项</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_827f88b30e62">
+    <value>备份密码不正确，或备份文件无法读取。原密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:54</comment>
+  </data>
+  <data xml:space="preserve" name="T_83f46410c4f4">
+    <value>已取消，密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_8405a7f60c73">
+    <value>容器命名</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_84b861a4e1f9">
+    <value>预览名称</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_84cffd4304ee">
+    <value>备份密码</value>
+    <comment>src/Desktop/VaultBackupDialog.xaml; src/Desktop/VaultBackupDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_84d584fcfc26">
+    <value>设置压缩密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_85d4df741e35">
+    <value>所选文件不是 ZIP</value>
+    <comment>src\Desktop\MainViewModel.cs:408</comment>
+  </data>
+  <data xml:space="preserve" name="T_85f2e2eaa295">
+    <value>正在交付分卷 {0}/{1}…</value>
+    <comment>src\Core\VolumeCompressionService.cs:60</comment>
+  </data>
+  <data xml:space="preserve" name="T_861a9645de18">
+    <value>每卷大小（整数）</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8672864e9041">
+    <value>最高</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8680cb4ca45a">
+    <value>包内路径冲突。替换已有文件请使用“替换所选文件”。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:38</comment>
+  </data>
+  <data xml:space="preserve" name="T_872f46af0698">
+    <value>创建 7z 自解压包，EXE</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_88a399b911e0">
+    <value>搜索包内文件或文件夹路径</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_88bab2e8302f">
+    <value>同名文件处理</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_893970c571a4">
+    <value>无法读取来源信息</value>
+    <comment>src\Desktop\MainViewModel.cs:407</comment>
+  </data>
+  <data xml:space="preserve" name="T_8961163c6eb0">
+    <value>产品渠道提供 {0}，可下载更新。</value>
+    <comment>src\Desktop\MainViewModel.cs:305</comment>
+  </data>
+  <data xml:space="preserve" name="T_89a718b42e08">
+    <value>官方最新稳定版本：{0}。</value>
+    <comment>src\Desktop\MainViewModel.cs:299</comment>
+  </data>
+  <data xml:space="preserve" name="T_89cd547d9c4a">
+    <value>添加要压缩的文件夹</value>
+    <comment>src\Desktop\WindowDialogs.cs:83</comment>
+  </data>
+  <data xml:space="preserve" name="T_8a03bbcdc75e">
+    <value>输入查看密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b512613643a">
+    <value>压缩文件</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b6f82263946">
+    <value>无法校验压缩包，请检查文件位置与访问权限。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:102</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b8256cab6ef">
+    <value>SHA-256 文件列表</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b8de629cdd2">
+    <value>没有匹配的密码。可调整搜索或添加密码。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_8bdc96d86b79">
+    <value>
+
+选择“是”覆盖，“否”跳过，“取消”停止当前任务。</value>
+    <comment>src\Desktop\WindowDialogs.cs:142</comment>
+  </data>
+  <data xml:space="preserve" name="T_8c321cda91b6">
+    <value>软件正式版由 nomozip 发布，与 7-Zip 引擎更新分别检查。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8cbbf31c44ce">
+    <value>右键菜单</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8d0a0f895554">
+    <value>当前菜单不属于此程序位置，已保留原登记。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_8e2db755c2ae">
+    <value>在文件和文件夹的右键菜单中添加 nomozip：压缩包可直接解压，文件或文件夹可进入压缩页。Windows 11 当前在“显示更多选项”中使用。此入口与打开方式分别管理，不更改默认应用。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8e836a56fd8c">
+    <value>计算文件 SHA-256、比较期望值，或导入和导出校验清单。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8e8fba138ab2">
+    <value>已取消，本次半成品已清理。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_8edd2a535003">
+    <value>直接放入所选位置</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8ef472040a2a">
+    <value>已保存密码列表</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8f10dc147500">
+    <value>压缩包</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8f878f87c255">
+    <value>选择要打开的结果位置。每次只打开一个目录。</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8fdf99488775">
+    <value>启用主密码前建议导出独立加密备份。忘记主密码后，只有备份和它的独立密码能恢复；备份之后新增的记录不在其中。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8feb2108c770">
+    <value>备份未能导出，请检查保存位置。密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_8febe1105ae9">
+    <value>保留两份，重复项也添加为新记录</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_901f39739e0d">
+    <value>跳过重复</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_90b5a4f6315a">
+    <value>已取消校验</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.ExtractionTools.cs:97; src\Desktop\MainViewModel.ExtractionTools.cs:101</comment>
+  </data>
+  <data xml:space="preserve" name="T_9123fb442035">
+    <value>所选压缩包的文件名编码</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_91834aebecab">
+    <value>正在检查更新…</value>
+    <comment>src\Desktop\MainViewModel.cs:291</comment>
+  </data>
+  <data xml:space="preserve" name="T_918e0ce2177e">
+    <value>已切换解压引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:77</comment>
+  </data>
+  <data xml:space="preserve" name="T_91d7521c9927">
+    <value>密码未能保存，原密码库已保留。</value>
+    <comment>src\Desktop\MainViewModel.cs:269</comment>
+  </data>
+  <data xml:space="preserve" name="T_920a69aef13d">
+    <value>解压已完成，但密码未能保存，请检查密码库。</value>
+    <comment>src\Core\ExtractionService.cs:122</comment>
+  </data>
+  <data xml:space="preserve" name="T_924799380463">
+    <value>密码库已锁定。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:67</comment>
+  </data>
+  <data xml:space="preserve" name="T_9338f02fd12a">
+    <value>密码仅保存在本机</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_959216b78f90">
+    <value>继续解压</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_95b303abcdd4">
+    <value>当前入口不属于此程序位置，已保留原登记。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_95b8d5f6906e">
+    <value>主密码不正确，或密码库已损坏。原文件保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_968608e4ff51">
+    <value>主要导航</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_96e6f5b1e07a">
+    <value>已导入 {0} 项期望值；点击计算进行校验。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:150</comment>
+  </data>
+  <data xml:space="preserve" name="T_9719b364c066">
+    <value>处理失败，请检查文件与输出目录</value>
+    <comment>src\Desktop\MainViewModel.cs:240</comment>
+  </data>
+  <data xml:space="preserve" name="T_97390316e0b1">
+    <value>同时处理</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_980e907463c6">
+    <value>备份文件：</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_984c2e351e4f">
+    <value>更新解压引擎</value>
+    <comment>src\Desktop\WindowDialogs.cs:155</comment>
+  </data>
+  <data xml:space="preserve" name="T_9874c8d6f32d">
+    <value>解压规则暂不可识别，已使用默认规则并保留设置文件。</value>
+    <comment>src\Desktop\MainViewModel.cs:390</comment>
+  </data>
+  <data xml:space="preserve" name="T_98b23dcfbd8c">
+    <value>密码库无法读取，可手动输入密码</value>
+    <comment>src\Desktop\MainViewModel.cs:133</comment>
+  </data>
+  <data xml:space="preserve" name="T_98b68837365d">
+    <value>{0} · {1} 项已计算 · {2} 项一致 · {3} 项不一致 · {4} 项无法读取</value>
+    <comment>src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_9a4813174fe6">
+    <value>现用引擎：7-Zip {0}</value>
+    <comment>src\Desktop\MainViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_9a7734609eda">
+    <value>选择已保存的密码</value>
+    <comment>src/Desktop/PasswordDialog.xaml; src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9b3b93d7e3fd">
+    <value>自定义每卷大小，正整数</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9b54fb7636af">
+    <value>密码库</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9bd11dda28fc">
+    <value>尚未使用</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9c24f5fd0bf1">
+    <value>右键菜单未能更改，请检查程序位置和当前用户权限。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_9c337a89dac9">
+    <value>密码备注</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9c6a9194d6f5">
+    <value>覆盖同名文件</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9d35f5dfdf51">
+    <value>密码库已解锁，主密码保护已生效。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:63</comment>
+  </data>
+  <data xml:space="preserve" name="T_9d615b3a5cd9">
+    <value>搜索密码名称或备注</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9d9a5e5793d1">
+    <value>5 分钟</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9e08e64ab2ee">
+    <value>删除密码</value>
+    <comment>src\Desktop\WindowDialogs.cs:144</comment>
+  </data>
+  <data xml:space="preserve" name="T_9e09420bc999">
+    <value>处理方式</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9f07f55881a9">
+    <value>不是有效的 nomozip 加密备份，或记录无法读取。密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:52</comment>
+  </data>
+  <data xml:space="preserve" name="T_9f2931076bbe">
+    <value>引擎更新包|ArchivePassword-engine-*-win-{0}.zip|ZIP 文件|*.zip</value>
+    <comment>src\Desktop\WindowDialogs.cs:149</comment>
+  </data>
+  <data xml:space="preserve" name="T_9f39374682b9">
+    <value>合并到已有目录，沿用同名文件策略</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9fd0e26026e2">
+    <value>文件损坏</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_a01a28d147ac">
+    <value>30 分钟</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a01cf40b28cc">
+    <value>
+已验证的密码会用于对应文件。请为剩余失败条目输入其它密码；也可能是文件损坏。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_a047e3a4eafa">
+    <value>密码库已锁定。解锁后查看保存的密码。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_a0bdfdcc647c">
+    <value>清单对同一文件给出了不同哈希，原列表保留。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:178</comment>
+  </data>
+  <data xml:space="preserve" name="T_a147ebf3581a">
+    <value>解压</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a16a60f9eb3b">
+    <value>预览并设置所选 ZIP 文件名编码</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a194128b2939">
+    <value>移除所选</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a197a0e5c250">
+    <value>目标目录已有同名文件：
+</value>
+    <comment>src\Desktop\WindowDialogs.cs:142</comment>
+  </data>
+  <data xml:space="preserve" name="T_a199bcc29a45">
+    <value>密码会由当前 Windows 用户加密保存在本机。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_a1fca7bde5d2">
+    <value>解压所选</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a22879cda61a">
+    <value>压缩</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a24b356d60ba">
+    <value>智能目录</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a2cd3d94cd10">
+    <value>所选密码另有 {0} 条相同密码记录，可合并。</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_a2e6438fa7e0">
+    <value>缺少分卷文件</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_a3067144f50a">
+    <value>GitHub 更新仓库</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a3610c2b94b0">
+    <value>解压时自动尝试此密码</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a37778f17c5f">
+    <value>已取消</value>
+    <comment>src\Desktop\FileHashViewModel.cs:127; src\Desktop\FileHashViewModel.cs:130; src\Desktop\MainViewModel.cs:231; src\Desktop\MainViewModel.cs:238</comment>
+  </data>
+  <data xml:space="preserve" name="T_a3c974892464">
+    <value>清空选择</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a42a77297e7c">
+    <value>清单无法读取，或文件路径/UTF-8 编码无效；原列表保留。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:154</comment>
+  </data>
+  <data xml:space="preserve" name="T_a465dc5d7781">
+    <value>自动尝试保存的密码</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a49163724694">
+    <value>分卷大小，M 表示 MiB，G 表示 GiB</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a4e66e7a3fca">
+    <value>自定义目录</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a50309ed2709">
+    <value>不一致</value>
+    <comment>src\Desktop\FileHashViewModel.cs:33; src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_a536dcaf5cef">
+    <value>分卷大小单位</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a56b08874f91">
+    <value>取消引擎更新</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a5b37bdf8cf4">
+    <value>修改完成，原包副本已保留。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_a621ab606db2">
+    <value>密码</value>
+    <comment>src/Desktop/PasswordDialog.xaml; src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a66f3be2b81c">
+    <value>规则已在本次使用，原设置文件保持不变。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_a6c2deee185b">
+    <value>清单不能覆盖待校验的源文件。请选择其它保存位置。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:177</comment>
+  </data>
+  <data xml:space="preserve" name="T_a7084fcb218d">
+    <value>取消操作</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a71b8c644be1">
+    <value>清单中没有 SHA-256 文件记录。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:176</comment>
+  </data>
+  <data xml:space="preserve" name="T_a7e0c50c814f">
+    <value>暂停或继续整批解压队列；活动任务在下一个检查点暂停。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a8c3698b5b8c">
+    <value>已停用</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a9a693eafd18">
+    <value>打开结果目录</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a9e77935df83">
+    <value>已保存通知设置。</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_aa41cd7ea619">
+    <value>请输入可用密码</value>
+    <comment>src\Core\ArchiveVerificationService.cs:69</comment>
+  </data>
+  <data xml:space="preserve" name="T_aa72684414b8">
+    <value>关闭主密码</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src\Desktop\MasterPasswordDialog.xaml.cs:15; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_aa7456af5f94">
+    <value>所选引擎无法使用，已使用随包可用引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:352</comment>
+  </data>
+  <data xml:space="preserve" name="T_ab3ecbe376c2">
+    <value>开始解压（{0}）</value>
+    <comment>src\Desktop\MainViewModel.cs:135</comment>
+  </data>
+  <data xml:space="preserve" name="T_ab621a6eecb5">
+    <value>选中的不同文件或文件夹具有相同名称，请分开压缩。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:184</comment>
+  </data>
+  <data xml:space="preserve" name="T_abab7359518e">
+    <value>优先尝试规则（可选）</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_abb6a356f9a2">
+    <value>ZIP 使用 AES-256 加密；当前官方引擎仅支持 ASCII 密码，中文密码请选择 7z。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:87</comment>
+  </data>
+  <data xml:space="preserve" name="T_abcbf20aca41">
+    <value>无法处理文件或写入设置，请检查输出目录与文件权限。</value>
+    <comment>src\Desktop\MainViewModel.cs:251</comment>
+  </data>
+  <data xml:space="preserve" name="T_abdd4a1227fb">
+    <value>ZIP 文件名预览</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_abe63dd52a99">
+    <value>解压完成通知</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ac936a188f6d">
+    <value>默认关闭；仅整批解压成功时提醒一次，不显示文件名、目录或密码。</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:9</comment>
+  </data>
+  <data xml:space="preserve" name="T_acc3854e8b71">
+    <value>合并重复密码</value>
+    <comment>src\Desktop\WindowDialogs.cs:141</comment>
+  </data>
+  <data xml:space="preserve" name="T_acf212babaf8">
+    <value>添加压缩包，</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_ad09f3fda29a">
+    <value>解压引擎</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ad9daebe00dc">
+    <value>添加文件</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ada71e8959d8">
+    <value>已创建并校验自解压包。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_ae173945fb80">
+    <value>处理失败</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:30</comment>
+  </data>
+  <data xml:space="preserve" name="T_aebafd23c2d9">
+    <value>自解压仅支持 7z。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_af906e3c6e4c">
+    <value>没有可恢复的上一版本。</value>
+    <comment>src\Desktop\MainViewModel.cs:375</comment>
+  </data>
+  <data xml:space="preserve" name="T_afb84681f1c0">
+    <value>所选内容未能解压，请检查目标目录与访问权限。</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0b03f8b05a5">
+    <value>创建自解压包（EXE）</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0d8010df783">
+    <value>解压目录规则</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0e866423d58">
+    <value>所有文件|*.*</value>
+    <comment>src\Desktop\FileHashViewModel.cs:39; src\Desktop\WindowDialogs.cs:22; src\Desktop\WindowDialogs.cs:78</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0f1ecfd6cb8">
+    <value>单文件压缩，不支持加密、分卷或 EXE。建议保存为“原文件名{0}”；解压名称来自包名。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:89</comment>
+  </data>
+  <data xml:space="preserve" name="T_b140c4f0fe5a">
+    <value>编辑所选密码</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b1c46471ae91">
+    <value>修改内容</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b1f473ca70e6">
+    <value>GitHub 更新仓库地址</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b265ade249fc">
+    <value>密码来源</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b27d094f513e">
+    <value>已保留原压缩包。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:142</comment>
+  </data>
+  <data xml:space="preserve" name="T_b2a1d05496f2">
+    <value>没有可用的已验证引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_b32af2a5114f">
+    <value>解压文件</value>
+    <comment>src\Core\ExtractionDirectoryRules.cs:28; src\Core\ShellSelection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_b3b8e461c196">
+    <value>M 表示 MiB，G 表示 GiB；1 MiB = 1048576 字节。</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b3d70cc43d2a">
+    <value>文件 SHA-256</value>
+    <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b3eceee47a3d">
+    <value>新建解压目录命名</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b438e0890c2a">
+    <value>引擎默认编码</value>
+    <comment>src\Desktop\MainViewModel.FilenameEncoding.cs:23</comment>
+  </data>
+  <data xml:space="preserve" name="T_b4caab65183a">
+    <value>密码库已锁定，可手动输入密码</value>
+    <comment>src\Desktop\MainViewModel.cs:133</comment>
+  </data>
+  <data xml:space="preserve" name="T_b4de1e4ddf02">
+    <value>使用密码加密</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b5836abfbd39">
+    <value>已打开 {0} 下载页。请选择 win-{1} 轻量安装包，关闭软件后运行安装器。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_b5bb08da76d9">
+    <value>来源（可选）</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b5e264b0d6f8">
+    <value>取消备份操作</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b64114dffb9b">
+    <value>目标扩展名与格式不一致，请重新选择保存位置。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:129</comment>
+  </data>
+  <data xml:space="preserve" name="T_b66975fbd35f">
+    <value>已加密</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:99</comment>
+  </data>
+  <data xml:space="preserve" name="T_b786485ba1c7">
+    <value>编码已更改 · 准备就绪</value>
+    <comment>src\Desktop\MainViewModel.FilenameEncoding.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_b7cddbf2761a">
+    <value>密码已存在</value>
+    <comment>src\Desktop\WindowDialogs.cs:139</comment>
+  </data>
+  <data xml:space="preserve" name="T_b83678cb1bcf">
+    <value>设置或引擎文件无法读取，请检查产品包和文件权限。</value>
+    <comment>src\Desktop\MainViewModel.cs:163</comment>
+  </data>
+  <data xml:space="preserve" name="T_b93945612611">
+    <value>本次设置已生效，但无法保存，请检查设置目录权限。</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_b94136fcd4cd">
+    <value> 原包未修改。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_b9bd587305d1">
+    <value>编辑密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba22f8e0541a">
+    <value>生成 Windows EXE，接收者无需安装 7-Zip 或 .NET；只解压，不自动运行包内文件。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba40014ff496">
+    <value>类型</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml; src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba5967311206">
+    <value>取消软件检查</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba71a8541da6">
+    <value>已移除本程序的打开方式入口。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_bb0fa41ea6b8">
+    <value>新压缩包完整路径</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_bb1057c00cf3">
+    <value>已设置本次压缩密码，内容保持隐藏。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_bbe24b7f2796">
+    <value>正在写入临时新包，原包保持不变…</value>
+    <comment>src\Core\ArchiveEditingService.cs:82</comment>
+  </data>
+  <data xml:space="preserve" name="T_bc8c3fd9b315">
+    <value>已恢复密码库备份。</value>
+    <comment>src\Desktop\MainViewModel.cs:287</comment>
+  </data>
+  <data xml:space="preserve" name="T_bcd9ac8817f3">
+    <value>替换压缩包</value>
+    <comment>src\Desktop\WindowDialogs.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_bcf34c82614c">
+    <value>新主密码需要 12 至 16384 个字符。</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_bf1ed102d858">
+    <value>下移所选任务</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_bf7a3232e891">
+    <value>未能创建完整压缩包。请检查源文件、保存位置和可用空间。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:192</comment>
+  </data>
+  <data xml:space="preserve" name="T_bfa903605147">
+    <value>仅存储</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_bff03461df20">
+    <value>再次输入备份密码</value>
+    <comment>src/Desktop/VaultBackupDialog.xaml; src/Desktop/VaultBackupDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c042daee8c17">
+    <value>加密文件在解压时仍需验证密码。</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c0a3d36a2dce">
+    <value>解压结果目录</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml; src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c1043fe70086">
+    <value>密码库已锁定，请手动输入密码。</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:20; src\Core\ArchiveVerificationService.cs:50</comment>
+  </data>
+  <data xml:space="preserve" name="T_c11330b85234">
+    <value>选择</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c124c00caa4f">
+    <value>正在尝试保存的密码，{0}/{1}</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:25; src\Core\ArchiveVerificationService.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_c132d4b6ff48">
+    <value>密码库暂时无法读取，请手动输入密码。</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:20; src\Core\ArchiveVerificationService.cs:50</comment>
+  </data>
+  <data xml:space="preserve" name="T_c1956c02fc37">
+    <value>引擎选择记录无法读取，原文件已保留。</value>
+    <comment>src\Desktop\MainViewModel.cs:376</comment>
+  </data>
+  <data xml:space="preserve" name="T_c27041585556">
+    <value>无法读取</value>
+    <comment>src\Desktop\FileHashViewModel.cs:122; src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_c273eb49ef49">
+    <value>主密码未开启，本机密码由当前 Windows 用户加密保护。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_c28fe2702f55">
+    <value>正在完整校验修改后的压缩包…</value>
+    <comment>src\Core\ArchiveEditingService.cs:86</comment>
+  </data>
+  <data xml:space="preserve" name="T_c2e0ceeca350">
+    <value>上次验证：{0} 项通过，{1} 项失败。尚未解压文件。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_c35c7ca6d32f">
+    <value>添加压缩包以开始。</value>
+    <comment>src\Desktop\MainViewModel.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_c4bf814baf3d">
+    <value>继续队列</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
+  </data>
+  <data xml:space="preserve" name="T_c4d54b1608b5">
+    <value>已有同名文件或分卷，已保留。请使用新名称或新目录。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_c58d5c7dc924">
+    <value>不自动锁定</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c5d6fdc4bff5">
+    <value>目标文件已存在，未覆盖。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:186</comment>
+  </data>
+  <data xml:space="preserve" name="T_c62af9393001">
+    <value>密码不匹配</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\ExtractionFailureDialog.xaml.cs:26; src\Desktop\MainViewModel.cs:410</comment>
+  </data>
+  <data xml:space="preserve" name="T_c682f190cbd4">
+    <value>请输入密码。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:86</comment>
+  </data>
+  <data xml:space="preserve" name="T_c6a218f534d8">
+    <value>无法建立解压目录，请检查同名文件和访问权限。</value>
+    <comment>src\Core\ExtractionService.cs:47</comment>
+  </data>
+  <data xml:space="preserve" name="T_c75b14b93f5e">
+    <value>备份密码导入预览</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c781dd48e786">
+    <value>包内名称</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c78f695d1e5e">
+    <value>当前压缩不支持链接或联接点，请选择原始文件。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:185</comment>
+  </data>
+  <data xml:space="preserve" name="T_c85f7e6675d5">
+    <value>更新请求超时，请稍后重试。当前引擎保持可用。</value>
+    <comment>src\Desktop\MainViewModel.cs:363</comment>
+  </data>
+  <data xml:space="preserve" name="T_c8d8ba7dc5ba">
+    <value>恢复最近一次保存</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c8edea951714">
+    <value>解压位置预设</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c950f8f2b8e0">
+    <value>
+请输入密码，或选择一个已保存的密码。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_c9936e785515">
+    <value>未能合并重复密码。原密码库已保留，请刷新后重试。</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:47</comment>
+  </data>
+  <data xml:space="preserve" name="T_c9d224fbca48">
+    <value>上移所选任务</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ca8d1fab2a53">
+    <value>任务操作，单独解压、调整顺序和移除已完成任务</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cab1a449f534">
+    <value>nomozip · 解压完成</value>
+    <comment>src\Desktop\CompletionNotification.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_caf3184a97ef">
+    <value>保存通知设置</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cb42c2f7aa25">
+    <value>解压与密码管理</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cb82f06947d1">
+    <value>已计算（未比较）</value>
+    <comment>src\Desktop\FileHashViewModel.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_cd62c4ff0804">
+    <value>已取消软件版本检查。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_ce50d85b6e27">
+    <value>密码库空闲锁定时间</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cebf5ff2ca42">
+    <value>共 {0} 个文件，点击计算开始读取。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:95</comment>
+  </data>
+  <data xml:space="preserve" name="T_cf3032ad5651">
+    <value>更新包无法通过真实性校验，未切换引擎。请重新取得产品发布的更新包。</value>
+    <comment>src\Desktop\MainViewModel.cs:371</comment>
+  </data>
+  <data xml:space="preserve" name="T_cf5d453b4cbe">
+    <value>所选文件的 SHA-256 计算值</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cf8aefc70fc9">
+    <value>已取消所选解压。</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:24; src\Desktop\MainViewModel.Selection.cs:33</comment>
+  </data>
+  <data xml:space="preserve" name="T_d0356fd00208">
+    <value>取消当前任务</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_d0b2c6fecb84">
+    <value>正在校验更新包…</value>
+    <comment>src\Desktop\MainViewModel.cs:336; src\Infrastructure\EngineUpdateService.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_d0f1011a6592">
+    <value>已取消，密码库保持原状态。</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:61</comment>
+  </data>
+  <data xml:space="preserve" name="T_d12b676ae379">
+    <value>添加到包根目录；替换保留原路径。校验后替换，并保留原包副本。</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_d18624b2347a">
+    <value>已创建并校验 {0} 个分卷。首卷：{1}</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_d1a3e356e435">
+    <value>正在计算文件的 SHA-256…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:106</comment>
+  </data>
+  <data xml:space="preserve" name="T_d1dbd2948956">
+    <value>{0}：{1}。未输出文件；格式没有校验值时，仅检查数据可读取性。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:98</comment>
+  </data>
+  <data xml:space="preserve" name="T_d1de1249c3ed">
+    <value>各包分别解压到所在目录。右侧显示首个目标，“浏览目录”可统一修改。</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_d2011de64a34">
+    <value>已取消设置密码，未创建压缩包。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:144</comment>
+  </data>
+  <data xml:space="preserve" name="T_d2e37e15b46a">
+    <value>此格式不支持加密，请选择 7z 或 ZIP。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:182</comment>
+  </data>
+  <data xml:space="preserve" name="T_d3fcfb571828">
+    <value>例如“照片”。不区分大小写；仅调整顺序，其它已启用密码仍会尝试。留空则不设规则。</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d402a1d201a7">
+    <value>校验值（所选文件）</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d4163ce3b078">
+    <value>分组（可选）</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d42f0b43d460">
+    <value>优先：</value>
+    <comment>src\Desktop\PasswordMetadataConverter.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_d446a6f3b2e9">
+    <value>准备读取文件…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:106</comment>
+  </data>
+  <data xml:space="preserve" name="T_d44e9b3d3b31">
+    <value>名称</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/PasswordDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d4a7c6d97dcd">
+    <value>自定义解压目录或最近使用目录</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d4c08edb8fff">
+    <value>正在交付已校验的自解压包…</value>
+    <comment>src\Core\SfxCompressionService.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_d576b99c6465">
+    <value>添加文件或文件夹，选择新压缩包的位置。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_d599f83f5d0a">
+    <value>也可以将文件拖入此窗口</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d5c732fc01f2">
+    <value>搜索名称、备注、分组、来源和规则，不搜索密码明文</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d64ffabdbf39">
+    <value>两次输入的新主密码不一致。</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_d6a38b364511">
+    <value>筛选密码分组</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d6b35eaaa1d9">
+    <value>选择输出目录后开始解压。</value>
+    <comment>src\Desktop\MainViewModel.cs:172</comment>
+  </data>
+  <data xml:space="preserve" name="T_d6c877caa132">
+    <value>简体中文 · GBK / CP936</value>
+    <comment>src\Core\ZipFilenameEncoding.cs:6</comment>
+  </data>
+  <data xml:space="preserve" name="T_d722534ab0db">
+    <value>最多 2 个</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d791cd25027a">
+    <value>整批解压成功后发送系统通知</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d7b05c158fb5">
+    <value>解压规则</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d86f81dd3225">
+    <value>所选 ZIP 的文件名编码</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d94c48315238">
+    <value>已应用解压规则。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_d9851374e355">
+    <value>无法读取文件</value>
+    <comment>src\Desktop\Presentation.cs:66</comment>
+  </data>
+  <data xml:space="preserve" name="T_daed8faf2fc1">
+    <value>已预览 {0} 项。确认名称正确后应用。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_daede9881787">
+    <value>备注</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/PasswordDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_db5cb5a070e6">
+    <value>失败详情</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_db945cfe9f9f">
+    <value>快速</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dbf2ce470c29">
+    <value>软件版本检查超时，请稍后重试。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_dca602fdf931">
+    <value>尚无可恢复的上一版本。</value>
+    <comment>src\Desktop\MainViewModel.cs:132</comment>
+  </data>
+  <data xml:space="preserve" name="T_dce9d4fb756a">
+    <value>成功后保存到密码库</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dcfba7612da5">
+    <value>
+密码可能不匹配，或压缩包已损坏。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:50; src\Desktop\PasswordDialog.xaml.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_dd6c6990313a">
+    <value>位置预设</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ded3763dd8ee">
+    <value>目录规则</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_df0142916f7f">
+    <value>1 个（顺序）</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_df02d958a65f">
+    <value>仅安装本产品验证过的官方引擎更新包。此版本使用开发预览更新渠道。</value>
+    <comment>src\Desktop\MainViewModel.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_df24662c5521">
+    <value>正在创建压缩包…</value>
+    <comment>src\Core\CompressionContracts.cs:35; src\Core\CompressionContracts.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_df3d58c7d84b">
+    <value>设置</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_df622593db69">
+    <value>输入校验密码</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfaa16616d31">
+    <value>常用压缩包与自解压包|*.7z;*.zip;*.rar;*.001;*.exe;*.tar;*.gz;*.bz2;*.xz|所有文件|*.*</value>
+    <comment>src\Desktop\WindowDialogs.cs:103</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfb802238b38">
+    <value>已启用</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfbad24e7f4a">
+    <value>较高</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfc7c0776409">
+    <value>浏览仅列出内容；勾选后可解压所选范围。</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e1189ffd0bcd">
+    <value>导入更新包</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e12de546f6c3">
+    <value>密码未能删除，请检查密码库。</value>
+    <comment>src\Desktop\MainViewModel.cs:276</comment>
+  </data>
+  <data xml:space="preserve" name="T_e185d04bcc5f">
+    <value>创建压缩包</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e1fb8aa2fcac">
+    <value>此格式仅支持查看与解压。</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:58; src\Desktop\MainViewModel.ArchiveEditing.cs:33</comment>
+  </data>
+  <data xml:space="preserve" name="T_e22598f79cf3">
+    <value>导出加密密码备份</value>
+    <comment>src\Desktop\WindowDialogs.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_e25466fdb9be">
+    <value>nomozip 压缩包</value>
+    <comment>src\Infrastructure\FileAssociationService.cs:19; src\Infrastructure\FileAssociationService.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_e274b7537023">
+    <value>未找到通过校验的解压引擎，请重新取得完整产品包。</value>
+    <comment>src\Desktop\MainViewModel.cs:160</comment>
+  </data>
+  <data xml:space="preserve" name="T_e29c21446e54">
+    <value>导出计算值清单</value>
+    <comment>src\Desktop\FileHashViewModel.cs:45; src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e29c3af1bd15">
+    <value>队列已取消，未开始的任务保留。</value>
+    <comment>src\Desktop\MainViewModel.cs:249</comment>
+  </data>
+  <data xml:space="preserve" name="T_e2a88581bf88">
+    <value>打开加密备份</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_e2f5a1f2af3e">
+    <value>解压设置</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e312254287d8">
+    <value>已完成解压，但目标文件系统不支持来源标记（如 FAT32/exFAT），下载来源信息未能保留。需要保留时请改用支持命名流的目录。</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_e3848c27e720">
+    <value> · {0} 项失败</value>
+    <comment>src\Desktop\MainViewModel.cs:233</comment>
+  </data>
+  <data xml:space="preserve" name="T_e4d1595c61be">
+    <value>下载并更新引擎</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e566731c9d05">
+    <value>创建新编号目录，如名称 (2)</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e5689e06217c">
+    <value>添加压缩包或拖入文件</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e5bce8324529">
+    <value>nomozip · 解压完成通知</value>
+    <comment>src\Desktop\CompletionNotification.cs:45</comment>
+  </data>
+  <data xml:space="preserve" name="T_e64da2a40b53">
+    <value>检查软件更新</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e6dea7de8415">
+    <value>当前工作程序或引擎不支持此编码，请更新软件。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_e6e9a47ae51b">
+    <value>已导出 {0} 项实际计算值；未完成的文件不包含在清单中。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:165</comment>
+  </data>
+  <data xml:space="preserve" name="T_e72f93a83aa9">
+    <value>
+此更新包的版本低于当前版本。</value>
+    <comment>src\Desktop\WindowDialogs.cs:154</comment>
+  </data>
+  <data xml:space="preserve" name="T_e75e8b4e5c97">
+    <value>下移</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_e764d4668e4a">
+    <value>编码已更改，请重新预览后应用。</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_e7758edec13b">
+    <value>压缩包校验结果</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_e7a740c073cb">
+    <value>添加文件、文件夹或拖入内容</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e7e4273dd4c8">
+    <value>压缩级别</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e8166a5ae76c">
+    <value>添加要压缩的文件</value>
+    <comment>src\Desktop\WindowDialogs.cs:78; src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e836053f4b78">
+    <value>生成 .001 起的连续分卷；全部放在同一目录，选择首卷解压。已有分卷不覆盖。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_e86ea3f280d9">
+    <value>未分组</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_e8c12deee3da">
+    <value>自解压内容未通过完整校验，未交付目标文件。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:191</comment>
+  </data>
+  <data xml:space="preserve" name="T_e90e4d4b3a66">
+    <value>暂停队列</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
+  </data>
+  <data xml:space="preserve" name="T_e98b7cc07066">
+    <value>保留“{0}”，合并其它 {1} 条相同密码记录？
+
+保留所选记录的名称、备注、分组、来源、规则和自动尝试设置，其它记录的这些信息将被移除。保留最早创建时间、最近成功时间，所有压缩包关联转到所选记录。</value>
+    <comment>src\Desktop\WindowDialogs.cs:141</comment>
+  </data>
+  <data xml:space="preserve" name="T_e9a521da468a">
+    <value>来源信息未能写入，本次解压文件尚未交付，已有文件保持不变。请检查目标权限。</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_e9d3dd690a4e">
+    <value>导出备份</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:15; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e9e70eaf87d7">
+    <value>最新正式版：{0}。当前软件已是最新版本。</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_eb0c326b60ae">
+    <value>已暂停</value>
+    <comment>src\Desktop\MainViewModel.cs:212</comment>
+  </data>
+  <data xml:space="preserve" name="T_eb0e28eeb37b">
+    <value>分卷未能通过完整校验，未交付目标文件。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:189</comment>
+  </data>
+  <data xml:space="preserve" name="T_eb1ee5f7f8d7">
+    <value>继续校验</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_ec217804074a">
+    <value>导入备份</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ecb9f0adb4e4">
+    <value>导入已经保存，但列表未能刷新。请关闭后重新打开密码库。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_ed3955526cf9">
+    <value>压缩…</value>
+    <comment>src\Infrastructure\ShellMenuService.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_ed470de7dfeb">
+    <value>导入完成：新增 {0} 条，跳过 {1} 条。原有密码已保留。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_edb93ad988fa">
+    <value>主密码至少 12 个字符，可使用中文。忘记后只能通过事先导出的独立加密备份及其备份密码恢复；没有重置通道。</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:16</comment>
+  </data>
+  <data xml:space="preserve" name="T_edfa33a3f470">
+    <value>选择保存位置</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee3467b3533f">
+    <value>更新包无法使用，未切换引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:377</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee5907bc1d41">
+    <value>输出文件未能全部写入，请检查目标目录。已写入的文件仍在目标目录中。</value>
+    <comment>src\Core\ExtractionService.cs:129</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee66a816c44e">
+    <value>{0}，{1}</value>
+    <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee8c9493f18c">
+    <value>未完成的文件不会生成哈希；可重新计算。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_eeafd62503fb">
+    <value>查看所选压缩包内容，Control L</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f007e1890a6a">
+    <value>两次输入的备份密码不一致。</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_f00ef1be4493">
+    <value>每次询问</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f024ef58cfce">
+    <value>未找到可用引擎，尚未解压。</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_f029d9cb4a76">
+    <value>原因</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f08ca2748091">
+    <value>请输入 GitHub 仓库地址，或用户名/仓库名。</value>
+    <comment>src\Desktop\MainViewModel.cs:374</comment>
+  </data>
+  <data xml:space="preserve" name="T_f0b9c3e0a17b">
+    <value>上一版本：7-Zip {0}</value>
+    <comment>src\Desktop\MainViewModel.cs:132</comment>
+  </data>
+  <data xml:space="preserve" name="T_f12fba592449">
+    <value>自解压不能与分卷同时使用。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_f1477a4655ee">
+    <value>选择文件放在哪里，以及是否需要新建目录。</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f1a4a993b180">
+    <value>请输入大于 0 的整数，分卷上限为 1 TiB。</value>
+    <comment>src\Desktop\CompressionViewModel.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_f23f6d1addfc">
+    <value>已取消查看内容。</value>
+    <comment>src\Desktop\ArchiveBrowsingViewModel.cs:25; src\Desktop\ArchiveBrowsingViewModel.cs:30</comment>
+  </data>
+  <data xml:space="preserve" name="T_f28461bb49c8">
+    <value>已完成</value>
+    <comment>src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_f321085e8ea2">
+    <value>已有 {0} 条记录保存了相同密码。仍然保存此记录？
+
+可取消后编辑已有记录，或保存后在密码库合并重复记录。</value>
+    <comment>src\Desktop\WindowDialogs.cs:139</comment>
+  </data>
+  <data xml:space="preserve" name="T_f3c637218750">
+    <value>优先尝试的文件名关键词</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f41a0d58cf70">
+    <value>压缩包已变化，请关闭并重新查看内容。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_f48d334495f6">
+    <value>桌面</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f4a81440138a">
+    <value>无法打开结果目录，请在资源管理器中访问目标路径。</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:73</comment>
+  </data>
+  <data xml:space="preserve" name="T_f4d9761756f5">
+    <value>移除已完成任务</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f4f9aaac57e4">
+    <value>压缩包校验失败条目列表</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_f5358f6b735d">
+    <value>压缩设置</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f585137c61b2">
+    <value>请输入 64 位十六进制 SHA-256。</value>
+    <comment>src\Desktop\FileHashViewModel.cs:21</comment>
+  </data>
+  <data xml:space="preserve" name="T_f5d4d2b687bd">
+    <value>备份密码不正确，或备份文件已损坏。密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_f6b557598ac8">
+    <value>已合并 {0} 条重复记录，压缩包关联已保留。</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_f710925bd393">
+    <value>重复 · 新增</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_f853a70b1204">
+    <value>上移</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_f8753cf655b4">
+    <value>使用官方 7-Zip 引擎。许可证与来源信息随产品附带。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f8c32297384e">
+    <value>打开输出目录</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f8fcd8c32414">
+    <value>请选择另一个文件名，不能覆盖本机密码库或恢复备份。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_f987b614b7f1">
+    <value>空闲后锁定密码库</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f9b106212acd">
+    <value>解压到当前目录</value>
+    <comment>src\Infrastructure\ShellMenuService.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_f9e7c5fdc973">
+    <value>已取消导入，密码库保持不变。</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa2d0a57ea4e">
+    <value>已移除本程序的右键菜单。</value>
+    <comment>src\Desktop\AssociationViewModel.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa5398fd7e94">
+    <value>压缩包内容</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml; src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa762d29f739">
+    <value>设置或更换密码</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa9d33365735">
+    <value>解压失败详情</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fb1f94c09208">
+    <value>队列已继续。</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_fb4d81fcdb9e">
+    <value>备份共 {0} 条 · 将新增 {1} 条 · 跳过 {2} 条。</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_fbac9a59ad82">
+    <value>查看上一次验证失败的条目</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fbda214c62b2">
+    <value>设置仅在本次使用，原设置文件保持不变。</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_fbefab1520fc">
+    <value>SHA-256 清单|*.txt;*.sha256|所有文件|*.*</value>
+    <comment>src\Desktop\FileHashViewModel.cs:45; src\Desktop\FileHashViewModel.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_fc03f4f98f60">
+    <value>按本程序内的操作计时；处理任务期间延后，任务结束后再锁定。关闭程序后，下次需要重新解锁。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fc4b460196dc">
+    <value>更新未完成，请检查网络、更新包与文件权限。当前引擎保持可用。</value>
+    <comment>src\Desktop\MainViewModel.cs:366</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcc381b75f0b">
+    <value>不能删空已加密文件名的包，否则会失去文件名加密。原包未修改。</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcc639129b23">
+    <value>密码分组</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcdc3edb34ff">
+    <value>合并重复</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcef101b1132">
+    <value>解压进度</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fe3a59cb66da">
+    <value>添加后可从“打开方式”启动 nomozip，不会直接更改默认应用。Windows 首次打开可能询问使用哪个应用，默认程序由你在系统窗口选择。</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fe6aa19502f5">
+    <value>密码用于本次创建压缩包。也可以选择已保存的密码。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_feaebc29ef3e">
+    <value>
+需要密码以校验压缩包数据。</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_ff2a17217e7c">
+    <value>已取消更新，继续使用当前引擎。</value>
+    <comment>src\Desktop\MainViewModel.cs:339</comment>
+  </data>
+  <data xml:space="preserve" name="T_ffcd45757108">
+    <value>引擎无法启动</value>
+    <comment>src\Desktop\MainViewModel.cs:412</comment>
+  </data>
+  <data xml:space="preserve" name="T_ffda925743a3">
+    <value>已将 {0} {1}。</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_ffe21a671190">
+    <value>显示密码</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+</root>

@@ -9,14 +9,14 @@ namespace ArchivePassword.Desktop;
 public sealed record CompressionSourceRow(string Path, string? PreviewKind = null)
 {
     public string Name => System.IO.Path.GetFileName(System.IO.Path.TrimEndingDirectorySeparator(Path));
-    public string Kind => PreviewKind ?? (Directory.Exists(Path) ? "文件夹" : "文件");
+    public string Kind => PreviewKind ?? (Directory.Exists(Path) ? UiText.Get("T_7c7802d8adae") : UiText.Get("T_39932f24fe11"));
 }
 public sealed partial class MainViewModel
 {
     private int compressionFormat, compressionLevel = 2;
     private bool compressionEncrypt, compressionHeaders = true, compressionIndeterminate, compressionRunning;
     private double compressionPercent;
-    private string compressionOutput = "", compressionMessage = "添加文件或文件夹，选择新压缩包的位置。";
+    private string compressionOutput = "", compressionMessage = UiText.Get("T_d576b99c6465");
     private CompressionSourceRow? selectedCompressionSource;
     private PasswordPromptResponse? compressionPassword;
     private bool compressionSfx,sfxAvailable;
@@ -32,14 +32,14 @@ public sealed partial class MainViewModel
     public bool CanSetCompressionLevel => IsIdle && CompressionOptions.CompressionLevel;
     public bool CanSplitCompression => IsIdle && CompressionOptions.Encryption;
     public string CompressionSourceError => CompressionOptions.SingleFile && CompressionSources.Count > 0
-        && (CompressionSources.Count != 1 || !File.Exists(CompressionSources[0].Path)) ? "仅支持一个文件。文件夹或多个文件请先创建 TAR。" : "";
+        && (CompressionSources.Count != 1 || !File.Exists(CompressionSources[0].Path)) ? UiText.Get("T_238288d05599") : "";
     private void CompressionCapabilitiesChanged()
     {
         Changed(nameof(CanEncryptCompression));Changed(nameof(CanSetCompressionLevel));Changed(nameof(CanSplitCompression));
         Changed(nameof(CompressionSourceError));CommandManager.InvalidateRequerySuggested();
     }
     public bool CanUseSfx=>IsIdle && Is7zCompression && volumeOption==0 && sfxAvailable;
-    public string CompressionSfxHint=>!Is7zCompression?(CompressionFormat==1?"自解压仅支持 7z。":""):volumeOption!=0?"自解压不能与分卷同时使用。":!sfxAvailable?"当前引擎没有匹配的自解压模块；可选择随包引擎。":CompressionSfx?"生成 Windows EXE，接收者无需安装 7-Zip 或 .NET；只解压，不自动运行包内文件。":"";
+    public string CompressionSfxHint=>!Is7zCompression?(CompressionFormat==1?UiText.Get("T_aebafd23c2d9"):""):volumeOption!=0?UiText.Get("T_f12fba592449"):!sfxAvailable?UiText.Get("T_5b79de668b3b"):CompressionSfx?UiText.Get("T_ba22f8e0541a"):"";
     private void AlignCompressionExtension(string previous) {if(Path.GetExtension(CompressionOutput).Equals(previous,StringComparison.OrdinalIgnoreCase)) CompressionOutput=Path.ChangeExtension(CompressionOutput,CompressionExtension);CommandManager.InvalidateRequerySuggested();}
     private async Task RefreshSfxAvailabilityAsync()
     {
@@ -53,8 +53,8 @@ public sealed partial class MainViewModel
     public string CompressionVolumeCustom {get=>volumeCustom;set {if(Set(ref volumeCustom,value)) VolumeOptionsChanged();}}
     private bool ValidVolumeSize=>VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out _);
     private void VolumeOptionsChanged() {if(volumeOption!=0) CompressionSfx=false;Changed(nameof(CompressionVolumeError));Changed(nameof(CompressionVolumeHint));Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));CommandManager.InvalidateRequerySuggested();}
-    public string CompressionVolumeError=>ValidVolumeSize?"":"请输入大于 0 的整数，分卷上限为 1 TiB。";
-    public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?"生成 .001 起的连续分卷；全部放在同一目录，选择首卷解压。已有分卷不覆盖。":"";
+    public string CompressionVolumeError=>ValidVolumeSize?"":UiText.Get("T_f1a4a993b180");
+    public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?UiText.Get("T_e836053f4b78"):"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
     public ICommand AddCompressionFilesCommand { get; private set; } = null!;
     public ICommand AddCompressionFolderCommand { get; private set; } = null!;
@@ -83,15 +83,15 @@ public sealed partial class MainViewModel
     public bool Is7zCompression => CompressionFormat == 0;
     public string CompressionHint => CompressionFormatName switch
     {
-        "7z" => "7z 支持中文密码及文件名加密。",
-        "zip" => "ZIP 使用 AES-256 加密；当前官方引擎仅支持 ASCII 密码，中文密码请选择 7z。",
-        "tar" => "TAR 仅打包，不压缩；不支持加密、分卷或 EXE。",
-        _ => $"单文件压缩，不支持加密、分卷或 EXE。建议保存为“原文件名{CompressionOptions.Extension}”；解压名称来自包名。"
+        "7z" => UiText.Get("T_22c2a744aea2"),
+        "zip" => UiText.Get("T_abb6a356f9a2"),
+        "tar" => UiText.Get("T_7f8c82c8d8b8"),
+        _ => UiText.Format("T_b0f1ecfd6cb8", CompressionOptions.Extension)
     };
     public int CompressionLevel { get => compressionLevel; set => Set(ref compressionLevel, value); }
     public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
-    public string CompressionPasswordStatus => compressionPassword is null ? "尚未设置，创建时可输入或选择已保存的密码。" : "已设置本次压缩密码，内容保持隐藏。";
+    public string CompressionPasswordStatus => compressionPassword is null ? UiText.Get("T_5d8111695438") : UiText.Get("T_bb1057c00cf3");
     public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) createdCompressionPath="";} }
     public string CompressionMessage { get => compressionMessage; set => Set(ref compressionMessage, value); }
     public double CompressionPercent { get => compressionPercent; private set => Set(ref compressionPercent, value); }
@@ -126,22 +126,22 @@ public sealed partial class MainViewModel
     {
         if (CompressionSourceError.Length > 0) {CompressionMessage=CompressionSourceError;return;}
         if(!VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out var volumeSize)) {CompressionMessage=CompressionVolumeError;return;}
-        if (!Path.GetExtension(CompressionOutput).Equals(CompressionExtension, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = "目标扩展名与格式不一致，请重新选择保存位置。"; return; }
-        if(volumeSize>0 && VolumeCompressionService.HasExistingTarget(CompressionOutput)) {CompressionMessage="已有同名文件或分卷，已保留。请使用新名称或新目录。";return;}
+        if (!Path.GetExtension(CompressionOutput).Equals(CompressionExtension, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = UiText.Get("T_b64114dffb9b"); return; }
+        if(volumeSize>0 && VolumeCompressionService.HasExistingTarget(CompressionOutput)) {CompressionMessage=UiText.Get("T_c4d54b1608b5");return;}
         IsBusy=true;idle=new TaskCompletionSource();cancellation=new CancellationTokenSource();
         try
         {
         SfxModule? module=null;
         if(CompressionSfx)
         {
-            if(volumeSize>0 || !Is7zCompression) {CompressionMessage="自解压仅支持不分卷的 7z。";return;}
+            if(volumeSize>0 || !Is7zCompression) {CompressionMessage=UiText.Get("T_0072b72a230a");return;}
             try {module=await engines.ReadSfxModuleAsync(activeEngine,cancellation.Token);}
-            catch(Exception error) when(error is UpdateException or IOException or UnauthorizedAccessException or System.Text.Json.JsonException) {CompressionMessage="自解压模块无法通过校验；请重新取得产品包或切换引擎。";return;}
+            catch(Exception error) when(error is UpdateException or IOException or UnauthorizedAccessException or System.Text.Json.JsonException) {CompressionMessage=UiText.Get("T_0c3a93b2ceab");return;}
         }
         var replace = volumeSize==0 && File.Exists(CompressionOutput);
-        if (replace && !dialogs.ConfirmArchiveReplacement(CompressionOutput)) { CompressionMessage = "已保留原压缩包。"; return; }
+        if (replace && !dialogs.ConfirmArchiveReplacement(CompressionOutput)) { CompressionMessage = UiText.Get("T_b27d094f513e"); return; }
         if (CompressionEncrypt && compressionPassword is null) await SetCompressionPasswordAsync();
-        if (CompressionEncrypt && compressionPassword is null) { CompressionMessage = "已取消设置密码，未创建压缩包。"; return; }
+        if (CompressionEncrypt && compressionPassword is null) { CompressionMessage = UiText.Get("T_d2011de64a34"); return; }
         createdCompressionPath="";CompressionRunning = true;CompressionPercent = 0; CompressionIndeterminate = true;
             var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));
             var progress = new Progress<TaskUpdate>(value =>
@@ -155,7 +155,7 @@ public sealed partial class MainViewModel
                 : await new CompressionService(client, client).CreateAsync(CompressionSources.Select(value => value.Path).ToArray(), CompressionOutput,
                 CompressionFormatName, new[] { 0, 1, 5, 7, 9 }[CompressionLevel], CompressionEncrypt ? compressionPassword?.Secret : null, CompressionHeaders, replace, progress, cancellation.Token,volumeSize);
             if(outcome.Engine.IsSuccess) createdCompressionPath=outcome.OutputPath;
-            CompressionMessage = outcome.Engine.IsSuccess ? module is not null?"已创建并校验自解压包。":outcome.Volumes is { } volumes ? $"已创建并校验 {volumes.Count} 个分卷。首卷：{outcome.OutputPath}" : "已创建并校验压缩包。" : outcome.Engine.Status == "cancelled" ? "已取消，本次半成品已清理。" : CompressionError(outcome.Engine.Code);
+            CompressionMessage = outcome.Engine.IsSuccess ? module is not null?UiText.Get("T_ada71e8959d8"):outcome.Volumes is { } volumes ? UiText.Format("T_d18624b2347a", volumes.Count, outcome.OutputPath) : UiText.Get("T_1bb010c7351a") : outcome.Engine.Status == "cancelled" ? UiText.Get("T_8e8fba138ab2") : CompressionError(outcome.Engine.Code);
             if (outcome.Engine.IsSuccess && CompressionEncrypt && compressionPassword is { } supplied && (supplied.Save || supplied.SavedId is not null))
             {
                 try
@@ -164,11 +164,11 @@ public sealed partial class MainViewModel
                     if (supplied.SavedId is null) await vault.SaveAsync(new SavedPassword(savedId, string.IsNullOrWhiteSpace(supplied.Name) ? Path.GetFileName(CompressionOutput) : supplied.Name, supplied.Secret, "", true, DateTimeOffset.UtcNow));
                     await vault.RecordSuccessAsync(savedId, outcome.OutputPath); await RefreshVaultAsync();
                 }
-                catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "压缩包已创建，但密码未能保存，请保留你使用的密码。"; }
+                catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = UiText.Get("T_0346e5dcf690"); }
             }
             Footer = CompressionMessage;
         }
-        catch(OperationCanceledException) {CompressionMessage="已取消，目标文件保持不变。";}
+        catch(OperationCanceledException) {CompressionMessage=UiText.Get("T_76756534e51e");}
         finally
         {
             compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); CompressionIndeterminate = false;
@@ -177,18 +177,18 @@ public sealed partial class MainViewModel
     }
     private static string CompressionError(string code) => code switch
     {
-        "zip_password_ascii_only" => "ZIP 加密仅支持 ASCII 密码；中文密码请改用 7z。",
-        "format_single_file_required" => "此格式只允许一个文件；文件夹或多个文件请先打包为 TAR。",
-        "format_encryption_unsupported" => "此格式不支持加密，请选择 7z 或 ZIP。",
-        "format_validation_failed" => "新包内容清单未通过校验，目标文件保持不变。",
-        "duplicate_archive_path" => "选中的不同文件或文件夹具有相同名称，请分开压缩。",
-        "unsupported_link" => "当前压缩不支持链接或联接点，请选择原始文件。",
-        "output_exists" => "目标文件已存在，未覆盖。",
-        "empty_sources" => "没有可压缩的文件，请重新选择。",
-        "invalid_volume_size"=>"分卷大小无效，请检查数值与单位。",
-        "invalid_volume_set"=>"分卷未能通过完整校验，未交付目标文件。",
-        "sfx_module_invalid"=>"自解压模块未通过校验，未创建目标文件。",
-        "sfx_validation_failed"=>"自解压内容未通过完整校验，未交付目标文件。",
-        _ => "未能创建完整压缩包。请检查源文件、保存位置和可用空间。"
+        "zip_password_ascii_only" => UiText.Get("T_0f39ab20ad82"),
+        "format_single_file_required" => UiText.Get("T_034a1bc397c6"),
+        "format_encryption_unsupported" => UiText.Get("T_d2e37e15b46a"),
+        "format_validation_failed" => UiText.Get("T_2bf33abd7e1e"),
+        "duplicate_archive_path" => UiText.Get("T_ab621a6eecb5"),
+        "unsupported_link" => UiText.Get("T_c78f695d1e5e"),
+        "output_exists" => UiText.Get("T_c5d6fdc4bff5"),
+        "empty_sources" => UiText.Get("T_1e332f6db100"),
+        "invalid_volume_size"=>UiText.Get("T_65e10632e6f4"),
+        "invalid_volume_set"=>UiText.Get("T_eb0e28eeb37b"),
+        "sfx_module_invalid"=>UiText.Get("T_2207abf5d6fe"),
+        "sfx_validation_failed"=>UiText.Get("T_e8c12deee3da"),
+        _ => UiText.Get("T_bf7a3232e891")
     };
 }

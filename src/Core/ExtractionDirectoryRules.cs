@@ -25,7 +25,7 @@ public static class ExtractionDirectoryPlanner
         var name = Path.GetFileNameWithoutExtension(archive);
         if (int.TryParse(Path.GetExtension(archive).TrimStart('.'), out _) && Path.GetExtension(name).ToLowerInvariant() is ".7z" or ".zip" or ".rar")
             name = Path.GetFileNameWithoutExtension(name);
-        if (string.IsNullOrWhiteSpace(name)) name = "解压文件";
+        if (string.IsNullOrWhiteSpace(name)) name = UiText.Get("T_b32af2a5114f");
         if (rules.Naming == ContainerNaming.ArchiveNameDate) name += "_" + date.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture);
         var destination = Path.Combine(root,name);
         if (rules.Collision == ContainerCollision.Merge)

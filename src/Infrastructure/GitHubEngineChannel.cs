@@ -77,7 +77,7 @@ public sealed partial class GitHubEngineChannel(HttpClient client)
         {
             total += count; if (total > EngineUpdatePackage.MaximumPackageBytes) throw new UpdateException("invalid_download");
             await output.WriteAsync(buffer.AsMemory(0, count), token);
-            progress?.Report($"正在下载更新包：{total / 1024:N0} KB…");
+            progress?.Report(UiText.Format("T_5a2d65d7ef82", total / 1024));
         }
         if (total != update.Size) throw new UpdateException("invalid_download");
     }

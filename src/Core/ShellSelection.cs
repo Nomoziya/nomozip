@@ -15,7 +15,7 @@ public sealed record ShellSelection(ShellAction Action, IReadOnlyList<string> Pa
     public string OutputFor(string archive)
     {
         var name = Path.GetFileNameWithoutExtension(archive);
-        if (string.IsNullOrEmpty(name)) name = "解压文件";
+        if (string.IsNullOrEmpty(name)) name = UiText.Get("T_b32af2a5114f");
         return Action == ShellAction.ExtractFolder ? Path.Combine(Path.GetDirectoryName(archive)!, name) : Path.GetDirectoryName(archive)!;
     }
 }

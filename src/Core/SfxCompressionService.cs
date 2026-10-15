@@ -14,21 +14,21 @@ public sealed class SfxCompressionService(IArchiveCreator creator,IArchiveEngine
             output=Path.GetFullPath(output);if(File.Exists(output) && !replace) return Failure("output_exists");
             var entries=await CompressionSources.CollectAsync(sources,output,token);if(entries.Count==0) return Failure("empty_sources");
             Directory.CreateDirectory(Path.GetDirectoryName(output)!);var stem=Path.Combine(Path.GetDirectoryName(output)!,".nomozip-sfx-"+Guid.NewGuid().ToString("N"));archive=stem+".7z";executable=stem+".exe";
-            progress?.Report(new("compressing","正在创建自解压内容…"));
-            var created=await creator.CreateAsync(new(entries,"7z",level,encryptHeaders),archive,password,new ForwardProgress<EngineProgress>(value=>progress?.Report(new("compressing","正在创建自解压内容…",value))),token);
+            progress?.Report(new("compressing",UiText.Get("T_0a3e6b6afda3")));
+            var created=await creator.CreateAsync(new(entries,"7z",level,encryptHeaders),archive,password,new ForwardProgress<EngineProgress>(value=>progress?.Report(new("compressing",UiText.Get("T_0a3e6b6afda3"),value))),token);
             if(!created.IsSuccess) return new(created,output);token.ThrowIfCancellationRequested();
-            progress?.Report(new("assembling","正在组合官方自解压模块…"));
+            progress?.Report(new("assembling",UiText.Get("T_051c6d0c19aa")));
             await using(var destination=new FileStream(executable,FileMode.CreateNew,FileAccess.Write,FileShare.None,81920,true))
             {
                 await destination.WriteAsync(module.Bytes,token);await using var input=File.OpenRead(archive);await input.CopyToAsync(destination,token);
             }
-            progress?.Report(new("testing","正在完整校验自解压包…"));
+            progress?.Report(new("testing",UiText.Get("T_51e878e93241")));
             var tested=await validator.TestAsync(executable,password,cancellationToken:token);if(!tested.IsSuccess) return new(tested,output);
             var listed=await validator.ListAsync(executable,password,token);if(!listed.IsSuccess) return new(listed,output);
             var expected=entries.ToDictionary(entry=>entry.Path.Replace('\\','/'),StringComparer.OrdinalIgnoreCase);
             if(listed.Format.ToLowerInvariant()!="7z" || listed.Items.Count!=entries.Count || listed.Items.Any(entry=>!expected.TryGetValue(entry.Path.Replace('\\','/'),out var source)
                 || entry.Directory!=source.Directory || !entry.Directory && entry.Size!=(ulong)new FileInfo(source.SourcePath).Length)) return Failure("sfx_validation_failed");
-            progress?.Report(new("committing","正在交付已校验的自解压包…"));token.ThrowIfCancellationRequested();
+            progress?.Report(new("committing",UiText.Get("T_d4c08edb8fff")));token.ThrowIfCancellationRequested();
             if(File.Exists(output)) {if(!replace) return Failure("output_exists");File.Replace(executable,output,null);} else File.Move(executable,output);
             return new(tested,output);
         }

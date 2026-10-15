@@ -25,36 +25,36 @@ public partial class PasswordDialog : Window
         if (!editing && !compressing && !browsing && previousFailure?.Failures.Count > 0)
         {
             FailurePanel.Visibility = Visibility.Visible;
-            FailureSummary.Text = $"上次验证：{previousFailure.SuccessfulItems} 项通过，{previousFailure.Failures.Count} 项失败。尚未解压文件。"
-                + (previousFailure.VerifiedEncryptedItems.Count > 0 ? "\n已验证的密码会用于对应文件。请为剩余失败条目输入其它密码；也可能是文件损坏。" : "");
+            FailureSummary.Text = UiText.Format("T_c2e0ceeca350", previousFailure.SuccessfulItems, previousFailure.Failures.Count)
+                + (previousFailure.VerifiedEncryptedItems.Count > 0 ? UiText.Get("T_a01cf40b28cc") : "");
         }
-        Description.Text = editing ? "密码会由当前 Windows 用户加密保存在本机。" : archiveName + (failed ? "\n上一个密码未能完整验证。密码可能不匹配，或压缩包已损坏。" : "\n请输入密码，或选择一个已保存的密码。");
+        Description.Text = editing ? UiText.Get("T_a199bcc29a45") : archiveName + (failed ? UiText.Get("T_3e40ded6412e") : UiText.Get("T_c950f8f2b8e0"));
         if (editing)
         {
-            Title = Heading.Text = existing is null ? "添加密码" : "编辑密码";
-            ContinueButton.Content = "保存密码"; SavePassword.Visibility = Visibility.Collapsed; DetailsPanel.Visibility = Visibility.Visible;
+            Title = Heading.Text = existing is null ? UiText.Get("T_36b2403fa140") : UiText.Get("T_b9bd587305d1");
+            ContinueButton.Content = UiText.Get("T_2e9f4819e064"); SavePassword.Visibility = Visibility.Collapsed; DetailsPanel.Visibility = Visibility.Visible;
             NameBox.Text = existing?.Name ?? ""; NotesBox.Text = existing?.Notes ?? ""; AutoTryBox.IsChecked = existing?.AutoTry ?? true; SecretBox.Password = existing?.Secret ?? "";
             GroupBox.Text = existing?.Group ?? ""; SourceBox.Text = existing?.Source ?? ""; MatchBox.Text = existing?.MatchText ?? "";
         }
         else NameBox.Text = archiveName;
         if (compressing)
         {
-            Title = Heading.Text = "设置压缩密码"; ContinueButton.Content = "使用此密码";
-            Description.Text = "密码用于本次创建压缩包。也可以选择已保存的密码。";
-            SavePassword.Content = "压缩成功后保存到密码库";
+            Title = Heading.Text = UiText.Get("T_84d584fcfc26"); ContinueButton.Content = UiText.Get("T_8154b012eaf1");
+            Description.Text = UiText.Get("T_fe6aa19502f5");
+            SavePassword.Content = UiText.Get("T_5d89c8f8c810");
         }
         if (browsing)
         {
-            Title = Heading.Text = "输入查看密码"; ContinueButton.Content = "查看内容";
+            Title = Heading.Text = UiText.Get("T_8a03bbcdc75e"); ContinueButton.Content = UiText.Get("T_393dd8a7f29e");
             SavePassword.IsEnabled = false; SavePassword.Visibility = Visibility.Collapsed;
-            Description.Text = archiveName + (failed ? "\n密码可能不匹配，或压缩包已损坏。" : "\n此压缩包的文件名已加密，需要密码才能查看内容。")
-                + "\n本次仅查看内容；如需保存新密码，请在解压成功后保存。";
+            Description.Text = archiveName + (failed ? UiText.Get("T_dcfba7612da5") : UiText.Get("T_7701884823bd"))
+                + UiText.Get("T_58c5744db746");
         }
         if(testing)
         {
-            Title=Heading.Text="输入校验密码";ContinueButton.Content="继续校验";
+            Title=Heading.Text=UiText.Get("T_df622593db69");ContinueButton.Content=UiText.Get("T_eb1ee5f7f8d7");
             SavePassword.IsEnabled=false;SavePassword.Visibility=Visibility.Collapsed;
-            Description.Text=archiveName+(failed?"\n密码可能不匹配，或压缩包已损坏。":"\n需要密码以校验压缩包数据。")+"\n本次校验不输出文件，也不保存或更新密码库。";
+            Description.Text=archiveName+(failed?UiText.Get("T_dcfba7612da5"):UiText.Get("T_feaebc29ef3e"))+UiText.Get("T_0da2931b10ac");
         }
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear(); SavedBox.ItemsSource = null; };
@@ -83,13 +83,13 @@ public partial class PasswordDialog : Window
         var secret = ShowPassword.IsChecked == true ? VisibleSecret.Text : SecretBox.Password;
         if (string.IsNullOrEmpty(secret))
         {
-            ErrorLabel.Text = "请输入密码。";
+            ErrorLabel.Text = UiText.Get("T_c682f190cbd4");
             if (ShowPassword.IsChecked == true) VisibleSecret.Focus(); else SecretBox.Focus();
             return;
         }
         var selected = SavedBox.SelectedItem as SavedPassword;
         Response = new PasswordPromptResponse(secret, SavePassword.IsChecked == true && SavePassword.IsEnabled, NameBox.Text, selected?.Secret == secret ? selected.Id : null);
-        if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? "未命名密码" : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt,
+        if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? UiText.Get("T_218e758854ee") : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt,
             GroupBox.Text.Trim(), SourceBox.Text.Trim(), MatchBox.Text.Trim());
         DialogResult = true;
     }

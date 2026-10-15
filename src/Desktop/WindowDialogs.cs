@@ -17,19 +17,19 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         if(selectArchiveEditSources is not null) return selectArchiveEditSources(action);
         if(action==ArchiveEditAction.AddFolder)
         {
-            var folder=new OpenFolderDialog {Title="添加文件夹到压缩包根目录"};return folder.ShowDialog(owner)==true?[folder.FolderName]:[];
+            var folder=new OpenFolderDialog {Title=UiText.Get("T_357e9c21398d")};return folder.ShowDialog(owner)==true?[folder.FolderName]:[];
         }
-        var files=new OpenFileDialog {Title=action==ArchiveEditAction.Replace?"选择替换文件（保留包内路径）":"添加文件到压缩包根目录",Multiselect=action!=ArchiveEditAction.Replace,Filter="所有文件|*.*"};
+        var files=new OpenFileDialog {Title=action==ArchiveEditAction.Replace?UiText.Get("T_6c93c9b1cf76"):UiText.Get("T_776af38fd768"),Multiselect=action!=ArchiveEditAction.Replace,Filter=UiText.Get("T_b0e866423d58")};
         return files.ShowDialog(owner)==true?files.FileNames:[];
     }
     public bool ConfirmArchiveEdit(ArchiveEditAction action,int removed,int added)=>confirmArchiveEdit?.Invoke(action,removed,added) ?? MessageBox.Show(owner,
-        $"删除或替换 {removed} 项，写入 {added} 项（文件夹包含子项）。\n\n新包完整校验成功后才替换，并在原包旁保留修改前的 .bak 副本。副本包含被删除和替换的旧内容。\n\n新增或替换的文件沿用本次验证的密码；混合多个密码的包暂不支持修改。是否继续？",
-        "确认修改压缩包",MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
+        UiText.Format("T_18a17ee1b961", removed, added),
+        UiText.Get("T_79bedfdfce1a"),MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
     public MasterPasswordResponse? AskMasterPassword(MasterPasswordAction action)
     {
         var dialog=new MasterPasswordDialog(action){Owner=owner};prepareMaster?.Invoke(dialog);return dialog.ShowDialog()==true?dialog.Response:null;
     }
-    public bool ConfirmVaultRecovery(int count)=>confirmVaultRecovery?.Invoke(count) ?? MessageBox.Show(owner,$"用已验证备份中的 {count} 条密码创建新库？\n\n当前锁定库将另存原始加密副本。备份之后新增的记录不会出现在恢复结果中。下一步设置新主密码。","通过独立备份恢复",MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
+    public bool ConfirmVaultRecovery(int count)=>confirmVaultRecovery?.Invoke(count) ?? MessageBox.Show(owner,UiText.Format("T_4ac1c3d04751", count),UiText.Get("T_31f7ee87ce42"),MessageBoxButton.YesNo,MessageBoxImage.Question)==MessageBoxResult.Yes;
     public bool NotifyExtractionComplete(int count) => owner is MainWindow window && window.NotifyExtractionComplete(count);
     public int? EditFilenameEncoding(string archive,int codePage,Func<int,CancellationToken,Task<EngineResult>> read,CancellationToken token)
     {
@@ -51,14 +51,14 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     public string? SelectVaultBackup(bool exporting)
     {
         if (selectVaultBackup is not null) return selectVaultBackup(exporting);
-        var filter = "nomozip 加密密码备份|*.nvault";
+        var filter = UiText.Get("T_2e537d66280c");
         if (exporting)
         {
-            var dialog = new SaveFileDialog { Title = "导出加密密码备份", Filter = filter, DefaultExt = ".nvault", AddExtension = true,
+            var dialog = new SaveFileDialog { Title = UiText.Get("T_e22598f79cf3"), Filter = filter, DefaultExt = ".nvault", AddExtension = true,
                 FileName = "nomozip-passwords-" + DateTime.Now.ToString("yyyyMMdd"), OverwritePrompt = true };
             return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
         }
-        var input = new OpenFileDialog { Title = "导入加密密码备份", Filter = filter };
+        var input = new OpenFileDialog { Title = UiText.Get("T_18653fc51f17"), Filter = filter };
         return input.ShowDialog(owner) == true ? input.FileName : null;
     }
     public string? AskBackupPassword(bool exporting, string path)
@@ -75,23 +75,23 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     }
     public string[] SelectCompressionFiles()
     {
-        var dialog = new OpenFileDialog { Multiselect = true, Title = "添加要压缩的文件", Filter = "所有文件|*.*" };
+        var dialog = new OpenFileDialog { Multiselect = true, Title = UiText.Get("T_e8166a5ae76c"), Filter = UiText.Get("T_b0e866423d58") };
         return dialog.ShowDialog(owner) == true ? dialog.FileNames : [];
     }
     public string? SelectCompressionFolder()
     {
-        var dialog = new OpenFolderDialog { Title = "添加要压缩的文件夹" };
+        var dialog = new OpenFolderDialog { Title = UiText.Get("T_89cd547d9c4a") };
         return dialog.ShowDialog(owner) == true ? dialog.FolderName : null;
     }
     public string? SelectArchiveOutput(string format)
     {
         var options = CompressionFormats.Find(format);
         var extension = format == "sfx" ? ".exe" : options?.Extension ?? throw new ArgumentException("Unsupported compression format.", nameof(format));
-        var dialog = new SaveFileDialog { Title = "保存新压缩包", Filter = (format=="sfx"?"7z 自解压包":options!.Label+" 压缩包")+"|*"+extension, DefaultExt = extension, AddExtension = true, OverwritePrompt = false };
+        var dialog = new SaveFileDialog { Title = UiText.Get("T_408fc90e4db5"), Filter = (format=="sfx"?UiText.Get("T_0a0eaf72b488"):options!.Label+UiText.Get("T_1c5e6e08253a"))+"|*"+extension, DefaultExt = extension, AddExtension = true, OverwritePrompt = false };
         return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
     }
     public bool ConfirmArchiveReplacement(string path) => confirmEngineUpdate?.Invoke(path, "archive") ?? (MessageBox.Show(owner,
-        "目标已有压缩包：\n" + path + "\n\n新压缩包校验成功后才替换。是否继续？", "替换压缩包", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+        UiText.Get("T_19686d32f96f") + path + UiText.Get("T_5c6b348e7c5f"), UiText.Get("T_bcd9ac8817f3"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
     public Task<PasswordPromptResponse?> AskCompressionPasswordAsync(string name, IReadOnlyList<SavedPassword> saved, bool canSave)
     {
         var dialog = new PasswordDialog(name, false, saved, canSave, compressing: true) { Owner = owner };
@@ -100,12 +100,12 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     }
     public string[] SelectArchives()
     {
-        var dialog = new OpenFileDialog { Multiselect = true, Title = "添加压缩包", Filter = "常用压缩包与自解压包|*.7z;*.zip;*.rar;*.001;*.exe;*.tar;*.gz;*.bz2;*.xz|所有文件|*.*" };
+        var dialog = new OpenFileDialog { Multiselect = true, Title = UiText.Get("T_309cb972a002"), Filter = UiText.Get("T_dfaa16616d31") };
         return dialog.ShowDialog(owner) == true ? dialog.FileNames : [];
     }
     public string? SelectOutput(string current)
     {
-        var dialog = new OpenFolderDialog { Title = "选择输出目录", InitialDirectory = System.IO.Directory.Exists(current) ? current : "" };
+        var dialog = new OpenFolderDialog { Title = UiText.Get("T_537bdbd1e894"), InitialDirectory = System.IO.Directory.Exists(current) ? current : "" };
         return dialog.ShowDialog(owner) == true ? dialog.FolderName : null;
     }
     public void ShowArchiveContents(ArchiveContentsViewModel model)
@@ -136,21 +136,21 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         return dialog.ShowDialog() == true ? dialog.Edited : null;
     }
     public bool ConfirmDuplicatePassword(int count) => confirmPasswordOrganization?.Invoke("duplicate", count) ??
-        MessageBox.Show(owner, $"已有 {count} 条记录保存了相同密码。仍然保存此记录？\n\n可取消后编辑已有记录，或保存后在密码库合并重复记录。", "密码已存在", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+        MessageBox.Show(owner, UiText.Format("T_f321085e8ea2", count), UiText.Get("T_b7cddbf2761a"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
     public bool ConfirmMergePasswords(string name, int count) => confirmPasswordOrganization?.Invoke("merge", count) ??
-        MessageBox.Show(owner, $"保留“{name}”，合并其它 {count} 条相同密码记录？\n\n保留所选记录的名称、备注、分组、来源、规则和自动尝试设置，其它记录的这些信息将被移除。保留最早创建时间、最近成功时间，所有压缩包关联转到所选记录。", "合并重复密码", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
-    public ExistingFilePolicy ResolveConflict(string path) => MessageBox.Show(owner, "目标目录已有同名文件：\n" + path + "\n\n选择“是”覆盖，“否”跳过，“取消”停止当前任务。", "同名文件", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) switch
+        MessageBox.Show(owner, UiText.Format("T_e98b7cc07066", name, count), UiText.Get("T_acc3854e8b71"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+    public ExistingFilePolicy ResolveConflict(string path) => MessageBox.Show(owner, UiText.Get("T_a197a0e5c250") + path + UiText.Get("T_8bdc96d86b79"), UiText.Get("T_5b249813df54"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question) switch
     { MessageBoxResult.Yes => ExistingFilePolicy.Replace, MessageBoxResult.No => ExistingFilePolicy.Skip, _ => ExistingFilePolicy.Ask };
-    public bool ConfirmDelete(string name) => MessageBox.Show(owner, $"删除本机保存的密码“{name}”？", "删除密码", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
-    public bool ConfirmRestore() => MessageBox.Show(owner, "使用最近一次有效备份替换当前密码库？最近的新增或修改可能需要重新保存。", "恢复备份", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+    public bool ConfirmDelete(string name) => MessageBox.Show(owner, UiText.Format("T_2c2b32da9ad3", name), UiText.Get("T_9e08e64ab2ee"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+    public bool ConfirmRestore() => MessageBox.Show(owner, UiText.Get("T_0a2b7a9840b4"), UiText.Get("T_1ae486278078"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
     public string? SelectEngineUpdate()
     {
         if (selectEngineUpdate is not null) return selectEngineUpdate();
-        var dialog = new OpenFileDialog { Title = "导入引擎更新包", Filter = $"引擎更新包|ArchivePassword-engine-*-win-{EngineArchitecture.Current}.zip|ZIP 文件|*.zip" };
+        var dialog = new OpenFileDialog { Title = UiText.Get("T_7e7357ef4c49"), Filter = UiText.Format("T_9f2931076bbe", EngineArchitecture.Current) };
         return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
     }
     public bool ConfirmEngineUpdate(string version, string current) => confirmEngineUpdate?.Invoke(version, current) ?? (MessageBox.Show(owner,
-        $"安装并使用 7-Zip {version}？\n\n当前引擎：{current}。密码库保持不变；完成后可以恢复上一版本。" +
-        (Version.TryParse(current, out var currentVersion) && Version.Parse(version) < currentVersion ? "\n此更新包的版本低于当前版本。" : ""),
-        "更新解压引擎", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+        UiText.Format("T_27b9b12b34a0", version, current) +
+        (Version.TryParse(current, out var currentVersion) && Version.Parse(version) < currentVersion ? UiText.Get("T_e72f93a83aa9") : ""),
+        UiText.Get("T_984c2e351e4f"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
 }

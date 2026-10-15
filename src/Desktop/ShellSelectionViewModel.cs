@@ -24,20 +24,20 @@ public sealed partial class MainViewModel
             Page = 3; AddCompressionSources(selection.Paths);
             var first = selection.Paths[0].TrimEnd(Path.DirectorySeparatorChar);
             var parent = Path.GetDirectoryName(first);
-            var name = selection.Paths.Count == 1 && parent is not null ? Path.GetFileName(first) : "压缩文件";
+            var name = selection.Paths.Count == 1 && parent is not null ? Path.GetFileName(first) : UiText.Get("T_8b512613643a");
             CompressionOutput = Path.Combine(parent ?? selection.Paths[0], name + (Is7zCompression ? ".7z" : ".zip"));
-            CompressionMessage = $"已从右键菜单添加 {selection.Paths.Count} 个项目。确认格式、位置和密码后创建。";
+            CompressionMessage = UiText.Format("T_1c7107214dba", selection.Paths.Count);
             return;
         }
         Page = 0; Tasks.Clear(); OutputPath = selection.OutputFor(selection.Paths[0]);
         shellAction = selection.Action;
         foreach (var path in selection.Paths) Tasks.Add(new ArchiveTaskRow(path) { ShellOutputPath = selection.OutputFor(path) });
         ShellDestinationDescription = selection.Action == ShellAction.ExtractHere
-            ? "各包分别解压到所在目录。右侧显示首个目标，“浏览目录”可统一修改。"
-            : "各包分别解压到同名文件夹。右侧显示首个目标，“浏览目录”可统一修改。";
+            ? UiText.Get("T_d1de1249c3ed")
+            : UiText.Get("T_1015b5abe5e7");
         Changed(nameof(HasShellDestinations));
         Changed(nameof(IsOutputPathReadOnly));Changed(nameof(DisplayOutputPath));
-        if (!ExtractCommand.CanExecute(null)) { Banner = "未找到可用引擎，尚未解压。"; return; }
+        if (!ExtractCommand.CanExecute(null)) { Banner = UiText.Get("T_f024ef58cfce"); return; }
         ExtractCommand.Execute(null); await WaitForIdleAsync();
     }
 }

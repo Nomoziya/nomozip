@@ -23,15 +23,15 @@ public sealed partial class MainViewModel : ObservableObject
     private List<SavedPassword> allPasswords = [];
     private bool busy, initializing = true, vaultAvailable = true, autoTry = true, canSkipPasswords, settingsWritable = true, narrow;
     private string outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Extracted");
-    private string banner = "", footer = "添加压缩包以开始。", search = "", selectedEngine = "";
-    private string updateMessage = "尚未检查更新。";
+    private string banner = "", footer = UiText.Get("T_c35c7ca6d32f"), search = "", selectedEngine = "";
+    private string updateMessage = UiText.Get("T_3ec6f6baa17d");
     private int page, conflictPolicy;
     private ArchiveTaskRow? selectedTask;
     private SavedPassword? selectedPassword;
     public ObservableCollection<ArchiveTaskRow> Tasks { get; } = [];
     public ObservableCollection<SavedPassword> PasswordRows { get; } = [];
     public ObservableCollection<string> EngineVersions { get; } = [];
-    public string UpdateChannelDescription { get; private set; } = "仅安装本产品验证过的官方引擎更新包。此版本使用开发预览更新渠道。";
+    public string UpdateChannelDescription { get; private set; } = UiText.Get("T_df02d958a65f");
 
     public MainViewModel(string baseDirectory, string dataDirectory, IPasswordVault vault, WindowDialogs dialogs, string shellClassesPath = @"Software\Classes")
     {
@@ -49,7 +49,7 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 using var channel = JsonDocument.Parse(File.ReadAllText(channelPath)); updateRepository = channel.RootElement.GetProperty("repository").GetString() ?? "";
                 if (channel.RootElement.TryGetProperty("developmentSigningKey", out var development) && development.ValueKind == JsonValueKind.False)
-                    UpdateChannelDescription = "仅安装本产品验证过的官方引擎更新包。";
+                    UpdateChannelDescription = UiText.Get("T_6629a0133704");
             }
             catch (Exception exception) when (exception is JsonException or KeyNotFoundException) { }
         }
@@ -74,8 +74,8 @@ public sealed partial class MainViewModel : ObservableObject
         CheckUpdatesCommand = new AsyncCommand(CheckUpdatesAsync, () => IsIdle);
         ImportUpdateCommand = new AsyncCommand(ImportUpdateAsync, () => IsIdle && updater is not null);
         InstallUpdateCommand = new AsyncCommand(InstallOnlineUpdateAsync, () => IsIdle && updater is not null && availableUpdate is not null);
-        ApplyEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.ActivateAsync(SelectedEngineVersion, token); await RefreshEngineSelectionAsync(); UpdateMessage = "已切换解压引擎。"; }), () => IsIdle && updater is not null && SelectedEngineVersion != activeEngine && EngineVersions.Contains(SelectedEngineVersion));
-        RollbackEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.RollbackAsync(token); await RefreshEngineSelectionAsync(); UpdateMessage = "已恢复上一版本。"; }), () => IsIdle && updater is not null && EngineVersions.Contains(previousEngine));
+        ApplyEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.ActivateAsync(SelectedEngineVersion, token); await RefreshEngineSelectionAsync(); UpdateMessage = UiText.Get("T_918e0ce2177e"); }), () => IsIdle && updater is not null && SelectedEngineVersion != activeEngine && EngineVersions.Contains(SelectedEngineVersion));
+        RollbackEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.RollbackAsync(token); await RefreshEngineSelectionAsync(); UpdateMessage = UiText.Get("T_17c4979ce5bf"); }), () => IsIdle && updater is not null && EngineVersions.Contains(previousEngine));
         OpenLicensesCommand = new RelayCommand(() => OpenFolder(Path.Combine(baseDirectory, "licenses")));
         InitializeCompressionCommands();
         InitializeAssociationCommands();
@@ -87,6 +87,7 @@ public sealed partial class MainViewModel : ObservableObject
         InitializeFilenameEncodingCommands();
         InitializeNotificationCommands();
         InitializeVaultProtectionCommands();
+        InitializeLanguageCommands();
     }
     private static TaskCompletionSource CompletedSource() { var source = new TaskCompletionSource(); source.SetResult(); return source; }
     public Task WaitForIdleAsync() => idle.Task;
@@ -128,11 +129,11 @@ public sealed partial class MainViewModel : ObservableObject
     public string UpdateRepository { get => updateRepository; set { if (Set(ref updateRepository, value)) { availableUpdate = null; CommandManager.InvalidateRequerySuggested(); } } }
     public string Search { get => search; set { if (Set(ref search, value)) FilterPasswords(); } }
     public string SelectedEngineVersion { get => selectedEngine; set { if (value is not null && Set(ref selectedEngine, value)) Changed(nameof(EngineSummary)); } }
-    public string EngineSummary => string.IsNullOrWhiteSpace(activeEngine) ? "没有可用的已验证引擎。" : $"现用引擎：7-Zip {activeEngine}";
-    public string PreviousEngineSummary => string.IsNullOrWhiteSpace(previousEngine) ? "尚无可恢复的上一版本。" : $"上一版本：7-Zip {previousEngine}";
-    public string VaultSummary => VaultLocked ? "密码库已锁定，可手动输入密码" : vaultAvailable ? $"密码库中有 {allPasswords.Count(value => value.AutoTry)} 个可用密码" : "密码库无法读取，可手动输入密码";
-    public string TaskSummary => $"{Tasks.Count(value => !value.Completed)} 个待处理 · {Tasks.Count(value => value.Completed)} 个已完成";
-    public string ExtractButtonText => $"开始解压（{Tasks.Count(value => !value.Completed)}）";
+    public string EngineSummary => string.IsNullOrWhiteSpace(activeEngine) ? UiText.Get("T_b2a1d05496f2") : UiText.Format("T_9a4813174fe6", activeEngine);
+    public string PreviousEngineSummary => string.IsNullOrWhiteSpace(previousEngine) ? UiText.Get("T_dca602fdf931") : UiText.Format("T_f0b9c3e0a17b", previousEngine);
+    public string VaultSummary => VaultLocked ? UiText.Get("T_b4caab65183a") : vaultAvailable ? UiText.Format("T_357176e2a16d", allPasswords.Count(value => value.AutoTry)) : UiText.Get("T_98b23dcfbd8c");
+    public string TaskSummary => UiText.Format("T_3292893c1e67", Tasks.Count(value => !value.Completed), Tasks.Count(value => value.Completed));
+    public string ExtractButtonText => UiText.Format("T_ab3ecbe376c2", Tasks.Count(value => !value.Completed));
     public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
     public SavedPassword? SelectedPassword { get => selectedPassword; set { if (Set(ref selectedPassword, value)) { Changed(nameof(DuplicateSummary)); CommandManager.InvalidateRequerySuggested(); } } }
 
@@ -152,15 +153,15 @@ public sealed partial class MainViewModel : ObservableObject
                     if (selection is null && activeEngine.Length > 0) await updater.ActivateAsync(activeEngine);
                     await RefreshEngineSelectionAsync();
                 }
-                catch (UpdateException) { Banner = "引擎选择记录无法使用，已保留原记录。可先使用随包引擎。"; }
+                catch (UpdateException) { Banner = UiText.Get("T_1174cb4266e5"); }
             }
             Changed(nameof(EngineSummary));
             await RefreshSfxAvailabilityAsync();
             await RefreshVaultAsync();
-            if (EngineVersions.Count == 0) Banner = "未找到通过校验的解压引擎，请重新取得完整产品包。";
+            if (EngineVersions.Count == 0) Banner = UiText.Get("T_e274b7537023");
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
-        { Banner = "设置或引擎文件无法读取，请检查产品包和文件权限。"; }
+        { Banner = UiText.Get("T_b83678cb1bcf"); }
         finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanUseSfx)); CompressionCapabilitiesChanged(); CommandManager.InvalidateRequerySuggested(); }
     }
     public void AddFiles(IEnumerable<string> paths)
@@ -169,14 +170,14 @@ public sealed partial class MainViewModel : ObservableObject
         foreach (var path in paths.Where(File.Exists))
             if (!Tasks.Any(value => string.Equals(value.Path, Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase)))
                 Tasks.Add(new ArchiveTaskRow(Path.GetFullPath(path)) { ShellOutputPath = shellAction is { } action ? new ShellSelection(action, []).OutputFor(Path.GetFullPath(path)) : null });
-        Footer = "选择输出目录后开始解压。"; Changed(nameof(DisplayOutputPath));
+        Footer = UiText.Get("T_d6b35eaaa1d9"); Changed(nameof(DisplayOutputPath));
     }
     private async Task RefreshVaultAsync()
     {
         await RefreshVaultProtectionAsync();
         if (VaultLocked) { ClearVaultReferences(); CommandManager.InvalidateRequerySuggested(); return; }
         try { allPasswords = (await vault.ReadAsync()).ToList(); vaultAvailable = true; }
-        catch (VaultException exception) { allPasswords = []; vaultAvailable = false; Banner = exception.BackupAvailable ? "密码库无法读取。你可以在设置中恢复备份，或先手动输入解压密码。" : "密码库无法读取，请保留原文件。你仍可手动输入解压密码。"; }
+        catch (VaultException exception) { allPasswords = []; vaultAvailable = false; Banner = exception.BackupAvailable ? UiText.Get("T_33838fbc8ea5") : UiText.Get("T_33e9a9f2b109"); }
         RefreshPasswordGroups(); FilterPasswords(); Changed(nameof(VaultSummary)); CommandManager.InvalidateRequerySuggested();
     }
     private void FilterPasswords()
@@ -189,7 +190,7 @@ public sealed partial class MainViewModel : ObservableObject
     private Task ExtractAsync()=>ExtractTasksAsync(Tasks.Where(value=>!value.Completed).ToArray());
     private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch)
     {
-        if (directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = "请选择输出目录。"; return; }
+        if (directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = UiText.Get("T_36711b07451f"); return; }
         IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
         using var prompts=new SemaphoreSlim(1,1);
         var openResults=new List<string>();
@@ -209,7 +210,7 @@ public sealed partial class MainViewModel : ObservableObject
             var progress=new Progress<TaskUpdate>(value=>
             {
                 if(!task.Running) return;
-                task.Status=value.Progress?.PausedState==true?"已暂停":value.Message;Footer=$"{task.Name}：{task.Status}";
+                task.Status=value.Progress?.PausedState==true?UiText.Get("T_eb0c326b60ae"):value.Message;Footer=UiText.Format("Common.TaskMessage", task.Name, task.Status);
                 queueAttempts[task]=(skip,value.State=="password");RefreshQueuePasswordAction();
                 if(value.Progress is {PausedState:null} details) {task.IsIndeterminate=details.Total==0;task.Percent=details.Total==0?0:Math.Min(100,details.Completed*100.0/details.Total);}
                 else if(value.Progress is {PausedState:{} paused} state) task.IsIndeterminate=!paused && state.Total==0;
@@ -228,16 +229,16 @@ public sealed partial class MainViewModel : ObservableObject
                 task.Completed=outcome.Engine.IsSuccess;
                 task.ResultOutputPath=task.Completed?outcome.OutputPath:null;task.SelectedOutputPath=null;
                 if(task.Completed) openResults.Add(outcome.OutputPath);
-                task.Status=task.Completed?"已解压":outcome.Engine.Status=="cancelled"?"已取消":ErrorText(outcome.Engine.Code);
+                task.Status=task.Completed?UiText.Get("T_362133bf383f"):outcome.Engine.Status=="cancelled"?UiText.Get("T_a37778f17c5f"):ErrorText(outcome.Engine.Code);
                 task.Failure=task.Completed?null:outcome.Engine;
-                if(task.Failure?.Failures.Count>0) task.Status+=$" · {task.Failure.Failures.Count} 项失败";
-                if(outcome.Warning is not null) Banner+=(Banner.Length>0?"\n":"")+(batch.Count>1?task.Name+"：":"")+outcome.Warning;
-                Footer=$"{task.Name}：{task.Status}";
+                if(task.Failure?.Failures.Count>0) task.Status+=UiText.Format("T_e3848c27e720", task.Failure.Failures.Count);
+                if(outcome.Warning is not null) Banner+=(Banner.Length>0?"\n":"")+(batch.Count>1?task.Name+UiText.Get("Common.Colon"):"")+outcome.Warning;
+                Footer=UiText.Format("Common.TaskMessage", task.Name, task.Status);
                 if(outcome.Engine.Status=="cancelled") cancellation.Cancel();
             }
-            catch(OperationCanceledException) {task.Status="已取消";Footer=$"{task.Name}：已取消";}
+            catch(OperationCanceledException) {task.Status=UiText.Get("T_a37778f17c5f");Footer=UiText.Format("T_39f2e118230d", task.Name);}
             catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
-            {task.Failure=new EngineResult {Code="output_write_failed"};task.Status="处理失败，请检查文件与输出目录";Banner+=(Banner.Length>0?"\n":"")+task.Name+"：无法处理文件或写入输出，请检查位置与访问权限。";}
+            {task.Failure=new EngineResult {Code="output_write_failed"};task.Status=UiText.Get("T_9719b364c066");Banner+=(Banner.Length>0?"\n":"")+task.Name+UiText.Get("T_51bf39e5552c");}
             finally {task.Running=false;queueAttempts.Remove(task);RefreshQueuePasswordAction();Changed(nameof(TaskSummary));Changed(nameof(ExtractButtonText));}
         }
         try
@@ -246,9 +247,9 @@ public sealed partial class MainViewModel : ObservableObject
             await ExtractionQueue.RunAsync(batch,QueueConcurrency,task=>new(task.Path,Destination(task)),RunTaskAsync,cancellation.Token,queuePause);
             await RefreshVaultAsync();
         }
-        catch(OperationCanceledException) {Footer="队列已取消，未开始的任务保留。";}
+        catch(OperationCanceledException) {Footer=UiText.Get("T_e29c3af1bd15");}
         catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
-        {Banner="无法处理文件或写入设置，请检查输出目录与文件权限。";}
+        {Banner=UiText.Get("T_abcbf20aca41");}
         finally
         {
             var batchSucceeded=!cancellation.IsCancellationRequested && batch.Count>0 && batch.All(task=>task.Completed);
@@ -266,14 +267,14 @@ public sealed partial class MainViewModel : ObservableObject
         if (duplicateCount > 0 && !dialogs.ConfirmDuplicatePassword(duplicateCount)) return;
         IsBusy = true; idle = new TaskCompletionSource();
         try { await vault.SaveAsync(edited); await RefreshVaultAsync(); Banner = ""; }
-        catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "密码未能保存，原密码库已保留。"; }
+        catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = UiText.Get("T_91d7521c9927"); }
         finally { IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
     }
     private async Task DeletePasswordAsync()
     {
         if (SelectedPassword is not { } item || !dialogs.ConfirmDelete(item.Name)) return;
         try { await vault.DeleteAsync(item.Id); await RefreshVaultAsync(); }
-        catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = "密码未能删除，请检查密码库。"; }
+        catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = UiText.Get("T_e12de546f6c3"); }
     }
     private async Task RestoreVaultAsync()=>await VaultOperationAsync(async()=>
     {
@@ -284,25 +285,25 @@ public sealed partial class MainViewModel : ObservableObject
             await Task.Run(()=>protection.RestoreMasterBackupAsync(response.Current));
         }
         else await vault.RestoreBackupAsync();
-        await RefreshVaultAsync();RecordVaultActivity();Banner="已恢复密码库备份。";
+        await RefreshVaultAsync();RecordVaultActivity();Banner=UiText.Get("T_bc8c3fd9b315");
     });
     private async Task CheckUpdatesAsync() => await RunUpdateOperationAsync(async token =>
     {
-        UpdateMessage = "正在检查更新…"; availableUpdate = null;
+        UpdateMessage = UiText.Get("T_91834aebecab"); availableUpdate = null;
         UpdateRepository = GitHubEngineChannel.NormalizeRepository(UpdateRepository); await SaveSettingsAsync();
         using var client = CreateUpdateClient();
-        var officialMessage = "官方版本暂时无法查询。";
+        var officialMessage = UiText.Get("T_56d81aa40608");
         try
         {
             using var release = JsonDocument.Parse(await client.GetStringAsync("https://api.github.com/repos/ip7z/7zip/releases/latest", token));
             var latest = release.RootElement.GetProperty("tag_name").GetString();
-            officialMessage = $"官方最新稳定版本：{latest}。";
+            officialMessage = UiText.Format("T_89a718b42e08", latest);
         }
         catch (Exception exception) when (exception is System.Net.Http.HttpRequestException or JsonException or KeyNotFoundException) { }
         catch (TaskCanceledException) when (!token.IsCancellationRequested) { }
         var found = await new GitHubEngineChannel(client).CheckAsync(UpdateRepository, token);
         if (found is not null && (!Version.TryParse(activeEngine, out var currentVersion) || Version.Parse(found.Version) > currentVersion)) availableUpdate = found;
-        UpdateMessage = officialMessage + (availableUpdate is null ? "产品渠道尚无较新的引擎更新包。" : $"产品渠道提供 {availableUpdate.Version}，可下载更新。");
+        UpdateMessage = officialMessage + (availableUpdate is null ? UiText.Get("T_39d754d63791") : UiText.Format("T_8961163c6eb0", availableUpdate.Version));
         CommandManager.InvalidateRequerySuggested();
     });
     private static System.Net.Http.HttpClient CreateUpdateClient()
@@ -333,13 +334,13 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private async Task InstallPackageAsync(string path, string? expectedVersion, CancellationToken token)
     {
-        UpdateMessage = "正在校验更新包…";
+        UpdateMessage = UiText.Get("T_d0b2c6fecb84");
         var manifest = await updater!.InspectAsync(path, token);
         if (expectedVersion is not null && manifest.Version != expectedVersion) throw new UpdateException("invalid_package");
-        if (!dialogs.ConfirmEngineUpdate(manifest.Version, activeEngine)) { UpdateMessage = "已取消更新，继续使用当前引擎。"; return; }
+        if (!dialogs.ConfirmEngineUpdate(manifest.Version, activeEngine)) { UpdateMessage = UiText.Get("T_ff2a17217e7c"); return; }
         var installed = await updater.InstallAsync(path, new Progress<string>(value => UpdateMessage = value), token);
         await updater.ActivateAsync(installed, token); await RefreshEngineSelectionAsync();
-        availableUpdate = null; UpdateMessage = "更新完成，可继续解压。需要时可恢复上一版本。";
+        availableUpdate = null; UpdateMessage = UiText.Get("T_633e63054e43");
     }
     private async Task RefreshEngineSelectionAsync()
     {
@@ -348,8 +349,8 @@ public sealed partial class MainViewModel : ObservableObject
         if (state is not null)
         {
             if (versions.Contains(state.Active)) activeEngine = state.Active;
-            else if (state.Previous is not null && versions.Contains(state.Previous)) { activeEngine = state.Previous; Banner = "当前引擎未通过校验，已使用上一可用版本。请在设置中确认引擎。"; }
-            else { activeEngine = versions.FirstOrDefault() ?? ""; Banner = "所选引擎无法使用，已使用随包可用引擎。"; }
+            else if (state.Previous is not null && versions.Contains(state.Previous)) { activeEngine = state.Previous; Banner = UiText.Get("T_64b8cce1d2f1"); }
+            else { activeEngine = versions.FirstOrDefault() ?? ""; Banner = UiText.Get("T_aa7456af5f94"); }
             previousEngine = state.Previous ?? "";
         }
         SelectedEngineVersion = activeEngine; Changed(nameof(EngineSummary)); Changed(nameof(PreviousEngineSummary));
@@ -359,35 +360,35 @@ public sealed partial class MainViewModel : ObservableObject
     {
         IsBusy = true; idle = new TaskCompletionSource(); cancellation = new CancellationTokenSource();
         try { await operation(cancellation.Token); }
-        catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { UpdateMessage = "已取消更新，当前引擎保持可用。"; }
-        catch (OperationCanceledException) { UpdateMessage = "更新请求超时，请稍后重试。当前引擎保持可用。"; }
+        catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { UpdateMessage = UiText.Get("T_596d7d8dbed2"); }
+        catch (OperationCanceledException) { UpdateMessage = UiText.Get("T_c85f7e6675d5"); }
         catch (UpdateException exception) { UpdateMessage = UpdateErrorText(exception.Code); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or System.Net.Http.HttpRequestException or JsonException or KeyNotFoundException or InvalidOperationException or ArgumentException)
-        { UpdateMessage = "更新未完成，请检查网络、更新包与文件权限。当前引擎保持可用。"; }
+        { UpdateMessage = UiText.Get("T_fc4b460196dc"); }
         finally { cancellation.Dispose(); cancellation = null; IsBusy = false; idle.TrySetResult(); }
     }
     private static string UpdateErrorText(string code) => code switch
     {
-        "invalid_signature" or "invalid_manifest" or "hash_mismatch" => "更新包无法通过真实性校验，未切换引擎。请重新取得产品发布的更新包。",
-        "incompatible_update" => "此更新包与当前软件不兼容，请先更新软件。",
-        "engine_validation_failed" => "新引擎无法通过解压验证，仍使用当前引擎。",
-        "invalid_repository" => "请输入 GitHub 仓库地址，或用户名/仓库名。",
-        "no_previous_engine" => "没有可恢复的上一版本。",
-        "invalid_selection" => "引擎选择记录无法读取，原文件已保留。",
-        _ => "更新包无法使用，未切换引擎。",
+        "invalid_signature" or "invalid_manifest" or "hash_mismatch" => UiText.Get("T_cf3032ad5651"),
+        "incompatible_update" => UiText.Get("T_42893dea38ad"),
+        "engine_validation_failed" => UiText.Get("T_7ab82fcea02a"),
+        "invalid_repository" => UiText.Get("T_f08ca2748091"),
+        "no_previous_engine" => UiText.Get("T_af906e3c6e4c"),
+        "invalid_selection" => UiText.Get("T_c1956c02fc37"),
+        _ => UiText.Get("T_ee3467b3533f"),
     };
     private async Task LoadSettingsAsync()
     {
         var path = Path.Combine(dataDirectory, "settings.json");
         if (!File.Exists(path)) return;
         var settings = JsonSerializer.Deserialize<Settings>(await File.ReadAllTextAsync(path));
-        if (settings is null || settings.Version != 1) { settingsWritable = false; Banner = "设置文件版本无法识别，已使用默认设置并保留原文件。"; return; }
+        if (settings is null || settings.Version != 1) { settingsWritable = false; Banner = UiText.Get("T_14703b3eea3e"); return; }
         OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;VaultIdleIndex=settings.VaultIdleIndex;
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
         directoryRules=settings.DirectoryRules ?? new();
         if(!Enum.IsDefined(directoryRules.Location) || !Enum.IsDefined(directoryRules.Layout) || !Enum.IsDefined(directoryRules.Collision) || !Enum.IsDefined(directoryRules.Naming))
-        { directoryRules=new();settingsWritable=false;Banner="解压规则暂不可识别，已使用默认规则并保留设置文件。"; }
+        { directoryRules=new();settingsWritable=false;Banner=UiText.Get("T_9874c8d6f32d"); }
         recentOutputPaths=settings.RecentOutputPaths?.Where(path=>!string.IsNullOrWhiteSpace(path) && Path.IsPathFullyQualified(path)).Distinct(StringComparer.OrdinalIgnoreCase).Take(5).ToList() ?? [];
         Changed(nameof(DirectoryRules));Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(ExtractionSubtitle));
     }
@@ -404,12 +405,12 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private static string ErrorText(string code) => code switch
     {
-        "origin_read_failed" => "无法读取来源信息", "origin_write_failed" => "来源信息无法保留，未交付文件",
-        "filename_encoding_not_zip" => "所选文件不是 ZIP", "filename_encoding_unsupported" => "引擎不支持文件名编码",
-        "missing_volume" => "缺少分卷文件", "first_volume_required"=>"请选择 .001 首卷，并将全部分卷放在同一目录", "unsafe_path" => "压缩包包含不安全路径", "archive_read_failed" => "无法读取压缩包",
-        "wrong_password" => "密码不匹配", "password_or_corrupt" => "密码不匹配或文件损坏", "corrupt_archive" => "压缩包已损坏",
-        "unsupported_or_corrupt" => "格式不支持或文件损坏", "output_write_failed" or "write_failed" => "输出目录无法写入",
-        "worker_connection_failed" or "engine_load_failed" => "引擎无法启动", _ => "处理失败，请检查压缩包",
+        "origin_read_failed" => UiText.Get("T_893970c571a4"), "origin_write_failed" => UiText.Get("T_0a521f1e9069"),
+        "filename_encoding_not_zip" => UiText.Get("T_85d4df741e35"), "filename_encoding_unsupported" => UiText.Get("T_7ffb2c276490"),
+        "missing_volume" => UiText.Get("T_a2e6438fa7e0"), "first_volume_required"=>UiText.Get("T_6d06665b464f"), "unsafe_path" => UiText.Get("T_7aeb3a3773e5"), "archive_read_failed" => UiText.Get("T_0cc98408032b"),
+        "wrong_password" => UiText.Get("T_c62af9393001"), "password_or_corrupt" => UiText.Get("T_64acf7e7c429"), "corrupt_archive" => UiText.Get("T_449136abb0a6"),
+        "unsupported_or_corrupt" => UiText.Get("T_21777c1adb09"), "output_write_failed" or "write_failed" => UiText.Get("T_736922310835"),
+        "worker_connection_failed" or "engine_load_failed" => UiText.Get("T_ffcd45757108"), _ => UiText.Get("T_54d74bc17776"),
     };
     private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2);
     public void LoadPreview()

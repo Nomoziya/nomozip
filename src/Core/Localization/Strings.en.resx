@@ -1,0 +1,2972 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <data xml:space="preserve" name="Common.Colon">
+    <value>: </value>
+    <comment>Task result messages</comment>
+  </data>
+  <data xml:space="preserve" name="Common.TaskMessage">
+    <value>{0}: {1}</value>
+    <comment>Task result messages</comment>
+  </data>
+  <data xml:space="preserve" name="Extraction.Subtitle">
+    <value>Add archives. {0} · {1}.</value>
+    <comment>Extraction page</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Label">
+    <value>Language</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Preserved">
+    <value>Language preference could not be read or recognized. Chinese is in use; the original file was preserved.</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.RestartHint">
+    <value>Restart nomozip after saving. Current tasks and your vault are unchanged.</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Save">
+    <value>Save language</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.SaveFailed">
+    <value>Could not save the language. The original preference file was preserved. Check directory permissions or file version.</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Saved">
+    <value>Language saved. Finish current tasks, then restart nomozip.</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="Language.Title">
+    <value>Interface language</value>
+    <comment>Settings</comment>
+  </data>
+  <data xml:space="preserve" name="T_0006d696d8e1">
+    <value>Add</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_0072b72a230a">
+    <value>Self-extracting archives require 7z without volumes.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:137</comment>
+  </data>
+  <data xml:space="preserve" name="T_00882210530c">
+    <value>Cannot read the archive. Check its location and access permissions.</value>
+    <comment>src\Desktop\ArchiveBrowsingViewModel.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_015feae6f8e4">
+    <value>15 minutes</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_01a43920a4e9">
+    <value>Master password disabled. Windows user encryption is active again.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:63</comment>
+  </data>
+  <data xml:space="preserve" name="T_01ed3640ba1d">
+    <value>Each archive's directory</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_027d5093d92e">
+    <value>This backup version is not supported. Use a compatible nomozip version. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:49</comment>
+  </data>
+  <data xml:space="preserve" name="T_0346e5dcf690">
+    <value>Archive created, but the password could not be saved. Keep the password you used.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:167</comment>
+  </data>
+  <data xml:space="preserve" name="T_034a1bc397c6">
+    <value>This format supports one file only. For folders or multiple files, create a TAR first.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:181</comment>
+  </data>
+  <data xml:space="preserve" name="T_0475bef77baa">
+    <value>Add files at the archive root</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0492995d7555">
+    <value>The manifest exceeds 4 MB. Nothing was imported or written.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:174</comment>
+  </data>
+  <data xml:space="preserve" name="T_04c3e1fec3f5">
+    <value>Master password enabled and vault unlocked. Export an independent encrypted backup regularly.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_04e76a15f886">
+    <value>Extraction did not finish. These are the last check or staging results; they do not indicate completed extraction.</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_051c6d0c19aa">
+    <value>Combining the official self-extracting module…</value>
+    <comment>src\Core\SfxCompressionService.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_05c3b270a0e1">
+    <value>ZIP filename encoding</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml; src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0680a4a36ca8">
+    <value>Match</value>
+    <comment>src\Desktop\FileHashViewModel.cs:33; src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_06e5d870ebce">
+    <value>Validation failed · </value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:97</comment>
+  </data>
+  <data xml:space="preserve" name="T_0797085a2170">
+    <value>File verification</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_08d0dacf3299">
+    <value>View failed items for the selected task</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_08f316ab8225">
+    <value>Select visible items</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_09dc19185a68">
+    <value>{0} selected · {1} included (including descendants and hidden items)</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:76</comment>
+  </data>
+  <data xml:space="preserve" name="T_09eb6850c88c">
+    <value>Extracting</value>
+    <comment>src\Core\ExtractionService.cs:50; src\Core\ExtractionService.cs:59</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a0eaf72b488">
+    <value>7z self-extracting archive</value>
+    <comment>src\Desktop\WindowDialogs.cs:90</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a2b7a9840b4">
+    <value>Replace the vault with the most recent valid backup? Recent additions or changes may need to be saved again.</value>
+    <comment>src\Desktop\WindowDialogs.cs:145</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a3e6b6afda3">
+    <value>Creating self-extracting content…</value>
+    <comment>src\Core\SfxCompressionService.cs:17; src\Core\SfxCompressionService.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a521f1e9069">
+    <value>Origin information could not be preserved. No files were delivered.</value>
+    <comment>src\Desktop\MainViewModel.cs:407</comment>
+  </data>
+  <data xml:space="preserve" name="T_0a82b3e79473">
+    <value>Preparing archive volumes…</value>
+    <comment>src\Core\VolumeCompressionService.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_0b0191c79534">
+    <value>Enter the current master password.</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_0b848fcf77fa">
+    <value>Enter extraction password</value>
+    <comment>src/Desktop/PasswordDialog.xaml; src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0b9cbc023a91">
+    <value>Windows default app settings</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0be3e9aaa9fa">
+    <value>Cannot check software releases. Check your connection and retry, or visit the GitHub releases page.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:62</comment>
+  </data>
+  <data xml:space="preserve" name="T_0c3a93b2ceab">
+    <value>The self-extracting module failed validation. Download the product package again or switch engines.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:139</comment>
+  </data>
+  <data xml:space="preserve" name="T_0c62ba8e3d49">
+    <value>Writing a temporary archive…</value>
+    <comment>src\Core\ArchiveEditingService.cs:84</comment>
+  </data>
+  <data xml:space="preserve" name="T_0cc98408032b">
+    <value>Cannot read archive</value>
+    <comment>src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_0d7d878fe5ad">
+    <value>Archive task list</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0da2931b10ac">
+    <value>
+This check produces no extracted files and does not save or update vault passwords.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_0dce8699aebd">
+    <value>Files without an expected hash are calculated only, with no match verdict.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_0e5e1daffc91">
+    <value>Extracted {0} selected items, preserving the archive's folder structure.</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_0e8b1c78c5f3">
+    <value>Format</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_0f39ab20ad82">
+    <value>ZIP encryption supports ASCII passwords only. Use 7z for non-ASCII passwords.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:180</comment>
+  </data>
+  <data xml:space="preserve" name="T_1015b5abe5e7">
+    <value>Extract each archive into its own named folder. The first destination is shown on the right; Browse folder changes all destinations.</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_101b04070436">
+    <value>Cannot read the archive's origin information. Extraction has not started. Check file permissions.</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_1109737d1829">
+    <value>Unlock vault</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1174cb4266e5">
+    <value>The engine selection record cannot be used and was preserved. A bundled engine can still be used.</value>
+    <comment>src\Desktop\MainViewModel.cs:155</comment>
+  </data>
+  <data xml:space="preserve" name="T_1213fe7f3fbd">
+    <value>The vault operation failed. Check file permissions. Existing data was not cleared.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_121d1465121a">
+    <value>Unsupported compression method</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_1277dd53f347">
+    <value>{0}/{1} · {2} · {3:N0} / {4:N0} bytes</value>
+    <comment>src\Desktop\FileHashViewModel.cs:119</comment>
+  </data>
+  <data xml:space="preserve" name="T_131f0bc8b9ac">
+    <value>A new folder per archive</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_13fa566b385e">
+    <value>No volumes</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_140e85a15cfe">
+    <value>All groups</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_144cae45601e">
+    <value>Checking entered password</value>
+    <comment>src\Core\ArchiveVerificationService.cs:73</comment>
+  </data>
+  <data xml:space="preserve" name="T_14703b3eea3e">
+    <value>Unrecognized settings version. Default settings are in use; the original file was preserved.</value>
+    <comment>src\Desktop\MainViewModel.cs:384</comment>
+  </data>
+  <data xml:space="preserve" name="T_1513262149a4">
+    <value>Password, currently visible</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1554396888e3">
+    <value>The password may be incorrect, or the archive may be damaged</value>
+    <comment>src\Core\ArchiveVerificationService.cs:76</comment>
+  </data>
+  <data xml:space="preserve" name="T_15626f6b2b4d">
+    <value>Name and source</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_16ad9673c5f8">
+    <value>Processed {0} archives. Click to return to the task list for results and notices.</value>
+    <comment>src\Desktop\CompletionNotification.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_16fa87f9fdef">
+    <value>Edit archive contents: add, delete, or replace</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_172e96123d51">
+    <value>You can also drag content into this window</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_176f8887e229">
+    <value>Delete selected password</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_17a8f74d32e3">
+    <value>Start extraction, Control E</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_17c4979ce5bf">
+    <value>Previous version restored.</value>
+    <comment>src\Desktop\MainViewModel.cs:78</comment>
+  </data>
+  <data xml:space="preserve" name="T_18653fc51f17">
+    <value>Import encrypted password backup</value>
+    <comment>src\Desktop\WindowDialogs.cs:61</comment>
+  </data>
+  <data xml:space="preserve" name="T_18a17ee1b961">
+    <value>Delete or replace {0} items and write {1} items (folders include descendants).
+
+The original is replaced only after full validation. A .bak copy is kept beside it, including deleted and replaced content.
+
+Added or replaced files use the password verified for this operation. Archives with multiple passwords cannot be edited. Continue?</value>
+    <comment>src\Desktop\WindowDialogs.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_18cd155e6e88">
+    <value>Editing cancelled. The original archive is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:31; src\Desktop\MainViewModel.ArchiveEditing.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_18ce943d8b00">
+    <value>Validation failed</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_18e6101f922f">
+    <value>Reading filenames…</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_19686d32f96f">
+    <value>An archive already exists at the destination:
+</value>
+    <comment>src\Desktop\WindowDialogs.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_1a1507a7dc64">
+    <value>Add files or import a UTF-8 SHA256SUMS manifest.</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1ad4833d7451">
+    <value>Checks stable releases only. Connects to GitHub when requested; does not install automatically.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_1adbe504ab1f">
+    <value>Context menus have not been changed. Register them to extract directly or open the compression page.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_1ae486278078">
+    <value>Restore backup</value>
+    <comment>src\Desktop\WindowDialogs.cs:145</comment>
+  </data>
+  <data xml:space="preserve" name="T_1b210b6e4fb0">
+    <value>No content selected</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:76</comment>
+  </data>
+  <data xml:space="preserve" name="T_1b44be05dd6e">
+    <value>Backup data exceeds the supported limit. The original backup was not overwritten.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_1bb010c7351a">
+    <value>Archive created and validated.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_1bd1893c0900">
+    <value>Ready</value>
+    <comment>src\Desktop\Presentation.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_1c5e6e08253a">
+    <value> archive</value>
+    <comment>src\Desktop\WindowDialogs.cs:90</comment>
+  </data>
+  <data xml:space="preserve" name="T_1c6e594d100e">
+    <value>The clipboard is temporarily unavailable. Try again later.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:84</comment>
+  </data>
+  <data xml:space="preserve" name="T_1c7107214dba">
+    <value>Added {0} items from the context menu. Confirm the format, destination, and password before creating.</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_1cc5ae49da18">
+    <value>Choose or enter a full custom directory path.</value>
+    <comment>src\Desktop\ExtractionRulesDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_1cdcd2c700d0">
+    <value>New master password</value>
+    <comment>src/Desktop/MasterPasswordDialog.xaml; src/Desktop/MasterPasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1dafbd6917de">
+    <value>Test archive</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1db01e54aa3c">
+    <value>Preparing files…</value>
+    <comment>src\Core\CompressionContracts.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_1e332f6db100">
+    <value>No files can be compressed. Select content again.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:187</comment>
+  </data>
+  <data xml:space="preserve" name="T_1e50592d591a">
+    <value>Removed {0} completed tasks; output files were kept.</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_1e906c12d00b">
+    <value>Shows names and notes, never passwords. Existing records, auto-try preferences, and archive associations remain intact.</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_1f45f5276e0b">
+    <value>Failed items</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2027f78d6e16">
+    <value>Register Open with entry</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_20b5563e0a94">
+    <value>Opening encrypted backup…</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_211371dafb84">
+    <value>Vault protection</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_21777c1adb09">
+    <value>Unsupported format or damaged archive</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.cs:411</comment>
+  </data>
+  <data xml:space="preserve" name="T_218e758854ee">
+    <value>Unnamed password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:92</comment>
+  </data>
+  <data xml:space="preserve" name="T_21a07234feb3">
+    <value>Task actions</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_21bc9141d482">
+    <value>Restored {0} passwords from an independent backup. The original locked vault is at: {1}</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:89</comment>
+  </data>
+  <data xml:space="preserve" name="T_21c7bcd0de0a">
+    <value>The archive's origin information exceeds 64 KiB. Extraction has not started. Check the origin marker.</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_2207abf5d6fe">
+    <value>The self-extracting module failed validation. No destination file was created.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:190</comment>
+  </data>
+  <data xml:space="preserve" name="T_2243e0ec8b00">
+    <value>Auto-try</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2273a2975767">
+    <value>ZIP filenames</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_229445d7c9f8">
+    <value>Exported an encrypted backup of {0} passwords. The backup password is required to import it.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_22c2a744aea2">
+    <value>7z supports non-ASCII passwords and filename encryption.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:86</comment>
+  </data>
+  <data xml:space="preserve" name="T_2381499164c4">
+    <value>Open download page</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_238288d05599">
+    <value>Only one file is supported. Create a TAR first for folders or multiple files.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_23a051575c7a">
+    <value>Rules apply for this session, but settings could not be saved.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_248fdf1896ba">
+    <value>Password name</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_24d6194b0a28">
+    <value>Cannot preview this ZIP. Check its format, location, and access permissions.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_24dcae0d9315">
+    <value>Current version: {0} ({1} lightweight)</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_2575b9f84805">
+    <value>Unsupported paths or links were found. The original archive was not modified.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:39</comment>
+  </data>
+  <data xml:space="preserve" name="T_2604bd11a6e8">
+    <value>Check engine updates</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2687ccdbb1d2">
+    <value>Documentation</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2751de2a936d">
+    <value>ArchiveName_Date</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_27b9b12b34a0">
+    <value>Install and use 7-Zip {0}?
+
+Current engine: {1}. Your vault is unchanged; you can restore the previous engine afterward.</value>
+    <comment>src\Desktop\WindowDialogs.cs:153</comment>
+  </data>
+  <data xml:space="preserve" name="T_28295bf98b81">
+    <value>Confirm import ({0})</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_282d839a46b1">
+    <value>Calculate file fingerprints or compare them with expected hashes.</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2874c26396a2">
+    <value>Duplicate passwords</value>
+    <comment>src/Desktop/VaultImportDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2890ec1b2f04">
+    <value>Pending</value>
+    <comment>src\Desktop\FileHashViewModel.cs:13; src\Desktop\FileHashViewModel.cs:26; src\Desktop\FileHashViewModel.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_28a8e216754d">
+    <value>Calculating</value>
+    <comment>src\Desktop\FileHashViewModel.cs:113</comment>
+  </data>
+  <data xml:space="preserve" name="T_290f973e5ae3">
+    <value>Skip duplicates and keep local records (recommended)</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2a3c4bfdd294">
+    <value>For multiple destinations, choose a folder from the results list. Nothing opens automatically after failure or cancellation.</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2aea093e5709">
+    <value>Select files for SHA-256 calculation</value>
+    <comment>src\Desktop\FileHashViewModel.cs:39</comment>
+  </data>
+  <data xml:space="preserve" name="T_2b219f77f72a">
+    <value>Set a backup password of at least 12 characters. Non-ASCII text is supported. Use this password to import on another PC or Windows account. Keep it safe; it cannot be recovered if forgotten.</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_2b4c6e7a2c92">
+    <value>The manifest exceeds 10,000 entries. The original list was preserved.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:175</comment>
+  </data>
+  <data xml:space="preserve" name="T_2bf33abd7e1e">
+    <value>The new archive's contents failed validation. The destination file is unchanged.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:183</comment>
+  </data>
+  <data xml:space="preserve" name="T_2c2b32da9ad3">
+    <value>Delete the locally saved password “{0}”?</value>
+    <comment>src\Desktop\WindowDialogs.cs:144</comment>
+  </data>
+  <data xml:space="preserve" name="T_2cbc0219e82d">
+    <value>Selected content extracted</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_2cd0f3be8738">
+    <value>Cancel</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/FilenameEncodingDialog.xaml; src/Desktop/MasterPasswordDialog.xaml; src/Desktop/PasswordDialog.xaml; src/Desktop/VaultBackupDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2d678603a0b6">
+    <value>The vault is locked. Unlock it first.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_2e537d66280c">
+    <value>nomozip encrypted password backup|*.nvault</value>
+    <comment>src\Desktop\WindowDialogs.cs:54</comment>
+  </data>
+  <data xml:space="preserve" name="T_2e9a859d8486">
+    <value>Calculated hash (SHA-256)</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_2e9f4819e064">
+    <value>Save password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_2ff4ef3cb27c">
+    <value>Search names, notes, or sources</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_301a69c74dfc">
+    <value>Original size</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_3051a776eaa5">
+    <value>Validation passed</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.ExtractionTools.cs:97</comment>
+  </data>
+  <data xml:space="preserve" name="T_309cb972a002">
+    <value>Add archives</value>
+    <comment>src\Desktop\WindowDialogs.cs:103; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_30d420c8637f">
+    <value>Invalid expected hash</value>
+    <comment>src\Desktop\FileHashViewModel.cs:30</comment>
+  </data>
+  <data xml:space="preserve" name="T_313a3f58a787">
+    <value>Latest stable release: {0}. This development preview is newer; no downgrade is needed.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_31799ff93944">
+    <value>Creating volumes…</value>
+    <comment>src\Core\VolumeCompressionService.cs:39</comment>
+  </data>
+  <data xml:space="preserve" name="T_317cb00c1275">
+    <value>Compression progress</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_31f7ee87ce42">
+    <value>Restore from independent backup</value>
+    <comment>src\Desktop\WindowDialogs.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_320c254572c4">
+    <value>Encryption</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_326093a3324d">
+    <value>Extract selected archive</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_327149af926b">
+    <value>Extract to selected directory</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_3292893c1e67">
+    <value>{0} pending · {1} completed</value>
+    <comment>src\Desktop\MainViewModel.cs:134</comment>
+  </data>
+  <data xml:space="preserve" name="T_32993c531afb">
+    <value>Skip attempts and enter password</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_32a49d3fb90e">
+    <value>Content to compress</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_33624dd36711">
+    <value>Skipped {0} existing files.</value>
+    <comment>src\Core\ExtractionService.cs:102</comment>
+  </data>
+  <data xml:space="preserve" name="T_33838fbc8ea5">
+    <value>Cannot read the vault. Restore a backup in Settings, or enter an extraction password manually.</value>
+    <comment>src\Desktop\MainViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_33e9a9f2b109">
+    <value>Cannot read the vault. Keep the original file. You can still enter extraction passwords manually.</value>
+    <comment>src\Desktop\MainViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_343f89b343d4">
+    <value>This check produced no output files and did not update the vault. Formats without checksums are checked for readable data only.</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_348e2fde4e19">
+    <value>Open containing folder</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_34a6bbd80e45">
+    <value>Content modified · Pending extraction</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_3514845d4419">
+    <value>Content to compress</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_357176e2a16d">
+    <value>{0} available passwords in the vault</value>
+    <comment>src\Desktop\MainViewModel.cs:133</comment>
+  </data>
+  <data xml:space="preserve" name="T_357e9c21398d">
+    <value>Add a folder at the archive root</value>
+    <comment>src\Desktop\WindowDialogs.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_35e82ca44119">
+    <value>Import cancelled. The original list was preserved.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:152</comment>
+  </data>
+  <data xml:space="preserve" name="T_362133bf383f">
+    <value>Extracted</value>
+    <comment>src\Desktop\MainViewModel.cs:231</comment>
+  </data>
+  <data xml:space="preserve" name="T_362754cb43df">
+    <value>Licenses and sources</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_36711b07451f">
+    <value>Select an output directory.</value>
+    <comment>src\Desktop\MainViewModel.cs:192</comment>
+  </data>
+  <data xml:space="preserve" name="T_369f392371ab">
+    <value>Extraction finished, but the staging directory could not be removed</value>
+    <comment>src\Core\ExtractionService.cs:136</comment>
+  </data>
+  <data xml:space="preserve" name="T_36b2403fa140">
+    <value>Add password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:34; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_3751e3763d93">
+    <value>The vault is locked; auto-try is unavailable. You can enter an extraction password manually.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_37b278fca0db">
+    <value>Add archives, Control O</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_37ef7113fe3c">
+    <value>Skip existing files</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_38af3ab9fef1">
+    <value>Settings apply for this session. The original settings file was preserved.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_38f0ec2e02b3">
+    <value>Test selected archive without extracting files</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_393dd8a7f29e">
+    <value>Browse contents</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:48; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_397dc2bf2897">
+    <value>Showing {0} / {1} records</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_39932f24fe11">
+    <value>File</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:97; src\Desktop\CompressionViewModel.cs:12; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_399ee6934772">
+    <value>Group</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_39a9046f9c8c">
+    <value>Last used</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_39d754d63791">
+    <value>No newer engine update package is available in the product channel.</value>
+    <comment>src\Desktop\MainViewModel.cs:305</comment>
+  </data>
+  <data xml:space="preserve" name="T_39f2e118230d">
+    <value>{0}: Cancelled</value>
+    <comment>src\Desktop\MainViewModel.cs:238</comment>
+  </data>
+  <data xml:space="preserve" name="T_3a3e31cae862">
+    <value>Extract to Documents</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_3b1b95cffc07">
+    <value>To replace a file, select one archive file and one local file.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:21</comment>
+  </data>
+  <data xml:space="preserve" name="T_3bca99f1c692">
+    <value>Extracted · Validation passed</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:97</comment>
+  </data>
+  <data xml:space="preserve" name="T_3cb0bad98799">
+    <value>Preview cancelled. The original encoding was kept.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:40; src\Desktop\FilenameEncodingViewModel.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_3da8a8f7933a">
+    <value>Open result folders after the entire batch succeeds</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_3dcae718826e">
+    <value>No stable lightweight installer is available for this architecture.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_3e0c4202739b">
+    <value>Cannot open the browser. Visit https://github.com/Nomoziya/nomozip/releases for stable software releases.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:38</comment>
+  </data>
+  <data xml:space="preserve" name="T_3e40ded6412e">
+    <value>
+The previous password could not be fully verified. It may be incorrect, or the archive may be damaged.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_3ec6f6baa17d">
+    <value>Updates have not been checked.</value>
+    <comment>src\Desktop\MainViewModel.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_3eda1af52f71">
+    <value>Export cancelled. The original manifest was preserved.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:167</comment>
+  </data>
+  <data xml:space="preserve" name="T_3fd47edce45b">
+    <value>Close</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml; src/Desktop/ExtractionFailureDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_408fc90e4db5">
+    <value>Save new archive</value>
+    <comment>src\Desktop\WindowDialogs.cs:90</comment>
+  </data>
+  <data xml:space="preserve" name="T_4122031c2fec">
+    <value>Validating new archive…</value>
+    <comment>src\Core\CompressionContracts.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_418a8ca65a39">
+    <value>Preview password import</value>
+    <comment>src/Desktop/VaultImportDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_422af596a866">
+    <value>Expected SHA-256 for the selected file</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_42893dea38ad">
+    <value>This update package is incompatible with the current software. Update the application first.</value>
+    <comment>src\Desktop\MainViewModel.cs:372</comment>
+  </data>
+  <data xml:space="preserve" name="T_43349fa473cb">
+    <value>Smart folders: extract a single file or an existing root folder directly into the selected location; otherwise create a containing folder. Existing root folders merge according to the file conflict policy.</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_43cf63c5c302">
+    <value>Line {0}</value>
+    <comment>src\Desktop\FileHashViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_43d1355757d4">
+    <value>Tasks with separate base destinations can run together. Identical or overlapping destinations run in list order.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_43dec518571d">
+    <value>Save lock settings</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_440f5cfd4823">
+    <value>Enable master password</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_441ac4c7443f">
+    <value>Japanese · Shift-JIS / CP932</value>
+    <comment>src\Core\ZipFilenameEncoding.cs:7</comment>
+  </data>
+  <data xml:space="preserve" name="T_446518e7ac65">
+    <value>Calculate / verify</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_449136abb0a6">
+    <value>Damaged archive</value>
+    <comment>src\Desktop\MainViewModel.cs:410</comment>
+  </data>
+  <data xml:space="preserve" name="T_449c0abb4f19">
+    <value>Archive updated. Original copy: </value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:45</comment>
+  </data>
+  <data xml:space="preserve" name="T_45da2d9c85d1">
+    <value>Add folder</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4628f73171ac">
+    <value>New archive location</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_46482d9011f6">
+    <value>SHA-256 progress for the current file</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4796f4576711">
+    <value>GitHub is temporarily limiting requests. Check for software updates later.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:60</comment>
+  </data>
+  <data xml:space="preserve" name="T_47b1d013205f">
+    <value>Remove this app's entries</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_47c6a0bd6bc3">
+    <value>Cannot prepare the edit. Check files, directories, and permissions. The original archive is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:47</comment>
+  </data>
+  <data xml:space="preserve" name="T_4828c2a4bf97">
+    <value>Could not write the manifest. The original file was preserved.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:169</comment>
+  </data>
+  <data xml:space="preserve" name="T_488a647c5714">
+    <value>If a new directory already exists</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_49012ae3beb3">
+    <value>Add files or import a manifest, then select Calculate.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_4922bfc42b52">
+    <value>Could not import the backup. Check the file and permissions. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_4927a97ee0e8">
+    <value>Stable release {0} is available. Open the download page for release notes and installation files.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_498e1d59b4d7">
+    <value>Exit</value>
+    <comment>src\Desktop\MainWindow.xaml.cs:77</comment>
+  </data>
+  <data xml:space="preserve" name="T_49a64a97cdbb">
+    <value>1 minute</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_49c8ef416bd3">
+    <value>Restore previous version</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_49d677742458">
+    <value>Register nomozip in Open with for 7z, ZIP, and RAR files.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_49f546094d96">
+    <value>Windows file integration</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4a8d6841b402">
+    <value>Confirm import</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4ac1c3d04751">
+    <value>Create a new vault with {0} passwords from the verified backup?
+
+The current locked vault will be kept as an encrypted copy. Records added after the backup will not be restored. Next, choose a new master password.</value>
+    <comment>src\Desktop\WindowDialogs.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_4b1aa2b0c024">
+    <value>Import SHA-256 manifest</value>
+    <comment>src\Desktop\FileHashViewModel.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_4b67ce3665b0">
+    <value>Requires the current master password. After disabling, local passwords are encrypted for the current Windows user.</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:16</comment>
+  </data>
+  <data xml:space="preserve" name="T_4ca923709bb9">
+    <value>Remove context menus</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4d9ff0ad6b7c">
+    <value>Copy calculated SHA-256 for selected file</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4e3a77b660b6">
+    <value>Open selected folder</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4e66c76ffe75">
+    <value>Add files or folders, then choose a format and destination.</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4eafa9e925b3">
+    <value>Custom</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_4fa012ab89e1">
+    <value>Enter a password to browse contents</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_4fd9ef5e6208">
+    <value>Removes tasks from the list only; output files are kept.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_50fcfc7f7af4">
+    <value>Save master password</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_51697b367131">
+    <value>Register context menus</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_519368274ae1">
+    <value>Determining extraction directory</value>
+    <comment>src\Core\ExtractionService.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_51bf39e5552c">
+    <value>: Cannot process files or write output. Check the location and access permissions.</value>
+    <comment>src\Desktop\MainViewModel.cs:240</comment>
+  </data>
+  <data xml:space="preserve" name="T_51cf0d31ab02">
+    <value>Search archive paths</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_51e878e93241">
+    <value>Fully validating self-extracting archive…</value>
+    <comment>src\Core\SfxCompressionService.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_523a85904c77">
+    <value>Output directory</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5266972ebb28">
+    <value>Default (engine setting)</value>
+    <comment>src\Core\ZipFilenameEncoding.cs:6</comment>
+  </data>
+  <data xml:space="preserve" name="T_52d25a9e30ba">
+    <value>About</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_537bdbd1e894">
+    <value>Select output directory</value>
+    <comment>src\Desktop\WindowDialogs.cs:108</comment>
+  </data>
+  <data xml:space="preserve" name="T_54036ebd63cd">
+    <value>Preserving download origin information</value>
+    <comment>src\Core\ExtractionService.cs:82</comment>
+  </data>
+  <data xml:space="preserve" name="T_5473b9b24a75">
+    <value>Volumes</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_54d74bc17776">
+    <value>Processing failed. Check the archive</value>
+    <comment>src\Desktop\MainViewModel.cs:412</comment>
+  </data>
+  <data xml:space="preserve" name="T_55373b6437b7">
+    <value>Extract to Desktop</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_554ae194934c">
+    <value>At most 10,000 files can be added.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:93</comment>
+  </data>
+  <data xml:space="preserve" name="T_5554bde4849d">
+    <value>Forgot master password: restore backup</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_55f9d9c65be9">
+    <value>Showing {0} / {1} items · {2} files · {3} folders</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:87</comment>
+  </data>
+  <data xml:space="preserve" name="T_5679ccc535d2">
+    <value>Verifying that the new engine can extract files…</value>
+    <comment>src\Infrastructure\EngineUpdateService.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_56bba533e12e">
+    <value>Checking stable software releases…</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_56d81aa40608">
+    <value>The official version cannot be checked right now.</value>
+    <comment>src\Desktop\MainViewModel.cs:294</comment>
+  </data>
+  <data xml:space="preserve" name="T_571579b0c6a1">
+    <value>Extraction rules…</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_57212d030f7e">
+    <value>Choose a validated local engine</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_57f456082416">
+    <value>Archive name</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_57f471c35128">
+    <value>Copied the selected file's SHA-256.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:83</comment>
+  </data>
+  <data xml:space="preserve" name="T_583afe53968f">
+    <value>Exporting calculated hashes…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:160</comment>
+  </data>
+  <data xml:space="preserve" name="T_58a15ee482f7">
+    <value>Idle lock settings saved.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_58be85ec225f">
+    <value>Use selected version</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_58c5744db746">
+    <value>
+Browsing only. To save a new password, save it after successful extraction.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:51</comment>
+  </data>
+  <data xml:space="preserve" name="T_58db5ae70926">
+    <value>{0}: Read {1} items</value>
+    <comment>src\Desktop\ArchiveBrowsingViewModel.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_5905071d43b5">
+    <value>Apply to this task</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_596d7d8dbed2">
+    <value>Update cancelled. The current engine remains available.</value>
+    <comment>src\Desktop\MainViewModel.cs:362</comment>
+  </data>
+  <data xml:space="preserve" name="T_598941f23ed0">
+    <value>Confirm new master password</value>
+    <comment>src/Desktop/MasterPasswordDialog.xaml; src/Desktop/MasterPasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_599d258c41d7">
+    <value>New extraction directory conflicts</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_59a916550385">
+    <value>Select files or folders; folders include all descendants.</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_5a21ce30671c">
+    <value>{0}: Applied {1} to this task's filenames only.</value>
+    <comment>src\Desktop\MainViewModel.FilenameEncoding.cs:23</comment>
+  </data>
+  <data xml:space="preserve" name="T_5a2d65d7ef82">
+    <value>Downloading update package: {0:N0} KB…</value>
+    <comment>src\Infrastructure\GitHubEngineChannel.cs:80</comment>
+  </data>
+  <data xml:space="preserve" name="T_5a4540c9b21b">
+    <value>Browse folder</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5b249813df54">
+    <value>Existing files</value>
+    <comment>src\Desktop\WindowDialogs.cs:142; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5b76f8110c9e">
+    <value>Delete selected content (including descendants)</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5b79de668b3b">
+    <value>No matching self-extracting module is available for this engine. Choose a bundled engine.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_5c6b348e7c5f">
+    <value>
+
+The existing archive is replaced only after validation. Continue?</value>
+    <comment>src\Desktop\WindowDialogs.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_5d8111695438">
+    <value>Not set. Enter a password or choose a saved one when creating.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_5d83503a78bc">
+    <value>Cancel queue</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_5d89c8f8c810">
+    <value>Save to vault after successful compression</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_5db8427e5209">
+    <value>Archive contents list</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5dcf192a65bc">
+    <value>Available engines</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5e30948d6a8b">
+    <value>Archive format</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5e541773a96b">
+    <value>Task actions menu</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5e556d867f29">
+    <value>Edit archive contents menu</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5ee7b0789fb7">
+    <value>Current master password</value>
+    <comment>src/Desktop/MasterPasswordDialog.xaml; src/Desktop/MasterPasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_5f5069faffe1">
+    <value>This file is not a ZIP archive.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_5fe1672f7244">
+    <value>Reading archive contents</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_61375d555d33">
+    <value>Validation result</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_619d8d493bd0">
+    <value>Password backup and import operation finished.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:59</comment>
+  </data>
+  <data xml:space="preserve" name="T_61a734266cbd">
+    <value>Select an encoding, then preview filenames.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:12</comment>
+  </data>
+  <data xml:space="preserve" name="T_61e8ff181802">
+    <value>Export encrypted backup</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_62dc5851e8e4">
+    <value>nomozip context menus registered. On Windows 11, use Show more options. Existing default apps are unchanged.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:33</comment>
+  </data>
+  <data xml:space="preserve" name="T_6320b4a8722a">
+    <value>Status</value>
+    <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6326197fcda1">
+    <value>Apply rules</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_633e63054e43">
+    <value>Update complete. Extraction is available; the previous engine can be restored if needed.</value>
+    <comment>src\Desktop\MainViewModel.cs:342</comment>
+  </data>
+  <data xml:space="preserve" name="T_6341079415f8">
+    <value>Creating volumes; destination files are unchanged…</value>
+    <comment>src\Core\VolumeCompressionService.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_63d90d977348">
+    <value>Copy</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_640f915421fe">
+    <value>Failed extraction items</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_642a46d4d83a">
+    <value>Pause requested. Waiting tasks will not start; running tasks pause at the next checkpoint.</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_6452568341e4">
+    <value>Item {0} (the engine did not provide a path)</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:23</comment>
+  </data>
+  <data xml:space="preserve" name="T_64acf7e7c429">
+    <value>Incorrect password or damaged file</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\ExtractionFailureDialog.xaml.cs:27; src\Desktop\MainViewModel.cs:410</comment>
+  </data>
+  <data xml:space="preserve" name="T_64b8cce1d2f1">
+    <value>The current engine failed validation. The previous available engine is in use. Check the engine in Settings.</value>
+    <comment>src\Desktop\MainViewModel.cs:351</comment>
+  </data>
+  <data xml:space="preserve" name="T_651f27447015">
+    <value>Software updates</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_652879ddcefd">
+    <value>The backup password must be at least 12 characters.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:50; src\Desktop\VaultBackupDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_6586bdce46a3">
+    <value>Result folders from successful extraction</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_65c10d80f1f3">
+    <value>For garbled legacy ZIP names only. UTF-8 flags and valid Unicode names take priority. Password encoding is unchanged.</value>
+    <comment>src\Desktop\FilenameEncodingDialog.xaml.cs:12; src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_65c90110f894">
+    <value>Add a folder at the root</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_65e10632e6f4">
+    <value>Invalid volume size. Check the value and unit.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:188</comment>
+  </data>
+  <data xml:space="preserve" name="T_6629a0133704">
+    <value>Only official engine updates validated for this product are installed.</value>
+    <comment>src\Desktop\MainViewModel.cs:52</comment>
+  </data>
+  <data xml:space="preserve" name="T_667e8db76038">
+    <value>Fully validating all volumes…</value>
+    <comment>src\Core\VolumeCompressionService.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_67c260d2140d">
+    <value>Archive contents changed or the selection is invalid. Browse again and select the content.</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_6809b15a9372">
+    <value>{0}, {1}, {2}</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_687847379040">
+    <value>{0}, {1}: {2}</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_692c042a909e">
+    <value>Reading checksum manifest…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:138</comment>
+  </data>
+  <data xml:space="preserve" name="T_6a2d72e11b34">
+    <value>This archive uses multiple passwords and cannot be edited yet. Browsing and extraction remain available.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_6b1b473569fa">
+    <value>Tasks are running. Cancel them and exit?</value>
+    <comment>src\Desktop\MainWindow.xaml.cs:77</comment>
+  </data>
+  <data xml:space="preserve" name="T_6b444e0f3275">
+    <value>Change master password</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6bd33a03586f">
+    <value>Manage vault</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6bea77acefb3">
+    <value>Normal</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6c93c9b1cf76">
+    <value>Select replacement file (preserve archive path)</value>
+    <comment>src\Desktop\WindowDialogs.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_6d06665b464f">
+    <value>Select the first .001 volume and keep all volumes in the same directory</value>
+    <comment>src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_6d5d0fcd5f97">
+    <value>Enter the master password to read and auto-try vault passwords. If cancelled, you can still enter extraction passwords manually.</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:16</comment>
+  </data>
+  <data xml:space="preserve" name="T_6d9f3b6f019c">
+    <value>Lock vault</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6dd88ad49bac">
+    <value>Extract into each archive's directory</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_6ddbd4ca96f6">
+    <value>UTF-8 names take priority; password encoding is unchanged.</value>
+    <comment>src\Desktop\FilenameEncodingDialog.xaml.cs:12</comment>
+  </data>
+  <data xml:space="preserve" name="T_6df0322e460d">
+    <value>Encrypt filenames (7z only)</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6e2433d1240e">
+    <value>Import checksum manifest</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_6e38ffe34b8b">
+    <value>Restore and encrypt</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_6e7687ea3b36">
+    <value>Concurrent extraction tasks</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_70ad689f1006">
+    <value>The vault operation did not finish. Keep the original file or use an independent encrypted backup.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_70b6cd556861">
+    <value>Checking archive</value>
+    <comment>src\Core\ArchiveVerificationService.cs:29; src\Core\ArchiveVerificationService.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_70dee1e7db4e">
+    <value>Vertical scroll thumb</value>
+    <comment>src/Desktop/App.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_70e9460bb754">
+    <value>Volumes and archives with self-extracting prefixes cannot be edited yet. The original archive is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_70fba17fffb7">
+    <value>Unlock</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_71b6e7bd57a8">
+    <value>Validation cancelled.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:101</comment>
+  </data>
+  <data xml:space="preserve" name="T_720075fc0e18">
+    <value>Open with entries registered; default apps were not changed. Windows may ask which app to use on the first double-click. To keep the previous default, choose that app in the system dialog. You can also choose nomozip from Open with for one use.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_724d7a12cc56">
+    <value>Archive filename contains</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_736922310835">
+    <value>Cannot write to output directory</value>
+    <comment>src\Desktop\MainViewModel.cs:411</comment>
+  </data>
+  <data xml:space="preserve" name="T_73cca7f7d0fc">
+    <value>No success notification after failure or cancellation. Click a notification to return to tasks. Windows may hide it according to notification settings.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_73d97e01d24e">
+    <value>No matching files or folders</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_74953ee22008">
+    <value>Extract directly</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_7567f17ec844">
+    <value>Each archive's directory</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_7600be19c5ac">
+    <value>Extraction finished, but Windows did not accept the notification. View results in the task list.</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_76756534e51e">
+    <value>Cancelled. The destination file is unchanged.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:171</comment>
+  </data>
+  <data xml:space="preserve" name="T_76aca1ff80df">
+    <value>Extracted · </value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_7701884823bd">
+    <value>
+This archive encrypts filenames. A password is required to browse its contents.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:50</comment>
+  </data>
+  <data xml:space="preserve" name="T_77176f743984">
+    <value>Creating encrypted password backup…</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_77316765ebb8">
+    <value>Enter the backup password.</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_776af38fd768">
+    <value>Add files at the archive root</value>
+    <comment>src\Desktop\WindowDialogs.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_77c11f78b11a">
+    <value>Preview passwords</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_77e1ea5c5688">
+    <value>Path</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7811b89425d9">
+    <value>Invalid directory format. Enter it again.</value>
+    <comment>src\Desktop\ExtractionRulesDialog.xaml.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_78deea3a0b97">
+    <value>Create archive, Control Shift C</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_79bedfdfce1a">
+    <value>Confirm archive edit</value>
+    <comment>src\Desktop\WindowDialogs.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_7a325297a9db">
+    <value>The master password must contain 12 to 16,384 characters.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_7a4c72a941be">
+    <value>Invalid format or path in manifest{0}. Use a UTF-8 SHA256SUMS manifest.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:179</comment>
+  </data>
+  <data xml:space="preserve" name="T_7ab82fcea02a">
+    <value>The new engine failed extraction validation. The current engine remains in use.</value>
+    <comment>src\Desktop\MainViewModel.cs:373</comment>
+  </data>
+  <data xml:space="preserve" name="T_7aeb3a3773e5">
+    <value>The archive contains unsafe paths</value>
+    <comment>src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_7b9e83a283ae">
+    <value>Cancel compression</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7c568abbd672">
+    <value>Not encrypted</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:99</comment>
+  </data>
+  <data xml:space="preserve" name="T_7c7802d8adae">
+    <value>Folder</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:97; src\Desktop\CompressionViewModel.cs:12</comment>
+  </data>
+  <data xml:space="preserve" name="T_7d59743b0281">
+    <value>View failed items</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7de7bf85254d">
+    <value>Extract to named folder</value>
+    <comment>src\Infrastructure\ShellMenuService.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_7e41da13f3e7">
+    <value>Replace selected file (preserve path)</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7e6b31a9f368">
+    <value>Archive path</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_7e7357ef4c49">
+    <value>Import engine update</value>
+    <comment>src\Desktop\WindowDialogs.cs:149</comment>
+  </data>
+  <data xml:space="preserve" name="T_7eb10fe1ce8c">
+    <value>Set master password for the restored vault</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_7f8c82c8d8b8">
+    <value>TAR bundles files without compression. Encryption, volumes, and EXE are unavailable.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:88</comment>
+  </data>
+  <data xml:space="preserve" name="T_7ffb2c276490">
+    <value>The engine does not support filename encoding</value>
+    <comment>src\Desktop\MainViewModel.cs:408</comment>
+  </data>
+  <data xml:space="preserve" name="T_807416f416c4">
+    <value>Extract only the archive selected in the task list. You can retry after failure or cancellation.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_80eae77ee4ed">
+    <value>Expected hash (optional, 64 hexadecimal digits)</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8154b012eaf1">
+    <value>Use this password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_815a722179ba">
+    <value>Enter the password used when exporting. Next, preview records and choose how to handle duplicates. The vault is updated only after confirmation.</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_817bc97cce36">
+    <value>Could not change the entries. Check permissions for the current Windows user.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:45</comment>
+  </data>
+  <data xml:space="preserve" name="T_825e66873fc3">
+    <value>{0} items passed · {1} failed</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_827f88b30e62">
+    <value>Incorrect backup password or unreadable backup file. The original vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:54</comment>
+  </data>
+  <data xml:space="preserve" name="T_83f46410c4f4">
+    <value>Cancelled. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_8405a7f60c73">
+    <value>Container name</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_84b861a4e1f9">
+    <value>Preview names</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_84cffd4304ee">
+    <value>Backup password</value>
+    <comment>src/Desktop/VaultBackupDialog.xaml; src/Desktop/VaultBackupDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_84d584fcfc26">
+    <value>Set archive password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_85d4df741e35">
+    <value>The selected file is not a ZIP</value>
+    <comment>src\Desktop\MainViewModel.cs:408</comment>
+  </data>
+  <data xml:space="preserve" name="T_85f2e2eaa295">
+    <value>Delivering volume {0}/{1}…</value>
+    <comment>src\Core\VolumeCompressionService.cs:60</comment>
+  </data>
+  <data xml:space="preserve" name="T_861a9645de18">
+    <value>Size per volume (integer)</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8672864e9041">
+    <value>Ultra</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8680cb4ca45a">
+    <value>Archive path conflict. Use Replace selected file to replace existing content.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:38</comment>
+  </data>
+  <data xml:space="preserve" name="T_872f46af0698">
+    <value>Create a 7z self-extracting EXE</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_88a399b911e0">
+    <value>Search file or folder paths in the archive</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_88bab2e8302f">
+    <value>Existing file policy</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_893970c571a4">
+    <value>Cannot read origin information</value>
+    <comment>src\Desktop\MainViewModel.cs:407</comment>
+  </data>
+  <data xml:space="preserve" name="T_8961163c6eb0">
+    <value>Product channel offers {0}, available to download.</value>
+    <comment>src\Desktop\MainViewModel.cs:305</comment>
+  </data>
+  <data xml:space="preserve" name="T_89a718b42e08">
+    <value>Latest official stable version: {0}.</value>
+    <comment>src\Desktop\MainViewModel.cs:299</comment>
+  </data>
+  <data xml:space="preserve" name="T_89cd547d9c4a">
+    <value>Select a folder to compress</value>
+    <comment>src\Desktop\WindowDialogs.cs:83</comment>
+  </data>
+  <data xml:space="preserve" name="T_8a03bbcdc75e">
+    <value>Enter browsing password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b512613643a">
+    <value>Compress files</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b6f82263946">
+    <value>Cannot test the archive. Check its location and access permissions.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:102</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b8256cab6ef">
+    <value>SHA-256 file list</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8b8de629cdd2">
+    <value>No matching passwords. Adjust the search or add a password.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_8bdc96d86b79">
+    <value>
+
+Choose Yes to overwrite, No to skip, or Cancel to stop the current task.</value>
+    <comment>src\Desktop\WindowDialogs.cs:142</comment>
+  </data>
+  <data xml:space="preserve" name="T_8c321cda91b6">
+    <value>nomozip software releases and 7-Zip engine updates are checked separately.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8cbbf31c44ce">
+    <value>Context menus</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8d0a0f895554">
+    <value>These menu entries belong to another application location. Existing registration was preserved.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_8e2db755c2ae">
+    <value>Add nomozip to file and folder context menus: extract archives directly, or open files and folders on the compression page. On Windows 11, use Show more options. These entries are separate from Open with and do not change default apps.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8e836a56fd8c">
+    <value>Calculate file SHA-256 hashes, compare expected values, or import and export checksum manifests.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8e8fba138ab2">
+    <value>Cancelled. Temporary output from this operation was removed.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_8edd2a535003">
+    <value>Extract directly into selected location</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8ef472040a2a">
+    <value>Saved passwords</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8f10dc147500">
+    <value>Archive</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8f878f87c255">
+    <value>Choose a result location to open. One directory opens at a time.</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8fdf99488775">
+    <value>Export an independent encrypted backup before enabling a master password. If you forget it, only that backup and its separate password can restore data. Later additions are not included.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_8feb2108c770">
+    <value>Could not export the backup. Check the save location. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_8febe1105ae9">
+    <value>Keep both; add duplicates as new records</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_901f39739e0d">
+    <value>Skip duplicates</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_90b5a4f6315a">
+    <value>Validation cancelled</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.ExtractionTools.cs:97; src\Desktop\MainViewModel.ExtractionTools.cs:101</comment>
+  </data>
+  <data xml:space="preserve" name="T_9123fb442035">
+    <value>Filename encoding for the selected archive</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_91834aebecab">
+    <value>Checking updates…</value>
+    <comment>src\Desktop\MainViewModel.cs:291</comment>
+  </data>
+  <data xml:space="preserve" name="T_918e0ce2177e">
+    <value>Extraction engine switched.</value>
+    <comment>src\Desktop\MainViewModel.cs:77</comment>
+  </data>
+  <data xml:space="preserve" name="T_91d7521c9927">
+    <value>Could not save the password. The original vault was preserved.</value>
+    <comment>src\Desktop\MainViewModel.cs:269</comment>
+  </data>
+  <data xml:space="preserve" name="T_920a69aef13d">
+    <value>Extraction finished, but the password could not be saved. Check the vault.</value>
+    <comment>src\Core\ExtractionService.cs:122</comment>
+  </data>
+  <data xml:space="preserve" name="T_924799380463">
+    <value>Vault locked.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:67</comment>
+  </data>
+  <data xml:space="preserve" name="T_9338f02fd12a">
+    <value>Passwords stay on this PC</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_959216b78f90">
+    <value>Continue extraction</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_95b303abcdd4">
+    <value>These entries belong to another application location. Existing registration was preserved.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_95b8d5f6906e">
+    <value>Incorrect master password or damaged vault. The original file is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:53</comment>
+  </data>
+  <data xml:space="preserve" name="T_968608e4ff51">
+    <value>Main navigation</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_96e6f5b1e07a">
+    <value>Imported {0} expected hashes. Select Calculate to verify.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:150</comment>
+  </data>
+  <data xml:space="preserve" name="T_9719b364c066">
+    <value>Processing failed. Check the file and output directory</value>
+    <comment>src\Desktop\MainViewModel.cs:240</comment>
+  </data>
+  <data xml:space="preserve" name="T_97390316e0b1">
+    <value>Run together</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_980e907463c6">
+    <value>Backup file: </value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_984c2e351e4f">
+    <value>Update extraction engine</value>
+    <comment>src\Desktop\WindowDialogs.cs:155</comment>
+  </data>
+  <data xml:space="preserve" name="T_9874c8d6f32d">
+    <value>Unrecognized extraction rules. Default rules are in use; the settings file was preserved.</value>
+    <comment>src\Desktop\MainViewModel.cs:390</comment>
+  </data>
+  <data xml:space="preserve" name="T_98b23dcfbd8c">
+    <value>Cannot read the vault; enter passwords manually</value>
+    <comment>src\Desktop\MainViewModel.cs:133</comment>
+  </data>
+  <data xml:space="preserve" name="T_98b68837365d">
+    <value>{0} · {1} calculated · {2} matching · {3} mismatched · {4} unreadable</value>
+    <comment>src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_9a4813174fe6">
+    <value>Current engine: 7-Zip {0}</value>
+    <comment>src\Desktop\MainViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_9a7734609eda">
+    <value>Choose a saved password</value>
+    <comment>src/Desktop/PasswordDialog.xaml; src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9b3b93d7e3fd">
+    <value>Custom volume size, positive integer</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9b54fb7636af">
+    <value>Vault</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9bd11dda28fc">
+    <value>Never used</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9c24f5fd0bf1">
+    <value>Could not change context menus. Check the application location and current user permissions.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_9c337a89dac9">
+    <value>Password notes</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9c6a9194d6f5">
+    <value>Overwrite existing files</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9d35f5dfdf51">
+    <value>Vault unlocked; master password protection is active.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:63</comment>
+  </data>
+  <data xml:space="preserve" name="T_9d615b3a5cd9">
+    <value>Search password names or notes</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9d9a5e5793d1">
+    <value>5 minutes</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9e08e64ab2ee">
+    <value>Delete password</value>
+    <comment>src\Desktop\WindowDialogs.cs:144</comment>
+  </data>
+  <data xml:space="preserve" name="T_9e09420bc999">
+    <value>Action</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9f07f55881a9">
+    <value>Invalid nomozip encrypted backup or unreadable records. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:52</comment>
+  </data>
+  <data xml:space="preserve" name="T_9f2931076bbe">
+    <value>Engine update package|ArchivePassword-engine-*-win-{0}.zip|ZIP files|*.zip</value>
+    <comment>src\Desktop\WindowDialogs.cs:149</comment>
+  </data>
+  <data xml:space="preserve" name="T_9f39374682b9">
+    <value>Merge into existing directory using file conflict policy</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_9fd0e26026e2">
+    <value>Damaged file</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_a01a28d147ac">
+    <value>30 minutes</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a01cf40b28cc">
+    <value>
+Verified passwords apply to the corresponding files. Enter another password for the remaining failed items; files may also be damaged.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:29</comment>
+  </data>
+  <data xml:space="preserve" name="T_a047e3a4eafa">
+    <value>The vault is locked. Unlock it to view saved passwords.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:15</comment>
+  </data>
+  <data xml:space="preserve" name="T_a0bdfdcc647c">
+    <value>The manifest gives different hashes for the same file. The original list was preserved.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:178</comment>
+  </data>
+  <data xml:space="preserve" name="T_a147ebf3581a">
+    <value>Extract</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a16a60f9eb3b">
+    <value>Preview and set filename encoding for selected ZIP</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a194128b2939">
+    <value>Remove selected</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a197a0e5c250">
+    <value>Files with the same names already exist at the destination:
+</value>
+    <comment>src\Desktop\WindowDialogs.cs:142</comment>
+  </data>
+  <data xml:space="preserve" name="T_a199bcc29a45">
+    <value>Passwords are encrypted locally for the current Windows user.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_a1fca7bde5d2">
+    <value>Extract selected</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a22879cda61a">
+    <value>Compress</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a24b356d60ba">
+    <value>Smart folder</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a2cd3d94cd10">
+    <value>{0} other records have the same password as the selected entry and can be merged.</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_a2e6438fa7e0">
+    <value>Missing archive volume</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\MainViewModel.cs:409</comment>
+  </data>
+  <data xml:space="preserve" name="T_a3067144f50a">
+    <value>GitHub update repository</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a3610c2b94b0">
+    <value>Automatically try this password during extraction</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a37778f17c5f">
+    <value>Cancelled</value>
+    <comment>src\Desktop\FileHashViewModel.cs:127; src\Desktop\FileHashViewModel.cs:130; src\Desktop\MainViewModel.cs:231; src\Desktop\MainViewModel.cs:238</comment>
+  </data>
+  <data xml:space="preserve" name="T_a3c974892464">
+    <value>Clear selection</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a42a77297e7c">
+    <value>Cannot read the manifest, or its paths or UTF-8 encoding are invalid. The original list was preserved.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:154</comment>
+  </data>
+  <data xml:space="preserve" name="T_a465dc5d7781">
+    <value>Automatically try saved passwords</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a49163724694">
+    <value>Volume size; M means MiB, G means GiB</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a4e66e7a3fca">
+    <value>Custom directory</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a50309ed2709">
+    <value>Mismatch</value>
+    <comment>src\Desktop\FileHashViewModel.cs:33; src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_a536dcaf5cef">
+    <value>Volume size unit</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a56b08874f91">
+    <value>Cancel engine update</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a5b37bdf8cf4">
+    <value>Archive updated. A copy of the original was kept.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_a621ab606db2">
+    <value>Password</value>
+    <comment>src/Desktop/PasswordDialog.xaml; src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a66f3be2b81c">
+    <value>Rules apply for this session. The original settings file was preserved.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_a6c2deee185b">
+    <value>The manifest cannot overwrite a source file being verified. Choose another save location.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:177</comment>
+  </data>
+  <data xml:space="preserve" name="T_a7084fcb218d">
+    <value>Cancel operation</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a71b8c644be1">
+    <value>The manifest contains no SHA-256 file entries.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:176</comment>
+  </data>
+  <data xml:space="preserve" name="T_a7e0c50c814f">
+    <value>Pause or resume the entire extraction queue; active tasks pause at the next checkpoint.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a8c3698b5b8c">
+    <value>Disabled</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a9a693eafd18">
+    <value>Open result folder</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_a9e77935df83">
+    <value>Notification settings saved.</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_aa41cd7ea619">
+    <value>Enter a valid password</value>
+    <comment>src\Core\ArchiveVerificationService.cs:69</comment>
+  </data>
+  <data xml:space="preserve" name="T_aa72684414b8">
+    <value>Disable master password</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:14; src\Desktop\MasterPasswordDialog.xaml.cs:15; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_aa7456af5f94">
+    <value>The selected engine is unavailable. An available bundled engine is in use.</value>
+    <comment>src\Desktop\MainViewModel.cs:352</comment>
+  </data>
+  <data xml:space="preserve" name="T_ab3ecbe376c2">
+    <value>Start extraction ({0})</value>
+    <comment>src\Desktop\MainViewModel.cs:135</comment>
+  </data>
+  <data xml:space="preserve" name="T_ab621a6eecb5">
+    <value>Selected files or folders share the same name. Compress them separately.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:184</comment>
+  </data>
+  <data xml:space="preserve" name="T_abab7359518e">
+    <value>Priority matching rule (optional)</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_abb6a356f9a2">
+    <value>ZIP uses AES-256 encryption. The current official engine supports ASCII passwords only; use 7z for non-ASCII passwords.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:87</comment>
+  </data>
+  <data xml:space="preserve" name="T_abcbf20aca41">
+    <value>Cannot process files or write settings. Check the output directory and file permissions.</value>
+    <comment>src\Desktop\MainViewModel.cs:251</comment>
+  </data>
+  <data xml:space="preserve" name="T_abdd4a1227fb">
+    <value>ZIP filename preview</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_abe63dd52a99">
+    <value>Extraction notifications</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ac936a188f6d">
+    <value>Off by default. One notice after the entire batch succeeds; filenames, directories, and passwords are omitted.</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:9</comment>
+  </data>
+  <data xml:space="preserve" name="T_acc3854e8b71">
+    <value>Merge duplicate passwords</value>
+    <comment>src\Desktop\WindowDialogs.cs:141</comment>
+  </data>
+  <data xml:space="preserve" name="T_acf212babaf8">
+    <value>Add archives, </value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_ad09f3fda29a">
+    <value>Extraction engine</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ad9daebe00dc">
+    <value>Add files</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ada71e8959d8">
+    <value>Self-extracting archive created and validated.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_ae173945fb80">
+    <value>Processing failed</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:30</comment>
+  </data>
+  <data xml:space="preserve" name="T_aebafd23c2d9">
+    <value>Self-extracting archives require 7z.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_af906e3c6e4c">
+    <value>No previous version is available to restore.</value>
+    <comment>src\Desktop\MainViewModel.cs:375</comment>
+  </data>
+  <data xml:space="preserve" name="T_afb84681f1c0">
+    <value>Could not extract the selected content. Check the destination and access permissions.</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0b03f8b05a5">
+    <value>Create self-extracting archive (EXE)</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0d8010df783">
+    <value>Extraction directory rules</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0e866423d58">
+    <value>All files|*.*</value>
+    <comment>src\Desktop\FileHashViewModel.cs:39; src\Desktop\WindowDialogs.cs:22; src\Desktop\WindowDialogs.cs:78</comment>
+  </data>
+  <data xml:space="preserve" name="T_b0f1ecfd6cb8">
+    <value>Compresses one file; encryption, volumes, and EXE are unavailable. Save as “OriginalFilename{0}”; the extracted filename comes from the archive name.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:89</comment>
+  </data>
+  <data xml:space="preserve" name="T_b140c4f0fe5a">
+    <value>Edit selected password</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b1c46471ae91">
+    <value>Edit contents</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b1f473ca70e6">
+    <value>GitHub update repository</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b265ade249fc">
+    <value>Password source</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b27d094f513e">
+    <value>The original archive was preserved.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:142</comment>
+  </data>
+  <data xml:space="preserve" name="T_b2a1d05496f2">
+    <value>No validated engine is available.</value>
+    <comment>src\Desktop\MainViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_b32af2a5114f">
+    <value>Extract files</value>
+    <comment>src\Core\ExtractionDirectoryRules.cs:28; src\Core\ShellSelection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_b3b8e461c196">
+    <value>M means MiB; G means GiB. 1 MiB = 1,048,576 bytes.</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b3d70cc43d2a">
+    <value>File SHA-256</value>
+    <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b3eceee47a3d">
+    <value>New extraction directory name</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b438e0890c2a">
+    <value>Engine default encoding</value>
+    <comment>src\Desktop\MainViewModel.FilenameEncoding.cs:23</comment>
+  </data>
+  <data xml:space="preserve" name="T_b4caab65183a">
+    <value>Vault locked; enter passwords manually</value>
+    <comment>src\Desktop\MainViewModel.cs:133</comment>
+  </data>
+  <data xml:space="preserve" name="T_b4de1e4ddf02">
+    <value>Encrypt with password</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b5836abfbd39">
+    <value>Opened the {0} download page. Choose the win-{1} lightweight installer, close the application, then run the installer.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:35</comment>
+  </data>
+  <data xml:space="preserve" name="T_b5bb08da76d9">
+    <value>Source (optional)</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b5e264b0d6f8">
+    <value>Cancel backup operation</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_b64114dffb9b">
+    <value>The destination extension does not match the format. Select the save location again.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:129</comment>
+  </data>
+  <data xml:space="preserve" name="T_b66975fbd35f">
+    <value>Encrypted</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:99</comment>
+  </data>
+  <data xml:space="preserve" name="T_b786485ba1c7">
+    <value>Encoding changed · Ready</value>
+    <comment>src\Desktop\MainViewModel.FilenameEncoding.cs:22</comment>
+  </data>
+  <data xml:space="preserve" name="T_b7cddbf2761a">
+    <value>Password already exists</value>
+    <comment>src\Desktop\WindowDialogs.cs:139</comment>
+  </data>
+  <data xml:space="preserve" name="T_b83678cb1bcf">
+    <value>Cannot read settings or engine files. Check the product package and file permissions.</value>
+    <comment>src\Desktop\MainViewModel.cs:163</comment>
+  </data>
+  <data xml:space="preserve" name="T_b93945612611">
+    <value>Settings apply for this session but could not be saved. Check permissions for the settings directory.</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:27</comment>
+  </data>
+  <data xml:space="preserve" name="T_b94136fcd4cd">
+    <value> The original archive was not modified.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_b9bd587305d1">
+    <value>Edit password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba22f8e0541a">
+    <value>Creates a Windows EXE. Recipients need neither 7-Zip nor .NET. It only extracts and does not automatically run archived files.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba40014ff496">
+    <value>Type</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml; src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba5967311206">
+    <value>Cancel software check</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ba71a8541da6">
+    <value>This application's Open with entries were removed.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_bb0fa41ea6b8">
+    <value>Full path of new archive</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_bb1057c00cf3">
+    <value>The password for this archive is set and remains hidden.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_bbe24b7f2796">
+    <value>Writing a temporary archive; the original is unchanged…</value>
+    <comment>src\Core\ArchiveEditingService.cs:82</comment>
+  </data>
+  <data xml:space="preserve" name="T_bc8c3fd9b315">
+    <value>Vault backup restored.</value>
+    <comment>src\Desktop\MainViewModel.cs:287</comment>
+  </data>
+  <data xml:space="preserve" name="T_bcd9ac8817f3">
+    <value>Replace archive</value>
+    <comment>src\Desktop\WindowDialogs.cs:94</comment>
+  </data>
+  <data xml:space="preserve" name="T_bcf34c82614c">
+    <value>The new master password must contain 12 to 16,384 characters.</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_bf1ed102d858">
+    <value>Move selected task down</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_bf7a3232e891">
+    <value>Could not create a complete archive. Check source files, save location, and free space.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:192</comment>
+  </data>
+  <data xml:space="preserve" name="T_bfa903605147">
+    <value>Store only</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_bff03461df20">
+    <value>Confirm backup password</value>
+    <comment>src/Desktop/VaultBackupDialog.xaml; src/Desktop/VaultBackupDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c042daee8c17">
+    <value>Passwords for encrypted files still need validation during extraction.</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c0a3d36a2dce">
+    <value>Extraction result folders</value>
+    <comment>src/Desktop/ResultDirectoriesDialog.xaml; src/Desktop/ResultDirectoriesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c1043fe70086">
+    <value>The vault is locked. Enter the password manually.</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:20; src\Core\ArchiveVerificationService.cs:50</comment>
+  </data>
+  <data xml:space="preserve" name="T_c11330b85234">
+    <value>Select</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c124c00caa4f">
+    <value>Trying saved passwords, {0}/{1}</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:25; src\Core\ArchiveVerificationService.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_c132d4b6ff48">
+    <value>The vault is temporarily unreadable. Enter the password manually.</value>
+    <comment>src\Core\ArchiveBrowsingService.cs:20; src\Core\ArchiveVerificationService.cs:50</comment>
+  </data>
+  <data xml:space="preserve" name="T_c1956c02fc37">
+    <value>Cannot read the engine selection record. The original file was preserved.</value>
+    <comment>src\Desktop\MainViewModel.cs:376</comment>
+  </data>
+  <data xml:space="preserve" name="T_c27041585556">
+    <value>Unreadable</value>
+    <comment>src\Desktop\FileHashViewModel.cs:122; src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_c273eb49ef49">
+    <value>Master password is disabled. Local passwords are encrypted for the current Windows user.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:18</comment>
+  </data>
+  <data xml:space="preserve" name="T_c28fe2702f55">
+    <value>Fully validating the edited archive…</value>
+    <comment>src\Core\ArchiveEditingService.cs:86</comment>
+  </data>
+  <data xml:space="preserve" name="T_c2e0ceeca350">
+    <value>Last check: {0} items passed, {1} failed. No files have been extracted.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:28</comment>
+  </data>
+  <data xml:space="preserve" name="T_c35c7ca6d32f">
+    <value>Add an archive to begin.</value>
+    <comment>src\Desktop\MainViewModel.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_c4bf814baf3d">
+    <value>Resume queue</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
+  </data>
+  <data xml:space="preserve" name="T_c4d54b1608b5">
+    <value>Existing files or volumes were preserved. Use a new name or directory.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_c58d5c7dc924">
+    <value>Never lock automatically</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c5d6fdc4bff5">
+    <value>The destination file already exists and was not overwritten.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:186</comment>
+  </data>
+  <data xml:space="preserve" name="T_c62af9393001">
+    <value>Incorrect password</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:18; src\Desktop\ExtractionFailureDialog.xaml.cs:26; src\Desktop\MainViewModel.cs:410</comment>
+  </data>
+  <data xml:space="preserve" name="T_c682f190cbd4">
+    <value>Enter a password.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:86</comment>
+  </data>
+  <data xml:space="preserve" name="T_c6a218f534d8">
+    <value>Cannot create the extraction directory. Check conflicting files and access permissions.</value>
+    <comment>src\Core\ExtractionService.cs:47</comment>
+  </data>
+  <data xml:space="preserve" name="T_c75b14b93f5e">
+    <value>Password backup import preview</value>
+    <comment>src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c781dd48e786">
+    <value>Archive name</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c78f695d1e5e">
+    <value>Links and junctions cannot be compressed. Select the original files instead.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:185</comment>
+  </data>
+  <data xml:space="preserve" name="T_c85f7e6675d5">
+    <value>The update request timed out. Try again later. The current engine remains available.</value>
+    <comment>src\Desktop\MainViewModel.cs:363</comment>
+  </data>
+  <data xml:space="preserve" name="T_c8d8ba7dc5ba">
+    <value>Restore latest saved backup</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c8edea951714">
+    <value>Extraction destination preset</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_c950f8f2b8e0">
+    <value>
+Enter a password or choose a saved one.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_c9936e785515">
+    <value>Could not merge duplicate passwords. The original vault was preserved. Refresh and retry.</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:47</comment>
+  </data>
+  <data xml:space="preserve" name="T_c9d224fbca48">
+    <value>Move selected task up</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ca8d1fab2a53">
+    <value>Task actions: extract one archive, reorder tasks, or remove completed tasks</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cab1a449f534">
+    <value>nomozip · Extraction complete</value>
+    <comment>src\Desktop\CompletionNotification.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_caf3184a97ef">
+    <value>Save notification settings</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cb42c2f7aa25">
+    <value>Extraction and passwords</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cb82f06947d1">
+    <value>Calculated (not compared)</value>
+    <comment>src\Desktop\FileHashViewModel.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_cd62c4ff0804">
+    <value>Software version check cancelled.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_ce50d85b6e27">
+    <value>Vault idle lock timeout</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cebf5ff2ca42">
+    <value>{0} files. Select Calculate to start reading.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:95</comment>
+  </data>
+  <data xml:space="preserve" name="T_cf3032ad5651">
+    <value>This update package failed authenticity validation. The engine was not switched. Obtain a new update package from the product release.</value>
+    <comment>src\Desktop\MainViewModel.cs:371</comment>
+  </data>
+  <data xml:space="preserve" name="T_cf5d453b4cbe">
+    <value>Calculated SHA-256 for the selected file</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_cf8aefc70fc9">
+    <value>Selected extraction cancelled.</value>
+    <comment>src\Desktop\MainViewModel.Selection.cs:24; src\Desktop\MainViewModel.Selection.cs:33</comment>
+  </data>
+  <data xml:space="preserve" name="T_d0356fd00208">
+    <value>Cancel current task</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_d0b2c6fecb84">
+    <value>Validating update package…</value>
+    <comment>src\Desktop\MainViewModel.cs:336; src\Infrastructure\EngineUpdateService.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_d0f1011a6592">
+    <value>Cancelled. The vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultProtection.cs:61</comment>
+  </data>
+  <data xml:space="preserve" name="T_d12b676ae379">
+    <value>Add at the archive root; replacements keep the original path. The original is replaced after validation, with a backup kept.</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_d18624b2347a">
+    <value>Created and validated {0} volumes. First volume: {1}</value>
+    <comment>src\Desktop\CompressionViewModel.cs:158</comment>
+  </data>
+  <data xml:space="preserve" name="T_d1a3e356e435">
+    <value>Calculating file SHA-256…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:106</comment>
+  </data>
+  <data xml:space="preserve" name="T_d1dbd2948956">
+    <value>{0}: {1}. No files were extracted. Formats without checksums are checked for readable data only.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:98</comment>
+  </data>
+  <data xml:space="preserve" name="T_d1de1249c3ed">
+    <value>Extract each archive into its own directory. The first destination is shown on the right; Browse folder changes all destinations.</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_d2011de64a34">
+    <value>Password selection cancelled. No archive was created.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:144</comment>
+  </data>
+  <data xml:space="preserve" name="T_d2e37e15b46a">
+    <value>This format does not support encryption. Choose 7z or ZIP.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:182</comment>
+  </data>
+  <data xml:space="preserve" name="T_d3fcfb571828">
+    <value>For example, “photos”. Case-insensitive; changes the attempt order only. Other enabled passwords are still tried. Leave blank for no rule.</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d402a1d201a7">
+    <value>Hashes (selected file)</value>
+    <comment>src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d4163ce3b078">
+    <value>Group (optional)</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d42f0b43d460">
+    <value>Priority: </value>
+    <comment>src\Desktop\PasswordMetadataConverter.cs:10</comment>
+  </data>
+  <data xml:space="preserve" name="T_d446a6f3b2e9">
+    <value>Preparing to read files…</value>
+    <comment>src\Desktop\FileHashViewModel.cs:106</comment>
+  </data>
+  <data xml:space="preserve" name="T_d44e9b3d3b31">
+    <value>Name</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/PasswordDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d4a7c6d97dcd">
+    <value>Custom or recently used extraction directory</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d4c08edb8fff">
+    <value>Delivering validated self-extracting archive…</value>
+    <comment>src\Core\SfxCompressionService.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_d576b99c6465">
+    <value>Add files or folders, then choose the new archive's location.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_d599f83f5d0a">
+    <value>You can also drag files into this window</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d5c732fc01f2">
+    <value>Search names, notes, groups, sources, and rules; password text is never searched</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d64ffabdbf39">
+    <value>The new master passwords do not match.</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:26</comment>
+  </data>
+  <data xml:space="preserve" name="T_d6a38b364511">
+    <value>Filter password group</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d6b35eaaa1d9">
+    <value>Choose an output directory, then start extraction.</value>
+    <comment>src\Desktop\MainViewModel.cs:172</comment>
+  </data>
+  <data xml:space="preserve" name="T_d6c877caa132">
+    <value>Simplified Chinese · GBK / CP936</value>
+    <comment>src\Core\ZipFilenameEncoding.cs:6</comment>
+  </data>
+  <data xml:space="preserve" name="T_d722534ab0db">
+    <value>Up to 2</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d791cd25027a">
+    <value>Notify after the entire extraction batch succeeds</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d7b05c158fb5">
+    <value>Extraction rules</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml; src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d86f81dd3225">
+    <value>Filename encoding for selected ZIP</value>
+    <comment>src/Desktop/FilenameEncodingDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_d94c48315238">
+    <value>Extraction rules applied.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_d9851374e355">
+    <value>Cannot read file</value>
+    <comment>src\Desktop\Presentation.cs:66</comment>
+  </data>
+  <data xml:space="preserve" name="T_daed8faf2fc1">
+    <value>Previewed {0} items. Apply after confirming the names are correct.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_daede9881787">
+    <value>Notes</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/PasswordDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_db5cb5a070e6">
+    <value>Failure details</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_db945cfe9f9f">
+    <value>Fast</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dbf2ce470c29">
+    <value>Software version check timed out. Try again later.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_dca602fdf931">
+    <value>No previous version is available to restore.</value>
+    <comment>src\Desktop\MainViewModel.cs:132</comment>
+  </data>
+  <data xml:space="preserve" name="T_dce9d4fb756a">
+    <value>Save to vault on success</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dcfba7612da5">
+    <value>
+The password may be incorrect, or the archive may be damaged.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:50; src\Desktop\PasswordDialog.xaml.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_dd6c6990313a">
+    <value>Destination preset</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ded3763dd8ee">
+    <value>Directory rules</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_df0142916f7f">
+    <value>1 (sequential)</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_df02d958a65f">
+    <value>Only official engine updates validated for this product are installed. This version uses a development preview update channel.</value>
+    <comment>src\Desktop\MainViewModel.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_df24662c5521">
+    <value>Creating archive…</value>
+    <comment>src\Core\CompressionContracts.cs:35; src\Core\CompressionContracts.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_df3d58c7d84b">
+    <value>Settings</value>
+    <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_df622593db69">
+    <value>Enter verification password</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfaa16616d31">
+    <value>Common archives and self-extracting archives|*.7z;*.zip;*.rar;*.001;*.exe;*.tar;*.gz;*.bz2;*.xz|All files|*.*</value>
+    <comment>src\Desktop\WindowDialogs.cs:103</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfb802238b38">
+    <value>Enabled</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfbad24e7f4a">
+    <value>Maximum</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_dfc7c0776409">
+    <value>Browsing lists contents only; select items to extract the selected scope.</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e1189ffd0bcd">
+    <value>Import update package</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e12de546f6c3">
+    <value>Could not delete the password. Check the vault.</value>
+    <comment>src\Desktop\MainViewModel.cs:276</comment>
+  </data>
+  <data xml:space="preserve" name="T_e185d04bcc5f">
+    <value>Create archive</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e1fb8aa2fcac">
+    <value>This format supports browsing and extraction only.</value>
+    <comment>src\Desktop\ArchiveContentsViewModel.cs:58; src\Desktop\MainViewModel.ArchiveEditing.cs:33</comment>
+  </data>
+  <data xml:space="preserve" name="T_e22598f79cf3">
+    <value>Export encrypted password backup</value>
+    <comment>src\Desktop\WindowDialogs.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_e25466fdb9be">
+    <value>nomozip archive</value>
+    <comment>src\Infrastructure\FileAssociationService.cs:19; src\Infrastructure\FileAssociationService.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_e274b7537023">
+    <value>No validated extraction engine was found. Download the complete product package again.</value>
+    <comment>src\Desktop\MainViewModel.cs:160</comment>
+  </data>
+  <data xml:space="preserve" name="T_e29c21446e54">
+    <value>Export calculated hashes</value>
+    <comment>src\Desktop\FileHashViewModel.cs:45; src/Desktop/FileHashDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e29c3af1bd15">
+    <value>Queue cancelled. Tasks that had not started were kept.</value>
+    <comment>src\Desktop\MainViewModel.cs:249</comment>
+  </data>
+  <data xml:space="preserve" name="T_e2a88581bf88">
+    <value>Open encrypted backup</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_e2f5a1f2af3e">
+    <value>Extraction settings</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e312254287d8">
+    <value>Extraction finished, but the destination filesystem does not support origin markers (for example FAT32/exFAT). Download origin information could not be preserved. Use a directory supporting named streams if this is required.</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_e3848c27e720">
+    <value> · {0} items failed</value>
+    <comment>src\Desktop\MainViewModel.cs:233</comment>
+  </data>
+  <data xml:space="preserve" name="T_e4d1595c61be">
+    <value>Download and update engine</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e566731c9d05">
+    <value>Create a numbered directory, such as Name (2)</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e5689e06217c">
+    <value>Add archives or drop files</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e5bce8324529">
+    <value>nomozip · Extraction notification</value>
+    <comment>src\Desktop\CompletionNotification.cs:45</comment>
+  </data>
+  <data xml:space="preserve" name="T_e64da2a40b53">
+    <value>Check software updates</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e6dea7de8415">
+    <value>The current worker or engine does not support this encoding. Update the software.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_e6e9a47ae51b">
+    <value>Exported {0} calculated hashes. Unfinished files were excluded.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:165</comment>
+  </data>
+  <data xml:space="preserve" name="T_e72f93a83aa9">
+    <value>
+This update package is older than the current version.</value>
+    <comment>src\Desktop\WindowDialogs.cs:154</comment>
+  </data>
+  <data xml:space="preserve" name="T_e75e8b4e5c97">
+    <value>Move down</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_e764d4668e4a">
+    <value>Encoding changed. Preview again before applying.</value>
+    <comment>src\Desktop\FilenameEncodingViewModel.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_e7758edec13b">
+    <value>Archive validation result</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:17</comment>
+  </data>
+  <data xml:space="preserve" name="T_e7a740c073cb">
+    <value>Add files, folders, or drop content</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e7e4273dd4c8">
+    <value>Compression level</value>
+    <comment>src/Desktop/CompressionView.xaml; src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e8166a5ae76c">
+    <value>Select files to compress</value>
+    <comment>src\Desktop\WindowDialogs.cs:78; src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e836053f4b78">
+    <value>Creates sequential volumes starting at .001. Keep them together and select the first to extract. Existing volumes are not overwritten.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_e86ea3f280d9">
+    <value>Ungrouped</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:31</comment>
+  </data>
+  <data xml:space="preserve" name="T_e8c12deee3da">
+    <value>Self-extracting contents failed full validation. No destination file was delivered.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:191</comment>
+  </data>
+  <data xml:space="preserve" name="T_e90e4d4b3a66">
+    <value>Pause queue</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
+  </data>
+  <data xml:space="preserve" name="T_e98b7cc07066">
+    <value>Keep “{0}” and merge {1} other records with the same password?
+
+The selected record's name, notes, group, source, matching rule, and auto-try setting are kept; those fields from the other records are removed. The earliest creation and latest success times are kept, and all archive associations move to the selected record.</value>
+    <comment>src\Desktop\WindowDialogs.cs:141</comment>
+  </data>
+  <data xml:space="preserve" name="T_e9a521da468a">
+    <value>Could not write origin information. Extracted files have not been delivered; existing files are unchanged. Check destination permissions.</value>
+    <comment>src\Infrastructure\WindowsExtractionOrigin.cs:58</comment>
+  </data>
+  <data xml:space="preserve" name="T_e9d3dd690a4e">
+    <value>Export backup</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:15; src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_e9e70eaf87d7">
+    <value>Latest stable release: {0}. Your software is up to date.</value>
+    <comment>src\Desktop\MainViewModel.ApplicationUpdates.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_eb0c326b60ae">
+    <value>Paused</value>
+    <comment>src\Desktop\MainViewModel.cs:212</comment>
+  </data>
+  <data xml:space="preserve" name="T_eb0e28eeb37b">
+    <value>Volumes failed full validation. No destination files were delivered.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:189</comment>
+  </data>
+  <data xml:space="preserve" name="T_eb1ee5f7f8d7">
+    <value>Continue validation</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:55</comment>
+  </data>
+  <data xml:space="preserve" name="T_ec217804074a">
+    <value>Import backup</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ecb9f0adb4e4">
+    <value>Import was saved, but the list could not refresh. Close and reopen the vault.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_ed3955526cf9">
+    <value>Compress…</value>
+    <comment>src\Infrastructure\ShellMenuService.cs:46</comment>
+  </data>
+  <data xml:space="preserve" name="T_ed470de7dfeb">
+    <value>Import complete: {0} added, {1} skipped. Existing passwords were preserved.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_edb93ad988fa">
+    <value>Use at least 12 characters; non-ASCII text is supported. If forgotten, only a previously exported independent encrypted backup and its password can restore data. There is no reset option.</value>
+    <comment>src\Desktop\MasterPasswordDialog.xaml.cs:16</comment>
+  </data>
+  <data xml:space="preserve" name="T_edfa33a3f470">
+    <value>Choose save location</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee3467b3533f">
+    <value>The update package cannot be used. The engine was not switched.</value>
+    <comment>src\Desktop\MainViewModel.cs:377</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee5907bc1d41">
+    <value>Some output files could not be written. Check the destination. Files already written remain there.</value>
+    <comment>src\Core\ExtractionService.cs:129</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee66a816c44e">
+    <value>{0}, {1}</value>
+    <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/VaultImportDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_ee8c9493f18c">
+    <value>Unfinished files receive no hash. You can calculate again.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:131</comment>
+  </data>
+  <data xml:space="preserve" name="T_eeafd62503fb">
+    <value>Browse selected archive contents, Control L</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f007e1890a6a">
+    <value>The backup passwords do not match.</value>
+    <comment>src\Desktop\VaultBackupDialog.xaml.cs:32</comment>
+  </data>
+  <data xml:space="preserve" name="T_f00ef1be4493">
+    <value>Ask each time</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f024ef58cfce">
+    <value>No available engine was found. Nothing has been extracted.</value>
+    <comment>src\Desktop\ShellSelectionViewModel.cs:40</comment>
+  </data>
+  <data xml:space="preserve" name="T_f029d9cb4a76">
+    <value>Reason</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f08ca2748091">
+    <value>Enter a GitHub repository URL or owner/repository.</value>
+    <comment>src\Desktop\MainViewModel.cs:374</comment>
+  </data>
+  <data xml:space="preserve" name="T_f0b9c3e0a17b">
+    <value>Previous version: 7-Zip {0}</value>
+    <comment>src\Desktop\MainViewModel.cs:132</comment>
+  </data>
+  <data xml:space="preserve" name="T_f12fba592449">
+    <value>Self-extracting archives cannot use volumes.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:42</comment>
+  </data>
+  <data xml:space="preserve" name="T_f1477a4655ee">
+    <value>Choose where to put files and whether to create a directory.</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f1a4a993b180">
+    <value>Enter an integer greater than 0. Each volume is limited to 1 TiB.</value>
+    <comment>src\Desktop\CompressionViewModel.cs:56</comment>
+  </data>
+  <data xml:space="preserve" name="T_f23f6d1addfc">
+    <value>Browsing cancelled.</value>
+    <comment>src\Desktop\ArchiveBrowsingViewModel.cs:25; src\Desktop\ArchiveBrowsingViewModel.cs:30</comment>
+  </data>
+  <data xml:space="preserve" name="T_f28461bb49c8">
+    <value>Completed</value>
+    <comment>src\Desktop\FileHashViewModel.cs:130</comment>
+  </data>
+  <data xml:space="preserve" name="T_f321085e8ea2">
+    <value>{0} existing records contain the same password. Save this record anyway?
+
+You can cancel and edit an existing record, or merge duplicates in the vault after saving.</value>
+    <comment>src\Desktop\WindowDialogs.cs:139</comment>
+  </data>
+  <data xml:space="preserve" name="T_f3c637218750">
+    <value>Priority filename keywords</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f41a0d58cf70">
+    <value>The archive changed. Close this view and browse again.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:37</comment>
+  </data>
+  <data xml:space="preserve" name="T_f48d334495f6">
+    <value>Desktop</value>
+    <comment>src/Desktop/ExtractionRulesDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f4a81440138a">
+    <value>Cannot open the result directory. Open the destination path in File Explorer.</value>
+    <comment>src\Desktop\MainViewModel.ExtractionTools.cs:73</comment>
+  </data>
+  <data xml:space="preserve" name="T_f4d9761756f5">
+    <value>Remove completed tasks</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f4f9aaac57e4">
+    <value>Failed archive validation items</value>
+    <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:20</comment>
+  </data>
+  <data xml:space="preserve" name="T_f5358f6b735d">
+    <value>Compression settings</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f585137c61b2">
+    <value>Enter a 64-digit hexadecimal SHA-256.</value>
+    <comment>src\Desktop\FileHashViewModel.cs:21</comment>
+  </data>
+  <data xml:space="preserve" name="T_f5d4d2b687bd">
+    <value>Incorrect backup password or damaged backup. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_f6b557598ac8">
+    <value>Merged {0} duplicate records. Archive associations were preserved.</value>
+    <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_f710925bd393">
+    <value>Duplicate · Add</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_f853a70b1204">
+    <value>Move up</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_f8753cf655b4">
+    <value>Uses the official 7-Zip engine. Licenses and source information are included with the product.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f8c32297384e">
+    <value>Open output folder</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f8fcd8c32414">
+    <value>Choose another filename. The local vault and recovery backup cannot be overwritten.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:19</comment>
+  </data>
+  <data xml:space="preserve" name="T_f987b614b7f1">
+    <value>Lock vault when idle</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_f9b106212acd">
+    <value>Extract here</value>
+    <comment>src\Infrastructure\ShellMenuService.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_f9e7c5fdc973">
+    <value>Import cancelled. Your vault is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.VaultTransfer.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa2d0a57ea4e">
+    <value>This application's context menus were removed.</value>
+    <comment>src\Desktop\AssociationViewModel.cs:34</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa5398fd7e94">
+    <value>Archive contents</value>
+    <comment>src/Desktop/ArchiveContentsDialog.xaml; src/Desktop/ArchiveContentsDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa762d29f739">
+    <value>Set or change password</value>
+    <comment>src/Desktop/CompressionView.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fa9d33365735">
+    <value>Extraction failure details</value>
+    <comment>src/Desktop/ExtractionFailureDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fb1f94c09208">
+    <value>Queue resumed.</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:14</comment>
+  </data>
+  <data xml:space="preserve" name="T_fb4d81fcdb9e">
+    <value>Backup: {0} records · {1} to add · {2} to skip.</value>
+    <comment>src\Desktop\VaultImportDialog.xaml.cs:25</comment>
+  </data>
+  <data xml:space="preserve" name="T_fbac9a59ad82">
+    <value>View items that failed the last check</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fbda214c62b2">
+    <value>Settings apply for this session. The original settings file was preserved.</value>
+    <comment>src\Desktop\MainViewModel.Notifications.cs:24</comment>
+  </data>
+  <data xml:space="preserve" name="T_fbefab1520fc">
+    <value>SHA-256 manifest|*.txt;*.sha256|All files|*.*</value>
+    <comment>src\Desktop\FileHashViewModel.cs:45; src\Desktop\FileHashViewModel.cs:48</comment>
+  </data>
+  <data xml:space="preserve" name="T_fc03f4f98f60">
+    <value>Measures activity within this application. Locking is deferred while tasks run and occurs afterward. Closing the application requires unlocking next time.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fc4b460196dc">
+    <value>Update did not finish. Check the network, update package, and file permissions. The current engine remains available.</value>
+    <comment>src\Desktop\MainViewModel.cs:366</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcc381b75f0b">
+    <value>Removing all content would disable filename encryption. The original archive is unchanged.</value>
+    <comment>src\Desktop\MainViewModel.ArchiveEditing.cs:36</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcc639129b23">
+    <value>Password group</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcdc3edb34ff">
+    <value>Merge duplicates</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fcef101b1132">
+    <value>Extraction progress</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fe3a59cb66da">
+    <value>After registration, use Open with to launch nomozip. Default apps are not changed directly. Windows may ask which app to use; you choose the default in its system dialog.</value>
+    <comment>src/Desktop/MainWindow.xaml</comment>
+  </data>
+  <data xml:space="preserve" name="T_fe6aa19502f5">
+    <value>This password is used to create the archive. You can also choose a saved password.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:43</comment>
+  </data>
+  <data xml:space="preserve" name="T_feaebc29ef3e">
+    <value>
+A password is required to validate the archive data.</value>
+    <comment>src\Desktop\PasswordDialog.xaml.cs:57</comment>
+  </data>
+  <data xml:space="preserve" name="T_ff2a17217e7c">
+    <value>Update cancelled. The current engine remains in use.</value>
+    <comment>src\Desktop\MainViewModel.cs:339</comment>
+  </data>
+  <data xml:space="preserve" name="T_ffcd45757108">
+    <value>Cannot start engine</value>
+    <comment>src\Desktop\MainViewModel.cs:412</comment>
+  </data>
+  <data xml:space="preserve" name="T_ffda925743a3">
+    <value>{0}: {1}.</value>
+    <comment>src\Desktop\MainViewModel.Queue.cs:44</comment>
+  </data>
+  <data xml:space="preserve" name="T_ffe21a671190">
+    <value>Show password</value>
+    <comment>src/Desktop/PasswordDialog.xaml</comment>
+  </data>
+</root>

@@ -33,7 +33,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         if (!result.IsSuccess) return new ExtractionOutcome(result, destination, warning);
         if (resolveDestination is not null)
         {
-            progress?.Report(new TaskUpdate("listing", "正在确定解压目录"));
+            progress?.Report(new TaskUpdate("listing", UiText.Get("T_519368274ae1")));
             if(pause is not null) await pause.WaitAsync(cancellationToken);
             var listed = await engine.ListAsync(archivePath, secret, cancellationToken);
             if (!listed.IsSuccess) return new ExtractionOutcome(listed, destination, warning);
@@ -44,10 +44,10 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 Directory.CreateDirectory(destination);
             }
             catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
-            { return new ExtractionOutcome(new EngineResult {Code="output_write_failed"},destination,"无法建立解压目录，请检查同名文件和访问权限。"); }
+            { return new ExtractionOutcome(new EngineResult {Code="output_write_failed"},destination,UiText.Get("T_c6a218f534d8")); }
         }
         var currentState = "extracting";
-        var currentMessage = "正在解压";
+        var currentMessage = UiText.Get("T_09eb6850c88c");
         var engineProgress = new ForwardProgress<EngineProgress>(value => progress?.Report(new TaskUpdate(currentState, currentMessage, value)));
 
         var staging = Path.Combine(destination, ".archive-password-" + Guid.NewGuid().ToString("N"));
@@ -56,7 +56,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         var committed = false;
         try
         {
-            currentState = "extracting"; currentMessage = "正在解压";
+            currentState = "extracting"; currentMessage = UiText.Get("T_09eb6850c88c");
             progress?.Report(new TaskUpdate(currentState, currentMessage));
             var overrides = verifiedPasswords.Where(value => value.Value.Secret != secret).ToDictionary(value => value.Key, value => value.Value.Secret);
             result = selection is not null
@@ -79,7 +79,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             if (originMark is not null)
             {
                 if(pause is not null) await pause.WaitAsync(cancellationToken);
-                currentState = "origin"; currentMessage = "正在保留下载来源信息";
+                currentState = "origin"; currentMessage = UiText.Get("T_54036ebd63cd");
                 progress?.Report(new TaskUpdate(currentState, currentMessage));
                 warning = CombineWarnings(warning, await originMark.ApplyAsync(decisions.Where(value => value.Policy != ExistingFilePolicy.Skip).Select(value => value.Source).ToArray(), cancellationToken));
                 cancellationToken.ThrowIfCancellationRequested();
@@ -99,7 +99,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 Directory.CreateDirectory(target);
             }
             var skipped = decisions.Count(value => value.Policy == ExistingFilePolicy.Skip);
-            if (skipped > 0) warning = CombineWarnings(warning, $"已跳过 {skipped} 个同名文件。");
+            if (skipped > 0) warning = CombineWarnings(warning, UiText.Format("T_33624dd36711", skipped));
             committed = true;
             try
             {
@@ -119,21 +119,21 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 }
             }
             catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException)
-            { warning = CombineWarnings(warning, "解压已完成，但密码未能保存，请检查密码库。"); }
+            { warning = CombineWarnings(warning, UiText.Get("T_920a69aef13d")); }
             return new ExtractionOutcome(result, destination, warning);
         }
         catch (ExtractionOriginException error)
         { return new(new EngineResult { Code = error.Code }, destination, CombineWarnings(warning, error.Message)); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
-            return new ExtractionOutcome(new EngineResult { Code = "output_write_failed" }, destination, "输出文件未能全部写入，请检查目标目录。已写入的文件仍在目标目录中。");
+            return new ExtractionOutcome(new EngineResult { Code = "output_write_failed" }, destination, UiText.Get("T_ee5907bc1d41"));
         }
         finally
         {
             if (Directory.Exists(staging))
             {
                 try { Directory.Delete(staging, recursive: true); }
-                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { if (committed) progress?.Report(new TaskUpdate("warning", "已完成解压，但暂存目录未能清理")); }
+                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { if (committed) progress?.Report(new TaskUpdate("warning", UiText.Get("T_369f392371ab"))); }
             }
         }
     }

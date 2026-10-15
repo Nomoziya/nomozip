@@ -21,9 +21,9 @@ public partial class VaultImportDialog : Window
     {
         var plan = PasswordImportPlanner.Build(existing, incoming, Mode);
         PreviewTable.ItemsSource = plan.Rows.Select(row => new { row.Password.Name, row.Password.Notes,
-            Action = row.Duplicate ? Mode == PasswordImportMode.SkipDuplicates ? "跳过重复" : "重复 · 新增" : "新增" }).ToArray();
-        SummaryLabel.Text = $"备份共 {incoming.Count} 条 · 将新增 {plan.Added} 条 · 跳过 {plan.Skipped} 条。";
-        ImportButton.Content = $"确认导入（{plan.Added}）"; ImportButton.IsEnabled = plan.Added > 0;
+            Action = row.Duplicate ? Mode == PasswordImportMode.SkipDuplicates ? UiText.Get("T_901f39739e0d") : UiText.Get("T_f710925bd393") : UiText.Get("T_0006d696d8e1") }).ToArray();
+        SummaryLabel.Text = UiText.Format("T_fb4d81fcdb9e", incoming.Count, plan.Added, plan.Skipped);
+        ImportButton.Content = UiText.Format("T_28295bf98b81", plan.Added); ImportButton.IsEnabled = plan.Added > 0;
         UIElementAutomationPeer.CreatePeerForElement(SummaryLabel)?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
     }
     private void OnImport(object sender, RoutedEventArgs e) => DialogResult = true;

@@ -17,11 +17,11 @@ public sealed partial class MainViewModel
     public string DisplayOutputPath
     {
         get => HasShellDestinations || directoryRules.Location==ExtractionLocation.Custom ? OutputPath
-            : directoryRules.Location==ExtractionLocation.ArchiveParent && Tasks.Count==0 ? "各压缩包所在目录"
+            : directoryRules.Location==ExtractionLocation.ArchiveParent && Tasks.Count==0 ? UiText.Get("T_7567f17ec844")
             : ExtractionDirectoryPlanner.BaseDirectory(SelectedTask?.Path ?? Tasks.FirstOrDefault()?.Path ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"archive.7z"),OutputPath,directoryRules.Location);
         set { if(!IsOutputPathReadOnly) OutputPath=value; }
     }
-    public string ExtractionSubtitle=>"添加压缩包，"+(directoryRules.Location switch { ExtractionLocation.ArchiveParent=>"解压到各包所在目录",ExtractionLocation.Desktop=>"解压到桌面",ExtractionLocation.Documents=>"解压到文档",_=>"解压到所选目录" })+" · "+(directoryRules.Layout switch { ExtractionLayout.ArchiveFolder=>"每包新建目录",ExtractionLayout.Smart=>"智能目录",_=>"直接放入" })+"。";
+    public string ExtractionSubtitle=>UiText.Format("Extraction.Subtitle", (directoryRules.Location switch { ExtractionLocation.ArchiveParent=>UiText.Get("T_6dd88ad49bac"),ExtractionLocation.Desktop=>UiText.Get("T_55373b6437b7"),ExtractionLocation.Documents=>UiText.Get("T_3a3e31cae862"),_=>UiText.Get("T_327149af926b") }), (directoryRules.Layout switch { ExtractionLayout.ArchiveFolder=>UiText.Get("T_131f0bc8b9ac"),ExtractionLayout.Smart=>UiText.Get("T_a24b356d60ba"),_=>UiText.Get("T_74953ee22008") }));
     public ICommand EditExtractionRulesCommand { get;private set; }=null!;
     public ICommand TestArchiveCommand { get;private set; }=null!;
     public ICommand ShowTestResultCommand { get;private set; }=null!;
@@ -39,9 +39,9 @@ public sealed partial class MainViewModel
             var editor=dialogs.EditExtractionRules(directoryRules,OutputPath,recentOutputPaths);
             if(editor is null) return;
             ApplyDirectoryRules(editor.Rules,editor.CustomPath);
-            await SaveSettingsAsync();Footer=settingsWritable?"已应用解压规则。":"规则已在本次使用，原设置文件保持不变。";
+            await SaveSettingsAsync();Footer=settingsWritable?UiText.Get("T_d94c48315238"):UiText.Get("T_a66f3be2b81c");
         }
-        catch(Exception error) when(error is IOException or UnauthorizedAccessException) { Banner="规则已在本次使用，但设置未能保存。"; }
+        catch(Exception error) when(error is IOException or UnauthorizedAccessException) { Banner=UiText.Get("T_23a051575c7a"); }
         finally {IsBusy=false;idle.TrySetResult();}
     }
     internal void ApplyDirectoryRules(ExtractionDirectoryRules rules,string custom)
@@ -70,7 +70,7 @@ public sealed partial class MainViewModel
         void Open(string path)
         {
             try { OpenFolder(path); }
-            catch(Exception error) when(error is Win32Exception or InvalidOperationException) { Banner="无法打开结果目录，请在资源管理器中访问目标路径。"; }
+            catch(Exception error) when(error is Win32Exception or InvalidOperationException) { Banner=UiText.Get("T_f4a81440138a"); }
         }
         if(paths.Count==1) Open(paths[0]);
         else new ResultDirectoriesDialog(paths,Open) {Owner=Application.Current.MainWindow}.ShowDialog();
@@ -90,16 +90,16 @@ public sealed partial class MainViewModel
                 failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,false,cancellation.Token,previousFailure:failure,testing:true),
                 new Progress<TaskUpdate>(value=>
                 {
-                    task.Status=value.Message; Footer=$"{task.Name}：{value.Message}";CanSkipPasswords=value.State=="password";
+                    task.Status=value.Message; Footer=UiText.Format("Common.TaskMessage", task.Name, value.Message);CanSkipPasswords=value.State=="password";
                     if(value.Progress is {} progress) {task.IsIndeterminate=progress.Total==0;task.Percent=progress.Total==0?0:Math.Min(100,progress.Completed*100.0/progress.Total);}
                 }),cancellation.Token,skipPasswords.Token);
             task.VerificationResult=outcome.Engine;
-            task.Status=outcome.Engine.IsSuccess ? (wasCompleted?"已解压 · 校验通过":"校验通过") : outcome.Engine.Status=="cancelled"?"已取消校验":"校验未通过 · "+ErrorText(outcome.Engine.Code);
-            Footer=$"{task.Name}：{task.Status}。未输出文件；格式没有校验值时，仅检查数据可读取性。";
+            task.Status=outcome.Engine.IsSuccess ? (wasCompleted?UiText.Get("T_3bca99f1c692"):UiText.Get("T_3051a776eaa5")) : outcome.Engine.Status=="cancelled"?UiText.Get("T_90b5a4f6315a"):UiText.Get("T_06e5d870ebce")+ErrorText(outcome.Engine.Code);
+            Footer=UiText.Format("T_d1dbd2948956", task.Name, task.Status);
             if(outcome.Warning is not null) Banner=outcome.Warning;
         }
-        catch(OperationCanceledException) {task.Status="已取消校验";task.VerificationResult=new EngineResult {Status="cancelled",Code="cancelled"};Footer="已取消校验。";}
-        catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException) {Banner="无法校验压缩包，请检查文件位置与访问权限。";}
+        catch(OperationCanceledException) {task.Status=UiText.Get("T_90b5a4f6315a");task.VerificationResult=new EngineResult {Status="cancelled",Code="cancelled"};Footer=UiText.Get("T_71b6e7bd57a8");}
+        catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException) {Banner=UiText.Get("T_8b6f82263946");}
         finally {task.Completed=wasCompleted;task.Running=false;CanSkipPasswords=false;cancellation.Dispose();skipPasswords.Dispose();cancellation=null;skipPasswords=null;IsBusy=false;idle.TrySetResult();}
     }
 }

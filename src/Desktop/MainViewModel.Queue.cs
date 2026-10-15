@@ -6,13 +6,13 @@ public sealed partial class MainViewModel
     private ArchivePassword.Core.ExtractionPause? queuePause;
     public ICommand ToggleQueuePauseCommand {get;private set;}=null!;
     public bool CanPauseQueue=>IsBusy && queuePause is not null;
-    public string QueuePauseCaption=>queuePause?.IsRequested==true?"继续队列":"暂停队列";
-    public string CancelActionCaption=>CanPauseQueue?"取消队列":"取消当前任务";
+    public string QueuePauseCaption=>queuePause?.IsRequested==true?UiText.Get("T_c4bf814baf3d"):UiText.Get("T_e90e4d4b3a66");
+    public string CancelActionCaption=>CanPauseQueue?UiText.Get("T_5d83503a78bc"):UiText.Get("T_d0356fd00208");
     private void ToggleQueuePause()
     {
         if(queuePause is null) return;
-        if(queuePause.IsRequested) {queuePause.Resume();Footer="队列已继续。";}
-        else {queuePause.Pause();Footer="已请求暂停：排队任务停止启动，运行任务在下一个检查点暂停。";}
+        if(queuePause.IsRequested) {queuePause.Resume();Footer=UiText.Get("T_fb1f94c09208");}
+        else {queuePause.Pause();Footer=UiText.Get("T_642a46d4d83a");}
         Changed(nameof(QueuePauseCaption));RefreshQueuePasswordAction();
     }
     private int queueConcurrency=1;
@@ -41,13 +41,13 @@ public sealed partial class MainViewModel
     {
         if(!CanMoveTask(direction)) return;
         var selected=SelectedTask!;var index=Tasks.IndexOf(selected);Tasks.Move(index,index+direction);
-        SelectedTask=selected;Footer=$"已将 {selected.Name} {(direction<0?"上移":"下移")}。";
+        SelectedTask=selected;Footer=UiText.Format("T_ffda925743a3", selected.Name, (direction<0?UiText.Get("T_f853a70b1204"):UiText.Get("T_e75e8b4e5c97")));
     }
     private void RemoveCompletedTasks()
     {
         if(!IsIdle) return;
         var completed=Tasks.Where(task=>task.Completed).ToArray();foreach(var task in completed) Tasks.Remove(task);
         if(SelectedTask is {} selected && !Tasks.Contains(selected)) SelectedTask=Tasks.FirstOrDefault();
-        Footer=$"已移除 {completed.Length} 个完成任务；输出文件保留。";
+        Footer=UiText.Format("T_1e50592d591a", completed.Length);
     }
 }
