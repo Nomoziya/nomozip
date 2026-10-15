@@ -1,4 +1,7 @@
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ArchivePassword.Desktop;
 
@@ -18,7 +21,7 @@ public partial class ArchiveContentsDialog : Window
             ContentsSearchLabel.Content=UiText.Get(narrow?"Contents.CompactSearch":"T_51cf0d31ab02");
             SelectVisibleButton.Content=UiText.Get(narrow?"Contents.CompactSelect":"T_08f316ab8225");
             ClearSelectionButton.Content=UiText.Get(narrow?"Contents.CompactClear":"T_a3c974892464");
-            EditContentsButton.Content=UiText.Get(narrow?"Contents.CompactEdit":"T_b1c46471ae91");
+            EditContentsButton.Content=UiText.Get(narrow?"Drag.CompactActions":"Drag.Actions");
             foreach(var button in new[]{SelectVisibleButton,ClearSelectionButton,EditContentsButton}) button.Padding=new Thickness(narrow?12:16,8,narrow?12:16,8);
             EntryTable.Columns[0].Header=UiText.Get(narrow?"Contents.CompactPick":"T_c11330b85234");EntryTable.Columns[0].Width=narrow?52:68;
             EntryTable.Columns[1].MinWidth=narrow?110:150;
@@ -32,6 +35,24 @@ public partial class ArchiveContentsDialog : Window
         Closing+=async (_,e)=>
         {
             if(!closing && model.IsWorking) {e.Cancel=true;model.Cancel();await model.WaitForIdleAsync();closing=true;Close();}
+            else model.ClearDrag();
+        };
+        Point? dragStart=null;
+        EntryTable.PreviewMouseLeftButtonDown+=(_,e)=>
+        {
+            var node=e.OriginalSource as DependencyObject;
+            if(node is FrameworkContentElement content) node=content.Parent;
+            while(node is not null && node is not DataGridCell) node=VisualTreeHelper.GetParent(node);
+            dragStart=node is DataGridCell cell && cell.Column.DisplayIndex!=0?e.GetPosition(EntryTable):null;
+        };
+        EntryTable.PreviewMouseLeftButtonUp+=(_,_)=>dragStart=null;
+        EntryTable.PreviewMouseMove+=async(_,e)=>
+        {
+            if(dragStart is not { } start || e.LeftButton!=MouseButtonState.Pressed || !model.CanDrag) return;
+            var point=e.GetPosition(EntryTable);
+            if(Math.Abs(point.X-start.X)<SystemParameters.MinimumHorizontalDragDistance && Math.Abs(point.Y-start.Y)<SystemParameters.MinimumVerticalDragDistance) return;
+            dragStart=null;e.Handled=true;
+            await model.DragAsync(paths=>Mouse.LeftButton==MouseButtonState.Pressed?ArchiveFileDrag.Copy(paths):null);
         };
     }
     private void OnClose(object sender, RoutedEventArgs e) => Close();

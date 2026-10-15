@@ -14,11 +14,15 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     private string operationMessage=UiText.Get("T_59a916550385"),outputPath="";
     private TaskCompletionSource idle=CompletedSource();
     private readonly Action? cancel;
+    private readonly Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveDragOutcome>>? prepareDrag;
+    private ArchiveDragLease? dragContent;
+    private IReadOnlyList<ArchiveEntry> dragSelection=[];
     public ArchiveContentsViewModel(string archivePath,IReadOnlyList<ArchiveEntry> items,Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<string?>>? extract=null,Action? cancel=null,Action<string>? open=null,
         string? format=null,Func<ArchiveEditAction,IReadOnlyList<ArchiveEntry>,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveEditOutcome?>>? edit=null,
-        Func<ArchiveEntry,IProgress<string>,Task>? preview=null)
+        Func<ArchiveEntry,IProgress<string>,Task>? preview=null,
+        Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveDragOutcome>>? prepareDrag=null)
     {
-        this.archivePath=archivePath;this.items=items;this.cancel=cancel;
+        this.archivePath=archivePath;this.items=items;this.cancel=cancel;this.prepareDrag=prepareDrag;
         allRows=items.Select(entry=>new ArchiveContentRow(entry)).ToArray();Rows=new(allRows);
         AttachRows();
         SelectVisibleCommand=new RelayCommand(()=>Select(true),()=>!IsWorking && Rows.Count>0);
@@ -29,7 +33,8 @@ public sealed class ArchiveContentsViewModel : ObservableObject
             try {OutputPath=await extract!(SelectedEntries,new Progress<string>(value=>OperationMessage=value)) ?? "";}
             finally {IsWorking=false;idle.TrySetResult();}
         },()=>extract is not null && !IsWorking && allRows.Any(row=>row.Selected));
-        CancelCommand=new RelayCommand(()=>cancel?.Invoke(),()=>IsWorking);
+        CancelCommand=new RelayCommand(()=>{if(IsWorking) cancel?.Invoke();else {OperationMessage=UiText.Get("Drag.Cancelled");ClearDrag();}},()=>IsWorking || dragContent is not null);
+        PrepareDragCommand=new AsyncCommand(()=>DragAsync(_=>null),()=>CanDrag);
         PreviewCommand=new AsyncCommand(async()=>
         {
             var entry=CurrentRow!.Entry;IsWorking=true;idle=new TaskCompletionSource();
@@ -40,7 +45,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         EditingAvailable=edit is not null && !VolumeCompressionService.IsVolumePath(archivePath) && !Path.GetExtension(archivePath).Equals(".exe",StringComparison.OrdinalIgnoreCase) && format?.ToLowerInvariant() is "7z" or "zip";
         AsyncCommand EditingCommand(ArchiveEditAction action,Func<bool> allowed)=>new(async()=>
         {
-            IsWorking=true;idle=new TaskCompletionSource();OutputPath="";
+            IsWorking=true;idle=new TaskCompletionSource();OutputPath="";ClearDrag();
             try
             {
                 var outcome=await edit!(action,this.items,allRows.Any(row=>row.Selected)?SelectedEntries:[],new Progress<string>(value=>OperationMessage=value));
@@ -67,6 +72,41 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ICommand AddFolderCommand {get;}
     public ICommand DeleteSelectedCommand {get;}
     public ICommand ReplaceSelectedCommand {get;}
+    public ICommand PrepareDragCommand {get;}
+    public bool CanDrag=>prepareDrag is not null && !IsWorking && (allRows.Any(row=>row.Selected) || CurrentRow is not null);
+    public void ClearDrag()
+    {
+        var warning=dragContent?.Cleanup();dragContent=null;dragSelection=[];
+        if(warning is not null) OperationMessage=warning;
+        CommandManager.InvalidateRequerySuggested();
+    }
+    public async Task DragAsync(Func<IReadOnlyList<string>,bool?> copy)
+    {
+        if(!CanDrag) return;
+        var selection=allRows.Any(row=>row.Selected)?SelectedEntries:ArchiveSelection.Expand(items,[CurrentRow!.Entry.Index]);
+        IsWorking=true;idle=new TaskCompletionSource();
+        try
+        {
+            if(dragContent is null || !dragSelection.SequenceEqual(selection))
+            {
+                ClearDrag();OperationMessage=UiText.Get("Drag.Preparing");
+                var result=await prepareDrag!(selection,new Progress<string>(value=>OperationMessage=value));
+                if(result.Content is null)
+                {OperationMessage=result.Warning ?? UiText.Get(result.Engine.Status=="cancelled"?"Drag.Cancelled":"Drag.Failed");return;}
+                dragContent=result.Content;dragSelection=selection.ToArray();
+                // Keep origin/cleanup warnings visible instead of replacing them with readiness text.
+                OperationMessage=string.Join("\n",new[]{result.Warning,UiText.Get("Drag.Ready")}.Where(s=>!string.IsNullOrEmpty(s)));
+            }
+            var copied=copy(dragContent.Paths);
+            if(copied is not null)
+            {
+                OperationMessage=UiText.Get(copied.Value?"Drag.Copied":"Drag.Cancelled");ClearDrag();
+            }
+        }
+        catch(Exception error) when(error is IOException or UnauthorizedAccessException or System.Runtime.InteropServices.COMException)
+        {OperationMessage=UiText.Get("Drag.Failed");ClearDrag();}
+        finally {IsWorking=false;idle.TrySetResult();CommandManager.InvalidateRequerySuggested();}
+    }
     private static TaskCompletionSource CompletedSource() {var source=new TaskCompletionSource();source.SetResult();return source;}
     public Task WaitForIdleAsync()=>idle.Task;
     public void Cancel()=>cancel?.Invoke();
