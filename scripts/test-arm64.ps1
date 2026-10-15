@@ -5,7 +5,7 @@ $taskRoot = Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
 $taskFailures = [Collections.Generic.List[string]]::new()
-$taskProjects = @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')
+$taskProjects = @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','ConversionValidation','CliValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation','AppearanceValidation')
 foreach ($taskProject in $taskProjects + @('UpdatePackager')) {
     $taskPrefix = if ($taskProject -eq 'UpdatePackager') { 'tools' } else { 'tests' }
     & $taskDotnet build "$taskRoot/$taskPrefix/$taskProject/$taskProject.csproj" --nologo -m:1 -nr:false -v:minimal
@@ -18,7 +18,7 @@ foreach ($taskVersion in @('26.04','26.03')) {
 }
 python "$taskRoot/tests/engine_validation.py"
 if ($LASTEXITCODE -ne 0) { throw 'Native baseline engine matrix failed.' }
-foreach ($taskProject in $taskProjects | Where-Object { $_ -notin @('EngineSmoke','UpdateValidation','CoreValidation') }) {
+foreach ($taskProject in $taskProjects | Where-Object { $_ -notin @('EngineSmoke','UpdateValidation','CoreValidation','CliValidation') }) {
     & $taskDotnet "$taskRoot/tests/$taskProject/bin/Debug/net10.0-windows/$taskProject.dll" $taskRoot
     if ($LASTEXITCODE -ne 0) { $taskFailures.Add("data: $taskProject") }
 }
@@ -34,6 +34,8 @@ foreach ($taskProject in @('CoreValidation','UpdateValidation')) {
     & $taskDotnet "$taskRoot/tests/$taskProject/bin/Debug/net10.0-windows/$taskProject.dll" $taskRoot
     if ($LASTEXITCODE -ne 0) { throw "Native acceptance failed: $taskProject" }
 }
+& $taskDotnet "$taskRoot/tests/CliValidation/bin/Debug/net10.0-windows/CliValidation.dll" $taskRoot "$taskRoot/artifacts/app"
+if ($LASTEXITCODE -ne 0) { $taskFailures.Add('console entry') }
 $taskApp=Join-Path $taskRoot 'artifacts/test-app';New-Item -ItemType Directory -Force $taskApp | Out-Null
 Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force

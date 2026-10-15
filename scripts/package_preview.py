@@ -44,6 +44,8 @@ def validate_architecture(application, architecture):
     if architecture not in machines:
         raise ValueError('Unsupported release architecture.')
     images = [application/'ArchivePassword.exe', application/'ArchiveEngineWorker.exe']
+    if (application/'nomozip-cli.exe').exists():
+        images.append(application/'nomozip-cli.exe')
     engines = application/'engines'
     directories = [entry for entry in engines.iterdir() if entry.is_dir()]
     if not directories:

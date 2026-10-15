@@ -15,6 +15,10 @@ else { $taskPublishArguments += '--no-self-contained' }
 if ($Architecture -eq 'arm64') { $taskPublishArguments += @('-r','win-arm64','-p:PlatformTarget=ARM64') }
 & (Join-Path $taskRoot '.tools/dotnet/dotnet.exe') @taskPublishArguments
 if ($LASTEXITCODE -ne 0) { throw 'Desktop build failed.' }
+$taskCliArguments = @('publish',(Join-Path $taskRoot 'src/Cli/ArchivePassword.Cli.csproj'),'-c',$Configuration,'-o',$taskOutput,'--nologo','-m:1','-nr:false','-v:minimal','--no-self-contained')
+if ($Architecture -eq 'arm64') { $taskCliArguments += @('-r','win-arm64','-p:PlatformTarget=ARM64') }
+& (Join-Path $taskRoot '.tools/dotnet/dotnet.exe') @taskCliArguments
+if ($LASTEXITCODE -ne 0) { throw 'Console entry build failed.' }
 Copy-Item (Join-Path $taskRoot 'artifacts/worker/ArchiveEngineWorker.exe') $taskOutput -Force
 $taskEngineSource = Join-Path $taskRoot $(if ($Architecture -eq 'x64') { 'engines' } else { 'engines/arm64' })
 $taskEngineTarget = Join-Path $taskOutput 'engines'; New-Item -ItemType Directory -Force $taskEngineTarget | Out-Null
@@ -36,6 +40,7 @@ Copy-Item (Join-Path $taskRoot '.tools/7zip-src/DOC/unRarLicense.txt') (Join-Pat
 Copy-Item (Join-Path $taskRoot 'THIRD_PARTY.md') $taskLicenses -Force
 Copy-Item (Join-Path $taskRoot 'docs/QUICK_START.txt') (Join-Path $taskOutput '使用说明.txt') -Force
 Copy-Item (Join-Path $taskRoot 'docs/QUICK_START.en.txt') (Join-Path $taskOutput 'README.en.txt') -Force
+Copy-Item (Join-Path $taskRoot 'docs/COMMAND_LINE.md') (Join-Path $taskOutput 'CLI-guide.md') -Force
 if (-not $SelfContained) {
     $taskInstructions = Join-Path $taskOutput '使用说明.txt'
     $taskText = [IO.File]::ReadAllText($taskInstructions)

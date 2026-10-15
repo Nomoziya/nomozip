@@ -35,3 +35,5 @@ Downloads and support: https://github.com/Nomoziya/nomozip
 Appearance: in Settings, choose Follow system, Light, or Dark and save. It applies immediately. System contrast themes take priority; your choice resumes when contrast mode is off.
 
 Convert archive: select an ordinary 7z/ZIP/RAR on Extract, then Convert archive. Output a separate 7z/ZIP with explicit new encryption. Keep the original; allow space for two extracted copies.
+
+Console: run nomozip-cli.exe --help. Supports test, extract, create and vault-list; unattended and no overwrite by default. Use masked prompts, stdin or vault IDs for credentials. See CLI-guide.md.

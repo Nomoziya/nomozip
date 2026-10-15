@@ -20,6 +20,8 @@ if (-not $ApplicationDirectory) {
 } else { $ApplicationDirectory = [IO.Path]::GetFullPath($ApplicationDirectory) }
 $taskApp = Join-Path $ApplicationDirectory 'ArchivePassword.exe'
 if (-not (Test-Path -LiteralPath $taskApp)) { throw 'Application payload is missing.' }
+$taskCli = Join-Path $ApplicationDirectory 'nomozip-cli.exe'
+if (-not (Test-Path -LiteralPath $taskCli) -or (Get-Item -LiteralPath $taskCli).VersionInfo.FileVersion -ne $taskFileVersion -or (Get-Item -LiteralPath $taskCli).VersionInfo.ProductVersion.Split('+')[0] -ne $taskVersion) { throw 'Console entry is missing or its version differs from the source.' }
 $taskBinary = (Get-Item -LiteralPath $taskApp).VersionInfo
 if ($taskBinary.ProductVersion.Split('+')[0] -ne $taskVersion -or $taskBinary.FileVersion -ne $taskFileVersion) { throw 'Application payload version differs from the current source project.' }
 # Both collectors run before building an installer, so private/source/runtime failures create no release assets.
