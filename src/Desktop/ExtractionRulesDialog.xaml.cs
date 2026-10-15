@@ -21,9 +21,9 @@ public sealed class ExtractionRulesEditor : ObservableObject
     public ExtractionDirectoryRules Rules=>new((ExtractionLocation)Location,(ExtractionLayout)Layout,(ContainerCollision)Collision,(ContainerNaming)Naming,OpenAfterSuccess);
     public bool Validate()
     {
-        if(IsCustom && (string.IsNullOrWhiteSpace(CustomPath) || !Path.IsPathFullyQualified(CustomPath))) { Error="请选择或输入完整的自定义目录。";return false; }
+        if(IsCustom && (string.IsNullOrWhiteSpace(CustomPath) || !Path.IsPathFullyQualified(CustomPath))) { Error=UiText.Get("T_1cc5ae49da18");return false; }
         try { if(IsCustom) CustomPath=Path.GetFullPath(CustomPath); }
-        catch(ArgumentException) { Error="目录格式无效，请重新输入。";return false; }
+        catch(ArgumentException) { Error=UiText.Get("T_7811b89425d9");return false; }
         Error="";return true;
     }
 }

@@ -19,8 +19,8 @@ public sealed partial class MainViewModel
             if(encoding is {} cp && cp!=task.FilenameCodePage)
             {
                 task.FilenameCodePage=cp; task.Completed=false; task.Failure=null; task.VerificationResult=null;
-                task.Status="编码已更改 · 准备就绪";Changed(nameof(TaskSummary));Changed(nameof(ExtractButtonText));
-                Footer=$"{task.Name}：已应用{(cp==0 ? "引擎默认编码" : "CP"+cp)}，仅影响此任务的文件名。";
+                task.Status=UiText.Get("T_b786485ba1c7");Changed(nameof(TaskSummary));Changed(nameof(ExtractButtonText));
+                Footer=UiText.Format("T_5a21ce30671c", task.Name, (cp==0 ? UiText.Get("T_b438e0890c2a") : "CP"+cp));
             }
         }
         finally { cancellation.Dispose();cancellation=null;IsBusy=false;idle.TrySetResult(); }

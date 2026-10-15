@@ -11,7 +11,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     private IReadOnlyList<ArchiveEntry> items;
     private IReadOnlyList<ArchiveContentRow> allRows;
     private bool selecting,working;
-    private string operationMessage="勾选文件或文件夹；文件夹包含其全部子项。",outputPath="";
+    private string operationMessage=UiText.Get("T_59a916550385"),outputPath="";
     private TaskCompletionSource idle=CompletedSource();
     private readonly Action? cancel;
     public ArchiveContentsViewModel(string archivePath,IReadOnlyList<ArchiveEntry> items,Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<string?>>? extract=null,Action? cancel=null,Action<string>? open=null,
@@ -42,7 +42,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
                     this.items=outcome.Items;allRows=this.items.Select(entry=>new ArchiveContentRow(entry)).ToArray();AttachRows();FilterRows();
                     Changed(nameof(Summary));SelectionChanged();
                     OutputPath=Path.GetDirectoryName(archivePath)!;
-                    OperationMessage="修改完成。原包副本："+outcome.BackupPath;
+                    OperationMessage=UiText.Get("T_449c0abb4f19")+outcome.BackupPath;
                 }
             }
             finally {IsWorking=false;idle.TrySetResult();}
@@ -55,7 +55,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     private void AttachRows() {foreach(var row in allRows) row.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(ArchiveContentRow.Selected) && !selecting) SelectionChanged();};}
     private void FilterRows() {Rows.Clear();foreach(var row in allRows.Where(row=>row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase))) Rows.Add(row);}
     public bool EditingAvailable {get;}
-    public string EditingHint=>EditingAvailable?"添加到包根目录；替换保留原路径。校验后替换，并保留原包副本。":"此格式仅支持查看与解压。";
+    public string EditingHint=>EditingAvailable?UiText.Get("T_d12b676ae379"):UiText.Get("T_e1fb8aa2fcac");
     public ICommand AddFilesCommand {get;}
     public ICommand AddFolderCommand {get;}
     public ICommand DeleteSelectedCommand {get;}
@@ -73,7 +73,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ICommand CancelCommand {get;}
     public ICommand OpenResultCommand {get;}
     public IReadOnlyList<ArchiveEntry> SelectedEntries=>ArchiveSelection.Expand(items,allRows.Where(row=>row.Selected).Select(row=>row.Entry.Index));
-    public string SelectionSummary=>allRows.Any(row=>row.Selected)?$"已勾选 {allRows.Count(row=>row.Selected)} 项 · 包含 {SelectedEntries.Count} 项（含子项和隐藏项）":"未选择内容";
+    public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
     private void SelectionChanged() {Changed(nameof(SelectionSummary));CommandManager.InvalidateRequerySuggested();}
     private void Select(bool visible)
     {
@@ -84,7 +84,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public string ArchiveName => Path.GetFileName(archivePath);
     public ObservableCollection<ArchiveContentRow> Rows { get; }
     public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary)); } } }
-    public string Summary => $"显示 {Rows.Count} / {allRows.Count} 项 · {items.Count(value => !value.Directory)} 个文件 · {items.Count(value => value.Directory)} 个文件夹";
+    public string Summary => UiText.Format("T_55f9d9c65be9", Rows.Count, allRows.Count, items.Count(value => !value.Directory), items.Count(value => value.Directory));
 }
 public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace}
 
@@ -94,7 +94,7 @@ public sealed class ArchiveContentRow(ArchiveEntry entry) : ObservableObject
     public ArchiveEntry Entry=>entry;
     public bool Selected {get=>selected;set=>Set(ref selected,value);}
     public string Path => entry.Path;
-    public string Kind => entry.Directory ? "文件夹" : "文件";
+    public string Kind => entry.Directory ? UiText.Get("T_7c7802d8adae") : UiText.Get("T_39932f24fe11");
     public string SizeText => entry.Directory ? "—" : entry.Size < 1024 ? $"{entry.Size} B" : entry.Size < 1024 * 1024 ? $"{entry.Size / 1024.0:0.#} KB" : entry.Size < 1024ul * 1024 * 1024 ? $"{entry.Size / (1024.0 * 1024):0.#} MB" : $"{entry.Size / (1024.0 * 1024 * 1024):0.#} GB";
-    public string EncryptionText => entry.Encrypted ? "已加密" : "未加密";
+    public string EncryptionText => entry.Encrypted ? UiText.Get("T_b66975fbd35f") : UiText.Get("T_7c568abbd672");
 }

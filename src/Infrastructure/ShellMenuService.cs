@@ -40,10 +40,10 @@ public sealed class ShellMenuService(string executable, string classesPath = @"S
             using var children = key.CreateSubKey("shell");
             if (index < 3)
             {
-                AddVerb(children, "01ExtractHere", "解压到当前目录", HereClass);
-                AddVerb(children, "02ExtractFolder", "解压到同名文件夹", FolderClass);
+                AddVerb(children, "01ExtractHere", UiText.Get("T_f9b106212acd"), HereClass);
+                AddVerb(children, "02ExtractFolder", UiText.Get("T_7de7bf85254d"), FolderClass);
             }
-            AddVerb(children, "03Compress", "压缩…", CompressClass);
+            AddVerb(children, "03Compress", UiText.Get("T_ed3955526cf9"), CompressClass);
         }
         Notify();
     }

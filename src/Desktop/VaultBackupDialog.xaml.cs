@@ -11,12 +11,12 @@ public partial class VaultBackupDialog : Window
     public VaultBackupDialog(bool exporting, string path)
     {
         InitializeComponent(); this.exporting = exporting;
-        Title = Heading.Text = exporting ? "导出加密备份" : "打开加密备份";
-        ContinueButton.Content = exporting ? "导出备份" : "预览密码";
+        Title = Heading.Text = exporting ? UiText.Get("T_61e8ff181802") : UiText.Get("T_e2a88581bf88");
+        ContinueButton.Content = exporting ? UiText.Get("T_e9d3dd690a4e") : UiText.Get("T_77c11f78b11a");
         Description.Text = exporting
-            ? "为此备份设置至少 12 个字符的密码，可使用中文。换电脑或换 Windows 用户后，凭此密码导入。请记住备份密码，忘记后无法恢复。"
-            : "输入导出时设置的备份密码。下一步预览记录并选择重复项处理方式，确认后才写入密码库。";
-        FileLabel.Text = "备份文件：" + Path.GetFileName(path); FileLabel.ToolTip = path;
+            ? UiText.Get("T_2b219f77f72a")
+            : UiText.Get("T_815a722179ba");
+        FileLabel.Text = UiText.Get("T_980e907463c6") + Path.GetFileName(path); FileLabel.ToolTip = path;
         ConfirmationPanel.Visibility = exporting ? Visibility.Visible : Visibility.Collapsed;
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); ConfirmationBox.Clear(); };
@@ -25,11 +25,11 @@ public partial class VaultBackupDialog : Window
     {
         if (string.IsNullOrEmpty(SecretBox.Password) || exporting && SecretBox.Password.Length < 12)
         {
-            ShowError(exporting ? "备份密码至少需要 12 个字符。" : "请输入备份密码。"); SecretBox.Focus(); return;
+            ShowError(exporting ? UiText.Get("T_652879ddcefd") : UiText.Get("T_77316765ebb8")); SecretBox.Focus(); return;
         }
         if (exporting && SecretBox.Password != ConfirmationBox.Password)
         {
-            ShowError("两次输入的备份密码不一致。"); ConfirmationBox.Focus(); return;
+            ShowError(UiText.Get("T_f007e1890a6a")); ConfirmationBox.Focus(); return;
         }
         Passphrase = SecretBox.Password; DialogResult = true;
     }

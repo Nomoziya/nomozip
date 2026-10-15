@@ -79,11 +79,11 @@ public sealed class ArchiveEditingService(IArchiveEngine engine,IArchiveEditor e
             if(expected.Count==0 && headerProbe.NeedsPassword) return Failure("archive_edit_empty_encrypted");
             token.ThrowIfCancellationRequested();
             temporary=Path.Combine(Path.GetDirectoryName(archive)!,".nomozip-edit-"+Guid.NewGuid().ToString("N")+".tmp");
-            progress?.Report(new("editing","正在写入临时新包，原包保持不变…"));
+            progress?.Report(new("editing",UiText.Get("T_bbe24b7f2796")));
             var result=await editor.UpdateAsync(archive,temporary,new(snapshot,removed,additions,headerProbe.NeedsPassword),verified.Secret,
-                new ForwardProgress<EngineProgress>(value=>progress?.Report(new("editing","正在写入临时新包…",value))),token);
+                new ForwardProgress<EngineProgress>(value=>progress?.Report(new("editing",UiText.Get("T_0c62ba8e3d49"),value))),token);
             if(!result.IsSuccess) return new(result,snapshot);
-            progress?.Report(new("testing","正在完整校验修改后的压缩包…"));
+            progress?.Report(new("testing",UiText.Get("T_c28fe2702f55")));
             result=await engine.TestAsync(temporary,verified.Secret,cancellationToken:token);
             if(!result.IsSuccess) return new(result,snapshot);
             var final=await engine.ListAsync(temporary,verified.Secret,token);

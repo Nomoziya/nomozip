@@ -28,13 +28,13 @@ public sealed class EngineUpdateService(string installedDirectory, string select
         if (!staging.StartsWith(installedRoot, StringComparison.OrdinalIgnoreCase)) { gate.Release(); throw new UpdateException("invalid_package"); }
         try
         {
-            progress?.Report("正在校验更新包…");
+            progress?.Report(UiText.Get("T_d0b2c6fecb84"));
             var package = await EngineUpdatePackage.ReadAsync(packagePath, publicKey, cancellationToken);
             Directory.CreateDirectory(staging);
             foreach (var (name, bytes) in package.Payload) await File.WriteAllBytesAsync(Path.Combine(staging, name), bytes, cancellationToken);
             await File.WriteAllBytesAsync(Path.Combine(staging, "update-manifest.json"), package.ManifestBytes, cancellationToken);
             await File.WriteAllBytesAsync(Path.Combine(staging, "update-manifest.sig"), package.Signature, cancellationToken);
-            progress?.Report("正在验证新引擎能否正常解压…");
+            progress?.Report(UiText.Get("T_5679ccc535d2"));
             await ProbeAsync(Path.Combine(staging, "7z.dll"), cancellationToken);
             var target = Path.GetFullPath(Path.Combine(installedRoot, package.Manifest.Version));
             if (!target.StartsWith(installedRoot, StringComparison.OrdinalIgnoreCase)) throw new UpdateException("invalid_package");

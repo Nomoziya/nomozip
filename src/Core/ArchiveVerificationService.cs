@@ -26,7 +26,7 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
         PasswordPromptResponse? supplied = null;
         var verifiedPasswords = new Dictionary<uint, PasswordPromptResponse>();
         var currentState = "testing";
-        var currentMessage = "正在检查压缩包";
+        var currentMessage = UiText.Get("T_70b6cd556861");
         var engineProgress = new ForwardProgress<EngineProgress>(value => progress?.Report(new TaskUpdate(currentState, currentMessage, value)));
         Task<EngineResult> TestAsync(string? password,IReadOnlyDictionary<uint,string> overrides,CancellationToken token) =>selection is not null
             ? engine is IArchiveSelectionEngine selectedEngine ? selectedEngine.TestSelectionAsync(archivePath,selection,password,overrides,engineProgress,token) : Task.FromResult(new EngineResult {Code="unsupported_selection"})
@@ -41,19 +41,19 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
                 if (!verifiedPasswords.ContainsKey(index)) verifiedPasswords[index] = candidate;
             return tested;
         }
-        progress?.Report(new TaskUpdate("testing", "正在检查压缩包"));
+        progress?.Report(new TaskUpdate("testing", UiText.Get("T_70b6cd556861")));
         result = await TestAsync(null,new Dictionary<uint,string>(),cancellationToken);
         if (!result.IsSuccess && result.NeedsPassword && autoTry)
         {
             IReadOnlyList<PasswordCandidate> entries;
             try { entries = await candidates.GetAsync(archivePath, cancellationToken); }
-            catch (VaultException error) { entries = []; warning = error.Code == "vault_locked" ? "密码库已锁定，请手动输入密码。" : "密码库暂时无法读取，请手动输入密码。"; }
+            catch (VaultException error) { entries = []; warning = error.Code == "vault_locked" ? UiText.Get("T_c1043fe70086") : UiText.Get("T_c132d4b6ff48"); }
             for (var index = 0; index < entries.Count; ++index)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 if (skipSavedPasswordToken.IsCancellationRequested) break;
                 currentState = "password";
-                currentMessage = $"正在尝试保存的密码，{index + 1}/{entries.Count}";
+                currentMessage = UiText.Format("T_c124c00caa4f", index + 1, entries.Count);
                 progress?.Report(new TaskUpdate(currentState, currentMessage));
                 using var candidateCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, skipSavedPasswordToken);
                 result = await VerifyPasswordAsync(new(entries[index].Secret, false, "", entries[index].SavedId), candidateCancellation.Token);
@@ -66,14 +66,14 @@ public sealed class ArchiveVerificationService(IArchiveEngine engine, IPasswordC
         while (!result.IsSuccess && result.NeedsPassword)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            progress?.Report(new TaskUpdate("waiting", "请输入可用密码"));
+            progress?.Report(new TaskUpdate("waiting", UiText.Get("T_aa41cd7ea619")));
             supplied = await requestPassword(result);
             if (supplied is null) return new ArchiveVerificationOutcome(result with { Status = "cancelled", Code = "cancelled" }, secret, savedId, supplied, verifiedPasswords, warning);
             secret = supplied.Secret;
-            currentState = "testing"; currentMessage = "正在验证输入的密码";
+            currentState = "testing"; currentMessage = UiText.Get("T_144cae45601e");
             result = await VerifyPasswordAsync(supplied, cancellationToken);
             if (result.IsSuccess) savedId = supplied.SavedId;
-            if (!result.IsSuccess && result.NeedsPassword) progress?.Report(new TaskUpdate("waiting", "密码可能不匹配，或压缩包已损坏"));
+            if (!result.IsSuccess && result.NeedsPassword) progress?.Report(new TaskUpdate("waiting", UiText.Get("T_1554396888e3")));
         }
         return new ArchiveVerificationOutcome(result, secret, savedId, supplied, verifiedPasswords, warning);
 

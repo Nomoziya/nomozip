@@ -17,18 +17,18 @@ public sealed partial class MainViewModel
         set { if (Set(ref selectedPasswordGroup, value)) FilterPasswords(); }
     }
     public ICommand MergePasswordsCommand { get; private set; } = null!;
-    public string PasswordListSummary => $"显示 {PasswordRows.Count} / {allPasswords.Count} 条";
+    public string PasswordListSummary => UiText.Format("T_397dc2bf2897", PasswordRows.Count, allPasswords.Count);
     public string DuplicateSummary => SelectedPassword is { } value && DuplicateIds(value).Length > 0
-        ? $"所选密码另有 {DuplicateIds(value).Length} 条相同密码记录，可合并。" : "";
+        ? UiText.Format("T_a2cd3d94cd10", DuplicateIds(value).Length) : "";
     private Guid[] DuplicateIds(SavedPassword keep) => allPasswords.Where(value => value.Id != keep.Id && value.Secret == keep.Secret).Select(value => value.Id).ToArray();
     private void InitializePasswordOrganizationCommands() => MergePasswordsCommand = new AsyncCommand(MergePasswordsAsync,
         () => IsIdle && vaultAvailable && vault is IPasswordOrganizationVault && SelectedPassword is { } value && DuplicateIds(value).Length > 0);
     private void RefreshPasswordGroups()
     {
         var prior = selectedPasswordGroup?.Value;
-        PasswordGroups.Clear(); PasswordGroups.Add(new(null, "全部分组"));
+        PasswordGroups.Clear(); PasswordGroups.Add(new(null, UiText.Get("T_140e85a15cfe")));
         foreach (var group in allPasswords.Select(value => value.Group).Distinct(StringComparer.Ordinal).Order(StringComparer.CurrentCultureIgnoreCase))
-            PasswordGroups.Add(new(group, group.Length == 0 ? "未分组" : group));
+            PasswordGroups.Add(new(group, group.Length == 0 ? UiText.Get("T_e86ea3f280d9") : group));
         SelectedPasswordGroup = PasswordGroups.FirstOrDefault(value => value.Value == prior) ?? PasswordGroups[0];
     }
     private async Task MergePasswordsAsync()
@@ -41,10 +41,10 @@ public sealed partial class MainViewModel
         {
             var removed = await organization.MergeDuplicatesAsync(keep.Id, ids);
             await RefreshVaultAsync(); SelectedPassword = allPasswords.FirstOrDefault(value => value.Id == keep.Id);
-            Banner = $"已合并 {removed} 条重复记录，压缩包关联已保留。";
+            Banner = UiText.Format("T_f6b557598ac8", removed);
         }
         catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException)
-        { Banner = "未能合并重复密码。原密码库已保留，请刷新后重试。"; }
+        { Banner = UiText.Get("T_c9936e785515"); }
         finally { IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
     }
 }

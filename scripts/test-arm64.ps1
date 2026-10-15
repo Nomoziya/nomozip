@@ -5,7 +5,7 @@ $taskRoot = Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
 $taskDotnet = Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
 $taskFailures = [Collections.Generic.List[string]]::new()
-$taskProjects = @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation')
+$taskProjects = @('EngineSmoke','CoreValidation','UpdateValidation','CompressionValidation','AssociationValidation','BrowserValidation','MultiPasswordValidation','VaultTransferValidation','ShellValidation','ApplicationUpdateValidation','ExtractionToolsValidation','SelectionValidation','PasswordOrganizationValidation','FileHashValidation','EncodingValidation','OriginValidation','QueueValidation','PauseValidation','MasterVaultValidation','ArchiveEditingValidation','VolumeValidation','SfxValidation','FormatValidation','ArchitectureValidation','LocalizationValidation')
 foreach ($taskProject in $taskProjects + @('UpdatePackager')) {
     $taskPrefix = if ($taskProject -eq 'UpdatePackager') { 'tools' } else { 'tests' }
     & $taskDotnet build "$taskRoot/$taskPrefix/$taskProject/$taskProject.csproj" --nologo -m:1 -nr:false -v:minimal
@@ -45,6 +45,7 @@ foreach ($taskFlag in @('validate','validate-vault-transfer','validate-password-
     $taskGui=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot) -WindowStyle Hidden -Wait -PassThru
     if ($taskGui.ExitCode -ne 0) { $taskFailures.Add("desktop: $taskFlag") }
 }
+try { & "$taskRoot/scripts/test-localization-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: localization: $_") }
 # ARM64 SDK builds AnyCPU fixture code; the separately verified x64 runtime actually writes old vaults.
 $taskMetadata=Invoke-RestMethod 'https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json'
 $taskRuntime=($taskMetadata.releases | Where-Object { $_.runtime.version -eq '10.0.12' } | Select-Object -First 1).runtime.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name -eq 'dotnet-runtime-win-x64.zip' } | Select-Object -First 1

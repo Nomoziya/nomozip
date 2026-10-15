@@ -50,7 +50,7 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private int filenameCodePage;
     public int FilenameCodePage { get=>filenameCodePage; set { if(!ZipFilenameEncoding.IsSupported(value)) throw new ArgumentOutOfRangeException(nameof(value)); if(Set(ref filenameCodePage,value)) Changed(nameof(SizeText)); } }
     public string SizeText => (previewSize ?? FileSize()) + (FilenameCodePage==0 ? "" : $" · CP{FilenameCodePage}");
-    private string status = "准备就绪";
+    private string status = UiText.Get("T_1bd1893c0900");
     private double percent;
     private bool running, indeterminate;
     public bool Completed { get; set; }
@@ -63,6 +63,6 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private string FileSize()
     {
         try { var bytes = new System.IO.FileInfo(Path).Length; return bytes >= 1048576 ? $"{bytes / 1048576.0:N1} MB" : $"{bytes / 1024.0:N1} KB"; }
-        catch (System.IO.IOException) { return "无法读取文件"; }
+        catch (System.IO.IOException) { return UiText.Get("T_d9851374e355"); }
     }
 }

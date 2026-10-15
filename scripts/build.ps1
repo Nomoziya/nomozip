@@ -35,6 +35,7 @@ Copy-Item (Join-Path $taskRoot '.tools/7zip-src/DOC/License.txt') (Join-Path $ta
 Copy-Item (Join-Path $taskRoot '.tools/7zip-src/DOC/unRarLicense.txt') (Join-Path $taskLicenses '7zip-unRar-License.txt') -Force
 Copy-Item (Join-Path $taskRoot 'THIRD_PARTY.md') $taskLicenses -Force
 Copy-Item (Join-Path $taskRoot 'docs/QUICK_START.txt') (Join-Path $taskOutput '使用说明.txt') -Force
+Copy-Item (Join-Path $taskRoot 'docs/QUICK_START.en.txt') (Join-Path $taskOutput 'README.en.txt') -Force
 if (-not $SelfContained) {
     $taskInstructions = Join-Path $taskOutput '使用说明.txt'
     $taskText = [IO.File]::ReadAllText($taskInstructions)

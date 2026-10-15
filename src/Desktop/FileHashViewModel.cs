@@ -10,7 +10,7 @@ namespace ArchivePassword.Desktop;
 
 public sealed class FileHashRow(string path, string expected = "") : ObservableObject
 {
-    private string expectedHash = expected, digest = "", status = "待计算";
+    private string expectedHash = expected, digest = "", status = UiText.Get("T_2890ec1b2f04");
     public string Path { get; } = path;
     public string Name => System.IO.Path.GetFileName(Path);
     public string ExpectedHash
@@ -18,34 +18,34 @@ public sealed class FileHashRow(string path, string expected = "") : ObservableO
         get => expectedHash;
         set { if (Set(ref expectedHash, value)) { Changed(nameof(ExpectedError)); Compare(); } }
     }
-    public string ExpectedError => string.IsNullOrWhiteSpace(ExpectedHash) || Sha256Manifest.IsDigest(ExpectedHash.Trim()) ? "" : "请输入 64 位十六进制 SHA-256。";
+    public string ExpectedError => string.IsNullOrWhiteSpace(ExpectedHash) || Sha256Manifest.IsDigest(ExpectedHash.Trim()) ? "" : UiText.Get("T_f585137c61b2");
     public string Digest { get => digest; private set => Set(ref digest, value); }
     public long BytesRead { get; private set; }
     public string Status { get => status; internal set => Set(ref status, value); }
     public FileHashResult Result => new(Path, BytesRead, Digest);
-    internal void Reset() { Digest = ""; BytesRead = 0; Status = "待计算"; }
+    internal void Reset() { Digest = ""; BytesRead = 0; Status = UiText.Get("T_2890ec1b2f04"); }
     internal void Complete(FileHashResult value) { BytesRead = value.BytesRead; Digest = value.Digest; Compare(); }
     private void Compare()
     {
-        if (ExpectedError.Length > 0) Status = "期望值无效";
-        else if (Digest.Length == 0) Status = "待计算";
-        else Status = string.IsNullOrWhiteSpace(ExpectedHash) ? "已计算（未比较）"
-            : string.Equals(Digest, ExpectedHash.Trim(), StringComparison.OrdinalIgnoreCase) ? "一致" : "不一致";
+        if (ExpectedError.Length > 0) Status = UiText.Get("T_30d420c8637f");
+        else if (Digest.Length == 0) Status = UiText.Get("T_2890ec1b2f04");
+        else Status = string.IsNullOrWhiteSpace(ExpectedHash) ? UiText.Get("T_cb82f06947d1")
+            : string.Equals(Digest, ExpectedHash.Trim(), StringComparison.OrdinalIgnoreCase) ? UiText.Get("T_0680a4a36ca8") : UiText.Get("T_a50309ed2709");
     }
 }
 
 public sealed class FileHashDialogs(Window owner, Func<string[]>? selectFiles = null, Func<bool, string?>? selectManifest = null, Action<string>? copy = null)
 {
-    public string[] SelectFiles() => selectFiles?.Invoke() ?? (new OpenFileDialog { Multiselect = true, Title = "选择需要计算 SHA-256 的文件", Filter = "所有文件|*.*" } is var dialog && dialog.ShowDialog(owner) == true ? dialog.FileNames : []);
+    public string[] SelectFiles() => selectFiles?.Invoke() ?? (new OpenFileDialog { Multiselect = true, Title = UiText.Get("T_2aea093e5709"), Filter = UiText.Get("T_b0e866423d58") } is var dialog && dialog.ShowDialog(owner) == true ? dialog.FileNames : []);
     public string? SelectManifest(bool exporting)
     {
         if (selectManifest is not null) return selectManifest(exporting);
         if (exporting)
         {
-            var dialog = new SaveFileDialog { Title = "导出计算值清单", Filter = "SHA-256 清单|*.txt;*.sha256|所有文件|*.*", FileName = "SHA256SUMS.txt", DefaultExt = ".txt", AddExtension = true, OverwritePrompt = true };
+            var dialog = new SaveFileDialog { Title = UiText.Get("T_e29c21446e54"), Filter = UiText.Get("T_fbefab1520fc"), FileName = "SHA256SUMS.txt", DefaultExt = ".txt", AddExtension = true, OverwritePrompt = true };
             return dialog.ShowDialog(owner) == true ? dialog.FileName : null;
         }
-        var input = new OpenFileDialog { Title = "导入 SHA-256 校验清单", Filter = "SHA-256 清单|*.txt;*.sha256|所有文件|*.*" };
+        var input = new OpenFileDialog { Title = UiText.Get("T_4b1aa2b0c024"), Filter = UiText.Get("T_fbefab1520fc") };
         return input.ShowDialog(owner) == true ? input.FileName : null;
     }
     public void Copy(string value) { if (copy is not null) copy(value); else Clipboard.SetText(value); }
@@ -54,7 +54,7 @@ public sealed class FileHashDialogs(Window owner, Func<string[]>? selectFiles = 
 public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDialogs dialogs) : ObservableObject
 {
     private bool busy;
-    private string message = "添加文件或导入清单，然后点击计算。", progressText = "";
+    private string message = UiText.Get("T_49012ae3beb3"), progressText = "";
     private double progress;
     private FileHashRow? selected;
     private CancellationTokenSource? cancellation;
@@ -80,8 +80,8 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
     public ICommand ExportCommand => export ??= new AsyncCommand(ExportAsync, () => IsIdle && Rows.Any(value => value.Digest.Length > 0));
     public ICommand CopyCommand => copy ??= new RelayCommand(() =>
     {
-        try { dialogs.Copy(Selected!.Digest); Message = "已复制所选文件的 SHA-256。"; }
-        catch (System.Runtime.InteropServices.ExternalException) { Message = "剪贴板暂时不可用，请稍后重试。"; }
+        try { dialogs.Copy(Selected!.Digest); Message = UiText.Get("T_57f471c35128"); }
+        catch (System.Runtime.InteropServices.ExternalException) { Message = UiText.Get("T_1c6e594d100e"); }
     }, () => IsIdle && Selected?.Digest.Length > 0);
     private ICommand? add, remove, calculate, cancel, import, export, copy;
     public Task WaitForIdleAsync() => idle.Task;
@@ -90,9 +90,9 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
     {
         if (IsBusy) return;
         var values = paths.Select(Path.GetFullPath).Distinct(StringComparer.OrdinalIgnoreCase).Where(path => !Rows.Any(row => string.Equals(row.Path, path, StringComparison.OrdinalIgnoreCase))).ToArray();
-        if (Rows.Count + values.Length > Sha256Manifest.MaxEntries) { Message = "最多添加 10000 个文件。"; return; }
+        if (Rows.Count + values.Length > Sha256Manifest.MaxEntries) { Message = UiText.Get("T_554ae194934c"); return; }
         foreach (var path in values) Add(new(path));
-        Selected ??= Rows.FirstOrDefault(); ProgressText = ""; Message = $"共 {Rows.Count} 个文件，点击计算开始读取。";
+        Selected ??= Rows.FirstOrDefault(); ProgressText = ""; Message = UiText.Format("T_cebf5ff2ca42", Rows.Count);
     }
     private void Add(FileHashRow row)
     {
@@ -103,39 +103,39 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
     private void End() { cancellation?.Dispose(); cancellation = null; IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
     private async Task CalculateAsync()
     {
-        Begin(); Progress = 0; ProgressText = "准备读取文件…"; Message = "正在计算文件的 SHA-256…";
+        Begin(); Progress = 0; ProgressText = UiText.Get("T_d446a6f3b2e9"); Message = UiText.Get("T_d1a3e356e435");
         foreach (var row in Rows) row.Reset();
         FileHashRow? current = null; var interrupted = false; var completed = 0;
         try
         {
             foreach (var row in Rows)
             {
-                cancellation!.Token.ThrowIfCancellationRequested(); current = row; row.Status = "计算中";
+                cancellation!.Token.ThrowIfCancellationRequested(); current = row; row.Status = UiText.Get("T_28a8e216754d");
                 var ordinal = ++completed; var token = cancellation.Token;
                 var feedback = new Progress<FileHashProgress>(value =>
                 {
                     if (token.IsCancellationRequested || !IsBusy) return;
                     Progress = value.TotalBytes == 0 ? 100 : Math.Min(100, value.BytesRead * 100.0 / value.TotalBytes);
-                    ProgressText = $"{ordinal}/{Rows.Count} · {row.Name} · {value.BytesRead:N0} / {value.TotalBytes:N0} 字节";
+                    ProgressText = UiText.Format("T_1277dd53f347", ordinal, Rows.Count, row.Name, value.BytesRead, value.TotalBytes);
                 });
                 try { row.Complete(await calculator.ComputeAsync(row.Path, feedback, token)); }
-                catch (Exception error) when (error is IOException or UnauthorizedAccessException) { row.Status = "无法读取"; }
+                catch (Exception error) when (error is IOException or UnauthorizedAccessException) { row.Status = UiText.Get("T_c27041585556"); }
                 current = null;
             }
             Progress = 100;
         }
-        catch (OperationCanceledException) { interrupted = true; if (current is not null) current.Status = "已取消"; }
+        catch (OperationCanceledException) { interrupted = true; if (current is not null) current.Status = UiText.Get("T_a37778f17c5f"); }
         finally
         {
-            Message = $"{(interrupted ? "已取消" : "已完成")} · {Rows.Count(value => value.Digest.Length > 0)} 项已计算 · {Rows.Count(value => value.Status == "一致")} 项一致 · {Rows.Count(value => value.Status == "不一致")} 项不一致 · {Rows.Count(value => value.Status == "无法读取")} 项无法读取";
-            ProgressText = interrupted ? "未完成的文件不会生成哈希；可重新计算。" : "未填期望值的文件仅计算，不作一致判断。";
+            Message = UiText.Format("T_98b68837365d", (interrupted ? UiText.Get("T_a37778f17c5f") : UiText.Get("T_f28461bb49c8")), Rows.Count(value => value.Digest.Length > 0), Rows.Count(value => value.Status == UiText.Get("T_0680a4a36ca8")), Rows.Count(value => value.Status == UiText.Get("T_a50309ed2709")), Rows.Count(value => value.Status == UiText.Get("T_c27041585556")));
+            ProgressText = interrupted ? UiText.Get("T_ee8c9493f18c") : UiText.Get("T_0dce8699aebd");
             End();
         }
     }
     private async Task ImportAsync()
     {
         var path = dialogs.SelectManifest(false); if (path is null) return;
-        Begin(); Message = "正在读取校验清单…";
+        Begin(); Message = UiText.Get("T_692c042a909e");
         try
         {
             var entries = FileHashManifest.Resolve(await FileHashManifest.ReadAsync(path, cancellation!.Token), path);
@@ -147,35 +147,35 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
                 var row = Rows.FirstOrDefault(value => string.Equals(value.Path, entry.FileName, StringComparison.OrdinalIgnoreCase));
                 if (row is not null) row.ExpectedHash = entry.Digest; else Add(new(entry.FileName, entry.Digest));
             }
-            Selected ??= Rows.FirstOrDefault(); Message = $"已导入 {entries.Count} 项期望值；点击计算进行校验。";
+            Selected ??= Rows.FirstOrDefault(); Message = UiText.Format("T_96e6f5b1e07a", entries.Count);
         }
-        catch (OperationCanceledException) { Message = "已取消导入，原列表保留。"; }
+        catch (OperationCanceledException) { Message = UiText.Get("T_35e82ca44119"); }
         catch (HashManifestException error) { Message = ManifestError(error); }
-        catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException) { Message = "清单无法读取，或文件路径/UTF-8 编码无效；原列表保留。"; }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException) { Message = UiText.Get("T_a42a77297e7c"); }
         finally { End(); }
     }
     private async Task ExportAsync()
     {
         var path = dialogs.SelectManifest(true); if (path is null) return;
-        Begin(); Message = "正在导出实际计算值…";
+        Begin(); Message = UiText.Get("T_583afe53968f");
         try
         {
             if (Rows.Any(value => string.Equals(value.Path, Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase))) throw new HashManifestException("manifest_is_source_file");
             var results = Rows.Where(value => value.Digest.Length > 0).Select(value => value.Result).ToArray();
-            await FileHashManifest.ExportAsync(path, results, cancellation!.Token); Message = $"已导出 {results.Length} 项实际计算值；未完成的文件不包含在清单中。";
+            await FileHashManifest.ExportAsync(path, results, cancellation!.Token); Message = UiText.Format("T_e6e9a47ae51b", results.Length);
         }
-        catch (OperationCanceledException) { Message = "已取消导出，原清单保留。"; }
+        catch (OperationCanceledException) { Message = UiText.Get("T_3eda1af52f71"); }
         catch (HashManifestException error) { Message = ManifestError(error); }
-        catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException) { Message = "清单未能写入，原文件保留。"; }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException) { Message = UiText.Get("T_4828c2a4bf97"); }
         finally { End(); }
     }
     private static string ManifestError(HashManifestException error) => error.Code switch
     {
-        "manifest_too_large" => "清单超过 4 MB，未导入或写入。",
-        "manifest_too_many_files" => "清单超过 10000 项，原列表保留。",
-        "empty_manifest" => "清单中没有 SHA-256 文件记录。",
-        "manifest_is_source_file" => "清单不能覆盖待校验的源文件。请选择其它保存位置。",
-        "conflicting_manifest_hashes" => "清单对同一文件给出了不同哈希，原列表保留。",
-        _ => $"清单{(error.Line > 0 ? $"第 {error.Line} 行" : "")}格式或路径无效。请使用 UTF-8 的 SHA256SUMS 格式。"
+        "manifest_too_large" => UiText.Get("T_0492995d7555"),
+        "manifest_too_many_files" => UiText.Get("T_2b4c6e7a2c92"),
+        "empty_manifest" => UiText.Get("T_a71b8c644be1"),
+        "manifest_is_source_file" => UiText.Get("T_a6c2deee185b"),
+        "conflicting_manifest_hashes" => UiText.Get("T_a0bdfdcc647c"),
+        _ => UiText.Format("T_7a4c72a941be", (error.Line > 0 ? UiText.Format("T_43cf63c5c302", error.Line) : ""))
     };
 }

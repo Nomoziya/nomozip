@@ -9,7 +9,7 @@ public sealed class FilenameEncodingViewModel : ObservableObject
     private readonly CancellationToken parentToken;
     private ZipFilenameEncoding selected;
     private bool busy, previewReady;
-    private string status="请选择编码，再预览名称。";
+    private string status=UiText.Get("T_61a734266cbd");
     private CancellationTokenSource? cancellation;
     private TaskCompletionSource idle=new();
     public FilenameEncodingViewModel(string archive,int codePage,Func<int,CancellationToken,Task<EngineResult>> read,CancellationToken token=default)
@@ -21,7 +21,7 @@ public sealed class FilenameEncodingViewModel : ObservableObject
     public string ArchiveName {get;}
     public IReadOnlyList<ZipFilenameEncoding> Choices=>ZipFilenameEncoding.Choices;
     public ObservableCollection<ArchiveEntry> Names {get;}=[];
-    public ZipFilenameEncoding Selected {get=>selected;set {if(Set(ref selected,value)) {Names.Clear();PreviewReady=false;Status="编码已更改，请重新预览后应用。";}}}
+    public ZipFilenameEncoding Selected {get=>selected;set {if(Set(ref selected,value)) {Names.Clear();PreviewReady=false;Status=UiText.Get("T_e764d4668e4a");}}}
     public bool IsBusy {get=>busy;private set {if(Set(ref busy,value)) {Changed(nameof(IsIdle));Changed(nameof(CanApply));}}}
     public bool IsIdle=>!IsBusy;
     public bool PreviewReady {get=>previewReady;private set {if(Set(ref previewReady,value)) Changed(nameof(CanApply));}}
@@ -33,19 +33,19 @@ public sealed class FilenameEncodingViewModel : ObservableObject
     private async Task PreviewAsync()
     {
         var cp=Selected.CodePage;Names.Clear();PreviewReady=false;IsBusy=true;idle=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        cancellation=CancellationTokenSource.CreateLinkedTokenSource(parentToken);Status="正在读取文件名…";
+        cancellation=CancellationTokenSource.CreateLinkedTokenSource(parentToken);Status=UiText.Get("T_18e6101f922f");
         try
         {
             var result=await read(cp,cancellation.Token);
-            if(cancellation.IsCancellationRequested || result.Status=="cancelled") {Status="已取消预览，原编码保持不变。";return;}
+            if(cancellation.IsCancellationRequested || result.Status=="cancelled") {Status=UiText.Get("T_3cb0bad98799");return;}
             if(!result.IsSuccess || !result.Format.Equals("zip",StringComparison.OrdinalIgnoreCase))
             {
-                Status=result.Code switch {"unsupported_operation" or "filename_encoding_unsupported"=>"当前工作程序或引擎不支持此编码，请更新软件。","filename_encoding_not_zip"=>"此文件不是 ZIP 压缩包。",_=>"无法预览此 ZIP，请检查格式、文件位置与访问权限。"};return;
+                Status=result.Code switch {"unsupported_operation" or "filename_encoding_unsupported"=>UiText.Get("T_e6dea7de8415"),"filename_encoding_not_zip"=>UiText.Get("T_5f5069faffe1"),_=>UiText.Get("T_24d6194b0a28")};return;
             }
             foreach(var item in result.Items) Names.Add(item);
-            PreviewReady=true;Status=$"已预览 {Names.Count} 项。确认名称正确后应用。";
+            PreviewReady=true;Status=UiText.Format("T_daed8faf2fc1", Names.Count);
         }
-        catch(OperationCanceledException) {Status="已取消预览，原编码保持不变。";}
+        catch(OperationCanceledException) {Status=UiText.Get("T_3cb0bad98799");}
         finally {cancellation.Dispose();cancellation=null;IsBusy=false;idle.TrySetResult();}
     }
 }

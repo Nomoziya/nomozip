@@ -14,10 +14,15 @@ OutFile "${OUTPUT_FILE}"
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
 SetOverwrite on
-BrandingText "nomozip · 解压与密码管理"
+BrandingText "$(Branding)"
 VIProductVersion "${VERSION}"
 VIAddVersionKey /LANG=2052 "ProductName" "nomozip"
 VIAddVersionKey /LANG=2052 "FileDescription" "nomozip 当前用户安装程序"
+VIAddVersionKey /LANG=1033 "FileDescription" "nomozip per-user installer"
+VIAddVersionKey /LANG=1033 "ProductName" "nomozip"
+VIAddVersionKey /LANG=1033 "FileVersion" "${VERSION}"
+VIAddVersionKey /LANG=1033 "ProductVersion" "${DISPLAY_VERSION}"
+VIAddVersionKey /LANG=1033 "LegalCopyright" "Nomoziya"
 VIAddVersionKey /LANG=2052 "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=2052 "ProductVersion" "${DISPLAY_VERSION}"
 VIAddVersionKey /LANG=2052 "LegalCopyright" "Nomoziya"
@@ -44,23 +49,24 @@ Var PreserveAssociations
 Var OriginalOpenCommand
 Var PreserveShellMenu
 !include "shell-menu.nsh"
+!define MUI_LANGDLL_REGISTRY_ROOT HKCU
+!define MUI_LANGDLL_REGISTRY_KEY "${REG_KEY}"
+!define MUI_LANGDLL_REGISTRY_VALUENAME "InstallerLanguage"
 !define MUI_ABORTWARNING
-!define MUI_WELCOMEPAGE_TITLE "安装 nomozip"
-!ifdef FRAMEWORK_DEPENDENT
-  !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n这是 ${ARCHITECTURE} 轻量版，使用系统共享的 .NET 10 Windows Desktop Runtime ${ARCHITECTURE}（10.0.12 或更高的 10.0 补丁版），无需 SDK。未安装运行库时，请先从 dotnet.microsoft.com 下载并安装。$\r$\n$\r$\n升级保留密码库、设置和下载的引擎，并清理上一安装的程序文件。安装前请关闭 nomozip。"
-!else
-  !define MUI_WELCOMEPAGE_TEXT "保存解压密码，下次自动尝试。$\r$\n$\r$\n仅为当前 Windows 用户安装，已包含 .NET 运行组件。升级会保留密码库、设置和已下载的引擎。$\r$\n$\r$\n软件仍为开发预览。安装前请关闭正在运行的 nomozip。"
-!endif
+!define MUI_WELCOMEPAGE_TITLE "$(WelcomeTitle)"
+!define MUI_WELCOMEPAGE_TEXT "$(WelcomeBody)"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-!define MUI_FINISHPAGE_TEXT "nomozip 已安装。可从开始菜单打开软件，或查看安装目录中的使用说明。"
+!define MUI_FINISHPAGE_TEXT "$(FinishBody)"
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_WELCOME
 UninstPage custom un.DataPage un.DataPageLeave
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 !insertmacro MUI_LANGUAGE "SimpChinese"
+!insertmacro MUI_LANGUAGE "English"
+!include "nomozip-languages.nsh"
 
 !macro CheckNotRunning PREFIX
   IfFileExists "$INSTDIR\ArchivePassword.exe" 0 ${PREFIX}end
@@ -71,7 +77,7 @@ UninstPage custom un.DataPage un.DataPageLeave
   Goto ${PREFIX}end
 ${PREFIX}locked:
   IfSilent ${PREFIX}abort
-  MessageBox MB_OK|MB_ICONEXCLAMATION "请先关闭 nomozip，再继续安装或卸载。文件暂未更改。"
+  MessageBox MB_OK|MB_ICONEXCLAMATION "$(CloseFirst)"
 ${PREFIX}abort:
   SetErrorLevel 2
   Abort
@@ -80,10 +86,11 @@ ${PREFIX}end:
 
 Function .onInit
   SetShellVarContext current
+  !insertmacro MUI_LANGDLL_DISPLAY
 !if "${ARCHITECTURE}" == "arm64"
   ${IfNot} ${IsNativeARM64}
     IfSilent +2
-    MessageBox MB_OK|MB_ICONSTOP "此版本需要 ARM64 Windows。"
+    MessageBox MB_OK|MB_ICONSTOP "$(NeedArm64)"
     SetErrorLevel 2
     Abort
   ${EndIf}
@@ -91,7 +98,7 @@ Function .onInit
   ${IfNot} ${RunningX64}
   ${AndIfNot} ${IsNativeARM64}
     IfSilent +2
-    MessageBox MB_OK|MB_ICONSTOP "此版本需要 64 位 Windows。"
+    MessageBox MB_OK|MB_ICONSTOP "$(NeedX64)"
     SetErrorLevel 2
     Abort
   ${EndIf}
@@ -100,6 +107,7 @@ FunctionEnd
 
 Function un.onInit
   SetShellVarContext current
+  !insertmacro MUI_UNGETLANGUAGE
   StrCpy $DeleteData 0
   !insertmacro CheckNotRunning "uninit"
   !ifdef VALIDATION_ROOT
@@ -112,15 +120,15 @@ Function un.onInit
 FunctionEnd
 
 Function un.DataPage
-  !insertmacro MUI_HEADER_TEXT "卸载与本机数据" "默认保留密码库和设置，便于重新安装后继续使用。"
+  !insertmacro MUI_HEADER_TEXT "$(UninstallTitle)" "$(UninstallSubtitle)"
   nsDialogs::Create 1018
   Pop $Dialog
   ${If} $Dialog == error
     Abort
   ${EndIf}
-  ${NSD_CreateLabel} 0 0 100% 42u "卸载将移除程序和开始菜单入口。$\r$\n保存的密码、设置及下载的引擎默认保留在当前用户的本机目录中。"
+  ${NSD_CreateLabel} 0 0 100% 42u "$(UninstallBody)"
   Pop $0
-  ${NSD_CreateCheckbox} 0 58u 100% 30u "同时删除我的密码库、设置和已下载的引擎（无法恢复）"
+  ${NSD_CreateCheckbox} 0 58u 100% 30u "$(DeleteDataLabel)"
   Pop $DeleteCheckbox
   ${NSD_Uncheck} $DeleteCheckbox
   nsDialogs::Show
@@ -129,13 +137,13 @@ FunctionEnd
 Function un.DataPageLeave
   ${NSD_GetState} $DeleteCheckbox $DeleteData
   ${If} $DeleteData == ${BST_CHECKED}
-    MessageBox MB_YESNO|MB_DEFBUTTON2|MB_ICONEXCLAMATION "确定删除本机保存的全部 nomozip 数据？$\r$\n密码库、设置和下载的引擎将无法恢复。" IDYES confirmed
+    MessageBox MB_YESNO|MB_DEFBUTTON2|MB_ICONEXCLAMATION "$(ConfirmDelete)" IDYES confirmed
     Abort
 confirmed:
   ${EndIf}
 FunctionEnd
 
-Section "安装"
+Section "$(InstallSection)"
   !insertmacro CheckNotRunning "install"
   ; Run only a registered installation's own cleanup list. This removes old bundled runtime
   ; files during a full-to-light upgrade without deleting unrelated files or user data.
@@ -160,7 +168,7 @@ runoldcleanup:
   ${EndIf}
   ${If} $1 != 0
     IfSilent +2
-    MessageBox MB_OK|MB_ICONSTOP "上一安装未能完成清理。请关闭 nomozip 后重试；本机密码库和设置保持不变。"
+    MessageBox MB_OK|MB_ICONSTOP "$(CleanupFailed)"
     SetErrorLevel 2
     Abort
   ${EndIf}
@@ -170,8 +178,11 @@ cleanupdone:
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   CreateDirectory "${SHORTCUT_DIR}"
   CreateShortcut "${SHORTCUT_DIR}\nomozip.lnk" "$INSTDIR\ArchivePassword.exe"
-  CreateShortcut "${SHORTCUT_DIR}\卸载 nomozip.lnk" "$INSTDIR\Uninstall.exe"
-  WriteRegStr HKCU "${REG_KEY}" "DisplayName" "nomozip 开发预览"
+  Delete "${SHORTCUT_DIR}\卸载 nomozip.lnk"
+  Delete "${SHORTCUT_DIR}\Uninstall nomozip.lnk"
+  CreateShortcut "${SHORTCUT_DIR}\$(UninstallShortcut)" "$INSTDIR\Uninstall.exe"
+  WriteRegStr HKCU "${REG_KEY}" "DisplayName" "$(InstalledName)"
+  WriteRegStr HKCU "${REG_KEY}" "InstallerLanguage" "$LANGUAGE"
   WriteRegStr HKCU "${REG_KEY}" "DisplayVersion" "${DISPLAY_VERSION}"
   WriteRegStr HKCU "${REG_KEY}" "Publisher" "Nomoziya"
   WriteRegStr HKCU "${REG_KEY}" "InstallLocation" "$INSTDIR"
@@ -203,6 +214,7 @@ associationsdone:
   RMDir "$INSTDIR"
   Delete "${SHORTCUT_DIR}\nomozip.lnk"
   Delete "${SHORTCUT_DIR}\卸载 nomozip.lnk"
+  Delete "${SHORTCUT_DIR}\Uninstall nomozip.lnk"
   RMDir "${SHORTCUT_DIR}"
   DeleteRegKey HKCU "${REG_KEY}"
   ${If} $DeleteData == 1

@@ -26,18 +26,18 @@ public sealed class CompressionService(IArchiveCreator creator, IArchiveEngine v
             if (format == "zip" && password?.Any(value => value > 127) == true) return new(Failure("zip_password_ascii_only"), outputPath);
             var destination = Path.GetFullPath(outputPath);
             if (File.Exists(destination) && !replace) return new(Failure("output_exists"), destination);
-            progress?.Report(new("preparing", "正在准备文件…"));
+            progress?.Report(new("preparing", UiText.Get("T_1db01e54aa3c")));
             var entries=await CompressionSources.CollectAsync(sources,destination,cancellationToken);
             if (entries.Count == 0) return new(Failure("empty_sources"), destination);
             if (options.SingleFile && (entries.Count != 1 || entries[0].Directory)) return new(Failure("format_single_file_required"), destination);
             Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
             temporary = Path.Combine(Path.GetDirectoryName(destination)!, ".nomozip-create-" + Guid.NewGuid().ToString("N") + options.Extension);
-            progress?.Report(new("compressing", "正在创建压缩包…"));
-            var forwarded = new ForwardProgress<EngineProgress>(value => progress?.Report(new("compressing", "正在创建压缩包…", value)));
+            progress?.Report(new("compressing", UiText.Get("T_df24662c5521")));
+            var forwarded = new ForwardProgress<EngineProgress>(value => progress?.Report(new("compressing", UiText.Get("T_df24662c5521"), value)));
             var result = await creator.CreateAsync(new(entries, format, options.CompressionLevel ? level : 0, format == "7z" && encryptHeaders), temporary, password, forwarded, cancellationToken);
             if (!result.IsSuccess) return new(result, destination);
             cancellationToken.ThrowIfCancellationRequested();
-            progress?.Report(new("testing", "正在校验新压缩包…"));
+            progress?.Report(new("testing", UiText.Get("T_4122031c2fec")));
             result = await validator.TestAsync(temporary, password, cancellationToken: cancellationToken);
             if (!result.IsSuccess) return new(result, destination);
             if (!options.Encryption)

@@ -6,7 +6,7 @@ namespace ArchivePassword.Desktop;
 public sealed partial class MainViewModel
 {
     private bool notifyExtractionSuccess;
-    private string notificationMessage = "默认关闭；仅整批解压成功时提醒一次，不显示文件名、目录或密码。";
+    private string notificationMessage = UiText.Get("T_ac936a188f6d");
     private Func<int, bool>? notificationOverride;
     public bool NotifyExtractionSuccess
     {
@@ -21,10 +21,10 @@ public sealed partial class MainViewModel
         try
         {
             await SaveSettingsAsync();
-            NotificationMessage = settingsWritable ? "已保存通知设置。" : "设置仅在本次使用，原设置文件保持不变。";
+            NotificationMessage = settingsWritable ? UiText.Get("T_a9e77935df83") : UiText.Get("T_fbda214c62b2");
         }
         catch (Exception error) when (error is IOException or UnauthorizedAccessException)
-        { NotificationMessage = "本次设置已生效，但无法保存，请检查设置目录权限。"; }
+        { NotificationMessage = UiText.Get("T_b93945612611"); }
         finally { IsBusy = false; idle.TrySetResult(); }
     }, () => IsIdle);
 
@@ -32,7 +32,7 @@ public sealed partial class MainViewModel
     {
         if (!NotifyExtractionSuccess) return;
         var accepted = notificationOverride?.Invoke(count) ?? dialogs.NotifyExtractionComplete(count);
-        if (!accepted) NotificationMessage = "解压已完成，但系统未接受通知；结果可在任务列表查看。";
+        if (!accepted) NotificationMessage = UiText.Get("T_7600be19c5ac");
     }
     internal void ConfigureNotificationValidation(Func<int, bool> notify) => notificationOverride = notify;
 }
