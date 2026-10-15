@@ -32,7 +32,7 @@ internal static class DesktopConcurrencyValidation
                 {
                     await Task.Delay(100);
                     if(mode=="cancel") {current!.CancelCommand.Execute(null);return;}
-                    var description=((TextBlock)dialog.FindName("Description")).Text;var name=description.Split('\n')[0];
+                    var name=((TextBox)dialog.FindName("NameBox")).Text;
                     ((PasswordBox)dialog.FindName("SecretBox")).Password=secrets[name];
                     ((CheckBox)dialog.FindName("SavePassword")).IsChecked=mode=="manual";
                     ((TextBox)dialog.FindName("NameBox")).Text=name;
@@ -97,6 +97,7 @@ internal static class DesktopConcurrencyValidation
                     var engine=new ArchiveEngineClient(worker,Path.Combine(baseDirectory,"engines",version,"7z.dll"));var created=await engine.CreateAsync(new([new(source,"item.txt",false)],"7z",1,true),archive,secret);if(!created.IsSuccess) throw new IOException("synthetic encrypted archive creation failed");manualPaths.Add(archive);
                 }
                 model.Tasks.Clear();model.AddFiles(manualPaths);rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"manual-output-"+index);model.AutoTry=false;mode="manual";promptCount=0;modalPeak=0;peak=await RunAndMonitor();
+                if(promptError is not null) Check(version+" synthetic prompt error "+promptError.GetType().Name+" "+promptError.Message,false);
                 Check(version+" password dialogs are serialized without nesting",promptCount==2 && modalPeak==1 && modalCount==0 && promptError is null);
                 Check(version+" distinct manual passwords decrypt only their own jobs",rows.Select((row,index)=>row.Completed && File.ReadAllText(Path.Combine(row.ResultOutputPath!,"item.txt"))=="distinct content "+index).All(value=>value));
                 var saved=await vault.ReadAsync();Check(version+" concurrent successful saves keep both records",saved.Count==2 && rows.All(row=>saved.Single(value=>value.Name==row.Name).LastSuccessAt is not null));
