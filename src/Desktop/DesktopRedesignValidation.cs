@@ -82,9 +82,14 @@ internal static class DesktopRedesignValidation
                     theme.Apply(true);Check("system high contrast takes priority over soft palette",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush));theme.Apply(false);
                     var preference=Path.Combine(folder,"synthetic","soft-appearance");await AppearancePreferenceStore.SaveAsync(preference,"soft");Check("soft appearance preference survives save and reload",AppearancePreferenceStore.Read(preference).Mode=="soft");
                     window.Width=1160;window.Height=760;model.Page=0;await Layout();
-                    window.Activate();window.ArchiveTasks.UpdateLayout();
+                    window.Opacity=1;window.Activate();window.ArchiveTasks.ScrollIntoView(model.Tasks[0]);await Layout();
                     var row=(DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.Tasks[0]);
-                    Keyboard.Focus(row);await Layout();Check("soft task focus uses actual WPF keyboard focus",row.IsKeyboardFocusWithin);Capture("soft-task-keyboard-focus");
+                    var cell=VisualDescendants(row).OfType<DataGridCell>().First();
+                    Keyboard.Focus(cell);await Layout();
+                    var ring=(Border)row.Template.FindName("RowFocus",row);
+                    Check("soft task focus uses actual WPF keyboard focus",cell.IsKeyboardFocused && row.IsKeyboardFocusWithin);
+                    Check("soft task focus renders the semantic focus border",ring.Visibility==Visibility.Visible && ReferenceEquals(ring.BorderBrush,Application.Current.Resources["FocusBrush"]));
+                    Capture("soft-task-keyboard-focus");
                 }
             }
             theme.SetMode("light");theme.Apply(false);window.Width=1160;window.Height=760;
