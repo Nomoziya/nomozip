@@ -26,11 +26,11 @@ internal sealed class ThemeResources
     private static readonly string[] Keys =
     [
         "CanvasBrush", "SurfaceBrush", "TextBrush", "SecondaryBrush", "BorderBrush", "DividerBrush",
-        "AccentBrush", "OnAccentBrush", "SelectionBrush", "SelectionTextBrush", "FocusBrush", "ErrorBrush", "HoverBrush", "SuccessBrush", "ButtonBorderBrush"
+        "AccentBrush", "OnAccentBrush", "SelectionBrush", "SelectionTextBrush", "FocusBrush", "ErrorBrush", "HoverBrush", "SuccessBrush", "ButtonBorderBrush", "FolderIconBrush", "PdfIconBrush", "SheetIconBrush", "IconOnFillBrush"
     ];
     private readonly Dictionary<string, object> defaults;
-    private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#879099", "#3D3D3D", "#75B6E7", "#242424", "#17354A", "#F5F5F5", "#75B6E7", "#F6A6A6", "#303030", "#6BCB8E", "#505050"];
-    private static readonly string[] SoftColors = ["#25282B","#2C3034","#E5E2DA","#C8C5BD","#8F969A","#454C50","#9BBCD0","#25282B","#304858","#E5E2DA","#C5B98B","#E3AAA3","#333B40","#93BAA3","#78858C"];
+    private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#879099", "#3D3D3D", "#75B6E7", "#242424", "#17354A", "#F5F5F5", "#75B6E7", "#F6A6A6", "#303030", "#6BCB8E", "#505050", "#F4B83B", "#D74842", "#16845C", "#FFFFFF"];
+    private static readonly string[] SoftColors = ["#25282B","#2C3034","#E5E2DA","#C8C5BD","#8F969A","#454C50","#9BBCD0","#25282B","#304858","#E5E2DA","#C5B98B","#E3AAA3","#333B40","#93BAA3","#78858C","#C7AB65","#BC827D","#729B84","#25282B"];
     internal void SetMode(string mode)
     {
         if (!AppearancePreferenceStore.IsSupported(mode)) throw new ArgumentException("Unsupported appearance mode.", nameof(mode));
@@ -59,6 +59,8 @@ internal sealed class ThemeResources
         resources["DividerBrush"] = SystemColors.WindowBrush;
         resources["AccentBrush"] = resources["SelectionBrush"] = SystemColors.HighlightBrush;
         resources["OnAccentBrush"] = resources["SelectionTextBrush"] = SystemColors.HighlightTextBrush;
+        resources["FolderIconBrush"] = resources["PdfIconBrush"] = resources["SheetIconBrush"] = SystemColors.WindowTextBrush;
+        resources["IconOnFillBrush"] = SystemColors.WindowBrush;
         }
         // Native templates use these WPF system-resource keys. These are application
         // resources only; Windows settings and other applications are never changed.

@@ -16,7 +16,7 @@
       <SolidColorBrush x:Key="ButtonBorderBrush" Color="#D1D5DB"/>
       <SolidColorBrush x:Key="BorderBrush" Color="#8491A3"/>
       <SolidColorBrush x:Key="DividerBrush" Color="#E0E0E0"/>
-      <SolidColorBrush x:Key="SelectionBrush" Color="#EFF6FC"/>
+      <SolidColorBrush x:Key="SelectionBrush" Color="#E5F1FD"/>
       <SolidColorBrush x:Key="HoverBrush" Color="#F1F5F9"/>
       <SolidColorBrush x:Key="SelectionTextBrush" Color="#0F6CBD"/>
       <SolidColorBrush x:Key="FocusBrush" Color="#0F6CBD"/>
@@ -596,6 +596,10 @@
           </Setter.Value>
         </Setter>
       </Style>
+      <SolidColorBrush x:Key="FolderIconBrush" Color="#F4B83B"/>
+      <SolidColorBrush x:Key="PdfIconBrush" Color="#D74842"/>
+      <SolidColorBrush x:Key="SheetIconBrush" Color="#16845C"/>
+      <SolidColorBrush x:Key="IconOnFillBrush" Color="#FFFFFF"/>
     </ResourceDictionary>
   </Application.Resources>
 </Application>
