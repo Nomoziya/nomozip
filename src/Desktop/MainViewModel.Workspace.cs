@@ -19,6 +19,7 @@ public sealed partial class MainViewModel
     public ICollectionView TaskView => taskView ??= new ListCollectionView(Tasks) { Filter = value => MatchesTaskFilter((ArchiveTaskRow)value) };
     public int TaskFilterIndex { get => taskFilterIndex; set { if (Set(ref taskFilterIndex,Math.Clamp(value,0,3))) { taskView?.Refresh(); Changed(nameof(ShowCompressionActivity)); } } }
     public IReadOnlyList<string> TaskFilters {get;} = [UiText.Get("Redesign.AllTasks"),UiText.Get("Redesign.RunningTasks"),UiText.Get("Redesign.PendingTasks"),UiText.Get("Redesign.EndedTasks")];
+    public IReadOnlyList<TaskFilterBadge> TaskFilterBadges {get;} = new[] {"Redesign.AllTasks","Redesign.RunningTasks","Redesign.PendingTasks","Redesign.EndedTasks"}.Select(key=>new TaskFilterBadge(UiText.Get(key))).ToArray();
     public bool ShowCompressionActivity => HasCompressionActivity && (TaskFilterIndex==0 || TaskFilterIndex==1 && CompressionRunning || TaskFilterIndex==3 && !CompressionRunning);
     private bool MatchesTaskFilter(ArchiveTaskRow row) => TaskFilterIndex switch {1=>row.Running,2=>!row.Running && !row.Completed && row.Failure is null,3=>row.Completed || row.Failure is not null,_=>true};
     private void RefreshWorkspaceTasks(bool refreshView = true)
@@ -26,6 +27,7 @@ public sealed partial class MainViewModel
         // Collection changes already reach ListCollectionView. Refreshing during
         // its source notification would make it process the new row twice.
         if (refreshView) taskView?.Refresh();
+        for(var index=0;index<4;index++) TaskFilterBadges[index].Count=Tasks.Count(row=>index switch {1=>row.Running,2=>!row.Running && !row.Completed && row.Failure is null,3=>row.Completed || row.Failure is not null,_=>true});
         Changed(nameof(TaskSummary));Changed(nameof(ShowCompressionActivity));
     }
     private void WorkspaceTaskChanged(object? sender,PropertyChangedEventArgs e)
@@ -52,4 +54,11 @@ public sealed partial class MainViewModel
         if(added.Length>1) {Page=0;return;}
         if (SelectedTask is not null) await BrowseArchiveAsync();
     }
+}
+
+public sealed class TaskFilterBadge(string label) : ObservableObject
+{
+    public string Label {get;}=label;
+    private int count;
+    public int Count {get=>count;set=>Set(ref count,value);}
 }

@@ -81,6 +81,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
       </Style>
       <Style TargetType="Button">
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="Padding" Value="16,8"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
@@ -499,6 +500,18 @@
                 </Setter.Value>
               </Setter>
             </Style>
+          </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+          <Setter.Value>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
+                <Border Background="{DynamicResource HoverBrush}" CornerRadius="10" Padding="6,2" Margin="6,0,0,0">
+                  <TextBlock Text="{Binding Count}" Foreground="{DynamicResource TextBrush}" FontSize="12"/>
+                </Border>
+              </StackPanel>
+            </DataTemplate>
           </Setter.Value>
         </Setter>
       </Style>

@@ -44,7 +44,7 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     public string? SelectedOutputPath {get=>selectedOutputPath;set {if(Set(ref selectedOutputPath,value)) Changed(nameof(DisplayOutputPath));}}
     public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;
     public string DisplayOutputPath=>LatestOutputPath ?? ShellOutputPath ?? UiText.Get("Redesign.OutputPending");
-    public string PrimaryActionCaption=>UiText.Get(Completed?"T_348e2fde4e19":"Contents.CompactExtract");
+    public string PrimaryActionCaption=>UiText.Get(Completed?"Redesign.OpenFolder":"Contents.CompactExtract");
     private EngineResult? verificationResult;
     public string? ResultOutputPath { get=>resultOutputPath;set {if(Set(ref resultOutputPath,value)) Changed(nameof(DisplayOutputPath));} }
     public EngineResult? VerificationResult {get=>verificationResult;set=>Set(ref verificationResult,value);}
