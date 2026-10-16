@@ -10,7 +10,7 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="Button">
-            <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+            <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="24" Padding="{TemplateBinding Padding}">
               <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Border>
             <ControlTemplate.Triggers>
@@ -38,7 +38,7 @@
       <ColumnDefinition x:Name="SidebarColumn" Width="200"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
-    <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
+    <Border Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
       <DockPanel x:Name="SidebarContent" Margin="16,24">
         <StackPanel DockPanel.Dock="Top" Margin="8,0,0,24">
           <StackPanel Orientation="Horizontal">
@@ -47,7 +47,7 @@
           </StackPanel>
           <TextBlock Text="{loc:Text T_cb42c2f7aa25}" Style="{StaticResource Secondary}" Margin="0,6,0,0" Visibility="Collapsed"/>
         </StackPanel>
-        <DockPanel DockPanel.Dock="Bottom" Margin="8,12,0,0">
+        <DockPanel DockPanel.Dock="Bottom" Margin="8,12,0,0" Visibility="Collapsed">
           <Path DockPanel.Dock="Left" Data="M6,11 L18,11 L18,20 L6,20 Z M8,11 L8,7 A4,4 0 0 1 16,7 L16,11" Width="14" Height="14" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" StrokeLineJoin="Round" Margin="0,2,6,0" VerticalAlignment="Top" IsHitTestVisible="False"/>
           <TextBlock x:Name="SidebarPrivacyNote" Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}"/>
         </DockPanel>
@@ -69,7 +69,7 @@
               <Setter Property="Template">
                 <Setter.Value>
                   <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="Pill" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="8">
+                    <Border x:Name="Pill" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="24">
                       <Grid>
                         <Border x:Name="Bar" Width="3" Height="18" HorizontalAlignment="Left" Margin="-14,0,0,0" CornerRadius="0,2,2,0" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
                         <Grid>

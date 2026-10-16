@@ -39,8 +39,8 @@
               </Label.ContentTemplate>
             </Label>
             <Grid Grid.Row="1" Grid.Column="1" Margin="0">
-              <PasswordBox x:Name="SecretBox"/>
-              <TextBox x:Name="VisibleSecret" Visibility="Collapsed"/>
+              <PasswordBox x:Name="SecretBox" Padding="12,8,40,8"/>
+              <TextBox x:Name="VisibleSecret" Visibility="Collapsed" Padding="12,8,40,8"/>
             </Grid>
             <Label Content="{loc:Text T_399ee6934772}" Target="{Binding ElementName=GroupBox}" Grid.Row="3" Margin="0,4,8,12" Padding="0">
               <Label.ContentTemplate>
@@ -58,29 +58,45 @@
               </Label.ContentTemplate>
             </Label>
             <TextBox x:Name="NotesBox" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="64" Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" VerticalContentAlignment="Top"/>
-            <CheckBox x:Name="ShowSecret" Content="{loc:Text T_ffe21a671190}" Checked="OnVisibilityChanged" Unchecked="OnVisibilityChanged" Grid.Row="2" Grid.Column="1" Margin="0,4,0,4"/>
+            <CheckBox x:Name="ShowSecret" Checked="OnVisibilityChanged" Unchecked="OnVisibilityChanged" Grid.Row="1" Grid.Column="1" Margin="0,0,8,8" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="30" ToolTip="{loc:Text T_ffe21a671190}" AutomationProperties.Name="{loc:Text T_ffe21a671190}">
+              <CheckBox.Template>
+                <ControlTemplate TargetType="CheckBox">
+                  <Grid Background="Transparent">
+                    <Path Data="M1,10 Q12,-3 23,10 Q12,23 1,10 M16,10 A4,4 0 1 1 8,10 A4,4 0 1 1 16,10" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Width="22" Height="18" Stretch="Uniform"/>
+                    <Path x:Name="Slash" Data="M3,2 L21,20" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Visibility="Collapsed" Width="22" Height="20" Stretch="Uniform"/>
+                  </Grid>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                      <Setter TargetName="Slash" Property="Visibility" Value="Visible"/>
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </CheckBox.Template>
+            </CheckBox>
             <CheckBox x:Name="AutoTryBox" Content="{loc:Text T_a3610c2b94b0}" Grid.Row="5" Grid.Column="1" Margin="0,4,0,4"/>
           </Grid>
-          <Expander Header="{loc:Text T_abab7359518e}" Margin="0,8,0,0">
-            <StackPanel>
-              <Label Content="{loc:Text T_b5bb08da76d9}" Target="{Binding ElementName=SourceBox}">
-                <Label.ContentTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
-                  </DataTemplate>
-                </Label.ContentTemplate>
-              </Label>
-              <TextBox x:Name="SourceBox" MaxLength="512"/>
-              <Label Content="{loc:Text T_724d7a12cc56}" Target="{Binding ElementName=MatchBox}">
-                <Label.ContentTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
-                  </DataTemplate>
-                </Label.ContentTemplate>
-              </Label>
-              <TextBox x:Name="MatchBox" MaxLength="256"/>
-            </StackPanel>
-          </Expander>
+          <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,16,0,0">
+            <Expander Header="{loc:Text T_abab7359518e}" Margin="0,20,0,8">
+              <StackPanel>
+                <Label Content="{loc:Text T_b5bb08da76d9}" Target="{Binding ElementName=SourceBox}">
+                  <Label.ContentTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                  </Label.ContentTemplate>
+                </Label>
+                <TextBox x:Name="SourceBox" MaxLength="512"/>
+                <Label Content="{loc:Text T_724d7a12cc56}" Target="{Binding ElementName=MatchBox}">
+                  <Label.ContentTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                  </Label.ContentTemplate>
+                </Label>
+                <TextBox x:Name="MatchBox" MaxLength="256"/>
+              </StackPanel>
+            </Expander>
+          </Border>
           <TextBlock x:Name="Error" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
         </StackPanel>
       </ScrollViewer>

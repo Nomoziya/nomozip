@@ -13,6 +13,9 @@ public sealed class ArchivePreviewViewModel : ObservableObject
     public string Text {get;private set;}="";
     public BitmapSource? Picture {get;private set;}
     public string Details {get;private set;}="";
+    public string PixelDimensions=>Picture is null?"":$"{Picture.PixelWidth} × {Picture.PixelHeight}";
+    public long Bytes {get;private set;}
+    public string SizeText=>Bytes>=1048576?$"{Bytes/1048576.0:0.#} MB":Bytes>=1024?$"{Bytes/1024.0:0.#} KB":$"{Bytes} B";
     public string Message {get;private set;}="";
     public bool IsText=>Picture is null && Message.Length==0;
     public bool IsImage=>Picture is not null;
@@ -22,7 +25,7 @@ public sealed class ArchivePreviewViewModel : ObservableObject
         =>await Task.Run(()=>Decode(entry,bytes,token),token);
     internal static ArchivePreviewViewModel Decode(ArchiveEntry entry,byte[] bytes,CancellationToken token=default)
     {
-        var model=new ArchivePreviewViewModel(entry.Path);
+        var model=new ArchivePreviewViewModel(entry.Path){Bytes=bytes.Length};
         try
         {
             token.ThrowIfCancellationRequested();
