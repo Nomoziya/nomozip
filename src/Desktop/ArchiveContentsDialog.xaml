@@ -172,7 +172,7 @@
           </DataGridTemplateColumn>
           <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="110" ElementStyle="{StaticResource TableText}"/>
           <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" Width="80" ElementStyle="{StaticResource TableText}"/>
-          <DataGridTextColumn Header="{loc:Text T_320c254572c4}" Binding="{Binding EncryptionText}" Width="96" ElementStyle="{StaticResource TableText}"/>
+          <DataGridTextColumn Header="{loc:Text T_320c254572c4}" Binding="{Binding EncryptionText}" Width="120" ElementStyle="{StaticResource TableText}"/>
         </DataGrid.Columns>
       </DataGrid>
       <TextBlock Text="{loc:Text T_73d97e01d24e}" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">

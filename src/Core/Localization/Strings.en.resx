@@ -1557,7 +1557,7 @@ This archive encrypts filenames. A password is required to browse its contents.<
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_88a399b911e0">
-    <value>Search file or folder paths in the archive</value>
+    <value>Search in archive</value>
     <comment>src/Desktop/ArchiveContentsDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_88bab2e8302f">
