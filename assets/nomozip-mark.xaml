@@ -1,0 +1,15 @@
+<DrawingImage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <DrawingImage.Drawing>
+    <DrawingGroup>
+      <!-- Transparent square fixes the export bounds at 256 by 256. -->
+      <GeometryDrawing Brush="Transparent" Geometry="M0,0 H256 V256 H0 Z"/>
+      <GeometryDrawing Brush="#1D4ED8" Geometry="M60,20 H174 L236,82 V196 Q236,236 196,236 H60 Q20,236 20,196 V60 Q20,20 60,20 Z"/>
+      <GeometryDrawing Brush="#60A5FA" Geometry="M174,20 V62 Q174,82 194,82 H236 Z"/>
+      <!-- Folded N ribbon; a separate zipper remains legible at small sizes. -->
+      <GeometryDrawing Brush="#FFFFFF" Geometry="M56,176 V82 H78 L124,139 V82 H146 V176 H124 L78,119 V176 Z"/>
+      <GeometryDrawing Brush="#BFDBFE" Geometry="M178,100 H190 V112 H178 Z M190,116 H202 V128 H190 Z M178,132 H190 V144 H178 Z M190,148 H202 V160 H190 Z"/>
+      <GeometryDrawing Brush="#FFFFFF" Geometry="M178,172 H202 V204 H178 Z"/>
+      <GeometryDrawing Brush="#1D4ED8" Geometry="M186,180 H194 V194 H186 Z"/>
+    </DrawingGroup>
+  </DrawingImage.Drawing>
+</DrawingImage>

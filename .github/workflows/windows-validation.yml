@@ -147,6 +147,7 @@ jobs:
             artifacts/archive-editing-preview/*.png
             artifacts/drag-preview/*.png
             artifacts/checkpoint-preview/*.png
+            artifacts/visual-refresh/**/*
             artifacts/conversion-preview/*.png
             artifacts/volume-preview/*.png
             artifacts/sfx-preview/*.png

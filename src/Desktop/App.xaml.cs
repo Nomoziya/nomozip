@@ -19,6 +19,7 @@ public partial class App : Application
         var localeIndex = Array.IndexOf(arguments, "--validate-localization");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-language-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-visual-refresh");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-application-updates");
         var isolated = arguments.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
@@ -468,6 +469,15 @@ public partial class App : Application
                 Shutdown(1);
             }
             return;
+        }
+        var visualIndex = Array.IndexOf(e.Args, "--validate-visual-refresh");
+        if (visualIndex >= 0 && visualIndex + 1 < e.Args.Length)
+        {
+            window.SuppressExitConfirmationForValidation = true;
+            window.WindowStartupLocation = WindowStartupLocation.Manual; window.Left = -32000; window.Top = -32000;
+            window.Opacity = 0; window.ShowActivated = false; window.ShowInTaskbar = false; window.Show();
+            var passed = await DesktopVisualRefreshValidation.RunAsync(window, model, theme, Path.GetFullPath(e.Args[visualIndex + 1]));
+            Shutdown(passed ? 0 : 1); return;
         }
         if (previewIndex >= 0 && previewIndex + 1 < e.Args.Length)
         {

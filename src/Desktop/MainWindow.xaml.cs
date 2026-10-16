@@ -36,6 +36,8 @@ public partial class MainWindow : Window
         {
             var narrow = ActualWidth < 1000;
             var compact = ActualWidth < 800;
+            BrandMark.Width = BrandMark.Height = compact ? 18 : 24;
+            BrandMark.Margin = new Thickness(0, 0, compact ? 4 : 8, 0);
             SidebarColumn.Width = new GridLength(compact ? 120 : 176);
             SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(16, 24, 16, 24);
             MainContent.Margin = new Thickness(compact ? 12 : 24);
