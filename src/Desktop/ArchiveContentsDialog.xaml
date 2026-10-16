@@ -102,49 +102,49 @@
               </ContextMenu.ItemContainerStyle>
               <MenuItem Header="{loc:Text T_08f316ab8225}" Command="{Binding SelectVisibleCommand}" InputGestureText="Ctrl+A">
                 <MenuItem.Icon>
-                  <Path Data="M2,3 L5,3 M9,3 L24,3 M2,11 L5,11 M9,11 L24,11 M2,19 L5,19 M9,19 L24,19" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M2,3 L5,3 M9,3 L24,3 M2,11 L5,11 M9,11 L24,11 M2,19 L5,19 M9,19 L24,19" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem Header="{loc:Text T_a3c974892464}" Command="{Binding ClearSelectionCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M3,3 L21,21 M21,3 L3,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M3,3 L21,21 M21,3 L3,21" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
               <MenuItem x:Name="PrepareDragAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text Drag.PrepareAction}" Command="{Binding PrepareDragCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M3,8 L3,23 L23,23 L23,8 M13,17 L13,1 M7,7 L13,1 L19,7" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M3,8 L3,23 L23,23 L23,8 M13,17 L13,1 M7,7 L13,1 L19,7" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="AddEntryFilesAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_0475bef77baa}" Command="{Binding AddFilesCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M3,1 L16,1 L23,8 L23,29 L3,29 Z M16,1 L16,8 L23,8 M8,18 L18,18 M13,13 L13,23" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M3,1 L16,1 L23,8 L23,29 L3,29 Z M16,1 L16,8 L23,8 M8,18 L18,18 M13,13 L13,23" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="AddEntryFolderAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_65c90110f894}" Command="{Binding AddFolderCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M1,6 L10,6 L13,10 L26,10 L26,27 L1,27 Z M8,19 L20,19 M14,13 L14,25" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M1,6 L10,6 L13,10 L26,10 L26,27 L1,27 Z M8,19 L20,19 M14,13 L14,25" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="ReplaceEntryAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_7e41da13f3e7}" Command="{Binding ReplaceSelectedCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M2,7 L20,7 L16,3 M20,7 L16,11 M22,20 L4,20 L8,16 M4,20 L8,24" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M2,7 L20,7 L16,3 M20,7 L16,11 M22,20 L4,20 L8,16 M4,20 L8,24" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem Header="{loc:Text TextEdit.EditCopy}" Command="{Binding EditTextCommand}" ToolTip="{loc:Text TextEdit.Supported}" ToolTipService.ShowOnDisabled="True" Style="{StaticResource ArchiveEditItem}">
                 <MenuItem.Icon>
-                  <Path Data="M3,1 L17,1 L24,8 L24,29 L3,29 Z M7,23 L9,17 L21,5 L25,9 L13,21 Z" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M3,1 L17,1 L24,8 L24,29 L3,29 Z M7,23 L9,17 L21,5 L25,9 L13,21 Z" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="DeleteEntriesAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_5b76f8110c9e}" Command="{Binding DeleteSelectedCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M2,6 L24,6 M8,6 L8,1 L18,1 L18,6 M5,6 L7,28 L19,28 L21,6 M10,11 L10,22 M16,11 L16,22" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M2,6 L24,6 M8,6 L8,1 L18,1 L18,6 M5,6 L7,28 L19,28 L21,6 M10,11 L10,22 M16,11 L16,22" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
               <MenuItem Header="{loc:Text Redesign.CloseArchive}" Click="OnClose">
                 <MenuItem.Icon>
-                  <Path Data="M1,4 L10,4 L14,8 L26,8 L26,27 L1,27 Z M10,14 L19,23 M19,14 L10,23" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=MenuItem}}" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <Path Data="M1,4 L10,4 L14,8 L26,8 L26,27 L1,27 Z M10,14 L19,23 M19,14 L10,23" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
             </ContextMenu>
