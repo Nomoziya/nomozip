@@ -62,7 +62,7 @@ def validate_architecture(application, architecture):
 
 def source_files(root):
     files = []
-    for folder in ('src', 'tests', 'tools', 'scripts', 'docs', 'config', 'resources', 'design-system', 'installer', '.github'):
+    for folder in ('src', 'tests', 'tools', 'scripts', 'docs', 'config', 'resources', 'assets', 'design-system', 'installer', '.github'):
         files.extend(file for file in (root / folder).rglob('*') if file.is_file()
                      and not any(part in ('bin', 'obj', 'generated', '__pycache__') for part in file.relative_to(root).parts))
     for name in ('README.md', 'PROJECT_PLAN.md', 'THIRD_PARTY.md', 'global.json', 'Directory.Build.props', 'NuGet.Config', '.gitignore', '启动软件.cmd'):

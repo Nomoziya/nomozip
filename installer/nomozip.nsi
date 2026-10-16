@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 Unicode true
+!define MUI_ICON "..\assets\nomozip.ico"
+!define MUI_UNICON "..\assets\nomozip.ico"
 !include MUI2.nsh
 !include LogicLib.nsh
 !include FileFunc.nsh

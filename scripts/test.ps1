@@ -199,6 +199,7 @@ $taskVolumeGui = Start-Process -FilePath $taskApplication -ArgumentList @('--val
 if ($taskVolumeGui.ExitCode -ne 0) { throw 'Split volume desktop validation failed.' }
 $taskCheckpointGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-checkpoints', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskCheckpointGui.ExitCode -ne 0) { throw 'Extraction checkpoint desktop validation failed.' }
+& (Join-Path $PSScriptRoot 'test-visual-refresh.ps1') -ApplicationDirectory (Split-Path $taskApplication -Parent)
 $taskDragGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-drag-out', $taskRoot) -WindowStyle Hidden -Wait -PassThru
 if ($taskDragGui.ExitCode -ne 0) { throw 'Archive drag desktop validation failed.' }
 $taskPreviewGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-content-preview', $taskRoot) -WindowStyle Hidden -Wait -PassThru

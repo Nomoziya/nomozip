@@ -18,6 +18,7 @@ internal sealed class CompletionNotification : IDisposable
     private readonly DispatcherTimer expiry;
     private readonly uint taskbarCreated;
     private bool registered, disposed;
+    private IntPtr ownedIcon;
 
     internal CompletionNotification(Window window, Action activate, ShellCall? shell = null)
     {
@@ -41,7 +42,13 @@ internal sealed class CompletionNotification : IDisposable
         var data = Data();
         data.Flags = 1 | 2 | 4; // NIF_MESSAGE | NIF_ICON | NIF_TIP; never displays a balloon.
         data.Callback = CallbackMessage;
-        data.Icon = LoadIconW(IntPtr.Zero, new IntPtr(32512)); // Shared Windows application icon.
+        if (ownedIcon == IntPtr.Zero)
+        {
+            ExtractIconExW(System.IO.Path.Combine(AppContext.BaseDirectory, "ArchivePassword.exe"), 0, out var large, out var small, 1);
+            ownedIcon = small != IntPtr.Zero ? small : large;
+            if (large != IntPtr.Zero && large != ownedIcon) DestroyIcon(large);
+        }
+        data.Icon = ownedIcon != IntPtr.Zero ? ownedIcon : LoadIconW(IntPtr.Zero, new IntPtr(32512));
         data.Tip = UiText.Get("T_e5bce8324529");
         registered = shell(0, ref data); // NIM_ADD, legacy callback layout.
         return registered;
@@ -101,7 +108,9 @@ internal sealed class CompletionNotification : IDisposable
     public void Dispose()
     {
         if (disposed) return;
-        RemoveIcon(); source.RemoveHook(OnMessage); disposed = true;
+        RemoveIcon(); source.RemoveHook(OnMessage);
+        if (ownedIcon != IntPtr.Zero) { DestroyIcon(ownedIcon); ownedIcon = IntPtr.Zero; }
+        disposed = true;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -119,5 +128,7 @@ internal sealed class CompletionNotification : IDisposable
     [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)] private static extern bool Shell_NotifyIconW(uint operation, ref IconData data);
     [DllImport("user32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)] private static extern IntPtr LoadIconW(IntPtr instance, IntPtr name);
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)] private static extern uint ExtractIconExW(string file, int index, out IntPtr large, out IntPtr small, uint count);
+    [DllImport("user32.dll", ExactSpelling = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool DestroyIcon(IntPtr icon);
     [DllImport("user32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)] private static extern uint RegisterWindowMessageW(string name);
 }

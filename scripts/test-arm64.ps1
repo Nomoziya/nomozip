@@ -49,6 +49,7 @@ foreach ($taskFlag in @('validate','validate-vault-transfer','validate-password-
 }
 $taskEnglishUpdate=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @('--validate-application-updates',$taskRoot,'en') -WindowStyle Hidden -Wait -PassThru
 if ($taskEnglishUpdate.ExitCode -ne 0) { $taskFailures.Add('desktop: English application updates') }
+try { & "$taskRoot/scripts/test-visual-refresh.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: visual refresh: $_") }
 try { & "$taskRoot/scripts/test-localization-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: localization: $_") }
 try { & "$taskRoot/scripts/test-theme-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: theme: $_") }
 # ARM64 SDK builds AnyCPU fixture code; the separately verified x64 runtime actually writes old vaults.
