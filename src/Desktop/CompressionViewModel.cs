@@ -96,7 +96,7 @@ public sealed partial class MainViewModel
     public string CompressionMessage { get => compressionMessage; set => Set(ref compressionMessage, value); }
     public double CompressionPercent { get => compressionPercent; private set => Set(ref compressionPercent, value); }
     public bool CompressionIndeterminate { get => compressionIndeterminate; private set => Set(ref compressionIndeterminate, value); }
-    public bool CompressionRunning { get => compressionRunning; private set => Set(ref compressionRunning, value); }
+    public bool CompressionRunning { get => compressionRunning; private set {if(Set(ref compressionRunning,value)) {Changed(nameof(HasCompressionActivity));Changed(nameof(ShowCompressionActivity));}} }
     public CompressionSourceRow? SelectedCompressionSource { get => selectedCompressionSource; set => Set(ref selectedCompressionSource, value); }
     private string CompressionFormatName => CompressionOptions.Name;
     private void InitializeCompressionCommands()
@@ -142,6 +142,7 @@ public sealed partial class MainViewModel
         if (replace && !dialogs.ConfirmArchiveReplacement(CompressionOutput)) { CompressionMessage = UiText.Get("T_b27d094f513e"); return; }
         if (CompressionEncrypt && compressionPassword is null) await SetCompressionPasswordAsync();
         if (CompressionEncrypt && compressionPassword is null) { CompressionMessage = UiText.Get("T_d2011de64a34"); return; }
+        compressionActivityStarted=true;Changed(nameof(HasCompressionActivity));Page=0;
         createdCompressionPath="";CompressionRunning = true;CompressionPercent = 0; CompressionIndeterminate = true;
             var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));
             var progress = new Progress<TaskUpdate>(value =>

@@ -53,13 +53,13 @@ public sealed partial class MainViewModel : ObservableObject
             }
             catch (Exception exception) when (exception is JsonException or KeyNotFoundException) { }
         }
-        Tasks.CollectionChanged += (_, _) => { Changed(nameof(TaskSummary)); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
+        Tasks.CollectionChanged += (_, e) => { if(e.OldItems is not null) foreach(ArchiveTaskRow row in e.OldItems) row.PropertyChanged-=WorkspaceTaskChanged; if(e.NewItems is not null) foreach(ArchiveTaskRow row in e.NewItems) row.PropertyChanged+=WorkspaceTaskChanged; RefreshWorkspaceTasks(); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
-        OpenInputCommand = new RelayCommand(() => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else AddFilesCommand.Execute(null); }, () => IsIdle);
+        OpenInputCommand = new AsyncCommand(async () => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else if (Page == 4) await OpenWorkspaceArchiveAsync(dialogs.SelectArchives()); else AddFilesCommand.Execute(null); }, () => IsIdle);
         RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is {Checkpoint:null});
-        BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) SelectCustomOutput(path); }, () => IsIdle && SelectedTask?.Checkpoint is null);
+        BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) SelectCustomOutput(path); }, () => CanConfigureExtraction && SelectedTask?.Checkpoint is null);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
-        BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page == 0 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
+        BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page is 0 or 4 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
         ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(SkipSelectedPasswordAttempts, () => IsBusy && CanSkipPasswords);
@@ -117,9 +117,9 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand ApplyEngineCommand { get; }
     public ICommand RollbackEngineCommand { get; }
     public ICommand OpenLicensesCommand { get; }
-    public int Page { get => page; set { if (Set(ref page, value)) Changed(nameof(NavigationIndex)); } }
-    public int NavigationIndex { get => Page switch { 3 => 1, 1 => 2, 2 => 3, _ => 0 }; set => Page = value switch { 1 => 3, 2 => 1, 3 => 2, _ => 0 }; }
-    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
+    public int Page { get => page; set { if (Set(ref page, value)) { Changed(nameof(NavigationIndex)); CommandManager.InvalidateRequerySuggested(); } } }
+    public int NavigationIndex { get => Page switch { 0 => 1, 1 => 2, 5 => 3, 2 => -1, _ => 0 }; set { if (value >= 0) Page = value switch { 1 => 0, 2 => 1, 3 => 5, _ => 4 }; } }
+    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
@@ -166,7 +166,7 @@ public sealed partial class MainViewModel : ObservableObject
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
         { Banner = UiText.Get("T_b83678cb1bcf"); }
-        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanUseSfx)); CompressionCapabilitiesChanged(); CommandManager.InvalidateRequerySuggested(); }
+        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanUseSfx)); CompressionCapabilitiesChanged(); CommandManager.InvalidateRequerySuggested(); }
     }
     public void AddFiles(IEnumerable<string> paths)
     {

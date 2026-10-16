@@ -13,6 +13,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null,
     Action<ArchivePreviewDialog>? preparePreview=null,Func<string,bool>? confirmApplicationInstall=null,Func<string,bool>? confirmDiscardCheckpoint=null)
 {
+    public bool ConfirmWorkspaceExtraction() => prepareContents is not null || owner is not MainWindow main || main.ConfirmExtractionOptions();
     public bool ConfirmDiscardCheckpoint(string name)=>confirmDiscardCheckpoint?.Invoke(name) ?? MessageBox.Show(owner,
         UiText.Format("Checkpoint.DiscardPrompt",name),UiText.Get("Checkpoint.Discard"),MessageBoxButton.YesNo,MessageBoxImage.Question,MessageBoxResult.No)==MessageBoxResult.Yes;
     public bool ConfirmApplicationInstall(string version) => confirmApplicationInstall?.Invoke(version) ??
@@ -21,6 +22,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     public void ShowArchivePreview(ArchivePreviewViewModel model)
     {
         var dialog=new ArchivePreviewDialog(model) {Owner=owner.OwnedWindows.OfType<ArchiveContentsDialog>().FirstOrDefault() ?? owner};
+        if(preparePreview is null && owner is MainWindow main && main.HostPreview(dialog,model)) return;
         preparePreview?.Invoke(dialog);dialog.ShowDialog();
     }
     public void ShowArchiveConversion(ArchiveConversionViewModel model)
@@ -123,6 +125,11 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     {
         var dialog = new OpenFolderDialog { Title = UiText.Get("T_537bdbd1e894"), InitialDirectory = System.IO.Directory.Exists(current) ? current : "" };
         return dialog.ShowDialog(owner) == true ? dialog.FolderName : null;
+    }
+    public async Task ShowArchiveContentsAsync(ArchiveContentsViewModel model)
+    {
+        if(prepareContents is null && owner is MainWindow main) {await main.HostArchiveAsync(new ArchiveContentsDialog(model),model);return;}
+        ShowArchiveContents(model);
     }
     public void ShowArchiveContents(ArchiveContentsViewModel model)
     {
