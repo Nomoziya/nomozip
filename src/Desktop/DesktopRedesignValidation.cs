@@ -148,7 +148,12 @@ internal static class DesktopRedesignValidation
 
             // Compression is visible on Tasks but never added to the extraction input collection.
             var source=Path.Combine(data,"source.txt");await File.WriteAllTextAsync(source,"synthetic compression content");
-            model.Page=3;model.AddCompressionSources([source]);model.CompressionOutput=Path.Combine(data,"created.7z");model.CreateArchiveCommand.Execute(null);await Until(()=>model.IsIdle);
+            model.Page=3;model.AddCompressionSources([source]);await Layout();
+            window.CompressionPage.ArchiveOutputBox.Text=data;window.CompressionPage.ArchiveOutputBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
+            window.CompressionPage.ArchiveNameBox.Text="created";window.CompressionPage.ArchiveNameBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
+            Check("separate location and filename compose the real output path",model.CompressionOutput==Path.Combine(data,"created.7z"));
+            model.CompressionFormat=1;Check("format changes retain the entered name and align extension",model.CompressionOutput==Path.Combine(data,"created.zip") && model.CompressionOutputName=="created");model.CompressionFormat=0;
+            model.CreateArchiveCommand.Execute(null);await Until(()=>model.IsIdle);
             Check("compression routes to unified task workspace",model.Page==0 && model.HasCompressionActivity && File.Exists(model.CompressionOutput));
             Check("compression output is not an extraction task",model.Tasks.All(value=>!string.Equals(value.Path,model.CompressionOutput,StringComparison.OrdinalIgnoreCase)));
             Capture("actual-compression-result");

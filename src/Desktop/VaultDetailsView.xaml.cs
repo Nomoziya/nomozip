@@ -15,8 +15,8 @@ public partial class VaultDetailsView : UserControl
         IsVisibleChanged += (_, _) => { if (IsVisible) LoadSelection(); else Clear(); };
         Unloaded += (_, _) => { Clear(); if (model is not null) model.PropertyChanged -= OnModelChanged; };
         Loaded += (_, _) => { if (model is not null) { model.PropertyChanged -= OnModelChanged; model.PropertyChanged += OnModelChanged; } LoadSelection(); };
-        foreach (var control in new Control[] {NameBox,SecretBox,VisibleSecret,GroupBox,NotesBox,SourceBox,MatchBox})
-            System.Windows.Automation.AutomationProperties.SetName(control, control.Name);
+        foreach (var (control, key) in new (Control,string)[] {(NameBox,"T_d44e9b3d3b31"),(SecretBox,"T_a621ab606db2"),(VisibleSecret,"T_a621ab606db2"),(GroupBox,"T_d4163ce3b078"),(NotesBox,"T_daede9881787"),(SourceBox,"T_b5bb08da76d9"),(MatchBox,"T_724d7a12cc56")})
+            System.Windows.Automation.AutomationProperties.SetName(control, UiText.Get(key));
     }
     private void OnModelChanged(object? sender, PropertyChangedEventArgs e) { if (e.PropertyName is nameof(MainViewModel.SelectedPassword) or nameof(MainViewModel.VaultLocked) or nameof(MainViewModel.Page)) LoadSelection(); }
     private void Clear() { original=null; SecretBox.Clear(); VisibleSecret.Clear(); ShowSecret.IsChecked=false; NameBox.Clear(); GroupBox.Clear(); NotesBox.Clear(); SourceBox.Clear(); MatchBox.Clear(); Heading.Text=UiText.Get("Redesign.VaultDetails");Error.Text=""; SaveButton.IsEnabled=false; }

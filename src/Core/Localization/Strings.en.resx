@@ -3130,4 +3130,6 @@ A password is required to validate the archive data.</value>
 <data name="Redesign.OpenFolder" xml:space="preserve"><value>Open folder</value></data>
 <data name="Redesign.SampleExtracting" xml:space="preserve"><value>Extracting</value></data>
 <data name="Redesign.SampleCompleted" xml:space="preserve"><value>Completed</value></data>
+<data name="Redesign.SaveLocation" xml:space="preserve"><value>Save location</value></data>
+<data name="Redesign.ArchiveName" xml:space="preserve"><value>File name</value></data>
 </root>
