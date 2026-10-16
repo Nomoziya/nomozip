@@ -816,10 +816,12 @@
           <ColumnDefinition x:Name="SettingsCategoriesColumn" Width="176"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.ColumnSpan="2" Margin="24,24,24,20">
+        <Border Grid.ColumnSpan="2" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
+        <DockPanel Margin="24,24,24,20">
           <ComboBox x:Name="SettingsCategory" SelectedIndex="{Binding SettingsSection}" ItemsSource="{Binding SettingsCategories}" Width="260" HorizontalAlignment="Left" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" DockPanel.Dock="Right"/>
-          <TextBlock Text="{loc:Text T_df3d58c7d84b}" FontSize="24" FontWeight="SemiBold" Margin="0"/>
+          <TextBlock Text="{loc:Text T_df3d58c7d84b}" FontSize="28" FontWeight="SemiBold" Margin="0"/>
         </DockPanel>
+        </Border>
         <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
           <ListBox x:Name="SettingsCategoryList" ItemsSource="{Binding SettingsCategories}" SelectedIndex="{Binding SettingsSection}" Margin="12,0,12,0" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" AlternationCount="6">
             <ListBox.ItemContainerStyle>

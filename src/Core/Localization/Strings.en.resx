@@ -3225,4 +3225,5 @@ A password is required to validate the archive data.</value>
   <data name="Compression.HeadersHint" xml:space="preserve"><value>Available for 7z archives to hide file names.</value></data>
   <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>Available options depend on the format and engine.</value></data>
   <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>Search archive contents</value></data>
+  <data name="Compression.AdvancedTitle" xml:space="preserve"><value>Advanced options</value></data>
 </root>
