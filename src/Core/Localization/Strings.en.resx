@@ -1,5 +1,4 @@
-<?xml version="1.0" ?>
-<root>
+<?xml version="1.0" ?><root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -297,7 +296,9 @@ This check produces no extracted files and does not save or update vault passwor
   </data>
   <data xml:space="preserve" name="T_18a17ee1b961">
     <value>Delete or replace {0} items and write {1} items (folders include descendants).
+
 The original is replaced only after full validation. A .bak copy is kept beside it, including deleted and replaced content.
+
 Added or replaced files use the password verified for this operation. Archives with multiple passwords cannot be edited. Continue?</value>
     <comment>src\Desktop\WindowDialogs.cs:26</comment>
   </data>
@@ -488,6 +489,7 @@ Added or replaced files use the password verified for this operation. Archives w
   </data>
   <data xml:space="preserve" name="T_27b9b12b34a0">
     <value>Install and use 7-Zip {0}?
+
 Current engine: {1}. Your vault is unchanged; you can restore the previous engine afterward.</value>
     <comment>src\Desktop\WindowDialogs.cs:153</comment>
   </data>
@@ -902,6 +904,7 @@ The previous password could not be fully verified. It may be incorrect, or the a
   </data>
   <data xml:space="preserve" name="T_4ac1c3d04751">
     <value>Create a new vault with {0} passwords from the verified backup?
+
 The current locked vault will be kept as an encrypted copy. Records added after the backup will not be restored. Next, choose a new master password.</value>
     <comment>src\Desktop\WindowDialogs.cs:32</comment>
   </data>
@@ -1104,6 +1107,7 @@ Browsing only. To save a new password, save it after successful extraction.</val
   </data>
   <data xml:space="preserve" name="T_5c6b348e7c5f">
     <value>
+
 The existing archive is replaced only after validation. Continue?</value>
     <comment>src\Desktop\WindowDialogs.cs:94</comment>
   </data>
@@ -1598,6 +1602,7 @@ This archive encrypts filenames. A password is required to browse its contents.<
   </data>
   <data xml:space="preserve" name="T_8bdc96d86b79">
     <value>
+
 Choose Yes to overwrite, No to skip, or Cancel to stop the current task.</value>
     <comment>src\Desktop\WindowDialogs.cs:142</comment>
   </data>
@@ -2680,6 +2685,7 @@ This update package is older than the current version.</value>
   </data>
   <data xml:space="preserve" name="T_e98b7cc07066">
     <value>Keep “{0}” and merge {1} other records with the same password?
+
 The selected record's name, notes, group, source, matching rule, and auto-try setting are kept; those fields from the other records are removed. The earliest creation and latest success times are kept, and all archive associations move to the selected record.</value>
     <comment>src\Desktop\WindowDialogs.cs:141</comment>
   </data>
@@ -2797,6 +2803,7 @@ The selected record's name, notes, group, source, matching rule, and auto-try se
   </data>
   <data xml:space="preserve" name="T_f321085e8ea2">
     <value>{0} existing records contain the same password. Save this record anyway?
+
 You can cancel and edit an existing record, or merge duplicates in the vault after saving.</value>
     <comment>src\Desktop\WindowDialogs.cs:139</comment>
   </data>
@@ -3004,640 +3011,185 @@ A password is required to validate the archive data.</value>
   <data xml:space="preserve" name="Appearance.HorizontalScroll">
     <value>Horizontal scroll thumb</value>
   </data>
-  <data name="Conversion.Title" xml:space="preserve">
-    <value>Convert archive</value>
-  </data>
-  <data name="Conversion.Subtitle" xml:space="preserve">
-    <value>Convert all contents of the selected archive into a new archive. Keep the original.</value>
-  </data>
-  <data name="Conversion.Source" xml:space="preserve">
-    <value>Source archive</value>
-  </data>
-  <data name="Conversion.Output" xml:space="preserve">
-    <value>New archive path</value>
-  </data>
-  <data name="Conversion.Browse" xml:space="preserve">
-    <value>Browse…</value>
-  </data>
-  <data name="Conversion.Format" xml:space="preserve">
-    <value>Output format</value>
-  </data>
-  <data name="Conversion.Level" xml:space="preserve">
-    <value>Compression level (0–9)</value>
-  </data>
-  <data name="Conversion.Encrypt" xml:space="preserve">
-    <value>Encrypt the new archive</value>
-  </data>
-  <data name="Conversion.Password" xml:space="preserve">
-    <value>New archive password</value>
-  </data>
-  <data name="Conversion.ConfirmPassword" xml:space="preserve">
-    <value>Confirm new password</value>
-  </data>
-  <data name="Conversion.EncryptHeaders" xml:space="preserve">
-    <value>Encrypt filenames (7z only)</value>
-  </data>
-  <data name="Conversion.TemporaryNote" xml:space="preserve">
-    <value>The source password is not inherited. Conversion temporarily stores two extracted copies beside the output and deletes them normally afterwards. Allow enough disk space. Supports ordinary 7z, ZIP and RAR inputs; 7z or ZIP outputs.</value>
-  </data>
-  <data name="Conversion.Start" xml:space="preserve">
-    <value>Convert</value>
-  </data>
-  <data name="Conversion.Cancel" xml:space="preserve">
-    <value>Cancel conversion</value>
-  </data>
-  <data name="Conversion.Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Conversion.Extracting" xml:space="preserve">
-    <value>Extracting the source to temporary storage…</value>
-  </data>
-  <data name="Conversion.Creating" xml:space="preserve">
-    <value>Creating the new archive…</value>
-  </data>
-  <data name="Conversion.Verifying" xml:space="preserve">
-    <value>Verifying the new archive and file contents…</value>
-  </data>
-  <data name="Conversion.Delivering" xml:space="preserve">
-    <value>Delivering the verified archive…</value>
-  </data>
-  <data name="Conversion.CleanupWarning" xml:space="preserve">
-    <value>Temporary cleanup failed. Extracted contents remain; delete this directory manually:</value>
-  </data>
-  <data name="Conversion.OutputRequired" xml:space="preserve">
-    <value>Choose a path for the new archive.</value>
-  </data>
-  <data name="Conversion.PasswordMismatch" xml:space="preserve">
-    <value>Enter and confirm a matching new archive password.</value>
-  </data>
-  <data name="Conversion.Cancelled" xml:space="preserve">
-    <value>Conversion cancelled. The original archive is preserved.</value>
-  </data>
-  <data name="Conversion.Success" xml:space="preserve">
-    <value>Conversion complete. Contents verified; original archive preserved.</value>
-  </data>
-  <data name="Conversion.SamePath" xml:space="preserve">
-    <value>Use a different path or name for the new archive.</value>
-  </data>
-  <data name="Conversion.Unsupported" xml:space="preserve">
-    <value>Only ordinary 7z, ZIP and RAR inputs are supported. Split volumes and self-extracting archives cannot be converted yet.</value>
-  </data>
-  <data name="Conversion.ZipPassword" xml:space="preserve">
-    <value>ZIP passwords must use ASCII characters. Choose 7z for other characters.</value>
-  </data>
-  <data name="Conversion.Failed" xml:space="preserve">
-    <value>Conversion failed. The original and any existing target are preserved.</value>
-  </data>
-  <data name="Conversion.ReplacePrompt" xml:space="preserve">
-    <value>The target exists. Replace it after successful conversion and verification? The source is always preserved.</value>
-  </data>
-  <data name="Preview.Title" xml:space="preserve">
-    <value>File preview</value>
-  </data>
-  <data name="Preview.Action" xml:space="preserve">
-    <value>Preview file</value>
-  </data>
-  <data name="Preview.SelectOne" xml:space="preserve">
-    <value>Select a text or image row first.</value>
-  </data>
-  <data name="Preview.Shortcut" xml:space="preserve">
-    <value>Read-only preview of the current row (Ctrl+P); extraction checkboxes are unchanged.</value>
-  </data>
-  <data name="Preview.Loading" xml:space="preserve">
-    <value>Reading preview…</value>
-  </data>
-  <data name="Preview.Notice" xml:space="preserve">
-    <value>Read-only · Temporary files cleaned after reading · No password or extraction status saved</value>
-  </data>
-  <data name="Preview.ReadOnly" xml:space="preserve">
-    <value>Preview finished; vault and extraction selection are unchanged.</value>
-  </data>
-  <data name="Preview.Cancelled" xml:space="preserve">
-    <value>Preview cancelled.</value>
-  </data>
-  <data name="Preview.TooLarge" xml:space="preserve">
-    <value>Preview limit: text 1 MiB, images 8 MiB. Use Extract selected instead.</value>
-  </data>
-  <data name="Preview.Unsupported" xml:space="preserve">
-    <value>Select a supported text, PNG, JPEG, BMP or GIF file.</value>
-  </data>
-  <data name="Preview.TextName" xml:space="preserve">
-    <value>File text content (read-only)</value>
-  </data>
-  <data name="Preview.TextDetails" xml:space="preserve">
-    <value>Text · {0} bytes · {1}</value>
-  </data>
-  <data name="Preview.ImageDetails" xml:space="preserve">
-    <value>Image · {0} × {1} pixels · {2} bytes</value>
-  </data>
-  <data name="Preview.FirstFrame" xml:space="preserve">
-    <value>First frame only</value>
-  </data>
-  <data name="Preview.TextInvalid" xml:space="preserve">
-    <value>Not valid UTF-8 or BOM-marked Unicode text. Extract and use an appropriate editor.</value>
-  </data>
-  <data name="Preview.ImageInvalid" xml:space="preserve">
-    <value>Cannot read this image. It may be corrupt or its format may not match its extension.</value>
-  </data>
-  <data name="Preview.ImageTooLarge" xml:space="preserve">
-    <value>Image exceeds the preview limit (16 million pixels, 16384 per side). Extract to view it.</value>
-  </data>
-  <data name="Preview.CleanupWarning" xml:space="preserve">
-    <value>Preview temporary files could not be removed. Close any program using them, then delete this directory:</value>
-  </data>
-  <data name="Preview.CompactAction" xml:space="preserve">
-    <value>Preview</value>
-  </data>
-  <data name="Contents.CompactExtract" xml:space="preserve">
-    <value>Extract</value>
-  </data>
-  <data name="Contents.CompactCancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Contents.CompactOpen" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="Contents.CompactSearch" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Contents.CompactSelect" xml:space="preserve">
-    <value>Select visible</value>
-  </data>
-  <data name="Contents.CompactClear" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="Contents.CompactEdit" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="Contents.CompactPick" xml:space="preserve">
-    <value>Pick</value>
-  </data>
-  <data name="Contents.CompactSize" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="SoftwareUpdate.Download" xml:space="preserve">
-    <value>Download installer</value>
-  </data>
-  <data name="SoftwareUpdate.Install" xml:space="preserve">
-    <value>Install and restart</value>
-  </data>
-  <data name="SoftwareUpdate.Progress" xml:space="preserve">
-    <value>Installer download progress</value>
-  </data>
-  <data name="SoftwareUpdate.InstalledHint" xml:space="preserve">
-    <value>After download verification, install and restart. Your vault, settings, and downloaded engines are preserved.</value>
-  </data>
-  <data name="SoftwareUpdate.PortableHint" xml:space="preserve">
-    <value>This is a ZIP or unregistered copy. Use the download page. Automatic installation requires a registered per-user installation.</value>
-  </data>
-  <data name="SoftwareUpdate.NoDigest" xml:space="preserve">
-    <value>The release has no usable checksum. Automatic download is unavailable; use the download page.</value>
-  </data>
-  <data name="SoftwareUpdate.Downloading" xml:space="preserve">
-    <value>Downloading the installer. You can cancel.</value>
-  </data>
-  <data name="SoftwareUpdate.Ready" xml:space="preserve">
-    <value>Version {0} is downloaded and SHA-256 verified. Select Install and restart to continue.</value>
-  </data>
-  <data name="SoftwareUpdate.Cancelled" xml:space="preserve">
-    <value>Download cancelled. Your installed version and vault are unchanged.</value>
-  </data>
-  <data name="SoftwareUpdate.InvalidDownload" xml:space="preserve">
-    <value>Installer size or checksum does not match. Installation is blocked. Check for updates again.</value>
-  </data>
-  <data name="SoftwareUpdate.DownloadFailed" xml:space="preserve">
-    <value>Download failed. Check your network and free disk space, then retry. You can continue using this version.</value>
-  </data>
-  <data name="SoftwareUpdate.Confirm" xml:space="preserve">
-    <value>nomozip will close, install version {0}, and reopen. Your vault, settings, and downloaded engines will be kept. Finish any other nomozip command-line tasks first. Continue?</value>
-  </data>
-  <data name="SoftwareUpdate.Started" xml:space="preserve">
-    <value>The installer has started. Closing nomozip.</value>
-  </data>
-  <data name="SoftwareUpdate.InstallFailed" xml:space="preserve">
-    <value>The installer could not start or the downloaded file changed. nomozip will stay open. Check for updates again.</value>
-  </data>
-  <data name="SoftwareUpdate.DownloadTimeout" xml:space="preserve">
-    <value>Installer download timed out. Check your network and retry. Your installed version is unchanged.</value>
-  </data>
-  <data name="Drag.PrepareAction" xml:space="preserve">
-    <value>Prepare selected items for dragging</value>
-  </data>
-  <data name="Drag.Hint" xml:space="preserve">
-    <value>Check files or folders, then drag a file name to the destination folder. You can also use Extract selected.</value>
-  </data>
-  <data name="Drag.Preparing" xml:space="preserve">
-    <value>Preparing files for dragging. You can cancel.</value>
-  </data>
-  <data name="Drag.Ready" xml:space="preserve">
-    <value>Ready. Drag a file name to the destination folder.</value>
-  </data>
-  <data name="Drag.Copied" xml:space="preserve">
-    <value>Drag copy finished; temporary files cleared. The receiving app handles the destination.</value>
-  </data>
-  <data name="Drag.Cancelled" xml:space="preserve">
-    <value>Drag cancelled.</value>
-  </data>
-  <data name="Drag.Failed" xml:space="preserve">
-    <value>Could not prepare or drag the selected items. Retry or use Extract selected.</value>
-  </data>
-  <data name="Drag.CleanupWarning" xml:space="preserve">
-    <value>Could not clear temporary drag files. Remove this directory manually:</value>
-  </data>
-  <data name="Drag.Actions" xml:space="preserve">
-    <value>Content actions</value>
-  </data>
-  <data name="Drag.CompactActions" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="Drag.ActionsHint" xml:space="preserve">
-    <value>Prepare selected items for dragging, or edit a 7z/ZIP archive.</value>
-  </data>
-  <data name="Checkpoint.Saved" xml:space="preserve">
-    <value>Progress saved: {0} / {1} items</value>
-  </data>
-  <data name="Checkpoint.Committing" xml:space="preserve">
-    <value>Delivering verified files</value>
-  </data>
-  <data name="Checkpoint.Cleanup" xml:space="preserve">
-    <value>Extraction completed, but temporary files could not all be removed. Retry discard in Task actions: {0}</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_binding_changed" xml:space="preserve">
-    <value>The required engine, architecture, or filename encoding does not match. Restore the original components and settings, or discard progress and extract again.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_source_changed" xml:space="preserve">
-    <value>The archive or a volume has changed, is missing, or cannot be read. Progress was retained. Restore the original files or discard progress.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_invalid" xml:space="preserve">
-    <value>The progress record could not be recognized. Its files were not used. Keep the record for investigation.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_busy" xml:space="preserve">
-    <value>Another process is still using this progress. Wait for it to exit and try again.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_missing" xml:space="preserve">
-    <value>This saved progress no longer exists.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_sources_unavailable" xml:space="preserve">
-    <value>The worker did not provide the source-file set. Use the worker supplied with this application.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_unsafe_path" xml:space="preserve">
-    <value>A progress path contains a link. The operation stopped to protect other files. Remove the link and retry.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_output_changed" xml:space="preserve">
-    <value>A completed file failed verification. Progress was retained. Check the disk and file permissions before retrying.</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_incomplete" xml:space="preserve">
-    <value>The worker did not confirm every item. Progress was retained and can be resumed.</value>
-  </data>
-  <data name="Checkpoint.Enable" xml:space="preserve">
-    <value>Keep extraction progress</value>
-  </data>
-  <data name="Checkpoint.Hint" xml:space="preserve">
-    <value>Resume after stopping or exiting. Decrypted temporary files and paths remain until completion or discard; passwords are not saved. Incomplete files restart.</value>
-  </data>
-  <data name="Checkpoint.Resume" xml:space="preserve">
-    <value>Resume selected task</value>
-  </data>
-  <data name="Checkpoint.Discard" xml:space="preserve">
-    <value>Discard selected progress</value>
-  </data>
-  <data name="Checkpoint.DiscardPrompt" xml:space="preserve">
-    <value>Discard extraction progress and delete retained temporary files for “{0}”? Files already delivered will be kept.</value>
-  </data>
-  <data name="Checkpoint.Discarded" xml:space="preserve">
-    <value>Progress discarded. The archive and files already delivered were kept.</value>
-  </data>
-  <data name="Checkpoint.DiscardFailed" xml:space="preserve">
-    <value>Some temporary files could not be removed. The progress record was kept. Close applications using those files and retry discard.</value>
-  </data>
-  <data name="Checkpoint.ReadFailed" xml:space="preserve">
-    <value>A progress record could not be read. Its files were kept: {0}</value>
-  </data>
-  <data name="Checkpoint.ScanFailed" xml:space="preserve">
-    <value>Saved extraction progress could not be read. Check access to the data directory and retry.</value>
-  </data>
-  <data name="Checkpoint.Available" xml:space="preserve">
-    <value>Ready to resume · {0} / {1} items saved</value>
-  </data>
-  <data name="Checkpoint.CleanupPending" xml:space="preserve">
-    <value>Extracted · progress cleanup pending</value>
-  </data>
-  <data name="Checkpoint.Found" xml:space="preserve">
-    <value>Tasks with saved progress: {0}. Resume or discard it in Task actions.</value>
-  </data>
-  <data name="Checkpoint.Checking" xml:space="preserve">
-    <value>Checking source files and saved progress…</value>
-  </data>
-  <data name="Checkpoint.Error.checkpoint_save_failed" xml:space="preserve">
-    <value>Extraction progress could not be saved. Further writes stopped and previous records were kept. Check free disk space and data-directory access before resuming.</value>
-  </data>
-  <data name="Menu.VaultHint" xml:space="preserve">
-    <value>Double-click or press Enter to edit, right-click for more actions, Delete to remove.</value>
-  </data>
-  <data name="Menu.SourceHint" xml:space="preserve">
-    <value>Drop content here, or right-click the list to add or remove</value>
-  </data>
-  <data name="Menu.ExtractHint" xml:space="preserve">
-    <value>Drop files here, or right-click a task for more actions</value>
-  </data>
-  <data name="Redesign.Files" xml:space="preserve">
-    <value>Files</value>
-  </data>
-  <data name="Redesign.Tasks" xml:space="preserve">
-    <value>Tasks</value>
-  </data>
-  <data name="Redesign.Tools" xml:space="preserve">
-    <value>Tools</value>
-  </data>
-  <data name="Redesign.General" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="Redesign.FileOperations" xml:space="preserve">
-    <value>File operations</value>
-  </data>
-  <data name="Redesign.Security" xml:space="preserve">
-    <value>Passwords and security</value>
-  </data>
-  <data name="Redesign.Integration" xml:space="preserve">
-    <value>System integration</value>
-  </data>
-  <data name="Redesign.Updates" xml:space="preserve">
-    <value>Updates</value>
-  </data>
-  <data name="Redesign.About" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="Redesign.SettingsCategory" xml:space="preserve">
-    <value>Settings category</value>
-  </data>
-  <data name="Redesign.FileDefaults" xml:space="preserve">
-    <value>Default file behavior</value>
-  </data>
-  <data name="Redesign.OpenArchive" xml:space="preserve">
-    <value>Open archive</value>
-  </data>
-  <data name="Redesign.CreateArchive" xml:space="preserve">
-    <value>Create archive</value>
-  </data>
-  <data name="Redesign.BatchExtract" xml:space="preserve">
-    <value>Batch extraction</value>
-  </data>
-  <data name="Redesign.CloseArchive" xml:space="preserve">
-    <value>Close archive</value>
-  </data>
-  <data name="Redesign.EmptyTitle" xml:space="preserve">
-    <value>Open an archive or create a new one</value>
-  </data>
-  <data name="Redesign.EmptyHint" xml:space="preserve">
-    <value>Drop an archive to browse it, or drop files to create an archive.</value>
-  </data>
-  <data name="Redesign.CompressionTask" xml:space="preserve">
-    <value>Compression task</value>
-  </data>
-  <data name="Redesign.ShowCompression" xml:space="preserve">
-    <value>Show compression settings</value>
-  </data>
-  <data name="Redesign.ExtractionOptions" xml:space="preserve">
-    <value>Confirm extraction settings</value>
-  </data>
-  <data name="Redesign.ConfirmExtraction" xml:space="preserve">
-    <value>Extract</value>
-  </data>
-  <data name="Redesign.VaultDetails" xml:space="preserve">
-    <value>Select a password to view details</value>
-  </data>
-  <data name="Redesign.SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
-  </data>
-  <data name="Redesign.ExtractAll" xml:space="preserve">
-    <value>Extract all</value>
-  </data>
-  <data name="Redesign.AllTasks" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="Redesign.RunningTasks" xml:space="preserve">
-    <value>Running</value>
-  </data>
-  <data name="Redesign.PendingTasks" xml:space="preserve">
-    <value>Pending</value>
-  </data>
-  <data name="Redesign.EndedTasks" xml:space="preserve">
-    <value>Ended</value>
-  </data>
-  <data name="Redesign.TaskFilter" xml:space="preserve">
-    <value>Task filter</value>
-  </data>
-  <data name="Redesign.Advanced" xml:space="preserve">
-    <value>More options</value>
-  </data>
-  <data name="Redesign.BackFiles" xml:space="preserve">
-    <value>Back to files</value>
-  </data>
-  <data name="Redesign.ExtractSelected" xml:space="preserve">
-    <value>Extract selected</value>
-  </data>
-  <data name="Redesign.More" xml:space="preserve">
-    <value>•••  More ⌄</value>
-  </data>
-  <data name="Redesign.ClosePreview" xml:space="preserve">
-    <value>Close preview</value>
-  </data>
-  <data name="Redesign.OutputPending" xml:space="preserve">
-    <value>Confirm destination before starting</value>
-  </data>
-  <data name="Redesign.OpenFolder" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="Redesign.SampleExtracting" xml:space="preserve">
-    <value>Extracting</value>
-  </data>
-  <data name="Redesign.SampleCompleted" xml:space="preserve">
-    <value>Completed</value>
-  </data>
-  <data name="Redesign.SaveLocation" xml:space="preserve">
-    <value>Save location</value>
-  </data>
-  <data name="Redesign.ArchiveName" xml:space="preserve">
-    <value>File name</value>
-  </data>
-  <data name="Redesign.AddForCompression" xml:space="preserve">
-    <value>Add files to compress</value>
-  </data>
-  <data name="Redesign.PasswordNotSet" xml:space="preserve">
-    <value>Not set</value>
-  </data>
-  <data name="Conflict.Title" xml:space="preserve">
-    <value>File already exists</value>
-  </data>
-  <data name="Conflict.Description" xml:space="preserve">
-    <value>A file with this name already exists. Choose what to do.</value>
-  </data>
-  <data name="Conflict.Existing" xml:space="preserve">
-    <value>Existing file (destination)</value>
-  </data>
-  <data name="Conflict.Incoming" xml:space="preserve">
-    <value>File from archive</value>
-  </data>
-  <data name="Conflict.ApplyAll" xml:space="preserve">
-    <value>Apply this choice to remaining conflicts in this task</value>
-  </data>
-  <data name="Conflict.NewName" xml:space="preserve">
-    <value>New filename</value>
-  </data>
-  <data name="Conflict.Replace" xml:space="preserve">
-    <value>Replace</value>
-  </data>
-  <data name="Conflict.Skip" xml:space="preserve">
-    <value>Skip</value>
-  </data>
-  <data name="Conflict.Rename" xml:space="preserve">
-    <value>Rename</value>
-  </data>
-  <data name="Conflict.Cancel" xml:space="preserve">
-    <value>Cancel task</value>
-  </data>
-  <data name="Conflict.FileDetails" xml:space="preserve">
-    <value>{0} bytes · {1}</value>
-  </data>
-  <data name="Conflict.Directory" xml:space="preserve">
-    <value>This location is a folder</value>
-  </data>
-  <data name="Conflict.InvalidName" xml:space="preserve">
-    <value>Enter a valid filename without a path or reserved name.</value>
-  </data>
-  <data name="Conflict.NameExists" xml:space="preserve">
-    <value>This name is already in use. Choose another name.</value>
-  </data>
-  <data name="TextEdit.Title" xml:space="preserve">
-    <value>Edit a file in the archive</value>
-  </data>
-  <data name="TextEdit.WriteBackTitle" xml:space="preserve">
-    <value>Write back changes</value>
-  </data>
-  <data name="TextEdit.Details" xml:space="preserve">
-    <value>Size: {0} bytes · {1}</value>
-  </data>
-  <data name="TextEdit.ChangedDetails" xml:space="preserve">
-    <value>Modified · {0} bytes (original {1} bytes) · {2}</value>
-  </data>
-  <data name="TextEdit.Explanation" xml:space="preserve">
-    <value>A temporary text copy will be created. Confirm after editing to write it back. Encoding is preserved; cancelling removes the copy.</value>
-  </data>
-  <data name="TextEdit.WriteBackExplanation" xml:space="preserve">
-    <value>Writing back replaces this file in the archive. After validation, the original archive is kept as a backup, including its original contents.</value>
-  </data>
-  <data name="TextEdit.WriteBack" xml:space="preserve">
-    <value>Write back to archive</value>
-  </data>
-  <data name="TextEdit.EditCopy" xml:space="preserve">
-    <value>Edit temporary copy</value>
-  </data>
-  <data name="TextEdit.Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="TextEdit.Discard" xml:space="preserve">
-    <value>Discard changes</value>
-  </data>
-  <data name="TextEdit.EditorTitle" xml:space="preserve">
-    <value>Edit temporary text copy</value>
-  </data>
-  <data name="TextEdit.Encoding" xml:space="preserve">
-    <value>{0} · Original encoding preserved · Archive changes only after confirmation</value>
-  </data>
-  <data name="TextEdit.Modified" xml:space="preserve">
-    <value>Modified, not written back</value>
-  </data>
-  <data name="TextEdit.Unchanged" xml:space="preserve">
-    <value>No changes yet</value>
-  </data>
-  <data name="TextEdit.TooLarge" xml:space="preserve">
-    <value>Text exceeds the 1 MiB editing limit.</value>
-  </data>
-  <data name="TextEdit.Supported" xml:space="preserve">
-    <value>Supports previewable text up to 1 MiB. Use Replace for other files.</value>
-  </data>
-  <data name="TextEdit.Discarded" xml:space="preserve">
-    <value>Temporary changes discarded; the original archive is unchanged.</value>
-  </data>
-  <data name="Redesign.WorkspaceSummary" xml:space="preserve">
-    <value>{0} running · {1} pending · {2} ended</value>
-  </data>
-  <data name="Redesign.PauseAll" xml:space="preserve">
-    <value>Pause all</value>
-  </data>
-  <data name="Appearance.Soft" xml:space="preserve">
-    <value>Soft contrast</value>
-  </data>
-  <data name="Hash.ImportShort" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="Hash.ExportShort" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="Compression.PasswordShort" xml:space="preserve">
-    <value>Set password</value>
-  </data>
-  <data name="Password.ConfirmationMismatch" xml:space="preserve">
-    <value>The passwords do not match.</value>
-  </data>
-  <data name="Extraction.BatchTitle" xml:space="preserve">
-    <value>Batch extraction</value>
-  </data>
-  <data name="Extraction.BatchCount" xml:space="preserve">
-    <value>{0} pending archives</value>
-  </data>
-  <data name="Extraction.CreateFolder" xml:space="preserve">
-    <value>Create a folder with the archive name</value>
-  </data>
-  <data name="Extraction.LayoutHint" xml:space="preserve">
-    <value>Checked: archive folder; unchecked: direct extraction; mixed: smart layout.</value>
-  </data>
-  <data name="TextEdit.CleanupWarning" xml:space="preserve">
-    <value>The temporary edit copy could not be removed. Delete this folder manually: {0}</value>
-  </data>
-  <data name="Browser.Up" xml:space="preserve">
-    <value>Up one level (Alt+Left)</value>
-  </data>
-  <data name="Updates.ManageVersions" xml:space="preserve">
-    <value>Manage engine versions and source</value>
-  </data>
-  <data name="Password.Confirm" xml:space="preserve">
-    <value>Confirm password</value>
-  </data>
-  <data name="Redesign.OutputUnavailable" xml:space="preserve">
-    <value>The output folder is unavailable. It may have been moved or deleted.</value>
-  </data>
-  <data name="Redesign.ViewDetails" xml:space="preserve">
-    <value>View details</value>
-  </data>
-  <data name="Compression.ResultTitle" xml:space="preserve">
-    <value>Compression result</value>
-  </data>
-  <data name="Redesign.ActiveTaskHelp" xml:space="preserve">
-    <value>Running and pending tasks</value>
-  </data>
-  <data name="Hash.Calculated" xml:space="preserve">
-    <value>Complete</value>
-  </data>
-  <data name="Hash.NotCompared" xml:space="preserve">
-    <value>Not compared</value>
-  </data>
-  <data name="Hash.InvalidExpected" xml:space="preserve">
-    <value>Invalid expected value</value>
-  </data>
-  <data name="Hash.SizeLabel" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="Hash.AlgorithmLabel" xml:space="preserve">
-    <value>Algorithm</value>
-  </data>
-  <data name="Hash.ResultLabel" xml:space="preserve">
-    <value>Result</value>
-  </data>
-  <data name="Preview.ImageTitle" xml:space="preserve">
-    <value>Image preview</value>
-  </data>
-  <data name="Preview.Dimensions" xml:space="preserve">
-    <value>Dimensions</value>
-  </data>
+  <data name="Conversion.Title" xml:space="preserve"><value>Convert archive</value></data>
+  <data name="Conversion.Subtitle" xml:space="preserve"><value>Convert all contents of the selected archive into a new archive. Keep the original.</value></data>
+  <data name="Conversion.Source" xml:space="preserve"><value>Source archive</value></data>
+  <data name="Conversion.Output" xml:space="preserve"><value>New archive path</value></data>
+  <data name="Conversion.Browse" xml:space="preserve"><value>Browse…</value></data>
+  <data name="Conversion.Format" xml:space="preserve"><value>Output format</value></data>
+  <data name="Conversion.Level" xml:space="preserve"><value>Compression level (0–9)</value></data>
+  <data name="Conversion.Encrypt" xml:space="preserve"><value>Encrypt the new archive</value></data>
+  <data name="Conversion.Password" xml:space="preserve"><value>New archive password</value></data>
+  <data name="Conversion.ConfirmPassword" xml:space="preserve"><value>Confirm new password</value></data>
+  <data name="Conversion.EncryptHeaders" xml:space="preserve"><value>Encrypt filenames (7z only)</value></data>
+  <data name="Conversion.TemporaryNote" xml:space="preserve"><value>The source password is not inherited. Conversion temporarily stores two extracted copies beside the output and deletes them normally afterwards. Allow enough disk space. Supports ordinary 7z, ZIP and RAR inputs; 7z or ZIP outputs.</value></data>
+  <data name="Conversion.Start" xml:space="preserve"><value>Convert</value></data>
+  <data name="Conversion.Cancel" xml:space="preserve"><value>Cancel conversion</value></data>
+  <data name="Conversion.Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Conversion.Extracting" xml:space="preserve"><value>Extracting the source to temporary storage…</value></data>
+  <data name="Conversion.Creating" xml:space="preserve"><value>Creating the new archive…</value></data>
+  <data name="Conversion.Verifying" xml:space="preserve"><value>Verifying the new archive and file contents…</value></data>
+  <data name="Conversion.Delivering" xml:space="preserve"><value>Delivering the verified archive…</value></data>
+  <data name="Conversion.CleanupWarning" xml:space="preserve"><value>Temporary cleanup failed. Extracted contents remain; delete this directory manually:</value></data>
+  <data name="Conversion.OutputRequired" xml:space="preserve"><value>Choose a path for the new archive.</value></data>
+  <data name="Conversion.PasswordMismatch" xml:space="preserve"><value>Enter and confirm a matching new archive password.</value></data>
+  <data name="Conversion.Cancelled" xml:space="preserve"><value>Conversion cancelled. The original archive is preserved.</value></data>
+  <data name="Conversion.Success" xml:space="preserve"><value>Conversion complete. Contents verified; original archive preserved.</value></data>
+  <data name="Conversion.SamePath" xml:space="preserve"><value>Use a different path or name for the new archive.</value></data>
+  <data name="Conversion.Unsupported" xml:space="preserve"><value>Only ordinary 7z, ZIP and RAR inputs are supported. Split volumes and self-extracting archives cannot be converted yet.</value></data>
+  <data name="Conversion.ZipPassword" xml:space="preserve"><value>ZIP passwords must use ASCII characters. Choose 7z for other characters.</value></data>
+  <data name="Conversion.Failed" xml:space="preserve"><value>Conversion failed. The original and any existing target are preserved.</value></data>
+  <data name="Conversion.ReplacePrompt" xml:space="preserve"><value>The target exists. Replace it after successful conversion and verification? The source is always preserved.</value></data>
+  <data name="Preview.Title" xml:space="preserve"><value>File preview</value></data>
+  <data name="Preview.Action" xml:space="preserve"><value>Preview file</value></data>
+  <data name="Preview.SelectOne" xml:space="preserve"><value>Select a text or image row first.</value></data>
+  <data name="Preview.Shortcut" xml:space="preserve"><value>Read-only preview of the current row (Ctrl+P); extraction checkboxes are unchanged.</value></data>
+  <data name="Preview.Loading" xml:space="preserve"><value>Reading preview…</value></data>
+  <data name="Preview.Notice" xml:space="preserve"><value>Read-only · Temporary files cleaned after reading · No password or extraction status saved</value></data>
+  <data name="Preview.ReadOnly" xml:space="preserve"><value>Preview finished; vault and extraction selection are unchanged.</value></data>
+  <data name="Preview.Cancelled" xml:space="preserve"><value>Preview cancelled.</value></data>
+  <data name="Preview.TooLarge" xml:space="preserve"><value>Preview limit: text 1 MiB, images 8 MiB. Use Extract selected instead.</value></data>
+  <data name="Preview.Unsupported" xml:space="preserve"><value>Select a supported text, PNG, JPEG, BMP or GIF file.</value></data>
+  <data name="Preview.TextName" xml:space="preserve"><value>File text content (read-only)</value></data>
+  <data name="Preview.TextDetails" xml:space="preserve"><value>Text · {0} bytes · {1}</value></data>
+  <data name="Preview.ImageDetails" xml:space="preserve"><value>Image · {0} × {1} pixels · {2} bytes</value></data>
+  <data name="Preview.FirstFrame" xml:space="preserve"><value>First frame only</value></data>
+  <data name="Preview.TextInvalid" xml:space="preserve"><value>Not valid UTF-8 or BOM-marked Unicode text. Extract and use an appropriate editor.</value></data>
+  <data name="Preview.ImageInvalid" xml:space="preserve"><value>Cannot read this image. It may be corrupt or its format may not match its extension.</value></data>
+  <data name="Preview.ImageTooLarge" xml:space="preserve"><value>Image exceeds the preview limit (16 million pixels, 16384 per side). Extract to view it.</value></data>
+  <data name="Preview.CleanupWarning" xml:space="preserve"><value>Preview temporary files could not be removed. Close any program using them, then delete this directory:</value></data>
+  <data name="Preview.CompactAction" xml:space="preserve"><value>Preview</value></data>
+  <data name="Contents.CompactExtract" xml:space="preserve"><value>Extract</value></data>
+  <data name="Contents.CompactCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Contents.CompactOpen" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Contents.CompactSearch" xml:space="preserve"><value>Search</value></data>
+  <data name="Contents.CompactSelect" xml:space="preserve"><value>Select visible</value></data>
+  <data name="Contents.CompactClear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Contents.CompactEdit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Contents.CompactPick" xml:space="preserve"><value>Pick</value></data>
+  <data name="Contents.CompactSize" xml:space="preserve"><value>Size</value></data>
+  <data name="SoftwareUpdate.Download" xml:space="preserve"><value>Download installer</value></data>
+  <data name="SoftwareUpdate.Install" xml:space="preserve"><value>Install and restart</value></data>
+  <data name="SoftwareUpdate.Progress" xml:space="preserve"><value>Installer download progress</value></data>
+  <data name="SoftwareUpdate.InstalledHint" xml:space="preserve"><value>After download verification, install and restart. Your vault, settings, and downloaded engines are preserved.</value></data>
+  <data name="SoftwareUpdate.PortableHint" xml:space="preserve"><value>This is a ZIP or unregistered copy. Use the download page. Automatic installation requires a registered per-user installation.</value></data>
+  <data name="SoftwareUpdate.NoDigest" xml:space="preserve"><value>The release has no usable checksum. Automatic download is unavailable; use the download page.</value></data>
+  <data name="SoftwareUpdate.Downloading" xml:space="preserve"><value>Downloading the installer. You can cancel.</value></data>
+  <data name="SoftwareUpdate.Ready" xml:space="preserve"><value>Version {0} is downloaded and SHA-256 verified. Select Install and restart to continue.</value></data>
+  <data name="SoftwareUpdate.Cancelled" xml:space="preserve"><value>Download cancelled. Your installed version and vault are unchanged.</value></data>
+  <data name="SoftwareUpdate.InvalidDownload" xml:space="preserve"><value>Installer size or checksum does not match. Installation is blocked. Check for updates again.</value></data>
+  <data name="SoftwareUpdate.DownloadFailed" xml:space="preserve"><value>Download failed. Check your network and free disk space, then retry. You can continue using this version.</value></data>
+  <data name="SoftwareUpdate.Confirm" xml:space="preserve"><value>nomozip will close, install version {0}, and reopen. Your vault, settings, and downloaded engines will be kept. Finish any other nomozip command-line tasks first. Continue?</value></data>
+  <data name="SoftwareUpdate.Started" xml:space="preserve"><value>The installer has started. Closing nomozip.</value></data>
+  <data name="SoftwareUpdate.InstallFailed" xml:space="preserve"><value>The installer could not start or the downloaded file changed. nomozip will stay open. Check for updates again.</value></data>
+  <data name="SoftwareUpdate.DownloadTimeout" xml:space="preserve"><value>Installer download timed out. Check your network and retry. Your installed version is unchanged.</value></data>
+  <data name="Drag.PrepareAction" xml:space="preserve"><value>Prepare selected items for dragging</value></data>
+  <data name="Drag.Hint" xml:space="preserve"><value>Check files or folders, then drag a file name to the destination folder. You can also use Extract selected.</value></data>
+  <data name="Drag.Preparing" xml:space="preserve"><value>Preparing files for dragging. You can cancel.</value></data>
+  <data name="Drag.Ready" xml:space="preserve"><value>Ready. Drag a file name to the destination folder.</value></data>
+  <data name="Drag.Copied" xml:space="preserve"><value>Drag copy finished; temporary files cleared. The receiving app handles the destination.</value></data>
+  <data name="Drag.Cancelled" xml:space="preserve"><value>Drag cancelled.</value></data>
+  <data name="Drag.Failed" xml:space="preserve"><value>Could not prepare or drag the selected items. Retry or use Extract selected.</value></data>
+  <data name="Drag.CleanupWarning" xml:space="preserve"><value>Could not clear temporary drag files. Remove this directory manually:</value></data>
+  <data name="Drag.Actions" xml:space="preserve"><value>Content actions</value></data>
+  <data name="Drag.CompactActions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Drag.ActionsHint" xml:space="preserve"><value>Prepare selected items for dragging, or edit a 7z/ZIP archive.</value></data>
+  <data name="Checkpoint.Saved" xml:space="preserve"><value>Progress saved: {0} / {1} items</value></data>
+  <data name="Checkpoint.Committing" xml:space="preserve"><value>Delivering verified files</value></data>
+  <data name="Checkpoint.Cleanup" xml:space="preserve"><value>Extraction completed, but temporary files could not all be removed. Retry discard in Task actions: {0}</value></data>
+  <data name="Checkpoint.Error.checkpoint_binding_changed" xml:space="preserve"><value>The required engine, architecture, or filename encoding does not match. Restore the original components and settings, or discard progress and extract again.</value></data>
+  <data name="Checkpoint.Error.checkpoint_source_changed" xml:space="preserve"><value>The archive or a volume has changed, is missing, or cannot be read. Progress was retained. Restore the original files or discard progress.</value></data>
+  <data name="Checkpoint.Error.checkpoint_invalid" xml:space="preserve"><value>The progress record could not be recognized. Its files were not used. Keep the record for investigation.</value></data>
+  <data name="Checkpoint.Error.checkpoint_busy" xml:space="preserve"><value>Another process is still using this progress. Wait for it to exit and try again.</value></data>
+  <data name="Checkpoint.Error.checkpoint_missing" xml:space="preserve"><value>This saved progress no longer exists.</value></data>
+  <data name="Checkpoint.Error.checkpoint_sources_unavailable" xml:space="preserve"><value>The worker did not provide the source-file set. Use the worker supplied with this application.</value></data>
+  <data name="Checkpoint.Error.checkpoint_unsafe_path" xml:space="preserve"><value>A progress path contains a link. The operation stopped to protect other files. Remove the link and retry.</value></data>
+  <data name="Checkpoint.Error.checkpoint_output_changed" xml:space="preserve"><value>A completed file failed verification. Progress was retained. Check the disk and file permissions before retrying.</value></data>
+  <data name="Checkpoint.Error.checkpoint_incomplete" xml:space="preserve"><value>The worker did not confirm every item. Progress was retained and can be resumed.</value></data>
+  <data name="Checkpoint.Enable" xml:space="preserve"><value>Keep extraction progress</value></data>
+  <data name="Checkpoint.Hint" xml:space="preserve"><value>Resume after stopping or exiting. Decrypted temporary files and paths remain until completion or discard; passwords are not saved. Incomplete files restart.</value></data>
+  <data name="Checkpoint.Resume" xml:space="preserve"><value>Resume selected task</value></data>
+  <data name="Checkpoint.Discard" xml:space="preserve"><value>Discard selected progress</value></data>
+  <data name="Checkpoint.DiscardPrompt" xml:space="preserve"><value>Discard extraction progress and delete retained temporary files for “{0}”? Files already delivered will be kept.</value></data>
+  <data name="Checkpoint.Discarded" xml:space="preserve"><value>Progress discarded. The archive and files already delivered were kept.</value></data>
+  <data name="Checkpoint.DiscardFailed" xml:space="preserve"><value>Some temporary files could not be removed. The progress record was kept. Close applications using those files and retry discard.</value></data>
+  <data name="Checkpoint.ReadFailed" xml:space="preserve"><value>A progress record could not be read. Its files were kept: {0}</value></data>
+  <data name="Checkpoint.ScanFailed" xml:space="preserve"><value>Saved extraction progress could not be read. Check access to the data directory and retry.</value></data>
+  <data name="Checkpoint.Available" xml:space="preserve"><value>Ready to resume · {0} / {1} items saved</value></data>
+  <data name="Checkpoint.CleanupPending" xml:space="preserve"><value>Extracted · progress cleanup pending</value></data>
+  <data name="Checkpoint.Found" xml:space="preserve"><value>Tasks with saved progress: {0}. Resume or discard it in Task actions.</value></data>
+  <data name="Checkpoint.Checking" xml:space="preserve"><value>Checking source files and saved progress…</value></data>
+  <data name="Checkpoint.Error.checkpoint_save_failed" xml:space="preserve"><value>Extraction progress could not be saved. Further writes stopped and previous records were kept. Check free disk space and data-directory access before resuming.</value></data>
+  <data name="Menu.VaultHint" xml:space="preserve"><value>Double-click or press Enter to edit, right-click for more actions, Delete to remove.</value></data>
+  <data name="Menu.SourceHint" xml:space="preserve"><value>Drop content here, or right-click the list to add or remove</value></data>
+  <data name="Menu.ExtractHint" xml:space="preserve"><value>Drop files here, or right-click a task for more actions</value></data>
+<data name="Redesign.Files" xml:space="preserve"><value>Files</value></data><data name="Redesign.Tasks" xml:space="preserve"><value>Tasks</value></data><data name="Redesign.Tools" xml:space="preserve"><value>Tools</value></data><data name="Redesign.General" xml:space="preserve"><value>General</value></data><data name="Redesign.FileOperations" xml:space="preserve"><value>File operations</value></data><data name="Redesign.Security" xml:space="preserve"><value>Passwords and security</value></data><data name="Redesign.Integration" xml:space="preserve"><value>System integration</value></data><data name="Redesign.Updates" xml:space="preserve"><value>Updates</value></data><data name="Redesign.About" xml:space="preserve"><value>About</value></data><data name="Redesign.SettingsCategory" xml:space="preserve"><value>Settings category</value></data><data name="Redesign.FileDefaults" xml:space="preserve"><value>Default file behavior</value></data><data name="Redesign.OpenArchive" xml:space="preserve"><value>Open archive</value></data><data name="Redesign.CreateArchive" xml:space="preserve"><value>Create archive</value></data><data name="Redesign.BatchExtract" xml:space="preserve"><value>Batch extraction</value></data><data name="Redesign.CloseArchive" xml:space="preserve"><value>Close archive</value></data><data name="Redesign.EmptyTitle" xml:space="preserve"><value>Open an archive or create a new one</value></data><data name="Redesign.EmptyHint" xml:space="preserve"><value>Drop an archive to browse it, or drop files to create an archive.</value></data><data name="Redesign.CompressionTask" xml:space="preserve"><value>Compression task</value></data><data name="Redesign.ShowCompression" xml:space="preserve"><value>Show compression settings</value></data><data name="Redesign.ExtractionOptions" xml:space="preserve"><value>Confirm extraction settings</value></data><data name="Redesign.ConfirmExtraction" xml:space="preserve"><value>Extract</value></data><data name="Redesign.VaultDetails" xml:space="preserve"><value>Select a password to view details</value></data><data name="Redesign.SaveChanges" xml:space="preserve"><value>Save changes</value></data><data name="Redesign.ExtractAll" xml:space="preserve"><value>Extract all</value></data><data name="Redesign.AllTasks" xml:space="preserve"><value>All</value></data><data name="Redesign.RunningTasks" xml:space="preserve"><value>Running</value></data><data name="Redesign.PendingTasks" xml:space="preserve"><value>Pending</value></data><data name="Redesign.EndedTasks" xml:space="preserve"><value>Ended</value></data><data name="Redesign.TaskFilter" xml:space="preserve"><value>Task filter</value></data><data name="Redesign.Advanced" xml:space="preserve"><value>More options</value></data><data name="Redesign.BackFiles" xml:space="preserve"><value>Back to files</value></data><data name="Redesign.ExtractSelected" xml:space="preserve"><value>Extract selected</value></data>
+<data name="Redesign.More" xml:space="preserve"><value>•••  More ⌄</value></data>
+<data name="Redesign.ClosePreview" xml:space="preserve"><value>Close preview</value></data>
+<data name="Redesign.OutputPending" xml:space="preserve"><value>Confirm destination before starting</value></data>
+<data name="Redesign.OpenFolder" xml:space="preserve"><value>Open folder</value></data>
+<data name="Redesign.SampleExtracting" xml:space="preserve"><value>Extracting</value></data>
+<data name="Redesign.SampleCompleted" xml:space="preserve"><value>Completed</value></data>
+<data name="Redesign.SaveLocation" xml:space="preserve"><value>Save location</value></data>
+<data name="Redesign.ArchiveName" xml:space="preserve"><value>File name</value></data>
+<data name="Redesign.AddForCompression" xml:space="preserve"><value>Add files to compress</value></data>
+<data name="Redesign.PasswordNotSet" xml:space="preserve"><value>Not set</value></data>
+  <data name="Conflict.Title" xml:space="preserve"><value>File already exists</value></data>
+  <data name="Conflict.Description" xml:space="preserve"><value>A file with this name already exists. Choose what to do.</value></data>
+  <data name="Conflict.Existing" xml:space="preserve"><value>Existing file (destination)</value></data>
+  <data name="Conflict.Incoming" xml:space="preserve"><value>File from archive</value></data>
+  <data name="Conflict.ApplyAll" xml:space="preserve"><value>Apply this choice to remaining conflicts in this task</value></data>
+  <data name="Conflict.NewName" xml:space="preserve"><value>New filename</value></data>
+  <data name="Conflict.Replace" xml:space="preserve"><value>Replace</value></data>
+  <data name="Conflict.Skip" xml:space="preserve"><value>Skip</value></data>
+  <data name="Conflict.Rename" xml:space="preserve"><value>Rename</value></data>
+  <data name="Conflict.Cancel" xml:space="preserve"><value>Cancel task</value></data>
+  <data name="Conflict.FileDetails" xml:space="preserve"><value>{0} bytes · {1}</value></data>
+  <data name="Conflict.Directory" xml:space="preserve"><value>This location is a folder</value></data>
+  <data name="Conflict.InvalidName" xml:space="preserve"><value>Enter a valid filename without a path or reserved name.</value></data>
+  <data name="Conflict.NameExists" xml:space="preserve"><value>This name is already in use. Choose another name.</value></data>
+  <data name="TextEdit.Title" xml:space="preserve"><value>Edit a file in the archive</value></data>
+  <data name="TextEdit.WriteBackTitle" xml:space="preserve"><value>Write back changes</value></data>
+  <data name="TextEdit.Details" xml:space="preserve"><value>Size: {0} bytes · {1}</value></data>
+  <data name="TextEdit.ChangedDetails" xml:space="preserve"><value>Modified · {0} bytes (original {1} bytes) · {2}</value></data>
+  <data name="TextEdit.Explanation" xml:space="preserve"><value>A temporary text copy will be created. Confirm after editing to write it back. Encoding is preserved; cancelling removes the copy.</value></data>
+  <data name="TextEdit.WriteBackExplanation" xml:space="preserve"><value>Writing back replaces this file in the archive. After validation, the original archive is kept as a backup, including its original contents.</value></data>
+  <data name="TextEdit.WriteBack" xml:space="preserve"><value>Write back to archive</value></data>
+  <data name="TextEdit.EditCopy" xml:space="preserve"><value>Edit temporary copy</value></data>
+  <data name="TextEdit.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="TextEdit.Discard" xml:space="preserve"><value>Discard changes</value></data>
+  <data name="TextEdit.EditorTitle" xml:space="preserve"><value>Edit temporary text copy</value></data>
+  <data name="TextEdit.Encoding" xml:space="preserve"><value>{0} · Original encoding preserved · Archive changes only after confirmation</value></data>
+  <data name="TextEdit.Modified" xml:space="preserve"><value>Modified, not written back</value></data>
+  <data name="TextEdit.Unchanged" xml:space="preserve"><value>No changes yet</value></data>
+  <data name="TextEdit.TooLarge" xml:space="preserve"><value>Text exceeds the 1 MiB editing limit.</value></data>
+  <data name="TextEdit.Supported" xml:space="preserve"><value>Supports previewable text up to 1 MiB. Use Replace for other files.</value></data>
+  <data name="TextEdit.Discarded" xml:space="preserve"><value>Temporary changes discarded; the original archive is unchanged.</value></data>
+<data name="Redesign.WorkspaceSummary" xml:space="preserve"><value>{0} running · {1} pending · {2} ended</value></data>
+<data name="Redesign.PauseAll" xml:space="preserve"><value>Pause all</value></data>
+<data name="Appearance.Soft" xml:space="preserve"><value>Soft contrast</value></data>
+<data name="Hash.ImportShort" xml:space="preserve"><value>Import</value></data>
+<data name="Hash.ExportShort" xml:space="preserve"><value>Export</value></data>
+<data name="Compression.PasswordShort" xml:space="preserve"><value>Set password</value></data>
+<data name="Password.ConfirmationMismatch" xml:space="preserve"><value>The passwords do not match.</value></data>
+<data name="Extraction.BatchTitle" xml:space="preserve"><value>Batch extraction</value></data>
+<data name="Extraction.BatchCount" xml:space="preserve"><value>{0} pending archives</value></data>
+<data name="Extraction.CreateFolder" xml:space="preserve"><value>Create a folder with the archive name</value></data>
+<data name="Extraction.LayoutHint" xml:space="preserve"><value>Checked: archive folder; unchecked: direct extraction; mixed: smart layout.</value></data>
+<data name="TextEdit.CleanupWarning" xml:space="preserve"><value>The temporary edit copy could not be removed. Delete this folder manually: {0}</value></data>
+<data name="Browser.Up" xml:space="preserve"><value>Up one level (Alt+Left)</value></data>
+<data name="Updates.ManageVersions" xml:space="preserve"><value>Manage engine versions and source</value></data>
+<data name="Password.Confirm" xml:space="preserve"><value>Confirm password</value></data>
+<data name="Redesign.OutputUnavailable" xml:space="preserve"><value>The output folder is unavailable. It may have been moved or deleted.</value></data>
+<data name="Redesign.ViewDetails" xml:space="preserve"><value>View details</value></data>
+<data name="Compression.ResultTitle" xml:space="preserve"><value>Compression result</value></data>
+<data name="Redesign.ActiveTaskHelp" xml:space="preserve"><value>Running and pending tasks</value></data>
+<data name="Hash.Calculated" xml:space="preserve"><value>Complete</value></data>
+<data name="Hash.NotCompared" xml:space="preserve"><value>Not compared</value></data>
+<data name="Hash.InvalidExpected" xml:space="preserve"><value>Invalid expected value</value></data>
+<data name="Hash.SizeLabel" xml:space="preserve"><value>Size</value></data>
+<data name="Hash.AlgorithmLabel" xml:space="preserve"><value>Algorithm</value></data>
+<data name="Hash.ResultLabel" xml:space="preserve"><value>Result</value></data>
+  <data name="Preview.ImageTitle" xml:space="preserve"><value>Image preview</value></data>
+  <data name="Preview.Dimensions" xml:space="preserve"><value>Dimensions</value></data>
 </root>
