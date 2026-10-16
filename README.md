@@ -1,6 +1,10 @@
 # nomozip
 
+<img src="assets/nomozip-256.png" alt="nomozip" width="64" height="64">
+
 Windows 桌面压缩包工具：使用官方 7-Zip 引擎，保存用户提供的解压密码，并在下次解压时自动尝试。
+
+preview.29 本地轻量候选加入自有产品图标，并修整菜单、设置间距、字段宽度及英语长标签；说明见 [图标与界面修整](docs/VISUAL_IDENTITY.md)。完整 x64 / 原生 ARM64 CI 已通过，仍不自动公开发布。
 
 最新本地候选还支持 [修改已有 7z/ZIP](docs/ARCHIVE_EDITING.md)、[分卷创建](docs/SPLIT_VOLUMES.md)、[官方 7z 自解压包](docs/SELF_EXTRACTING.md)、[TAR、单文件 GZIP/XZ 创建](docs/CREATION_FORMATS.md)、[Windows ARM64 原生轻量包](docs/ARM64.md)、[简体中文/英语界面](docs/LOCALIZATION.md) 和 [跟随系统/浅色/深色主题](docs/APPEARANCE.md)。语言保存后重启，主题保存后立即生效且系统高对比度优先；用户密码和文件名保持原文。公开正式版的功能与下载入口见下文；开发候选未自动公开发布。
 
