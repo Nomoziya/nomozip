@@ -198,7 +198,7 @@ internal static class DesktopRedesignValidation
             var firstAction=moreMenu.Items.OfType<MenuItem>().First();firstAction.ApplyTemplate();Keyboard.Focus(firstAction);moreMenu.UpdateLayout();
             var menuIcon=(ContentPresenter)firstAction.Template.FindName("MenuIcon",firstAction);
             var menuFocus=(Border)firstAction.Template.FindName("ItemFocus",firstAction);
-            Check("archive more menu retains icons shortcut and actual keyboard focus",moreMenu.IsOpen && menuIcon.IsVisible && menuIcon.ActualWidth>=18 && firstAction.InputGestureText=="Ctrl+A" && firstAction.IsKeyboardFocused && ReferenceEquals(menuFocus.BorderBrush,Application.Current.Resources["FocusBrush"]));
+            Check("archive more menu retains icons shortcut and actual keyboard focus",moreMenu.IsOpen && menuIcon.IsVisible && menuIcon.ActualWidth>=18 && firstAction.InputGestureText=="Ctrl+A" && moreMenu.InputBindings.OfType<KeyBinding>().Any(binding=>binding.Key==Key.A && binding.Modifiers==ModifierKeys.Control && ReferenceEquals(binding.Command,contents.SelectVisibleCommand)) && firstAction.IsKeyboardFocused && ReferenceEquals(menuFocus.BorderBrush,Application.Current.Resources["FocusBrush"]));
             var popupBitmap=new RenderTargetBitmap((int)Math.Ceiling(moreMenu.ActualWidth),(int)Math.Ceiling(moreMenu.ActualHeight),96,96,PixelFormats.Pbgra32);popupBitmap.Render(moreMenu);
             var popupEncoder=new PngBitmapEncoder();popupEncoder.Frames.Add(BitmapFrame.Create(popupBitmap));using(var popupFile=File.Create(Path.Combine(folder,"actual-soft-archive-more-menu.png")))popupEncoder.Save(popupFile);
             moreMenu.IsOpen=false;theme.SetMode("light");
@@ -261,6 +261,9 @@ internal static class DesktopRedesignValidation
             ((System.Windows.Automation.Provider.IToggleProvider)allSourcesPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Toggle)).Toggle();await Layout();
             Check("source select-all includes every displayed source",window.CompressionPage.CompressionSourceTable.SelectedItems.Count==2);
             Capture("actual-compression-multiselection");
+            var laterSource=Path.Combine(data,"later-source.txt");await File.WriteAllTextAsync(laterSource,"later addition");model.AddCompressionSources([laterSource]);await Layout();
+            Check("adding a source after select-all marks the partial selection",window.CompressionPage.SourceSelectAll.IsChecked is null && window.CompressionPage.CompressionSourceTable.SelectedItems.Count==2 && model.CompressionSources.Count==3);
+            window.CompressionPage.SourceSelectAll.IsChecked=true;await Layout();
             ((System.Windows.Automation.Provider.IInvokeProvider)new System.Windows.Automation.Peers.ButtonAutomationPeer(window.CompressionPage.CompressionRemoveButton).GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Layout();
             Check("remove selected removes the full source selection",model.CompressionSources.Count==0);model.AddCompressionSources([source]);await Layout();
             window.CompressionPage.ArchiveOutputBox.Text=data;window.CompressionPage.ArchiveOutputBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
