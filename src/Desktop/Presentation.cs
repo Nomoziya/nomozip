@@ -40,13 +40,16 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private CheckpointRecord? checkpoint;
     public CheckpointRecord? Checkpoint {get=>checkpoint;set=>Set(ref checkpoint,value);}
     private string? resultOutputPath;
-    public string? SelectedOutputPath {get;set;}
+    private string? selectedOutputPath;
+    public string? SelectedOutputPath {get=>selectedOutputPath;set {if(Set(ref selectedOutputPath,value)) Changed(nameof(DisplayOutputPath));}}
     public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;
+    public string DisplayOutputPath=>LatestOutputPath ?? ShellOutputPath ?? UiText.Get("Redesign.OutputPending");
+    public string PrimaryActionCaption=>UiText.Get(Completed?"T_348e2fde4e19":"Contents.CompactExtract");
     private EngineResult? verificationResult;
-    public string? ResultOutputPath { get=>resultOutputPath;set=>Set(ref resultOutputPath,value); }
+    public string? ResultOutputPath { get=>resultOutputPath;set {if(Set(ref resultOutputPath,value)) Changed(nameof(DisplayOutputPath));} }
     public EngineResult? VerificationResult {get=>verificationResult;set=>Set(ref verificationResult,value);}
     private string? shellOutputPath;
-    public string? ShellOutputPath { get => shellOutputPath; set => Set(ref shellOutputPath, value); }
+    public string? ShellOutputPath { get => shellOutputPath; set {if(Set(ref shellOutputPath,value)) Changed(nameof(DisplayOutputPath));} }
     public string Path { get; } = path;
     public string Name => System.IO.Path.GetFileName(Path);
     private int filenameCodePage;
@@ -57,7 +60,7 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private bool running, indeterminate;
     private bool completed;
     private EngineResult? failure;
-    public bool Completed { get=>completed; set=>Set(ref completed,value); }
+    public bool Completed { get=>completed; set {if(Set(ref completed,value)) Changed(nameof(PrimaryActionCaption));} }
     public EngineResult? Failure { get=>failure; set=>Set(ref failure,value); }
     public string Status { get => status; set => Set(ref status, value); }
     public double Percent { get => percent; set => Set(ref percent, value); }

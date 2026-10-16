@@ -29,7 +29,7 @@ internal sealed class ThemeResources
         "AccentBrush", "OnAccentBrush", "SelectionBrush", "SelectionTextBrush", "FocusBrush", "ErrorBrush", "HoverBrush"
     ];
     private readonly Dictionary<string, object> defaults;
-    private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#879099", "#3D3D3D", "#75B6E7", "#242424", "#17354A", "#F5F5F5", "#75B6E7", "#F6A6A6", "#303030"];
+    private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#505050", "#3D3D3D", "#75B6E7", "#242424", "#17354A", "#F5F5F5", "#75B6E7", "#F6A6A6", "#303030"];
     internal void SetMode(string mode)
     {
         if (!AppearancePreferenceStore.IsSupported(mode)) throw new ArgumentException("Unsupported appearance mode.", nameof(mode));

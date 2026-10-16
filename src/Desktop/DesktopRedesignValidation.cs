@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ArchivePassword.Core;
 using ArchivePassword.Infrastructure;
@@ -45,6 +46,8 @@ internal static class DesktopRedesignValidation
                         model.Page=page;model.SettingsSection=0;await Layout();
                         Check($"{mode}/{width}/{page} main workspace remains inside window",Bounds(window.MainContent).Right<=window.ActualWidth+1 && window.MainContent.ActualWidth>400);
                         Check($"{mode}/{width}/{page} navigation remains reachable",window.SettingsNavigation.IsVisible && Bounds(window.SettingsNavigation).Bottom<=window.ActualHeight+1);
+                        if(page==0)
+                            Check($"{mode}/{width} each source task appears exactly once",window.ArchiveTasks.Items.Count==model.Tasks.Count && model.TaskView.Cast<ArchiveTaskRow>().Distinct().Count()==model.Tasks.Count);
                         Capture($"{mode}-{width}-page-{page}");
                     }
                     model.Page=2;
@@ -73,16 +76,39 @@ internal static class DesktopRedesignValidation
             model=new MainViewModel(AppContext.BaseDirectory,data,vault,new WindowDialogs(window));window.DataContext=model;await model.InitializeAsync();
             var archive=Path.Combine(data,"sample.zip");
             using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create))
+            {
                 foreach(var name in new[]{"notes.txt","other.txt"}) {var entry=zip.CreateEntry(name);using var writer=new StreamWriter(entry.Open());writer.Write("Synthetic UI validation "+name);}
+                foreach(var name in new[]{"Photos/","Documents/","Documents/requirements.txt","Documents/changes.txt","metadata.json","readme.md"})
+                {var entry=zip.CreateEntry(name);if(!name.EndsWith('/')) {using var writer=new StreamWriter(entry.Open());writer.Write("Synthetic design verification content.");}}
+                var pixels=new byte[480*300*4];
+                for(var y=0;y<300;y++)for(var x=0;x<480;x++){var offset=(y*480+x)*4;pixels[offset]=(byte)(110+x/5);pixels[offset+1]=(byte)(100+y/3);pixels[offset+2]=45;pixels[offset+3]=255;}
+                var image=BitmapSource.Create(480,300,96,96,PixelFormats.Bgra32,null,pixels,480*4);
+                var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(image));using(var output=zip.CreateEntry("cover.png").Open())encoder.Save(output);
+            }
             var opening=model.OpenWorkspaceArchiveAsync([archive]);await Until(()=>window.ArchiveHost.Content is FrameworkElement);
             Check("archive browsing lives inside file workspace",model.Page==4 && model.IsBusy && !opening.IsCompleted);
             var browser=(FrameworkElement)window.ArchiveHost.Content;var contents=(ArchiveContentsViewModel)browser.DataContext;
+            await Layout();
+            // Verify the actual visual tree, not a duplicate geometry model.
+            var extractAll=VisualDescendants(browser).OfType<Button>().Single(value=>value.Name=="ExtractAllButton");
+            extractAll.ApplyTemplate();await Layout();
+            var capsule=VisualDescendants(extractAll).OfType<Border>().First();
+            Check("capsule radius equals half of actual height",Math.Abs(capsule.CornerRadius.TopLeft-capsule.ActualHeight/2)<.1 && capsule.ActualWidth>capsule.ActualHeight*2);
+            var entryTable=VisualDescendants(browser).OfType<DataGrid>().Single(value=>value.Name=="EntryTable");
+            Check("extraction toolbar precedes file list",Bounds(extractAll).Bottom<=Bounds(entryTable).Top);
+            Check("archive name occupies shared workspace header",window.ArchiveHeaderHost.Content is FrameworkElement && window.FilesLandingActions.Visibility==Visibility.Collapsed);
             contents.CurrentRow=contents.Rows.Single(value=>value.Path=="notes.txt");contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);
             Check("explicit preview is embedded",window.PreviewHost.Content is FrameworkElement && window.ArchivePreviewPane.IsVisible);
             var preview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
             Check("preview contains actual archive content",preview.Text.Contains("Synthetic UI validation notes.txt",StringComparison.Ordinal));
             Capture("actual-embedded-browser-preview");
-            model.Page=0;await Layout();Check("switching away clears decoded preview",preview.Text.Length==0 && window.PreviewHost.Content is null);model.Page=4;
+            contents.CurrentRow=contents.Rows.Single(value=>value.Path=="cover.png");contents.CurrentRow.Selected=true;
+            contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
+            var imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
+            Check("image preview renders decoded archive image",imagePreview.IsImage && imagePreview.Picture?.PixelWidth==480);
+            Capture("actual-embedded-browser-image-preview");contents.CurrentRow.Selected=false;
+            theme.SetMode("dark");await Layout();Capture("actual-embedded-browser-image-preview-dark");theme.SetMode("light");
+            model.Page=0;await Layout();Check("switching away clears decoded preview",preview.Text.Length==0 && imagePreview.Picture is null && window.PreviewHost.Content is null);model.Page=4;
             window.PrepareExtractionOptionsForValidation=dialog=>
             {
                 dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
@@ -120,6 +146,11 @@ internal static class DesktopRedesignValidation
         var passed=error is null && checks.Count>100 && checks.Values.All(value=>value);
         await File.WriteAllTextAsync(Path.Combine(folder,"report.json"),JsonSerializer.Serialize(new {passed,checks,error,scope="isolated CI; synthetic data; rendered WPF; contrast resource simulation; no physical-display or Narrator audio acceptance"},new JsonSerializerOptions{WriteIndented=true}));
         return passed;
+    }
+    private static IEnumerable<DependencyObject> VisualDescendants(DependencyObject parent)
+    {
+        for(var index=0;index<VisualTreeHelper.GetChildrenCount(parent);index++)
+        {var child=VisualTreeHelper.GetChild(parent,index);yield return child;foreach(var nested in VisualDescendants(child))yield return nested;}
     }
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
     {

@@ -53,7 +53,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
             catch (Exception exception) when (exception is JsonException or KeyNotFoundException) { }
         }
-        Tasks.CollectionChanged += (_, e) => { if(e.OldItems is not null) foreach(ArchiveTaskRow row in e.OldItems) row.PropertyChanged-=WorkspaceTaskChanged; if(e.NewItems is not null) foreach(ArchiveTaskRow row in e.NewItems) row.PropertyChanged+=WorkspaceTaskChanged; RefreshWorkspaceTasks(); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
+        Tasks.CollectionChanged += (_, e) => { if(e.OldItems is not null) foreach(ArchiveTaskRow row in e.OldItems) row.PropertyChanged-=WorkspaceTaskChanged; if(e.NewItems is not null) foreach(ArchiveTaskRow row in e.NewItems) row.PropertyChanged+=WorkspaceTaskChanged; RefreshWorkspaceTasks(refreshView: false); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
         OpenInputCommand = new AsyncCommand(async () => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else if (Page == 4) await OpenWorkspaceArchiveAsync(dialogs.SelectArchives()); else AddFilesCommand.Execute(null); }, () => IsIdle);
         RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is {Checkpoint:null});

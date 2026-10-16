@@ -141,7 +141,12 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ICommand OpenResultCommand {get;}
     public IReadOnlyList<ArchiveEntry> SelectedEntries=>ArchiveSelection.Expand(items,allRows.Where(row=>row.Selected).Select(row=>row.Entry.Index));
     public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
-    private void SelectionChanged() {Changed(nameof(SelectionSummary));CommandManager.InvalidateRequerySuggested();}
+    public bool? VisibleSelection
+    {
+        get => Rows.Count == 0 || Rows.All(row=>!row.Selected) ? false : Rows.All(row=>row.Selected) ? true : null;
+        set { selecting=true; try {foreach(var row in Rows) row.Selected=value==true;} finally {selecting=false;SelectionChanged();} }
+    }
+    private void SelectionChanged() {Changed(nameof(SelectionSummary));Changed(nameof(VisibleSelection));CommandManager.InvalidateRequerySuggested();}
     private void Select(bool visible)
     {
         selecting=true;try {foreach(var row in visible?Rows:allRows) row.Selected=visible;} finally {selecting=false;SelectionChanged();}
@@ -150,7 +155,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public string ArchivePath => archivePath;
     public string ArchiveName => Path.GetFileName(archivePath);
     public ObservableCollection<ArchiveContentRow> Rows { get; }
-    public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary)); } } }
+    public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary)); Changed(nameof(VisibleSelection)); } } }
     public string Summary => UiText.Format("T_55f9d9c65be9", Rows.Count, allRows.Count, items.Count(value => !value.Directory), items.Count(value => value.Directory));
 }
 public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace}

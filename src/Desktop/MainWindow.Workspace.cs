@@ -42,6 +42,7 @@ public partial class MainWindow
     private void WorkspaceChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(MainViewModel.Page) || workspaceModel is null) return;
+        ApplyWorkspaceMargin();
         if (workspaceModel.Page == 5 && embeddedHashes is null)
         {
             embeddedHashes = new FileHashDialog(dialogOwner: this);
@@ -61,16 +62,39 @@ public partial class MainWindow
         dialog.EmbeddedClose = CloseArchiveAsync;
         var content = (FrameworkElement)dialog.Content; dialog.Content = null; content.DataContext = model;
         DisableDialogDefaults(content);
-        ArchiveHost.Content = content; FilesEmptyState.Visibility = Visibility.Collapsed; CloseArchiveButton.Visibility = Visibility.Visible;
+        dialog.BrowserRoot.Children.Remove(dialog.BrowserHeader);
+        dialog.BrowserHeader.DataContext = model;
+        ArchiveHeaderHost.Content = dialog.BrowserHeader;
+        ArchiveHost.Content = content; FilesEmptyState.Visibility = Visibility.Collapsed;
+        FilesLandingHeader.Visibility = FilesLandingActions.Visibility = Visibility.Collapsed;
+        ApplyWorkspaceMargin();
         if (DataContext is MainViewModel vm) vm.Page = 4;
         try { await archiveClosed.Task; }
         finally
         {
-            ClosePreview(); ArchiveHost.Content = null; dialog.EmbeddedClose = null; model.ClearDrag();
+            ClosePreview(); ArchiveHost.Content = null; ArchiveHeaderHost.Content = null; dialog.EmbeddedClose = null; model.ClearDrag();
             embeddedModel = null; embeddedArchive = null; archiveClosed = null;
-            FilesEmptyState.Visibility = Visibility.Visible; CloseArchiveButton.Visibility = Visibility.Collapsed;
+            FilesEmptyState.Visibility = Visibility.Visible;
+            FilesLandingHeader.Visibility = FilesLandingActions.Visibility = Visibility.Visible;
             dialog.Close();
         }
+    }
+
+    private void ApplyWorkspaceMargin()
+    {
+        var page = (DataContext as MainViewModel)?.Page;
+        MainContent.Margin = page is 0 or 4 ? new Thickness(0) : new Thickness(ActualWidth < 960 ? 12 : 24);
+    }
+
+    private void OnTaskRowAction(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { DataContext: ArchiveTaskRow row } || DataContext is not MainViewModel vm || !vm.IsIdle) return;
+        vm.SelectedTask = row;
+        if (row.Completed)
+        {
+            if (vm.OpenOutputCommand.CanExecute(null)) vm.OpenOutputCommand.Execute(null);
+        }
+        else if (vm.ExtractSelectedTaskCommand.CanExecute(null) && ConfirmExtractionOptions()) vm.ExtractSelectedTaskCommand.Execute(null);
     }
 
     private async Task CloseArchiveAsync()
