@@ -186,6 +186,7 @@ internal static class DesktopRedesignValidation
             window.Width=800;window.Height=600;await Layout();
             Check("compact archive resize clears decoded preview",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
             Check("closing preview releases row thumbnails",contents.Rows.All(row=>row.PreviewThumbnail is null));
+            Check("compact browser keeps primary columns readable",entryTable.Columns[4].Visibility==Visibility.Collapsed && entryTable.Columns[2].ActualWidth>=90);
             Capture("actual-compact-browser");window.Width=1040;window.Height=720;await Layout();
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;contents.CurrentRow.Selected=false;
