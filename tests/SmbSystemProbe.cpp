@@ -26,5 +26,6 @@ int wmain(int argc,wchar_t** argv) {
       <<",\"directAttributesError\":"<<directError<<",\"attributes\":"<<direct.dwFileAttributes
       <<",\"filesystemAbsolute\":"<<(absoluteOk?"true":"false")<<",\"absoluteError\":"<<absoluteError
       <<",\"normalizedAttributes\":"<<(normalizedOk?"true":"false")
-      <<",\"normalizedOutputCreate\":"<<(outputOk?"true":"false")<<",\"outputError\":"<<outputError<<"}\n";
+      <<",\"normalizedOutputCreate\":"<<(outputOk?"true":"false")<<",\"outputError\":"<<outputError<<"}"<<std::endl;
+    return 0;
 }
