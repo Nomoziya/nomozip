@@ -3198,4 +3198,7 @@ A password is required to validate the archive data.</value>
   <data name="FileType.Sheet" xml:space="preserve"><value>{0} sheet</value></data>
   <data name="FileType.Archive" xml:space="preserve"><value>{0} archive</value></data>
   <data name="Compression.SourceCount" xml:space="preserve"><value>{0} items</value></data>
+  <data name="Vault.StatusLocked" xml:space="preserve"><value>Locked</value></data>
+  <data name="Vault.StatusUnlocked" xml:space="preserve"><value>Unlocked</value></data>
+  <data name="Vault.StatusLocal" xml:space="preserve"><value>Windows protection</value></data>
 </root>

@@ -46,7 +46,8 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     public string? SelectedOutputPath {get=>selectedOutputPath;set {if(Set(ref selectedOutputPath,value)) Changed(nameof(DisplayOutputPath));}}
     public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;
     public string DisplayOutputPath=>LatestOutputPath ?? ShellOutputPath ?? UiText.Get("Redesign.OutputPending");
-    public string PrimaryActionCaption=>UiText.Get(Running?IsCompression?"Conflict.Cancel":"Redesign.PauseAll":Completed?"Redesign.OpenFolder":IsCompression?"Redesign.ViewDetails":"Contents.CompactExtract");
+    public string PrimaryActionCaption=>UiText.Get(Running?IsCompression?"Conflict.Cancel":"Redesign.PauseAll":Failure is not null?"Redesign.ViewDetails":Completed?"Redesign.OpenFolder":IsCompression?"Redesign.ViewDetails":"Contents.CompactExtract");
+    public string StateKind=>Failure is not null?(Failure.Status=="cancelled"?"cancelled":"error"):Completed?"success":Running?"running":"pending";
     private EngineResult? verificationResult;
     public string? ResultOutputPath { get=>resultOutputPath;set {if(Set(ref resultOutputPath,value)) Changed(nameof(DisplayOutputPath));} }
     public EngineResult? VerificationResult {get=>verificationResult;set=>Set(ref verificationResult,value);}
@@ -63,14 +64,14 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private bool running, indeterminate;
     private bool completed;
     private EngineResult? failure;
-    public bool Completed { get=>completed; set {if(Set(ref completed,value)) {Changed(nameof(PrimaryActionCaption));Changed(nameof(ProgressVisibility));Changed(nameof(DisplayPercent));Changed(nameof(PercentText));}} }
-    public EngineResult? Failure { get=>failure; set=>Set(ref failure,value); }
+    public bool Completed { get=>completed; set {if(Set(ref completed,value)) {Changed(nameof(StateKind));Changed(nameof(PrimaryActionCaption));Changed(nameof(ProgressVisibility));Changed(nameof(DisplayPercent));Changed(nameof(PercentText));}} }
+    public EngineResult? Failure { get=>failure; set {if(Set(ref failure,value)){Changed(nameof(StateKind));Changed(nameof(PrimaryActionCaption));}} }
     public string Status { get => status; set => Set(ref status, value); }
     public double Percent { get => percent; set {if(Set(ref percent, value)) {Changed(nameof(DisplayPercent));Changed(nameof(PercentText));}} }
     public double DisplayPercent => Completed ? 100 : Percent;
     public string PercentText=>IsIndeterminate || !Running && !Completed?"":$"{DisplayPercent:0}%";
     public bool IsIndeterminate { get => indeterminate; set {if(Set(ref indeterminate, value))Changed(nameof(PercentText));} }
-    public bool Running { get => running; set { if (Set(ref running, value)) {Changed(nameof(ProgressVisibility));Changed(nameof(PrimaryActionCaption));} } }
+    public bool Running { get => running; set { if (Set(ref running, value)) {Changed(nameof(StateKind));Changed(nameof(ProgressVisibility));Changed(nameof(PrimaryActionCaption));} } }
     public Visibility ProgressVisibility => Running || Completed ? Visibility.Visible : Visibility.Collapsed;
     private string FileSize()
     {

@@ -42,6 +42,9 @@ internal static class DesktopRedesignValidation
             model.Tasks[2].ResultOutputPath=@"D:\Work\assets";
             model.Tasks.Add(new ArchiveTaskRow(@"D:\Downloads\project.7z","18 MB"));
             model.Tasks.Add(new ArchiveTaskRow(@"D:\Downloads\history.zip","240 MB") {Completed=true,Status=UiText.Get("Redesign.SampleCompleted"),ResultOutputPath=@"D:\Documents\history"});
+            var failedPreviewTask=new ArchiveTaskRow(@"D:\Downloads\damaged.7z","8 MB") {Status=UiText.Get("T_db5cb5a070e6"),Failure=new EngineResult {Status="error",Code="synthetic-preview"}};
+            model.Tasks.Add(failedPreviewTask);
+            Check("failed task offers details rather than extract",failedPreviewTask.StateKind=="error" && failedPreviewTask.PrimaryActionCaption==UiText.Get("Redesign.ViewDetails"));
             Check("five destinations use four sidebar items plus bottom settings",window.Navigation.Items.Count==4 && window.SettingsNavigation.IsVisible);
             foreach(var mode in new[]{"light","dark","soft","contrast"})
             {
@@ -101,6 +104,8 @@ internal static class DesktopRedesignValidation
             theme.SetMode("light");theme.Apply(false);window.Width=1160;window.Height=760;
             model.Page=1;model.SelectedPassword=model.PasswordRows[0];await Layout();
             Check("vault details populate only on selection",window.VaultDetails.SecretBox.Password.Length>0 && window.VaultDetails.VisibleSecret.Text.Length==0);
+            var nameHost=(ScrollViewer)window.VaultDetails.NameBox.Template.FindName("PART_ContentHost",window.VaultDetails.NameBox);
+            Check("compact vault name field retains a full line",nameHost.ViewportHeight>=window.VaultDetails.NameBox.GetRectFromCharacterIndex(0).Height-1);
             model.Page=0;await Layout();
             Check("leaving vault clears both password controls",window.VaultDetails.SecretBox.Password.Length==0 && window.VaultDetails.VisibleSecret.Text.Length==0);
             model.TaskFilterIndex=3;Check("ended task filter excludes pending entries",model.TaskView.Cast<ArchiveTaskRow>().All(value=>value.Completed || value.Failure is not null));
@@ -159,6 +164,7 @@ internal static class DesktopRedesignValidation
             contents.CurrentRow=contents.Rows.Single(value=>value.Path=="cover.png");contents.CurrentRow.Selected=true;
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             var imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
+            Check("requested image supplies its real row thumbnail",contents.Rows.Single(row=>row.Path==imagePreview.EntryPath).PreviewThumbnail==imagePreview.Picture);
             Check("image preview renders decoded archive image",imagePreview.IsImage && imagePreview.Picture?.PixelWidth==480);
             Capture("actual-embedded-browser-image-preview");
             theme.SetMode("dark");await Layout();Capture("actual-embedded-browser-image-preview-dark");theme.SetMode("light");
@@ -169,6 +175,7 @@ internal static class DesktopRedesignValidation
             Check("archive workspace focus remains on the selected real entry",entryRow.IsKeyboardFocusWithin && contents.CurrentRow.Path=="cover.png");Capture("actual-soft-browser-keyboard-focus");theme.SetMode("light");
             window.Width=800;window.Height=600;await Layout();
             Check("compact archive resize clears decoded preview",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
+            Check("closing preview releases row thumbnails",contents.Rows.All(row=>row.PreviewThumbnail is null));
             Capture("actual-compact-browser");window.Width=1160;window.Height=760;await Layout();
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;contents.CurrentRow.Selected=false;
@@ -233,7 +240,7 @@ internal static class DesktopRedesignValidation
             model.SelectedTask=compressionTask;Check("compression row cannot invoke extract selected",!model.ExtractSelectedTaskCommand.CanExecute(null));
             model.TaskFilterIndex=3;Check("ended filter includes completed compression",model.TaskView.Contains(compressionTask));model.TaskFilterIndex=2;Check("pending filter excludes completed compression",!model.TaskView.Contains(compressionTask));model.TaskFilterIndex=0;
             await Layout();
-            var openCompression=VisualDescendants(window.ArchiveTasks).OfType<Button>().Single(value=>ReferenceEquals(value.DataContext,compressionTask));openCompression.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            var openCompression=VisualDescendants(window.ArchiveTasks).OfType<Button>().Single(value=>ReferenceEquals(value.DataContext,compressionTask) && Equals(value.Tag,"TaskPrimary"));openCompression.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Check("compression row opens only its actual output folder",openedResults.LastOrDefault() is {Length:1} opened && opened[0]==compressionTask.LatestOutputPath);
             model.SelectedTask=null;model.OpenOutputCommand.Execute(null);
             Check("global output action includes completed compression",openedResults.LastOrDefault()?.Contains(compressionTask.LatestOutputPath!)==true);model.SelectedTask=compressionTask;await Layout();

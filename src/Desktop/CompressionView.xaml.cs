@@ -16,9 +16,9 @@ public partial class CompressionView : UserControl
     private void FitSourceColumns()
     {
         if(CompressionSourceTable.ActualWidth<=0)return;
-        CompressionSourceTable.Columns[1].Width=90;
+        CompressionSourceTable.Columns[1].Width=110;
         CompressionSourceTable.Columns[2].Width=120;
-        CompressionSourceTable.Columns[0].Width=Math.Max(130,CompressionSourceTable.ActualWidth-90-120-18);
+        CompressionSourceTable.Columns[0].Width=Math.Max(130,CompressionSourceTable.ActualWidth-110-120-18);
     }
 
     internal void ArrangePanels(bool isNarrow)

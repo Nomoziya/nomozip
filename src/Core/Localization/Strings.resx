@@ -3198,4 +3198,7 @@
   <data name="FileType.Sheet" xml:space="preserve"><value>{0} 表格</value></data>
   <data name="FileType.Archive" xml:space="preserve"><value>{0} 压缩包</value></data>
   <data name="Compression.SourceCount" xml:space="preserve"><value>{0} 项</value></data>
+  <data name="Vault.StatusLocked" xml:space="preserve"><value>已锁定</value></data>
+  <data name="Vault.StatusUnlocked" xml:space="preserve"><value>已解锁</value></data>
+  <data name="Vault.StatusLocal" xml:space="preserve"><value>本机加密保护</value></data>
 </root>

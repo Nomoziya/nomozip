@@ -259,6 +259,8 @@ public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace,EditText}
 public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=false) : ObservableObject
 {
     public bool Virtual=>virtualFolder;
+    private System.Windows.Media.ImageSource? previewThumbnail;
+    public System.Windows.Media.ImageSource? PreviewThumbnail {get=>previewThumbnail;internal set=>Set(ref previewThumbnail,value);}
     private bool showPath;
     internal bool ShowPath {get=>showPath;set {if(Set(ref showPath,value))Changed(nameof(DisplayName));}}
     public string DisplayName=>ShowPath?Path:System.IO.Path.GetFileName(Path.Replace('\\','/').TrimEnd('/'));

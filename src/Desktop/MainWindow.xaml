@@ -201,8 +201,6 @@
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Background="Transparent">
           <WrapPanel>
             <ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/>
-            <Button Content="{loc:Text T_309cb972a002}" Margin="0,0,8,4" Command="{Binding AddFilesCommand}" AutomationProperties.Name="{loc:Text T_37b278fca0db}"/>
-            <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
             <Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
               <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -218,6 +216,7 @@
             <Button x:Name="QueueActionsAction" Click="OnQueueActions" IsEnabled="{Binding IsIdle}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text T_ca8d1fab2a53}">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" x:Name="QueueActionsMenu" Padding="4" UseLayoutRounding="True" Placement="Bottom" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" FontFamily="Segoe UI, Microsoft YaHei" FontSize="14" Background="{DynamicResource SurfaceBrush}" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text T_5e541773a96b}">
+                  <MenuItem Header="{loc:Text T_309cb972a002}" Command="{Binding AddFilesCommand}" Style="{StaticResource QueueMenuItem}"/>
                   <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueExtractSelectedAction" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}" ToolTip="{loc:Text T_807416f416c4}"/>
                   <Separator Style="{StaticResource ActionMenuSeparator}"/>
                   <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueMoveUpAction" Header="{loc:Text T_c9d224fbca48}" Command="{Binding MoveTaskUpCommand}"/>
@@ -235,6 +234,41 @@
               </StackPanel>
             </Button>
             <TextBlock x:Name="ExtractionDropHint" Text="{loc:Text Menu.ExtractHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="16,0" Visibility="Collapsed"/>
+            <Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="36" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,8,4" Click="OnPrepareExtraction">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsIdle}" Value="False">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Button.Style>
+            </Button>
+            <Button x:Name="QueueCancelAction" Content="{Binding CancelActionCaption}" Command="{Binding CancelCommand}" Margin="0,0,8,4" MinHeight="36">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Button.Style>
+            </Button>
+            <Button Content="{loc:Text T_32993c531afb}" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanSkipPasswords}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Button.Style>
+            </Button>
           </WrapPanel>
         </Border>
         <ScrollViewer Grid.Row="2" x:Name="ExtractionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0">
@@ -317,7 +351,7 @@
                               <ColumnDefinition Width="30"/>
                               <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
+                            <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M8,13 L8,21 M12,13 L12,21" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
                               <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" FontSize="15"/>
                               <TextBlock Text="{Binding OperationLabel}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0" ToolTip="{Binding SizeText}"/>
@@ -332,6 +366,44 @@
                           <StackPanel Margin="8" VerticalAlignment="Center">
                             <DockPanel>
                               <TextBlock Text="{Binding PercentText}" DockPanel.Dock="Right" Margin="8,0,0,0"/>
+                              <Grid Width="18" Height="18" Margin="0,0,7,0" VerticalAlignment="Center">
+                                <Ellipse>
+                                  <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                      <Setter Property="Fill" Value="{DynamicResource SecondaryBrush}"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding StateKind}" Value="success">
+                                          <Setter Property="Fill" Value="{DynamicResource SuccessBrush}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding StateKind}" Value="error">
+                                          <Setter Property="Fill" Value="{DynamicResource ErrorBrush}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding StateKind}" Value="running">
+                                          <Setter Property="Fill" Value="{DynamicResource AccentBrush}"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Ellipse.Style>
+                                </Ellipse>
+                                <Path Stroke="{DynamicResource SurfaceBrush}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="10" Height="10" Stretch="Uniform">
+                                  <Path.Style>
+                                    <Style TargetType="Path">
+                                      <Setter Property="Data" Value="M5,1 L5,5 L8,7"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding StateKind}" Value="success">
+                                          <Setter Property="Data" Value="M1,5 L4,8 L10,1"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding StateKind}" Value="error">
+                                          <Setter Property="Data" Value="M5,1 L5,6 M5,9 L5,10"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding StateKind}" Value="cancelled">
+                                          <Setter Property="Data" Value="M1,1 L9,9 M9,1 L1,9"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Path.Style>
+                                </Path>
+                              </Grid>
                               <TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Status}"/>
                             </DockPanel>
                             <ProgressBar Value="{Binding DisplayPercent,Mode=OneWay}" Height="6" Margin="0,6,0,0" IsIndeterminate="{Binding IsIndeterminate}" Visibility="{Binding ProgressVisibility}" AutomationProperties.Name="{loc:Text T_fcef101b1132}">
@@ -359,31 +431,37 @@
                     <DataGridTemplateColumn Header="{loc:Text Drag.Actions}" Width="152">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                          <Button Click="OnTaskRowAction" Margin="8,0,12,0" Padding="14,7" HorizontalAlignment="Left">
-                            <Button.Style>
-                              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                <Setter Property="IsEnabled" Value="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                                <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/>
-                                <Style.Triggers>
-                                  <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                      <Condition Binding="{Binding Running}" Value="True"/>
-                                      <Condition Binding="{Binding IsCompression}" Value="False"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="IsEnabled" Value="{Binding DataContext.CanPauseQueue,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                                    <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                                  </MultiDataTrigger>
-                                  <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                      <Condition Binding="{Binding Running}" Value="True"/>
-                                      <Condition Binding="{Binding IsCompression}" Value="True"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="IsEnabled" Value="True"/>
-                                  </MultiDataTrigger>
-                                </Style.Triggers>
-                              </Style>
-                            </Button.Style>
-                          </Button>
+                          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Click="OnTaskRowAction" Margin="4,0,4,0" Padding="12,6" HorizontalAlignment="Left" Tag="TaskPrimary">
+                              <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                  <Setter Property="IsEnabled" Value="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                  <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/>
+                                  <Style.Triggers>
+                                    <MultiDataTrigger>
+                                      <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Running}" Value="True"/>
+                                        <Condition Binding="{Binding IsCompression}" Value="False"/>
+                                      </MultiDataTrigger.Conditions>
+                                      <Setter Property="IsEnabled" Value="{Binding DataContext.CanPauseQueue,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                      <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                      <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Running}" Value="True"/>
+                                        <Condition Binding="{Binding IsCompression}" Value="True"/>
+                                      </MultiDataTrigger.Conditions>
+                                      <Setter Property="IsEnabled" Value="True"/>
+                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                      <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </Button.Style>
+                            </Button>
+                            <Button Content="···" Click="OnTaskMore" Padding="5,4" Margin="0" MinWidth="28" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"/>
+                          </StackPanel>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -395,7 +473,8 @@
                       <ColumnDefinition Width="*"/>
                       <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Margin="0,0,20,0" VerticalAlignment="Center">
+                    <Path Data="M3,1 L22,1 L34,13 L34,43 L3,43 Z M22,1 L22,13 L34,13 M12,23 L12,35 M20,23 L20,35" Width="34" Height="44" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,4,0,0"/>
+                    <StackPanel Margin="52,0,20,0" VerticalAlignment="Center">
                       <TextBlock Text="{Binding SelectedTask.Name}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                       <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
                       <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
@@ -427,43 +506,36 @@
                         </Button>
                       </DockPanel>
                     </StackPanel>
-                    <WrapPanel HorizontalAlignment="Right" Grid.Column="1" VerticalAlignment="Center" Width="300">
-                      <Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="44" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,12,8" Click="OnPrepareExtraction">
+                    <WrapPanel HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Center" Width="300">
+                      <Button Click="OnTaskRowAction" Margin="0,0,8,8" Padding="14,7" HorizontalAlignment="Left" Tag="TaskPrimary" x:Name="SelectedTaskPrimary" DataContext="{Binding SelectedTask}">
                         <Button.Style>
-                          <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                          <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="IsEnabled" Value="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/>
                             <Style.Triggers>
-                              <DataTrigger Binding="{Binding IsIdle}" Value="False">
+                              <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                  <Condition Binding="{Binding Running}" Value="True"/>
+                                  <Condition Binding="{Binding IsCompression}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="{Binding DataContext.CanPauseQueue,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                              </MultiDataTrigger>
+                              <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                  <Condition Binding="{Binding Running}" Value="True"/>
+                                  <Condition Binding="{Binding IsCompression}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True"/>
+                              </MultiDataTrigger>
+                              <DataTrigger Binding="{Binding}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                               </DataTrigger>
                             </Style.Triggers>
                           </Style>
                         </Button.Style>
                       </Button>
-                      <Button x:Name="QueueCancelAction" Content="{Binding CancelActionCaption}" Command="{Binding CancelCommand}" Margin="0,0,12,8">
-                        <Button.Style>
-                          <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding IsBusy}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                          </Style>
-                        </Button.Style>
-                      </Button>
-                      <Button Content="{loc:Text T_32993c531afb}" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8">
-                        <Button.Style>
-                          <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding CanSkipPasswords}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                          </Style>
-                        </Button.Style>
-                      </Button>
-                      <Button Content="{loc:Text T_f8c32297384e}" Command="{Binding OpenOutputCommand}" Margin="0,0,0,8"/>
+                      <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
                     </WrapPanel>
                   </Grid>
                 </Border>
@@ -552,7 +624,7 @@
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
           <DockPanel>
-            <WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+            <WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right"><StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0" ToolTip="{Binding VaultProtectionMessage}"><Ellipse Width="9" Height="9" Margin="0,0,8,0"><Ellipse.Style><Style TargetType="Ellipse"><Setter Property="Fill" Value="{DynamicResource SuccessBrush}"/><Style.Triggers><DataTrigger Binding="{Binding VaultLocked}" Value="True"><Setter Property="Fill" Value="{DynamicResource SecondaryBrush}"/></DataTrigger></Style.Triggers></Style></Ellipse.Style></Ellipse><TextBlock Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center"/></StackPanel>
               <Button x:Name="VaultUnlockAction" Content="{loc:Text T_1109737d1829}" Command="{Binding UnlockVaultCommand}" Margin="0,0,8,0">
                 <Button.Style>
                   <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -578,7 +650,7 @@
             </WrapPanel>
             <TextBlock Text="{loc:Text T_9b54fb7636af}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
           </DockPanel>
-          <TextBlock Grid.Row="1" Text="{Binding VaultProtectionMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
+          
         </Grid>
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Grid.ColumnSpan="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
           <Grid>
@@ -663,18 +735,32 @@
                 <DataGridTemplateColumn Header="{loc:Text T_2243e0ec8b00}" Width="88">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock>
-                        <TextBlock.Style>
-                          <Style TargetType="TextBlock" BasedOn="{StaticResource TableText}">
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding AutoTry}" Value="True">
-                                <Setter Property="Text" Value="{loc:Text T_dfb802238b38}"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                            <Setter Property="Text" Value="{loc:Text T_a8c3698b5b8c}"/>
-                          </Style>
-                        </TextBlock.Style>
-                      </TextBlock>
+                      <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                        <Ellipse Width="8" Height="8" Margin="0,0,7,0">
+                          <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                              <Setter Property="Fill" Value="{DynamicResource SecondaryBrush}"/>
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding AutoTry}" Value="True">
+                                  <Setter Property="Fill" Value="{DynamicResource SuccessBrush}"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Ellipse.Style>
+                        </Ellipse>
+                        <TextBlock Margin="0">
+                          <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TableText}">
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding AutoTry}" Value="True">
+                                  <Setter Property="Text" Value="{loc:Text T_dfb802238b38}"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                              <Setter Property="Text" Value="{loc:Text T_a8c3698b5b8c}"/>
+                            </Style>
+                          </TextBlock.Style>
+                        </TextBlock>
+                      </StackPanel>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -698,7 +784,7 @@
         <StackPanel Grid.Row="3" Margin="24,12" Grid.ColumnSpan="2">
           <DockPanel>
             <TextBlock DockPanel.Dock="Right" Text="{Binding PasswordListSummary}" Style="{StaticResource Secondary}" Margin="12,0,0,0"/>
-            <TextBlock Text="{loc:Text Menu.VaultHint}" Style="{StaticResource Secondary}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{loc:Text Menu.VaultHint}"/>
+            <TextBlock Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{loc:Text Menu.VaultHint}"/>
           </DockPanel>
           <TextBlock x:Name="DuplicateSummaryText" Text="{Binding DuplicateSummary}" Style="{StaticResource Secondary}" AutomationProperties.LiveSetting="Polite"/>
         </StackPanel>

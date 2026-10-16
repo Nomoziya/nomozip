@@ -16,6 +16,7 @@ public sealed partial class MainViewModel
     public bool VaultLocked=>vaultProtection==VaultProtectionState.Locked;
     public bool VaultMasterEnabled=>vaultProtection!=VaultProtectionState.Disabled;
     public string VaultProtectionMessage=>VaultLocked?UiText.Get("T_3751e3763d93"):VaultMasterEnabled?UiText.Get("T_04c3e1fec3f5"):UiText.Get("T_c273eb49ef49");
+    public string VaultProtectionStatusLabel=>UiText.Get(VaultLocked?"Vault.StatusLocked":VaultMasterEnabled?"Vault.StatusUnlocked":"Vault.StatusLocal");
     public int VaultIdleIndex {get=>vaultIdleIndex;set{if(!IsBusy && Set(ref vaultIdleIndex,Math.Clamp(value,0,4)))RecordVaultActivity();}}
     private int VaultIdleMinutes=>new[]{0,1,5,15,30}[VaultIdleIndex];
     public ICommand UnlockVaultCommand {get;private set;}=null!;
@@ -39,7 +40,7 @@ public sealed partial class MainViewModel
     private async Task RefreshVaultProtectionAsync()
     {
         vaultProtection=vault is IPasswordVaultProtection protection?await protection.GetProtectionStateAsync():VaultProtectionState.Disabled;
-        foreach(var name in new[]{nameof(VaultLocked),nameof(VaultMasterEnabled),nameof(VaultProtectionMessage),nameof(VaultSummary),nameof(PasswordEmptyMessage)})Changed(name);
+        foreach(var name in new[]{nameof(VaultLocked),nameof(VaultMasterEnabled),nameof(VaultProtectionMessage),nameof(VaultProtectionStatusLabel),nameof(VaultSummary),nameof(PasswordEmptyMessage)})Changed(name);
     }
     private void ClearVaultReferences()
     {
