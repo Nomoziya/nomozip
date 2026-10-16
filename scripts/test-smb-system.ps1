@@ -24,7 +24,7 @@ function Invoke-SmbCli([string[]]$CliArguments,[int]$ExpectedExit=0) {
   $result=$stdout.GetAwaiter().GetResult() | ConvertFrom-Json
   $errorText=$stderr.GetAwaiter().GetResult()
   $taskResults.Add(@{operation=$CliArguments[0];expectedExit=$ExpectedExit;actualExit=$process.ExitCode;jsonOutput=($null -ne $result)})
-  if($process.ExitCode -ne $ExpectedExit){throw "CLI $($CliArguments[0]) exit $($process.ExitCode), expected $ExpectedExit. $errorText"}
+  if($process.ExitCode -ne $ExpectedExit){throw "CLI $($CliArguments[0]) exit $($process.ExitCode), expected $ExpectedExit. Result: $($result | ConvertTo-Json -Compress -Depth 6) $errorText"}
  } finally {$process.Dispose()}
 }
 try {
@@ -32,6 +32,8 @@ try {
  $taskSource=Join-Path $taskRun 'share/输入示例.txt'
  [IO.File]::WriteAllText($taskSource,'nomozip real SMB protocol acceptance: synthetic Unicode file.',[Text.UTF8Encoding]::new($false))
  $taskOriginal=(Get-FileHash -LiteralPath $taskSource -Algorithm SHA256).Hash
+ Invoke-SmbCli @('create',$taskSource,'--output',(Join-Path $taskRun 'local-control.zip'),'--format','zip','--engine','26.03')
+ Check-Smb 'same product local creation control' (Test-Path -LiteralPath (Join-Path $taskRun 'local-control.zip'))
  $taskUser=[Security.Principal.WindowsIdentity]::GetCurrent().Name
  New-SmbShare -Name $taskShare -Path (Join-Path $taskRun 'share') -FullAccess $taskUser -Temporary -CachingMode None | Out-Null
  $taskShareCreated=$true
