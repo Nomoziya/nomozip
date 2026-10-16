@@ -95,7 +95,21 @@ internal static class DesktopCheckpointValidation
                     await Stop();
                     model=Model();window.DataContext=model;await model.InitializeAsync();model.SelectedTask=model.Tasks.Single();confirm=true;
                     var unrelated=Path.Combine(output,"unrelated.txt");File.WriteAllText(unrelated,"keep");
+                    var discardedTask=model.SelectedTask!;
+                    var retained=store.ReadPending().Single();
+                    await using(var session=await store.ResumeAsync(retained.Id,binding))
+                        for(var index=0;index<3000;index++) File.WriteAllText(Path.Combine(session.StagingPath,$"discard-load-{index:D4}.txt"),"synthetic cleanup responsiveness");
+                    var otherTask=new ArchiveTaskRow(archive+".other.zip");model.Tasks.Add(otherTask);
+                    var dispatcherResponsive=false;
+                    _=window.Dispatcher.BeginInvoke(DispatcherPriority.Send,new Action(()=>
+                    {
+                        dispatcherResponsive=model.IsBusy && discardedTask.Checkpoint is not null;
+                        model.SelectedTask=otherTask;
+                    }));
                     model.DiscardCheckpointCommand.Execute(null);await model.WaitForIdleAsync();await Layout(window);
+                    Check(language+" dispatcher responds while real many-file discard is busy",dispatcherResponsive);
+                    Check(language+" discard clears original task after selection changes",ReferenceEquals(model.SelectedTask,otherTask) && discardedTask.Checkpoint is null);
+                    model.SelectedTask=discardedTask;await Layout(window);
                     Check(language+" actual discard removes private progress and keeps archive",store.ReadPending().Count==0 && model.SelectedTask.Checkpoint is null && !model.SelectedTask.Completed && File.ReadAllText(unrelated)=="keep" && File.Exists(archive));
                     var resetOutput=(TextBox)window.FindName("OutputBox");
                     Check(language+" discard refreshes displayed destination and editability",resetOutput.Text==model.OutputPath && !resetOutput.IsReadOnly && model.BrowseOutputCommand.CanExecute(null) && model.EditExtractionRulesCommand.CanExecute(null));
