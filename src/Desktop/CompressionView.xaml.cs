@@ -16,9 +16,9 @@ public partial class CompressionView : UserControl
     private void FitSourceColumns()
     {
         if(CompressionSourceTable.ActualWidth<=0)return;
-        CompressionSourceTable.Columns[1].Width=110;
-        CompressionSourceTable.Columns[2].Width=86;
-        CompressionSourceTable.Columns[0].Width=Math.Max(130,CompressionSourceTable.ActualWidth-110-86-18);
+        CompressionSourceTable.Columns[1].Width=90;
+        CompressionSourceTable.Columns[2].Width=120;
+        CompressionSourceTable.Columns[0].Width=Math.Max(130,CompressionSourceTable.ActualWidth-90-120-18);
     }
 
     internal void ArrangePanels(bool isNarrow)
@@ -30,6 +30,9 @@ public partial class CompressionView : UserControl
         ListRow.Height = narrow ? new GridLength(240) : new GridLength(1, GridUnitType.Star);
         SettingsColumn.Width = narrow ? new GridLength(0) : new GridLength(Math.Clamp(ActualWidth * .46,340,480));
         SettingsRow.Height = narrow ? GridLength.Auto : new GridLength(0);
+        FooterSettingsColumn.Width=SettingsColumn.Width;
+        Grid.SetColumn(CompressionActionsPanel,narrow?0:1);
+        CompressionActionsPanel.BorderThickness=narrow?new Thickness(0,1,0,0):new Thickness(1,1,0,0);
         Grid.SetRow(SettingsPanel, narrow ? 1 : 0);
         Grid.SetColumn(SettingsPanel, narrow ? 0 : 2);
         SettingsPanel.Margin = narrow ? new Thickness(0, 16, 0, 0) : new Thickness(0);

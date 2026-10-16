@@ -128,7 +128,7 @@
       </WrapPanel>
     </Border>
     <Grid Grid.Row="2">
-      <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow}" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="42" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="OnOpenEntry">
+      <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow}" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="36" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="OnOpenEntry">
         <DataGrid.InputBindings>
           <KeyBinding Key="Enter" Command="{Binding OpenCurrentEntryCommand}"/>
           <KeyBinding Key="Back" Command="{Binding FolderUpCommand}"/>
@@ -149,7 +149,7 @@
               <DataTemplate>
                 <Grid Margin="10,0">
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="26"/>
+                    <ColumnDefinition Width="34"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
                   <loc:FileKindIcon FileName="{Binding Path}" IsDirectory="{Binding Entry.Directory}" Width="22" Height="26" VerticalAlignment="Center"/>

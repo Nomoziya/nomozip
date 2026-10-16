@@ -9,10 +9,10 @@
     </Grid.RowDefinitions>
     <StackPanel Margin="24,24,24,20">
       <StackPanel Orientation="Horizontal">
-        <Path Data="M3,1 L17,1 L24,8 L24,31 L3,31 Z M17,1 L17,8 L24,8" Fill="{DynamicResource AccentBrush}" Width="28" Height="34" Stretch="Uniform" Margin="0,0,14,0"/>
+        <Viewbox Width="28" Height="34" Margin="0,0,14,0"><Grid Width="28" Height="34"><Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/><Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/></Grid></Viewbox>
         <TextBlock Text="{loc:Text Redesign.CreateArchive}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/>
       </StackPanel>
-      <TextBlock Text="{loc:Text T_4e66c76ffe75}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>
+      
     </StackPanel>
     <ScrollViewer Grid.Row="1" x:Name="CompressionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
       <Grid x:Name="CompressionLayout">
@@ -55,7 +55,7 @@
                 <TextBlock x:Name="DropHint" Text="{loc:Text Menu.SourceHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
               </WrapPanel>
             </Border>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="48" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="40" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable">
               <DataGrid.ContextMenu>
                 <ContextMenu x:Name="SourceContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_3514845d4419}">
                   <MenuItem x:Name="SourceAddFilesAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}"/>
@@ -96,7 +96,7 @@
                 </Style>
               </TextBlock.Style>
             </TextBlock>
-            <TextBlock Grid.Row="2" Text="{Binding SelectedCompressionSource.Path}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding SelectedCompressionSource.Path}" Margin="8,16,0,0"/>
+            <TextBlock Grid.Row="2" Text="{Binding CompressionSourceSummary}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding SelectedCompressionSource.Path}" Margin="20,14,12,14"/>
           </Grid>
         </Border>
         <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Padding="24" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0">
@@ -180,7 +180,7 @@
                   </Style>
                 </TextBlock.Style>
               </TextBlock>
-              <Expander Header="{loc:Text Redesign.Advanced}" Margin="0,16,0,12">
+              <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0"><Expander x:Name="AdvancedOptions" Header="{loc:Text Redesign.Advanced}" IsExpanded="True" Margin="0,16,0,12">
                 <StackPanel>
                   <Grid Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
@@ -260,13 +260,13 @@
                     <CheckBox Content="{loc:Text T_6df0322e460d}" IsChecked="{Binding CompressionHeaders}" IsEnabled="{Binding Is7zCompression}"/>
                   </StackPanel>
                 </StackPanel>
-              </Expander>
+              </Expander></Border>
             </StackPanel>
           </ScrollViewer>
         </Border>
       </Grid>
     </ScrollViewer>
-    <Grid Grid.Row="3" Margin="24,16,24,20" x:Name="CompressionActionsRoot">
+    <Grid Grid.Row="3" x:Name="CompressionFooterLayout"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="FooterSettingsColumn" Width="320"/></Grid.ColumnDefinitions><Border x:Name="CompressionActionsPanel" Grid.Column="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,1,0,0" Padding="24,16,24,16"><Grid x:Name="CompressionActionsRoot">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -313,7 +313,7 @@
         </ProgressBar.Style>
       </ProgressBar>
       <TextBlock Grid.Row="3" Text="{Binding CompressionMessage}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
-      <TextBlock Text="{Binding CompressionOutput}" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}" Margin="0,0,0,12" Grid.Row="0" HorizontalAlignment="Right" MaxWidth="420"/>
-    </Grid>
+      <TextBlock Text="{Binding CompressionOutput}" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}" Margin="0,0,0,12" Grid.Row="0" HorizontalAlignment="Left" MaxWidth="420"/>
+    </Grid></Border></Grid>
   </Grid>
 </UserControl>

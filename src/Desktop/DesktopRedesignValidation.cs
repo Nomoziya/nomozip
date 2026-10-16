@@ -67,6 +67,7 @@ internal static class DesktopRedesignValidation
                         {
                             var sourceTable=window.CompressionPage.CompressionSourceTable;
                             Check($"{mode}/{width} compression source headers remain inside the table",VisualDescendants(sourceTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Where(header=>header.Column is not null).All(header=>Bounds(header).Right<=Bounds(sourceTable).Right+1));
+                            Check($"{mode}/{width} compression footer stays reachable",Bounds(window.CompressionPage.CreateButton).Bottom<=((FrameworkElement)window.Content).ActualHeight+1 && window.CompressionPage.CreateButton.ActualWidth>60);
                         }
                         Capture($"{mode}-{width}-page-{page}");
                     }
@@ -208,8 +209,9 @@ internal static class DesktopRedesignValidation
             // Actual inline edits use the synthetic vault and preserve secret masking on navigation.
             var saved=new SavedPassword(Guid.NewGuid(),"Synthetic vault item","synthetic-secret","",true,DateTimeOffset.UtcNow);
             await model.SaveVaultDetailsAsync(saved);model.Page=1;await Layout();
-            window.VaultDetails.NameBox.Text="Edited synthetic item";window.VaultDetails.SaveButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Until(()=>model.IsIdle);
+            window.VaultDetails.NameBox.Text="Edited synthetic item";window.VaultDetails.GroupBox.Text="New synthetic group";window.VaultDetails.SaveButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Until(()=>model.IsIdle);
             Check("inline details persist to synthetic vault",(await vault.ReadAsync()).Single().Name=="Edited synthetic item");
+            Check("editable group picker saves new groups",(await vault.ReadAsync()).Single().Group=="New synthetic group");
             model.Page=0;await Layout();Check("inline editor clears secret after saving and leaving",window.VaultDetails.SecretBox.Password.Length==0);
 
             // Compression is visible on Tasks but never added to the extraction input collection.
