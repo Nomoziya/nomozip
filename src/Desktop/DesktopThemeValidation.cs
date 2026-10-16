@@ -23,7 +23,7 @@ internal static class DesktopThemeValidation
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);
         string Hash(string path)=>Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
         Color ColorOf(string key)=>((SolidColorBrush)Application.Current.Resources[key]).Color;
-        bool DarkSurface()=>ColorOf("SurfaceBrush")==Color.FromRgb(31,41,55);
+        bool DarkSurface()=>ColorOf("SurfaceBrush")==Color.FromRgb(30,41,59);
         var language=UiText.LanguageCode;var samples=Path.Combine(root,"artifacts/theme-controls-preview");Directory.CreateDirectory(samples);
         try
         {
