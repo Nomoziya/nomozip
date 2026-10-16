@@ -146,21 +146,22 @@ public partial class MainWindow
         foreach(var child in LogicalTreeHelper.GetChildren(root).OfType<DependencyObject>()) DisableDialogDefaults(child);
     }
 
-    internal bool ConfirmExtractionOptions(int? count=null)
+    internal bool ConfirmExtractionOptions(int? count=null,int? selectedItemCount=null)
     {
         if (DataContext is not MainViewModel vm) return false;
         vm.PreparingExtraction = true;
         var accepted = false;
         var taskCount=count ?? vm.Tasks.Count(row=>!row.Completed);var batch=taskCount>1;
-        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get(batch?"Extraction.BatchTitle":"Redesign.ExtractionOptions"), Width = batch?700:640, Height = batch?760:600, MinWidth = 520, MinHeight = 500, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
+        var titleKey=batch?"Extraction.BatchTitle":selectedItemCount is not null?"Extraction.SelectedTitle":"Redesign.ExtractionOptions";
+        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get(titleKey), Width = batch?700:640, Height = batch?760:600, MinWidth = 520, MinHeight = 500, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
         var container = new Grid { Margin = new Thickness(24) };
         container.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         var titleRow=new DockPanel {Margin=new Thickness(0,0,0,24)};
         var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M4,1 L18,1 L25,8 L25,31 L4,31 Z M18,1 L18,8 L25,8 M10,15 L10,23 L7,20 M10,23 L14,19"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
         icon.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
         var heading=new StackPanel();titleRow.Children.Add(heading);
-        heading.Children.Add(new TextBlock {Text=UiText.Get(batch?"Extraction.BatchTitle":"Redesign.ExtractionOptions"),FontSize=24,FontWeight=FontWeights.SemiBold});
-        var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};scopeLabel.SetResourceReference(TextBlock.ForegroundProperty,"SecondaryBrush");heading.Children.Add(scopeLabel);container.Children.Add(titleRow);
+        heading.Children.Add(new TextBlock {Text=UiText.Get(titleKey),FontSize=24,FontWeight=FontWeights.SemiBold});
+        var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):selectedItemCount is {} itemCount?UiText.Format("Extraction.SelectedCount",itemCount,vm.SelectedTask?.Name ?? ""):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};scopeLabel.SetResourceReference(TextBlock.ForegroundProperty,"SecondaryBrush");heading.Children.Add(scopeLabel);container.Children.Add(titleRow);
         System.Windows.Data.ListCollectionView? batchView=null;
         var body=new Grid();body.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});body.RowDefinitions.Add(new RowDefinition());Grid.SetRow(body,1);container.Children.Add(body);
         if(batch)

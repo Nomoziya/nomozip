@@ -7,7 +7,7 @@ public sealed partial class MainViewModel
 {
     private async Task<string?> ExtractSelectionAsync(ArchiveTaskRow task,ArchiveEngineClient client,IReadOnlyList<ArchiveEntry> selection,IProgress<string> status)
     {
-        if(!dialogs.ConfirmWorkspaceExtraction(1)) return null;
+        if(!dialogs.ConfirmWorkspaceExtraction(1,selection.Count)) return null;
         // A cancelled selection can be retried in the same browser with fresh cancellation sources.
         cancellation?.Dispose();skipPasswords?.Dispose();cancellation=new CancellationTokenSource();skipPasswords=new CancellationTokenSource();
         var prompts=0;Banner="";task.Running=true;task.IsIndeterminate=true;

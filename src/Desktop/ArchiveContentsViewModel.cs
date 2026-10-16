@@ -61,7 +61,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
                     while(currentFolder.Length>0 && !allRows.Any(row=>row.Entry.Directory && Normalize(row.Path)==currentFolder))currentFolder=Parent(currentFolder);
                     FilterRows();RefreshBreadcrumbs();
                     CurrentRow=allRows.FirstOrDefault(row=>row.Path==currentPath);
-                    Changed(nameof(Summary));SelectionChanged();
+                    Changed(nameof(Summary));Changed(nameof(CompactSummary));SelectionChanged();
                     OutputPath=Path.GetDirectoryName(archivePath)!;
                     OperationMessage=UiText.Get("T_449c0abb4f19")+outcome.BackupPath;
                 }
@@ -109,7 +109,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         foreach(var row in allRows.Where(row=>row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase)))Rows.Add(row);
         foreach(var row in Rows.Where(row=>search.Length>0 || string.Equals(Parent(Normalize(row.Path)),currentFolder,StringComparison.OrdinalIgnoreCase)).OrderByDescending(row=>row.Entry.Directory).ThenBy(row=>row.Path,StringComparer.CurrentCultureIgnoreCase))
         {row.ShowPath=search.Length>0;VisibleRows.Add(row);}
-        Changed(nameof(Summary));Changed(nameof(VisibleSelection));
+        Changed(nameof(Summary));Changed(nameof(CompactSummary));Changed(nameof(VisibleSelection));
     }
     private string currentFolder="";
     public string CurrentFolder=>currentFolder;
@@ -205,6 +205,8 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     private IReadOnlyList<ArchiveEntry> EntriesFor(IEnumerable<ArchiveContentRow> rows)=>ArchiveSelection.Expand(items,rows.SelectMany(row=>row.Virtual?items.Where(entry=>Normalize(entry.Path).StartsWith(Normalize(row.Path)+"/",StringComparison.OrdinalIgnoreCase)).Select(entry=>entry.Index):[row.Entry.Index]));
     public IReadOnlyList<ArchiveEntry> SelectedEntries=>ArchiveSelection.Expand(items,allRows.Where(row=>!row.Virtual && row.Selected).Select(row=>row.Entry.Index));
     public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
+    public string CompactSelectionSummary=>UiText.Format("Browser.CompactSelection",SelectedEntries.Count);
+    public string CompactSummary=>UiText.Format("Browser.CompactCount",VisibleRows.Count);
     public bool? VisibleSelection
     {
         get => VisibleRows.Count == 0 || VisibleRows.All(row=>!row.Selected) ? false : VisibleRows.All(row=>row.Selected) ? true : null;
@@ -222,7 +224,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
             }
         }
         finally {selecting=false;}
-        Changed(nameof(SelectionSummary));Changed(nameof(VisibleSelection));CommandManager.InvalidateRequerySuggested();
+        Changed(nameof(SelectionSummary));Changed(nameof(CompactSelectionSummary));Changed(nameof(VisibleSelection));CommandManager.InvalidateRequerySuggested();
     }
     private void SetSelection(IEnumerable<ArchiveContentRow> rows,bool value)
     {
@@ -250,7 +252,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public string ArchivePath => archivePath;
     public string ArchiveName => Path.GetFileName(archivePath);
     public ObservableCollection<ArchiveContentRow> Rows { get; }
-    public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary)); Changed(nameof(VisibleSelection)); } } }
+    public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary));Changed(nameof(CompactSummary)); Changed(nameof(VisibleSelection)); } } }
     public string Summary => UiText.Format("T_55f9d9c65be9", VisibleRows.Count, allRows.Count, items.Count(value => !value.Directory), allRows.Count(value => value.Entry.Directory));
 }
 public sealed record ArchiveBreadcrumb(string Label,ICommand NavigateCommand);

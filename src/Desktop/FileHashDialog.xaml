@@ -106,7 +106,7 @@
                 <DataTemplate>
                   <Grid Margin="10,0">
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="26"/>
+                      <ColumnDefinition Width="34"/>
                       <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <loc:FileKindIcon FileName="{Binding Path}" Width="20" Height="24" VerticalAlignment="Center"/>

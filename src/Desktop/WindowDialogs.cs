@@ -14,7 +14,7 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Action<ArchivePreviewDialog>? preparePreview=null,Func<string,bool>? confirmApplicationInstall=null,Func<string,bool>? confirmDiscardCheckpoint=null,
     Action<ExistingFileDialog>? prepareConflict=null,Action<ArchiveTextEditDialog>? prepareTextEdit=null,Action<ArchiveEditConfirmDialog>? prepareEditConfirm=null)
 {
-    public bool ConfirmWorkspaceExtraction(int? count=null) => prepareContents is not null || owner is not MainWindow main || main.ConfirmExtractionOptions(count);
+    public bool ConfirmWorkspaceExtraction(int? count=null,int? selectedItemCount=null) => prepareContents is not null || owner is not MainWindow main || main.ConfirmExtractionOptions(count,selectedItemCount);
     public bool ConfirmDiscardCheckpoint(string name)=>confirmDiscardCheckpoint?.Invoke(name) ?? MessageBox.Show(owner,
         UiText.Format("Checkpoint.DiscardPrompt",name),UiText.Get("Checkpoint.Discard"),MessageBoxButton.YesNo,MessageBoxImage.Question,MessageBoxResult.No)==MessageBoxResult.Yes;
     public bool ConfirmApplicationInstall(string version) => confirmApplicationInstall?.Invoke(version) ??
