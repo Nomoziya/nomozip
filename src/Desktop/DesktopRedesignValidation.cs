@@ -297,6 +297,23 @@ internal static class DesktopRedesignValidation
             var restoredDefaults=new MainViewModel(AppContext.BaseDirectory,data,vault,new WindowDialogs(window));await restoredDefaults.InitializeAsync();
             Check("file defaults survive reload",restoredDefaults.DefaultOutputDirectory==defaultOutput && restoredDefaults.ConflictPolicy==2 && restoredDefaults.DirectoryRules.Location==ExtractionLocation.Custom);
             await Layout();Capture("actual-file-defaults-saved");
+            var passwordStage=0;
+            var compressionDialogs=new WindowDialogs(window,prepareDialog:dialog=>
+            {
+                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
+                {
+                    if(passwordStage==0){dialog.SecretBox.Password="synthetic-settings-password";dialog.ConfirmationBox.Password=dialog.SecretBox.Password;dialog.EncryptHeadersBox.IsChecked=false;dialog.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));}
+                    else{if(passwordStage==2)Check("ZIP password settings omit unsupported filename encryption",!dialog.CompressionHeadersPanel.IsVisible && dialog.CompressionHeaderEncryption is null);dialog.EncryptHeadersBox.IsChecked=true;dialog.Close();}
+                });
+            });
+            var passwordSettingsModel=new MainViewModel(AppContext.BaseDirectory,data,vault,compressionDialogs);await passwordSettingsModel.InitializeAsync();passwordSettingsModel.Page=3;
+            Check("setting a password is available before encryption is enabled",!passwordSettingsModel.CompressionEncrypt && passwordSettingsModel.SetCompressionPasswordCommand.CanExecute(null));
+            passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
+            var passwordSummary=passwordSettingsModel.CompressionPasswordSummary;
+            Check("accepted password settings enable encryption and apply header choice",passwordSettingsModel.CompressionEncrypt && !passwordSettingsModel.CompressionHeaders && passwordSummary!=UiText.Get("Redesign.PasswordNotSet"));
+            passwordStage=1;passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
+            Check("cancel preserves prior password and header settings",passwordSettingsModel.CompressionPasswordSummary==passwordSummary && !passwordSettingsModel.CompressionHeaders);
+            passwordStage=2;passwordSettingsModel.CompressionFormat=1;passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
             DesktopDesignDialogValidation.Run(window,theme,folder,Check);
         }

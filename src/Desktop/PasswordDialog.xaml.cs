@@ -15,7 +15,8 @@ public partial class PasswordDialog : Window
     private readonly Action<ExtractionFailureDialog>? prepareFailure;
     public PasswordPromptResponse? Response { get; private set; }
     public SavedPassword? Edited { get; private set; }
-    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false, bool browsing = false, EngineResult? previousFailure = null, Action<ExtractionFailureDialog>? prepareFailure = null,bool testing=false)
+    public bool? CompressionHeaderEncryption=>CompressionHeadersPanel.Visibility==Visibility.Visible?EncryptHeadersBox.IsChecked==true:null;
+    public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false, bool browsing = false, EngineResult? previousFailure = null, Action<ExtractionFailureDialog>? prepareFailure = null,bool testing=false,bool? encryptHeaders=null)
     {
         InitializeComponent(); original = existing; this.editing = editing;
         this.compressing=compressing;
@@ -41,6 +42,7 @@ public partial class PasswordDialog : Window
         else NameBox.Text = archiveName;
         if (compressing)
         {
+            if(encryptHeaders is {} headers){CompressionHeadersPanel.Visibility=Visibility.Visible;EncryptHeadersBox.IsChecked=headers;}
             ConfirmationPanel.Visibility=Visibility.Visible;
             Title = Heading.Text = UiText.Get("T_84d584fcfc26"); ContinueButton.Content = UiText.Get("T_8154b012eaf1");
             Description.Text = UiText.Get("T_fe6aa19502f5");

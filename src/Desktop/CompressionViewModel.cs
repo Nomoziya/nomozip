@@ -128,7 +128,7 @@ public sealed partial class MainViewModel
             foreach(var item in selected)CompressionSources.Remove(item);
         }, () => IsIdle && (SelectedCompressionSource is not null || selectedCompressionSources.Any(CompressionSources.Contains)));
         BrowseCompressionOutputCommand = new RelayCommand(() => { if (dialogs.SelectArchiveOutput(CompressionSfx?"sfx":CompressionFormatName) is { } path) CompressionOutput = path; }, () => IsIdle);
-        SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionEncrypt);
+        SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionOptions.Encryption);
         CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && !string.IsNullOrWhiteSpace(CompressionOutputName) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
         OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
         CompressionSources.CollectionChanged += (_, _) => {CompressionCapabilitiesChanged();Changed(nameof(CompressionSourceSummary));};
@@ -142,7 +142,14 @@ public sealed partial class MainViewModel
     private async Task SetCompressionPasswordAsync()
     {
         var ownsBusy=IsIdle;if(ownsBusy){IsBusy=true;idle=new TaskCompletionSource();}
-        try { compressionPassword = await dialogs.AskCompressionPasswordAsync(Path.GetFileName(CompressionOutput), allPasswords, vaultAvailable); Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); }
+        try
+        {
+            var selection=await dialogs.AskCompressionPasswordAsync(Path.GetFileName(CompressionOutput),allPasswords,vaultAvailable,Is7zCompression?CompressionHeaders:null);
+            if(selection is null)return;
+            CompressionEncrypt=true;compressionPassword=selection.Password;
+            if(selection.EncryptHeaders is {} encryptHeaders)CompressionHeaders=encryptHeaders;
+            Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary));
+        }
         finally {if(ownsBusy){IsBusy=false;idle.TrySetResult();}}
     }
     private async Task CreateArchiveAsync()

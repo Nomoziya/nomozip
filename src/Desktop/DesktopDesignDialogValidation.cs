@@ -42,10 +42,11 @@ internal static class DesktopDesignDialogValidation
             password.SecretBox.Password="synthetic-secret";password.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         });
         check("password prompt clears secret on close",password.Response?.Secret=="synthetic-secret" && password.SecretBox.Password.Length==0 && password.VisibleSecret.Text.Length==0);
-        var compression=new PasswordDialog("资料备份.7z",false,[],true,compressing:true);
+        var compression=new PasswordDialog("资料备份.7z",false,[],true,compressing:true,encryptHeaders:true);
         Show(compression,"compression-password",()=>
         {
             compression.SecretBox.Password="synthetic-password";compression.ConfirmationBox.Password="different";compression.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            check("7z password dialog exposes filename encryption",compression.CompressionHeadersPanel.IsVisible && compression.EncryptHeadersBox.IsChecked==true);
             check("new compression password requires matching confirmation",compression.IsVisible && compression.Response is null && compression.ErrorLabel.Text.Length>0);
             compression.UpdateLayout();var compressionError=(Border)compression.ConfirmationBox.Template.FindName("FieldFocus",compression.ConfirmationBox);
             check("compression mismatch marks the confirmation field",compressionError.Visibility==Visibility.Visible && ReferenceEquals(compressionError.BorderBrush,Application.Current.Resources["ErrorBrush"]));
