@@ -39,6 +39,7 @@ public partial class MainWindow : Window
             BrandMark.Width = BrandMark.Height = compact ? 18 : 24;
             BrandMark.Margin = new Thickness(0, 0, compact ? 4 : 8, 0);
             SidebarColumn.Width = new GridLength(compact ? 120 : 176);
+            Navigation.Tag = compact;
             SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(16, 24, 16, 24);
             MainContent.Margin = new Thickness(compact ? 12 : 24);
             ExtractionDropHint.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;

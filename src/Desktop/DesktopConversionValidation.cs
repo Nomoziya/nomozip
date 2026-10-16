@@ -75,8 +75,8 @@ internal static class DesktopConversionValidation
                         main.SelectedEngineVersion=version;main.ApplyEngineCommand.Execute(null);await main.WaitForIdleAsync();
                         Check(label+" no selection disables real entry",!main.ConvertArchiveCommand.CanExecute(null));
                         main.AddFiles([source]);main.SelectedTask=main.Tasks.Single();await Layout(window);
-                        Invoke(window.ConvertArchiveAction);await Layout(window);await main.WaitForIdleAsync();
-                        Check(label+" actual toolbar entered conversion and returned idle",shown==1 && main.IsIdle);
+                        await ChooseTaskMenuItem(window,window.ConvertArchiveAction);await Layout(window);await main.WaitForIdleAsync();
+                        Check(label+" actual right-click menu entered conversion and returned idle",shown==1 && main.IsIdle);
                     }
                 }
                 finally {window.Close();}
@@ -88,6 +88,15 @@ internal static class DesktopConversionValidation
         await File.WriteAllTextAsync(Path.Combine(root,"artifacts/conversion-ui-validation.json"),JsonSerializer.Serialize(new{passed,total=checks.Count,checks,syntheticOnly=true},new JsonSerializerOptions{WriteIndented=true}));return passed;
     }
     private static void Invoke(Button button)=>((IInvokeProvider)new ButtonAutomationPeer(button).GetPattern(PatternInterface.Invoke)).Invoke();
+    /// <summary>Opens the task right-click menu on the task list and invokes one entry, as a pointer user would.</summary>
+    internal static async Task ChooseTaskMenuItem(MainWindow window,MenuItem item)
+    {
+        var menu=window.TaskContextMenu;menu.Opacity=0;menu.PlacementTarget=window.ArchiveTasks;menu.IsOpen=true;
+        await window.Dispatcher.InvokeAsync(()=>menu.UpdateLayout(),DispatcherPriority.Background);
+        if(item.Command is null || !item.Command.CanExecute(null)) throw new InvalidOperationException("Task context menu entry is unavailable: "+item.Name);
+        ((IInvokeProvider)new MenuItemAutomationPeer(item).GetPattern(PatternInterface.Invoke)).Invoke();
+        await window.Dispatcher.InvokeAsync(()=>{},DispatcherPriority.Background);menu.IsOpen=false;
+    }
     private static async Task Layout(Window window)=>await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
     private static bool Fits(FrameworkElement parent,FrameworkElement item) {var bounds=item.TransformToAncestor(parent).TransformBounds(new Rect(item.RenderSize));return bounds.Top>=0 && bounds.Bottom<=parent.ActualHeight+1 && bounds.Left>=0 && bounds.Right<=parent.ActualWidth+1;}
 }

@@ -60,11 +60,11 @@ jobs:
       - name: Restore canonical source metadata and package native local candidate
         run: |
           git restore --worktree -- engines
-          ./scripts/build-release.ps1 -Architecture arm64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.2.0-arm64 -Python python
+          ./scripts/build-release.ps1 -Architecture arm64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.2.1-arm64 -Python python
       - uses: actions/upload-artifact@v7
         with:
           name: native-arm64-lightweight-candidate
-          path: artifacts/release-0.2.0-arm64/*
+          path: artifacts/release-0.2.1-arm64/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         if: always()

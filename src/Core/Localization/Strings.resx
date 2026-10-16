@@ -3121,4 +3121,7 @@
   <data name="Checkpoint.Found" xml:space="preserve"><value>保留了 {0} 项任务进度，可在“任务操作”中恢复或丢弃。</value></data>
   <data name="Checkpoint.Checking" xml:space="preserve"><value>正在核对源文件和已保存进度…</value></data>
   <data name="Checkpoint.Error.checkpoint_save_failed" xml:space="preserve"><value>无法保存解压进度，已停止后续写入并保留已有记录。请检查磁盘空间和资料目录权限后恢复。</value></data>
+  <data name="Menu.VaultHint" xml:space="preserve"><value>双击或按 Enter 编辑，右键查看更多操作，Delete 删除。</value></data>
+  <data name="Menu.SourceHint" xml:space="preserve"><value>拖入内容，或右键列表添加、移除</value></data>
+  <data name="Menu.ExtractHint" xml:space="preserve"><value>拖入文件，或在任务上右键查看更多操作</value></data>
 </root>

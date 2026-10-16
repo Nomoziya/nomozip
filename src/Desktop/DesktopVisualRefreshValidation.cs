@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -20,6 +22,12 @@ internal static class DesktopVisualRefreshValidation
         void Check(string name, bool value) => checks.Add(name, value);
         async Task Layout() => await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.ApplicationIdle);
         Rect Bounds(FrameworkElement element) => element.TransformToAncestor(window).TransformBounds(new Rect(element.RenderSize));
+        // Right-click menus open from a real placement target and are tidied exactly as they are for a pointer user.
+        async Task Preview(ContextMenu menu, FrameworkElement target, string name)
+        {
+            menu.Opacity = 0; menu.PlacementTarget = target; menu.IsOpen = true; await Layout(); RowActions.Tidy(menu);
+            menu.Opacity = 1; Render(menu, Path.Combine(samples, name + ".png")); menu.Opacity = 0; menu.IsOpen = false;
+        }
         void Capture(string name, double scale = 1)
         {
             window.Opacity = 1;
@@ -51,6 +59,21 @@ internal static class DesktopVisualRefreshValidation
                     Capture($"{mode}-{width}-association-settings");
                 }
                 window.Width = 1120; model.Page = 0; model.SelectedTask = model.Tasks[1]; await Layout();
+                Capture($"{mode}-1120-page-0-selected");
+                var row = (DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.SelectedTask);
+                var cell = Descendants(row).OfType<DataGridCell>().First();
+                cell.Focus(); await Layout();
+                var focus = (Border)cell.Template.FindName("CellFocus", cell);
+                Check(mode + " current cell has an inset keyboard focus indicator", cell.IsKeyboardFocusWithin && focus.Visibility == Visibility.Visible
+                    && focus.Margin == new Thickness(2) && focus.BorderThickness == new Thickness(2));
+                Check(mode + " selected cell retains readable row foreground", ColorOf(cell.Foreground) == ColorOf(row.Foreground));
+                Capture($"{mode}-cell-focus");
+                await Preview(window.TaskContextMenu, window.ArchiveTasks, mode + "-row-menu");
+                Check(mode + " task context menu filters by the current command state", window.TaskContextMenu.Items.OfType<MenuItem>().All(item =>
+                    (item.Visibility == Visibility.Visible) == (item.Command?.CanExecute(item.CommandParameter) ?? item.IsEnabled)));
+                Check(mode + " task context menu has no orphan separators", CleanSeparators(window.TaskContextMenu));
+                foreach (var pair in new[] { ("TextBrush", "SurfaceBrush", 4.5), ("SecondaryBrush", "SurfaceBrush", 4.5), ("ErrorBrush", "SurfaceBrush", 4.5), ("BorderBrush", "SurfaceBrush", 3.0) })
+                    Check(mode + " readable palette " + pair.Item1, Contrast(ColorOf((Brush)Application.Current.Resources[pair.Item1]), ColorOf((Brush)Application.Current.Resources[pair.Item2])) >= pair.Item3);
                 var menu = window.QueueActionsMenu; menu.Opacity = 0;
                 window.QueueActionsAction.RaiseEvent(new RoutedEventArgs(Button.ClickEvent)); await Layout(); menu.UpdateLayout();
                 var header = Descendants(window.QueueMoveUpAction).OfType<ContentPresenter>().First();
@@ -68,6 +91,14 @@ internal static class DesktopVisualRefreshValidation
                 foreach (var page in new[] { 0, 3, 1 })
                 {
                     model.Page = page; await Layout(); Capture($"{mode}-1120-page-{page}");
+                    if (page == 1)
+                    {
+                        model.SelectedPassword = model.PasswordRows.FirstOrDefault(); await Layout();
+                        Capture($"{mode}-1120-page-1-selected");
+                        await Preview(window.PasswordContextMenu, window.PasswordTable, mode + "-vault-row-menu");
+                        Check(mode + " vault actions bind to the selected password", ReferenceEquals(window.PasswordEditAction.Command, model.EditPasswordCommand)
+                            && window.PasswordEditAction.Visibility == Visibility.Visible && CleanSeparators(window.PasswordContextMenu));
+                    }
                     if (page == 3)
                     {
                         var label = Descendants(window.CompressionPage.SfxBox).OfType<AccessText>().Single();
@@ -76,12 +107,81 @@ internal static class DesktopVisualRefreshValidation
                     }
                 }
             }
+            await CheckRowInput(window, model, Check, Layout);
         }
         catch (Exception error) { checks["exception " + error] = false; }
         finally { theme.Apply(SystemParameters.HighContrast); }
-        var passed = checks.Count == 53 && checks.Values.All(value => value);
+        var passed = checks.Count == 90 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(samples, "report.json"), JsonSerializer.Serialize(new { passed, checks, limitations = "Hidden WPF rendering and UIA do not replace audible Narrator or physical display acceptance." }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;
+    }
+
+    private static Color ColorOf(Brush brush) => ((SolidColorBrush)brush).Color;
+    private static double Contrast(Color first, Color second)
+    {
+        static double L(Color c)
+        {
+            static double Linear(byte value) { var v = value / 255.0; return v <= 0.04045 ? v / 12.92 : Math.Pow((v + 0.055) / 1.055, 2.4); }
+            return 0.2126 * Linear(c.R) + 0.7152 * Linear(c.G) + 0.0722 * Linear(c.B);
+        }
+        var a = L(first); var b = L(second); return (Math.Max(a, b) + 0.05) / (Math.Min(a, b) + 0.05);
+    }
+
+    private static bool CleanSeparators(ContextMenu menu)
+    {
+        var visible = menu.Items.OfType<UIElement>().Where(item => item.Visibility == Visibility.Visible).ToArray();
+        return visible.Length > 0 && visible[0] is MenuItem && visible[^1] is MenuItem
+            && !visible.Zip(visible.Skip(1)).Any(pair => pair.First is Separator && pair.Second is Separator);
+    }
+
+    private static async Task CheckRowInput(MainWindow window, MainViewModel model, Action<string, bool> check, Func<Task> layout)
+    {
+        model.Page = 0; model.SelectedTask = model.Tasks[0]; await layout();
+        var grid = window.ArchiveTasks;
+        var row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(model.Tasks[1]);
+        var openBinding = BindingOperations.GetBindingBase(grid, RowActions.OpenCommandProperty)!;
+        var deleteBinding = BindingOperations.GetBindingBase(grid, RowActions.DeleteCommandProperty)!;
+        var opened = 0; var deleted = 0; var enabled = true;
+        grid.SetValue(RowActions.OpenCommandProperty, new InputCommand(() => opened++, () => enabled));
+        grid.SetValue(RowActions.DeleteCommandProperty, new InputCommand(() => deleted++, () => enabled));
+        void Key(Key key) => grid.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, PresentationSource.FromVisual(window), Environment.TickCount, key) { RoutedEvent = Keyboard.PreviewKeyDownEvent });
+        void Right(DependencyObject source) => grid.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Right) { RoutedEvent = UIElement.PreviewMouseRightButtonDownEvent, Source = source });
+        try
+        {
+            Right(row); await layout(); check("right-click selects the pointed row before commands", ReferenceEquals(model.SelectedTask, row.Item));
+            Key(System.Windows.Input.Key.Enter); check("Enter invokes the row open command once", opened == 1);
+            Key(System.Windows.Input.Key.Delete); check("Delete invokes the row remove command once", deleted == 1);
+            grid.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left) { RoutedEvent = Control.MouseDoubleClickEvent, Source = row });
+            check("double-click invokes the row open command once", opened == 2);
+            enabled = false; Key(System.Windows.Input.Key.Enter); Key(System.Windows.Input.Key.Delete);
+            check("unavailable row commands cannot run from keyboard", opened == 2 && deleted == 1);
+            Right(grid); await layout(); check("right-click blank list clears stale selection", model.SelectedTask is null);
+            enabled = true; Key(System.Windows.Input.Key.Enter); Key(System.Windows.Input.Key.Delete);
+            check("blank list keyboard cannot act on the previous row", opened == 2 && deleted == 1);
+            var unavailable = new MenuItem { Command = new InputCommand(() => { }, () => false) };
+            var available = new MenuItem { Command = new InputCommand(() => { }, () => true) };
+            var popup = new ContextMenu(); popup.Items.Add(new Separator()); popup.Items.Add(unavailable); popup.Items.Add(new Separator()); popup.Items.Add(available); popup.Items.Add(new Separator());
+            RowActions.Tidy(popup);
+            check("menu filtering removes leading trailing and unavailable groups", unavailable.Visibility == Visibility.Collapsed && available.Visibility == Visibility.Visible && CleanSeparators(popup));
+            unavailable.Command = new InputCommand(() => { }, () => true); RowActions.Tidy(popup);
+            check("menu filtering restores commands when availability changes", unavailable.Visibility == Visibility.Visible && CleanSeparators(popup));
+            model.Page = 3; await layout();
+            var sources = Descendants(window.CompressionPage).OfType<DataGrid>().Single();
+            check("compression list retains remove keyboard and context entry", RowActions.GetDeleteCommand(sources) == model.RemoveCompressionSourceCommand
+                && sources.ContextMenu.Items.OfType<MenuItem>().Any(item => item.Command == model.RemoveCompressionSourceCommand));
+        }
+        finally
+        {
+            BindingOperations.SetBinding(grid, RowActions.OpenCommandProperty, openBinding);
+            BindingOperations.SetBinding(grid, RowActions.DeleteCommandProperty, deleteBinding);
+        }
+    }
+
+    private sealed class InputCommand(Action execute, Func<bool> canExecute) : ICommand
+    {
+        public bool CanExecute(object? parameter) => canExecute();
+        public void Execute(object? parameter) => execute();
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
     }
 
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)

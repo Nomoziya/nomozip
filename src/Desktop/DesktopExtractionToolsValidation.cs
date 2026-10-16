@@ -66,7 +66,7 @@ internal static class DesktopExtractionToolsValidation
             var reopened=new MainViewModel(baseDirectory,data,vault,dialogs);await reopened.InitializeAsync();
             Check("rules and recent custom paths survive restart",reopened.DirectoryRules==preservedRules && reopened.RecentOutputPaths.Contains(model.OutputPath));
             var encrypted=Path.Combine(root,"tests/fixtures/generated/encrypted-header.7z");model.AddFiles([encrypted]);model.SelectedTask=model.Tasks.Single();
-            var testButton=(Button)window.FindName("TestArchiveAction");testButton.BringIntoView();await Layout();Invoke(testButton);await Layout();await model.WaitForIdleAsync();await Layout();
+            await DesktopConversionValidation.ChooseTaskMenuItem(window,(MenuItem)window.FindName("TestArchiveAction"));await Layout();await model.WaitForIdleAsync();await Layout();
             Check("actual test command no extraction completion",model.SelectedTask.VerificationResult?.IsSuccess==true && !model.SelectedTask.Completed && model.SelectedTask.Status=="校验通过");
             Check("actual test command no output save association or automatic open",!Directory.Exists(model.OutputPath) && File.ReadAllBytes(Path.Combine(data,"passwords.apv")).SequenceEqual(originalVault) && opens.Count==0);
             Invoke((Button)window.FindName("TestResultAction"));await Layout();
