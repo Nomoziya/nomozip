@@ -162,7 +162,10 @@
             </ComboBox>
           </StackPanel>
           <StackPanel Margin="0">
-            <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,8"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+              <Path Data="M2,3 L5,3 M10,3 L28,3 M2,12 L5,12 M10,12 L28,12 M2,21 L5,21 M10,21 L28,21" Width="28" Height="26" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,14,0" VerticalAlignment="Center"/>
+              <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="28" FontWeight="SemiBold" Margin="0"/>
+            </StackPanel>
             <TextBlock Text="{Binding TaskSummary}" Style="{StaticResource Secondary}"/>
             <Border x:Name="CompressionActivity" Background="{DynamicResource SurfaceBrush}" Padding="12" Margin="0,12,0,0">
               <Border.Style>
@@ -290,10 +293,17 @@
                     <DataGridTemplateColumn Header="{loc:Text T_39932f24fe11}" Width="1.15*" MinWidth="140">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                          <StackPanel VerticalAlignment="Center" Margin="24,8,12,8">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
-                            <TextBlock Text="{Binding SizeText}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0"/>
-                          </StackPanel>
+                          <Grid Margin="20,0,8,0">
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="30"/>
+                              <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
+                            <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
+                              <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" FontSize="15"/>
+                              <TextBlock Text="{Binding SizeText}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                          </Grid>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -302,7 +312,17 @@
                         <DataTemplate>
                           <StackPanel Margin="8" VerticalAlignment="Center">
                             <TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Status}"/>
-                            <ProgressBar Value="{Binding Percent}" Height="4" Margin="0,6,0,0" IsIndeterminate="{Binding IsIndeterminate}" Visibility="{Binding ProgressVisibility}" AutomationProperties.Name="{loc:Text T_fcef101b1132}"/>
+                            <ProgressBar Value="{Binding DisplayPercent}" Height="6" Margin="0,6,0,0" IsIndeterminate="{Binding IsIndeterminate}" Visibility="{Binding ProgressVisibility}" AutomationProperties.Name="{loc:Text T_fcef101b1132}">
+                              <ProgressBar.Style>
+                                <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                  <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="True">
+                                      <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </ProgressBar.Style>
+                            </ProgressBar>
                           </StackPanel>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
