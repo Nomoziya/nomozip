@@ -9,6 +9,7 @@
             <Path Data="M15,1 L15,8 L22,8" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.4"/>
             <Path x:Name="Lines" Data="M7,13 L18,13 M7,17 L18,17 M7,21 L18,21" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.2"/>
             <TextBlock x:Name="Mark" Foreground="{DynamicResource IconOnFillBrush}" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1,6,0,0" Visibility="Collapsed"/>
+<Path x:Name="Zipper" Data="M10,3 L13,3 M13,6 L16,6 M10,9 L13,9 M13,12 L16,12 M13,14 L13,17 M16,21 A3,3 0 1 1 10,21 A3,3 0 1 1 16,21" Stroke="{DynamicResource IconOnFillBrush}" StrokeThickness="1.5" Visibility="Collapsed"/>
           </Grid>
           <Grid x:Name="Folder" Visibility="Collapsed" VerticalAlignment="Center" Height="20">
             <Path Data="M1,2 Q1,0 3,0 L9,0 L12,3 L21,3 Q23,3 23,5 L23,18 Q23,20 21,20 L3,20 Q1,20 1,18 Z" Fill="{DynamicResource FolderIconBrush}"/>
@@ -49,8 +50,8 @@
           <Setter TargetName="Page" Property="Fill" Value="{DynamicResource FolderIconBrush}"/>
           <Setter TargetName="Page" Property="Stroke" Value="{DynamicResource FolderIconBrush}"/>
           <Setter TargetName="Lines" Property="Visibility" Value="Collapsed"/>
-          <Setter TargetName="Mark" Property="Text" Value="≡"/>
-          <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
+          <Setter TargetName="Zipper" Property="Visibility" Value="Visible"/>
+          <Setter TargetName="Mark" Property="Visibility" Value="Collapsed"/>
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>

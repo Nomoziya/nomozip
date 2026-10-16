@@ -9,10 +9,14 @@
     </Grid.RowDefinitions>
     <StackPanel Margin="24,24,24,20">
       <StackPanel Orientation="Horizontal">
-        <Viewbox Width="28" Height="34" Margin="0,0,14,0"><Grid Width="28" Height="34"><Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/><Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/></Grid></Viewbox>
+        <Viewbox Width="28" Height="34" Margin="0,0,14,0">
+          <Grid Width="28" Height="34">
+            <Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/>
+            <Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
+          </Grid>
+        </Viewbox>
         <TextBlock Text="{loc:Text Redesign.CreateArchive}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/>
       </StackPanel>
-      
     </StackPanel>
     <ScrollViewer Grid.Row="1" x:Name="CompressionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
       <Grid x:Name="CompressionLayout">
@@ -46,7 +50,7 @@
                     <TextBlock Text="{loc:Text T_45da2d9c85d1}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
-                <Button Command="{Binding RemoveCompressionSourceCommand}" Margin="0,0,8,4">
+                <Button Command="{Binding RemoveCompressionSourceCommand}" Margin="0,0,8,4" x:Name="CompressionRemoveButton">
                   <StackPanel Orientation="Horizontal">
                     <Path Data="M4,7 L20,7 M8,7 L8,3 L16,3 L16,7 M6,7 L7,25 L17,25 L18,7 M10,11 L10,21 M14,11 L14,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="18" Height="22" Stretch="Uniform" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_a194128b2939}" VerticalAlignment="Center"/>
@@ -55,7 +59,7 @@
                 <TextBlock x:Name="DropHint" Text="{loc:Text Menu.SourceHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
               </WrapPanel>
             </Border>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="40" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="40" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable" SelectionMode="Extended" SelectionUnit="FullRow" PreviewMouseLeftButtonDown="OnSourceSelectionMouseDown">
               <DataGrid.ContextMenu>
                 <ContextMenu x:Name="SourceContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_3514845d4419}">
                   <MenuItem x:Name="SourceAddFilesAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}"/>
@@ -70,6 +74,16 @@
                 </Style>
               </DataGrid.RowStyle>
               <DataGrid.Columns>
+                <DataGridTemplateColumn Width="40" CanUserSort="False">
+                  <DataGridTemplateColumn.Header>
+                    <CheckBox x:Name="SourceSelectAll" IsThreeState="True" Checked="OnSourceSelectAll" Unchecked="OnSourceSelectAll" Margin="0" AutomationProperties.Name="{loc:Text Compression.SelectAllSources}"/>
+                  </DataGridTemplateColumn.Header>
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <CheckBox IsChecked="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=DataGridRow},Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" AutomationProperties.Name="{loc:Text Compression.SelectSource}" ToolTip="{loc:Text Compression.SelectionHint}"/>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="{loc:Text T_d44e9b3d3b31}" Width="*">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -180,140 +194,160 @@
                   </Style>
                 </TextBlock.Style>
               </TextBlock>
-              <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0"><Expander x:Name="AdvancedOptions" Header="{loc:Text Redesign.Advanced}" IsExpanded="True" Margin="0,16,0,12">
-                <StackPanel>
-                  <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto"/>
-                      <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Margin="0,0,8,0" Content="{loc:Text T_5473b9b24a75}" Target="{Binding ElementName=VolumeOptionBox}" Padding="0" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" x:Name="VolumeOptionBox" SelectedIndex="{Binding CompressionVolumeOption}" IsEnabled="{Binding CanSplitCompression}" AutomationProperties.Name="{loc:Text T_a49163724694}" ToolTip="{loc:Text T_b3b8e461c196}">
-                      <ComboBoxItem Content="{loc:Text T_13fa566b385e}"/>
-                      <ComboBoxItem Content="100 MiB"/>
-                      <ComboBoxItem Content="1 GiB"/>
-                      <ComboBoxItem Content="4 GiB"/>
-                      <ComboBoxItem Content="{loc:Text T_4eafa9e925b3}"/>
-                    </ComboBox>
-                  </Grid>
-                  <StackPanel x:Name="CustomVolumePanel">
-                    <StackPanel.Style>
-                      <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding CompressionVolumeOption}" Value="4">
-                            <Setter Property="Visibility" Value="Visible"/>
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </StackPanel.Style>
-                    <Label Content="{loc:Text T_861a9645de18}" Target="{Binding ElementName=VolumeSizeBox}" Padding="0" Margin="0,8,0,8"/>
-                    <Grid>
+              <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0">
+                <Expander x:Name="AdvancedOptions" Header="{loc:Text Redesign.Advanced}" IsExpanded="True" Margin="0,16,0,12">
+                  <StackPanel>
+                    <Grid Margin="0,0,0,8">
                       <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="90"/>
                       </Grid.ColumnDefinitions>
-                      <TextBox x:Name="VolumeSizeBox" Text="{Binding CompressionVolumeCustom,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_9b3b93d7e3fd}"/>
-                      <ComboBox Grid.Column="2" x:Name="VolumeUnitBox" SelectedIndex="{Binding CompressionVolumeUnit}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_a536dcaf5cef}">
-                        <ComboBoxItem Content="MiB"/>
-                        <ComboBoxItem Content="GiB"/>
+                      <Label Margin="0,0,8,0" Content="{loc:Text T_5473b9b24a75}" Target="{Binding ElementName=VolumeOptionBox}" Padding="0" VerticalAlignment="Center"/>
+                      <ComboBox Grid.Column="1" x:Name="VolumeOptionBox" SelectedIndex="{Binding CompressionVolumeOption}" IsEnabled="{Binding CanSplitCompression}" AutomationProperties.Name="{loc:Text T_a49163724694}" ToolTip="{loc:Text T_b3b8e461c196}">
+                        <ComboBoxItem Content="{loc:Text T_13fa566b385e}"/>
+                        <ComboBoxItem Content="100 MiB"/>
+                        <ComboBoxItem Content="1 GiB"/>
+                        <ComboBoxItem Content="4 GiB"/>
+                        <ComboBoxItem Content="{loc:Text T_4eafa9e925b3}"/>
                       </ComboBox>
                     </Grid>
-                    <TextBlock x:Name="VolumeError" Text="{Binding CompressionVolumeError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+                    <StackPanel x:Name="CustomVolumePanel">
+                      <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding CompressionVolumeOption}" Value="4">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </StackPanel.Style>
+                      <Label Content="{loc:Text T_861a9645de18}" Target="{Binding ElementName=VolumeSizeBox}" Padding="0" Margin="0,8,0,8"/>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="8"/>
+                          <ColumnDefinition Width="90"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="VolumeSizeBox" Text="{Binding CompressionVolumeCustom,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_9b3b93d7e3fd}"/>
+                        <ComboBox Grid.Column="2" x:Name="VolumeUnitBox" SelectedIndex="{Binding CompressionVolumeUnit}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_a536dcaf5cef}">
+                          <ComboBoxItem Content="MiB"/>
+                          <ComboBoxItem Content="GiB"/>
+                        </ComboBox>
+                      </Grid>
+                      <TextBlock x:Name="VolumeError" Text="{Binding CompressionVolumeError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding CompressionVolumeHint}">
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding CompressionVolumeHint}" Value="">
+                              <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+                    <CheckBox x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}"/>
+                    <TextBlock Text="{Binding CompressionSfxHint}">
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding CompressionSfxHint}" Value="">
+                              <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Text="{Binding CompressionHint}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
+                    <StackPanel>
+                      <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding CompressionEncrypt}" Value="True">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </StackPanel.Style>
+                      <CheckBox Content="{loc:Text T_6df0322e460d}" IsChecked="{Binding CompressionHeaders}" IsEnabled="{Binding Is7zCompression}"/>
+                    </StackPanel>
                   </StackPanel>
-                  <TextBlock Text="{Binding CompressionVolumeHint}">
-                    <TextBlock.Style>
-                      <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding CompressionVolumeHint}" Value="">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </TextBlock.Style>
-                  </TextBlock>
-                  <CheckBox x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}"/>
-                  <TextBlock Text="{Binding CompressionSfxHint}">
-                    <TextBlock.Style>
-                      <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding CompressionSfxHint}" Value="">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </TextBlock.Style>
-                  </TextBlock>
-                  <TextBlock Text="{Binding CompressionHint}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
-                  <StackPanel>
-                    <StackPanel.Style>
-                      <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding CompressionEncrypt}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </StackPanel.Style>
-                    <CheckBox Content="{loc:Text T_6df0322e460d}" IsChecked="{Binding CompressionHeaders}" IsEnabled="{Binding Is7zCompression}"/>
-                  </StackPanel>
-                </StackPanel>
-              </Expander></Border>
+                </Expander>
+              </Border>
             </StackPanel>
           </ScrollViewer>
         </Border>
       </Grid>
     </ScrollViewer>
-    <Grid Grid.Row="3" x:Name="CompressionFooterLayout"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="FooterSettingsColumn" Width="320"/></Grid.ColumnDefinitions><Border x:Name="CompressionActionsPanel" Grid.Column="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,1,0,0" Padding="24,16,24,16"><Grid x:Name="CompressionActionsRoot">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-      </Grid.RowDefinitions>
-      <WrapPanel HorizontalAlignment="Right" Grid.Row="1">
-        <Button x:Name="CreateButton" Content="{loc:Text T_e185d04bcc5f}" Command="{Binding CreateArchiveCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.Name="{loc:Text T_78deea3a0b97}" MinHeight="44" Margin="0,0,12,8"/>
-        <Button Content="{loc:Text T_2cd0f3be8738}" Click="OnBackFiles" Margin="0,0,8,8">
-          <Button.Style>
-            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding CompressionRunning}" Value="True">
+    <Grid Grid.Row="3" x:Name="CompressionFooterLayout">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition x:Name="FooterSettingsColumn" Width="320"/>
+      </Grid.ColumnDefinitions>
+      <Border x:Name="CompressionActionsPanel" Grid.Column="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,1,0,0" Padding="24,16,24,16">
+        <Grid x:Name="CompressionActionsRoot">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <WrapPanel HorizontalAlignment="Right" Grid.Row="1">
+            <Button x:Name="CreateButton" Content="{loc:Text T_e185d04bcc5f}" Command="{Binding CreateArchiveCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.Name="{loc:Text T_78deea3a0b97}" MinHeight="44" Margin="0,0,12,8"/>
+            <Button Content="{loc:Text T_2cd0f3be8738}" Click="OnBackFiles" Margin="0,0,8,8">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CompressionRunning}" Value="True">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Button.Style>
+            </Button>
+            <Button Content="{loc:Text T_7b9e83a283ae}" Command="{Binding CancelCommand}" Margin="0,0,12,8">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                   <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </Button.Style>
-        </Button>
-        <Button Content="{loc:Text T_7b9e83a283ae}" Command="{Binding CancelCommand}" Margin="0,0,12,8">
-          <Button.Style>
-            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-              <Setter Property="Visibility" Value="Collapsed"/>
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding CompressionRunning}" Value="True">
-                  <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </Button.Style>
-        </Button>
-        <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}" Margin="0,0,0,8"/>
-      </WrapPanel>
-      <ProgressBar Grid.Row="2" Value="{Binding CompressionPercent, Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="6" Margin="0,0,0,8" AutomationProperties.Name="{loc:Text T_317cb00c1275}">
-        <ProgressBar.Style>
-          <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding CompressionRunning}" Value="True">
-                <Setter Property="Visibility" Value="Visible"/>
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </ProgressBar.Style>
-      </ProgressBar>
-      <TextBlock Grid.Row="3" Text="{Binding CompressionMessage}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Style.Triggers><DataTrigger Binding="{Binding CompressionMessage}" Value="{loc:Text T_d576b99c6465}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
-      <TextBlock Text="{Binding CompressionOutput}" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}" Margin="0,0,0,12" Grid.Row="0" HorizontalAlignment="Left" MaxWidth="420"/>
-    </Grid></Border></Grid>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CompressionRunning}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Button.Style>
+            </Button>
+            <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}" Margin="0,0,0,8"/>
+          </WrapPanel>
+          <ProgressBar Grid.Row="2" Value="{Binding CompressionPercent, Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="6" Margin="0,0,0,8" AutomationProperties.Name="{loc:Text T_317cb00c1275}">
+            <ProgressBar.Style>
+              <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CompressionRunning}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </ProgressBar.Style>
+          </ProgressBar>
+          <TextBlock Grid.Row="3" Text="{Binding CompressionMessage}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CompressionMessage}" Value="{loc:Text T_d576b99c6465}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <TextBlock Text="{Binding CompressionOutput}" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}" Margin="0,0,0,12" Grid.Row="0" HorizontalAlignment="Left" MaxWidth="420"/>
+        </Grid>
+      </Border>
+    </Grid>
   </Grid>
 </UserControl>

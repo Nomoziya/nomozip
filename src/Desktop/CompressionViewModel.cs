@@ -58,7 +58,10 @@ public sealed partial class MainViewModel
     public string CompressionVolumeError=>ValidVolumeSize?"":UiText.Get("T_f1a4a993b180");
     public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?UiText.Get("T_e836053f4b78"):"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
-    public string CompressionSourceSummary=>UiText.Format("Compression.SourceCount",CompressionSources.Count);
+    private CompressionSourceRow[] selectedCompressionSources=[];
+    public string CompressionSourceSummary=>UiText.Format("Compression.SourceCount",CompressionSources.Count,selectedCompressionSources.Count(CompressionSources.Contains));
+    internal void SelectCompressionSources(IEnumerable<CompressionSourceRow> rows)
+    {selectedCompressionSources=rows.ToArray();Changed(nameof(CompressionSourceSummary));CommandManager.InvalidateRequerySuggested();}
     public ICommand AddCompressionFilesCommand { get; private set; } = null!;
     public ICommand AddCompressionFolderCommand { get; private set; } = null!;
     public ICommand RemoveCompressionSourceCommand { get; private set; } = null!;
@@ -118,7 +121,12 @@ public sealed partial class MainViewModel
     {
         AddCompressionFilesCommand = new RelayCommand(() => AddCompressionSources(dialogs.SelectCompressionFiles()), () => IsIdle);
         AddCompressionFolderCommand = new RelayCommand(() => { if (dialogs.SelectCompressionFolder() is { } path) AddCompressionSources([path]); }, () => IsIdle);
-        RemoveCompressionSourceCommand = new RelayCommand(() => { if (SelectedCompressionSource is { } item) CompressionSources.Remove(item); }, () => IsIdle && SelectedCompressionSource is not null);
+        RemoveCompressionSourceCommand = new RelayCommand(() =>
+        {
+            var selected=selectedCompressionSources.Where(CompressionSources.Contains).ToArray();
+            if(selected.Length==0 && SelectedCompressionSource is {} focused)selected=[focused];
+            foreach(var item in selected)CompressionSources.Remove(item);
+        }, () => IsIdle && (SelectedCompressionSource is not null || selectedCompressionSources.Any(CompressionSources.Contains)));
         BrowseCompressionOutputCommand = new RelayCommand(() => { if (dialogs.SelectArchiveOutput(CompressionSfx?"sfx":CompressionFormatName) is { } path) CompressionOutput = path; }, () => IsIdle);
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionEncrypt);
         CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && !string.IsNullOrWhiteSpace(CompressionOutputName) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);

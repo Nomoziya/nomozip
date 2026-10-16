@@ -1,24 +1,46 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ArchivePassword.Desktop;
 public partial class CompressionView : UserControl
 {
     private bool narrow;
+    private bool updatingSourceSelection;
     public CompressionView()
     {
         InitializeComponent();
         CompressionViewport.SizeChanged += (_, _) => ArrangePanels(narrow);
         CompressionSourceTable.Loaded += (_, _) => FitSourceColumns();
         CompressionSourceTable.SizeChanged += (_, _) => FitSourceColumns();
+        CompressionSourceTable.SelectionChanged+=(_,_)=>
+        {
+            if(DataContext is MainViewModel model)model.SelectCompressionSources(CompressionSourceTable.SelectedItems.OfType<CompressionSourceRow>());
+            var selected=CompressionSourceTable.SelectedItems.Count;updatingSourceSelection=true;
+            try{SourceSelectAll.IsChecked=selected==0?false:selected==CompressionSourceTable.Items.Count?true:null;}
+            finally{updatingSourceSelection=false;}
+        };
     }
 
     private void FitSourceColumns()
     {
         if(CompressionSourceTable.ActualWidth<=0)return;
-        CompressionSourceTable.Columns[1].Width=110;
-        CompressionSourceTable.Columns[2].Width=120;
-        CompressionSourceTable.Columns[0].Width=Math.Max(130,CompressionSourceTable.ActualWidth-110-120-18);
+        CompressionSourceTable.Columns[0].Width=40;
+        CompressionSourceTable.Columns[2].Width=110;
+        CompressionSourceTable.Columns[3].Width=120;
+        CompressionSourceTable.Columns[1].Width=Math.Max(130,CompressionSourceTable.ActualWidth-40-110-120-18);
+    }
+
+    private void OnSourceSelectAll(object sender,RoutedEventArgs e)
+    {if(updatingSourceSelection)return;if(SourceSelectAll.IsChecked==true)CompressionSourceTable.SelectAll();else CompressionSourceTable.UnselectAll();}
+    private void OnSourceSelectionMouseDown(object sender,MouseButtonEventArgs e)
+    {
+        var element=e.OriginalSource as DependencyObject;
+        while(element is not null && element is not CheckBox && element is not DataGridCell)element=VisualTreeHelper.GetParent(element);
+        if(element is not CheckBox check)return;
+        var parent=VisualTreeHelper.GetParent(check);while(parent is not null && parent is not DataGridRow)parent=VisualTreeHelper.GetParent(parent);
+        if(parent is DataGridRow row){var selected=!row.IsSelected;check.Focus();row.IsSelected=selected;e.Handled=true;}
     }
 
     internal void ArrangePanels(bool isNarrow)
