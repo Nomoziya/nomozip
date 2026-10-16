@@ -151,7 +151,23 @@
           <TextBlock Text="SHA-256" Style="{StaticResource Secondary}" Margin="0,0,0,16"/>
           <TextBlock x:Name="HashSelectedPath" Text="{Binding Selected.Path}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding Selected.Path}" Margin="0,0,0,16"/>
           <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,1" Padding="0,16" Margin="0,0,0,20">
-            <TextBlock Text="{Binding Selected.Status}" FontWeight="SemiBold" AutomationProperties.LiveSetting="Polite"/>
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+              <TextBlock Text="{loc:Text T_6320b4a8722a}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Selected.CalculationState}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+              <TextBlock Grid.Row="1" Text="{loc:Text Hash.ResultLabel}" Margin="0,12,0,0"/>
+              <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Selected.ComparisonResult}" FontWeight="SemiBold" Margin="0,12,0,0" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding Selected.IsMatch}" Value="True"><Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/></DataTrigger>
+                      <DataTrigger Binding="{Binding Selected.IsMismatch}" Value="True"><Setter Property="Foreground" Value="{DynamicResource ErrorBrush}"/></DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+            </Grid>
           </Border>
           <Label Content="{loc:Text T_2e9a859d8486}" Target="{Binding ElementName=HashDigestBox}" Padding="0" Margin="0,0,0,8"/>
           <TextBox x:Name="HashDigestBox" Text="{Binding Selected.Digest,Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="76" FontFamily="Consolas" FontSize="12" AutomationProperties.Name="{loc:Text T_cf5d453b4cbe}" Margin="0,0,0,20"/>
