@@ -15,7 +15,7 @@
 | [安装版 EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.1.0/nomozip-0.1.0-light-setup-win-x64.exe) | 安装或升级，保留密码库与设置 |
 | [便携版 ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.1.0/nomozip-0.1.0-light-win-x64.zip) | 解压到新目录，运行 `ArchivePassword.exe` |
 
-需要 [.NET 10 Windows Desktop Runtime x64](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)，无需安装 SDK。正式版安装包约 2 MB，程序目录约 9 MB，不包含系统共享运行库。
+需要 [.NET 10 Windows Desktop Runtime x64](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)（10.0.12 或更新的 10.0 补丁版），无需安装 SDK。正式版安装包约 2 MB，程序目录约 9 MB，不包含系统共享运行库。
 
 **0.2.0 正在准备发布**；开发候选支持的功能见[后续规划](docs/ROADMAP.md)，不代表上述正式版已支持。`engine-*` 发行仅供程序更新引擎，请下载带 `nomozip` 名称的软件安装包。
 

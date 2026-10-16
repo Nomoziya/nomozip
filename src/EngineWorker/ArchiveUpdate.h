@@ -19,7 +19,7 @@ static json updateArchive(json& request,IInArchive* input,const std::wstring& fo
     std::vector<CreateEntry> entries;std::vector<UInt32> previous;
     for(UInt32 i=0;i<count;++i) if(!removed[i]) {entries.push_back({{},property(input,i,kpidPath).text(),property(input,i,kpidIsDir).boolean(),property(input,i,kpidSize).number(),{}});previous.push_back(i);}
     for(const auto& item:request.at("sourceEntries")) {
-        auto source=fs::absolute(wide(item.at("sourcePath").get<std::string>()));
+        auto source=absoluteWindowsPath(wide(item.at("sourcePath").get<std::string>()));
         auto name=safeRelative(wide(item.at("path").get<std::string>())).wstring();
         if(source==context.archivePath) throw std::runtime_error("invalid_source");
         WIN32_FILE_ATTRIBUTE_DATA attributes{};
@@ -37,7 +37,7 @@ static json updateArchive(json& request,IInArchive* input,const std::wstring& fo
     if(format==L"7z") {values[1].vt=VT_BOOL;values[1].boolVal=request.value("encryptHeaders",false) ? VARIANT_TRUE : VARIANT_FALSE;number=2;}
     else if(context.passwordDefined) {encryption.value.vt=VT_BSTR;encryption.value.bstrVal=SysAllocString(L"AES256");values[1]=encryption.value;number=2;}
     if(properties->SetProperties(names,values,number)!=S_OK) throw std::runtime_error("invalid_compression_options");
-    auto path=fs::absolute(wide(request.at("outputPath").get<std::string>()));
+    auto path=absoluteWindowsPath(wide(request.at("outputPath").get<std::string>()));
     if(path==context.archivePath) throw std::runtime_error("invalid_output");
     HANDLE handle=CreateFileW(path.c_str(),GENERIC_WRITE,0,nullptr,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,nullptr);
     if(handle==INVALID_HANDLE_VALUE) throw std::runtime_error("output_write_failed");

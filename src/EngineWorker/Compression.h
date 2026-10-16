@@ -118,7 +118,7 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
     if (!traditional && request.value("volumeSize", static_cast<UInt64>(0))) return {{"kind","result"},{"status","error"},{"code","format_volumes_unsupported"}};
     std::vector<CreateEntry> entries;
     for (const auto& item : request.at("sourceEntries")) {
-        auto source = fs::absolute(wide(item.at("sourcePath").get<std::string>()));
+        auto source = absoluteWindowsPath(wide(item.at("sourcePath").get<std::string>()));
         auto name = safeRelative(wide(item.at("path").get<std::string>())).wstring();
         WIN32_FILE_ATTRIBUTE_DATA attributes{};
         if (!GetFileAttributesExW(source.c_str(), GetFileExInfoStandard, &attributes) || (attributes.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)) throw std::runtime_error("source_read_failed");
@@ -139,7 +139,7 @@ static json createArchive(json& request, const std::vector<Format>& formats, Cre
     if (formatName == "7z") { values[1].vt = VT_BOOL; values[1].boolVal = context.passwordDefined && request.value("encryptHeaders", true) ? VARIANT_TRUE : VARIANT_FALSE; propertyCount = 2; }
     else if (context.passwordDefined) { names[1] = names[2]; encryption.value.vt = VT_BSTR; encryption.value.bstrVal = SysAllocString(L"AES256"); values[1] = encryption.value; propertyCount = 2; }
     if (formatName != "tar" && properties->SetProperties(names, values, propertyCount) != S_OK) throw std::runtime_error("invalid_compression_options");
-    auto outputPath = fs::absolute(wide(request.at("outputPath").get<std::string>()));
+    auto outputPath = absoluteWindowsPath(wide(request.at("outputPath").get<std::string>()));
     const auto volumeSize=request.value("volumeSize",static_cast<UInt64>(0));VolumeOutputStream* split=nullptr;
     ComPtr<IOutStream> stream;
     if(volumeSize) {split=new VolumeOutputStream(outputPath,volumeSize);stream.ptr=split;}

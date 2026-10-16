@@ -17,6 +17,7 @@
 #include "7zip/Archive/IArchive.h"
 #include "7zip/IPassword.h"
 #include "json.hpp"
+#include "WindowsPaths.h"
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
@@ -196,7 +197,7 @@ public:
             if (relative.has_parent_path() || relative.is_absolute()) return E_ACCESSDENIED;
             HANDLE handle = CreateFileW((context.archivePath.parent_path() / relative).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
             if (handle == INVALID_HANDLE_VALUE) { context.missingVolume = true; return S_FALSE; }
-            auto path=fs::absolute(context.archivePath.parent_path()/relative);
+            auto path=absoluteWindowsPath(context.archivePath.parent_path()/relative);
             if(std::find(context.sourcePaths.begin(),context.sourcePaths.end(),path)==context.sourcePaths.end()) context.sourcePaths.push_back(path);
             *stream = new InputStream(handle); return S_OK;
         } catch (...) { return E_FAIL; }
@@ -373,7 +374,7 @@ static json run(json& request, const wchar_t* dllPath) {
     // discard must acquire the same file before inspecting retained plaintext.
     HANDLE checkpointLease=INVALID_HANDLE_VALUE;
     if(checkpointMode) {
-        const auto output=fs::absolute(wide(request.at("outputPath").get<std::string>()));
+        const auto output=absoluteWindowsPath(wide(request.at("outputPath").get<std::string>()));
         const auto gate=output.parent_path()/L".nomozip-checkpoint-writer";
         checkpointLease=CreateFileW(gate.c_str(),GENERIC_READ|GENERIC_WRITE,0,nullptr,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);
         if(checkpointLease==INVALID_HANDLE_VALUE) return {{"kind","result"},{"status","error"},{"code","checkpoint_busy"}};
@@ -388,7 +389,7 @@ static json run(json& request, const wchar_t* dllPath) {
         if(context.previewLimit==0 || context.previewLimit>8*1024*1024 || !request.contains("selection") || !request["selection"].is_array() || request["selection"].size()!=1)
             return {{"kind","result"},{"status","error"},{"code","invalid_preview"}};
     }
-    context.archivePath = fs::absolute(wide(request.at("archivePath").get<std::string>()));
+    context.archivePath = absoluteWindowsPath(wide(request.at("archivePath").get<std::string>()));
     context.sourcePaths.push_back(context.archivePath);
     if (request.contains("itemPasswords") && !request["itemPasswords"].is_null()) {
         for (auto& entry : request["itemPasswords"]) {
@@ -480,7 +481,7 @@ static json run(json& request, const wchar_t* dllPath) {
         archive->Close();
         return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "success"}, {"format", utf8(usedFormat)}, {"items", items},{"sourcePaths",context.Sources()}};
     }
-    fs::path output = operation == "extract" ? fs::absolute(wide(request.at("outputPath").get<std::string>())) : fs::path();
+    fs::path output = operation == "extract" ? absoluteWindowsPath(wide(request.at("outputPath").get<std::string>())) : fs::path();
     if (operation == "extract") fs::create_directories(output);
     ComPtr<IArchiveExtractCallback> callback;
     auto* extract = new ExtractCallback(context, archive.ptr, output,selective ? &selected : nullptr); callback.ptr = extract;
