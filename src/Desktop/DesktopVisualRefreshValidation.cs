@@ -71,7 +71,8 @@ internal static class DesktopVisualRefreshValidation
                     if (page == 3)
                     {
                         var label = Descendants(window.CompressionPage.SfxBox).OfType<AccessText>().Single();
-                        Check(mode + " compression option retains its complete label", UiText.LanguageCode != "en" || label.ActualHeight >= 28);
+                        var level = Descendants(window.CompressionPage.LevelLabel).OfType<AccessText>().Single();
+                        Check(mode + " compression option and level label remain complete", UiText.LanguageCode != "en" || (label.ActualHeight >= 28 && level.ActualHeight >= 28 && Math.Abs(window.CompressionPage.FormatBox.TranslatePoint(new Point(), window).Y - window.CompressionPage.LevelBox.TranslatePoint(new Point(), window).Y) < 1));
                     }
                 }
             }
