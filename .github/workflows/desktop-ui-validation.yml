@@ -50,23 +50,26 @@ jobs:
         run: |
           ./scripts/build-worker.ps1 -Architecture '${{ matrix.architecture }}'
           ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker
-      - name: Validate both languages and all visual states
-        run: ./scripts/test-visual-refresh.ps1
-      - name: Package the exact tested application
+      - name: Validate redesigned pages and actual archive operations in both languages
         run: |
-          ./scripts/bootstrap-installer.ps1 -Architecture '${{ matrix.architecture }}'
-          git restore --worktree -- engines
-          ./scripts/build-release.ps1 -Architecture '${{ matrix.architecture }}' -ApplicationDirectory artifacts/app -OutputDirectory 'artifacts/ui-package-${{ matrix.architecture }}' -Python python
+          foreach ($taskLanguage in @('zh-CN','en')) {
+            $taskProcess = Start-Process ./artifacts/app/ArchivePassword.exe -ArgumentList @('--validate-redesign',$PWD.Path,$taskLanguage) -WindowStyle Hidden -Wait -PassThru
+            if ($taskProcess.ExitCode -ne 0) { throw "Redesign validation failed: $taskLanguage" }
+            $taskReport = Get-Content "artifacts/ui-redesign/$taskLanguage/report.json" -Raw | ConvertFrom-Json
+            if (-not $taskReport.passed) { throw "Redesign report failed: $taskLanguage" }
+          }
+      - name: Package the exact tested shared-runtime candidate
+        run: |
+          Compress-Archive -Path artifacts/app/* -DestinationPath 'artifacts/nomozip-ui-redesign-${{ matrix.architecture }}.zip'
       - uses: actions/upload-artifact@v7
         with:
           name: ui-${{ matrix.architecture }}-lightweight-candidate
-          path: artifacts/ui-package-${{ matrix.architecture }}/*
+          path: artifacts/nomozip-ui-redesign-${{ matrix.architecture }}.zip
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: ui-${{ matrix.architecture }}-validation-reports
           path: |
-            artifacts/visual-refresh/**/*
-            artifacts/ui-package-*-validation.json
+            artifacts/ui-redesign/**/*
           if-no-files-found: error
