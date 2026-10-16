@@ -32,7 +32,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Shell registration validation failed.' }
 & (Join-Path $PSScriptRoot 'test-shell-modern-prototype.ps1')
 $taskPython = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $taskPython -or $taskPython -like '*WindowsApps*') {
-    $taskPython = 'C:\Users\Nomozi\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+    $taskPython = Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
 }
 if (-not $SkipEngineValidation) {
     & $taskPython (Join-Path $taskRoot 'tests/engine_validation.py')

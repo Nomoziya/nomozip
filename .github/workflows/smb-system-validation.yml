@@ -1,0 +1,43 @@
+name: Isolated SMB system acceptance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smb:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: msys2/setup-msys2@v2
+        id: msys2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc
+      - name: Prepare existing toolchain and shared-runtime product
+        env:
+          TASK_MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+        run: |
+          $env:PATH=(Join-Path $env:TASK_MSYS2_LOCATION 'ucrt64/bin')+';C:\Program Files\7-Zip;'+$env:PATH
+          ./scripts/bootstrap.ps1
+          ./scripts/build.ps1 -Configuration Release -OutputDirectory artifacts/smb-app
+      - name: Exercise real SMB through product CLI on disposable runner
+        run: |
+          $env:DOTNET_ROOT=Join-Path $PWD '.tools/dotnet'
+          ./scripts/test-smb-system.ps1 -ApplicationDirectory (Join-Path $PWD 'artifacts/smb-app')
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: smb-system-acceptance
+          path: artifacts/smb-system-validation.json
+          if-no-files-found: error
+          retention-days: 7
