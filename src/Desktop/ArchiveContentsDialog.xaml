@@ -152,7 +152,7 @@
                     <ColumnDefinition Width="26"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
-                  <loc:FileKindIcon FileName="{Binding Path}" IsDirectory="{Binding Entry.IsDirectory}" Width="22" Height="26" VerticalAlignment="Center"/>
+                  <loc:FileKindIcon FileName="{Binding Path}" IsDirectory="{Binding Entry.Directory}" Width="22" Height="26" VerticalAlignment="Center"/>
                   <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                 </Grid>
               </DataTemplate>
