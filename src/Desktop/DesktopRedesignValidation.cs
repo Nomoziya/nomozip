@@ -191,6 +191,17 @@ internal static class DesktopRedesignValidation
             var entryRow=(DataGridRow)entryTable.ItemContainerGenerator.ContainerFromItem(contents.CurrentRow);
             Keyboard.Focus(VisualDescendants(entryRow).OfType<DataGridCell>().First());await Layout();
             Check("archive workspace focus remains on the selected real entry",entryRow.IsKeyboardFocusWithin && contents.CurrentRow.Path=="cover.png");Capture("actual-soft-browser-keyboard-focus");theme.SetMode("light");
+            theme.SetMode("soft");
+            var moreButton=VisualDescendants(browser).OfType<Button>().Single(value=>value.Name=="EditContentsButton");
+            moreButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Layout();
+            var moreMenu=moreButton.ContextMenu;moreMenu.UpdateLayout();
+            var firstAction=moreMenu.Items.OfType<MenuItem>().First();firstAction.ApplyTemplate();Keyboard.Focus(firstAction);moreMenu.UpdateLayout();
+            var menuIcon=(ContentPresenter)firstAction.Template.FindName("MenuIcon",firstAction);
+            var menuFocus=(Border)firstAction.Template.FindName("ItemFocus",firstAction);
+            Check("archive more menu retains icons shortcut and actual keyboard focus",moreMenu.IsOpen && menuIcon.IsVisible && menuIcon.ActualWidth>=18 && firstAction.InputGestureText=="Ctrl+A" && firstAction.IsKeyboardFocused && ReferenceEquals(menuFocus.BorderBrush,Application.Current.Resources["FocusBrush"]));
+            var popupBitmap=new RenderTargetBitmap((int)Math.Ceiling(moreMenu.ActualWidth),(int)Math.Ceiling(moreMenu.ActualHeight),96,96,PixelFormats.Pbgra32);popupBitmap.Render(moreMenu);
+            var popupEncoder=new PngBitmapEncoder();popupEncoder.Frames.Add(BitmapFrame.Create(popupBitmap));using(var popupFile=File.Create(Path.Combine(folder,"actual-soft-archive-more-menu.png")))popupEncoder.Save(popupFile);
+            moreMenu.IsOpen=false;theme.SetMode("light");
             window.Width=800;window.Height=600;await Layout();
             Check("compact archive resize clears decoded preview",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
             Check("closing preview releases row thumbnails",contents.Rows.All(row=>row.PreviewThumbnail is null));
