@@ -2,18 +2,19 @@
   <Application.Resources>
   <ResourceDictionary>
     <ResourceDictionary.MergedDictionaries><ResourceDictionary Source="ActionMenuResources.xaml"/></ResourceDictionary.MergedDictionaries>
-    <SolidColorBrush x:Key="CanvasBrush" Color="#F3F4F6" />
+    <SolidColorBrush x:Key="CanvasBrush" Color="#F8F9FA" />
     <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="TextBrush" Color="#1F2937" />
-    <SolidColorBrush x:Key="SecondaryBrush" Color="#4B5563" />
-    <SolidColorBrush x:Key="AccentBrush" Color="#1D4ED8" />
+    <SolidColorBrush x:Key="TextBrush" Color="#1E293B" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="#64748B" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#2563EB" />
     <SolidColorBrush x:Key="OnAccentBrush" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="BorderBrush" Color="#6B7280" />
-    <SolidColorBrush x:Key="DividerBrush" Color="#E5E7EB" />
-    <SolidColorBrush x:Key="SelectionBrush" Color="#EFF6FF" />
-    <SolidColorBrush x:Key="SelectionTextBrush" Color="#1D4ED8" />
-    <SolidColorBrush x:Key="FocusBrush" Color="#1D4ED8" />
-    <SolidColorBrush x:Key="ErrorBrush" Color="#B91C1C" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#8491A3" />
+    <SolidColorBrush x:Key="DividerBrush" Color="#E2E8F0" />
+    <SolidColorBrush x:Key="SelectionBrush" Color="#DBEAFE" />
+    <SolidColorBrush x:Key="HoverBrush" Color="#F1F5F9" />
+    <SolidColorBrush x:Key="SelectionTextBrush" Color="#1E40AF" />
+    <SolidColorBrush x:Key="FocusBrush" Color="#3B82F6" />
+    <SolidColorBrush x:Key="ErrorBrush" Color="#DC2626" />
     <Style x:Key="AppWindow" TargetType="Window"><Setter Property="Icon" Value="/ArchivePassword;component/Assets/nomozip.ico"/><Setter Property="local:WindowPlacement.AutoFit" Value="True"/><Setter Property="UseLayoutRounding" Value="True"/><Setter Property="SnapsToDevicePixels" Value="True"/><Setter Property="FontFamily" Value="Segoe UI, Microsoft YaHei"/><Setter Property="FontSize" Value="14"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="Background" Value="{DynamicResource CanvasBrush}"/></Style>
     <Style x:Key="Secondary" TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/><Setter Property="FontSize" Value="13"/><Setter Property="TextWrapping" Value="Wrap"/></Style>
     <Style x:Key="Heading" TargetType="TextBlock"><Setter Property="FontSize" Value="16"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Margin" Value="0,0,0,16"/></Style>
@@ -23,7 +24,7 @@
     <Style TargetType="DataGridColumnHeader"><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}"/><Setter Property="BorderThickness" Value="0,0,0,1"/><Setter Property="Padding" Value="12,8"/><Setter Property="MinHeight" Value="36"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="VerticalContentAlignment" Value="Center"/></Style>
     <Style TargetType="Button">
       <Setter Property="MinHeight" Value="36"/><Setter Property="Padding" Value="16,8"/><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/>
-      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.9"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter Property="Opacity" Value="0.8"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.6"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Grid><Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/></Border><Border x:Name="Overlay" CornerRadius="8" Background="{TemplateBinding Foreground}" Opacity="0" IsHitTestVisible="False"/></Grid><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Overlay" Property="Opacity" Value="0.08"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter TargetName="Overlay" Property="Opacity" Value="0.16"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.6"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
     </Style>
     <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Background" Value="{DynamicResource AccentBrush}"/><Setter Property="Foreground" Value="{DynamicResource OnAccentBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/><Setter Property="FontWeight" Value="SemiBold"/></Style>
     <Style TargetType="TextBox"><Setter Property="CaretBrush" Value="{DynamicResource TextBrush}"/><Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}"/><Setter Property="SelectionTextBrush" Value="{DynamicResource OnAccentBrush}"/><Setter Property="MinHeight" Value="36"/><Setter Property="Padding" Value="8,6"/><Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/></Style>
@@ -69,9 +70,28 @@
         <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageRightCommand" Focusable="False" IsTabStop="False" Opacity="0" Style="{x:Null}"/></Track.IncreaseRepeatButton>
       </Track></ControlTemplate></Setter.Value></Setter>
     </Trigger></Style.Triggers></Style>
-    <Style x:Key="Card" TargetType="Border"><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="CornerRadius" Value="8"/><Setter Property="Padding" Value="20"/></Style>
+    <Style x:Key="Card" TargetType="Border"><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="CornerRadius" Value="12"/><Setter Property="Padding" Value="20"/></Style>
     <Style x:Key="WorkspaceCard" TargetType="Border" BasedOn="{StaticResource Card}"><Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}"/><Setter Property="BorderThickness" Value="1"/></Style>
-    <Style TargetType="DataGrid"><Setter Property="AutoGenerateColumns" Value="False"/><Setter Property="CanUserAddRows" Value="False"/><Setter Property="IsReadOnly" Value="True"/><Setter Property="RowHeight" Value="64"/><Setter Property="HeadersVisibility" Value="Column"/><Setter Property="GridLinesVisibility" Value="Horizontal"/><Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DividerBrush}"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="EnableRowVirtualization" Value="True"/><Setter Property="SelectionMode" Value="Single"/></Style>
+    <Style TargetType="DataGridRow">
+      <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/><Setter Property="SnapsToDevicePixels" Value="True"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="DataGridRow">
+        <Border x:Name="RowSurface" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True" CornerRadius="4" Margin="0,1">
+          <Grid>
+            <DataGridCellsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            <Border x:Name="SelectionBar" Width="3" HorizontalAlignment="Left" Margin="0,8" CornerRadius="0,2,2,0" Background="{DynamicResource AccentBrush}" Visibility="Collapsed" IsHitTestVisible="False"/>
+          </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="RowSurface" Property="Background" Value="{DynamicResource HoverBrush}"/></Trigger>
+          <Trigger Property="IsSelected" Value="True"><Setter TargetName="RowSurface" Property="Background" Value="{DynamicResource SelectionBrush}"/><Setter TargetName="SelectionBar" Property="Visibility" Value="Visible"/><Setter Property="Foreground" Value="{DynamicResource SelectionTextBrush}"/></Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="DataGridCell">
+      <Setter Property="Background" Value="Transparent"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="DataGridCell"><Grid><Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True"><ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/></Border><Border x:Name="CellFocus" BorderBrush="{TemplateBinding Foreground}" BorderThickness="2" CornerRadius="3" Margin="2" Visibility="Collapsed" IsHitTestVisible="False"/></Grid><ControlTemplate.Triggers><Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="CellFocus" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="DataGrid"><Setter Property="AutoGenerateColumns" Value="False"/><Setter Property="CanUserAddRows" Value="False"/><Setter Property="IsReadOnly" Value="True"/><Setter Property="RowHeight" Value="64"/><Setter Property="HeadersVisibility" Value="Column"/><Setter Property="GridLinesVisibility" Value="None"/><Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DividerBrush}"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="EnableRowVirtualization" Value="True"/><Setter Property="SelectionMode" Value="Single"/></Style>
   </ResourceDictionary>
   </Application.Resources>
 </Application>

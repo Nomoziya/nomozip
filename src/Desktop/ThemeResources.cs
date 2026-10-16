@@ -26,10 +26,10 @@ internal sealed class ThemeResources
     private static readonly string[] Keys =
     [
         "CanvasBrush", "SurfaceBrush", "TextBrush", "SecondaryBrush", "BorderBrush", "DividerBrush",
-        "AccentBrush", "OnAccentBrush", "SelectionBrush", "SelectionTextBrush", "FocusBrush", "ErrorBrush"
+        "AccentBrush", "OnAccentBrush", "SelectionBrush", "SelectionTextBrush", "FocusBrush", "ErrorBrush", "HoverBrush"
     ];
     private readonly Dictionary<string, object> defaults;
-    private static readonly string[] DarkColors = ["#111827", "#1F2937", "#F3F4F6", "#CBD5E1", "#94A3B8", "#475569", "#93C5FD", "#111827", "#1E3A5F", "#BFDBFE", "#93C5FD", "#FCA5A5"];
+    private static readonly string[] DarkColors = ["#0F172A", "#1E293B", "#F1F5F9", "#CBD5E1", "#94A3B8", "#475569", "#60A5FA", "#0F172A", "#1E3A5F", "#DBEAFE", "#60A5FA", "#F87171", "#334155"];
     internal void SetMode(string mode)
     {
         if (!AppearancePreferenceStore.IsSupported(mode)) throw new ArgumentException("Unsupported appearance mode.", nameof(mode));
@@ -51,7 +51,7 @@ internal sealed class ThemeResources
         }
         else
         {
-        resources["CanvasBrush"] = resources["SurfaceBrush"] = SystemColors.WindowBrush;
+        resources["CanvasBrush"] = resources["SurfaceBrush"] = resources["HoverBrush"] = SystemColors.WindowBrush;
         resources["TextBrush"] = resources["SecondaryBrush"] = resources["BorderBrush"]
             = resources["DividerBrush"] = resources["FocusBrush"] = resources["ErrorBrush"] = SystemColors.WindowTextBrush;
         resources["AccentBrush"] = resources["SelectionBrush"] = SystemColors.HighlightBrush;

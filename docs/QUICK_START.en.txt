@@ -1,4 +1,4 @@
-nomozip 0.2.0 — lightweight Windows archive tool
+nomozip 0.2.1 — lightweight Windows archive tool
 
 Requires the .NET 10 Windows Desktop Runtime matching this package's architecture
 (10.0.12 or a later 10.0 patch). The SDK is not required. Install the runtime from:

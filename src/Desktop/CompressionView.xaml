@@ -5,8 +5,8 @@
     <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="16" Margin="0,0,0,16"><DockPanel>
       <Button Content="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}" AutomationProperties.Name="{loc:Text T_e8166a5ae76c}" DockPanel.Dock="Left"/>
       <Button Content="{loc:Text T_45da2d9c85d1}" Command="{Binding AddCompressionFolderCommand}" DockPanel.Dock="Left" Margin="12,0,0,0"/>
-      <Button Content="{loc:Text T_a194128b2939}" Command="{Binding RemoveCompressionSourceCommand}" DockPanel.Dock="Right" Margin="12,0,0,0"/>
-      <TextBlock x:Name="DropHint" Text="{loc:Text T_172e96123d51}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="16,0"/>
+
+      <TextBlock x:Name="DropHint" Text="{loc:Text Menu.SourceHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="16,0"/>
     </DockPanel></Border>
     <ScrollViewer Grid.Row="2" x:Name="CompressionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
       <Grid x:Name="CompressionLayout">
@@ -15,8 +15,14 @@
         <Border Style="{StaticResource WorkspaceCard}" Padding="16"><Grid>
           <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
           <TextBlock Text="{loc:Text T_32a49d3fb90e}" Style="{StaticResource Heading}"/>
-          <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="48" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}">
-            <DataGrid.RowStyle><Style TargetType="DataGridRow"><Setter Property="ToolTip" Value="{Binding Path}"/></Style></DataGrid.RowStyle>
+          <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="48" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}">
+            <DataGrid.ContextMenu><ContextMenu x:Name="SourceContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_3514845d4419}">
+              <MenuItem x:Name="SourceAddFilesAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}"/>
+              <MenuItem x:Name="SourceAddFolderAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_45da2d9c85d1}" Command="{Binding AddCompressionFolderCommand}"/>
+              <Separator Style="{StaticResource ActionMenuSeparator}"/>
+              <MenuItem x:Name="SourceRemoveAction" Style="{StaticResource ContextDangerItem}" Header="{loc:Text T_a194128b2939}" InputGestureText="Del" Command="{Binding RemoveCompressionSourceCommand}"/>
+            </ContextMenu></DataGrid.ContextMenu>
+            <DataGrid.RowStyle><Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}"><Setter Property="ToolTip" Value="{Binding Path}"/></Style></DataGrid.RowStyle>
             <DataGrid.Columns><DataGridTextColumn Header="{loc:Text T_d44e9b3d3b31}" Binding="{Binding Name}" Width="*" ElementStyle="{StaticResource TableText}"/><DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" Width="80" ElementStyle="{StaticResource TableText}"/></DataGrid.Columns>
           </DataGrid>
           <TextBlock Grid.Row="1" Text="{loc:Text T_e7a740c073cb}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Margin="16"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CompressionSources.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>

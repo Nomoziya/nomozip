@@ -3121,4 +3121,7 @@ A password is required to validate the archive data.</value>
   <data name="Checkpoint.Found" xml:space="preserve"><value>Tasks with saved progress: {0}. Resume or discard it in Task actions.</value></data>
   <data name="Checkpoint.Checking" xml:space="preserve"><value>Checking source files and saved progress…</value></data>
   <data name="Checkpoint.Error.checkpoint_save_failed" xml:space="preserve"><value>Extraction progress could not be saved. Further writes stopped and previous records were kept. Check free disk space and data-directory access before resuming.</value></data>
+  <data name="Menu.VaultHint" xml:space="preserve"><value>Double-click or press Enter to edit, right-click for more actions, Delete to remove.</value></data>
+  <data name="Menu.SourceHint" xml:space="preserve"><value>Drop content here, or right-click the list to add or remove</value></data>
+  <data name="Menu.ExtractHint" xml:space="preserve"><value>Drop files here, or right-click a task for more actions</value></data>
 </root>

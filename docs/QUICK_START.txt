@@ -1,4 +1,4 @@
-nomozip 0.2.0（Windows x64 / ARM64 正式版）
+nomozip 0.2.1（Windows x64 / ARM64 正式版）
 
 仅提供轻量版，使用与本包架构匹配的 .NET 10 Windows Desktop Runtime（10.0.12 或更高的 10.0 补丁版），无需 SDK。
 安装版：运行对应架构的安装 EXE，按向导为当前用户安装；从开始菜单打开 nomozip。
