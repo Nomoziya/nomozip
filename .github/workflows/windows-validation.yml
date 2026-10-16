@@ -95,6 +95,8 @@ jobs:
         run: ./scripts/follow-official-engine.ps1 -Update
       - name: Build desktop preview
         run: ./scripts/build.ps1 -Configuration Release -SkipWorker
+      - name: Check visual and row input regressions before the full suite
+        run: ./scripts/test-visual-refresh.ps1
       - name: Validate vault, updates and desktop command flows
         run: |
           ./scripts/test.ps1 -SkipEngineValidation
