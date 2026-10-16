@@ -427,8 +427,8 @@ public sealed partial class MainViewModel : ObservableObject
     private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false);
     public void LoadPreview()
     {
-        CompressionSources.Add(new("D:\\Documents\\资料", "文件夹"));
-        CompressionSources.Add(new("D:\\Documents\\说明.txt", "文件"));
+        CompressionSources.Add(new("D:\\Documents\\资料", UiText.Get("T_7c7802d8adae")));
+        CompressionSources.Add(new("D:\\Documents\\说明.txt", UiText.Get("T_39932f24fe11")));
         CompressionOutput = "D:\\Documents\\资料备份.7z";
         CompressionEncrypt = true;
         initializing = false; Changed(nameof(IsIdle));
