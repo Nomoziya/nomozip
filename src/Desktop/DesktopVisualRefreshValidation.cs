@@ -107,11 +107,17 @@ internal static class DesktopVisualRefreshValidation
                     }
                 }
             }
+            // Match the usable client height of an 800x600 decorated window, including its status banner.
+            window.Width = 800; window.MinHeight = 560; window.Height = 560;
+            model.Page = 1; model.Banner = "Layout validation"; await Layout();
+            Check("compact vault with status banner retains a complete first row", window.PasswordTable.ActualHeight >= 96);
+            Capture("compact-vault-banner");
+            model.Banner = ""; window.Height = 760; window.MinHeight = 600; window.Width = 1120; await Layout();
             await CheckRowInput(window, model, Check, Layout);
         }
         catch (Exception error) { checks["exception " + error] = false; }
         finally { theme.Apply(SystemParameters.HighContrast); }
-        var passed = checks.Count == 90 && checks.Values.All(value => value);
+        var passed = checks.Count == 91 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(samples, "report.json"), JsonSerializer.Serialize(new { passed, checks, limitations = "Hidden WPF rendering and UIA do not replace audible Narrator or physical display acceptance." }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;
     }
