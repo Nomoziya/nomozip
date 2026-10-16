@@ -97,12 +97,19 @@ public partial class MainWindow
         vm.SelectedTask = row;
         if(row.Running){var command=row.IsCompression?vm.CancelCommand:vm.ToggleQueuePauseCommand;if(command.CanExecute(null))command.Execute(null);return;}
         if(!vm.IsIdle)return;
+        if(row.Failure is not null){if(row.IsCompression)vm.ShowCompressionTaskResult(row);else if(vm.ShowFailureCommand.CanExecute(null))vm.ShowFailureCommand.Execute(null);return;}
         if (row.Completed)
         {
             vm.OpenTaskOutput(row);
         }
         else if(row.IsCompression)vm.ShowCompressionTaskResult(row);
         else if (vm.PrepareSelectedTaskExtractionCommand.CanExecute(null)) vm.PrepareSelectedTaskExtractionCommand.Execute(null);
+    }
+
+    private void OnTaskMore(object sender,RoutedEventArgs e)
+    {
+        if(sender is not Button {DataContext:ArchiveTaskRow row} button || DataContext is not MainViewModel vm)return;
+        vm.SelectedTask=row;TaskContextMenu.DataContext=vm;TaskContextMenu.PlacementTarget=button;TaskContextMenu.IsOpen=true;
     }
 
     private async Task CloseArchiveAsync()
@@ -118,6 +125,7 @@ public partial class MainWindow
     {
         if (embeddedArchive is null || ActualWidth < 1040) return false;
         ClosePreview(); embeddedPreview = dialog; previewModel = model;
+        if(model.Picture is not null && embeddedModel?.Rows.FirstOrDefault(row=>row.Path==model.EntryPath) is {} previewRow)previewRow.PreviewThumbnail=model.Picture;
         var content = (FrameworkElement)dialog.Content; dialog.Content = null; content.DataContext = model;
         DisableDialogDefaults(content);
         dialog.EmbeddedClose = ClosePreview; PreviewHost.Content = content;
@@ -127,6 +135,7 @@ public partial class MainWindow
     }
     private void ClosePreview()
     {
+        if(embeddedModel is not null)foreach(var row in embeddedModel.Rows)row.PreviewThumbnail=null;
         PreviewHost.Content = null; ArchivePreviewPane.Visibility = Visibility.Collapsed; PreviewColumn.Width = new GridLength(0);
         previewModel?.Clear(); previewModel = null;
         if (embeddedPreview is not null) { embeddedPreview.EmbeddedClose = null; embeddedPreview.Close(); embeddedPreview = null; }
