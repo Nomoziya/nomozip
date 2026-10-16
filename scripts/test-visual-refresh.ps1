@@ -5,5 +5,5 @@ foreach ($taskLanguage in @('zh-CN', 'en')) {
     $taskProcess = Start-Process (Join-Path $ApplicationDirectory 'ArchivePassword.exe') -ArgumentList @('--validate-visual-refresh', $taskRoot, $taskLanguage) -WindowStyle Hidden -Wait -PassThru
     if ($taskProcess.ExitCode -ne 0) { throw "Visual review failed: $taskLanguage" }
     $taskReport = Get-Content (Join-Path $taskRoot "artifacts/visual-refresh/$taskLanguage/report.json") -Raw | ConvertFrom-Json
-    if (-not $taskReport.passed -or @($taskReport.checks.PSObject.Properties).Count -ne 103) { throw "Visual evidence is incomplete: $taskLanguage" }
+    if (-not $taskReport.passed -or @($taskReport.checks.PSObject.Properties).Count -ne 124) { throw "Visual evidence is incomplete: $taskLanguage" }
 }
