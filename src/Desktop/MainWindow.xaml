@@ -495,19 +495,19 @@
                   </Grid>
                   <CheckBox Content="{loc:Text Extraction.CreateFolder}" IsChecked="{Binding CreateArchiveFolder}" IsThreeState="True" ToolTip="{loc:Text Extraction.LayoutHint}" Margin="0,0,0,12" IsEnabled="{Binding CanChangeExtractionLayout}">
                   </CheckBox>
-                  <CheckBox Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}" Margin="0,0,0,14"/>
-                  <Grid Margin="0,0,0,16">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="112"/>
-                      <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="{loc:Text T_5b249813df54}" Target="{Binding ElementName=ConflictBox}" Padding="0" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="ConflictBox" Grid.Column="1" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text T_88bab2e8302f}">
+                  <Grid Margin="0,8,0,20">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="{loc:Text T_5b249813df54}" Target="{Binding ElementName=ConflictBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                    <ComboBox x:Name="ConflictBox" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text T_88bab2e8302f}" Grid.Row="1">
                       <ComboBoxItem Content="{loc:Text T_f00ef1be4493}"/>
                       <ComboBoxItem Content="{loc:Text T_37ef7113fe3c}"/>
                       <ComboBoxItem Content="{loc:Text T_9c6a9194d6f5}"/>
                     </ComboBox>
                   </Grid>
+                  <CheckBox Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}" Margin="0,0,0,20"/>
                   <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
                     <Expander Header="{loc:Text Redesign.Advanced}">
                       <StackPanel Margin="0,12,0,0">
