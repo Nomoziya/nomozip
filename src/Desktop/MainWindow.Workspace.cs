@@ -143,38 +143,38 @@ public partial class MainWindow
         vm.PreparingExtraction = true;
         var accepted = false;
         var taskCount=count ?? vm.Tasks.Count(row=>!row.Completed);var batch=taskCount>1;
-        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get("Redesign.ExtractionOptions"), Width = batch?900:640, Height = batch?620:520, MinWidth = 520, MinHeight = 420, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
+        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get(batch?"Extraction.BatchTitle":"Redesign.ExtractionOptions"), Width = batch?700:640, Height = batch?760:600, MinWidth = 520, MinHeight = 500, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
         var container = new Grid { Margin = new Thickness(24) };
         container.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        var heading=new StackPanel {Margin=new Thickness(0,0,0,24)};
+        var titleRow=new DockPanel {Margin=new Thickness(0,0,0,24)};
+        var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M4,1 L18,1 L25,8 L25,31 L4,31 Z M18,1 L18,8 L25,8 M10,15 L10,23 L7,20 M10,23 L14,19"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
+        icon.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
+        var heading=new StackPanel();titleRow.Children.Add(heading);
         heading.Children.Add(new TextBlock {Text=UiText.Get(batch?"Extraction.BatchTitle":"Redesign.ExtractionOptions"),FontSize=24,FontWeight=FontWeights.SemiBold});
-        var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};heading.Children.Add(scopeLabel);container.Children.Add(heading);
+        var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};scopeLabel.SetResourceReference(TextBlock.ForegroundProperty,"SecondaryBrush");heading.Children.Add(scopeLabel);container.Children.Add(titleRow);
         System.Windows.Data.ListCollectionView? batchView=null;
-        var body=new Grid();body.ColumnDefinitions.Add(new ColumnDefinition {Width=batch?new GridLength(260):new GridLength(0)});body.ColumnDefinitions.Add(new ColumnDefinition());Grid.SetRow(body,1);container.Children.Add(body);
+        var body=new Grid();body.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});body.RowDefinitions.Add(new RowDefinition());Grid.SetRow(body,1);container.Children.Add(body);
         if(batch)
         {
-            var list=new Grid {Margin=new Thickness(0,0,24,0)};list.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});list.RowDefinitions.Add(new RowDefinition());
-            var tools=new WrapPanel {Margin=new Thickness(0,0,0,12)};tools.Children.Add(new Button {Content=UiText.Get("T_309cb972a002"),Command=vm.AddFilesCommand,Margin=new Thickness(0,0,8,0)});tools.Children.Add(new Button {Content=UiText.Get("T_a194128b2939"),Command=vm.RemoveFileCommand});list.Children.Add(tools);
+            var list=new Grid {Margin=new Thickness(0,0,0,18)};list.RowDefinitions.Add(new RowDefinition());list.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});
+            var tools=new WrapPanel {Margin=new Thickness(0,12,0,0)};tools.Children.Add(new Button {Content=UiText.Get("T_309cb972a002"),Command=vm.AddFilesCommand,Style=(Style)FindResource("PrimaryButton"),Margin=new Thickness(0,0,8,0)});tools.Children.Add(new Button {Content=UiText.Get("T_a194128b2939"),Command=vm.RemoveFileCommand});Grid.SetRow(tools,1);list.Children.Add(tools);
             var view=new System.Windows.Data.ListCollectionView(vm.Tasks) {Filter=value=>!((ArchiveTaskRow)value).Completed};
             batchView=view;
-            var table=new DataGrid {ItemsSource=view,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=48,HeadersVisibility=DataGridHeadersVisibility.Column,CanUserAddRows=false};
-            table.Columns.Add(new DataGridTextColumn {Header=UiText.Get("T_d44e9b3d3b31"),Binding=new System.Windows.Data.Binding("Name"),Width=new DataGridLength(1,DataGridLengthUnitType.Star)});table.SelectionChanged+=(_,_)=>vm.SelectedTask=table.SelectedItem as ArchiveTaskRow;table.SelectedItem=vm.Tasks.FirstOrDefault(row=>!row.Completed);Grid.SetRow(table,1);list.Children.Add(table);body.Children.Add(list);
-            table.Columns[0].MinWidth=160;
-            ((DataGridTextColumn)table.Columns[0]).ElementStyle=(Style)FindResource("TableText");
-            void FitBatchColumn(){if(table.ActualWidth>0)table.Columns[0].Width=Math.Max(160,table.ActualWidth-20);}
-            table.Loaded+=(_,_)=>FitBatchColumn();table.SizeChanged+=(_,_)=>FitBatchColumn();
+            var table=new DataGrid {ItemsSource=view,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=44,Height=132,HeadersVisibility=DataGridHeadersVisibility.None,CanUserAddRows=false};
+            var template=(DataTemplate)System.Windows.Markup.XamlReader.Parse("<DataTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'><DockPanel Margin='12,0'><Path DockPanel.Dock='Left' Data='M2,1 L13,1 L19,7 L19,25 L2,25 Z M13,1 L13,7 L19,7 M8,10 L8,20' Stroke='{DynamicResource SecondaryBrush}' StrokeThickness='1.5' Width='18' Height='24' Stretch='Uniform' Margin='0,0,12,0'/><TextBlock Text='{Binding Name}' TextTrimming='CharacterEllipsis' VerticalAlignment='Center'/></DockPanel></DataTemplate>");
+            table.Columns.Add(new DataGridTemplateColumn {Header=UiText.Get("T_d44e9b3d3b31"),CellTemplate=template,Width=new DataGridLength(1,DataGridLengthUnitType.Star),MinWidth=160});table.SelectionChanged+=(_,_)=>vm.SelectedTask=table.SelectedItem as ArchiveTaskRow;table.SelectedItem=vm.Tasks.FirstOrDefault(row=>!row.Completed);list.Children.Add(table);body.Children.Add(list);
         }
         SettingsPanel.Visibility = Visibility.Visible; SettingsPanel.DataContext = vm; SettingsPanel.Margin = new Thickness(0); SettingsPanel.Padding = new Thickness(0); SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-        Grid.SetColumn(SettingsPanel,1);body.Children.Add(SettingsPanel);
+        Grid.SetColumn(SettingsPanel,0);Grid.SetRow(SettingsPanel,1);body.Children.Add(SettingsPanel);
         var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0,16,0,0) };
-        var start = new Button { Content = UiText.Get("Redesign.ConfirmExtraction"), Style = (Style)FindResource("PrimaryButton"), IsDefault = true, Margin = new Thickness(0,0,8,0) };
-        var cancel = new Button { Content = UiText.Get("T_2cd0f3be8738"), IsCancel = true };
-        if(batchView is not null)((System.Collections.Specialized.INotifyCollectionChanged)batchView).CollectionChanged+=(_,_)=>{scopeLabel.Text=UiText.Format("Extraction.BatchCount",batchView.Count);start.IsEnabled=batchView.Count>0;};
+        var start = new Button { Content = UiText.Get("Redesign.ConfirmExtraction")+(batch?" ("+taskCount+")":""), Style = (Style)FindResource("PrimaryButton"), MinWidth=144,MinHeight=44,IsDefault = true, Margin = new Thickness(0,0,12,0) };
+        var cancel = new Button { Content = UiText.Get("T_2cd0f3be8738"), MinWidth=100,MinHeight=44,IsCancel = true };
+        if(batchView is not null)((System.Collections.Specialized.INotifyCollectionChanged)batchView).CollectionChanged+=(_,_)=>{scopeLabel.Text=UiText.Format("Extraction.BatchCount",batchView.Count);start.Content=UiText.Get("Redesign.ConfirmExtraction")+" ("+batchView.Count+")";start.IsEnabled=batchView.Count>0;};
         start.Click += (_, _) => { accepted = true; dialog.DialogResult = true; };
-        actions.Children.Add(start); actions.Children.Add(cancel); Grid.SetRow(actions,2); container.Children.Add(actions);
+        actions.Children.Add(start); actions.Children.Add(cancel);var actionBorder=new Border {BorderThickness=new Thickness(0,1,0,0),Padding=new Thickness(0,4,0,0),Child=actions};actionBorder.SetResourceReference(Border.BorderBrushProperty,"DividerBrush");Grid.SetRow(actionBorder,2);container.Children.Add(actionBorder);
         var surface=new Border {Child=container};surface.SetResourceReference(Border.BackgroundProperty,"SurfaceBrush");dialog.Content=surface;
         try { PrepareExtractionOptionsForValidation?.Invoke(dialog);dialog.ShowDialog(); return accepted; }
-        finally { body.Children.Remove(SettingsPanel);Grid.SetColumn(SettingsPanel,2);SettingsPanel.Visibility = Visibility.Collapsed; SettingsPanel.DataContext = null; vm.PreparingExtraction = false; }
+        finally { body.Children.Remove(SettingsPanel);Grid.SetColumn(SettingsPanel,2);Grid.SetRow(SettingsPanel,0);SettingsPanel.Visibility = Visibility.Collapsed; SettingsPanel.DataContext = null; vm.PreparingExtraction = false; }
     }
     internal void OnPrepareExtraction(object sender, RoutedEventArgs e)
     {
