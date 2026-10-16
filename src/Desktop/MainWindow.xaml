@@ -203,6 +203,18 @@
             <ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/>
             <Button Content="{loc:Text T_309cb972a002}" Margin="0,0,8,4" Command="{Binding AddFilesCommand}" AutomationProperties.Name="{loc:Text T_37b278fca0db}"/>
             <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
+            <Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanPauseQueue}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Button.Style>
+            </Button>
             <Button x:Name="QueueActionsAction" Click="OnQueueActions" IsEnabled="{Binding IsIdle}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text T_ca8d1fab2a53}">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" x:Name="QueueActionsMenu" Padding="4" UseLayoutRounding="True" Placement="Bottom" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" FontFamily="Segoe UI, Microsoft YaHei" FontSize="14" Background="{DynamicResource SurfaceBrush}" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text T_5e541773a96b}">
@@ -378,38 +390,82 @@
                   </DataGrid.Columns>
                 </DataGrid>
                 <Border Grid.Row="2" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="24,16">
-                  <StackPanel>
-                    <TextBlock Text="{Binding SelectedTask.Name}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
-                    <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
-                    <DockPanel Margin="0,12,0,0">
-                      <Button x:Name="FilenameEncodingAction" Content="{loc:Text T_2273a2975767}" Command="{Binding FilenameEncodingCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_a16a60f9eb3b}" Visibility="Collapsed"/>
-                      <Button x:Name="TestResultAction" Content="{loc:Text T_61375d555d33}" Command="{Binding ShowTestResultCommand}" DockPanel.Dock="Right" Margin="12,0,0,0">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,20,0" VerticalAlignment="Center">
+                      <TextBlock Text="{Binding SelectedTask.Name}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
+                      <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
+                      <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
+                      <DockPanel Margin="0,12,0,0">
+                        <Button x:Name="FilenameEncodingAction" Content="{loc:Text T_2273a2975767}" Command="{Binding FilenameEncodingCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_a16a60f9eb3b}" Visibility="Collapsed"/>
+                        <Button x:Name="TestResultAction" Content="{loc:Text T_61375d555d33}" Command="{Binding ShowTestResultCommand}" DockPanel.Dock="Right" Margin="12,0,0,0">
+                          <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                              <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                  <Setter Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Button.Style>
+                        </Button>
+                        <Button x:Name="FailureDetailsAction" Content="{loc:Text T_db5cb5a070e6}" Command="{Binding ShowFailureCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_08d0dacf3299}">
+                          <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                              <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                  <Setter Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
+                              </Style.Triggers>
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </Style>
+                          </Button.Style>
+                        </Button>
+                      </DockPanel>
+                    </StackPanel>
+                    <WrapPanel HorizontalAlignment="Right" Grid.Column="1" VerticalAlignment="Center" Width="300">
+                      <Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="44" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,12,8" Click="OnPrepareExtraction">
                         <Button.Style>
-                          <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                          <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
                             <Style.Triggers>
-                              <Trigger Property="IsEnabled" Value="False">
+                              <DataTrigger Binding="{Binding IsIdle}" Value="False">
                                 <Setter Property="Visibility" Value="Collapsed"/>
-                              </Trigger>
+                              </DataTrigger>
                             </Style.Triggers>
                           </Style>
                         </Button.Style>
                       </Button>
-                      <Button x:Name="FailureDetailsAction" Content="{loc:Text T_db5cb5a070e6}" Command="{Binding ShowFailureCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_08d0dacf3299}">
+                      <Button x:Name="QueueCancelAction" Content="{Binding CancelActionCaption}" Command="{Binding CancelCommand}" Margin="0,0,12,8">
                         <Button.Style>
                           <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
-                              <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                              </Trigger>
+                              <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                              </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                           </Style>
                         </Button.Style>
                       </Button>
-                    </DockPanel>
-                  </StackPanel>
+                      <Button Content="{loc:Text T_32993c531afb}" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8">
+                        <Button.Style>
+                          <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding CanSkipPasswords}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                              </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                          </Style>
+                        </Button.Style>
+                      </Button>
+                      <Button Content="{loc:Text T_f8c32297384e}" Command="{Binding OpenOutputCommand}" Margin="0,0,0,8"/>
+                    </WrapPanel>
+                  </Grid>
                 </Border>
                 <TextBlock Grid.Row="1" Text="{loc:Text T_e5689e06217c}" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
                   <TextBlock.Style>
@@ -1058,12 +1114,16 @@
           </Style>
         </local:CompressionView.Style>
       </local:CompressionView>
-      <Grid Grid.Row="2" Margin="0,16,0,0">
+      <Grid Grid.Row="2">
         <Grid.Style>
           <Style TargetType="Grid">
+            <Setter Property="Margin" Value="0,16,0,0"/>
             <Style.Triggers>
               <DataTrigger Binding="{Binding Page}" Value="3">
                 <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Page}" Value="0">
+                <Setter Property="Margin" Value="0"/>
               </DataTrigger>
             </Style.Triggers>
           </Style>
@@ -1072,66 +1132,6 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <WrapPanel HorizontalAlignment="Right">
-          <WrapPanel.Style>
-            <Style TargetType="WrapPanel">
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding Page}" Value="0">
-                  <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-              </Style.Triggers>
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </Style>
-          </WrapPanel.Style>
-          <Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="44" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,12,8" Click="OnPrepareExtraction">
-            <Button.Style>
-              <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding IsIdle}" Value="False">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                  </DataTrigger>
-                </Style.Triggers>
-              </Style>
-            </Button.Style>
-          </Button>
-          <Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,12,8" ToolTip="{loc:Text T_a7e0c50c814f}">
-            <Button.Style>
-              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding CanPauseQueue}" Value="True">
-                    <Setter Property="Visibility" Value="Visible"/>
-                  </DataTrigger>
-                </Style.Triggers>
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </Style>
-            </Button.Style>
-          </Button>
-          <Button x:Name="QueueCancelAction" Content="{Binding CancelActionCaption}" Command="{Binding CancelCommand}" Margin="0,0,12,8">
-            <Button.Style>
-              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding IsBusy}" Value="True">
-                    <Setter Property="Visibility" Value="Visible"/>
-                  </DataTrigger>
-                </Style.Triggers>
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </Style>
-            </Button.Style>
-          </Button>
-          <Button Content="{loc:Text T_32993c531afb}" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8">
-            <Button.Style>
-              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding CanSkipPasswords}" Value="True">
-                    <Setter Property="Visibility" Value="Visible"/>
-                  </DataTrigger>
-                </Style.Triggers>
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </Style>
-            </Button.Style>
-          </Button>
-          <Button Content="{loc:Text T_f8c32297384e}" Command="{Binding OpenOutputCommand}" Margin="0,0,0,8"/>
-        </WrapPanel>
         <WrapPanel HorizontalAlignment="Right">
           <WrapPanel.Style>
             <Style TargetType="WrapPanel">
