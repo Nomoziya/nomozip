@@ -266,7 +266,7 @@ public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=fals
     public ArchiveEntry Entry=>entry;
     public bool Selected {get=>selected;set=>Set(ref selected,value);}
     public string Path => entry.Path;
-    public string Kind => entry.Directory ? UiText.Get("T_7c7802d8adae") : UiText.Get("T_39932f24fe11");
+    public string Kind => FileKindIcon.TypeDescription(Path,entry.Directory);
     public string SizeText => entry.Directory ? "—" : entry.Size < 1024 ? $"{entry.Size} B" : entry.Size < 1024 * 1024 ? $"{entry.Size / 1024.0:0.#} KB" : entry.Size < 1024ul * 1024 * 1024 ? $"{entry.Size / (1024.0 * 1024):0.#} MB" : $"{entry.Size / (1024.0 * 1024 * 1024):0.#} GB";
     public string EncryptionText => entry.Directory?"—":entry.Encrypted ? UiText.Get("T_b66975fbd35f") : UiText.Get("T_7c568abbd672");
 }

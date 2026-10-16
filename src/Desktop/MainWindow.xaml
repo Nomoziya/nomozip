@@ -258,7 +258,7 @@
                 <DockPanel Margin="24,8,24,12" Visibility="Collapsed">
                   <TextBlock Text="{loc:Text T_8f10dc147500}" Style="{StaticResource Heading}" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                 </DockPanel>
-                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="60">
+                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="56">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
                       <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}"/>
@@ -627,7 +627,7 @@
         </Border>
         <Border Grid.Row="2" Style="{StaticResource WorkspaceCard}" Padding="0" Grid.Column="0" Margin="0">
           <Grid>
-            <DataGrid x:Name="PasswordTable" ItemsSource="{Binding PasswordRows}" SelectedItem="{Binding SelectedPassword}" RowHeight="52" AutomationProperties.Name="{loc:Text T_8ef472040a2a}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.HelpText="{loc:Text Menu.VaultHint}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding EditPasswordCommand}" local:RowActions.DeleteCommand="{Binding DeletePasswordCommand}">
+            <DataGrid x:Name="PasswordTable" ItemsSource="{Binding PasswordRows}" SelectedItem="{Binding SelectedPassword}" RowHeight="44" AutomationProperties.Name="{loc:Text T_8ef472040a2a}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.HelpText="{loc:Text Menu.VaultHint}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding EditPasswordCommand}" local:RowActions.DeleteCommand="{Binding DeletePasswordCommand}">
               <DataGrid.ContextMenu>
                 <ContextMenu x:Name="PasswordContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_9b54fb7636af}">
                   <MenuItem x:Name="PasswordEditAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_b140c4f0fe5a}" InputGestureText="Enter" Command="{Binding EditPasswordCommand}"/>

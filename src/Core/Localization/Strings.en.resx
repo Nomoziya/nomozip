@@ -3192,4 +3192,10 @@ A password is required to validate the archive data.</value>
 <data name="Hash.ResultLabel" xml:space="preserve"><value>Result</value></data>
   <data name="Preview.ImageTitle" xml:space="preserve"><value>Image preview</value></data>
   <data name="Preview.Dimensions" xml:space="preserve"><value>Dimensions</value></data>
+  <data name="FileType.Text" xml:space="preserve"><value>Text document</value></data>
+  <data name="FileType.Image" xml:space="preserve"><value>{0} image</value></data>
+  <data name="FileType.Pdf" xml:space="preserve"><value>PDF document</value></data>
+  <data name="FileType.Sheet" xml:space="preserve"><value>{0} sheet</value></data>
+  <data name="FileType.Archive" xml:space="preserve"><value>{0} archive</value></data>
+  <data name="Compression.SourceCount" xml:space="preserve"><value>{0} items</value></data>
 </root>

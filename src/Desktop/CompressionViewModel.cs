@@ -11,7 +11,7 @@ public sealed record CompressionSourceRow(string Path, string? PreviewKind = nul
     public string Name => System.IO.Path.GetFileName(System.IO.Path.TrimEndingDirectorySeparator(Path));
     public bool IsDirectory=>PreviewKind==UiText.Get("T_7c7802d8adae") || Directory.Exists(Path);
     public string SizeText {get {try {var size=IsDirectory?-1:new FileInfo(Path).Length;return size<0?"—":size<1024?$"{size} B":size<1048576?$"{size/1024.0:0.#} KB":$"{size/1048576.0:0.#} MB";}catch(Exception error) when(error is IOException or UnauthorizedAccessException) {return "—";}}}
-    public string Kind => PreviewKind ?? (Directory.Exists(Path) ? UiText.Get("T_7c7802d8adae") : UiText.Get("T_39932f24fe11"));
+    public string Kind => FileKindIcon.TypeDescription(Path,IsDirectory);
 }
 public sealed partial class MainViewModel
 {
@@ -58,6 +58,7 @@ public sealed partial class MainViewModel
     public string CompressionVolumeError=>ValidVolumeSize?"":UiText.Get("T_f1a4a993b180");
     public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?UiText.Get("T_e836053f4b78"):"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
+    public string CompressionSourceSummary=>UiText.Format("Compression.SourceCount",CompressionSources.Count);
     public ICommand AddCompressionFilesCommand { get; private set; } = null!;
     public ICommand AddCompressionFolderCommand { get; private set; } = null!;
     public ICommand RemoveCompressionSourceCommand { get; private set; } = null!;
@@ -122,7 +123,7 @@ public sealed partial class MainViewModel
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionEncrypt);
         CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && !string.IsNullOrWhiteSpace(CompressionOutputName) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
         OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
-        CompressionSources.CollectionChanged += (_, _) => CompressionCapabilitiesChanged();
+        CompressionSources.CollectionChanged += (_, _) => {CompressionCapabilitiesChanged();Changed(nameof(CompressionSourceSummary));};
     }
     public void AddCompressionSources(IEnumerable<string> paths)
     {
