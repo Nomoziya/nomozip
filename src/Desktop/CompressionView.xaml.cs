@@ -17,10 +17,15 @@ public partial class CompressionView : UserControl
         CompressionSourceTable.SelectionChanged+=(_,_)=>
         {
             if(DataContext is MainViewModel model)model.SelectCompressionSources(CompressionSourceTable.SelectedItems.OfType<CompressionSourceRow>());
-            var selected=CompressionSourceTable.SelectedItems.Count;updatingSourceSelection=true;
-            try{SourceSelectAll.IsChecked=selected==0?false:selected==CompressionSourceTable.Items.Count?true:null;}
-            finally{updatingSourceSelection=false;}
+            RefreshSelectionHeader();
         };
+        ((System.Collections.Specialized.INotifyCollectionChanged)CompressionSourceTable.Items).CollectionChanged+=(_,_)=>RefreshSelectionHeader();
+    }
+    private void RefreshSelectionHeader()
+    {
+        var selected=CompressionSourceTable.SelectedItems.Count;updatingSourceSelection=true;
+        try{SourceSelectAll.IsChecked=selected==0?false:selected==CompressionSourceTable.Items.Count?true:null;}
+        finally{updatingSourceSelection=false;}
     }
 
     private void FitSourceColumns()
