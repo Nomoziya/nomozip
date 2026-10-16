@@ -53,7 +53,7 @@
             <TextBlock x:Name="SettingsNavigationText" Text="{loc:Text T_df3d58c7d84b}" VerticalAlignment="Center"/>
           </StackPanel>
         </Button>
-        <ListBox x:Name="Navigation" Foreground="{DynamicResource TextBrush}" SelectedIndex="{Binding NavigationIndex}" BorderThickness="0" Background="Transparent" AutomationProperties.Name="{loc:Text T_968608e4ff51}" VerticalAlignment="Top">
+        <ListBox x:Name="Navigation" Foreground="{DynamicResource TextBrush}" SelectedIndex="{Binding NavigationIndex}" BorderThickness="0" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" AutomationProperties.Name="{loc:Text T_968608e4ff51}" VerticalAlignment="Top">
           <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
               <Setter Property="Padding" Value="14,14"/>

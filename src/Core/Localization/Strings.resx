@@ -3134,4 +3134,35 @@
 <data name="Redesign.ArchiveName" xml:space="preserve"><value>文件名</value></data>
 <data name="Redesign.AddForCompression" xml:space="preserve"><value>添加文件以压缩</value></data>
 <data name="Redesign.PasswordNotSet" xml:space="preserve"><value>未设置</value></data>
+  <data name="Conflict.Title" xml:space="preserve"><value>同名文件</value></data>
+  <data name="Conflict.Description" xml:space="preserve"><value>目标位置已存在同名文件，请选择要执行的操作。</value></data>
+  <data name="Conflict.Existing" xml:space="preserve"><value>现有文件（目标位置）</value></data>
+  <data name="Conflict.Incoming" xml:space="preserve"><value>压缩包中的文件</value></data>
+  <data name="Conflict.ApplyAll" xml:space="preserve"><value>对本任务后续冲突应用此选择</value></data>
+  <data name="Conflict.NewName" xml:space="preserve"><value>新文件名</value></data>
+  <data name="Conflict.Replace" xml:space="preserve"><value>替换</value></data>
+  <data name="Conflict.Skip" xml:space="preserve"><value>跳过</value></data>
+  <data name="Conflict.Rename" xml:space="preserve"><value>重命名</value></data>
+  <data name="Conflict.Cancel" xml:space="preserve"><value>取消此任务</value></data>
+  <data name="Conflict.FileDetails" xml:space="preserve"><value>{0} 字节 · {1}</value></data>
+  <data name="Conflict.Directory" xml:space="preserve"><value>此位置是文件夹</value></data>
+  <data name="Conflict.InvalidName" xml:space="preserve"><value>请输入有效的文件名，不能包含路径或保留名称。</value></data>
+  <data name="Conflict.NameExists" xml:space="preserve"><value>此名称已被占用，请换一个名称。</value></data>
+  <data name="TextEdit.Title" xml:space="preserve"><value>编辑归档中的文件</value></data>
+  <data name="TextEdit.WriteBackTitle" xml:space="preserve"><value>写回更改</value></data>
+  <data name="TextEdit.Details" xml:space="preserve"><value>大小：{0} 字节 · {1}</value></data>
+  <data name="TextEdit.ChangedDetails" xml:space="preserve"><value>已修改 · {0} 字节（原始 {1} 字节）· {2}</value></data>
+  <data name="TextEdit.Explanation" xml:space="preserve"><value>将创建临时文本副本；编辑后需确认写回压缩包。原编码将保留，取消时清理副本。</value></data>
+  <data name="TextEdit.WriteBackExplanation" xml:space="preserve"><value>写回将替换压缩包中的对应文件。完成校验后保存原包备份；备份也包含原有文件内容。</value></data>
+  <data name="TextEdit.WriteBack" xml:space="preserve"><value>写回压缩包</value></data>
+  <data name="TextEdit.EditCopy" xml:space="preserve"><value>编辑临时副本</value></data>
+  <data name="TextEdit.Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="TextEdit.Discard" xml:space="preserve"><value>放弃更改</value></data>
+  <data name="TextEdit.EditorTitle" xml:space="preserve"><value>编辑临时文本副本</value></data>
+  <data name="TextEdit.Encoding" xml:space="preserve"><value>{0} · 保留原编码 · 仅确认写回后更新压缩包</value></data>
+  <data name="TextEdit.Modified" xml:space="preserve"><value>已修改，尚未写回</value></data>
+  <data name="TextEdit.Unchanged" xml:space="preserve"><value>尚未修改</value></data>
+  <data name="TextEdit.TooLarge" xml:space="preserve"><value>文本超过 1 MiB，无法写回。</value></data>
+  <data name="TextEdit.Supported" xml:space="preserve"><value>支持不超过 1 MiB 的可预览文本；其他文件可使用“替换文件”。</value></data>
+  <data name="TextEdit.Discarded" xml:space="preserve"><value>已放弃临时更改，原压缩包保持不变。</value></data>
 </root>

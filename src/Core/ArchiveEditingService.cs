@@ -35,7 +35,7 @@ public sealed class ArchiveEditingService(IArchiveEngine engine,IArchiveEditor e
     }
     public async Task<ArchiveEditOutcome> EditAsync(string archive,IReadOnlyList<ArchiveEntry> snapshot,IReadOnlyList<uint> removed,
         IReadOnlyList<CompressionEntry> additions,bool autoTry,Func<EngineResult,Task<PasswordPromptResponse?>> askPassword,
-        IProgress<TaskUpdate>? progress=null,CancellationToken token=default)
+        IProgress<TaskUpdate>? progress=null,CancellationToken token=default,string? expectedArchiveSha256=null)
     {
         string? temporary=null;FileStream? sourceLock=null;
         ArchiveEditOutcome Failure(string code)=>new(new EngineResult {Code=code},snapshot);
@@ -45,6 +45,7 @@ public sealed class ArchiveEditingService(IArchiveEngine engine,IArchiveEditor e
             if(VolumeCompressionService.IsVolumePath(archive)) return Failure("archive_edit_container_read_only");
             // Block writers throughout verification and creation. Release only for atomic replacement.
             sourceLock=new FileStream(archive,FileMode.Open,FileAccess.Read,FileShare.Read);
+            if(expectedArchiveSha256 is not null && !Convert.ToHexString(await System.Security.Cryptography.SHA256.HashDataAsync(sourceLock,token)).Equals(expectedArchiveSha256,StringComparison.OrdinalIgnoreCase)) return Failure("selection_changed");
             var verified=await new ArchiveVerificationService(engine,candidates).VerifyAsync(archive,autoTry,askPassword,progress,token);
             if(!verified.Engine.IsSuccess) return new(verified.Engine,snapshot,Warning:verified.Warning);
             var listed=await engine.ListAsync(archive,verified.Secret,token);

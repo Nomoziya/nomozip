@@ -3134,4 +3134,35 @@ A password is required to validate the archive data.</value>
 <data name="Redesign.ArchiveName" xml:space="preserve"><value>File name</value></data>
 <data name="Redesign.AddForCompression" xml:space="preserve"><value>Add files to compress</value></data>
 <data name="Redesign.PasswordNotSet" xml:space="preserve"><value>Not set</value></data>
+  <data name="Conflict.Title" xml:space="preserve"><value>File already exists</value></data>
+  <data name="Conflict.Description" xml:space="preserve"><value>A file with this name already exists. Choose what to do.</value></data>
+  <data name="Conflict.Existing" xml:space="preserve"><value>Existing file (destination)</value></data>
+  <data name="Conflict.Incoming" xml:space="preserve"><value>File from archive</value></data>
+  <data name="Conflict.ApplyAll" xml:space="preserve"><value>Apply this choice to remaining conflicts in this task</value></data>
+  <data name="Conflict.NewName" xml:space="preserve"><value>New filename</value></data>
+  <data name="Conflict.Replace" xml:space="preserve"><value>Replace</value></data>
+  <data name="Conflict.Skip" xml:space="preserve"><value>Skip</value></data>
+  <data name="Conflict.Rename" xml:space="preserve"><value>Rename</value></data>
+  <data name="Conflict.Cancel" xml:space="preserve"><value>Cancel task</value></data>
+  <data name="Conflict.FileDetails" xml:space="preserve"><value>{0} bytes · {1}</value></data>
+  <data name="Conflict.Directory" xml:space="preserve"><value>This location is a folder</value></data>
+  <data name="Conflict.InvalidName" xml:space="preserve"><value>Enter a valid filename without a path or reserved name.</value></data>
+  <data name="Conflict.NameExists" xml:space="preserve"><value>This name is already in use. Choose another name.</value></data>
+  <data name="TextEdit.Title" xml:space="preserve"><value>Edit a file in the archive</value></data>
+  <data name="TextEdit.WriteBackTitle" xml:space="preserve"><value>Write back changes</value></data>
+  <data name="TextEdit.Details" xml:space="preserve"><value>Size: {0} bytes · {1}</value></data>
+  <data name="TextEdit.ChangedDetails" xml:space="preserve"><value>Modified · {0} bytes (original {1} bytes) · {2}</value></data>
+  <data name="TextEdit.Explanation" xml:space="preserve"><value>A temporary text copy will be created. Confirm after editing to write it back. Encoding is preserved; cancelling removes the copy.</value></data>
+  <data name="TextEdit.WriteBackExplanation" xml:space="preserve"><value>Writing back replaces this file in the archive. After validation, the original archive is kept as a backup, including its original contents.</value></data>
+  <data name="TextEdit.WriteBack" xml:space="preserve"><value>Write back to archive</value></data>
+  <data name="TextEdit.EditCopy" xml:space="preserve"><value>Edit temporary copy</value></data>
+  <data name="TextEdit.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="TextEdit.Discard" xml:space="preserve"><value>Discard changes</value></data>
+  <data name="TextEdit.EditorTitle" xml:space="preserve"><value>Edit temporary text copy</value></data>
+  <data name="TextEdit.Encoding" xml:space="preserve"><value>{0} · Original encoding preserved · Archive changes only after confirmation</value></data>
+  <data name="TextEdit.Modified" xml:space="preserve"><value>Modified, not written back</value></data>
+  <data name="TextEdit.Unchanged" xml:space="preserve"><value>No changes yet</value></data>
+  <data name="TextEdit.TooLarge" xml:space="preserve"><value>Text exceeds the 1 MiB editing limit.</value></data>
+  <data name="TextEdit.Supported" xml:space="preserve"><value>Supports previewable text up to 1 MiB. Use Replace for other files.</value></data>
+  <data name="TextEdit.Discarded" xml:space="preserve"><value>Temporary changes discarded; the original archive is unchanged.</value></data>
 </root>

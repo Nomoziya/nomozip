@@ -51,10 +51,12 @@ public sealed class ArchiveContentsViewModel : ObservableObject
             try
             {
                 if(!ClearDrag()) return;
-                var outcome=await edit!(action,this.items,allRows.Any(row=>row.Selected)?SelectedEntries:[],new Progress<string>(value=>OperationMessage=value));
+                var outcome=await edit!(action,this.items,action==ArchiveEditAction.EditText?[CurrentRow!.Entry]:allRows.Any(row=>row.Selected)?SelectedEntries:[],new Progress<string>(value=>OperationMessage=value));
                 if(outcome?.Engine.IsSuccess==true)
                 {
+                    var currentPath=CurrentRow?.Path;
                     this.items=outcome.Items;allRows=this.items.Select(entry=>new ArchiveContentRow(entry)).ToArray();AttachRows();FilterRows();
+                    CurrentRow=allRows.FirstOrDefault(row=>row.Path==currentPath);
                     Changed(nameof(Summary));SelectionChanged();
                     OutputPath=Path.GetDirectoryName(archivePath)!;
                     OperationMessage=UiText.Get("T_449c0abb4f19")+outcome.BackupPath;
@@ -66,6 +68,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         AddFolderCommand=EditingCommand(ArchiveEditAction.AddFolder,()=>true);
         DeleteSelectedCommand=EditingCommand(ArchiveEditAction.Delete,()=>allRows.Any(row=>row.Selected));
         ReplaceSelectedCommand=EditingCommand(ArchiveEditAction.Replace,()=>allRows.Count(row=>row.Selected)==1 && allRows.Single(row=>row.Selected).Entry.Directory==false);
+        EditTextCommand=EditingCommand(ArchiveEditAction.EditText,()=>CurrentRow is not null && ArchivePreviewPolicy.Kind(CurrentRow.Path)=="text" && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
     }
     private void AttachRows() {foreach(var row in allRows) row.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(ArchiveContentRow.Selected) && !selecting) SelectionChanged();};}
     private void FilterRows() {Rows.Clear();foreach(var row in allRows.Where(row=>row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase))) Rows.Add(row);}
@@ -75,6 +78,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ICommand AddFolderCommand {get;}
     public ICommand DeleteSelectedCommand {get;}
     public ICommand ReplaceSelectedCommand {get;}
+    public ICommand EditTextCommand {get;}
     public ICommand PrepareDragCommand {get;}
     public bool CanDrag=>prepareDrag is not null && !IsWorking && (allRows.Any(row=>row.Selected) || CurrentRow is not null);
     public bool ClearDrag()
@@ -158,7 +162,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary)); Changed(nameof(VisibleSelection)); } } }
     public string Summary => UiText.Format("T_55f9d9c65be9", Rows.Count, allRows.Count, items.Count(value => !value.Directory), items.Count(value => value.Directory));
 }
-public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace}
+public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace,EditText}
 
 public sealed class ArchiveContentRow(ArchiveEntry entry) : ObservableObject
 {

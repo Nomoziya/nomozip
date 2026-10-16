@@ -6,7 +6,7 @@ namespace ArchivePassword.Core;
 // Deliberately contains no password, vault identifier, or decoder state.
 public sealed record CheckpointBinding(string EngineVersion, string EngineSha256, string Architecture, int FilenameCodePage);
 public sealed record CheckpointSource(string Path, long Length, string Sha256);
-public sealed record CheckpointReceipt(uint Index, long Length, string Sha256, string State = "staged");
+public sealed record CheckpointReceipt(uint Index, long Length, string Sha256, string State = "staged", string? TargetPath = null);
 public sealed record CheckpointRecord(int Version, Guid Id, string ArchivePath, string Destination,
     CheckpointBinding Binding, IReadOnlyList<CheckpointSource> Sources, IReadOnlyList<ArchiveEntry> Entries,
     IReadOnlyList<CheckpointReceipt> Receipts, DateTimeOffset Created, string Phase = "extracting", Guid Journal = default);
@@ -163,7 +163,13 @@ public sealed class ExtractionCheckpointStore(string root)
             indexed.TryGetValue(receipt.Index,out var entry);
             if (entry is null || receipt.Length < 0 || (!entry.Directory && ((ulong)receipt.Length != entry.Size || !HashValid(receipt.Sha256)))
                 || receipt.State is not ("staged" or "intent" or "delivered" or "skipped")) throw new CheckpointException("checkpoint_invalid");
+            if(receipt.TargetPath is not null && (entry.Directory || !ConflictFileNames.IsValid(Path.GetFileName(Relative(receipt.TargetPath)))
+                || !string.Equals(Path.GetDirectoryName(Relative(entry.Path)),Path.GetDirectoryName(Relative(receipt.TargetPath)),StringComparison.OrdinalIgnoreCase)))
+                throw new CheckpointException("checkpoint_invalid");
         }
+        var renamed=record.Receipts.Where(receipt=>receipt.TargetPath is not null).ToDictionary(receipt=>receipt.Index,receipt=>receipt.TargetPath!);
+        var targets=record.Entries.Select(entry=>Relative(renamed.GetValueOrDefault(entry.Index) ?? entry.Path));
+        if(targets.Distinct(StringComparer.OrdinalIgnoreCase).Count()!=record.Entries.Count) throw new CheckpointException("checkpoint_invalid");
     }
 
     internal static bool HashValid(string? value) => value is { Length: 64 } && value.All(Uri.IsHexDigit);
@@ -245,7 +251,8 @@ public sealed class ExtractionCheckpointSession : IAsyncDisposable
     public void BeginExtraction() { writer?.Dispose(); writer = null; }
     public void EndExtraction() => OwnWriter();
     public string Source(ArchiveEntry entry) => SafePath(StagingPath, entry.Path);
-    public string Target(ArchiveEntry entry) => SafePath(record.Destination, entry.Path);
+    public string DeliveryTarget(string source) => Target(files[Path.GetRelativePath(StagingPath,source)]);
+    public string Target(ArchiveEntry entry) => SafePath(record.Destination, receipts.GetValueOrDefault(entry.Index)?.TargetPath ?? entry.Path);
     private static string SafePath(string root, string relative)
     {
         var path = Path.Combine(root, ExtractionCheckpointStore.Relative(relative));
@@ -336,14 +343,15 @@ public sealed class ExtractionCheckpointSession : IAsyncDisposable
         }
         await AppendAsync(receipt,token);
     }
-    public Task SetIntentAsync(string source, ExistingFilePolicy policy, CancellationToken token)
+    public Task SetIntentAsync(string source, ExistingFilePolicy policy, CancellationToken token, string? target=null)
     {
         var entry=files[Path.GetRelativePath(StagingPath,source)];
-        return AppendAsync(receipts[entry.Index] with {State=policy==ExistingFilePolicy.Skip?"skipped":"intent"},token);
+        var relative=target is null?null:ExtractionCheckpointStore.Relative(Path.GetRelativePath(record.Destination,target));
+        return AppendAsync(receipts[entry.Index] with {State=policy==ExistingFilePolicy.Skip?"skipped":"intent",TargetPath=relative},token);
     }
-    public Task SetDeliveredAsync(string target, CancellationToken token)
+    public Task SetDeliveredAsync(string target, CancellationToken token, string? source=null)
     {
-        var entry=files[Path.GetRelativePath(record.Destination,target)];
+        var entry=source is null?files[Path.GetRelativePath(record.Destination,target)]:files[Path.GetRelativePath(StagingPath,source)];
         return AppendAsync(receipts[entry.Index] with {State="delivered"},token);
     }
     public async Task<FileStream> VerifyForDeliveryAsync(string source,CancellationToken token)

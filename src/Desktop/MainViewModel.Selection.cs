@@ -21,7 +21,8 @@ public sealed partial class MainViewModel
                 failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,vaultAvailable,cancellation.Token,previousFailure:failure),
                 path=>Task.FromResult(ConflictPolicy==1?ExistingFilePolicy.Skip:ConflictPolicy==2?ExistingFilePolicy.Replace:dialogs.ResolveConflict(path)),
                 new Progress<TaskUpdate>(value=>{status.Report(value.Message);task.Status=value.Message;Footer=UiText.Format("Common.TaskMessage", task.Name, value.Message);CanSkipPasswords=value.State=="password";if(value.Progress is {} progress){task.IsIndeterminate=progress.Total==0;task.Percent=progress.Total==0?0:Math.Min(100,progress.Completed*100.0/progress.Total);}}),
-                cancellation.Token,skipPasswords.Token,resolve,selection);
+                cancellation.Token,skipPasswords.Token,resolve,selection,
+                resolveFileConflict:conflict=>Task.FromResult(ConflictPolicy==1?new ExistingFileDecision(ExistingFilePolicy.Skip):ConflictPolicy==2?new ExistingFileDecision(ExistingFilePolicy.Replace):dialogs.ResolveFileConflict(conflict)));
             var message=result.Engine.IsSuccess?UiText.Format("T_0e5e1daffc91", selection.Count):result.Engine.Status=="cancelled"?UiText.Get("T_cf8aefc70fc9"):result.Engine.Code is "selection_changed" or "invalid_selection"?UiText.Get("T_67c260d2140d"):ErrorText(result.Engine.Code);
             status.Report(message);Footer=UiText.Format("Common.TaskMessage", task.Name, message);
             if(result.Warning is not null) Banner=result.Warning;

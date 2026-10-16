@@ -11,6 +11,28 @@ public sealed partial class MainViewModel
         cancellation?.Dispose();cancellation=new CancellationTokenSource();var token=cancellation.Token;
         try
         {
+            ArchiveEditOutcome? outcome;
+            if(action==ArchiveEditAction.EditText)
+            {
+                if(selection.Count!=1) return null;
+                var prompts=0;
+                Task<PasswordPromptResponse?> Ask(EngineResult failure)=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,false,token,previousFailure:failure,testing:true);
+                var progress=new Progress<TaskUpdate>(value=>status.Report(value.Message));
+                var start=await new ArchiveTextEditingService(client,client,new PasswordCandidateProvider(vault),Path.Combine(dataDirectory,"edit-temp")).BeginAsync(task.Path,selection[0],AutoTry,Ask,progress,token);
+                if(start.Warning is not null) Banner=start.Warning;
+                using var session=start.Session;
+                if(session is null) outcome=new(start.Engine,snapshot);
+                else
+                {
+                    if(!dialogs.ConfirmTextEdit(session.Entry,false,session.EncodingName)) return null;
+                    var text=dialogs.EditTextCopy(session);
+                    if(text is null || text==session.OriginalText) {status.Report(UiText.Get("TextEdit.Discarded"));return null;}
+                    if(!dialogs.ConfirmTextEdit(session.Entry,true,session.EncodingName,session.Encode(text).LongLength)) return null;
+                    outcome=await session.WriteBackAsync(text,snapshot,AutoTry,Ask,progress,token);
+                }
+            }
+            else
+            {
             IReadOnlyList<CompressionEntry> additions=[];IReadOnlyList<uint> removed=[];
             if(action==ArchiveEditAction.Delete) removed=selection.Select(item=>item.Index).ToArray();
             else
@@ -25,9 +47,10 @@ public sealed partial class MainViewModel
             }
             if(!dialogs.ConfirmArchiveEdit(action,removed.Count,additions.Count)) return null;
             var prompts=0;
-            var outcome=await new ArchiveEditingService(client,client,new PasswordCandidateProvider(vault)).EditAsync(task.Path,snapshot,removed,additions,AutoTry,
+            outcome=await new ArchiveEditingService(client,client,new PasswordCandidateProvider(vault)).EditAsync(task.Path,snapshot,removed,additions,AutoTry,
                 failure=>dialogs.AskPasswordAsync(task.Name,prompts++>0,allPasswords,false,token,previousFailure:failure,testing:true),
                 new Progress<TaskUpdate>(value=>{status.Report(value.Message);Footer=UiText.Format("Common.TaskMessage", task.Name, value.Message);}),token);
+            }
             var message=outcome.Engine.IsSuccess?UiText.Get("T_a5b37bdf8cf4"):outcome.Engine.Status=="cancelled"?UiText.Get("T_18cd155e6e88"):outcome.Engine.Code switch
             {
                 "archive_edit_read_only"=>UiText.Get("T_e1fb8aa2fcac"),

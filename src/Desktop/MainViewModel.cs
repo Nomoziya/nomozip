@@ -230,7 +230,9 @@ public sealed partial class MainViewModel : ObservableObject
                     failure=>PromptAsync(()=>dialogs.AskPasswordAsync(task.Name,attempts++>0,allPasswords,vaultAvailable,token,previousFailure:failure),token),
                     path=>ConflictPolicy==1?Task.FromResult(ExistingFilePolicy.Skip):ConflictPolicy==2?Task.FromResult(ExistingFilePolicy.Replace)
                         :PromptAsync(()=>Task.FromResult(dialogs.ResolveConflict(path)),token),
-                    progress,token,skip.Token,resolveDestination,checkpoint:checkpoint);
+                    progress,token,skip.Token,resolveDestination,checkpoint:checkpoint,
+                    resolveFileConflict:conflict=>ConflictPolicy==1?Task.FromResult(new ExistingFileDecision(ExistingFilePolicy.Skip)):ConflictPolicy==2?Task.FromResult(new ExistingFileDecision(ExistingFilePolicy.Replace))
+                        :PromptAsync(()=>Task.FromResult(dialogs.ResolveFileConflict(conflict)),token));
                 task.Completed=outcome.Engine.IsSuccess;
                 task.ResultOutputPath=task.Completed?outcome.OutputPath:null;task.SelectedOutputPath=null;
                 if(task.Completed) openResults.Add(outcome.OutputPath);
