@@ -30,7 +30,7 @@
           <Grid>
             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
             <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center"/>
-            <TextBlock Grid.Column="1" Text="{TemplateBinding InputGestureText}" Margin="24,0,0,0" FontSize="12" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.72"/>
+            <TextBlock Grid.Column="1" Text="{TemplateBinding InputGestureText}" Margin="24,0,0,0" FontSize="12" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Grid>
         </Border>
         <Border x:Name="ItemFocus" BorderBrush="Transparent" BorderThickness="2" CornerRadius="5" Margin="2" IsHitTestVisible="False"/>
