@@ -3214,4 +3214,5 @@ A password is required to validate the archive data.</value>
   <data name="Settings.InvalidOutput" xml:space="preserve"><value>Choose an absolute output folder path.</value></data>
   <data name="Settings.DefaultsSaved" xml:space="preserve"><value>Saved for subsequent operations.</value></data>
   <data name="Updates.EngineTitle" xml:space="preserve"><value>7-Zip engine</value></data>
+  <data name="Preview.SyntheticNotice" xml:space="preserve"><value>Interface preview using synthetic data.</value></data>
 </root>

@@ -431,10 +431,10 @@ public sealed partial class MainViewModel : ObservableObject
         CompressionSources.Add(new("D:\\Documents\\说明.txt", UiText.Get("T_39932f24fe11")));
         CompressionOutput = "D:\\Documents\\资料备份.7z";
         CompressionEncrypt = true;
-        initializing = false; Changed(nameof(IsIdle));
+        initializing = false; Changed(nameof(IsIdle));CompressionCapabilitiesChanged();
         Tasks.Add(new ArchiveTaskRow("D:\\Downloads\\资料合集.7z", "128 MB"));
         Tasks.Add(new ArchiveTaskRow("D:\\Downloads\\图片备份.zip", "42 MB"));
-        Tasks.Add(new ArchiveTaskRow("D:\\Downloads\\设计素材.rar", "86 MB") { Status = "已解压", Completed = true });
+        Tasks.Add(new ArchiveTaskRow("D:\\Downloads\\设计素材.rar", "86 MB") { Status = UiText.Get("Redesign.SampleCompleted"), Completed = true });
         OutputPath = "D:\\Extracted"; EngineVersions.Add("26.04"); EngineVersions.Add("26.03"); SelectedEngineVersion = "26.04";
         activeEngine = "26.04"; previousEngine = "26.03"; Changed(nameof(EngineSummary)); Changed(nameof(PreviousEngineSummary));
         allPasswords = [new SavedPassword(Guid.NewGuid(), "常用资源密码", "preview-only", "示例备注", true, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)];
@@ -443,6 +443,6 @@ public sealed partial class MainViewModel : ObservableObject
         allPasswords.Add(new SavedPassword(Guid.NewGuid(),"旧资料","preview-history","",false,DateTimeOffset.UtcNow));
         allPasswords.Add(new SavedPassword(Guid.NewGuid(),"素材下载","preview-assets","",true,DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddDays(-5),Group:"下载"));
         RefreshPasswordGroups();FilterPasswords(); Changed(nameof(VaultSummary));
-        Footer = "界面渲染预览，使用虚构数据。";
+        Footer = UiText.Get("Preview.SyntheticNotice");
     }
 }

@@ -36,6 +36,14 @@ internal static class DesktopRedesignValidation
         try
         {
             model.LoadPreview();
+            var previewSources=Path.Combine(folder,"synthetic","source-list");Directory.CreateDirectory(previewSources);
+            var sourceFolder=Path.Combine(previewSources,"项目文件");Directory.CreateDirectory(sourceFolder);
+            var previewText=Path.Combine(previewSources,"说明.txt");await File.WriteAllTextAsync(previewText,"Synthetic source text for visual verification.\r\n");
+            var previewSheet=Path.Combine(previewSources,"数据.csv");await File.WriteAllTextAsync(previewSheet,"Name,Value\r\nSample,123\r\n");
+            var previewImage=Path.Combine(previewSources,"素材.png");
+            var sourceBitmap=BitmapSource.Create(24,24,96,96,PixelFormats.Gray8,null,Enumerable.Repeat((byte)128,24*24).ToArray(),24);
+            var sourceEncoder=new PngBitmapEncoder();sourceEncoder.Frames.Add(BitmapFrame.Create(sourceBitmap));using(var stream=File.Create(previewImage))sourceEncoder.Save(stream);
+            model.CompressionSources.Clear();model.AddCompressionSources([sourceFolder,previewText,previewImage,previewSheet]);model.SelectedCompressionSource=model.CompressionSources[0];
             model.SelectedTask=model.Tasks[0];
             model.Tasks[0].Running=true;model.Tasks[0].Percent=62;model.Tasks[0].Status=UiText.Get("Redesign.SampleExtracting");
             model.Tasks[0].SelectedOutputPath=@"D:\Pictures\album";
@@ -71,6 +79,7 @@ internal static class DesktopRedesignValidation
                             var sourceTable=window.CompressionPage.CompressionSourceTable;
                             Check($"{mode}/{width} compression source headers remain inside the table",VisualDescendants(sourceTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Where(header=>header.Column is not null).All(header=>Bounds(header).Right<=Bounds(sourceTable).Right+1));
                             Check($"{mode}/{width} compression footer stays reachable",Bounds(window.CompressionPage.CreateButton).Bottom<=((FrameworkElement)window.Content).ActualHeight+1 && window.CompressionPage.CreateButton.ActualWidth>60);
+                            Check($"{mode}/{width} compression supports enabled 7z level and encryption",window.CompressionPage.LevelBox.IsEnabled && window.CompressionPage.EncryptBox.IsEnabled);
                         }
                         Capture($"{mode}-{width}-page-{page}");
                     }
@@ -266,7 +275,9 @@ internal static class DesktopRedesignValidation
             model.SaveFileDefaultsCommand.Execute(null);await Until(()=>model.IsIdle);
             Check("invalid default output does not replace saved settings",model.FileDefaultsMessage==UiText.Get("Settings.InvalidOutput") && await File.ReadAllTextAsync(settingsPath)==priorSettings);
             var defaultOutput=Path.Combine(data,"default-output");window.DefaultOutputBox.Text=defaultOutput;window.DefaultOutputBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();window.DefaultConflictChoice.SelectedIndex=2;
-            window.SaveFileDefaultsAction.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Until(()=>model.IsIdle);
+            await Layout();
+            ((System.Windows.Automation.Provider.IInvokeProvider)new System.Windows.Automation.Peers.ButtonAutomationPeer(window.SaveFileDefaultsAction).GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();
+            await Layout();await Until(()=>model.IsIdle);
             using(var savedSettings=JsonDocument.Parse(await File.ReadAllTextAsync(settingsPath)))
                 Check("general defaults save the chosen path and conflict policy",savedSettings.RootElement.GetProperty("OutputPath").GetString()==defaultOutput && savedSettings.RootElement.GetProperty("ConflictPolicy").GetInt32()==2);
             Check("changing defaults preserves queued shell destinations",shellTask.ShellOutputPath==shellDestination);

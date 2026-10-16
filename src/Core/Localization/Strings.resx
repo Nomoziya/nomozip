@@ -3214,4 +3214,5 @@
   <data name="Settings.InvalidOutput" xml:space="preserve"><value>请选择完整的输出目录路径。</value></data>
   <data name="Settings.DefaultsSaved" xml:space="preserve"><value>已保存，将用于后续操作。</value></data>
   <data name="Updates.EngineTitle" xml:space="preserve"><value>7-Zip 引擎</value></data>
+  <data name="Preview.SyntheticNotice" xml:space="preserve"><value>界面渲染预览，使用合成数据。</value></data>
 </root>
