@@ -89,9 +89,10 @@ public sealed partial class MainViewModel
         _ => UiText.Format("T_b0f1ecfd6cb8", CompressionOptions.Extension)
     };
     public int CompressionLevel { get => compressionLevel; set => Set(ref compressionLevel, value); }
-    public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); } } }
+    public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
     public string CompressionPasswordStatus => compressionPassword is null ? UiText.Get("T_5d8111695438") : UiText.Get("T_bb1057c00cf3");
+    public string CompressionPasswordSummary => UiText.Get(compressionPassword is null ? "Redesign.PasswordNotSet" : "T_bb1057c00cf3");
     public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));}} }
     public string CompressionOutputDirectory
     {
@@ -130,7 +131,7 @@ public sealed partial class MainViewModel
     private async Task SetCompressionPasswordAsync()
     {
         var ownsBusy=IsIdle;if(ownsBusy){IsBusy=true;idle=new TaskCompletionSource();}
-        try { compressionPassword = await dialogs.AskCompressionPasswordAsync(Path.GetFileName(CompressionOutput), allPasswords, vaultAvailable); Changed(nameof(CompressionPasswordStatus)); }
+        try { compressionPassword = await dialogs.AskCompressionPasswordAsync(Path.GetFileName(CompressionOutput), allPasswords, vaultAvailable); Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); }
         finally {if(ownsBusy){IsBusy=false;idle.TrySetResult();}}
     }
     private async Task CreateArchiveAsync()
@@ -183,7 +184,7 @@ public sealed partial class MainViewModel
         catch(OperationCanceledException) {CompressionMessage=UiText.Get("T_76756534e51e");}
         finally
         {
-            compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); CompressionIndeterminate = false;
+            compressionPassword = null; Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); CompressionIndeterminate = false;
             Footer=CompressionMessage;cancellation.Dispose(); cancellation = null; CompressionRunning = false; IsBusy = false; idle.TrySetResult();
         }
     }

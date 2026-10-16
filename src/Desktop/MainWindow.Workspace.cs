@@ -29,7 +29,12 @@ public partial class MainWindow
         };
         Closed += (_, _) => { ClosePreview(); embeddedHashes?.Close(); if (workspaceModel is not null) workspaceModel.PropertyChanged -= WorkspaceChanged; };
         InputBindings.Add(new KeyBinding(new RelayCommand(() => { if (embeddedModel?.PreviewCommand.CanExecute(null) == true) embeddedModel.PreviewCommand.Execute(null); }), Key.P, ModifierKeys.Control));
-        InputBindings.Add(new KeyBinding(new RelayCommand(async () => await CloseArchiveAsync()), Key.Escape, ModifierKeys.None));
+        InputBindings.Add(new KeyBinding(new RelayCommand(async () =>
+        {
+            if(workspaceModel?.Page==5 && embeddedHashes is not null)
+            {if(embeddedHashes.Model.IsBusy) embeddedHashes.Model.Cancel();else workspaceModel.Page=4;}
+            else if(workspaceModel?.Page==4) await CloseArchiveAsync();
+        }), Key.Escape, ModifierKeys.None));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => embeddedModel?.SelectVisibleCommand.Execute(null), () => embeddedModel?.CanSelect == true), Key.A, ModifierKeys.Control));
         foreach(var binding in InputBindings.OfType<KeyBinding>().Where(value=>value.Key==Key.E && value.Modifiers==ModifierKeys.Control).ToArray()) InputBindings.Remove(binding);
         InputBindings.Add(new KeyBinding(new RelayCommand(() =>
@@ -83,7 +88,7 @@ public partial class MainWindow
     private void ApplyWorkspaceMargin()
     {
         var page = (DataContext as MainViewModel)?.Page;
-        MainContent.Margin = page is 0 or 1 or 2 or 3 or 4 ? new Thickness(0) : new Thickness(ActualWidth < 960 ? 12 : 24);
+        MainContent.Margin = page is 0 or 1 or 2 or 3 or 4 or 5 ? new Thickness(0) : new Thickness(ActualWidth < 960 ? 12 : 24);
     }
 
     private void OnTaskRowAction(object sender, RoutedEventArgs e)
@@ -153,6 +158,11 @@ public partial class MainWindow
     }
     private void OnSettings(object sender, RoutedEventArgs e) { if (DataContext is MainViewModel vm) vm.Page = 2; }
     private void OnCompression(object sender, RoutedEventArgs e) { if (DataContext is MainViewModel vm) vm.Page = 3; }
+    private void OnCreateFromFiles(object sender, RoutedEventArgs e)
+    {
+        if(DataContext is not MainViewModel vm || !vm.IsIdle)return;
+        vm.Page=3;if(vm.AddCompressionFilesCommand.CanExecute(null))vm.AddCompressionFilesCommand.Execute(null);
+    }
     private async void OnOpenArchive(object sender, RoutedEventArgs e)
     {
         if (DataContext is MainViewModel vm && vm.IsIdle) await vm.OpenWorkspaceArchiveAsync(new WindowDialogs(this).SelectArchives());

@@ -436,7 +436,11 @@ public sealed partial class MainViewModel : ObservableObject
         OutputPath = "D:\\Extracted"; EngineVersions.Add("26.04"); EngineVersions.Add("26.03"); SelectedEngineVersion = "26.04";
         activeEngine = "26.04"; previousEngine = "26.03"; Changed(nameof(EngineSummary)); Changed(nameof(PreviousEngineSummary));
         allPasswords = [new SavedPassword(Guid.NewGuid(), "常用资源密码", "preview-only", "示例备注", true, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)];
-        FilterPasswords(); Changed(nameof(VaultSummary));
+        allPasswords.Add(new SavedPassword(Guid.NewGuid(),"项目归档","preview-project","",true,DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddDays(-1),Group:"工作"));
+        allPasswords.Add(new SavedPassword(Guid.NewGuid(),"家庭备份","preview-family","",true,DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddDays(-3),Group:"个人"));
+        allPasswords.Add(new SavedPassword(Guid.NewGuid(),"旧资料","preview-history","",false,DateTimeOffset.UtcNow));
+        allPasswords.Add(new SavedPassword(Guid.NewGuid(),"素材下载","preview-assets","",true,DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddDays(-5),Group:"下载"));
+        RefreshPasswordGroups();FilterPasswords(); Changed(nameof(VaultSummary));
         Footer = "界面渲染预览，使用虚构数据。";
     }
 }

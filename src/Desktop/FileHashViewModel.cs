@@ -21,10 +21,11 @@ public sealed class FileHashRow(string path, string expected = "") : ObservableO
     public string ExpectedError => string.IsNullOrWhiteSpace(ExpectedHash) || Sha256Manifest.IsDigest(ExpectedHash.Trim()) ? "" : UiText.Get("T_f585137c61b2");
     public string Digest { get => digest; private set => Set(ref digest, value); }
     public long BytesRead { get; private set; }
+    public string SizeText=>Digest.Length==0?"—":BytesRead>=1048576?$"{BytesRead/1048576.0:0.#} MB":BytesRead>=1024?$"{BytesRead/1024.0:0.#} KB":$"{BytesRead} B";
     public string Status { get => status; internal set => Set(ref status, value); }
     public FileHashResult Result => new(Path, BytesRead, Digest);
-    internal void Reset() { Digest = ""; BytesRead = 0; Status = UiText.Get("T_2890ec1b2f04"); }
-    internal void Complete(FileHashResult value) { BytesRead = value.BytesRead; Digest = value.Digest; Compare(); }
+    internal void Reset() { Digest = ""; BytesRead = 0; Changed(nameof(SizeText));Status = UiText.Get("T_2890ec1b2f04"); }
+    internal void Complete(FileHashResult value) { BytesRead = value.BytesRead; Digest = value.Digest;Changed(nameof(SizeText));Compare(); }
     private void Compare()
     {
         if (ExpectedError.Length > 0) Status = UiText.Get("T_30d420c8637f");

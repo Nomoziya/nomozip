@@ -3132,4 +3132,6 @@ A password is required to validate the archive data.</value>
 <data name="Redesign.SampleCompleted" xml:space="preserve"><value>Completed</value></data>
 <data name="Redesign.SaveLocation" xml:space="preserve"><value>Save location</value></data>
 <data name="Redesign.ArchiveName" xml:space="preserve"><value>File name</value></data>
+<data name="Redesign.AddForCompression" xml:space="preserve"><value>Add files to compress</value></data>
+<data name="Redesign.PasswordNotSet" xml:space="preserve"><value>Not set</value></data>
 </root>
