@@ -300,10 +300,6 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="ProgressBar">
-        <Setter Property="Background" Value="{DynamicResource DividerBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
-      </Style>
       <Style TargetType="Label">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
       </Style>
