@@ -12,7 +12,7 @@ if (Test-Path (Join-Path $taskEngine 'manifest.json')) {
 }
 if (-not $Update) { Write-Output 'A new engine is available. Run with -Update on the matching native Windows environment to validate it.'; return }
 $taskPython = (Get-Command python -ErrorAction SilentlyContinue).Source
-if (-not $taskPython -or $taskPython -like '*WindowsApps*') { $taskPython = (Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe') }
+if (-not $taskPython -or $taskPython -like '*WindowsApps*') { $taskPython = Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe' }
 $taskCandidate = Join-Path $taskRoot ('artifacts/upstream-' + $Architecture + '-' + [Guid]::NewGuid().ToString('N'))
 # Check the official digest and all ten native matrices without signing or publishing.
 & (Join-Path $PSScriptRoot 'maintain-engine-release.ps1') -Mode Prepare -CandidateDirectory $taskCandidate -Version $taskVersion -Architecture $Architecture -Python $taskPython

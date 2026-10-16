@@ -7,3 +7,11 @@ engines/**/7z.exe
 engines/**/7z.sfx
 tests/fixtures/generated/
 *.user
+.env
+.env.*
+*.apv
+*.nvault
+*.dpapi
+*.pfx
+*.p12
+*.key
