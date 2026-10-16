@@ -51,6 +51,12 @@ internal static class DesktopVisualRefreshValidation
                     ((Border)((FrameworkElement)window.VaultIdleChoice.Parent).Parent).BringIntoView(); await Layout();
                     Check($"{mode}/{width} idle field has readable bounded width", window.VaultIdleChoice.ActualWidth >= 220 && window.VaultIdleChoice.ActualWidth <= 280 && Bounds(window.VaultIdleChoice).Right < window.ActualWidth);
                     Check($"{mode}/{width} settings card measure stays bounded", window.PreferencesCards.ActualWidth <= 920 && window.PreferencesScroll.ExtentWidth <= window.PreferencesScroll.ViewportWidth + 1);
+                    var note = window.SidebarPrivacyNote;
+                    var noteBounds = Bounds(note); var sidebarBounds = Bounds(window.SidebarContent);
+                    var formatted = new FormattedText(note.Text, System.Globalization.CultureInfo.CurrentUICulture, note.FlowDirection,
+                        new Typeface(note.FontFamily, note.FontStyle, note.FontWeight, note.FontStretch), note.FontSize, note.Foreground, VisualTreeHelper.GetDpi(note).PixelsPerDip) { MaxTextWidth = Math.Max(1, note.ActualWidth) };
+                    Check($"{mode}/{width} sidebar privacy note fits complete wrapped text", note.ActualWidth > 0 && noteBounds.Right <= sidebarBounds.Right + 1
+                        && noteBounds.Bottom <= window.ActualHeight && note.ActualHeight >= formatted.Height - 1);
                     Capture($"{mode}-{width}-vault-settings", width == 800 ? 2 : 1);
                     ((Border)((FrameworkElement)((FrameworkElement)window.RegisterAssociationsAction.Parent).Parent).Parent).BringIntoView(); await Layout();
                     var buttons = new[] { window.RegisterAssociationsAction, window.RemoveAssociationsAction, window.DefaultAppsAction };
@@ -121,7 +127,7 @@ internal static class DesktopVisualRefreshValidation
         }
         catch (Exception error) { checks["exception " + error] = false; }
         finally { theme.Apply(SystemParameters.HighContrast); }
-        var passed = checks.Count == 94 && checks.Values.All(value => value);
+        var passed = checks.Count == 103 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(samples, "report.json"), JsonSerializer.Serialize(new { passed, checks, limitations = "Hidden WPF rendering and UIA do not replace audible Narrator or physical display acceptance." }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;
     }
