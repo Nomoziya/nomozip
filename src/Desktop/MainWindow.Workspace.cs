@@ -99,9 +99,9 @@ public partial class MainWindow
         if(!vm.IsIdle)return;
         if (row.Completed)
         {
-            if (vm.OpenOutputCommand.CanExecute(null)) vm.OpenOutputCommand.Execute(null);
+            vm.OpenTaskOutput(row);
         }
-        else if(row.IsCompression)vm.Page=3;
+        else if(row.IsCompression)vm.ShowCompressionTaskResult(row);
         else if (vm.PrepareSelectedTaskExtractionCommand.CanExecute(null)) vm.PrepareSelectedTaskExtractionCommand.Execute(null);
     }
 

@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -19,6 +20,7 @@ internal static class DesktopRedesignValidation
         if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true") throw new InvalidOperationException("UI validation requires isolated CI.");
         var folder=Path.Combine(root,"artifacts/ui-redesign",UiText.LanguageCode);Directory.CreateDirectory(folder);
         var checks=new Dictionary<string,bool>();string? error=null;
+        var viewports=new List<object>();
         void Check(string name,bool passed)=>checks.Add(name,passed);
         async Task Layout()=>await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
         async Task Until(Func<bool> predicate)
@@ -44,12 +46,16 @@ internal static class DesktopRedesignValidation
             foreach(var mode in new[]{"light","dark","soft","contrast"})
             {
                 theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");
+                model.SelectedAppearance=model.AppearanceOptions.Single(option=>option.Code==(mode=="contrast"?"system":mode));
+                if(mode!="contrast")foreach(var pair in new[]{("TextBrush","SurfaceBrush",4.5),("SecondaryBrush","SurfaceBrush",4.5),("OnAccentBrush","AccentBrush",4.5),("SelectionTextBrush","SelectionBrush",4.5),("ErrorBrush","SurfaceBrush",4.5),("BorderBrush","SurfaceBrush",3.0),("FocusBrush","SurfaceBrush",3.0)})
+                    Check(mode+" contrast "+pair.Item1+" on "+pair.Item2,DesktopThemeValidation.Contrast(((SolidColorBrush)Application.Current.Resources[pair.Item1]).Color,((SolidColorBrush)Application.Current.Resources[pair.Item2]).Color)>=pair.Item3);
                 foreach(var width in new[]{800,1160})
                 {
                     window.Width=width;window.Height=width==800?600:760;
                     foreach(var page in new[]{4,0,1,3,5,2})
                     {
                         model.Page=page;model.SettingsSection=0;await Layout();
+                        viewports.Add(new {mode,page,requestedWidth=width,actualWindowWidth=window.ActualWidth,actualWindowHeight=window.ActualHeight,clientWidth=((FrameworkElement)window.Content).ActualWidth,clientHeight=((FrameworkElement)window.Content).ActualHeight});
                         Check($"{mode}/{width}/{page} main workspace remains inside window",Bounds(window.MainContent).Right<=window.ActualWidth+1 && window.MainContent.ActualWidth>400);
                         Check($"{mode}/{width}/{page} navigation remains reachable",window.SettingsNavigation.IsVisible && Bounds(window.SettingsNavigation).Bottom<=window.ActualHeight+1);
                         if(page==0)
@@ -75,6 +81,10 @@ internal static class DesktopRedesignValidation
                     Check("soft contrast uses graphite warm text and muted focus",((SolidColorBrush)Application.Current.Resources["CanvasBrush"]).Color==Color.FromRgb(0x25,0x28,0x2b) && ((SolidColorBrush)Application.Current.Resources["TextBrush"]).Color==Color.FromRgb(0xe5,0xe2,0xda) && ((SolidColorBrush)Application.Current.Resources["FocusBrush"]).Color==Color.FromRgb(0xc5,0xb9,0x8b));
                     theme.Apply(true);Check("system high contrast takes priority over soft palette",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush));theme.Apply(false);
                     var preference=Path.Combine(folder,"synthetic","soft-appearance");await AppearancePreferenceStore.SaveAsync(preference,"soft");Check("soft appearance preference survives save and reload",AppearancePreferenceStore.Read(preference).Mode=="soft");
+                    window.Width=1160;window.Height=760;model.Page=0;await Layout();
+                    window.Activate();window.ArchiveTasks.UpdateLayout();
+                    var row=(DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.Tasks[0]);
+                    Keyboard.Focus(row);await Layout();Check("soft task focus uses actual WPF keyboard focus",row.IsKeyboardFocusWithin);Capture("soft-task-keyboard-focus");
                 }
             }
             theme.SetMode("light");theme.Apply(false);window.Width=1160;window.Height=760;
@@ -89,6 +99,7 @@ internal static class DesktopRedesignValidation
             var data=Path.Combine(folder,"synthetic",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(data);
             var vault=new DpapiPasswordVault(Path.Combine(data,"passwords.apv"));
             model=new MainViewModel(AppContext.BaseDirectory,data,vault,new WindowDialogs(window));window.DataContext=model;await model.InitializeAsync();
+            var openedResults=new List<string[]>();model.ConfigureResultDirectoryValidation(paths=>openedResults.Add(paths.ToArray()));
             var archive=Path.Combine(data,"sample.zip");
             using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create))
             {
@@ -188,12 +199,19 @@ internal static class DesktopRedesignValidation
             model.CreateArchiveCommand.Execute(null);await Until(()=>model.IsIdle);
             Check("compression routes to unified task workspace",model.Page==0 && model.HasCompressionActivity && File.Exists(model.CompressionOutput));
             Check("compression output is not an extraction task",model.Tasks.All(value=>!string.Equals(value.Path,model.CompressionOutput,StringComparison.OrdinalIgnoreCase)));
+            var missingOutput=new ArchiveTaskRow("missing.zip") {Completed=true,ResultOutputPath=Path.Combine(data,"missing-output")};
+            var priorFooter=model.Footer;model.OpenTaskOutput(missingOutput);Check("row open reports missing output instead of opening another task",model.Footer==UiText.Get("Redesign.OutputUnavailable"));model.Footer=priorFooter;
             var compressionTask=model.WorkspaceTasks.Single(value=>value.IsCompression);
+            Check("task selection survives completion state refresh",ReferenceEquals(model.SelectedTask,compressionTask));
             Check("compression appears exactly once in the unified table",model.TaskView.Cast<ArchiveTaskRow>().Count(value=>value.IsCompression)==1 && model.TaskView.Cast<ArchiveTaskRow>().Count()==model.Tasks.Count+1);
             Check("compression row preserves its actual result",compressionTask.Completed && string.Equals(Path.GetFullPath(compressionTask.Path),Path.GetFullPath(model.CompressionOutput),StringComparison.OrdinalIgnoreCase) && File.Exists(compressionTask.Path) && Directory.Exists(compressionTask.LatestOutputPath));
             model.SelectedTask=compressionTask;Check("compression row cannot invoke extract selected",!model.ExtractSelectedTaskCommand.CanExecute(null));
             model.TaskFilterIndex=3;Check("ended filter includes completed compression",model.TaskView.Contains(compressionTask));model.TaskFilterIndex=2;Check("pending filter excludes completed compression",!model.TaskView.Contains(compressionTask));model.TaskFilterIndex=0;
             await Layout();
+            var openCompression=VisualDescendants(window.ArchiveTasks).OfType<Button>().Single(value=>ReferenceEquals(value.DataContext,compressionTask));openCompression.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Check("compression row opens only its actual output folder",openedResults.LastOrDefault() is {Length:1} opened && opened[0]==compressionTask.LatestOutputPath);
+            model.SelectedTask=null;model.OpenOutputCommand.Execute(null);
+            Check("global output action includes completed compression",openedResults.LastOrDefault()?.Contains(compressionTask.LatestOutputPath!)==true);model.SelectedTask=compressionTask;await Layout();
             Capture("actual-compression-result");
 
             model.Page=5;await Layout();
@@ -201,19 +219,21 @@ internal static class DesktopRedesignValidation
             hashes.AddFiles([source,archive]);hashes.CalculateCommand.Execute(null);await hashes.WaitForIdleAsync();await Layout();
             Check("checksum workspace computes actual synthetic files",hashes.Rows.Count==2 && hashes.Rows.All(value=>value.Digest.Length==64));
             Check("empty expected digest remains not compared",hashes.Rows.All(value=>value.Status==UiText.Get("T_cb82f06947d1")));
-            hashes.Selected!.ExpectedHash=hashes.Selected.Digest;
+            var expectedBox=VisualDescendants((DependencyObject)window.ToolsHost.Content).OfType<TextBox>().Single(value=>value.Name=="HashExpectedBox");
+            expectedBox.Text=hashes.Selected!.Digest;expectedBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
             Check("checksum details compare the selected value",hashes.Selected.Status==UiText.Get("T_0680a4a36ca8"));
+            Check("checksum summary updates when expected digest changes",hashes.Message==UiText.Format("T_98b68837365d",UiText.Get("T_f28461bb49c8"),2,1,0,0));
             await Layout();
             Capture("actual-checksum-matched");
-            hashes.Selected.ExpectedHash=new string(hashes.Selected.Digest[0]=='0'?'1':'0',64);
-            Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));await Layout();Capture("actual-checksum-mismatch");
+            expectedBox.Text=new string(hashes.Selected.Digest[0]=='0'?'1':'0',64);expectedBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
+            Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));Check("checksum summary reflects current mismatch",hashes.Message==UiText.Format("T_98b68837365d",UiText.Get("T_f28461bb49c8"),2,0,1,0));await Layout();Capture("actual-checksum-mismatch");
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
             DesktopDesignDialogValidation.Run(window,theme,folder,Check);
         }
         catch(Exception exception) {error=exception.ToString();}
         finally {window.PrepareExtractionOptionsForValidation=null;}
         var passed=error is null && checks.Count>100 && checks.Values.All(value=>value);
-        await File.WriteAllTextAsync(Path.Combine(folder,"report.json"),JsonSerializer.Serialize(new {passed,checks,error,scope="isolated CI; synthetic data; rendered WPF; contrast resource simulation; no physical-display or Narrator audio acceptance"},new JsonSerializerOptions{WriteIndented=true}));
+        await File.WriteAllTextAsync(Path.Combine(folder,"report.json"),JsonSerializer.Serialize(new {passed,checks,error,viewports,scope="isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"},new JsonSerializerOptions{WriteIndented=true}));
         return passed;
     }
     private static IEnumerable<DependencyObject> VisualDescendants(DependencyObject parent)

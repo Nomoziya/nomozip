@@ -60,7 +60,7 @@ public sealed partial class MainViewModel : ObservableObject
         BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) SelectCustomOutput(path); }, () => CanConfigureExtraction && SelectedTask?.Checkpoint is null);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
         BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page is 0 or 4 && IsIdle && SelectedTask is {} selected && (!selected.IsCompression || selected.Completed) && !string.IsNullOrWhiteSpace(activeEngine));
-        ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
+        ShowFailureCommand = new RelayCommand(() => {if(SelectedTask!.IsCompression)ShowCompressionTaskResult(SelectedTask);else dialogs.ShowExtractionFailure(SelectedTask.Name, SelectedTask.Failure!);}, () => IsIdle && SelectedTask?.Failure is {} failure && (SelectedTask.IsCompression || failure.Failures.Count>0));
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(SkipSelectedPasswordAttempts, () => IsBusy && CanSkipPasswords);
         OpenOutputCommand = new RelayCommand(OpenSelectedOutput, () => IsIdle && (Directory.Exists(OutputPath) || WorkspaceTasks.Any(task=>task.LatestOutputPath is {} path && Directory.Exists(path))));

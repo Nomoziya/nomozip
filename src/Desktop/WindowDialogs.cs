@@ -144,6 +144,13 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         prepareFailure?.Invoke(dialog);
         dialog.ShowDialog();
     }
+    public void ShowCompressionResult(string name,string status,EngineResult failure)
+    {
+        var dialog=new ExtractionFailureDialog(name,failure) {Owner=owner};
+        dialog.Title=dialog.ResultHeading.Text=UiText.Get("Compression.ResultTitle");dialog.ResultSummary.Text=status;dialog.ContextDescription.Text="";
+        if(failure.Failures.Count==0){dialog.FailureTable.Visibility=Visibility.Collapsed;dialog.MinHeight=300;dialog.Height=360;}
+        prepareFailure?.Invoke(dialog);dialog.ShowDialog();
+    }
     public Task<PasswordPromptResponse?> AskPasswordAsync(string name, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, CancellationToken token, bool browsing = false, EngineResult? previousFailure = null,bool testing=false)
     {
         if (token.IsCancellationRequested) return Task.FromResult<PasswordPromptResponse?>(null);

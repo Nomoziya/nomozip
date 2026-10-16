@@ -59,7 +59,7 @@ public sealed partial class MainViewModel
     private void OpenSelectedOutput()
     {
         var targets=SelectedTask?.LatestOutputPath is { } selected && Directory.Exists(selected) ? new[] {selected}
-            : Tasks.Where(task=>task.LatestOutputPath is not null && Directory.Exists(task.LatestOutputPath)).Select(task=>task.LatestOutputPath!).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+            : WorkspaceTasks.Where(task=>task.LatestOutputPath is not null && Directory.Exists(task.LatestOutputPath)).Select(task=>task.LatestOutputPath!).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
         if(targets.Length==0 && Directory.Exists(OutputPath)) targets=[Path.GetFullPath(OutputPath)];
         OpenResultDirectories(targets);
     }

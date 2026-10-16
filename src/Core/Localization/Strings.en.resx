@@ -2081,7 +2081,7 @@ Verified passwords apply to the corresponding files. Enter another password for 
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_b3d70cc43d2a">
-    <value>File SHA-256</value>
+    <value>File checksums</value>
     <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_b3eceee47a3d">
@@ -3180,4 +3180,14 @@ A password is required to validate the archive data.</value>
 <data name="Browser.Up" xml:space="preserve"><value>Up one level (Alt+Left)</value></data>
 <data name="Updates.ManageVersions" xml:space="preserve"><value>Manage engine versions and source</value></data>
 <data name="Password.Confirm" xml:space="preserve"><value>Confirm password</value></data>
+<data name="Redesign.OutputUnavailable" xml:space="preserve"><value>The output folder is unavailable. It may have been moved or deleted.</value></data>
+<data name="Redesign.ViewDetails" xml:space="preserve"><value>View details</value></data>
+<data name="Compression.ResultTitle" xml:space="preserve"><value>Compression result</value></data>
+<data name="Redesign.ActiveTaskHelp" xml:space="preserve"><value>Running and pending tasks</value></data>
+<data name="Hash.Calculated" xml:space="preserve"><value>Complete</value></data>
+<data name="Hash.NotCompared" xml:space="preserve"><value>Not compared</value></data>
+<data name="Hash.InvalidExpected" xml:space="preserve"><value>Invalid expected value</value></data>
+<data name="Hash.SizeLabel" xml:space="preserve"><value>Size</value></data>
+<data name="Hash.AlgorithmLabel" xml:space="preserve"><value>Algorithm</value></data>
+<data name="Hash.ResultLabel" xml:space="preserve"><value>Result</value></data>
 </root>

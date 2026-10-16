@@ -1,6 +1,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using ArchivePassword.Core;
 
@@ -35,6 +36,9 @@ internal static class DesktopDesignDialogValidation
         Show(password,"password-prompt",()=>
         {
             check("password prompt defaults to masked and unsaved",password.ShowPassword.IsChecked!=true && password.SavePassword.IsChecked!=true && password.VisibleSecret.Visibility==Visibility.Collapsed);
+            theme.SetMode("soft");password.Activate();Keyboard.Focus(password.SecretBox);password.UpdateLayout();
+            var ring=(Border)password.SecretBox.Template.FindName("FieldFocus",password.SecretBox);
+            check("soft password field shows semantic keyboard focus",password.SecretBox.IsKeyboardFocusWithin && ring.Visibility==Visibility.Visible && ReferenceEquals(ring.BorderBrush,Application.Current.Resources["FocusBrush"]));Capture(password,"soft-password-keyboard-focus");theme.SetMode("light");
             password.SecretBox.Password="synthetic-secret";password.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         });
         check("password prompt clears secret on close",password.Response?.Secret=="synthetic-secret" && password.SecretBox.Password.Length==0 && password.VisibleSecret.Text.Length==0);
@@ -69,6 +73,17 @@ internal static class DesktopDesignDialogValidation
         }
         var failureDialog=new ExtractionFailureDialog("资料合集.zip",new EngineResult {Code="corrupt_archive",SuccessfulItems=18,Failures=[new(18,"corrupt_archive","损坏文件.dat"),new(19,"unsupported_method","文档.txt")]});
         Show(failureDialog,"extraction-failures");
+        var compressionResultShown=false;
+        new WindowDialogs(owner,prepareFailure:dialog=>
+        {
+            dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
+            dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
+            {
+                compressionResultShown=dialog.ResultHeading.Text==UiText.Get("Compression.ResultTitle") && dialog.ResultSummary.Text=="Synthetic compression failure";
+                Capture(dialog,"compression-failure-result");dialog.Close();
+            });
+        }).ShowCompressionResult("synthetic.7z","Synthetic compression failure",new EngineResult {Code="source_or_output_unavailable"});
+        check("compression failure details keep the selected job status",compressionResultShown);
         theme.SetMode("light");
     }
 }

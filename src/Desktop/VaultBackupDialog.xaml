@@ -19,7 +19,13 @@
               <ColumnDefinition Width="112"/>
               <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="{loc:Text T_84cffd4304ee}" Target="{Binding ElementName=SecretBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,12,0"/>
+            <Label Content="{loc:Text T_84cffd4304ee}" Target="{Binding ElementName=SecretBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,12,0">
+              <Label.ContentTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                </DataTemplate>
+              </Label.ContentTemplate>
+            </Label>
             <PasswordBox x:Name="SecretBox" AutomationProperties.Name="{loc:Text T_84cffd4304ee}" Margin="0" PasswordChanged="SecretChanged" Grid.Column="1"/>
           </Grid>
           <StackPanel x:Name="ConfirmationPanel">
@@ -28,7 +34,13 @@
                 <ColumnDefinition Width="112"/>
                 <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
-              <Label Content="{loc:Text T_bff03461df20}" Target="{Binding ElementName=ConfirmationBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,12,0"/>
+              <Label Content="{loc:Text T_bff03461df20}" Target="{Binding ElementName=ConfirmationBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,12,0">
+                <Label.ContentTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                  </DataTemplate>
+                </Label.ContentTemplate>
+              </Label>
               <PasswordBox x:Name="ConfirmationBox" AutomationProperties.Name="{loc:Text T_bff03461df20}" Margin="0" PasswordChanged="SecretChanged" Grid.Column="1"/>
             </Grid>
           </StackPanel>
