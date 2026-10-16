@@ -58,7 +58,7 @@ internal static class DesktopRedesignValidation
             {
                 theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");
                 model.SelectedAppearance=model.AppearanceOptions.Single(option=>option.Code==(mode=="contrast"?"system":mode));
-                if(mode!="contrast")foreach(var pair in new[]{("TextBrush","SurfaceBrush",4.5),("SecondaryBrush","SurfaceBrush",4.5),("OnAccentBrush","AccentBrush",4.5),("SelectionTextBrush","SelectionBrush",4.5),("ErrorBrush","SurfaceBrush",4.5),("BorderBrush","SurfaceBrush",3.0),("FocusBrush","SurfaceBrush",3.0)})
+                if(mode!="contrast")foreach(var pair in new[]{("TextBrush","SurfaceBrush",4.5),("SecondaryBrush","SurfaceBrush",4.5),("OnAccentBrush","AccentBrush",4.5),("SelectionTextBrush","SelectionBrush",4.5),("ErrorBrush","SurfaceBrush",4.5),("WarningTextBrush","WarningSurfaceBrush",4.5),("BorderBrush","SurfaceBrush",3.0),("FocusBrush","SurfaceBrush",3.0)})
                     Check(mode+" contrast "+pair.Item1+" on "+pair.Item2,DesktopThemeValidation.Contrast(((SolidColorBrush)Application.Current.Resources[pair.Item1]).Color,((SolidColorBrush)Application.Current.Resources[pair.Item2]).Color)>=pair.Item3);
                 foreach(var width in new[]{800,1040})
                 {
