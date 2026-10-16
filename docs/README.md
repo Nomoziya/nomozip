@@ -29,4 +29,5 @@
 - [验收与交接](ACCEPTANCE.md)、[真实系统体验](SYSTEM_ACCEPTANCE.md)
 - [轻量发行维护](RELEASE_MAINTENANCE.md)、[引擎发行维护](ENGINE_RELEASE_MAINTENANCE.md)
 - [仓库文档维护约定](REPOSITORY_MAINTENANCE.md)
+- [公开仓库隐私审查](REPOSITORY_AUDIT.md)
 - [项目阶段记录](../PROJECT_PLAN.md)
