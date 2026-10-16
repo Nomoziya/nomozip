@@ -9,7 +9,7 @@
     </Grid.RowDefinitions>
     <StackPanel Margin="24,24,24,20">
       <StackPanel Orientation="Horizontal">
-        <Viewbox Width="28" Height="34" Margin="0,0,14,0">
+        <Viewbox Width="28" Height="34" Margin="0,0,24,0">
           <Grid Width="28" Height="34">
             <Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/>
             <Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
@@ -272,8 +272,8 @@
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
           <WrapPanel HorizontalAlignment="Right" Grid.Row="1">
-            <Button x:Name="CreateButton" Content="{loc:Text T_e185d04bcc5f}" Command="{Binding CreateArchiveCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.Name="{loc:Text T_78deea3a0b97}" MinHeight="44" Margin="0,0,12,8"/>
-            <Button Content="{loc:Text T_2cd0f3be8738}" Click="OnBackFiles" Margin="0,0,8,8">
+            <Button x:Name="CreateButton" Content="{loc:Text T_e185d04bcc5f}" Command="{Binding CreateArchiveCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.Name="{loc:Text T_78deea3a0b97}" MinHeight="40" Margin="0,0,12,8" MinWidth="124"/>
+            <Button Content="{loc:Text T_2cd0f3be8738}" Click="OnBackFiles" Margin="0,0,8,8" MinWidth="96" MinHeight="40">
               <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                   <Style.Triggers>
@@ -296,7 +296,17 @@
                 </Style>
               </Button.Style>
             </Button>
-            <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}" Margin="0,0,0,8"/>
+            <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}" Margin="0,0,0,8" x:Name="OpenCreatedFolderButton">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                    </Trigger>
+                  </Style.Triggers>
+                </Style>
+              </Button.Style>
+            </Button>
           </WrapPanel>
           <ProgressBar Grid.Row="2" Value="{Binding CompressionPercent, Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="6" Margin="0,0,0,8" AutomationProperties.Name="{loc:Text T_317cb00c1275}">
             <ProgressBar.Style>

@@ -14,7 +14,7 @@
     <comment>Task result messages</comment>
   </data>
   <data xml:space="preserve" name="Extraction.Subtitle">
-    <value>Add archives. {0} · {1}.</value>
+    <value>{0} · {1}</value>
     <comment>Extraction page</comment>
   </data>
   <data xml:space="preserve" name="Language.Label">
@@ -3224,4 +3224,5 @@ A password is required to validate the archive data.</value>
   <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} items · {1}</value></data>
   <data name="Compression.HeadersHint" xml:space="preserve"><value>Available for 7z archives to hide file names.</value></data>
   <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>Available options depend on the format and engine.</value></data>
+  <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>Search archive contents</value></data>
 </root>

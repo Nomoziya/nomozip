@@ -14,7 +14,7 @@
     <comment>Task result messages</comment>
   </data>
   <data xml:space="preserve" name="Extraction.Subtitle">
-    <value>添加压缩包，{0} · {1}。</value>
+    <value>{0} · {1}</value>
     <comment>Extraction page</comment>
   </data>
   <data xml:space="preserve" name="Language.Label">
@@ -3224,4 +3224,5 @@
   <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} 个项目 · {1}</value></data>
   <data name="Compression.HeadersHint" xml:space="preserve"><value>7z 格式可用，防止文件名被查看。</value></data>
   <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>选项根据当前格式与引擎能力启用。</value></data>
+  <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>搜索包内文件</value></data>
 </root>

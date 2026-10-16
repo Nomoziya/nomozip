@@ -55,7 +55,7 @@
         <DockPanel>
           <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
           <StackPanel Orientation="Horizontal">
-            <Path Data="M3,1 L14,1 L21,8 L21,27 L3,27 Z M14,1 L14,8 L21,8 M8,12 L7,23 M14,12 L13,23 M5,16 L17,16 M5,20 L17,20" Width="26" Height="32" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" Margin="0,0,14,0"/>
+            <Path Data="M3,1 L14,1 L21,8 L21,27 L3,27 Z M14,1 L14,8 L21,8 M8,12 L7,23 M14,12 L13,23 M5,16 L17,16 M5,20 L17,20" Width="26" Height="32" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" Margin="0,0,24,0"/>
             <TextBlock Text="{loc:Text T_b3d70cc43d2a}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/>
           </StackPanel>
         </DockPanel>
