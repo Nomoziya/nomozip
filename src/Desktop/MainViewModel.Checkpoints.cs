@@ -43,11 +43,14 @@ public sealed partial class MainViewModel
     private async Task DiscardCheckpointAsync()
     {
         if(SelectedTask?.Checkpoint is not {} record || !dialogs.ConfirmDiscardCheckpoint(Path.GetFileName(record.ArchivePath))) return;
+        var task=SelectedTask!;var store=CheckpointStore;
         IsBusy=true;idle=new TaskCompletionSource();cancellation=new CancellationTokenSource();
         try
         {
-            await CheckpointStore.DiscardAsync(record.Id,cancellation.Token);
-            var task=SelectedTask!;task.Checkpoint=null;Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));
+            Footer=UiText.Get("Checkpoint.Discard")+"…";Banner="";
+            var token=cancellation.Token;
+            await Task.Run(()=>store.DiscardAsync(record.Id,token),token);
+            task.Checkpoint=null;Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));
             if(!task.Completed) task.Status=UiText.Get("T_1bd1893c0900");
             Footer=UiText.Get("Checkpoint.Discarded");Banner="";
         }
