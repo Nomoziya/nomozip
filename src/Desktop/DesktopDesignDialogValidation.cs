@@ -42,6 +42,15 @@ internal static class DesktopDesignDialogValidation
             password.SecretBox.Password="synthetic-secret";password.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         });
         check("password prompt clears secret on close",password.Response?.Secret=="synthetic-secret" && password.SecretBox.Password.Length==0 && password.VisibleSecret.Text.Length==0);
+        var retryPassword=new PasswordDialog("资料合集.7z",true,[],true);
+        Show(retryPassword,"password-retry",()=>check("retry reason is visible separately from archive identity",retryPassword.RetryBanner.IsVisible && retryPassword.RetryMessage.Text.Length>0 && retryPassword.Description.Text=="资料合集.7z"));
+        var unlock=new MasterPasswordDialog(MasterPasswordAction.Unlock);
+        Show(unlock,"master-unlock",()=>
+        {
+            unlock.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            check("empty master unlock stays open and marks the real field",unlock.IsVisible && unlock.Response is null && FieldState.GetHasError(unlock.CurrentBox) && unlock.ErrorLabel.Text.Length>0);
+            Capture(unlock,"master-unlock-required");
+        });
         var compression=new PasswordDialog("资料备份.7z",false,[],true,compressing:true,encryptHeaders:true);
         Show(compression,"compression-password",()=>
         {
@@ -100,7 +109,7 @@ internal static class DesktopDesignDialogValidation
         Show(thumbnailConflict,"file-conflict-image",()=>check("conflict previews decode the two actual disk images",thumbnailConflict.ExistingThumbnail.Source is System.Windows.Media.Imaging.BitmapSource {PixelWidth:24} && thumbnailConflict.IncomingThumbnail.Source is System.Windows.Media.Imaging.BitmapSource {PixelWidth:24}));
         check("conflict thumbnails clear on close",thumbnailConflict.ExistingThumbnail.Source is null && thumbnailConflict.IncomingThumbnail.Source is null);
         var failureDialog=new ExtractionFailureDialog("资料合集.zip",new EngineResult {Code="corrupt_archive",SuccessfulItems=18,Failures=[new(18,"corrupt_archive","损坏文件.dat"),new(19,"unsupported_method","文档.txt")]});
-        Show(failureDialog,"extraction-failures");
+        Show(failureDialog,"extraction-failures",()=>check("failure file and reason columns use the available width",failureDialog.FailureTable.Columns[0].ActualWidth>=230 && Math.Abs(failureDialog.FailureTable.Columns.Sum(column=>column.ActualWidth)-failureDialog.FailureTable.ActualWidth)<=22));
         var compressionResultShown=false;
         new WindowDialogs(owner,prepareFailure:dialog=>
         {

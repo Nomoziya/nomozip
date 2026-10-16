@@ -30,7 +30,14 @@ public partial class ExtractionFailureDialog : Window
                 "corrupt_archive" => UiText.Get("T_9fd0e26026e2"),
                 _ => UiText.Get("T_ae173945fb80")
             })).ToArray();
-        Loaded += (_, _) => FailureTable.Focus();
+        void FitColumns()
+        {
+            var width=Math.Max(0,FailureTable.ActualWidth-18);
+            FailureTable.Columns[0].Width=Math.Max(200,width*.5);
+            FailureTable.Columns[1].Width=Math.Max(160,width-FailureTable.Columns[0].Width.Value);
+        }
+        FailureTable.SizeChanged+=(_,_)=>FitColumns();
+        Loaded += (_, _) => {FitColumns();FailureTable.Focus();};
     }
     private void OnClose(object sender, RoutedEventArgs e) => Close();
 }

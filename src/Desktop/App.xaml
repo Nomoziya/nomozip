@@ -25,6 +25,8 @@
       <SolidColorBrush x:Key="SelectionTextBrush" Color="#0F6CBD"/>
       <SolidColorBrush x:Key="FocusBrush" Color="#0F6CBD"/>
       <SolidColorBrush x:Key="ErrorBrush" Color="#C42B1C"/>
+      <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF4CE"/>
+      <SolidColorBrush x:Key="WarningTextBrush" Color="#795600"/>
       <Style x:Key="AppWindow" TargetType="Window">
         <Setter Property="Icon" Value="/ArchivePassword;component/Assets/nomozip.ico"/>
         <Setter Property="local:WindowPlacement.AutoFit" Value="True"/>

@@ -61,6 +61,12 @@ public partial class PasswordDialog : Window
             SavePassword.IsEnabled=false;SavePassword.Visibility=Visibility.Collapsed;
             Description.Text=archiveName+(failed?UiText.Get("T_dcfba7612da5"):UiText.Get("T_feaebc29ef3e"))+UiText.Get("T_0da2931b10ac");
         }
+        if(failed && !editing && !compressing)
+        {
+            RetryBanner.Visibility=Visibility.Visible;
+            RetryMessage.Text=UiText.Get(browsing || testing?"T_dcfba7612da5":"T_3e40ded6412e").Trim();
+            Description.Text=archiveName+(browsing?UiText.Get("T_58c5744db746"):testing?UiText.Get("T_0da2931b10ac"):"");
+        }
         Loaded += (_, _) => SecretBox.Focus();
         Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear();ConfirmationBox.Clear();VisibleConfirmation.Clear();SavedBox.ItemsSource = null; };
     }
