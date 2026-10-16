@@ -70,11 +70,36 @@ internal static class DesktopVisualRefreshValidation
                 var row = (DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.SelectedTask);
                 var cell = Descendants(row).OfType<DataGridCell>().First();
                 cell.Focus(); await Layout();
-                var focus = (Border)cell.Template.FindName("CellFocus", cell);
-                Check(mode + " current cell has an inset keyboard focus indicator", cell.IsKeyboardFocusWithin && focus.Visibility == Visibility.Visible
-                    && focus.Margin == new Thickness(2) && focus.BorderThickness == new Thickness(2));
+                var focus = (Border)row.Template.FindName("RowFocus", row);
+                Check(mode + " keyboard focus spans the entire row", cell.IsKeyboardFocusWithin && focus.Visibility == Visibility.Visible
+                    && focus.ActualWidth >= row.ActualWidth - 5 && focus.Margin == new Thickness(2) && focus.BorderThickness == new Thickness(1));
+                var inside = focus.TransformToAncestor(row).TransformBounds(new Rect(focus.RenderSize)); inside.Inflate(-1, -1);
+                Check(mode + " row focus leaves all visible text clear", Descendants(row).OfType<TextBlock>().Where(text => text.IsVisible && text.Text.Length > 0)
+                    .All(text => inside.Contains(text.TransformToAncestor(row).TransformBounds(new Rect(text.RenderSize)))));
                 Check(mode + " selected cell retains readable row foreground", ColorOf(cell.Foreground) == ColorOf(row.Foreground));
                 Capture($"{mode}-cell-focus");
+                Descendants(row).OfType<DataGridCell>().Last().Focus(); await Layout();
+                Check(mode + " moving between columns keeps one complete row focus", row.IsKeyboardFocusWithin && focus.Visibility == Visibility.Visible && focus.ActualWidth >= row.ActualWidth - 5);
+                foreach (var scale in new[] { 1.0, 1.25, 1.5, 2.0 })
+                {
+                    var bitmap = new RenderTargetBitmap((int)Math.Ceiling(window.ActualWidth * scale), (int)Math.Ceiling(window.ActualHeight * scale), 96 * scale, 96 * scale, PixelFormats.Pbgra32);
+                    window.Opacity = 1; bitmap.Render(window); window.Opacity = 0;
+                    var bounds = Bounds(focus); var color = ColorOf(focus.BorderBrush);
+                    bool Stroke(double x, double y)
+                    {
+                        var left = Math.Max(0, (int)Math.Floor(x * scale) - 2); var top = Math.Max(0, (int)Math.Floor(y * scale) - 2);
+                        var width = Math.Min(5, bitmap.PixelWidth - left); var height = Math.Min(5, bitmap.PixelHeight - top);
+                        if (width <= 0 || height <= 0) return false;
+                        var pixels = new byte[width * height * 4]; bitmap.CopyPixels(new Int32Rect(left, top, width, height), pixels, width * 4, 0);
+                        return Enumerable.Range(0, width * height).Any(i => pixels[i * 4] == color.B && pixels[i * 4 + 1] == color.G && pixels[i * 4 + 2] == color.R && pixels[i * 4 + 3] == 255);
+                    }
+                    Check($"{mode} complete row focus strokes at {scale * 100:0}%", Stroke(bounds.Left + 0.5, bounds.Top + bounds.Height / 2)
+                        && Stroke(bounds.Right - 0.5, bounds.Top + bounds.Height / 2) && Stroke(bounds.Left + bounds.Width / 2, bounds.Top + 0.5) && Stroke(bounds.Left + bounds.Width / 2, bounds.Bottom - 0.5));
+                    Capture($"{mode}-row-focus-{scale * 100:0}", scale);
+                }
+                var rules = window.ExtractionRulesAction;
+                Check(mode + " extraction rules uses a quiet keyboard reachable action", rules.BorderThickness == new Thickness(0) && rules.ActualHeight >= 36
+                    && rules.FocusVisualStyle is not null && new ButtonAutomationPeer(rules).IsKeyboardFocusable() && new ButtonAutomationPeer(rules).GetName() == UiText.Get("T_571579b0c6a1"));
                 await Preview(window.TaskContextMenu, window.ArchiveTasks, mode + "-row-menu");
                 Check(mode + " task context menu filters by the current command state", window.TaskContextMenu.Items.OfType<MenuItem>().All(item =>
                     (item.Visibility == Visibility.Visible) == (item.Command?.CanExecute(item.CommandParameter) ?? item.IsEnabled)));
@@ -127,7 +152,7 @@ internal static class DesktopVisualRefreshValidation
         }
         catch (Exception error) { checks["exception " + error] = false; }
         finally { theme.Apply(SystemParameters.HighContrast); }
-        var passed = checks.Count == 103 && checks.Values.All(value => value);
+        var passed = checks.Count == 124 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(samples, "report.json"), JsonSerializer.Serialize(new { passed, checks, limitations = "Hidden WPF rendering and UIA do not replace audible Narrator or physical display acceptance." }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;
     }
