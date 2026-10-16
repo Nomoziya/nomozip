@@ -1,4 +1,4 @@
-nomozip — lightweight Windows archive tool
+nomozip 0.2.0 — lightweight Windows archive tool
 
 Requires the .NET 10 Windows Desktop Runtime matching this package's architecture
 (10.0.12 or a later 10.0 patch). The SDK is not required. Install the runtime from:
@@ -38,4 +38,4 @@ Convert archive: select an ordinary 7z/ZIP/RAR on Extract, then Convert archive.
 
 Console: run nomozip-cli.exe --help. Supports test, extract, create and vault-list; unattended and no overwrite by default. Use masked prompts, stdin or vault IDs for credentials. See CLI-guide.md.
 
-Extraction continuation (development candidate): off by default. Enable Keep extraction progress to retain verified complete files when stopping or exiting. After restart, use Task actions to resume or discard. Retained data uses output-disk space and includes decrypted temporary files and paths, but no passwords. Incomplete files restart; solid archives may decode a prefix again. Discard unwanted progress before uninstalling or deleting the data directory.
+Extraction continuation: off by default. Enable Keep extraction progress to retain verified complete files when stopping or exiting. After restart, use Task actions to resume or discard. Retained data uses output-disk space and includes decrypted temporary files and paths, but no passwords. Incomplete files restart; solid archives may decode a prefix again. Discard unwanted progress before uninstalling or deleting the data directory.

@@ -77,7 +77,7 @@ internal static class DesktopApplicationUpdateValidation
             {
                 mode=failure; model.CheckApplicationUpdatesCommand.Execute(null); await model.WaitForIdleAsync();
                 Check("download cleared after " + failure,!model.OpenApplicationDownloadCommand.CanExecute(null));
-                Check("clear status after " + failure,model.ApplicationUpdateMessage==(failure=="old"?UiText.Format("T_313a3f58a787","0.1.0"):UiText.Get(failure switch {"limited"=>"T_4796f4576711","timeout"=>"T_dbf2ce470c29",_=>"T_0be3e9aaa9fa"})));
+                Check("clear status after " + failure,model.ApplicationUpdateMessage==(failure=="old"?UiText.Format(expectedVersion.Contains('-')?"T_313a3f58a787":"T_e9e70eaf87d7","0.1.0"):UiText.Get(failure switch {"limited"=>"T_4796f4576711","timeout"=>"T_dbf2ce470c29",_=>"T_0be3e9aaa9fa"})));
             }
             mode="cancel"; model.CheckApplicationUpdatesCommand.Execute(null);
             Check("checking blocks other mutation commands",model.IsBusy && !model.ImportVaultCommand.CanExecute(null) && !model.CheckUpdatesCommand.CanExecute(null));
