@@ -135,6 +135,7 @@ internal static class DesktopRedesignValidation
             var entryTable=VisualDescendants(browser).OfType<DataGrid>().Single(value=>value.Name=="EntryTable");
             var entryIcons=VisualDescendants(entryTable).OfType<FileKindIcon>().ToArray();
             Check("file icons reflect actual folders and image entries",entryIcons.Any(icon=>icon.DataContext is ArchiveContentRow {Entry.Directory:true} && icon.IconKind=="folder") && entryIcons.Any(icon=>icon.DataContext is ArchiveContentRow {Path:"cover.png"} && icon.IconKind=="image"));
+            Check("folder and image glyphs are actually visible",entryIcons.Where(icon=>icon.IconKind is "folder" or "image").All(icon=>((FrameworkElement)icon.Template.FindName(icon.IconKind=="folder"?"Folder":"Picture",icon)).Visibility==Visibility.Visible && ((FrameworkElement)icon.Template.FindName("Document",icon)).Visibility==Visibility.Collapsed));
             Check("embedded file columns retain readable widths",entryTable.Columns[0].ActualWidth>=48 && entryTable.Columns[1].ActualWidth>=200 && entryTable.Columns[2].ActualWidth>=78 && entryTable.Columns[3].ActualWidth>=80);
             Check("extraction toolbar precedes file list",Bounds(extractAll).Bottom<=Bounds(entryTable).Top);
             Check("archive name occupies shared workspace header",window.ArchiveHeaderHost.Content is FrameworkElement && window.FilesLandingActions.Visibility==Visibility.Collapsed);
