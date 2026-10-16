@@ -10,6 +10,7 @@ $taskShare='nomozip-test-'+[Guid]::NewGuid().ToString('N')
 $taskShareCreated=$false
 $taskFailure=$null
 $taskDialects=@()
+$taskPathProbe=$null
 function Check-Smb([string]$Name,[bool]$Value) { $taskChecks[$Name]=$Value;if(!$Value){throw "SMB acceptance failed: $Name"} }
 function Invoke-SmbCli([string[]]$CliArguments,[int]$ExpectedExit=0) {
  $info=[Diagnostics.ProcessStartInfo]::new((Join-Path $ApplicationDirectory 'nomozip-cli.exe'))
@@ -42,6 +43,14 @@ try {
  $taskConnections=@(Get-SmbConnection | Where-Object ShareName -eq $taskShare)
  $taskDialects=@($taskConnections | ForEach-Object {[string]$_.Dialect})
  Check-Smb 'actual SMB client connection and negotiated dialect' ($taskConnections.Count -gt 0 -and $taskDialects.Count -gt 0)
+ $taskPathProbe=(& (Join-Path $taskRoot 'artifacts/smb-path-probe.exe') ($taskUnc+'\输入示例.txt') ($taskUnc+'\native-create.probe')) | ConvertFrom-Json
+ foreach($taskCase in @(
+  @{name='UNC source and local output';source=($taskUnc+'\输入示例.txt');output=(Join-Path $taskRun 'unc-read-control.zip')},
+  @{name='local source and UNC output';source=$taskSource;output=($taskUnc+'\unc-write-control.zip')}
+ )) {
+  try {Invoke-SmbCli @('create',$taskCase.source,'--output',$taskCase.output,'--format','zip','--engine','26.03');$taskChecks[$taskCase.name]=$true}
+  catch {$taskChecks[$taskCase.name]=$false;$taskResults.Add(@{diagnosticCase=$taskCase.name;error=$_.Exception.Message})}
+ }
  foreach($taskVersion in @('26.03','26.04')) {
   foreach($taskFormat in @('zip','7z')) {
    $taskArchive=$taskUnc+'\archive-'+$taskVersion+'.'+$taskFormat
@@ -64,7 +73,7 @@ finally {
  if($taskShareCreated){try{Remove-SmbShare -Name $taskShare -Force -Confirm:$false}catch{$taskFailure='Temporary share cleanup failed.'}}
  $taskChecks['temporary share removed']=($null -eq (Get-SmbShare -Name $taskShare -ErrorAction SilentlyContinue))
  $taskPassed=(!$taskFailure -and @($taskChecks.Values | Where-Object {!$_}).Count -eq 0)
- @{passed=$taskPassed;scope='Real SMB loopback on disposable Windows runner; not a remote NAS, LAN outage, or visible Explorer test.';syntheticData=$true;dialects=$taskDialects;checks=$taskChecks;cliOperations=$taskResults;failure=$taskFailure} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $taskReport -Encoding utf8
+ @{passed=$taskPassed;scope='Real SMB loopback on disposable Windows runner; not a remote NAS, LAN outage, or visible Explorer test.';syntheticData=$true;dialects=$taskDialects;nativePathProbe=$taskPathProbe;checks=$taskChecks;cliOperations=$taskResults;failure=$taskFailure} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $taskReport -Encoding utf8
 }
 if(!$taskPassed){throw "SMB system acceptance failed: $taskFailure"}
 Write-Output "Real SMB acceptance passed: $($taskChecks.Count) checks, $($taskResults.Count) CLI operations."
