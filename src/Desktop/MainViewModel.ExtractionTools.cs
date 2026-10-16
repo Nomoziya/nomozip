@@ -28,6 +28,8 @@ public sealed partial class MainViewModel
     public ICommand BrowseDefaultOutputCommand {get;private set;}=null!;
     public ICommand SaveFileDefaultsCommand {get;private set;}=null!;
     private string fileDefaultsMessage="";
+    private bool defaultOutputInvalid;
+    public bool DefaultOutputInvalid {get=>defaultOutputInvalid;private set=>Set(ref defaultOutputInvalid,value);}
     public string FileDefaultsMessage {get=>fileDefaultsMessage;private set=>Set(ref fileDefaultsMessage,value);}
     public string DefaultOutputDirectory
     {
@@ -37,7 +39,7 @@ public sealed partial class MainViewModel
             if(!IsIdle || value==OutputPath)return;
             // Defaults must not clear destinations attached to queued shell tasks.
             directoryRules=directoryRules with {Location=ExtractionLocation.Custom};OutputPath=value;
-            Changed(nameof(DirectoryRules));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(DisplayOutputPath));Changed(nameof(ExtractionSubtitle));FileDefaultsMessage="";
+            Changed(nameof(DirectoryRules));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(DisplayOutputPath));Changed(nameof(ExtractionSubtitle));FileDefaultsMessage="";DefaultOutputInvalid=false;
         }
     }
     private void InitializeExtractionToolCommands()
@@ -48,7 +50,8 @@ public sealed partial class MainViewModel
         BrowseDefaultOutputCommand=new RelayCommand(()=>{if(dialogs.SelectOutput(OutputPath) is {} path)DefaultOutputDirectory=path;},()=>IsIdle);
         SaveFileDefaultsCommand=new AsyncCommand(async()=>
         {
-            if(directoryRules.Location==ExtractionLocation.Custom && !Path.IsPathFullyQualified(OutputPath)){FileDefaultsMessage=UiText.Get("Settings.InvalidOutput");return;}
+            if(directoryRules.Location==ExtractionLocation.Custom && !Path.IsPathFullyQualified(OutputPath)){DefaultOutputInvalid=true;FileDefaultsMessage=UiText.Get("Settings.InvalidOutput");return;}
+            DefaultOutputInvalid=false;
             IsBusy=true;idle=new TaskCompletionSource();
             try{await SaveSettingsAsync();FileDefaultsMessage=UiText.Get(settingsWritable?"Settings.DefaultsSaved":"T_a66f3be2b81c");}
             catch(Exception error) when(error is IOException or UnauthorizedAccessException){FileDefaultsMessage=UiText.Get("T_23a051575c7a");}
@@ -70,6 +73,7 @@ public sealed partial class MainViewModel
     }
     internal void ApplyDirectoryRules(ExtractionDirectoryRules rules,string custom)
     {
+        DefaultOutputInvalid=false;FileDefaultsMessage="";
         ClearShellDestinations(); directoryRules=rules; OutputPath=custom;
         Changed(nameof(DirectoryRules)); Changed(nameof(IsOutputPathReadOnly)); Changed(nameof(DisplayOutputPath)); Changed(nameof(ExtractionSubtitle));Changed(nameof(CreateArchiveFolder));
     }

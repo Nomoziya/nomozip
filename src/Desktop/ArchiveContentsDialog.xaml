@@ -153,7 +153,19 @@
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
                   <loc:FileKindIcon FileName="{Binding Path}" IsDirectory="{Binding Entry.Directory}" Width="22" Height="26" VerticalAlignment="Center"/>
-                  <Border Width="24" Height="24" VerticalAlignment="Center" Background="{DynamicResource SurfaceBrush}"><Border.Style><Style TargetType="Border"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><DataTrigger Binding="{Binding PreviewThumbnail}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Border.Style><Image Source="{Binding PreviewThumbnail}" Stretch="UniformToFill"/></Border>
+                  <Border Width="24" Height="24" VerticalAlignment="Center" Background="{DynamicResource SurfaceBrush}">
+                    <Border.Style>
+                      <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding PreviewThumbnail}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Border.Style>
+                    <Image Source="{Binding PreviewThumbnail}" Stretch="UniformToFill"/>
+                  </Border>
                   <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                 </Grid>
               </DataTemplate>
@@ -179,11 +191,13 @@
     </Grid>
     <Border Grid.Row="3" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="20,12">
       <StackPanel>
-        <WrapPanel>
-          <TextBlock x:Name="ContentsSummary" Text="{Binding Summary}" Style="{StaticResource Secondary}" Margin="0,0,16,0"/>
-          <TextBlock x:Name="SelectionSummary" Text="{Binding SelectionSummary}" AutomationProperties.LiveSetting="Polite"/>
-        </WrapPanel>
-        <TextBlock Text="{Binding OperationMessage}" Style="{StaticResource Secondary}" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
+        <DockPanel>
+          <TextBlock Text="{Binding OperationMessage}" Style="{StaticResource Secondary}" Margin="12,0,0,0" AutomationProperties.LiveSetting="Polite" DockPanel.Dock="Right" MaxWidth="280" ToolTip="{Binding OperationMessage}"/>
+          <WrapPanel>
+            <TextBlock x:Name="ContentsSummary" Text="{Binding CompactSummary}" Style="{StaticResource Secondary}" Margin="0,0,16,0" ToolTip="{Binding Summary}"/>
+            <TextBlock x:Name="SelectionSummary" Text="{Binding CompactSelectionSummary}" AutomationProperties.LiveSetting="Polite" ToolTip="{Binding SelectionSummary}"/>
+          </WrapPanel>
+        </DockPanel>
         <TextBlock x:Name="ContentsOutputPath" Text="{Binding OutputPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding OutputPath}">
           <TextBlock.Style>
             <Style TargetType="TextBlock">

@@ -3045,8 +3045,8 @@
   <data name="Preview.SelectOne" xml:space="preserve"><value>先在列表中选中一个文本或图片文件。</value></data>
   <data name="Preview.Shortcut" xml:space="preserve"><value>只读预览选中行（Ctrl+P）；不影响勾选的解压范围。</value></data>
   <data name="Preview.Loading" xml:space="preserve"><value>正在读取预览内容…</value></data>
-  <data name="Preview.Notice" xml:space="preserve"><value>只读预览 · 临时文件读取后清理 · 不保存密码或标记已解压</value></data>
-  <data name="Preview.ReadOnly" xml:space="preserve"><value>预览结束；密码库和解压范围保持不变。</value></data>
+  <data name="Preview.Notice" xml:space="preserve"><value>只读预览 · 压缩包保持不变</value></data>
+  <data name="Preview.ReadOnly" xml:space="preserve"><value>预览已就绪。</value></data>
   <data name="Preview.Cancelled" xml:space="preserve"><value>预览已取消。</value></data>
   <data name="Preview.TooLarge" xml:space="preserve"><value>超过预览限制：文本 1 MiB，图片 8 MiB。可使用“解压所选”。</value></data>
   <data name="Preview.Unsupported" xml:space="preserve"><value>仅预览常见文本和 PNG、JPEG、BMP、GIF；请选中文件。</value></data>
@@ -3218,4 +3218,8 @@
   <data name="Compression.SelectAllSources" xml:space="preserve"><value>选择所有源项目</value></data>
   <data name="Compression.SelectSource" xml:space="preserve"><value>选择源项目</value></data>
   <data name="Compression.SelectionHint" xml:space="preserve"><value>选择要移除的项目；创建压缩包将包含列表中的全部项目。</value></data>
+  <data name="Browser.CompactCount" xml:space="preserve"><value>{0} 项</value></data>
+  <data name="Browser.CompactSelection" xml:space="preserve"><value>已选择 {0} 项</value></data>
+  <data name="Extraction.SelectedTitle" xml:space="preserve"><value>解压所选项目</value></data>
+  <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} 个项目 · {1}</value></data>
 </root>

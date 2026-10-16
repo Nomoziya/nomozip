@@ -798,7 +798,10 @@
         <StackPanel Grid.Row="3" Margin="24,12" Grid.ColumnSpan="2">
           <DockPanel>
             <TextBlock DockPanel.Dock="Right" Text="{Binding PasswordListSummary}" Style="{StaticResource Secondary}" Margin="12,0,0,0"/>
-            <TextBlock Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{loc:Text Menu.VaultHint}"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <Path Data="M12,2 L21,6 L20,17 Q17,22 12,24 Q7,22 4,17 L3,6 Z M7,12 L11,16 L17,9" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Width="18" Height="21" Stretch="Uniform" Margin="0,0,10,0"/>
+              <TextBlock Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{loc:Text Menu.VaultHint}"/>
+            </StackPanel>
           </DockPanel>
           <TextBlock x:Name="DuplicateSummaryText" Text="{Binding DuplicateSummary}" Style="{StaticResource Secondary}" AutomationProperties.LiveSetting="Polite"/>
         </StackPanel>
@@ -886,7 +889,7 @@
                       </Style>
                     </Path.Style>
                   </Path>
-                  <TextBlock Text="{Binding}" VerticalAlignment="Center" MaxWidth="96" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/>
+                  <TextBlock Text="{Binding}" VerticalAlignment="Center" MaxWidth="108" ToolTip="{Binding}" TextWrapping="Wrap"/>
                 </StackPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>
@@ -894,7 +897,19 @@
         </Border>
         <ScrollViewer x:Name="PreferencesScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
           <StackPanel x:Name="PreferencesCards" MaxWidth="920" HorizontalAlignment="Stretch" Margin="24,0,24,24">
-            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,20">
+            <TextBlock Text="{loc:Text Appearance.Title}" FontSize="20" FontWeight="SemiBold" Margin="0,24,0,8">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding SettingsSection}" Value="0">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,12">
               <Border.Style>
                 <Style TargetType="Border" BasedOn="{StaticResource WorkspaceCard}">
                   <Style.Triggers>
@@ -914,16 +929,26 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{loc:Text Appearance.Label}" Style="{StaticResource Heading}" Margin="0,0,16,8" VerticalAlignment="Center"/>
+                <TextBlock Text="{loc:Text Appearance.Label}" Style="{StaticResource Heading}" Margin="0,0,16,0" VerticalAlignment="Center" FontSize="14" FontWeight="Normal"/>
                 <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock Text="{loc:Text Appearance.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,0"/>
-                  <TextBlock x:Name="AppearanceStatus" Text="{Binding AppearanceMessage}" Style="{StaticResource Secondary}" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
+                  <TextBlock x:Name="AppearanceStatus" Text="{Binding AppearanceMessage}" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding AppearanceMessage}" Value="">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
                 </StackPanel>
                 <ComboBox x:Name="AppearanceChoice" ItemsSource="{Binding AppearanceOptions}" SelectedItem="{Binding SelectedAppearance}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1" Margin="0,0,80,0"/>
                 <Button x:Name="SaveAppearanceAction" Content="{loc:Text Settings.Save}" AutomationProperties.Name="{loc:Text Appearance.Save}" Command="{Binding SaveAppearanceCommand}" HorizontalAlignment="Right" Margin="6,0,0,0" Grid.Column="1" Grid.Row="0" Style="{StaticResource SubtleButton}" MaxWidth="80" Padding="6,6"/>
               </Grid>
             </Border>
-            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,20">
+            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,12">
               <Border.Style>
                 <Style TargetType="Border" BasedOn="{StaticResource WorkspaceCard}">
                   <Style.Triggers>
@@ -943,7 +968,7 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{loc:Text Language.Title}" Style="{StaticResource Heading}" Margin="0,0,16,8" VerticalAlignment="Center"/>
+                <TextBlock Text="{loc:Text Language.Title}" Style="{StaticResource Heading}" Margin="0,0,16,0" VerticalAlignment="Center" FontSize="14" FontWeight="Normal"/>
                 <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock x:Name="LanguageStatus" Text="{Binding LanguageMessage}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
                 </StackPanel>
@@ -978,7 +1003,7 @@
                       <ColumnDefinition Width="*"/>
                       <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="DefaultOutputBox" Text="{Binding DefaultOutputDirectory,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultOutput}"/>
+                    <TextBox x:Name="DefaultOutputBox" Text="{Binding DefaultOutputDirectory,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultOutput}" loc:FieldState.HasError="{Binding DefaultOutputInvalid}" ToolTip="{Binding DefaultOutputDirectory}"/>
                     <Button Content="{loc:Text T_5a4540c9b21b}" Command="{Binding BrowseDefaultOutputCommand}" Grid.Column="1" Margin="8,0,0,0"/>
                   </Grid>
                 </Grid>
@@ -998,7 +1023,17 @@
                 <Button Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
                 <WrapPanel HorizontalAlignment="Right" Margin="0,14,0,0">
                   <Button x:Name="SaveFileDefaultsAction" Content="{loc:Text Settings.SaveDefaults}" Command="{Binding SaveFileDefaultsCommand}" Style="{StaticResource SubtleButton}"/>
-                  <TextBlock Text="{Binding FileDefaultsMessage}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="12,0,0,0" AutomationProperties.LiveSetting="Polite"/>
+                  <TextBlock Text="{Binding FileDefaultsMessage}" VerticalAlignment="Center" Margin="12,0,0,0" AutomationProperties.LiveSetting="Polite">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding DefaultOutputInvalid}" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
                 </WrapPanel>
               </StackPanel>
             </Border>

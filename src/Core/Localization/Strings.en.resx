@@ -3045,8 +3045,8 @@ A password is required to validate the archive data.</value>
   <data name="Preview.SelectOne" xml:space="preserve"><value>Select a text or image row first.</value></data>
   <data name="Preview.Shortcut" xml:space="preserve"><value>Read-only preview of the current row (Ctrl+P); extraction checkboxes are unchanged.</value></data>
   <data name="Preview.Loading" xml:space="preserve"><value>Reading preview…</value></data>
-  <data name="Preview.Notice" xml:space="preserve"><value>Read-only · Temporary files cleaned after reading · No password or extraction status saved</value></data>
-  <data name="Preview.ReadOnly" xml:space="preserve"><value>Preview finished; vault and extraction selection are unchanged.</value></data>
+  <data name="Preview.Notice" xml:space="preserve"><value>Read-only preview · The archive is unchanged</value></data>
+  <data name="Preview.ReadOnly" xml:space="preserve"><value>Preview ready.</value></data>
   <data name="Preview.Cancelled" xml:space="preserve"><value>Preview cancelled.</value></data>
   <data name="Preview.TooLarge" xml:space="preserve"><value>Preview limit: text 1 MiB, images 8 MiB. Use Extract selected instead.</value></data>
   <data name="Preview.Unsupported" xml:space="preserve"><value>Select a supported text, PNG, JPEG, BMP or GIF file.</value></data>
@@ -3218,4 +3218,8 @@ A password is required to validate the archive data.</value>
   <data name="Compression.SelectAllSources" xml:space="preserve"><value>Select all source items</value></data>
   <data name="Compression.SelectSource" xml:space="preserve"><value>Select source item</value></data>
   <data name="Compression.SelectionHint" xml:space="preserve"><value>Select items to remove. Creating an archive includes every item in the list.</value></data>
+  <data name="Browser.CompactCount" xml:space="preserve"><value>{0} items</value></data>
+  <data name="Browser.CompactSelection" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="Extraction.SelectedTitle" xml:space="preserve"><value>Extract selected items</value></data>
+  <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} items · {1}</value></data>
 </root>
