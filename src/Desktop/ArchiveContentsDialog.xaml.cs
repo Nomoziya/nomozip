@@ -7,13 +7,14 @@ namespace ArchivePassword.Desktop;
 
 public partial class ArchiveContentsDialog : Window
 {
+    internal Func<Task>? EmbeddedClose {get;set;}
     public ArchiveContentsDialog(ArchiveContentsViewModel model)
     {
         InitializeComponent(); DataContext = model;
         void Arrange()
         {
-            var compact=ActualHeight<420;ContentsArchiveName.Visibility=ContentsSummary.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
-            var narrow=ActualWidth<680;
+            var compact=EmbeddedClose is null && ActualHeight<420;ContentsArchiveName.Visibility=ContentsSummary.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
+            var narrow=EntryTable.ActualWidth<680;
             PreviewEntryButton.Content=UiText.Get(narrow?"Preview.CompactAction":"Preview.Action");
             ExtractSelectedButton.Content=UiText.Get(narrow?"Contents.CompactExtract":"T_a1fca7bde5d2");
             CancelContentsButton.Content=UiText.Get(narrow?"Contents.CompactCancel":"T_a7084fcb218d");
@@ -30,7 +31,7 @@ public partial class ArchiveContentsDialog : Window
             foreach(var button in ContentsActions.Children.OfType<System.Windows.Controls.Button>()) button.Padding=new Thickness(narrow?12:16,8,narrow?12:16,8);
             if(compact) ContentsOutputPath.Visibility=Visibility.Collapsed;else ContentsOutputPath.ClearValue(VisibilityProperty);
         }
-        SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
+        EntryTable.SizeChanged+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
         var closing=false;
         Closing+=async (_,e)=>
         {
@@ -55,7 +56,7 @@ public partial class ArchiveContentsDialog : Window
             await model.DragAsync(paths=>Mouse.LeftButton==MouseButtonState.Pressed?ArchiveFileDrag.Copy(paths):null);
         };
     }
-    private void OnClose(object sender, RoutedEventArgs e) => Close();
+    private async void OnClose(object sender, RoutedEventArgs e) {if(EmbeddedClose is not null) await EmbeddedClose();else Close();}
     private void OnEditContents(object sender,RoutedEventArgs e)
     {EditContentsMenu.PlacementTarget=EditContentsButton;EditContentsMenu.IsOpen=true;}
 }

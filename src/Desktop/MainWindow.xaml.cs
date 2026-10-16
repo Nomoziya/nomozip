@@ -24,6 +24,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        InitializeWorkspace();
         var vaultTimer=new DispatcherTimer {Interval=TimeSpan.FromSeconds(1)};
         vaultTimer.Tick+=async(_,_)=>{if(DataContext is MainViewModel model)await model.CheckVaultIdleAsync();};
         Loaded+=(_,_)=>vaultTimer.Start();
@@ -35,10 +36,17 @@ public partial class MainWindow : Window
         void ArrangePanels()
         {
             var narrow = ActualWidth < 1000;
-            var compact = ActualWidth < 800;
+            var compact = ActualWidth < 960;
             BrandMark.Width = BrandMark.Height = compact ? 18 : 24;
             BrandMark.Margin = new Thickness(0, 0, compact ? 4 : 8, 0);
-            SidebarColumn.Width = new GridLength(compact ? 120 : 176);
+            SidebarColumn.Width = new GridLength(compact ? 72 : 176);
+            foreach (var text in ((StackPanel)BrandMark.Parent).Children.OfType<TextBlock>()) text.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
+            SidebarPrivacyNote.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
+            SettingsNavigation.Content=compact?"…":UiText.Get("T_df3d58c7d84b");
+            System.Windows.Automation.AutomationProperties.SetName(SettingsNavigation,UiText.Get("T_df3d58c7d84b"));
+            SettingsNavigation.ToolTip=UiText.Get("T_df3d58c7d84b");
+            VaultDetailsColumn.Width=new GridLength(narrow?0:320);
+            VaultDetails.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
             Navigation.Tag = compact;
             SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(16, 24, 16, 24);
             MainContent.Margin = new Thickness(compact ? 12 : 24);
@@ -46,25 +54,30 @@ public partial class MainWindow : Window
             CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
-            ExtractionLayout.Height = narrow ? double.NaN : Math.Max(280, ExtractionViewport.ActualHeight);
-            ExtractionViewport.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
-            SettingsScroll.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;
-            ListRow.Height = narrow ? new GridLength(240) : new GridLength(1, GridUnitType.Star);
-            SettingsColumn.Width = narrow ? new GridLength(0) : new GridLength(280);
-            SettingsRow.Height = narrow ? GridLength.Auto : new GridLength(0);
-            Grid.SetRow(SettingsPanel, narrow ? 1 : 0);
-            Grid.SetColumn(SettingsPanel, narrow ? 0 : 2);
-            SettingsPanel.Margin = narrow ? new Thickness(0, 16, 0, 0) : new Thickness(0);
+            ExtractionLayout.Height = Math.Max(200, ExtractionViewport.ActualHeight);
+            ExtractionViewport.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ListRow.Height = new GridLength(1, GridUnitType.Star);
+            SettingsColumn.Width = new GridLength(0);
+            SettingsRow.Height = new GridLength(0);
+
         }
         SizeChanged += (_, _) => ArrangePanels();
         ExtractionViewport.SizeChanged += (_, _) => ArrangePanels();
         Loaded += (_, _) => ArrangePanels();
     }
-    private void OnDrop(object sender, DragEventArgs e)
+    private async void OnDrop(object sender, DragEventArgs e)
     {
         if (e.Data.GetData(DataFormats.FileDrop) is string[] paths && DataContext is MainViewModel model)
         {
             if (model.Page == 3) model.AddCompressionSources(paths);
+            else if(model.Page==4)
+            {
+                var archives=paths.Where(path=>System.IO.File.Exists(path) && new[]{".zip",".7z",".rar",".tar",".gz",".xz",".001",".exe"}.Contains(System.IO.Path.GetExtension(path).ToLowerInvariant())).ToArray();
+                if(archives.Length==1 && paths.Length==1) await model.OpenWorkspaceArchiveAsync(archives);
+                else if(archives.Length==paths.Length) {model.AddFiles(paths);model.Page=0;}
+                else {model.Page=3;model.AddCompressionSources(paths);}
+            }
             else model.AddFiles(paths);
         }
     }
@@ -74,6 +87,13 @@ public partial class MainWindow : Window
     }
     private async void OnClosing(object? sender, CancelEventArgs e)
     {
+        if (embeddedModel is not null)
+        {
+            e.Cancel=true;await CloseArchiveAsync();
+            if(embeddedModel is not null) return;
+            _ = Dispatcher.BeginInvoke(Close);return;
+        }
+        if(embeddedHashes?.Model.IsBusy==true) {e.Cancel=true;embeddedHashes.Model.Cancel();await embeddedHashes.Model.WaitForIdleAsync();_ = Dispatcher.BeginInvoke(Close);return;}
         if (!closingApproved && !SuppressExitConfirmationForValidation && DataContext is MainViewModel { IsBusy: true } model)
         {
             e.Cancel = true;

@@ -1,0 +1,18 @@
+<UserControl x:Class="ArchivePassword.Desktop.VaultDetailsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="clr-namespace:ArchivePassword.Desktop">
+  <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0" Background="{DynamicResource SurfaceBrush}" Padding="16,0,0,0">
+    <Grid><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel x:Name="Editor" IsEnabled="{Binding IsIdle}">
+        <TextBlock x:Name="Heading" Text="{loc:Text Redesign.VaultDetails}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,16"/>
+        <Label Content="{loc:Text T_d44e9b3d3b31}" Target="{Binding ElementName=NameBox}"/><TextBox x:Name="NameBox" Margin="0,0,0,12"/>
+        <Label Content="{loc:Text T_a621ab606db2}" Target="{Binding ElementName=SecretBox}"/><Grid><PasswordBox x:Name="SecretBox"/><TextBox x:Name="VisibleSecret" Visibility="Collapsed"/></Grid>
+        <CheckBox x:Name="ShowSecret" Content="{loc:Text T_ffe21a671190}" Checked="OnVisibilityChanged" Unchecked="OnVisibilityChanged"/>
+        <Label Content="{loc:Text T_d4163ce3b078}" Target="{Binding ElementName=GroupBox}"/><TextBox x:Name="GroupBox" MaxLength="128" Margin="0,0,0,12"/>
+        <Label Content="{loc:Text T_daede9881787}" Target="{Binding ElementName=NotesBox}"/><TextBox x:Name="NotesBox" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="64"/>
+        <CheckBox x:Name="AutoTryBox" Content="{loc:Text T_a3610c2b94b0}"/>
+        <Expander Header="{loc:Text T_abab7359518e}" Margin="0,8,0,0"><StackPanel><Label Content="{loc:Text T_b5bb08da76d9}" Target="{Binding ElementName=SourceBox}"/><TextBox x:Name="SourceBox" MaxLength="512"/><Label Content="{loc:Text T_724d7a12cc56}" Target="{Binding ElementName=MatchBox}"/><TextBox x:Name="MatchBox" MaxLength="256"/></StackPanel></Expander>
+        <TextBlock x:Name="Error" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+      </StackPanel></ScrollViewer>
+      <WrapPanel Grid.Row="1" Margin="0,16,0,0"><Button x:Name="SaveButton" Content="{loc:Text Redesign.SaveChanges}" Click="OnSave" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8"/><Button Content="{loc:Text T_2cd0f3be8738}" Click="OnCancel" Margin="0,0,8,8"/><Button Content="{loc:Text T_176f8887e229}" Command="{Binding DeletePasswordCommand}" Margin="0,0,0,8"/></WrapPanel>
+    </Grid>
+  </Border>
+</UserControl>

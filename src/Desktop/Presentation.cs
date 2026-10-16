@@ -55,8 +55,10 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private string status = UiText.Get("T_1bd1893c0900");
     private double percent;
     private bool running, indeterminate;
-    public bool Completed { get; set; }
-    public EngineResult? Failure { get; set; }
+    private bool completed;
+    private EngineResult? failure;
+    public bool Completed { get=>completed; set=>Set(ref completed,value); }
+    public EngineResult? Failure { get=>failure; set=>Set(ref failure,value); }
     public string Status { get => status; set => Set(ref status, value); }
     public double Percent { get => percent; set => Set(ref percent, value); }
     public bool IsIndeterminate { get => indeterminate; set => Set(ref indeterminate, value); }

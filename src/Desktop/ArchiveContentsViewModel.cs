@@ -125,6 +125,13 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ICommand SelectVisibleCommand {get;}
     public ICommand ClearSelectionCommand {get;}
     public ICommand ExtractSelectedCommand {get;}
+    public ICommand ExtractAllCommand => new RelayCommand(() =>
+    {
+        selecting=true;
+        try {foreach(var row in allRows) row.Selected=true;}
+        finally {selecting=false;SelectionChanged();}
+        ExtractSelectedCommand.Execute(null);
+    },()=>CanSelect && allRows.Count>0);
     public ICommand CancelCommand {get;}
     public ICommand PreviewCommand {get;}
     private ArchiveContentRow? currentRow;

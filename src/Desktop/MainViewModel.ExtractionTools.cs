@@ -27,13 +27,13 @@ public sealed partial class MainViewModel
     public ICommand ShowTestResultCommand { get;private set; }=null!;
     private void InitializeExtractionToolCommands()
     {
-        EditExtractionRulesCommand=new AsyncCommand(EditExtractionRulesAsync,()=>IsIdle && SelectedTask?.Checkpoint is null);
+        EditExtractionRulesCommand=new AsyncCommand(EditExtractionRulesAsync,()=>CanConfigureExtraction && SelectedTask?.Checkpoint is null);
         TestArchiveCommand=new AsyncCommand(TestSelectedArchiveAsync,()=>Page==0 && IsIdle && SelectedTask is not null && activeEngine.Length>0);
         ShowTestResultCommand=new RelayCommand(()=>dialogs.ShowExtractionFailure(SelectedTask!.Name,SelectedTask.VerificationResult!,testing:true),()=>IsIdle && SelectedTask?.VerificationResult is not null);
     }
     private async Task EditExtractionRulesAsync()
     {
-        IsBusy=true;idle=new TaskCompletionSource();
+        var priorBusy=IsBusy;var priorIdle=idle;IsBusy=true;idle=new TaskCompletionSource();
         try
         {
             var editor=dialogs.EditExtractionRules(directoryRules,OutputPath,recentOutputPaths);
@@ -42,7 +42,7 @@ public sealed partial class MainViewModel
             await SaveSettingsAsync();Footer=settingsWritable?UiText.Get("T_d94c48315238"):UiText.Get("T_a66f3be2b81c");
         }
         catch(Exception error) when(error is IOException or UnauthorizedAccessException) { Banner=UiText.Get("T_23a051575c7a"); }
-        finally {IsBusy=false;idle.TrySetResult();}
+        finally {IsBusy=priorBusy;idle.TrySetResult();idle=priorIdle;}
     }
     internal void ApplyDirectoryRules(ExtractionDirectoryRules rules,string custom)
     {

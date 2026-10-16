@@ -20,6 +20,7 @@ public partial class App : Application
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-language-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-visual-refresh");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-redesign");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-application-updates");
         var isolated = arguments.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
@@ -175,6 +176,15 @@ public partial class App : Application
             validationIndex >= 0 || onlineValidationIndex >= 0 ? (_, _) => true : null));
         window.DataContext = model;
         MainWindow = window;
+        var redesignIndex=Array.IndexOf(e.Args,"--validate-redesign");
+        if(redesignIndex>=0)
+        {
+            if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true") {Shutdown(2);return;}
+            var root=Path.GetFullPath(e.Args[redesignIndex+1]);var reports=Path.Combine(root,"artifacts/ui-redesign",UiText.LanguageCode);Directory.CreateDirectory(reports);
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(Path.Combine(reports,"report.json"),JsonSerializer.Serialize(new{passed=false,error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            window.SuppressExitConfirmationForValidation=true;window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopRedesignValidation.RunAsync(window,model,theme,root);Shutdown(passed?0:1);return;
+        }
         var formatsIndex=Array.IndexOf(e.Args,"--validate-formats");
         if(formatsIndex>=0)
         {
@@ -499,9 +509,11 @@ public partial class App : Application
             using var stream = File.Create(e.Args[previewIndex + 1]); encoder.Save(stream);
             Shutdown(); return;
         }
+        model.Page = 4;
         window.Show();
-        _ = model.InitializeAsync();
-        foreach (var argument in e.Args.Where(value => File.Exists(value))) model.AddFiles([argument]);
+        await model.InitializeAsync();
+        var startupArchives=e.Args.Where(File.Exists).ToArray();
+        if(startupArchives.Length>0) await model.OpenWorkspaceArchiveAsync(startupArchives);
     }
 
     private static void PrepareValidationDialog(PasswordDialog dialog)
