@@ -3226,4 +3226,5 @@ A password is required to validate the archive data.</value>
   <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>Available options depend on the format and engine.</value></data>
   <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>Search archive contents</value></data>
   <data name="Compression.AdvancedTitle" xml:space="preserve"><value>Advanced options</value></data>
+  <data name="Updates.SoftwareActions" xml:space="preserve"><value>Download and install</value></data>
 </root>
