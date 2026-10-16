@@ -72,7 +72,12 @@
                     <Border x:Name="Pill" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="8">
                       <Grid>
                         <Border x:Name="Bar" Width="3" Height="18" HorizontalAlignment="Left" Margin="-14,0,0,0" CornerRadius="0,2,2,0" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
-                        <StackPanel Orientation="Horizontal">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="28"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>
                           <Path Data="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,10,0" VerticalAlignment="Center" IsHitTestVisible="False">
                             <Path.Style>
                               <Style TargetType="Path">
@@ -84,7 +89,7 @@
                               </Style>
                             </Path.Style>
                           </Path>
-                          <ContentPresenter VerticalAlignment="Center">
+                          <ContentPresenter VerticalAlignment="Center" Grid.Column="1">
                             <ContentPresenter.Style>
                               <Style TargetType="ContentPresenter">
                                 <Style.Triggers>
@@ -95,7 +100,27 @@
                               </Style>
                             </ContentPresenter.Style>
                           </ContentPresenter>
-                        </StackPanel>
+                          <Border Grid.Column="2" CornerRadius="11" Padding="7,2" Margin="8,0,0,0" Background="{DynamicResource HoverBrush}" ToolTip="{loc:Text Redesign.ActiveTaskHelp}">
+                            <Border.Style>
+                              <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                  <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                      <Condition Binding="{Binding Uid,RelativeSource={RelativeSource TemplatedParent}}" Value="Tasks"/>
+                                      <Condition Binding="{Binding Tag,RelativeSource={RelativeSource AncestorType=ListBox}}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                  </MultiDataTrigger>
+                                  <DataTrigger Binding="{Binding ActiveTaskCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                  </DataTrigger>
+                                </Style.Triggers>
+                              </Style>
+                            </Border.Style>
+                            <TextBlock Text="{Binding ActiveTaskCount}" FontSize="12" Foreground="{TemplateBinding Foreground}"/>
+                          </Border>
+                        </Grid>
                       </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -116,7 +141,7 @@
             </Style>
           </ListBox.ItemContainerStyle>
           <ListBoxItem Content="{loc:Text Redesign.Files}" Tag="M3,6 L10,6 L12,8 L21,8 L21,20 L3,20 Z" ToolTip="{loc:Text Redesign.Files}"/>
-          <ListBoxItem Content="{loc:Text Redesign.Tasks}" Tag="M4,6 L6,6 M10,6 L21,6 M4,12 L6,12 M10,12 L21,12 M4,18 L6,18 M10,18 L21,18" ToolTip="{loc:Text Redesign.Tasks}"/>
+          <ListBoxItem Content="{loc:Text Redesign.Tasks}" Tag="M4,6 L6,6 M10,6 L21,6 M4,12 L6,12 M10,12 L21,12 M4,18 L6,18 M10,18 L21,18" ToolTip="{loc:Text Redesign.Tasks}" Uid="Tasks"/>
           <ListBoxItem Content="{loc:Text T_9b54fb7636af}" Tag="M6,11 L18,11 L18,20 L6,20 Z M8,11 L8,7 A4,4 0 0 1 16,7 L16,11" ToolTip="{loc:Text T_9b54fb7636af}"/>
           <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="M4,4 L9,9 M15,15 L20,20 M19,3 L21,5 L9,17 L5,19 L3,15 L15,3 Z" ToolTip="{loc:Text Redesign.Tools}"/>
         </ListBox>
@@ -221,7 +246,7 @@
                 <DockPanel Margin="24,8,24,12" Visibility="Collapsed">
                   <TextBlock Text="{loc:Text T_8f10dc147500}" Style="{StaticResource Heading}" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                 </DockPanel>
-                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="60">
+                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="60">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
                       <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}"/>
@@ -356,6 +381,7 @@
                   <StackPanel>
                     <TextBlock Text="{Binding SelectedTask.Name}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
                     <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
                     <DockPanel Margin="0,12,0,0">
                       <Button x:Name="FilenameEncodingAction" Content="{loc:Text T_2273a2975767}" Command="{Binding FilenameEncodingCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_a16a60f9eb3b}" Visibility="Collapsed"/>
@@ -1181,8 +1207,18 @@
                 <Path Data="M5,1 L30,1 L44,15 L44,53 L5,53 Z M30,1 L30,15 L44,15 M18,8 L23,8 M18,14 L23,14 M18,20 L23,20 M18,26 L23,26 M25,38 A5,5 0 1 1 15,38 A5,5 0 1 1 25,38" Width="48" Height="56" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" Margin="0,0,0,24"/>
                 <TextBlock Text="{loc:Text Redesign.EmptyTitle}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap"/>
                 <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,0">
-                  <Button Content="{loc:Text Redesign.OpenArchive}" Click="OnOpenArchive" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" IsEnabled="{Binding IsIdle}" Margin="0,0,12,0"/>
-                  <Button Content="{loc:Text Redesign.AddForCompression}" Click="OnCreateFromFiles" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}" IsEnabled="{Binding IsIdle}"/>
+                  <Button Click="OnOpenArchive" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" IsEnabled="{Binding IsIdle}" Margin="0,0,12,0" AutomationProperties.Name="{loc:Text Redesign.OpenArchive}">
+                    <StackPanel Orientation="Horizontal">
+                      <Path Data="M1,5 L8,5 L11,8 L23,8 L23,22 L1,22 Z" Width="18" Height="20" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Margin="0,0,10,0"/>
+                      <TextBlock Text="{loc:Text Redesign.OpenArchive}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                  </Button>
+                  <Button Click="OnCreateFromFiles" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Redesign.AddForCompression}">
+                    <StackPanel Orientation="Horizontal">
+                      <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M7,16 L16,16 M12,11 L12,21" Width="18" Height="20" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Margin="0,0,10,0"/>
+                      <TextBlock Text="{loc:Text Redesign.AddForCompression}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                  </Button>
                 </WrapPanel>
                 <TextBlock Text="{loc:Text Redesign.EmptyHint}" Style="{StaticResource Secondary}" Margin="0,20,0,0" TextAlignment="Center"/>
               </StackPanel>

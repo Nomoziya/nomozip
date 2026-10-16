@@ -13,16 +13,23 @@ public sealed class FileHashRow(string path, string expected = "") : ObservableO
     private string expectedHash = expected, digest = "", status = UiText.Get("T_2890ec1b2f04");
     public string Path { get; } = path;
     public string Name => System.IO.Path.GetFileName(Path);
+    public string Algorithm=>"SHA-256";
+    public bool IsArchive=>System.IO.Path.GetExtension(Path).ToLowerInvariant() is ".zip" or ".7z" or ".rar" or ".tar" or ".gz" or ".xz";
     public string ExpectedHash
     {
         get => expectedHash;
         set { if (Set(ref expectedHash, value)) { Changed(nameof(ExpectedError)); Compare(); } }
     }
     public string ExpectedError => string.IsNullOrWhiteSpace(ExpectedHash) || Sha256Manifest.IsDigest(ExpectedHash.Trim()) ? "" : UiText.Get("T_f585137c61b2");
-    public string Digest { get => digest; private set => Set(ref digest, value); }
+    public string Digest { get => digest; private set {if(Set(ref digest,value))RefreshResult();} }
     public long BytesRead { get; private set; }
     public string SizeText=>Digest.Length==0?"—":BytesRead>=1048576?$"{BytesRead/1048576.0:0.#} MB":BytesRead>=1024?$"{BytesRead/1024.0:0.#} KB":$"{BytesRead} B";
-    public string Status { get => status; internal set => Set(ref status, value); }
+    public string Status { get => status; internal set {if(Set(ref status,value))RefreshResult();} }
+    public string CalculationState=>Digest.Length>0?UiText.Get("Hash.Calculated"):Status;
+    public bool IsMatch=>Digest.Length>0 && Status==UiText.Get("T_0680a4a36ca8");
+    public bool IsMismatch=>Digest.Length>0 && Status==UiText.Get("T_a50309ed2709");
+    public string ComparisonResult=>Digest.Length==0?"—":IsMatch?UiText.Get("T_0680a4a36ca8"):IsMismatch?UiText.Get("T_a50309ed2709"):UiText.Get(string.IsNullOrWhiteSpace(ExpectedHash)?"Hash.NotCompared":"Hash.InvalidExpected");
+    private void RefreshResult() {Changed(nameof(CalculationState));Changed(nameof(ComparisonResult));Changed(nameof(IsMatch));Changed(nameof(IsMismatch));}
     public FileHashResult Result => new(Path, BytesRead, Digest);
     internal void Reset() { Digest = ""; BytesRead = 0; Changed(nameof(SizeText));Status = UiText.Get("T_2890ec1b2f04"); }
     internal void Complete(FileHashResult value) { BytesRead = value.BytesRead; Digest = value.Digest;Changed(nameof(SizeText));Compare(); }
@@ -56,6 +63,8 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
 {
     private bool busy;
     private string message = UiText.Get("T_49012ae3beb3"), progressText = "";
+    private bool showResultSummary;
+    private string completionLabel="";
     private double progress;
     private FileHashRow? selected;
     private CancellationTokenSource? cancellation;
@@ -70,11 +79,15 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
     public bool HasSelection => Selected is not null;
     public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) Changed(nameof(IsIdle)); } }
     public bool IsIdle => !IsBusy;
-    public string Message { get => message; private set => Set(ref message, value); }
+    public string Message
+    {
+        get=>showResultSummary?UiText.Format("T_98b68837365d",completionLabel,Rows.Count(value=>value.Digest.Length>0),Rows.Count(value=>value.Status==UiText.Get("T_0680a4a36ca8")),Rows.Count(value=>value.Status==UiText.Get("T_a50309ed2709")),Rows.Count(value=>value.Status==UiText.Get("T_c27041585556"))):message;
+        private set {var wasSummary=showResultSummary;showResultSummary=false;if(!Set(ref message,value) && wasSummary)Changed();}
+    }
     public string ProgressText { get => progressText; private set => Set(ref progressText, value); }
     public double Progress { get => progress; private set => Set(ref progress, value); }
     public ICommand AddFilesCommand => add ??= new RelayCommand(() => AddFiles(dialogs.SelectFiles()), () => IsIdle);
-    public ICommand RemoveCommand => remove ??= new RelayCommand(() => { if (Selected is { } row) { Rows.Remove(row); Selected = Rows.FirstOrDefault(); } }, () => IsIdle && HasSelection);
+    public ICommand RemoveCommand => remove ??= new RelayCommand(() => { if (Selected is { } row) { Rows.Remove(row); Selected = Rows.FirstOrDefault();Changed(nameof(Message)); } }, () => IsIdle && HasSelection);
     public ICommand CalculateCommand => calculate ??= new AsyncCommand(CalculateAsync, () => IsIdle && Rows.Count > 0 && Rows.All(value => value.ExpectedError.Length == 0));
     public ICommand CancelCommand => cancel ??= new RelayCommand(Cancel, () => IsBusy);
     public ICommand ImportCommand => import ??= new AsyncCommand(ImportAsync, () => IsIdle);
@@ -97,7 +110,7 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
     }
     private void Add(FileHashRow row)
     {
-        row.PropertyChanged += (_, args) => { if (args.PropertyName is nameof(FileHashRow.ExpectedHash) or nameof(FileHashRow.Digest)) CommandManager.InvalidateRequerySuggested(); };
+        row.PropertyChanged += (_, args) => { if (args.PropertyName is nameof(FileHashRow.ExpectedHash) or nameof(FileHashRow.Digest)) CommandManager.InvalidateRequerySuggested();if(args.PropertyName==nameof(FileHashRow.Status) && showResultSummary)Changed(nameof(Message)); };
         Rows.Add(row);
     }
     private void Begin() { IsBusy = true; idle = new TaskCompletionSource(); cancellation = new CancellationTokenSource(); }
@@ -128,7 +141,7 @@ public sealed class FileHashViewModel(IFileHashCalculator calculator, FileHashDi
         catch (OperationCanceledException) { interrupted = true; if (current is not null) current.Status = UiText.Get("T_a37778f17c5f"); }
         finally
         {
-            Message = UiText.Format("T_98b68837365d", (interrupted ? UiText.Get("T_a37778f17c5f") : UiText.Get("T_f28461bb49c8")), Rows.Count(value => value.Digest.Length > 0), Rows.Count(value => value.Status == UiText.Get("T_0680a4a36ca8")), Rows.Count(value => value.Status == UiText.Get("T_a50309ed2709")), Rows.Count(value => value.Status == UiText.Get("T_c27041585556")));
+            completionLabel=UiText.Get(interrupted?"T_a37778f17c5f":"T_f28461bb49c8");showResultSummary=true;Changed(nameof(Message));
             ProgressText = interrupted ? UiText.Get("T_ee8c9493f18c") : UiText.Get("T_0dce8699aebd");
             End();
         }

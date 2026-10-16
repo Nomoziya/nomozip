@@ -23,7 +23,7 @@ internal static class DesktopThemeValidation
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);
         string Hash(string path)=>Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
         Color ColorOf(string key)=>((SolidColorBrush)Application.Current.Resources[key]).Color;
-        bool DarkSurface()=>ColorOf("SurfaceBrush")==Color.FromRgb(30,41,59);
+        bool DarkSurface()=>ColorOf("SurfaceBrush")==Color.FromRgb(36,36,36);
         var language=UiText.LanguageCode;var samples=Path.Combine(root,"artifacts/theme-controls-preview");Directory.CreateDirectory(samples);
         try
         {
@@ -91,7 +91,7 @@ internal static class DesktopThemeValidation
         var result=new{passed=checks.Count>0 && checks.Values.All(v=>v),total=checks.Count,checks,language,syntheticData=true,changedActualWindowsTheme=false,actualVisibleNarratorTested=false};
         await File.WriteAllTextAsync(Path.Combine(root,"artifacts/theme-"+language+"-settings-validation.json"),JsonSerializer.Serialize(result,new JsonSerializerOptions{WriteIndented=true}));return result.passed;
     }
-    private static double Contrast(Color first,Color second)
+    internal static double Contrast(Color first,Color second)
     {
         double L(Color c){double F(byte b){var v=b/255.0;return v<=0.04045?v/12.92:Math.Pow((v+0.055)/1.055,2.4);}return .2126*F(c.R)+.7152*F(c.G)+.0722*F(c.B);}
         var a=L(first);var b=L(second);return (Math.Max(a,b)+.05)/(Math.Min(a,b)+.05);

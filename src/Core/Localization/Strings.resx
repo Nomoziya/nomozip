@@ -2081,7 +2081,7 @@
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_b3d70cc43d2a">
-    <value>文件 SHA-256</value>
+    <value>文件校验</value>
     <comment>src/Desktop/FileHashDialog.xaml; src/Desktop/FileHashDialog.xaml; src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_b3eceee47a3d">
@@ -3180,4 +3180,14 @@
 <data name="Browser.Up" xml:space="preserve"><value>上一级（Alt+←）</value></data>
 <data name="Updates.ManageVersions" xml:space="preserve"><value>管理引擎版本与来源</value></data>
 <data name="Password.Confirm" xml:space="preserve"><value>确认密码</value></data>
+<data name="Redesign.OutputUnavailable" xml:space="preserve"><value>输出目录不存在，可能已被移动或删除。</value></data>
+<data name="Redesign.ViewDetails" xml:space="preserve"><value>查看详情</value></data>
+<data name="Compression.ResultTitle" xml:space="preserve"><value>压缩任务结果</value></data>
+<data name="Redesign.ActiveTaskHelp" xml:space="preserve"><value>进行中与待处理任务</value></data>
+<data name="Hash.Calculated" xml:space="preserve"><value>已完成</value></data>
+<data name="Hash.NotCompared" xml:space="preserve"><value>未比较</value></data>
+<data name="Hash.InvalidExpected" xml:space="preserve"><value>期望值无效</value></data>
+<data name="Hash.SizeLabel" xml:space="preserve"><value>大小</value></data>
+<data name="Hash.AlgorithmLabel" xml:space="preserve"><value>算法</value></data>
+<data name="Hash.ResultLabel" xml:space="preserve"><value>结果</value></data>
 </root>

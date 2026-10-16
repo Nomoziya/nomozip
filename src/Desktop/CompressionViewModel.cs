@@ -120,7 +120,7 @@ public sealed partial class MainViewModel
         RemoveCompressionSourceCommand = new RelayCommand(() => { if (SelectedCompressionSource is { } item) CompressionSources.Remove(item); }, () => IsIdle && SelectedCompressionSource is not null);
         BrowseCompressionOutputCommand = new RelayCommand(() => { if (dialogs.SelectArchiveOutput(CompressionSfx?"sfx":CompressionFormatName) is { } path) CompressionOutput = path; }, () => IsIdle);
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionEncrypt);
-        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
+        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && !string.IsNullOrWhiteSpace(CompressionOutputName) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
         OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
         CompressionSources.CollectionChanged += (_, _) => CompressionCapabilitiesChanged();
     }

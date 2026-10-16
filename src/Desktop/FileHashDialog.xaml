@@ -50,9 +50,55 @@
             </Style>
           </DataGrid.RowStyle>
           <DataGrid.Columns>
-            <DataGridTextColumn Header="{loc:Text T_39932f24fe11}" Binding="{Binding Name}" Width="*" MinWidth="140" ElementStyle="{StaticResource TableText}"/>
-            <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="78" ElementStyle="{StaticResource TableText}"/>
-            <DataGridTextColumn Header="{loc:Text T_6320b4a8722a}" Binding="{Binding Status}" Width="140" ElementStyle="{StaticResource TableText}"/>
+            <DataGridTemplateColumn Header="{loc:Text T_d44e9b3d3b31}" Width="*" MinWidth="120">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <Grid Margin="10,0">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="26"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Path Width="16" Height="20" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.4" VerticalAlignment="Center">
+                      <Path.Style>
+                        <Style TargetType="Path">
+                          <Setter Property="Data" Value="M3,1 L12,1 L18,7 L18,22 L3,22 Z M12,1 L12,7 L18,7"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsArchive}" Value="True">
+                              <Setter Property="Stroke" Value="{DynamicResource AccentBrush}"/>
+                              <Setter Property="Data" Value="M3,1 L12,1 L18,7 L18,22 L3,22 Z M12,1 L12,7 L18,7 M7,5 L10,5 M7,9 L10,9 M7,13 L10,13 M11,17 A3,3 0 1 1 5,17 A3,3 0 1 1 11,17"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Path.Style>
+                    </Path>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                  </Grid>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTextColumn Header="{loc:Text Hash.SizeLabel}" Binding="{Binding SizeText}" Width="70" ElementStyle="{StaticResource TableText}"/>
+            <DataGridTextColumn Header="{loc:Text Hash.AlgorithmLabel}" Binding="{Binding Algorithm}" Width="80" ElementStyle="{StaticResource TableText}"/>
+            <DataGridTextColumn Header="{loc:Text T_6320b4a8722a}" Binding="{Binding CalculationState}" Width="80" ElementStyle="{StaticResource TableText}"/>
+            <DataGridTemplateColumn Header="{loc:Text Hash.ResultLabel}" Width="90">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding ComparisonResult}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ComparisonResult}" Margin="12,0" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding IsMatch}" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding IsMismatch}" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
           </DataGrid.Columns>
           <DataGrid.CellStyle>
             <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
