@@ -18,18 +18,22 @@ public sealed class FileHashRow(string path, string expected = "") : ObservableO
     public string ExpectedHash
     {
         get => expectedHash;
-        set { if (Set(ref expectedHash, value)) { Changed(nameof(ExpectedError)); Compare(); } }
+        set { if (Set(ref expectedHash, value)) { Changed(nameof(ExpectedError));Changed(nameof(HasExpectedError)); Compare(); } }
     }
     public string ExpectedError => string.IsNullOrWhiteSpace(ExpectedHash) || Sha256Manifest.IsDigest(ExpectedHash.Trim()) ? "" : UiText.Get("T_f585137c61b2");
+    public bool HasExpectedError=>ExpectedError.Length>0;
     public string Digest { get => digest; private set {if(Set(ref digest,value))RefreshResult();} }
     public long BytesRead { get; private set; }
     public string SizeText=>Digest.Length==0?"—":BytesRead>=1048576?$"{BytesRead/1048576.0:0.#} MB":BytesRead>=1024?$"{BytesRead/1024.0:0.#} KB":$"{BytesRead} B";
     public string Status { get => status; internal set {if(Set(ref status,value))RefreshResult();} }
     public string CalculationState=>Digest.Length>0?UiText.Get("Hash.Calculated"):Status;
+    public bool HasCalculated=>Digest.Length>0;
+    public bool IsCalculating=>Status==UiText.Get("T_28a8e216754d");
+    public bool HasCalculationError=>Status==UiText.Get("T_c27041585556");
     public bool IsMatch=>Digest.Length>0 && Status==UiText.Get("T_0680a4a36ca8");
     public bool IsMismatch=>Digest.Length>0 && Status==UiText.Get("T_a50309ed2709");
     public string ComparisonResult=>Digest.Length==0?"—":IsMatch?UiText.Get("T_0680a4a36ca8"):IsMismatch?UiText.Get("T_a50309ed2709"):UiText.Get(string.IsNullOrWhiteSpace(ExpectedHash)?"Hash.NotCompared":"Hash.InvalidExpected");
-    private void RefreshResult() {Changed(nameof(CalculationState));Changed(nameof(ComparisonResult));Changed(nameof(IsMatch));Changed(nameof(IsMismatch));}
+    private void RefreshResult() {Changed(nameof(CalculationState));Changed(nameof(HasCalculated));Changed(nameof(IsCalculating));Changed(nameof(HasCalculationError));Changed(nameof(ComparisonResult));Changed(nameof(IsMatch));Changed(nameof(IsMismatch));}
     public FileHashResult Result => new(Path, BytesRead, Digest);
     internal void Reset() { Digest = ""; BytesRead = 0; Changed(nameof(SizeText));Status = UiText.Get("T_2890ec1b2f04"); }
     internal void Complete(FileHashResult value) { BytesRead = value.BytesRead; Digest = value.Digest;Changed(nameof(SizeText));Compare(); }

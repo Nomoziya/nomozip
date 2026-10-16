@@ -60,9 +60,9 @@ internal static class DesktopRedesignValidation
                 model.SelectedAppearance=model.AppearanceOptions.Single(option=>option.Code==(mode=="contrast"?"system":mode));
                 if(mode!="contrast")foreach(var pair in new[]{("TextBrush","SurfaceBrush",4.5),("SecondaryBrush","SurfaceBrush",4.5),("OnAccentBrush","AccentBrush",4.5),("SelectionTextBrush","SelectionBrush",4.5),("ErrorBrush","SurfaceBrush",4.5),("BorderBrush","SurfaceBrush",3.0),("FocusBrush","SurfaceBrush",3.0)})
                     Check(mode+" contrast "+pair.Item1+" on "+pair.Item2,DesktopThemeValidation.Contrast(((SolidColorBrush)Application.Current.Resources[pair.Item1]).Color,((SolidColorBrush)Application.Current.Resources[pair.Item2]).Color)>=pair.Item3);
-                foreach(var width in new[]{800,1160})
+                foreach(var width in new[]{800,1040})
                 {
-                    window.Width=width;window.Height=width==800?600:760;
+                    window.Width=width;window.Height=width==800?600:720;
                     foreach(var page in new[]{4,0,1,3,5,2})
                     {
                         model.Page=page;model.SettingsSection=0;await Layout();
@@ -99,7 +99,7 @@ internal static class DesktopRedesignValidation
                     Check("soft contrast uses graphite warm text and muted focus",((SolidColorBrush)Application.Current.Resources["CanvasBrush"]).Color==Color.FromRgb(0x25,0x28,0x2b) && ((SolidColorBrush)Application.Current.Resources["TextBrush"]).Color==Color.FromRgb(0xe5,0xe2,0xda) && ((SolidColorBrush)Application.Current.Resources["FocusBrush"]).Color==Color.FromRgb(0xc5,0xb9,0x8b));
                     theme.Apply(true);Check("system high contrast takes priority over soft palette",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush));theme.Apply(false);
                     var preference=Path.Combine(folder,"synthetic","soft-appearance");await AppearancePreferenceStore.SaveAsync(preference,"soft");Check("soft appearance preference survives save and reload",AppearancePreferenceStore.Read(preference).Mode=="soft");
-                    window.Width=1160;window.Height=760;model.Page=0;await Layout();
+                    window.Width=1040;window.Height=720;model.Page=0;await Layout();
                     window.Opacity=1;window.Activate();window.ArchiveTasks.ScrollIntoView(model.Tasks[0]);await Layout();
                     var row=(DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.Tasks[0]);
                     var cell=VisualDescendants(row).OfType<DataGridCell>().First();
@@ -110,7 +110,7 @@ internal static class DesktopRedesignValidation
                     Capture("soft-task-keyboard-focus");
                 }
             }
-            theme.SetMode("light");theme.Apply(false);window.Width=1160;window.Height=760;
+            theme.SetMode("light");theme.Apply(false);window.Width=1040;window.Height=720;
             model.Page=1;model.SelectedPassword=model.PasswordRows[0];await Layout();
             Check("vault details populate only on selection",window.VaultDetails.SecretBox.Password.Length>0 && window.VaultDetails.VisibleSecret.Text.Length==0);
             var nameHost=(ScrollViewer)window.VaultDetails.NameBox.Template.FindName("PART_ContentHost",window.VaultDetails.NameBox);
@@ -185,7 +185,7 @@ internal static class DesktopRedesignValidation
             window.Width=800;window.Height=600;await Layout();
             Check("compact archive resize clears decoded preview",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
             Check("closing preview releases row thumbnails",contents.Rows.All(row=>row.PreviewThumbnail is null));
-            Capture("actual-compact-browser");window.Width=1160;window.Height=760;await Layout();
+            Capture("actual-compact-browser");window.Width=1040;window.Height=720;await Layout();
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;contents.CurrentRow.Selected=false;
             model.Page=0;await Layout();Check("switching away clears decoded preview",preview.Text.Length==0 && imagePreview.Picture is null && window.PreviewHost.Content is null);model.Page=4;
@@ -232,7 +232,13 @@ internal static class DesktopRedesignValidation
 
             // Compression is visible on Tasks but never added to the extraction input collection.
             var source=Path.Combine(data,"source.txt");await File.WriteAllTextAsync(source,"synthetic compression content");
-            model.Page=3;model.AddCompressionSources([source]);await Layout();
+            var extraSource=Path.Combine(data,"extra-source.txt");await File.WriteAllTextAsync(extraSource,"second synthetic source");
+            model.Page=3;model.AddCompressionSources([source,extraSource]);await Layout();
+            var allSourcesPeer=new System.Windows.Automation.Peers.CheckBoxAutomationPeer(window.CompressionPage.SourceSelectAll);
+            ((System.Windows.Automation.Provider.IToggleProvider)allSourcesPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Toggle)).Toggle();await Layout();
+            Check("source select-all includes every displayed source",window.CompressionPage.CompressionSourceTable.SelectedItems.Count==2);
+            ((System.Windows.Automation.Provider.IInvokeProvider)new System.Windows.Automation.Peers.ButtonAutomationPeer(window.CompressionPage.CompressionRemoveButton).GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Layout();
+            Check("remove selected removes the full source selection",model.CompressionSources.Count==0);model.AddCompressionSources([source]);await Layout();
             window.CompressionPage.ArchiveOutputBox.Text=data;window.CompressionPage.ArchiveOutputBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
             window.CompressionPage.ArchiveNameBox.Text="created";window.CompressionPage.ArchiveNameBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
             Check("separate location and filename compose the real output path",model.CompressionOutput==Path.Combine(data,"created.7z"));
@@ -261,6 +267,9 @@ internal static class DesktopRedesignValidation
             Check("checksum workspace computes actual synthetic files",hashes.Rows.Count==2 && hashes.Rows.All(value=>value.Digest.Length==64));
             Check("empty expected digest remains not compared",hashes.Rows.All(value=>value.Status==UiText.Get("T_cb82f06947d1")));
             var expectedBox=VisualDescendants((DependencyObject)window.ToolsHost.Content).OfType<TextBox>().Single(value=>value.Name=="HashExpectedBox");
+            expectedBox.Text="invalid";expectedBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();await Layout();
+            var expectedFocus=(Border)expectedBox.Template.FindName("FieldFocus",expectedBox);
+            Check("invalid digest marks its field and prevents calculation",FieldState.GetHasError(expectedBox) && expectedFocus.Visibility==Visibility.Visible && ReferenceEquals(expectedFocus.BorderBrush,Application.Current.Resources["ErrorBrush"]) && !hashes.CalculateCommand.CanExecute(null));
             expectedBox.Text=hashes.Selected!.Digest;expectedBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
             Check("checksum details compare the selected value",hashes.Selected.Status==UiText.Get("T_0680a4a36ca8"));
             Check("checksum summary updates when expected digest changes",hashes.Message==UiText.Format("T_98b68837365d",UiText.Get("T_f28461bb49c8"),2,1,0,0));

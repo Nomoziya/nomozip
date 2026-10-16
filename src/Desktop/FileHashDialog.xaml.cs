@@ -20,7 +20,7 @@ public partial class FileHashDialog : Window
             else if(!compact && CompactDetailsScroll.Content is not null) {CompactDetailsScroll.Content=null;HashDetailsScroll.Content=HashDetailsPanel;}
             HashDetailsSurface.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             CompactHashDetails.Visibility=compact?Visibility.Visible:Visibility.Collapsed;
-            HashDetailsColumn.Width=new GridLength(compact?0:Math.Clamp(HashLayout.ActualWidth*.42,300,400));
+            HashDetailsColumn.Width=new GridLength(compact?0:Math.Clamp(HashLayout.ActualWidth*.38,300,400));
             if(compact && HashActions.Parent is System.Windows.Controls.StackPanel actionsParent) {actionsParent.Children.Remove(HashActions);HashLayout.Children.Add(HashActions);System.Windows.Controls.Grid.SetRow(HashActions,3);}
             else if(!compact && HashActions.Parent is System.Windows.Controls.Grid) {HashLayout.Children.Remove(HashActions);HashDetailsPanel.Children.Add(HashActions);}
             System.Windows.Controls.Grid.SetColumn(HashActions,0);System.Windows.Controls.Grid.SetColumnSpan(HashActions,2);

@@ -3197,7 +3197,7 @@
   <data name="FileType.Pdf" xml:space="preserve"><value>PDF 文档</value></data>
   <data name="FileType.Sheet" xml:space="preserve"><value>{0} 表格</value></data>
   <data name="FileType.Archive" xml:space="preserve"><value>{0} 压缩包</value></data>
-  <data name="Compression.SourceCount" xml:space="preserve"><value>{0} 项</value></data>
+  <data name="Compression.SourceCount" xml:space="preserve"><value>{0} 项 · 已选择 {1} 项</value></data>
   <data name="Vault.StatusLocked" xml:space="preserve"><value>已锁定</value></data>
   <data name="Vault.StatusUnlocked" xml:space="preserve"><value>已解锁</value></data>
   <data name="Vault.StatusLocal" xml:space="preserve"><value>本机加密保护</value></data>
@@ -3215,4 +3215,7 @@
   <data name="Settings.DefaultsSaved" xml:space="preserve"><value>已保存，将用于后续操作。</value></data>
   <data name="Updates.EngineTitle" xml:space="preserve"><value>7-Zip 引擎</value></data>
   <data name="Preview.SyntheticNotice" xml:space="preserve"><value>界面渲染预览，使用合成数据。</value></data>
+  <data name="Compression.SelectAllSources" xml:space="preserve"><value>选择所有源项目</value></data>
+  <data name="Compression.SelectSource" xml:space="preserve"><value>选择源项目</value></data>
+  <data name="Compression.SelectionHint" xml:space="preserve"><value>选择要移除的项目；创建压缩包将包含列表中的全部项目。</value></data>
 </root>

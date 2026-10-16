@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ArchivePassword.Desktop" x:Class="ArchivePassword.Desktop.MainWindow" Style="{StaticResource AppWindow}" Title="nomozip" Width="1160" Height="760" MinWidth="800" MinHeight="600" WindowStartupLocation="CenterScreen" AllowDrop="True" Drop="OnDrop" Closing="OnClosing">
+<Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ArchivePassword.Desktop" x:Class="ArchivePassword.Desktop.MainWindow" Style="{StaticResource AppWindow}" Title="nomozip" Width="1040" Height="720" MinWidth="800" MinHeight="600" WindowStartupLocation="CenterScreen" AllowDrop="True" Drop="OnDrop" Closing="OnClosing">
   <Window.Resources>
     <local:PasswordMetadataConverter x:Key="PasswordMetadata"/>
     <Style x:Key="QueueMenuItem" TargetType="MenuItem" BasedOn="{StaticResource ActionMenuItem}"/>
@@ -166,7 +166,7 @@
         </Border.Style>
         <TextBlock Foreground="{DynamicResource SelectionTextBrush}" Text="{Binding Banner}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
       </Border>
-      <Grid Grid.Row="1" x:Name="TasksWorkspace">
+      <Grid Grid.Row="1" x:Name="TasksWorkspace" Background="{DynamicResource ChromeBrush}">
         <Grid.Style>
           <Style TargetType="Grid">
             <Style.Triggers>
@@ -182,7 +182,7 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="24,24,24,12">
+        <DockPanel Margin="24,20,24,12">
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top" Margin="16,0,0,0">
             <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
             <ComboBox x:Name="QueueConcurrencyChoice" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" Width="144" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
@@ -191,14 +191,14 @@
             </ComboBox>
           </StackPanel>
           <StackPanel Margin="0">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal" Margin="0">
               <Path Data="M2,3 L5,3 M10,3 L28,3 M2,12 L5,12 M10,12 L28,12 M2,21 L5,21 M10,21 L28,21" Width="28" Height="26" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,14,0" VerticalAlignment="Center"/>
               <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="28" FontWeight="SemiBold" Margin="0"/>
             </StackPanel>
-            <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}"/>
+            <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}" Visibility="Collapsed"/>
           </StackPanel>
         </DockPanel>
-        <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Background="Transparent">
+        <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,10" Margin="0" Background="Transparent">
           <WrapPanel>
             <ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/>
             <Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
@@ -292,7 +292,7 @@
                 <DockPanel Margin="24,8,24,12" Visibility="Collapsed">
                   <TextBlock Text="{loc:Text T_8f10dc147500}" Style="{StaticResource Heading}" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                 </DockPanel>
-                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="56">
+                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="54">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
                       <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}"/>
@@ -1311,9 +1311,9 @@
           <Button x:Name="ExportVaultButton" Content="{loc:Text T_e9d3dd690a4e}" Command="{Binding ExportVaultCommand}" Margin="0,0,12,8" Visibility="Collapsed"/>
           <Button x:Name="MergePasswordsButton" Content="{loc:Text T_fcdc3edb34ff}" Command="{Binding MergePasswordsCommand}" Margin="0,0,12,8" Visibility="Collapsed"/>
         </WrapPanel>
-        <TextBlock Grid.Row="1" Text="{Binding Footer}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+        <TextBlock Grid.Row="1" Text="{Binding Footer}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="20,10,20,10"/>
       </Grid>
-      <Grid x:Name="FilesWorkspace" Grid.Row="1">
+      <Grid x:Name="FilesWorkspace" Grid.Row="1" Background="{DynamicResource ChromeBrush}">
         <Grid.Style>
           <Style TargetType="Grid">
             <Style.Triggers>
