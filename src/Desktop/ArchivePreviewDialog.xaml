@@ -9,8 +9,18 @@
     </Grid.RowDefinitions>
     <StackPanel Margin="0,0,0,8">
       <TextBlock Text="{loc:Text Preview.Title}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryBrush}"/>
-      <TextBlock Text="{Binding EntryPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EntryPath}" FontWeight="SemiBold" Margin="0,6,0,8" FontSize="20"/>
-      <TextBlock x:Name="PreviewDetails" Text="{Binding Details}" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+      <TextBlock Text="{Binding EntryName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EntryPath}" FontWeight="SemiBold" Margin="0,6,0,8" FontSize="20"/>
+      <TextBlock x:Name="PreviewDetails" Text="{Binding Details}" TextWrapping="Wrap">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsImage}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+      </TextBlock>
     </StackPanel>
     <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="0" Margin="0,16,0,0">
       <Grid>
@@ -26,18 +36,6 @@
             </Style>
           </TextBox.Style>
         </TextBox>
-        <Image x:Name="PreviewImage" Source="{Binding Picture}" Stretch="Uniform" StretchDirection="DownOnly" AutomationProperties.Name="{Binding EntryPath}" VerticalAlignment="Top" MaxHeight="300">
-          <Image.Style>
-            <Style TargetType="Image">
-              <Setter Property="Visibility" Value="Collapsed"/>
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding IsImage}" Value="True">
-                  <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </Image.Style>
-        </Image>
         <TextBlock x:Name="PreviewError" Text="{Binding Message}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" AutomationProperties.LiveSetting="Polite">
           <TextBlock.Style>
             <Style TargetType="TextBlock">
@@ -50,6 +48,31 @@
             </Style>
           </TextBlock.Style>
         </TextBlock>
+        <StackPanel VerticalAlignment="Top">
+          <StackPanel.Style>
+            <Style TargetType="StackPanel">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsImage}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Style>
+          <Image x:Name="PreviewImage" Source="{Binding Picture}" Stretch="Uniform" StretchDirection="DownOnly" AutomationProperties.Name="{Binding EntryPath}" VerticalAlignment="Top" MaxHeight="300">
+            <Image.Style>
+              <Style TargetType="Image">
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsImage}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Image.Style>
+          </Image>
+          <TextBlock Text="{Binding Details}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,16,0,0"/>
+        </StackPanel>
       </Grid>
     </Border>
     <TextBlock x:Name="PreviewNotice" Grid.Row="2" Text="{loc:Text Preview.Notice}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,8,0,0"/>

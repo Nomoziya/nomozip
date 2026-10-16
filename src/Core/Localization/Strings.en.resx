@@ -3177,4 +3177,7 @@ A password is required to validate the archive data.</value>
 <data name="Extraction.CreateFolder" xml:space="preserve"><value>Create a folder with the archive name</value></data>
 <data name="Extraction.LayoutHint" xml:space="preserve"><value>Checked: archive folder; unchecked: direct extraction; mixed: smart layout.</value></data>
 <data name="TextEdit.CleanupWarning" xml:space="preserve"><value>The temporary edit copy could not be removed. Delete this folder manually: {0}</value></data>
+<data name="Browser.Up" xml:space="preserve"><value>Up one level (Alt+Left)</value></data>
+<data name="Updates.ManageVersions" xml:space="preserve"><value>Manage engine versions and source</value></data>
+<data name="Password.Confirm" xml:space="preserve"><value>Confirm password</value></data>
 </root>

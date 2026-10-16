@@ -139,7 +139,7 @@ public sealed class ExtractionCheckpointStore(string root)
 
     private static void ValidateRecord(CheckpointRecord record, Guid id, bool requireSources = true)
     {
-        if (record.Version != 1 || record.Id != id || !Path.IsPathFullyQualified(record.ArchivePath) || !Path.IsPathFullyQualified(record.Destination)
+        if (record.Version is not (1 or 2) || record.Id != id || !Path.IsPathFullyQualified(record.ArchivePath) || !Path.IsPathFullyQualified(record.Destination)
             || record.Binding is null || !ZipFilenameEncoding.IsSupported(record.Binding.FilenameCodePage) || !HashValid(record.Binding.EngineSha256)
             || string.IsNullOrWhiteSpace(record.Binding.EngineVersion) || record.Binding.Architecture is not ("x64" or "arm64")
             || record.Phase is not ("extracting" or "committing" or "complete") || record.Sources is null || record.Entries is null || record.Receipts is null
@@ -165,6 +165,8 @@ public sealed class ExtractionCheckpointStore(string root)
                 || receipt.State is not ("staged" or "intent" or "delivered" or "skipped")) throw new CheckpointException("checkpoint_invalid");
             if(receipt.TargetPath is not null && (entry.Directory || !ConflictFileNames.IsValid(Path.GetFileName(Relative(receipt.TargetPath)))
                 || !string.Equals(Path.GetDirectoryName(Relative(entry.Path)),Path.GetDirectoryName(Relative(receipt.TargetPath)),StringComparison.OrdinalIgnoreCase)))
+                throw new CheckpointException("checkpoint_invalid");
+            if(record.Version==1 && receipt.TargetPath is not null && !string.Equals(Relative(entry.Path),Relative(receipt.TargetPath),StringComparison.OrdinalIgnoreCase))
                 throw new CheckpointException("checkpoint_invalid");
         }
         var renamed=record.Receipts.Where(receipt=>receipt.TargetPath is not null).ToDictionary(receipt=>receipt.Index,receipt=>receipt.TargetPath!);
@@ -343,11 +345,17 @@ public sealed class ExtractionCheckpointSession : IAsyncDisposable
         }
         await AppendAsync(receipt,token);
     }
-    public Task SetIntentAsync(string source, ExistingFilePolicy policy, CancellationToken token, string? target=null)
+    public async Task SetIntentAsync(string source, ExistingFilePolicy policy, CancellationToken token, string? target=null)
     {
         var entry=files[Path.GetRelativePath(StagingPath,source)];
         var relative=target is null?null:ExtractionCheckpointStore.Relative(Path.GetRelativePath(record.Destination,target));
-        return AppendAsync(receipts[entry.Index] with {State=policy==ExistingFilePolicy.Skip?"skipped":"intent",TargetPath=relative},token);
+        if(relative is not null && !relative.Equals(ExtractionCheckpointStore.Relative(entry.Path),StringComparison.OrdinalIgnoreCase) && record.Version==1)
+        {
+            // Older applications must refuse this session instead of ignoring
+            // the new destination and delivering to the original filename.
+            record=record with {Version=2};await SaveAsync(token);
+        }
+        await AppendAsync(receipts[entry.Index] with {State=policy==ExistingFilePolicy.Skip?"skipped":"intent",TargetPath=relative},token);
     }
     public Task SetDeliveredAsync(string target, CancellationToken token, string? source=null)
     {

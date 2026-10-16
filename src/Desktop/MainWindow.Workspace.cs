@@ -159,6 +159,10 @@ public partial class MainWindow
             batchView=view;
             var table=new DataGrid {ItemsSource=view,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=48,HeadersVisibility=DataGridHeadersVisibility.Column,CanUserAddRows=false};
             table.Columns.Add(new DataGridTextColumn {Header=UiText.Get("T_d44e9b3d3b31"),Binding=new System.Windows.Data.Binding("Name"),Width=new DataGridLength(1,DataGridLengthUnitType.Star)});table.SelectionChanged+=(_,_)=>vm.SelectedTask=table.SelectedItem as ArchiveTaskRow;table.SelectedItem=vm.Tasks.FirstOrDefault(row=>!row.Completed);Grid.SetRow(table,1);list.Children.Add(table);body.Children.Add(list);
+            table.Columns[0].MinWidth=160;
+            ((DataGridTextColumn)table.Columns[0]).ElementStyle=(Style)FindResource("TableText");
+            void FitBatchColumn(){if(table.ActualWidth>0)table.Columns[0].Width=Math.Max(160,table.ActualWidth-20);}
+            table.Loaded+=(_,_)=>FitBatchColumn();table.SizeChanged+=(_,_)=>FitBatchColumn();
         }
         SettingsPanel.Visibility = Visibility.Visible; SettingsPanel.DataContext = vm; SettingsPanel.Margin = new Thickness(0); SettingsPanel.Padding = new Thickness(0); SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
         Grid.SetColumn(SettingsPanel,1);body.Children.Add(SettingsPanel);
