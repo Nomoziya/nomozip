@@ -63,6 +63,11 @@ internal static class DesktopRedesignValidation
                             Check($"{mode}/{width} each source task appears exactly once",window.ArchiveTasks.Items.Count==model.Tasks.Count && model.TaskView.Cast<ArchiveTaskRow>().Distinct().Count()==model.Tasks.Count);
                             Check($"{mode}/{width} row actions keep compact height",VisualDescendants(window.ArchiveTasks).OfType<Button>().Where(value=>value.DataContext is ArchiveTaskRow).All(value=>value.ActualHeight<=44));
                         }
+                        if(page==3)
+                        {
+                            var sourceTable=window.CompressionPage.CompressionSourceTable;
+                            Check($"{mode}/{width} compression source headers remain inside the table",VisualDescendants(sourceTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Where(header=>header.Column is not null).All(header=>Bounds(header).Right<=Bounds(sourceTable).Right+1));
+                        }
                         Capture($"{mode}-{width}-page-{page}");
                     }
                     model.Page=2;
@@ -151,8 +156,18 @@ internal static class DesktopRedesignValidation
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             var imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
             Check("image preview renders decoded archive image",imagePreview.IsImage && imagePreview.Picture?.PixelWidth==480);
-            Capture("actual-embedded-browser-image-preview");contents.CurrentRow.Selected=false;
+            Capture("actual-embedded-browser-image-preview");
             theme.SetMode("dark");await Layout();Capture("actual-embedded-browser-image-preview-dark");theme.SetMode("light");
+            theme.SetMode("soft");window.Opacity=1;window.Activate();
+            entryTable.ScrollIntoView(contents.CurrentRow);await Layout();
+            var entryRow=(DataGridRow)entryTable.ItemContainerGenerator.ContainerFromItem(contents.CurrentRow);
+            Keyboard.Focus(VisualDescendants(entryRow).OfType<DataGridCell>().First());await Layout();
+            Check("archive workspace focus remains on the selected real entry",entryRow.IsKeyboardFocusWithin && contents.CurrentRow.Path=="cover.png");Capture("actual-soft-browser-keyboard-focus");theme.SetMode("light");
+            window.Width=800;window.Height=600;await Layout();
+            Check("compact archive resize clears decoded preview",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
+            Capture("actual-compact-browser");window.Width=1160;window.Height=760;await Layout();
+            contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
+            imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;contents.CurrentRow.Selected=false;
             model.Page=0;await Layout();Check("switching away clears decoded preview",preview.Text.Length==0 && imagePreview.Picture is null && window.PreviewHost.Content is null);model.Page=4;
             window.PrepareExtractionOptionsForValidation=dialog=>
             {

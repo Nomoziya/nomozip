@@ -9,6 +9,16 @@ public partial class CompressionView : UserControl
     {
         InitializeComponent();
         CompressionViewport.SizeChanged += (_, _) => ArrangePanels(narrow);
+        CompressionSourceTable.Loaded += (_, _) => FitSourceColumns();
+        CompressionSourceTable.SizeChanged += (_, _) => FitSourceColumns();
+    }
+
+    private void FitSourceColumns()
+    {
+        if(CompressionSourceTable.ActualWidth<=0)return;
+        CompressionSourceTable.Columns[1].Width=110;
+        CompressionSourceTable.Columns[2].Width=86;
+        CompressionSourceTable.Columns[0].Width=Math.Max(130,CompressionSourceTable.ActualWidth-110-86-18);
     }
 
     internal void ArrangePanels(bool isNarrow)

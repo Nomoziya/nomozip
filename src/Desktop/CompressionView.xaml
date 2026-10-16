@@ -37,7 +37,7 @@
                 <TextBlock x:Name="DropHint" Text="{loc:Text Menu.SourceHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
               </WrapPanel>
             </Border>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="48" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="48" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable">
               <DataGrid.ContextMenu>
                 <ContextMenu x:Name="SourceContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_3514845d4419}">
                   <MenuItem x:Name="SourceAddFilesAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}"/>
@@ -73,8 +73,8 @@
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="110" ElementStyle="{StaticResource TableText}"/>
                 <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" Width="80" ElementStyle="{StaticResource TableText}"/>
-                <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="80" ElementStyle="{StaticResource TableText}"/>
               </DataGrid.Columns>
             </DataGrid>
             <TextBlock Grid.Row="1" Text="{loc:Text T_e7a740c073cb}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Margin="16">
