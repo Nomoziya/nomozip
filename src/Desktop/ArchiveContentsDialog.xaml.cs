@@ -19,10 +19,10 @@ public partial class ArchiveContentsDialog : Window
                 EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
                 // Detached content can first measure at zero width. Restore fixed
                 // columns after embedding rather than retaining coerced minima.
-                foreach(var (index,width) in new[]{(0,48d),(2,110d),(3,78d),(4,96d)})
+                foreach(var (index,width) in new[]{(0,48d),(2,110d),(3,80d),(4,96d)})
                 {EntryTable.Columns[index].MinWidth=width;EntryTable.Columns[index].Width=width;}
                 EntryTable.Columns[1].MinWidth=130;
-                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-48-110-78-18-(narrow?0:96));
+                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-48-110-80-18-(narrow?0:96));
             }
             EntrySearch.Width=double.NaN;
             ContentsArchiveName.MaxWidth=Math.Max(160,BrowserHeader.ActualWidth-370);

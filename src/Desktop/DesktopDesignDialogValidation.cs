@@ -47,7 +47,10 @@ internal static class DesktopDesignDialogValidation
         {
             compression.SecretBox.Password="synthetic-password";compression.ConfirmationBox.Password="different";compression.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             check("new compression password requires matching confirmation",compression.IsVisible && compression.Response is null && compression.ErrorLabel.Text.Length>0);
+            compression.UpdateLayout();var compressionError=(Border)compression.ConfirmationBox.Template.FindName("FieldFocus",compression.ConfirmationBox);
+            check("compression mismatch marks the confirmation field",compressionError.Visibility==Visibility.Visible && ReferenceEquals(compressionError.BorderBrush,Application.Current.Resources["ErrorBrush"]));
             Capture(compression,"compression-password-mismatch");compression.ConfirmationBox.Password="synthetic-password";
+            check("editing compression confirmation clears stale error",!FieldState.GetHasError(compression.ConfirmationBox) && compression.ErrorLabel.Text.Length==0);
             compression.ShowPassword.IsChecked=true;check("show password reveals both confirmation fields consistently",compression.VisibleSecret.Text==compression.VisibleConfirmation.Text && compression.VisibleConfirmation.Text=="synthetic-password");
             compression.ShowPassword.IsChecked=false;compression.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         });
@@ -56,8 +59,10 @@ internal static class DesktopDesignDialogValidation
         Show(master,"master-password",()=>
         {
             master.NewBox.Password="synthetic-master-secret";master.ConfirmBox.Password="different";master.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            check("master password mismatch stays inline",master.IsVisible && master.Response is null && master.ErrorLabel.Text.Length>0);Capture(master,"master-password-mismatch");
-            master.ConfirmBox.Password=master.NewBox.Password;master.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            check("master password mismatch stays inline",master.IsVisible && master.Response is null && master.ErrorLabel.Text.Length>0);
+            master.UpdateLayout();var masterError=(Border)master.ConfirmBox.Template.FindName("FieldFocus",master.ConfirmBox);
+            check("master mismatch marks the confirmation field",masterError.Visibility==Visibility.Visible && ReferenceEquals(masterError.BorderBrush,Application.Current.Resources["ErrorBrush"]));Capture(master,"master-password-mismatch");
+            master.ConfirmBox.Password=master.NewBox.Password;check("editing master confirmation clears stale error",!FieldState.GetHasError(master.ConfirmBox) && master.ErrorLabel.Text.Length==0);master.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         });
         check("master password inputs clear after close",master.Response is not null && master.NewBox.Password.Length==0 && master.ConfirmBox.Password.Length==0);
         foreach(var exporting in new[]{false,true})
@@ -66,7 +71,13 @@ internal static class DesktopDesignDialogValidation
             Show(backup,exporting?"vault-backup-export":"vault-backup-import",()=>
             {
                 backup.SecretBox.Password="synthetic-backup-passphrase";
-                if(exporting){backup.ConfirmationBox.Password="different";backup.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));check("backup export rejects mismatched passphrases",backup.IsVisible && backup.Passphrase is null);backup.ConfirmationBox.Password=backup.SecretBox.Password;}
+                if(exporting)
+                {
+                    backup.ConfirmationBox.Password="different";backup.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));check("backup export rejects mismatched passphrases",backup.IsVisible && backup.Passphrase is null);
+                    backup.UpdateLayout();var backupError=(Border)backup.ConfirmationBox.Template.FindName("FieldFocus",backup.ConfirmationBox);
+                    check("backup mismatch marks the confirmation field",backupError.Visibility==Visibility.Visible && ReferenceEquals(backupError.BorderBrush,Application.Current.Resources["ErrorBrush"]));Capture(backup,"vault-backup-mismatch");
+                    backup.ConfirmationBox.Password=backup.SecretBox.Password;check("editing backup confirmation clears stale error",!FieldState.GetHasError(backup.ConfirmationBox) && backup.ErrorLabel.Text.Length==0);
+                }
                 backup.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             });
             check("backup fields clear after close "+exporting,backup.Passphrase is not null && backup.SecretBox.Password.Length==0 && backup.ConfirmationBox.Password.Length==0);

@@ -16,7 +16,7 @@
           <TextBlock x:Name="FileLabel" TextWrapping="Wrap" Margin="0,0,0,16"/>
           <Grid Margin="0,0,0,16">
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="112"/>
+              <ColumnDefinition Width="136"/>
               <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Content="{loc:Text T_84cffd4304ee}" Target="{Binding ElementName=SecretBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,12,0">
@@ -31,7 +31,7 @@
           <StackPanel x:Name="ConfirmationPanel">
             <Grid Margin="0,0,0,16">
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="112"/>
+                <ColumnDefinition Width="136"/>
                 <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
               <Label Content="{loc:Text T_bff03461df20}" Target="{Binding ElementName=ConfirmationBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,12,0">

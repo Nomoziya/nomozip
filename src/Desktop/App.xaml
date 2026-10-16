@@ -180,6 +180,10 @@
                 <Trigger Property="IsEnabled" Value="False">
                   <Setter Property="Opacity" Value="0.6"/>
                 </Trigger>
+                <Trigger Property="loc:FieldState.HasError" Value="True">
+                  <Setter TargetName="FieldFocus" Property="Visibility" Value="Visible"/>
+                  <Setter TargetName="FieldFocus" Property="BorderBrush" Value="{DynamicResource ErrorBrush}"/>
+                </Trigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>
           </Setter.Value>
@@ -215,6 +219,10 @@
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                   <Setter Property="Opacity" Value="0.6"/>
+                </Trigger>
+                <Trigger Property="loc:FieldState.HasError" Value="True">
+                  <Setter TargetName="FieldFocus" Property="Visibility" Value="Visible"/>
+                  <Setter TargetName="FieldFocus" Property="BorderBrush" Value="{DynamicResource ErrorBrush}"/>
                 </Trigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>

@@ -78,7 +78,12 @@ public partial class PasswordDialog : Window
         if(ShowPassword.IsChecked==true){VisibleConfirmation.Text=ConfirmationBox.Password;ConfirmationBox.Visibility=Visibility.Collapsed;VisibleConfirmation.Visibility=Visibility.Visible;}
         else{ConfirmationBox.Password=VisibleConfirmation.Text;VisibleConfirmation.Clear();VisibleConfirmation.Visibility=Visibility.Collapsed;ConfirmationBox.Visibility=Visibility.Visible;}
     }
-    private void SecretChanged(object sender, RoutedEventArgs e) { if (ErrorLabel is not null) ErrorLabel.Text = ""; }
+    private void SecretChanged(object sender, RoutedEventArgs e)
+    {
+        if(ErrorLabel is null)return;
+        ErrorLabel.Text="";
+        foreach(var field in new System.Windows.Controls.Control[]{SecretBox,VisibleSecret,ConfirmationBox,VisibleConfirmation})if(field is not null)FieldState.SetHasError(field,false);
+    }
     private void SaveChanged(object sender, RoutedEventArgs e) { if (!editing && DetailsPanel is not null) DetailsPanel.Visibility = SavePassword.IsChecked == true ? Visibility.Visible : Visibility.Collapsed; }
     private void SavedChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -90,12 +95,13 @@ public partial class PasswordDialog : Window
         if (string.IsNullOrEmpty(secret))
         {
             ErrorLabel.Text = UiText.Get("T_c682f190cbd4");
+            FieldState.SetHasError(ShowPassword.IsChecked==true?VisibleSecret:SecretBox,true);
             if (ShowPassword.IsChecked == true) VisibleSecret.Focus(); else SecretBox.Focus();
             return;
         }
         var selected = SavedBox.SelectedItem as SavedPassword;
         if(compressing && secret!=(ShowPassword.IsChecked==true?VisibleConfirmation.Text:ConfirmationBox.Password))
-        {ErrorLabel.Text=UiText.Get("Password.ConfirmationMismatch");if(ShowPassword.IsChecked==true)VisibleConfirmation.Focus();else ConfirmationBox.Focus();return;}
+        {ErrorLabel.Text=UiText.Get("Password.ConfirmationMismatch");if(ShowPassword.IsChecked==true){FieldState.SetHasError(VisibleConfirmation,true);VisibleConfirmation.Focus();}else{FieldState.SetHasError(ConfirmationBox,true);ConfirmationBox.Focus();}return;}
         Response = new PasswordPromptResponse(secret, SavePassword.IsChecked == true && SavePassword.IsEnabled, NameBox.Text, selected?.Secret == secret ? selected.Id : null);
         if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? UiText.Get("T_218e758854ee") : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt,
             GroupBox.Text.Trim(), SourceBox.Text.Trim(), MatchBox.Text.Trim());

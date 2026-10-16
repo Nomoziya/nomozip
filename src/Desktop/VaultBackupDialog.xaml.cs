@@ -25,11 +25,11 @@ public partial class VaultBackupDialog : Window
     {
         if (string.IsNullOrEmpty(SecretBox.Password) || exporting && SecretBox.Password.Length < 12)
         {
-            ShowError(exporting ? UiText.Get("T_652879ddcefd") : UiText.Get("T_77316765ebb8")); SecretBox.Focus(); return;
+            ShowError(exporting ? UiText.Get("T_652879ddcefd") : UiText.Get("T_77316765ebb8"));FieldState.SetHasError(SecretBox,true); SecretBox.Focus(); return;
         }
         if (exporting && SecretBox.Password != ConfirmationBox.Password)
         {
-            ShowError(UiText.Get("T_f007e1890a6a")); ConfirmationBox.Focus(); return;
+            ShowError(UiText.Get("T_f007e1890a6a"));FieldState.SetHasError(ConfirmationBox,true); ConfirmationBox.Focus(); return;
         }
         Passphrase = SecretBox.Password; DialogResult = true;
     }
@@ -38,5 +38,10 @@ public partial class VaultBackupDialog : Window
         ErrorLabel.Text = message;
         UIElementAutomationPeer.CreatePeerForElement(ErrorLabel)?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
     }
-    private void SecretChanged(object sender, RoutedEventArgs e) { if (ErrorLabel is not null) ErrorLabel.Text = ""; }
+    private void SecretChanged(object sender, RoutedEventArgs e)
+    {
+        if(ErrorLabel is null)return;
+        ErrorLabel.Text="";
+        foreach(var field in new[]{SecretBox,ConfirmationBox})if(field is not null)FieldState.SetHasError(field,false);
+    }
 }

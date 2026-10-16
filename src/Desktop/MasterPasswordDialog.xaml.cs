@@ -26,6 +26,11 @@ public partial class MasterPasswordDialog : Window
         if(NewPanel.Visibility==Visibility.Visible && NewBox.Password!=ConfirmBox.Password){Error(UiText.Get("T_d64ffabdbf39"),ConfirmBox);return;}
         Response=new(CurrentBox.Password,NewBox.Password);DialogResult=true;
     }
-    private void Error(string text,UIElement field){ErrorLabel.Text=text;field.Focus();UIElementAutomationPeer.CreatePeerForElement(ErrorLabel)?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);}
-    private void OnPasswordChanged(object sender,RoutedEventArgs e){if(ErrorLabel is not null)ErrorLabel.Text="";}
+    private void Error(string text,UIElement field){ErrorLabel.Text=text;FieldState.SetHasError(field,true);field.Focus();UIElementAutomationPeer.CreatePeerForElement(ErrorLabel)?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);}
+    private void OnPasswordChanged(object sender,RoutedEventArgs e)
+    {
+        if(ErrorLabel is null)return;
+        ErrorLabel.Text="";
+        foreach(var field in new[]{CurrentBox,NewBox,ConfirmBox})if(field is not null)FieldState.SetHasError(field,false);
+    }
 }
