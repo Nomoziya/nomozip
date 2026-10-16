@@ -17,6 +17,8 @@ internal static class DesktopAccessibilityValidation
     internal static async Task<bool> RunAsync(MainWindow window, MainViewModel model, ThemeResources theme, string root)
     {
         var checks = new Dictionary<string, bool>();
+        var normalSurface = ColorOf((Brush)Application.Current.Resources["SurfaceBrush"]);
+        var normalSelectionText = ColorOf((Brush)Application.Current.Resources["SelectionTextBrush"]);
         var failures = new List<string>();
         var directory = Path.Combine(root, "artifacts/accessibility-preview");
         Directory.CreateDirectory(directory);
@@ -138,8 +140,8 @@ internal static class DesktopAccessibilityValidation
                 && ColorOf((Brush)resources["OnAccentBrush"]) == SystemColors.HighlightTextColor);
             Render(window, Path.Combine(directory, "high-contrast-resources-800.png"), 1.0);
             theme.Apply(false); await Layout();
-            Check("normal theme restored", ColorOf((Brush)resources["SurfaceBrush"]) == Colors.White
-                && ColorOf((Brush)resources["SelectionTextBrush"]) == Color.FromRgb(0x1D, 0x4E, 0xD8));
+            Check("normal theme restored", ColorOf((Brush)resources["SurfaceBrush"]) == normalSurface
+                && ColorOf((Brush)resources["SelectionTextBrush"]) == normalSelectionText);
             var dialog = new PasswordDialog("synthetic archive", false, [], true)
             {
                 Owner = window, Height = 420, WindowStartupLocation = WindowStartupLocation.Manual,

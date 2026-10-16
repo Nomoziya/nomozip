@@ -75,9 +75,10 @@
     <Style TargetType="DataGridRow">
       <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/><Setter Property="SnapsToDevicePixels" Value="True"/>
       <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="DataGridRow">
-        <Border x:Name="RowSurface" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True" CornerRadius="4" Margin="0,1">
+        <Border x:Name="RowSurface" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="4">
           <Grid>
             <DataGridCellsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            <Border Height="1" VerticalAlignment="Bottom" Background="{DynamicResource DividerBrush}" IsHitTestVisible="False"/>
             <Border x:Name="SelectionBar" Width="3" HorizontalAlignment="Left" Margin="0,8" CornerRadius="0,2,2,0" Background="{DynamicResource AccentBrush}" Visibility="Collapsed" IsHitTestVisible="False"/>
           </Grid>
         </Border>

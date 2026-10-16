@@ -30,6 +30,8 @@ jobs:
       - name: Native lightweight desktop build
         id: native_build
         run: ./scripts/build.ps1 -Architecture arm64 -Configuration Release -SkipWorker
+      - name: Native visual and row input regressions before the full suite
+        run: ./scripts/test-visual-refresh.ps1
       - name: Native data desktop updates and x64 vault migration
         run: ./scripts/test-arm64.ps1
       - name: Native traditional Shell selection and Explorer menu
