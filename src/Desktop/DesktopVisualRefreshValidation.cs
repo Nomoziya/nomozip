@@ -167,6 +167,7 @@ internal static class DesktopVisualRefreshValidation
             check("menu filtering restores commands when availability changes", unavailable.Visibility == Visibility.Visible && CleanSeparators(popup));
             model.Page = 3; await layout();
             var sources = Descendants(window.CompressionPage).OfType<DataGrid>().Single();
+            sources.ContextMenu.PlacementTarget = sources; await layout();
             check("compression list retains remove keyboard and context entry", RowActions.GetDeleteCommand(sources) == model.RemoveCompressionSourceCommand
                 && sources.ContextMenu.Items.OfType<MenuItem>().Any(item => item.Command == model.RemoveCompressionSourceCommand));
         }
