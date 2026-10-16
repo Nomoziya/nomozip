@@ -115,6 +115,17 @@ internal static class DesktopRedesignValidation
             Check("embedded file columns retain readable widths",entryTable.Columns[0].ActualWidth>=48 && entryTable.Columns[1].ActualWidth>=200 && entryTable.Columns[2].ActualWidth>=78 && entryTable.Columns[3].ActualWidth>=80);
             Check("extraction toolbar precedes file list",Bounds(extractAll).Bottom<=Bounds(entryTable).Top);
             Check("archive name occupies shared workspace header",window.ArchiveHeaderHost.Content is FrameworkElement && window.FilesLandingActions.Visibility==Visibility.Collapsed);
+            Check("archive root hides nested file paths",contents.VisibleRows.All(row=>!row.Path.TrimEnd('/','\\').Replace('\\','/').Contains('/')));
+            contents.CurrentRow=contents.VisibleRows.Single(row=>row.Path.TrimEnd('/','\\')=="Documents");contents.OpenCurrentEntryCommand.Execute(null);await Layout();
+            Check("opening folder shows its children and breadcrumb",contents.CurrentFolder=="Documents" && contents.VisibleRows.Count==2 && contents.Breadcrumbs.Count==2 && contents.VisibleRows.All(row=>!row.DisplayName.Contains('/')));
+            Capture("actual-archive-folder-navigation");contents.Search="changes";
+            Check("archive search finds complete paths across folders",contents.VisibleRows.Count==1 && contents.VisibleRows[0].DisplayName.Contains("Documents"));contents.Search="";
+            contents.FolderUpCommand.Execute(null);Check("folder up returns to archive root",contents.CurrentFolder.Length==0 && !contents.FolderUpCommand.CanExecute(null));
+            contents.SelectVisibleCommand.Execute(null);Check("visible folders select all real descendants",contents.SelectedEntries.Count==9);contents.ClearSelectionCommand.Execute(null);
+            IReadOnlyList<ArchiveEntry>? virtualSelection=null;
+            var virtualFolder=new ArchiveContentsViewModel("virtual.zip",[new(0,"outer/inner/note.txt",1,false,false)],(selection,_)=>{virtualSelection=selection;return Task.FromResult<string?>(null);});
+            virtualFolder.Navigate("outer");virtualFolder.VisibleRows.Single().Selected=true;virtualFolder.ExtractSelectedCommand.Execute(null);await virtualFolder.WaitForIdleAsync();
+            Check("implicit folders resolve to real entry indices",virtualSelection is [{Index:0,Path:"outer/inner/note.txt"}]);
             contents.CurrentRow=contents.Rows.Single(value=>value.Path=="notes.txt");contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);
             Check("explicit preview is embedded",window.PreviewHost.Content is FrameworkElement && window.ArchivePreviewPane.IsVisible);
             var preview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
@@ -179,9 +190,10 @@ internal static class DesktopRedesignValidation
             Check("compression output is not an extraction task",model.Tasks.All(value=>!string.Equals(value.Path,model.CompressionOutput,StringComparison.OrdinalIgnoreCase)));
             var compressionTask=model.WorkspaceTasks.Single(value=>value.IsCompression);
             Check("compression appears exactly once in the unified table",model.TaskView.Cast<ArchiveTaskRow>().Count(value=>value.IsCompression)==1 && model.TaskView.Cast<ArchiveTaskRow>().Count()==model.Tasks.Count+1);
-            Check("compression row preserves its actual result",compressionTask.Completed && compressionTask.Path==model.CompressionOutput && Directory.Exists(compressionTask.LatestOutputPath));
+            Check("compression row preserves its actual result",compressionTask.Completed && string.Equals(Path.GetFullPath(compressionTask.Path),Path.GetFullPath(model.CompressionOutput),StringComparison.OrdinalIgnoreCase) && File.Exists(compressionTask.Path) && Directory.Exists(compressionTask.LatestOutputPath));
             model.SelectedTask=compressionTask;Check("compression row cannot invoke extract selected",!model.ExtractSelectedTaskCommand.CanExecute(null));
             model.TaskFilterIndex=3;Check("ended filter includes completed compression",model.TaskView.Contains(compressionTask));model.TaskFilterIndex=2;Check("pending filter excludes completed compression",!model.TaskView.Contains(compressionTask));model.TaskFilterIndex=0;
+            await Layout();
             Capture("actual-compression-result");
 
             model.Page=5;await Layout();

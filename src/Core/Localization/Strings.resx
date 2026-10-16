@@ -3177,4 +3177,7 @@
 <data name="Extraction.CreateFolder" xml:space="preserve"><value>按压缩包名称创建文件夹</value></data>
 <data name="Extraction.LayoutHint" xml:space="preserve"><value>勾选：按包名创建文件夹；未勾选：直接解压；中间态：智能目录布局。</value></data>
 <data name="TextEdit.CleanupWarning" xml:space="preserve"><value>临时编辑副本未能清理，请手动删除此目录：{0}</value></data>
+<data name="Browser.Up" xml:space="preserve"><value>上一级（Alt+←）</value></data>
+<data name="Updates.ManageVersions" xml:space="preserve"><value>管理引擎版本与来源</value></data>
+<data name="Password.Confirm" xml:space="preserve"><value>确认密码</value></data>
 </root>

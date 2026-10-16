@@ -120,7 +120,7 @@ internal static class DesktopArchiveWorkspaceValidation
         var interrupted=await new ExtractionService(client,vault,candidates).ExtractAsync(archive,checkpointRoot,false,NoPassword,_=>Task.FromResult(ExistingFilePolicy.Rename),
             new ForwardProgress<TaskUpdate>(value=>{if(value.State=="checkpoint-commit")cancel.Cancel();}),cancel.Token,checkpoint:new(store,binding));
         var prior=store.ReadPending().Single();
-        check("checkpoint durably records renamed destination",interrupted.Engine.Status=="cancelled" && prior.Receipts.Any(value=>value.State=="delivered" && value.TargetPath is not null));
+        check("checkpoint durably records renamed destination",interrupted.Engine.Status=="cancelled" && prior.Version==2 && prior.Receipts.Any(value=>value.State=="delivered" && value.TargetPath is not null));
         var resumed=await new ExtractionService(client,vault,candidates).ExtractAsync(archive,checkpointRoot,false,NoPassword,_=>Task.FromResult(ExistingFilePolicy.Rename),checkpoint:new(store,binding,prior.Id));
         check("checkpoint resumes rename without duplicate delivery",resumed.Engine.IsSuccess && Directory.GetFiles(checkpointRoot).Length==4 && store.ReadPending().Count==0);
         check("checkpoint rename preserves existing originals",File.ReadAllText(Path.Combine(checkpointRoot,"keep.txt"))=="existing checkpoint file");

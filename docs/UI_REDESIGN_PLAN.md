@@ -47,14 +47,14 @@
 | 图号 | 对应实现 | 对照状态与下一步 |
 | --- | --- | --- |
 | 01 文件空态 | FilesWorkspace | 已有实际图；须补齐空态双入口、顶部主次操作与图标比例 |
-| 02 浏览与预览 | ArchiveContentsDialog / ArchivePreviewDialog | 列宽与右侧预览已有实际图，仍缺文件夹层级导航；窄窗切换清理预览已改，待复验 |
+| 02 浏览与预览 | ArchiveContentsDialog / ArchivePreviewDialog | 新候选补目录/面包屑/上一级和隐含目录的真实条目映射，预览信息下移，窄窗清理保留；待功能及实际截图 |
 | 03 单包/批量解压 | ConfirmExtractionOptions | 新候选加入批量左列表、单包范围、目录/冲突/自动尝试及高级设置；待真实截图与取消验证 |
 | 04 新建压缩包 | CompressionView | 左列表/右设置、位置/名称已拆分；新候选补图标/大小与紧凑加密行，待截图 |
 | 05 任务 | TasksWorkspace | 重复行已修复；新候选真正统一压缩/解压表、筛选与计数，补百分比和有实际范围的操作；待复验 |
 | 06 密码库 | PasswordTable / VaultDetailsView | 连续工作区、内联编辑和备份更多入口已有实际图；显示开关、状态及细节间距待收敛 |
 | 07 校验 | FileHashDialog | 左列表/右详情已有实际图；新候选压缩工具栏、将主操作放到详情并保留窄窗固定操作，待截图 |
 | 08 常规设置 | PreferencesScroll / SettingsCategoryList | 分类已具备，列表样式和表单布局仍偏离；待验收 |
-| 09 更新 | 软件/引擎设置 | 须按图分软件/引擎面板；保留真实版本与已有渠道；待验收 |
+| 09 更新 | 软件/引擎设置 | 已分软件/引擎面板；新候选将高级版本与来源管理折叠，保留真实版本和渠道；待截图 |
 | 10 密码与安全 | PasswordDialog / MasterPasswordDialog / VaultBackupDialog | 新候选已重排图标标题、横向字段、分隔和主次操作；补新建压缩密码确认及遮罩清理检查；待截图 |
 | 11 冲突/失败/编辑 | ExistingFileDialog / ArchiveTextEditDialog / ArchiveEditConfirmDialog | ef17940 的四组 CI 各 179 项通过功能；对照发现透明背景，已修正，待复验；错误详情保留实际暂存/交付语义，不伪造输出成功 |
 | 12 英文窄窗口 | 各页 800×600 适配 | 必须使用真实英文控件和实际尺寸对照，检查菜单和主操作 |

@@ -850,15 +850,6 @@
                 <TextBlock Text="{loc:Text T_ad09f3fda29a}" Style="{StaticResource Heading}"/>
                 <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/>
                 <TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,8,0,16"/>
-                <Label Content="{loc:Text T_5dcf192a65bc}" Target="{Binding ElementName=EngineChoice}" Padding="0"/>
-                <ComboBox x:Name="EngineChoice" Width="260" HorizontalAlignment="Left" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
-                <WrapPanel Margin="0,12,0,16">
-                  <Button Content="{loc:Text T_58be85ec225f}" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/>
-                  <Button Content="{loc:Text T_49c8ef416bd3}" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/>
-                </WrapPanel>
-                <Label Content="{loc:Text T_a3067144f50a}" Target="{Binding ElementName=UpdateRepositoryBox}" Padding="0"/>
-                <TextBox x:Name="UpdateRepositoryBox" Text="{Binding UpdateRepository, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_b1f473ca70e6}" Margin="0,8,0,0"/>
-                <TextBlock Text="{Binding UpdateChannelDescription}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>
                 <WrapPanel Margin="0,16,0,0">
                   <Button Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="0,0,12,8"/>
                   <Button Content="{loc:Text T_e4d1595c61be}" Command="{Binding InstallUpdateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,12,8"/>
@@ -881,6 +872,19 @@
                     </Style>
                   </Button.Style>
                 </Button>
+                <Expander Header="{loc:Text Updates.ManageVersions}" Margin="0,18,0,0">
+                  <StackPanel Margin="0,12,0,0">
+                    <Label Content="{loc:Text T_5dcf192a65bc}" Target="{Binding ElementName=EngineChoice}" Padding="0"/>
+                    <ComboBox x:Name="EngineChoice" Width="260" HorizontalAlignment="Left" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
+                    <WrapPanel Margin="0,12,0,16">
+                      <Button Content="{loc:Text T_58be85ec225f}" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/>
+                      <Button Content="{loc:Text T_49c8ef416bd3}" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/>
+                    </WrapPanel>
+                    <Label Content="{loc:Text T_a3067144f50a}" Target="{Binding ElementName=UpdateRepositoryBox}" Padding="0"/>
+                    <TextBox x:Name="UpdateRepositoryBox" Text="{Binding UpdateRepository, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_b1f473ca70e6}" Margin="0,8,0,0"/>
+                    <TextBlock Text="{Binding UpdateChannelDescription}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>
+                  </StackPanel>
+                </Expander>
               </StackPanel>
             </Border>
             <Border x:Name="VaultProtectionCard" Margin="0,0,0,16" CornerRadius="6" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" Padding="20">

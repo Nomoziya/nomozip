@@ -9,6 +9,7 @@ namespace ArchivePassword.Desktop;
 public sealed class ArchivePreviewViewModel : ObservableObject
 {
     public string EntryPath {get;}
+    public string EntryName=>Path.GetFileName(EntryPath);
     public string Text {get;private set;}="";
     public BitmapSource? Picture {get;private set;}
     public string Details {get;private set;}="";

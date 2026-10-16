@@ -55,4 +55,13 @@ public partial class ArchiveContentsDialog : Window
     private async void OnClose(object sender, RoutedEventArgs e) {if(EmbeddedClose is not null) await EmbeddedClose();else Close();}
     private void OnEditContents(object sender,RoutedEventArgs e)
     {EditContentsMenu.PlacementTarget=EditContentsButton;EditContentsMenu.IsOpen=true;}
+    private void OnOpenEntry(object sender,MouseButtonEventArgs e)
+    {
+        var node=e.OriginalSource as DependencyObject;
+        if(node is FrameworkContentElement content)node=content.Parent;
+        while(node is not null && node is not DataGridRow)
+        {if(node is CheckBox)return;node=VisualTreeHelper.GetParent(node);}
+        if(node is DataGridRow && DataContext is ArchiveContentsViewModel model && model.OpenCurrentEntryCommand.CanExecute(null))
+        {model.OpenCurrentEntryCommand.Execute(null);e.Handled=true;}
+    }
 }
