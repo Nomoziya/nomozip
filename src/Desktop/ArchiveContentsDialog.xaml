@@ -14,7 +14,7 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Border x:Name="BrowserHeader" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="24,24,24,16">
+    <Border x:Name="BrowserHeader" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="24,24,24,16">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>

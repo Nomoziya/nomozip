@@ -62,6 +62,9 @@ internal sealed class ThemeResources
         resources["FolderIconBrush"] = resources["PdfIconBrush"] = resources["SheetIconBrush"] = SystemColors.WindowTextBrush;
         resources["IconOnFillBrush"] = SystemColors.WindowBrush;
         }
+        resources["ChromeBrush"]=highContrast?SystemColors.WindowBrush:new LinearGradientBrush(
+            (Color)ColorConverter.ConvertFromString(Mode=="soft"?"#2A2E31":IsDark?"#252525":"#E9EEF5"),
+            (Color)ColorConverter.ConvertFromString(Mode=="soft"?"#25282B":IsDark?"#202020":"#F3F5F8"),90);
         // Native templates use these WPF system-resource keys. These are application
         // resources only; Windows settings and other applications are never changed.
         foreach (var key in new[] { SystemColors.WindowBrushKey, SystemColors.ControlBrushKey, SystemColors.InfoBrushKey }) resources[key] = resources["SurfaceBrush"];

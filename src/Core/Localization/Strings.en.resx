@@ -3201,4 +3201,8 @@ A password is required to validate the archive data.</value>
   <data name="Vault.StatusLocked" xml:space="preserve"><value>Locked</value></data>
   <data name="Vault.StatusUnlocked" xml:space="preserve"><value>Unlocked</value></data>
   <data name="Vault.StatusLocal" xml:space="preserve"><value>Windows protection</value></data>
+  <data name="Task.ProgressState" xml:space="preserve"><value>Progress / status</value></data>
+  <data name="Task.OutputLocation" xml:space="preserve"><value>Output location</value></data>
+  <data name="Task.Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Settings.Save" xml:space="preserve"><value>Save</value></data>
 </root>

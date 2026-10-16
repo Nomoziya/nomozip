@@ -103,7 +103,7 @@
           <ScrollViewer x:Name="SettingsScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.IsSharedSizeScope="True">
               <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}"/>
-              <Grid Margin="0,0,0,16">
+              <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
                   <ColumnDefinition Width="8"/>
@@ -115,7 +115,7 @@
                 <TextBox x:Name="ArchiveOutputBox" Text="{Binding CompressionOutputDirectory}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Redesign.SaveLocation}" Margin="0" Grid.Column="2"/>
                 <Button Content="{loc:Text T_5a4540c9b21b}" Command="{Binding BrowseCompressionOutputCommand}" HorizontalAlignment="Left" Margin="0" Grid.Column="4" Padding="12,8"/>
               </Grid>
-              <Grid Margin="0,0,0,16">
+              <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
                   <ColumnDefinition Width="8"/>
@@ -159,7 +159,7 @@
                   <ComboBoxItem Content="{loc:Text T_8672864e9041}"/>
                 </ComboBox>
               </Grid>
-              <Grid Margin="0,4,0,16">
+              <Grid Margin="0,4,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="*"/>

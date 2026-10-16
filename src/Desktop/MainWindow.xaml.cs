@@ -40,7 +40,7 @@ public partial class MainWindow : Window
             if(ActualWidth<1040) ClosePreview();
             BrandMark.Width = BrandMark.Height = compact ? 18 : 24;
             BrandMark.Margin = new Thickness(0, 0, compact ? 4 : 8, 0);
-            SidebarColumn.Width = new GridLength(compact ? 72 : 200);
+            SidebarColumn.Width = new GridLength(compact ? 72 : Math.Clamp(ActualWidth*.163,168,208));
             foreach (var text in ((StackPanel)BrandMark.Parent).Children.OfType<TextBlock>()) text.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             SidebarPrivacyNote.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             SettingsNavigationText.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
@@ -48,11 +48,11 @@ public partial class MainWindow : Window
             SettingsNavigation.ToolTip=UiText.Get("T_df3d58c7d84b");
             VaultDetailsColumn.Width=new GridLength(narrow?0:320);
             VaultDetails.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
-            SettingsCategoriesColumn.Width=new GridLength(narrow?0:176);
+            SettingsCategoriesColumn.Width=new GridLength(narrow?0:192);
             SettingsCategoryList.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
             SettingsCategory.Visibility=narrow?Visibility.Visible:Visibility.Collapsed;
             Navigation.Tag = compact;
-            SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(16, 24, 16, 24);
+            SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(8, 24, 8, 24);
             ApplyWorkspaceMargin();
             ExtractionDropHint.Visibility = Visibility.Collapsed;
             TaskOutputColumn.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;

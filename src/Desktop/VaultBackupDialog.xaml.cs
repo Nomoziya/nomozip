@@ -11,6 +11,7 @@ public partial class VaultBackupDialog : Window
     public VaultBackupDialog(bool exporting, string path)
     {
         InitializeComponent(); this.exporting = exporting;
+        SecretReveal.Configure(this,RevealToggle,(SecretBox,VisibleSecret),(ConfirmationBox,VisibleConfirmation));
         Title = Heading.Text = exporting ? UiText.Get("T_61e8ff181802") : UiText.Get("T_e2a88581bf88");
         ContinueButton.Content = exporting ? UiText.Get("T_e9d3dd690a4e") : UiText.Get("T_77c11f78b11a");
         Description.Text = exporting
@@ -25,11 +26,11 @@ public partial class VaultBackupDialog : Window
     {
         if (string.IsNullOrEmpty(SecretBox.Password) || exporting && SecretBox.Password.Length < 12)
         {
-            ShowError(exporting ? UiText.Get("T_652879ddcefd") : UiText.Get("T_77316765ebb8"));FieldState.SetHasError(SecretBox,true); SecretBox.Focus(); return;
+            ShowError(exporting ? UiText.Get("T_652879ddcefd") : UiText.Get("T_77316765ebb8"));FieldState.SetHasError(SecretBox,true); SecretReveal.Focus(SecretBox); return;
         }
         if (exporting && SecretBox.Password != ConfirmationBox.Password)
         {
-            ShowError(UiText.Get("T_f007e1890a6a"));FieldState.SetHasError(ConfirmationBox,true); ConfirmationBox.Focus(); return;
+            ShowError(UiText.Get("T_f007e1890a6a"));FieldState.SetHasError(ConfirmationBox,true); SecretReveal.Focus(ConfirmationBox); return;
         }
         Passphrase = SecretBox.Password; DialogResult = true;
     }

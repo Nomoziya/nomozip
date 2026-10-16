@@ -6,7 +6,7 @@
         <ResourceDictionary Source="ActionMenuResources.xaml"/>
       </ResourceDictionary.MergedDictionaries>
       <local:HalfHeightCornerRadiusConverter x:Key="HalfHeightRadius"/>
-      <SolidColorBrush x:Key="CanvasBrush" Color="#F3F3F3"/>
+      <SolidColorBrush x:Key="CanvasBrush" Color="#F3F3F3"/><LinearGradientBrush x:Key="ChromeBrush" StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#E9EEF5" Offset="0"/><GradientStop Color="#F3F5F8" Offset="1"/></LinearGradientBrush>
       <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
       <SolidColorBrush x:Key="TextBrush" Color="#1B1B1B"/>
       <SolidColorBrush x:Key="SecondaryBrush" Color="#616161"/>
@@ -59,6 +59,7 @@
           </Setter.Value>
         </Setter>
       </Style>
+<Style x:Key="SecretRevealToggle" TargetType="ToggleButton"><Setter Property="Width" Value="30"/><Setter Property="Height" Value="30"/><Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/><Setter Property="Background" Value="Transparent"/><Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ToggleButton"><Border x:Name="RevealSurface" Background="{TemplateBinding Background}" CornerRadius="4"><Grid><Path Data="M1,10 Q12,-3 23,10 Q12,23 1,10 M16,10 A4,4 0 1 1 8,10 A4,4 0 1 1 16,10" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" Width="22" Height="18" Stretch="Uniform"/><Path x:Name="RevealSlash" Data="M3,2 L21,20" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" Width="22" Height="20" Stretch="Uniform" Visibility="Collapsed"/></Grid></Border><ControlTemplate.Triggers><Trigger Property="IsChecked" Value="True"><Setter TargetName="RevealSlash" Property="Visibility" Value="Visible"/></Trigger><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="RevealSurface" Property="Background" Value="{DynamicResource HoverBrush}"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
       <Style x:Key="GridSecondary" TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
         <Style.Triggers>
           <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
