@@ -3127,4 +3127,7 @@ A password is required to validate the archive data.</value>
 <data name="Redesign.More" xml:space="preserve"><value>•••  More ⌄</value></data>
 <data name="Redesign.ClosePreview" xml:space="preserve"><value>Close preview</value></data>
 <data name="Redesign.OutputPending" xml:space="preserve"><value>Confirm destination before starting</value></data>
+<data name="Redesign.OpenFolder" xml:space="preserve"><value>Open folder</value></data>
+<data name="Redesign.SampleExtracting" xml:space="preserve"><value>Extracting</value></data>
+<data name="Redesign.SampleCompleted" xml:space="preserve"><value>Completed</value></data>
 </root>

@@ -34,6 +34,12 @@ internal static class DesktopRedesignValidation
         try
         {
             model.LoadPreview();
+            model.SelectedTask=model.Tasks[0];
+            model.Tasks[0].Running=true;model.Tasks[0].Percent=62;model.Tasks[0].Status=UiText.Get("Redesign.SampleExtracting");
+            model.Tasks[0].SelectedOutputPath=@"D:\Pictures\album";
+            model.Tasks[2].ResultOutputPath=@"D:\Work\assets";
+            model.Tasks.Add(new ArchiveTaskRow(@"D:\Downloads\project.7z","18 MB"));
+            model.Tasks.Add(new ArchiveTaskRow(@"D:\Downloads\history.zip","240 MB") {Completed=true,Status=UiText.Get("Redesign.SampleCompleted"),ResultOutputPath=@"D:\Documents\history"});
             Check("five destinations use four sidebar items plus bottom settings",window.Navigation.Items.Count==4 && window.SettingsNavigation.IsVisible);
             foreach(var mode in new[]{"light","dark","contrast"})
             {
@@ -47,7 +53,10 @@ internal static class DesktopRedesignValidation
                         Check($"{mode}/{width}/{page} main workspace remains inside window",Bounds(window.MainContent).Right<=window.ActualWidth+1 && window.MainContent.ActualWidth>400);
                         Check($"{mode}/{width}/{page} navigation remains reachable",window.SettingsNavigation.IsVisible && Bounds(window.SettingsNavigation).Bottom<=window.ActualHeight+1);
                         if(page==0)
+                        {
                             Check($"{mode}/{width} each source task appears exactly once",window.ArchiveTasks.Items.Count==model.Tasks.Count && model.TaskView.Cast<ArchiveTaskRow>().Distinct().Count()==model.Tasks.Count);
+                            Check($"{mode}/{width} row actions keep compact height",VisualDescendants(window.ArchiveTasks).OfType<Button>().Where(value=>value.DataContext is ArchiveTaskRow).All(value=>value.ActualHeight<=44));
+                        }
                         Capture($"{mode}-{width}-page-{page}");
                     }
                     model.Page=2;
@@ -83,7 +92,9 @@ internal static class DesktopRedesignValidation
                 var pixels=new byte[480*300*4];
                 for(var y=0;y<300;y++)for(var x=0;x<480;x++){var offset=(y*480+x)*4;pixels[offset]=(byte)(110+x/5);pixels[offset+1]=(byte)(100+y/3);pixels[offset+2]=45;pixels[offset+3]=255;}
                 var image=BitmapSource.Create(480,300,96,96,PixelFormats.Bgra32,null,pixels,480*4);
-                var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(image));using(var output=zip.CreateEntry("cover.png").Open())encoder.Save(output);
+                var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(image));
+                using var encoded=new MemoryStream();encoder.Save(encoded);encoded.Position=0;
+                using(var output=zip.CreateEntry("cover.png").Open())encoded.CopyTo(output);
             }
             var opening=model.OpenWorkspaceArchiveAsync([archive]);await Until(()=>window.ArchiveHost.Content is FrameworkElement);
             Check("archive browsing lives inside file workspace",model.Page==4 && model.IsBusy && !opening.IsCompleted);

@@ -153,35 +153,44 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="24,24,24,12">
-          <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,8"/>
-          <TextBlock Text="{Binding TaskSummary}" Style="{StaticResource Secondary}"/>
-          <Border x:Name="CompressionActivity" Background="{DynamicResource SurfaceBrush}" Padding="12" Margin="0,12,0,0">
-            <Border.Style>
-              <Style TargetType="Border">
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding ShowCompressionActivity}" Value="True">
-                    <Setter Property="Visibility" Value="Visible"/>
-                  </DataTrigger>
-                </Style.Triggers>
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </Style>
-            </Border.Style>
-            <StackPanel>
-              <TextBlock Text="{loc:Text Redesign.CompressionTask}" FontWeight="SemiBold"/>
-              <TextBlock Text="{Binding CompressionOutput}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}"/>
-              <TextBlock Text="{Binding CompressionMessage}" Style="{StaticResource Secondary}"/>
-              <ProgressBar Value="{Binding CompressionPercent,Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="4" Margin="0,8,0,0"/>
-              <WrapPanel Margin="0,8,0,0">
-                <Button Content="{loc:Text Redesign.ShowCompression}" Click="OnCompression" Margin="0,0,8,0"/>
-                <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}"/>
-              </WrapPanel>
-            </StackPanel>
-          </Border>
-        </StackPanel>
+        <DockPanel Margin="24,24,24,12">
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top" Margin="16,0,0,0">
+            <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
+            <ComboBox x:Name="QueueConcurrencyChoice" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" Width="144" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
+              <ComboBoxItem Content="{loc:Text T_df0142916f7f}"/>
+              <ComboBoxItem Content="{loc:Text T_d722534ab0db}"/>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Margin="0">
+            <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,8"/>
+            <TextBlock Text="{Binding TaskSummary}" Style="{StaticResource Secondary}"/>
+            <Border x:Name="CompressionActivity" Background="{DynamicResource SurfaceBrush}" Padding="12" Margin="0,12,0,0">
+              <Border.Style>
+                <Style TargetType="Border">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding ShowCompressionActivity}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Border.Style>
+              <StackPanel>
+                <TextBlock Text="{loc:Text Redesign.CompressionTask}" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding CompressionOutput}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}"/>
+                <TextBlock Text="{Binding CompressionMessage}" Style="{StaticResource Secondary}"/>
+                <ProgressBar Value="{Binding CompressionPercent,Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="4" Margin="0,8,0,0"/>
+                <WrapPanel Margin="0,8,0,0">
+                  <Button Content="{loc:Text Redesign.ShowCompression}" Click="OnCompression" Margin="0,0,8,0"/>
+                  <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}"/>
+                </WrapPanel>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </DockPanel>
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Background="Transparent">
           <WrapPanel>
-            <ListBox ItemsSource="{Binding TaskFilters}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/>
+            <ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/>
             <Button Content="{loc:Text T_309cb972a002}" Margin="0,0,8,4" Command="{Binding AddFilesCommand}" AutomationProperties.Name="{loc:Text T_37b278fca0db}"/>
             <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
             <Button x:Name="QueueActionsAction" Click="OnQueueActions" IsEnabled="{Binding IsIdle}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text T_ca8d1fab2a53}">
@@ -224,17 +233,10 @@
                   <RowDefinition Height="*"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <DockPanel Margin="24,8,24,12">
-                  <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                    <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
-                    <ComboBox x:Name="QueueConcurrencyChoice" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" Width="144" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
-                      <ComboBoxItem Content="{loc:Text T_df0142916f7f}"/>
-                      <ComboBoxItem Content="{loc:Text T_d722534ab0db}"/>
-                    </ComboBox>
-                  </StackPanel>
+                <DockPanel Margin="24,8,24,12" Visibility="Collapsed">
                   <TextBlock Text="{loc:Text T_8f10dc147500}" Style="{StaticResource Heading}" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                 </DockPanel>
-                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="76">
+                <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="60">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
                       <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding ExtractSelectedTaskCommand}"/>
@@ -312,7 +314,7 @@
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="{loc:Text Drag.Actions}" Width="132">
+                    <DataGridTemplateColumn Header="{loc:Text Drag.Actions}" Width="152">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                           <Button Click="OnTaskRowAction" Content="{Binding PrimaryActionCaption}" Margin="8,0,12,0" Padding="14,7" HorizontalAlignment="Left" IsEnabled="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>

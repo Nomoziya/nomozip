@@ -3127,4 +3127,7 @@
 <data name="Redesign.More" xml:space="preserve"><value>•••  更多 ⌄</value></data>
 <data name="Redesign.ClosePreview" xml:space="preserve"><value>关闭预览</value></data>
 <data name="Redesign.OutputPending" xml:space="preserve"><value>开始前确认输出位置</value></data>
+<data name="Redesign.OpenFolder" xml:space="preserve"><value>打开文件夹</value></data>
+<data name="Redesign.SampleExtracting" xml:space="preserve"><value>正在解压</value></data>
+<data name="Redesign.SampleCompleted" xml:space="preserve"><value>已完成</value></data>
 </root>
