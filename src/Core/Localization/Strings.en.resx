@@ -3205,4 +3205,13 @@ A password is required to validate the archive data.</value>
   <data name="Task.OutputLocation" xml:space="preserve"><value>Output location</value></data>
   <data name="Task.Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Settings.Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Settings.DefaultOutput" xml:space="preserve"><value>Default output folder</value></data>
+  <data name="Settings.DefaultConflict" xml:space="preserve"><value>Existing files</value></data>
+  <data name="Settings.ConflictAsk" xml:space="preserve"><value>Ask every time</value></data>
+  <data name="Settings.ConflictSkip" xml:space="preserve"><value>Skip existing files</value></data>
+  <data name="Settings.ConflictReplace" xml:space="preserve"><value>Replace existing files</value></data>
+  <data name="Settings.SaveDefaults" xml:space="preserve"><value>Save defaults</value></data>
+  <data name="Settings.InvalidOutput" xml:space="preserve"><value>Choose an absolute output folder path.</value></data>
+  <data name="Settings.DefaultsSaved" xml:space="preserve"><value>Saved for subsequent operations.</value></data>
+  <data name="Updates.EngineTitle" xml:space="preserve"><value>7-Zip engine</value></data>
 </root>
