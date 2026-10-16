@@ -30,7 +30,7 @@ jobs:
           $env:PATH=(Join-Path $env:TASK_MSYS2_LOCATION 'ucrt64/bin')+';C:\Program Files\7-Zip;'+$env:PATH
           ./scripts/bootstrap.ps1
           ./scripts/build.ps1 -Configuration Release -OutputDirectory artifacts/smb-app
-          & g++ -std=c++20 -O2 -static tests/SmbSystemProbe.cpp -o artifacts/smb-path-probe.exe
+          & g++ -std=c++20 -O2 -static -municode tests/SmbSystemProbe.cpp -o artifacts/smb-path-probe.exe
           if ($LASTEXITCODE -ne 0) { throw 'SMB path diagnostic build failed.' }
       - name: Exercise real SMB through product CLI on disposable runner
         run: |
