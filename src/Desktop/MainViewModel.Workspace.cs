@@ -21,7 +21,13 @@ public sealed partial class MainViewModel
     public IReadOnlyList<string> TaskFilters {get;} = [UiText.Get("Redesign.AllTasks"),UiText.Get("Redesign.RunningTasks"),UiText.Get("Redesign.PendingTasks"),UiText.Get("Redesign.EndedTasks")];
     public bool ShowCompressionActivity => HasCompressionActivity && (TaskFilterIndex==0 || TaskFilterIndex==1 && CompressionRunning || TaskFilterIndex==3 && !CompressionRunning);
     private bool MatchesTaskFilter(ArchiveTaskRow row) => TaskFilterIndex switch {1=>row.Running,2=>!row.Running && !row.Completed && row.Failure is null,3=>row.Completed || row.Failure is not null,_=>true};
-    private void RefreshWorkspaceTasks() {taskView?.Refresh();Changed(nameof(TaskSummary));Changed(nameof(ShowCompressionActivity));}
+    private void RefreshWorkspaceTasks(bool refreshView = true)
+    {
+        // Collection changes already reach ListCollectionView. Refreshing during
+        // its source notification would make it process the new row twice.
+        if (refreshView) taskView?.Refresh();
+        Changed(nameof(TaskSummary));Changed(nameof(ShowCompressionActivity));
+    }
     private void WorkspaceTaskChanged(object? sender,PropertyChangedEventArgs e)
     {if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure)) RefreshWorkspaceTasks();}
 
