@@ -33,6 +33,11 @@ try {
  $taskSource=Join-Path $taskRun 'share/输入示例.txt'
  [IO.File]::WriteAllText($taskSource,'nomozip real SMB protocol acceptance: synthetic Unicode file.',[Text.UTF8Encoding]::new($false))
  $taskOriginal=(Get-FileHash -LiteralPath $taskSource -Algorithm SHA256).Hash
+ $taskBundle=Join-Path $taskRun 'share/bundle'
+ New-Item -ItemType Directory -Force (Join-Path $taskBundle '子目录'),(Join-Path $taskBundle 'empty-dir') | Out-Null
+ Copy-Item -LiteralPath $taskSource -Destination (Join-Path $taskBundle '输入示例.txt')
+ [IO.File]::WriteAllText((Join-Path $taskBundle '子目录/nested-note.txt'),'Nested SMB extraction preserves directory structure.')
+ $taskNestedHash=(Get-FileHash -LiteralPath (Join-Path $taskBundle '子目录/nested-note.txt') -Algorithm SHA256).Hash
  Invoke-SmbCli @('create',$taskSource,'--output',(Join-Path $taskRun 'local-control.zip'),'--format','zip','--engine','26.03')
  Check-Smb 'same product local creation control' (Test-Path -LiteralPath (Join-Path $taskRun 'local-control.zip'))
  $taskUser=[Security.Principal.WindowsIdentity]::GetCurrent().Name
@@ -58,11 +63,13 @@ try {
   foreach($taskFormat in @('zip','7z')) {
    $taskArchive=$taskUnc+'\archive-'+$taskVersion+'.'+$taskFormat
    $taskTarget=$taskUnc+'\result-'+$taskVersion+'-'+$taskFormat
-   Invoke-SmbCli @('create',($taskUnc+'\输入示例.txt'),'--output',$taskArchive,'--format',$taskFormat,'--engine',$taskVersion)
+   Invoke-SmbCli @('create',($taskUnc+'\bundle'),'--output',$taskArchive,'--format',$taskFormat,'--engine',$taskVersion)
    Invoke-SmbCli @('test',$taskArchive,'--engine',$taskVersion)
    Invoke-SmbCli @('extract',$taskArchive,'--output',$taskTarget,'--engine',$taskVersion)
    $taskExtracted=@(Get-ChildItem -LiteralPath $taskTarget -Recurse -File -Filter '输入示例.txt')
    Check-Smb "$taskVersion $taskFormat exact extracted file over UNC" ($taskExtracted.Count -eq 1 -and (Get-FileHash -LiteralPath $taskExtracted[0].FullName -Algorithm SHA256).Hash -eq $taskOriginal)
+   $taskNested=Join-Path $taskTarget 'bundle/子目录/nested-note.txt'
+   Check-Smb "$taskVersion $taskFormat nested Unicode path and empty directory" ((Test-Path -LiteralPath (Join-Path $taskTarget 'bundle/empty-dir') -PathType Container) -and (Get-FileHash -LiteralPath $taskNested -Algorithm SHA256).Hash -eq $taskNestedHash)
    Invoke-SmbCli @('extract',$taskArchive,'--output',$taskTarget,'--engine',$taskVersion) 2
    Invoke-SmbCli @('extract',$taskArchive,'--output',$taskTarget,'--engine',$taskVersion,'--on-conflict','skip') 1
    Check-Smb "$taskVersion $taskFormat conflict kept prior output" ((Get-FileHash -LiteralPath $taskExtracted[0].FullName -Algorithm SHA256).Hash -eq $taskOriginal)
