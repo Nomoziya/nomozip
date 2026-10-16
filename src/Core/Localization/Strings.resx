@@ -3225,4 +3225,5 @@
   <data name="Compression.HeadersHint" xml:space="preserve"><value>7z 格式可用，防止文件名被查看。</value></data>
   <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>选项根据当前格式与引擎能力启用。</value></data>
   <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>搜索包内文件</value></data>
+  <data name="Compression.AdvancedTitle" xml:space="preserve"><value>高级选项</value></data>
 </root>

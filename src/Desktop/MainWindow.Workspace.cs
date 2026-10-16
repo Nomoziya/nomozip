@@ -157,7 +157,7 @@ public partial class MainWindow
         var container = new Grid { Margin = new Thickness(24) };
         container.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         var titleRow=new DockPanel {Margin=new Thickness(0,0,0,24)};
-        var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M4,1 L18,1 L25,8 L25,31 L4,31 Z M18,1 L18,8 L25,8 M10,15 L10,23 L7,20 M10,23 L14,19"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
+        var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M18,2 L6,2 Q3,2 3,5 L3,29 Q3,32 6,32 L25,32 Q28,32 28,29 L28,12 L20,12 L20,2 Z M8,7 L15,7 M14,6 L14,24 M8,18 L14,24 L20,18"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
         icon.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
         var heading=new StackPanel();titleRow.Children.Add(heading);
         heading.Children.Add(new TextBlock {Text=UiText.Get(titleKey),FontSize=24,FontWeight=FontWeights.SemiBold});
