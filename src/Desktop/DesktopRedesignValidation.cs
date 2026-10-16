@@ -157,6 +157,17 @@ internal static class DesktopRedesignValidation
             Check("compression routes to unified task workspace",model.Page==0 && model.HasCompressionActivity && File.Exists(model.CompressionOutput));
             Check("compression output is not an extraction task",model.Tasks.All(value=>!string.Equals(value.Path,model.CompressionOutput,StringComparison.OrdinalIgnoreCase)));
             Capture("actual-compression-result");
+
+            model.Page=5;await Layout();
+            var hashes=(FileHashViewModel)((FrameworkElement)window.ToolsHost.Content).DataContext;
+            hashes.AddFiles([source,archive]);hashes.CalculateCommand.Execute(null);await hashes.WaitForIdleAsync();await Layout();
+            Check("checksum workspace computes actual synthetic files",hashes.Rows.Count==2 && hashes.Rows.All(value=>value.Digest.Length==64));
+            Check("empty expected digest remains not compared",hashes.Rows.All(value=>value.Status==UiText.Get("T_cb82f06947d1")));
+            hashes.Selected!.ExpectedHash=hashes.Selected.Digest;
+            Check("checksum details compare the selected value",hashes.Selected.Status==UiText.Get("T_0680a4a36ca8"));
+            Capture("actual-checksum-matched");
+            hashes.Selected.ExpectedHash=new string(hashes.Selected.Digest[0]=='0'?'1':'0',64);
+            Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));Capture("actual-checksum-mismatch");
         }
         catch(Exception exception) {error=exception.ToString();}
         finally {window.PrepareExtractionOptionsForValidation=null;}

@@ -3132,4 +3132,6 @@
 <data name="Redesign.SampleCompleted" xml:space="preserve"><value>已完成</value></data>
 <data name="Redesign.SaveLocation" xml:space="preserve"><value>保存位置</value></data>
 <data name="Redesign.ArchiveName" xml:space="preserve"><value>文件名</value></data>
+<data name="Redesign.AddForCompression" xml:space="preserve"><value>添加文件以压缩</value></data>
+<data name="Redesign.PasswordNotSet" xml:space="preserve"><value>未设置</value></data>
 </root>

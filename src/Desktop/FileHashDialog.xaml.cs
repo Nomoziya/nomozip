@@ -13,15 +13,16 @@ public partial class FileHashDialog : Window
         InitializeComponent(); Model = create?.Invoke(this) ?? new FileHashViewModel(new FileHashCalculator(), new FileHashDialogs(dialogOwner ?? this)); DataContext = Model;
         void Arrange()
         {
-            var layoutHeight = EmbeddedClose is null ? ActualHeight : HashLayout.ActualHeight;
-            var compact = layoutHeight < 560;
-            HashLayout.Margin = new Thickness(compact ? 12 : 16);
-            HashHeading.Margin = new Thickness(0, 0, 0, compact ? 8 : 12);
-            HashSubtitle.Visibility = HashSelectedPath.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
-            var tiny=layoutHeight<420;
-            if(tiny && HashDetailsPanel.Parent==HashLayout) {HashLayout.Children.Remove(HashDetailsPanel);HashDetailsPanel.Margin=new Thickness(0);CompactDetailsScroll.Content=HashDetailsPanel;CompactHashDetails.Visibility=Visibility.Visible;}
-            else if(!tiny && CompactDetailsScroll.Content is not null) {CompactDetailsScroll.Content=null;HashDetailsPanel.Margin=new Thickness(0,12,0,0);HashLayout.Children.Add(HashDetailsPanel);CompactHashDetails.Visibility=Visibility.Collapsed;}
-
+            var compact = HashLayout.ActualWidth < 720 || HashLayout.ActualHeight < 500;
+            HashHeading.Margin = new Thickness(compact ? 16 : 24,compact ? 16 : 24,compact ? 16 : 24,16);
+            HashSubtitle.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            if(compact && HashDetailsScroll.Content is not null) {HashDetailsScroll.Content=null;CompactDetailsScroll.Content=HashDetailsPanel;}
+            else if(!compact && CompactDetailsScroll.Content is not null) {CompactDetailsScroll.Content=null;HashDetailsScroll.Content=HashDetailsPanel;}
+            HashDetailsSurface.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
+            CompactHashDetails.Visibility=compact?Visibility.Visible:Visibility.Collapsed;
+            HashDetailsColumn.Width=new GridLength(compact?0:Math.Clamp(HashLayout.ActualWidth*.42,300,400));
+            System.Windows.Controls.Grid.SetColumn(HashActions,compact?0:1);
+            System.Windows.Controls.Grid.SetColumnSpan(HashActions,compact?2:1);
         }
         HashLayout.SizeChanged += (_, _) => Arrange();SizeChanged += (_, _) => Arrange();
         if (initial is not null) Model.AddFiles([initial]);
@@ -31,7 +32,7 @@ public partial class FileHashDialog : Window
         {
             if (!closing && Model.IsBusy) { args.Cancel = true; Model.Cancel(); await Model.WaitForIdleAsync(); closing = true; Close(); }
         };
-        PreviewKeyDown += (_, args) => { if (args.Key == Key.Escape) { args.Handled = true; Close(); } };
+        PreviewKeyDown += (_, args) => { if (args.Key == Key.Escape && Model.IsIdle) { args.Handled = true;OnClose(this,new RoutedEventArgs()); } };
     }
     private void OnClose(object sender, RoutedEventArgs args) {if(EmbeddedClose is not null) EmbeddedClose();else Close();}
 }
