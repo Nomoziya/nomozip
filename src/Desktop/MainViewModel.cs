@@ -123,7 +123,7 @@ public sealed partial class MainViewModel : ObservableObject
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
-    public string OutputPath { get => outputPath; set { if(Set(ref outputPath,value)) Changed(nameof(DisplayOutputPath)); } }
+    public string OutputPath { get => outputPath; set { if(Set(ref outputPath,value)) {Changed(nameof(DisplayOutputPath));Changed(nameof(DefaultOutputDirectory));} } }
     public bool AutoTry { get => autoTry; set => Set(ref autoTry, value); }
     public int ConflictPolicy { get => conflictPolicy; set => Set(ref conflictPolicy, value); }
     public string Banner { get => banner; set => Set(ref banner, value); }

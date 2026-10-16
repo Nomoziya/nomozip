@@ -16,6 +16,20 @@ public partial class ExistingFileDialog : Window
         static string Describe(string path)=>File.Exists(path)?UiText.Format("Conflict.FileDetails",new FileInfo(path).Length.ToString("N0"),File.GetLastWriteTime(path).ToString("g")):UiText.Get("Conflict.Directory");
         ExistingDetails.Text=Describe(conflict.TargetPath);IncomingDetails.Text=Describe(conflict.SourcePath);
         NewName.Text=ConflictFileNames.Suggest(conflict.TargetPath,path=>conflict.ReservedTargets?.Contains(path)==true);
+        ExistingFileIcon.FileName=IncomingFileIcon.FileName=conflict.TargetPath;
+        ExistingFileIcon.IsDirectory=Directory.Exists(conflict.TargetPath);IncomingFileIcon.IsDirectory=Directory.Exists(conflict.SourcePath);
+        void LoadThumbnail(string path,System.Windows.Controls.Image target)
+        {
+            try
+            {
+                if(!File.Exists(path) || ArchivePreviewPolicy.Kind(conflict.TargetPath)!="image" || new FileInfo(path).Length>1048576)return;
+                var bytes=File.ReadAllBytes(path);var preview=ArchivePreviewViewModel.Decode(new ArchiveEntry(0,conflict.TargetPath,(ulong)bytes.Length,false,false),bytes);
+                if(preview.Picture is not null){target.Source=preview.Picture;target.Visibility=Visibility.Visible;}
+            }
+            catch(Exception error) when(error is IOException or UnauthorizedAccessException) { }
+        }
+        LoadThumbnail(conflict.TargetPath,ExistingThumbnail);LoadThumbnail(conflict.SourcePath,IncomingThumbnail);
+        Closed+=(_,_)=>{ExistingThumbnail.Source=null;IncomingThumbnail.Source=null;};
         ReplaceButton.IsEnabled=!Directory.Exists(conflict.TargetPath);
         Loaded+=(_,_)=>ReplaceButton.Focus();
     }

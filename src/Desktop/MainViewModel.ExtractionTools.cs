@@ -25,11 +25,35 @@ public sealed partial class MainViewModel
     public ICommand EditExtractionRulesCommand { get;private set; }=null!;
     public ICommand TestArchiveCommand { get;private set; }=null!;
     public ICommand ShowTestResultCommand { get;private set; }=null!;
+    public ICommand BrowseDefaultOutputCommand {get;private set;}=null!;
+    public ICommand SaveFileDefaultsCommand {get;private set;}=null!;
+    private string fileDefaultsMessage="";
+    public string FileDefaultsMessage {get=>fileDefaultsMessage;private set=>Set(ref fileDefaultsMessage,value);}
+    public string DefaultOutputDirectory
+    {
+        get=>OutputPath;
+        set
+        {
+            if(!IsIdle || value==OutputPath)return;
+            // Defaults must not clear destinations attached to queued shell tasks.
+            directoryRules=directoryRules with {Location=ExtractionLocation.Custom};OutputPath=value;
+            Changed(nameof(DirectoryRules));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(DisplayOutputPath));Changed(nameof(ExtractionSubtitle));FileDefaultsMessage="";
+        }
+    }
     private void InitializeExtractionToolCommands()
     {
         EditExtractionRulesCommand=new AsyncCommand(EditExtractionRulesAsync,()=>CanConfigureExtraction && SelectedTask?.Checkpoint is null);
         TestArchiveCommand=new AsyncCommand(TestSelectedArchiveAsync,()=>Page==0 && IsIdle && SelectedTask is not null && activeEngine.Length>0);
         ShowTestResultCommand=new RelayCommand(()=>dialogs.ShowExtractionFailure(SelectedTask!.Name,SelectedTask.VerificationResult!,testing:true),()=>IsIdle && SelectedTask?.VerificationResult is not null);
+        BrowseDefaultOutputCommand=new RelayCommand(()=>{if(dialogs.SelectOutput(OutputPath) is {} path)DefaultOutputDirectory=path;},()=>IsIdle);
+        SaveFileDefaultsCommand=new AsyncCommand(async()=>
+        {
+            if(directoryRules.Location==ExtractionLocation.Custom && !Path.IsPathFullyQualified(OutputPath)){FileDefaultsMessage=UiText.Get("Settings.InvalidOutput");return;}
+            IsBusy=true;idle=new TaskCompletionSource();
+            try{await SaveSettingsAsync();FileDefaultsMessage=UiText.Get(settingsWritable?"Settings.DefaultsSaved":"T_a66f3be2b81c");}
+            catch(Exception error) when(error is IOException or UnauthorizedAccessException){FileDefaultsMessage=UiText.Get("T_23a051575c7a");}
+            finally{IsBusy=false;idle.TrySetResult();}
+        },()=>IsIdle);
     }
     private async Task EditExtractionRulesAsync()
     {

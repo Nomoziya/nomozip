@@ -87,6 +87,17 @@ internal static class DesktopDesignDialogValidation
             });
             check("backup fields clear after close "+exporting,backup.Passphrase is not null && backup.SecretBox.Password.Length==0 && backup.ConfirmationBox.Password.Length==0 && backup.VisibleSecret.Text.Length==0 && backup.VisibleConfirmation.Text.Length==0);
         }
+        var thumbnailDirectory=Path.Combine(folder,"synthetic","conflict-thumbnails");Directory.CreateDirectory(thumbnailDirectory);
+        var thumbnailPaths=new[]{Path.Combine(thumbnailDirectory,"existing.png"),Path.Combine(thumbnailDirectory,"incoming.png")};
+        foreach(var path in thumbnailPaths)
+        {
+            var pixels=Enumerable.Repeat((byte)180,24*24*4).ToArray();for(var index=3;index<pixels.Length;index+=4)pixels[index]=255;
+            var bitmap=System.Windows.Media.Imaging.BitmapSource.Create(24,24,96,96,System.Windows.Media.PixelFormats.Bgra32,null,pixels,24*4);
+            var encoder=new System.Windows.Media.Imaging.PngBitmapEncoder();encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmap));using var output=File.Create(path);encoder.Save(output);
+        }
+        var thumbnailConflict=new ExistingFileDialog(new ExistingFileConflict(thumbnailPaths[0],thumbnailPaths[1]));
+        Show(thumbnailConflict,"file-conflict-image",()=>check("conflict previews decode the two actual disk images",thumbnailConflict.ExistingThumbnail.Source is System.Windows.Media.Imaging.BitmapSource {PixelWidth:24} && thumbnailConflict.IncomingThumbnail.Source is System.Windows.Media.Imaging.BitmapSource {PixelWidth:24}));
+        check("conflict thumbnails clear on close",thumbnailConflict.ExistingThumbnail.Source is null && thumbnailConflict.IncomingThumbnail.Source is null);
         var failureDialog=new ExtractionFailureDialog("资料合集.zip",new EngineResult {Code="corrupt_archive",SuccessfulItems=18,Failures=[new(18,"corrupt_archive","损坏文件.dat"),new(19,"unsupported_method","文档.txt")]});
         Show(failureDialog,"extraction-failures");
         var compressionResultShown=false;

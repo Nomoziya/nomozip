@@ -15,7 +15,7 @@
                 <Path Data="M19,1 L19,10 L28,10 M11,23 L11,19 A4,4 0 0 1 19,19 L19,23 M9,23 L21,23 L21,33 L9,33 Z M15,26 L15,30" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.6" StrokeLineJoin="Round"/>
               </Grid>
             </Viewbox>
-            <TextBlock x:Name="Heading" FontSize="24" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="Heading" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0" VerticalAlignment="Center"/>
           </DockPanel>
           <TextBlock x:Name="Description" Style="{StaticResource Secondary}" Margin="0,0,0,16"/>
           <TextBlock x:Name="FileLabel" TextWrapping="Wrap" Margin="0,0,0,16"/>

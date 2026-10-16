@@ -966,9 +966,40 @@
                 </Style>
               </Border.Style>
               <StackPanel>
-                <TextBlock Text="{loc:Text Redesign.FileDefaults}" Style="{StaticResource Heading}"/>
+                <TextBlock Text="{loc:Text Redesign.FileDefaults}" Style="{StaticResource Heading}" FontSize="20"/>
+                <Grid Margin="0,4,0,14">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Text="{loc:Text Settings.DefaultOutput}" VerticalAlignment="Center"/>
+                  <Grid Grid.Column="1" Width="360">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="DefaultOutputBox" Text="{Binding DefaultOutputDirectory,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultOutput}"/>
+                    <Button Content="{loc:Text T_5a4540c9b21b}" Command="{Binding BrowseDefaultOutputCommand}" Grid.Column="1" Margin="8,0,0,0"/>
+                  </Grid>
+                </Grid>
+                <Grid Margin="0,0,0,12">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="280"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Text="{loc:Text Settings.DefaultConflict}" VerticalAlignment="Center"/>
+                  <ComboBox Grid.Column="1" x:Name="DefaultConflictChoice" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultConflict}">
+                    <ComboBoxItem Content="{loc:Text Settings.ConflictAsk}"/>
+                    <ComboBoxItem Content="{loc:Text Settings.ConflictSkip}"/>
+                    <ComboBoxItem Content="{loc:Text Settings.ConflictReplace}"/>
+                  </ComboBox>
+                </Grid>
                 <TextBlock Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
                 <Button Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                <WrapPanel HorizontalAlignment="Right" Margin="0,14,0,0">
+                  <Button x:Name="SaveFileDefaultsAction" Content="{loc:Text Settings.SaveDefaults}" Command="{Binding SaveFileDefaultsCommand}" Style="{StaticResource SubtleButton}"/>
+                  <TextBlock Text="{Binding FileDefaultsMessage}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="12,0,0,0" AutomationProperties.LiveSetting="Polite"/>
+                </WrapPanel>
               </StackPanel>
             </Border>
             <Border Margin="0,0,0,16" CornerRadius="6" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" Padding="20">
@@ -1002,17 +1033,19 @@
                 </Style>
               </Border.Style>
               <StackPanel>
-                <TextBlock Text="{loc:Text T_651f27447015}" Style="{StaticResource Heading}"/>
-                <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
-                  <Image Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="34" Height="34" Margin="0,0,14,0"/>
-                  <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="nomozip" FontSize="18" FontWeight="SemiBold"/>
-                    <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,4,0,0"/>
+                <TextBlock Text="{loc:Text T_651f27447015}" Style="{StaticResource Heading}" FontSize="20"/>
+                <DockPanel Margin="0,0,0,4">
+                  <Button x:Name="CheckApplicationUpdatesButton" Content="{loc:Text T_e64da2a40b53}" Command="{Binding CheckApplicationUpdatesCommand}" Margin="12,0,0,0" Style="{StaticResource PrimaryButton}" DockPanel.Dock="Right"/>
+                  <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                    <Image Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="34" Height="34" Margin="0,0,14,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                      <TextBlock Text="nomozip" FontSize="18" FontWeight="SemiBold"/>
+                      <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,4,0,0"/>
+                    </StackPanel>
                   </StackPanel>
-                </StackPanel>
+                </DockPanel>
                 <TextBlock Text="{loc:Text T_8c321cda91b6}" Style="{StaticResource Secondary}"/>
                 <WrapPanel Margin="0,16,0,0">
-                  <Button x:Name="CheckApplicationUpdatesButton" Content="{loc:Text T_e64da2a40b53}" Command="{Binding CheckApplicationUpdatesCommand}" Margin="0,0,12,8"/>
                   <Button x:Name="OpenApplicationDownloadButton" Content="{loc:Text T_2381499164c4}" Command="{Binding OpenApplicationDownloadCommand}" Margin="0,0,12,8"/>
                   <Button x:Name="DownloadApplicationUpdateButton" Content="{loc:Text SoftwareUpdate.Download}" Command="{Binding DownloadApplicationUpdateCommand}" Margin="0,0,12,8"/>
                   <Button x:Name="InstallApplicationUpdateButton" Content="{loc:Text SoftwareUpdate.Install}" Command="{Binding InstallApplicationUpdateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,0,8"/>
@@ -1057,7 +1090,7 @@
                 </Style>
               </Border.Style>
               <StackPanel>
-                <TextBlock Text="{loc:Text T_ad09f3fda29a}" Style="{StaticResource Heading}"/>
+                <TextBlock Text="{loc:Text Updates.EngineTitle}" Style="{StaticResource Heading}" FontSize="20"/>
                 <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
                   <Grid Width="32" Height="40" Margin="0,0,14,0">
                     <Path Data="M2,1 L20,1 L30,11 L30,39 L2,39 Z M20,1 L20,11 L30,11" Stroke="{DynamicResource TextBrush}" StrokeThickness="1.5"/>
@@ -1069,8 +1102,8 @@
                   </StackPanel>
                 </StackPanel>
                 <WrapPanel Margin="0,16,0,0">
-                  <Button Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="0,0,12,8"/>
-                  <Button Content="{loc:Text T_e4d1595c61be}" Command="{Binding InstallUpdateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,12,8"/>
+                  <Button Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="0,0,12,8" Style="{StaticResource PrimaryButton}"/>
+                  <Button Content="{loc:Text T_e4d1595c61be}" Command="{Binding InstallUpdateCommand}" Margin="0,0,12,8"/>
                   <Button Content="{loc:Text T_e1189ffd0bcd}" Command="{Binding ImportUpdateCommand}" Margin="0,0,0,8"/>
                 </WrapPanel>
                 <TextBlock Text="{Binding UpdateMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>

@@ -259,6 +259,20 @@ internal static class DesktopRedesignValidation
             Capture("actual-checksum-matched");
             expectedBox.Text=new string(hashes.Selected.Digest[0]=='0'?'1':'0',64);expectedBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
             Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));Check("checksum summary reflects current mismatch",hashes.Message==UiText.Format("T_98b68837365d",UiText.Get("T_f28461bb49c8"),2,0,1,0));await Layout();Capture("actual-checksum-mismatch");
+            model.Page=2;model.SettingsSection=0;await Layout();
+            var settingsPath=Path.Combine(data,"settings.json");var priorSettings=await File.ReadAllTextAsync(settingsPath);
+            var shellDestination=Path.Combine(data,"shell-specific");var shellTask=new ArchiveTaskRow(archive){ShellOutputPath=shellDestination};model.Tasks.Add(shellTask);
+            window.DefaultOutputBox.Text="relative-output";window.DefaultOutputBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
+            model.SaveFileDefaultsCommand.Execute(null);await Until(()=>model.IsIdle);
+            Check("invalid default output does not replace saved settings",model.FileDefaultsMessage==UiText.Get("Settings.InvalidOutput") && await File.ReadAllTextAsync(settingsPath)==priorSettings);
+            var defaultOutput=Path.Combine(data,"default-output");window.DefaultOutputBox.Text=defaultOutput;window.DefaultOutputBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();window.DefaultConflictChoice.SelectedIndex=2;
+            window.SaveFileDefaultsAction.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Until(()=>model.IsIdle);
+            using(var savedSettings=JsonDocument.Parse(await File.ReadAllTextAsync(settingsPath)))
+                Check("general defaults save the chosen path and conflict policy",savedSettings.RootElement.GetProperty("OutputPath").GetString()==defaultOutput && savedSettings.RootElement.GetProperty("ConflictPolicy").GetInt32()==2);
+            Check("changing defaults preserves queued shell destinations",shellTask.ShellOutputPath==shellDestination);
+            var restoredDefaults=new MainViewModel(AppContext.BaseDirectory,data,vault,new WindowDialogs(window));await restoredDefaults.InitializeAsync();
+            Check("file defaults survive reload",restoredDefaults.DefaultOutputDirectory==defaultOutput && restoredDefaults.ConflictPolicy==2 && restoredDefaults.DirectoryRules.Location==ExtractionLocation.Custom);
+            await Layout();Capture("actual-file-defaults-saved");
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
             DesktopDesignDialogValidation.Run(window,theme,folder,Check);
         }

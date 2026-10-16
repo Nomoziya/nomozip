@@ -8,7 +8,8 @@ public partial class ArchiveEditConfirmDialog : Window
     public ArchiveEditConfirmDialog(ArchiveEntry entry,bool writeBack,string encoding,long? editedSize=null)
     {
         InitializeComponent();IsWriteBack=writeBack;
-        if(writeBack)ActionIcon.Data=System.Windows.Media.Geometry.Parse("M3,1 L23,1 L23,30 L3,30 Z M13,25 L13,9 M7,15 L13,9 L19,15");
+        if(writeBack)ActionIcon.Data=System.Windows.Media.Geometry.Parse("M14,28 L14,14 M8,20 L14,14 L20,20");
+        ChangedState.Visibility=writeBack?Visibility.Visible:Visibility.Collapsed;
         Title=Heading.Text=UiText.Get(writeBack?"TextEdit.WriteBackTitle":"TextEdit.Title");
         FileNameLabel.Text=Path.GetFileName(entry.Path);FileNameLabel.ToolTip=entry.Path;
         Details.Text=writeBack?UiText.Format("TextEdit.ChangedDetails",editedSize,entry.Size,encoding):UiText.Format("TextEdit.Details",entry.Size,encoding);
