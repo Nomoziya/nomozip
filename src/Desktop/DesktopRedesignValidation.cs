@@ -41,7 +41,7 @@ internal static class DesktopRedesignValidation
             model.Tasks.Add(new ArchiveTaskRow(@"D:\Downloads\project.7z","18 MB"));
             model.Tasks.Add(new ArchiveTaskRow(@"D:\Downloads\history.zip","240 MB") {Completed=true,Status=UiText.Get("Redesign.SampleCompleted"),ResultOutputPath=@"D:\Documents\history"});
             Check("five destinations use four sidebar items plus bottom settings",window.Navigation.Items.Count==4 && window.SettingsNavigation.IsVisible);
-            foreach(var mode in new[]{"light","dark","contrast"})
+            foreach(var mode in new[]{"light","dark","soft","contrast"})
             {
                 theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");
                 foreach(var width in new[]{800,1160})
@@ -70,6 +70,12 @@ internal static class DesktopRedesignValidation
                     Check($"{mode}/{width} vault detail adapts",window.VaultDetails.IsVisible==(width>=1000));
                 }
                 if(mode=="contrast") Check("system contrast preserves foreground/background pairs",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush) && ReferenceEquals(Application.Current.Resources["SelectionBrush"],SystemColors.HighlightBrush));
+                if(mode=="soft")
+                {
+                    Check("soft contrast uses graphite warm text and muted focus",((SolidColorBrush)Application.Current.Resources["CanvasBrush"]).Color==Color.FromRgb(0x25,0x28,0x2b) && ((SolidColorBrush)Application.Current.Resources["TextBrush"]).Color==Color.FromRgb(0xe5,0xe2,0xda) && ((SolidColorBrush)Application.Current.Resources["FocusBrush"]).Color==Color.FromRgb(0xc5,0xb9,0x8b));
+                    theme.Apply(true);Check("system high contrast takes priority over soft palette",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush));theme.Apply(false);
+                    var preference=Path.Combine(folder,"synthetic","soft-appearance");await AppearancePreferenceStore.SaveAsync(preference,"soft");Check("soft appearance preference survives save and reload",AppearancePreferenceStore.Read(preference).Mode=="soft");
+                }
             }
             theme.SetMode("light");theme.Apply(false);window.Width=1160;window.Height=760;
             model.Page=1;model.SelectedPassword=model.PasswordRows[0];await Layout();
@@ -126,6 +132,9 @@ internal static class DesktopRedesignValidation
                 dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
                 dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
                 {
+                    foreach(var appearance in new[]{"light","dark"})
+                    {theme.SetMode(appearance);dialog.UpdateLayout();dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(folder,"extraction-single-"+appearance+".png"),1,clientOnly:true);dialog.Opacity=0;}
+                    theme.SetMode("light");
                     var start=Descendants((DependencyObject)dialog.Content).OfType<Button>().Single(value=>value.IsDefault);
                     start.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 });
@@ -138,6 +147,18 @@ internal static class DesktopRedesignValidation
             window.CloseArchiveButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await opening;
             Check("closing archive releases operation lifetime",model.IsIdle && window.ArchiveHost.Content is null);
             window.PrepareExtractionOptionsForValidation=null;
+
+            var secondArchive=Path.Combine(data,"second.zip");File.Copy(archive,secondArchive);model.AddFiles([secondArchive]);
+            window.PrepareExtractionOptionsForValidation=dialog=>
+            {
+                dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
+                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
+                {
+                    foreach(var appearance in new[]{"light","dark"}) {theme.SetMode(appearance);dialog.UpdateLayout();dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(folder,"extraction-batch-"+appearance+".png"),1,clientOnly:true);dialog.Opacity=0;}
+                    theme.SetMode("light");dialog.Close();
+                });
+            };
+            Check("batch extraction confirmation can cancel without running",!window.ConfirmExtractionOptions() && model.IsIdle && model.Tasks.All(row=>!row.Running));window.PrepareExtractionOptionsForValidation=null;
 
             // Actual inline edits use the synthetic vault and preserve secret masking on navigation.
             var saved=new SavedPassword(Guid.NewGuid(),"Synthetic vault item","synthetic-secret","",true,DateTimeOffset.UtcNow);
@@ -156,6 +177,11 @@ internal static class DesktopRedesignValidation
             model.CreateArchiveCommand.Execute(null);await Until(()=>model.IsIdle);
             Check("compression routes to unified task workspace",model.Page==0 && model.HasCompressionActivity && File.Exists(model.CompressionOutput));
             Check("compression output is not an extraction task",model.Tasks.All(value=>!string.Equals(value.Path,model.CompressionOutput,StringComparison.OrdinalIgnoreCase)));
+            var compressionTask=model.WorkspaceTasks.Single(value=>value.IsCompression);
+            Check("compression appears exactly once in the unified table",model.TaskView.Cast<ArchiveTaskRow>().Count(value=>value.IsCompression)==1 && model.TaskView.Cast<ArchiveTaskRow>().Count()==model.Tasks.Count+1);
+            Check("compression row preserves its actual result",compressionTask.Completed && compressionTask.Path==model.CompressionOutput && Directory.Exists(compressionTask.LatestOutputPath));
+            model.SelectedTask=compressionTask;Check("compression row cannot invoke extract selected",!model.ExtractSelectedTaskCommand.CanExecute(null));
+            model.TaskFilterIndex=3;Check("ended filter includes completed compression",model.TaskView.Contains(compressionTask));model.TaskFilterIndex=2;Check("pending filter excludes completed compression",!model.TaskView.Contains(compressionTask));model.TaskFilterIndex=0;
             Capture("actual-compression-result");
 
             model.Page=5;await Layout();
@@ -165,10 +191,12 @@ internal static class DesktopRedesignValidation
             Check("empty expected digest remains not compared",hashes.Rows.All(value=>value.Status==UiText.Get("T_cb82f06947d1")));
             hashes.Selected!.ExpectedHash=hashes.Selected.Digest;
             Check("checksum details compare the selected value",hashes.Selected.Status==UiText.Get("T_0680a4a36ca8"));
+            await Layout();
             Capture("actual-checksum-matched");
             hashes.Selected.ExpectedHash=new string(hashes.Selected.Digest[0]=='0'?'1':'0',64);
-            Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));Capture("actual-checksum-mismatch");
+            Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));await Layout();Capture("actual-checksum-mismatch");
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
+            DesktopDesignDialogValidation.Run(window,theme,folder,Check);
         }
         catch(Exception exception) {error=exception.ToString();}
         finally {window.PrepareExtractionOptionsForValidation=null;}

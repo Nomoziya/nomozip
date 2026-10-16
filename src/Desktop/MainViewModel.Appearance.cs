@@ -7,7 +7,7 @@ namespace ArchivePassword.Desktop;
 public sealed record AppearanceOption(string Code, string Label);
 public sealed partial class MainViewModel
 {
-    public IReadOnlyList<AppearanceOption> AppearanceOptions { get; } = [new("system", UiText.Get("Appearance.System")), new("light", UiText.Get("Appearance.Light")), new("dark", UiText.Get("Appearance.Dark"))];
+    public IReadOnlyList<AppearanceOption> AppearanceOptions { get; } = [new("system", UiText.Get("Appearance.System")), new("light", UiText.Get("Appearance.Light")), new("dark", UiText.Get("Appearance.Dark")),new("soft",UiText.Get("Appearance.Soft"))];
     private AppearanceOption selectedAppearance = null!;
     public AppearanceOption SelectedAppearance { get => selectedAppearance; set { if (value is not null && AppearanceOptions.Contains(value)) Set(ref selectedAppearance, value); } }
     private string appearanceMessage = "";

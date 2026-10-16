@@ -1,5 +1,5 @@
 <Window x:Class="ArchivePassword.Desktop.ExistingFileDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="clr-namespace:ArchivePassword.Desktop" Style="{StaticResource AppWindow}" Title="{loc:Text Conflict.Title}" Width="660" Height="490" MinWidth="540" MinHeight="440" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
-  <Grid Margin="28" KeyboardNavigation.TabNavigation="Cycle">
+  <Border Background="{DynamicResource SurfaceBrush}"><Grid Margin="28" KeyboardNavigation.TabNavigation="Cycle">
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <StackPanel>
       <StackPanel Orientation="Horizontal" Margin="0,0,0,24"><Border Background="{DynamicResource AccentBrush}" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0"><TextBlock Text="!" Foreground="{DynamicResource OnAccentBrush}" FontSize="25" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="{loc:Text Conflict.Title}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
@@ -18,7 +18,7 @@
       </StackPanel>
     </ScrollViewer>
     <Border Grid.Row="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,18,0,0" Margin="0,14,0,0">
-      <WrapPanel HorizontalAlignment="Right"><Button x:Name="ReplaceButton" Content="{loc:Text Conflict.Replace}" Style="{StaticResource PrimaryButton}" Click="OnReplace" Margin="0,0,8,4"/><Button Content="{loc:Text Conflict.Skip}" Click="OnSkip" Margin="0,0,8,4"/><Button x:Name="RenameButton" Content="{loc:Text Conflict.Rename}" Click="OnRename" Margin="0,0,8,4"/><Button Content="{loc:Text Conflict.Cancel}" IsCancel="True" Margin="0,0,0,4"/></WrapPanel>
+      <WrapPanel HorizontalAlignment="Right"><Button x:Name="ReplaceButton" MinWidth="100" Content="{loc:Text Conflict.Replace}" Style="{StaticResource PrimaryButton}" Click="OnReplace" Margin="0,0,8,4"/><Button MinWidth="100" Content="{loc:Text Conflict.Skip}" Click="OnSkip" Margin="0,0,8,4"/><Button x:Name="RenameButton" MinWidth="100" Content="{loc:Text Conflict.Rename}" Click="OnRename" Margin="0,0,8,4"/><Button Content="{loc:Text Conflict.Cancel}" IsCancel="True" Margin="0,0,0,4"/></WrapPanel>
     </Border>
-  </Grid>
+  </Grid></Border>
 </Window>

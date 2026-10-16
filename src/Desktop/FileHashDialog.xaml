@@ -1,35 +1,99 @@
-<Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" x:Class="ArchivePassword.Desktop.FileHashDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Style="{StaticResource AppWindow}" Title="{loc:Text T_b3d70cc43d2a}" Width="1000" Height="700" MinWidth="600" MinHeight="500" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+<?xml version="1.0" ?>
+<Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="ArchivePassword.Desktop.FileHashDialog" Style="{StaticResource AppWindow}" Title="{loc:Text T_b3d70cc43d2a}" Width="1000" Height="700" MinWidth="600" MinHeight="500" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
   <Grid x:Name="HashLayout" KeyboardNavigation.TabNavigation="Cycle" Background="{DynamicResource SurfaceBrush}">
-    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="HashDetailsColumn" Width="360"/></Grid.ColumnDefinitions>
-    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition x:Name="HashDetailsColumn" Width="360"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
     <StackPanel x:Name="HashHeading" Grid.ColumnSpan="2" Margin="24,24,24,20">
-      <DockPanel><Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
-        <StackPanel Orientation="Horizontal"><Path Data="M3,1 L14,1 L21,8 L21,27 L3,27 Z M14,1 L14,8 L21,8 M8,12 L7,23 M14,12 L13,23 M5,16 L17,16 M5,20 L17,20" Width="26" Height="32" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" Margin="0,0,14,0"/><TextBlock Text="{loc:Text T_b3d70cc43d2a}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+      <DockPanel>
+        <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
+        <StackPanel Orientation="Horizontal">
+          <Path Data="M3,1 L14,1 L21,8 L21,27 L3,27 Z M14,1 L14,8 L21,8 M8,12 L7,23 M14,12 L13,23 M5,16 L17,16 M5,20 L17,20" Width="26" Height="32" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" Margin="0,0,14,0"/>
+          <TextBlock Text="{loc:Text T_b3d70cc43d2a}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        </StackPanel>
       </DockPanel>
       <TextBlock x:Name="HashSubtitle" Text="{loc:Text T_282d839a46b1}" Style="{StaticResource Secondary}" Margin="0,10,0,0"/>
     </StackPanel>
     <Grid Grid.Row="1">
-      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-      <Border Padding="16,10" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,1"><WrapPanel>
-        <Button x:Name="HashAddButton" Content="{loc:Text T_ad9daebe00dc}" Command="{Binding AddFilesCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4"/>
-        <Button x:Name="HashRemoveButton" Content="{loc:Text T_a194128b2939}" Command="{Binding RemoveCommand}" Margin="0,0,8,4"/>
-        <Button x:Name="HashImportButton" Content="{loc:Text T_6e2433d1240e}" Command="{Binding ImportCommand}" Margin="0,0,8,4"/>
-        <Button x:Name="HashExportButton" Content="{loc:Text T_e29c21446e54}" Command="{Binding ExportCommand}" Margin="0,0,8,4"/>
-      </WrapPanel></Border>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Border Padding="16,10" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,1">
+        <WrapPanel>
+          <Button x:Name="HashAddButton" Content="{loc:Text T_ad9daebe00dc}" Command="{Binding AddFilesCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4"/>
+          <Button x:Name="HashRemoveButton" Content="{loc:Text T_a194128b2939}" Command="{Binding RemoveCommand}" Margin="0,0,8,4"/>
+          <Button x:Name="HashImportButton" Content="{loc:Text Hash.ImportShort}" Command="{Binding ImportCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_6e2433d1240e}"/>
+          <Button x:Name="HashExportButton" Content="{loc:Text Hash.ExportShort}" Command="{Binding ExportCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_e29c21446e54}"/>
+        </WrapPanel>
+      </Border>
       <Grid Grid.Row="1">
         <DataGrid x:Name="HashTable" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" RowHeight="48" AutomationProperties.Name="{loc:Text T_8b8256cab6ef}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-          <DataGrid.RowStyle><Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}"><Setter Property="AutomationProperties.Name"><Setter.Value><MultiBinding StringFormat="{loc:Text T_ee66a816c44e}"><Binding Path="Name"/><Binding Path="Status"/></MultiBinding></Setter.Value></Setter></Style></DataGrid.RowStyle>
+          <DataGrid.RowStyle>
+            <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+              <Setter Property="AutomationProperties.Name">
+                <Setter.Value>
+                  <MultiBinding StringFormat="{loc:Text T_ee66a816c44e}">
+                    <Binding Path="Name"/>
+                    <Binding Path="Status"/>
+                  </MultiBinding>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </DataGrid.RowStyle>
           <DataGrid.Columns>
             <DataGridTextColumn Header="{loc:Text T_39932f24fe11}" Binding="{Binding Name}" Width="*" MinWidth="140" ElementStyle="{StaticResource TableText}"/>
             <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="78" ElementStyle="{StaticResource TableText}"/>
             <DataGridTextColumn Header="{loc:Text T_6320b4a8722a}" Binding="{Binding Status}" Width="140" ElementStyle="{StaticResource TableText}"/>
           </DataGrid.Columns>
-          <DataGrid.CellStyle><Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}"><Setter Property="ToolTip" Value="{Binding Path}"/><Setter Property="AutomationProperties.Name"><Setter.Value><MultiBinding StringFormat="{loc:Text T_ee66a816c44e}"><Binding Path="Name"/><Binding Path="Status"/></MultiBinding></Setter.Value></Setter></Style></DataGrid.CellStyle>
+          <DataGrid.CellStyle>
+            <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+              <Setter Property="ToolTip" Value="{Binding Path}"/>
+              <Setter Property="AutomationProperties.Name">
+                <Setter.Value>
+                  <MultiBinding StringFormat="{loc:Text T_ee66a816c44e}">
+                    <Binding Path="Name"/>
+                    <Binding Path="Status"/>
+                  </MultiBinding>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </DataGrid.CellStyle>
         </DataGrid>
-        <TextBlock Text="{loc:Text T_1a1507a7dc64}" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Rows.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+        <TextBlock Text="{loc:Text T_1a1507a7dc64}" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Rows.Count}" Value="0">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
       </Grid>
       <StackPanel Grid.Row="2" Margin="20,12">
-        <ProgressBar x:Name="HashProgress" Minimum="0" Maximum="100" Value="{Binding Progress,Mode=OneWay}" Height="6" AutomationProperties.Name="{loc:Text T_46482d9011f6}"><ProgressBar.Style><Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsBusy}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ProgressBar.Style></ProgressBar>
+        <ProgressBar x:Name="HashProgress" Minimum="0" Maximum="100" Value="{Binding Progress,Mode=OneWay}" Height="6" AutomationProperties.Name="{loc:Text T_46482d9011f6}">
+          <ProgressBar.Style>
+            <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ProgressBar.Style>
+        </ProgressBar>
         <TextBlock Text="{Binding ProgressText}" TextTrimming="CharacterEllipsis" Margin="0,4,0,0" Style="{StaticResource Secondary}"/>
         <TextBlock x:Name="HashMessage" Text="{Binding Message}" Style="{StaticResource Secondary}" AutomationProperties.LiveSetting="Polite" Margin="0,4,0,0"/>
       </StackPanel>
@@ -40,20 +104,34 @@
           <TextBlock Text="{Binding Selected.Name}" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,0,0,8"/>
           <TextBlock Text="SHA-256" Style="{StaticResource Secondary}" Margin="0,0,0,16"/>
           <TextBlock x:Name="HashSelectedPath" Text="{Binding Selected.Path}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding Selected.Path}" Margin="0,0,0,16"/>
-          <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,1" Padding="0,16" Margin="0,0,0,20"><TextBlock Text="{Binding Selected.Status}" FontWeight="SemiBold" AutomationProperties.LiveSetting="Polite"/></Border>
+          <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,1" Padding="0,16" Margin="0,0,0,20">
+            <TextBlock Text="{Binding Selected.Status}" FontWeight="SemiBold" AutomationProperties.LiveSetting="Polite"/>
+          </Border>
           <Label Content="{loc:Text T_2e9a859d8486}" Target="{Binding ElementName=HashDigestBox}" Padding="0" Margin="0,0,0,8"/>
           <TextBox x:Name="HashDigestBox" Text="{Binding Selected.Digest,Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="76" FontFamily="Consolas" FontSize="12" AutomationProperties.Name="{loc:Text T_cf5d453b4cbe}" Margin="0,0,0,20"/>
           <Label Content="{loc:Text T_80eae77ee4ed}" Target="{Binding ElementName=HashExpectedBox}" Padding="0" Margin="0,0,0,8"/>
           <TextBox x:Name="HashExpectedBox" Text="{Binding Selected.ExpectedHash,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="64" FontFamily="Consolas" FontSize="12" AutomationProperties.Name="{loc:Text T_422af596a866}"/>
-          <TextBlock x:Name="HashExpectedError" Text="{Binding Selected.ExpectedError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,8,0,0"><TextBlock.Style><Style TargetType="TextBlock"><Style.Triggers><DataTrigger Binding="{Binding Selected.ExpectedError}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+          <TextBlock x:Name="HashExpectedError" Text="{Binding Selected.ExpectedError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,8,0,0">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock">
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding Selected.ExpectedError}" Value="">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <WrapPanel x:Name="HashActions" HorizontalAlignment="Left" Margin="0,24,0,0">
+            <Button x:Name="HashCalculateButton" Content="{loc:Text T_446518e7ac65}" Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4"/>
+            <Button x:Name="HashCancelButton" Content="{loc:Text T_2cd0f3be8738}" Command="{Binding CancelCommand}" Margin="0,0,8,4"/>
+            <Button x:Name="HashCopyButton" Content="{loc:Text T_63d90d977348}" Command="{Binding CopyCommand}" Margin="0,0,0,4" AutomationProperties.Name="{loc:Text T_4d9ff0ad6b7c}"/>
+          </WrapPanel>
         </StackPanel>
       </ScrollViewer>
     </Border>
-    <Expander x:Name="CompactHashDetails" Grid.Row="2" Grid.ColumnSpan="2" Header="{loc:Text T_d402a1d201a7}" Margin="16,8" Visibility="Collapsed"><ScrollViewer x:Name="CompactDetailsScroll" MaxHeight="180" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"/></Expander>
-    <WrapPanel x:Name="HashActions" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Margin="16,12,16,20">
-      <Button x:Name="HashCalculateButton" Content="{loc:Text T_446518e7ac65}" Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4"/>
-      <Button x:Name="HashCancelButton" Content="{loc:Text T_2cd0f3be8738}" Command="{Binding CancelCommand}" Margin="0,0,8,4"/>
-      <Button x:Name="HashCopyButton" Content="{loc:Text T_63d90d977348}" Command="{Binding CopyCommand}" Margin="0,0,0,4" AutomationProperties.Name="{loc:Text T_4d9ff0ad6b7c}"/>
-    </WrapPanel>
+    <Expander x:Name="CompactHashDetails" Grid.Row="2" Grid.ColumnSpan="2" Header="{loc:Text T_d402a1d201a7}" Margin="16,8" Visibility="Collapsed">
+      <ScrollViewer x:Name="CompactDetailsScroll" MaxHeight="180" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"/>
+    </Expander>
   </Grid>
 </Window>

@@ -20,15 +20,19 @@ public sealed partial class MainViewModel
                 var progress=new Progress<TaskUpdate>(value=>status.Report(value.Message));
                 var start=await new ArchiveTextEditingService(client,client,new PasswordCandidateProvider(vault),Path.Combine(dataDirectory,"edit-temp")).BeginAsync(task.Path,selection[0],AutoTry,Ask,progress,token);
                 if(start.Warning is not null) Banner=start.Warning;
-                using var session=start.Session;
+                var session=start.Session;
                 if(session is null) outcome=new(start.Engine,snapshot);
                 else
                 {
+                    try
+                    {
                     if(!dialogs.ConfirmTextEdit(session.Entry,false,session.EncodingName)) return null;
                     var text=dialogs.EditTextCopy(session);
                     if(text is null || text==session.OriginalText) {status.Report(UiText.Get("TextEdit.Discarded"));return null;}
                     if(!dialogs.ConfirmTextEdit(session.Entry,true,session.EncodingName,session.Encode(text).LongLength)) return null;
                     outcome=await session.WriteBackAsync(text,snapshot,AutoTry,Ask,progress,token);
+                    }
+                    finally {session.Dispose();if(session.CleanupWarning is not null)Banner=UiText.Format("TextEdit.CleanupWarning",session.CleanupWarning);}
                 }
             }
             else
@@ -63,7 +67,7 @@ public sealed partial class MainViewModel
                 _=>ErrorText(outcome.Engine.Code)+UiText.Get("T_b94136fcd4cd")
             };
             status.Report(message);Footer=UiText.Format("Common.TaskMessage", task.Name, message);if(outcome.Warning is not null) Banner=outcome.Warning;
-            if(outcome.Engine.IsSuccess) {task.Completed=false;task.SelectedOutputPath=null;task.ResultOutputPath=null;task.VerificationResult=null;task.Failure=null;task.Percent=0;task.Status=UiText.Get("T_34a6bbd80e45");}
+            if(outcome.Engine.IsSuccess) {task.VerificationResult=null;if(!task.IsCompression) {task.Completed=false;task.SelectedOutputPath=null;task.ResultOutputPath=null;task.Failure=null;task.Percent=0;task.Status=UiText.Get("T_34a6bbd80e45");}}
             return outcome;
         }
         catch(OperationCanceledException) {status.Report(UiText.Get("T_18cd155e6e88"));return null;}

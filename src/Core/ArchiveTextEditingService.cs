@@ -39,6 +39,7 @@ public sealed class ArchiveTextEditSession : IDisposable
     public string OriginalText {get;}
     public string EncodingName=>encoding.WebName;
     public string CopyPath {get;}
+    public string? CleanupWarning {get;private set;}
     private ArchiveTextEditSession(IArchiveEditor editor,IArchiveEngine engine,IPasswordCandidateProvider candidates,string workspace,string archive,ArchiveEntry entry,string hash,byte[] original,string text,string encodingName)
     {
         this.editor=editor;this.engine=engine;this.candidates=candidates;this.workspace=workspace;this.archive=archive;Entry=entry;this.hash=hash;this.original=original;OriginalText=text;
@@ -66,5 +67,9 @@ public sealed class ArchiveTextEditSession : IDisposable
         await File.WriteAllBytesAsync(CopyPath,bytes,token);
         return await new ArchiveEditingService(engine,editor,candidates).EditAsync(archive,snapshot,[Entry.Index],[new(CopyPath,Entry.Path,false)],autoTry,askPassword,progress,token,hash);
     }
-    public void Dispose() {if(Directory.Exists(workspace)) Directory.Delete(workspace,true);}
+    public void Dispose()
+    {
+        try {if(Directory.Exists(workspace))Directory.Delete(workspace,true);CleanupWarning=null;}
+        catch(Exception error) when(error is IOException or UnauthorizedAccessException) {CleanupWarning=workspace;}
+    }
 }

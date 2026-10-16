@@ -52,8 +52,29 @@
                 </Style>
               </DataGrid.RowStyle>
               <DataGrid.Columns>
-                <DataGridTextColumn Header="{loc:Text T_d44e9b3d3b31}" Binding="{Binding Name}" Width="*" ElementStyle="{StaticResource TableText}"/>
+                <DataGridTemplateColumn Header="{loc:Text T_d44e9b3d3b31}" Width="*">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                        <Path Width="18" Height="22" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Margin="0,0,12,0">
+                          <Path.Style>
+                            <Style TargetType="Path">
+                              <Setter Property="Data" Value="M2,1 L13,1 L20,8 L20,27 L2,27 Z M13,1 L13,8 L20,8"/>
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDirectory}" Value="True">
+                                  <Setter Property="Data" Value="M1,5 L9,5 L12,8 L23,8 L23,23 L1,23 Z"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Path.Style>
+                        </Path>
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" Width="80" ElementStyle="{StaticResource TableText}"/>
+                <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="80" ElementStyle="{StaticResource TableText}"/>
               </DataGrid.Columns>
             </DataGrid>
             <TextBlock Grid.Row="1" Text="{loc:Text T_e7a740c073cb}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Margin="16">
@@ -131,22 +152,16 @@
                   <ComboBoxItem Content="{loc:Text T_8672864e9041}"/>
                 </ComboBox>
               </Grid>
-              <CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}"/>
-              <StackPanel>
-                <StackPanel.Style>
-                  <Style TargetType="StackPanel">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding CompressionEncrypt}" Value="True">
-                        <Setter Property="Visibility" Value="Visible"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </StackPanel.Style>
-                <TextBlock Text="{Binding CompressionPasswordSummary}" Style="{StaticResource Secondary}" ToolTip="{Binding CompressionPasswordStatus}"/>
-                <Button Content="{loc:Text T_fa762d29f739}" Command="{Binding SetCompressionPasswordCommand}" HorizontalAlignment="Left" Margin="0,8,0,0"/>
-                <CheckBox Content="{loc:Text T_6df0322e460d}" IsChecked="{Binding CompressionHeaders}" IsEnabled="{Binding Is7zCompression}"/>
-              </StackPanel>
+              <Grid Margin="0,4,0,16">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding CompressionPasswordSummary}" Style="{StaticResource Secondary}" ToolTip="{Binding CompressionPasswordStatus}" Grid.Column="1" VerticalAlignment="Center"/>
+                <Button Content="{loc:Text Compression.PasswordShort}" Command="{Binding SetCompressionPasswordCommand}" HorizontalAlignment="Left" Margin="12,0,0,0" Grid.Column="2" Padding="12,8"/>
+              </Grid>
               <TextBlock x:Name="FormatSourceError" Text="{Binding CompressionSourceError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
                 <TextBlock.Style>
                   <Style TargetType="TextBlock">
@@ -224,6 +239,19 @@
                     </TextBlock.Style>
                   </TextBlock>
                   <TextBlock Text="{Binding CompressionHint}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
+                  <StackPanel>
+                    <StackPanel.Style>
+                      <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding CompressionEncrypt}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </StackPanel.Style>
+                    <CheckBox Content="{loc:Text T_6df0322e460d}" IsChecked="{Binding CompressionHeaders}" IsEnabled="{Binding Is7zCompression}"/>
+                  </StackPanel>
                 </StackPanel>
               </Expander>
             </StackPanel>

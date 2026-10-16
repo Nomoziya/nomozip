@@ -9,6 +9,7 @@ public partial class PasswordDialog : Window
     private readonly bool testing;
     private readonly SavedPassword? original;
     private readonly bool editing;
+    private readonly bool compressing;
     private readonly string archiveName;
     private readonly EngineResult? previousFailure;
     private readonly Action<ExtractionFailureDialog>? prepareFailure;
@@ -17,6 +18,7 @@ public partial class PasswordDialog : Window
     public PasswordDialog(string archiveName, bool failed, IReadOnlyList<SavedPassword> saved, bool canSave, SavedPassword? existing = null, bool editing = false, bool compressing = false, bool browsing = false, EngineResult? previousFailure = null, Action<ExtractionFailureDialog>? prepareFailure = null,bool testing=false)
     {
         InitializeComponent(); original = existing; this.editing = editing;
+        this.compressing=compressing;
         this.testing=testing;
         this.archiveName = archiveName; this.previousFailure = previousFailure; this.prepareFailure = prepareFailure;
         SavedBox.ItemsSource = saved; SavedPanel.Visibility = !editing && saved.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -39,6 +41,7 @@ public partial class PasswordDialog : Window
         else NameBox.Text = archiveName;
         if (compressing)
         {
+            ConfirmationPanel.Visibility=Visibility.Visible;
             Title = Heading.Text = UiText.Get("T_84d584fcfc26"); ContinueButton.Content = UiText.Get("T_8154b012eaf1");
             Description.Text = UiText.Get("T_fe6aa19502f5");
             SavePassword.Content = UiText.Get("T_5d89c8f8c810");
@@ -57,7 +60,7 @@ public partial class PasswordDialog : Window
             Description.Text=archiveName+(failed?UiText.Get("T_dcfba7612da5"):UiText.Get("T_feaebc29ef3e"))+UiText.Get("T_0da2931b10ac");
         }
         Loaded += (_, _) => SecretBox.Focus();
-        Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear(); SavedBox.ItemsSource = null; };
+        Closed += (_, _) => { SecretBox.Clear(); VisibleSecret.Clear();ConfirmationBox.Clear();VisibleConfirmation.Clear();SavedBox.ItemsSource = null; };
     }
     private void OnShowFailures(object sender, RoutedEventArgs e)
     {
@@ -71,12 +74,15 @@ public partial class PasswordDialog : Window
         if (SecretBox is null || VisibleSecret is null) return;
         if (ShowPassword.IsChecked == true) { VisibleSecret.Text = SecretBox.Password; SecretBox.Visibility = Visibility.Collapsed; VisibleSecret.Visibility = Visibility.Visible; VisibleSecret.Focus(); }
         else { SecretBox.Password = VisibleSecret.Text; VisibleSecret.Clear(); VisibleSecret.Visibility = Visibility.Collapsed; SecretBox.Visibility = Visibility.Visible; SecretBox.Focus(); }
+        if(ConfirmationBox is null)return;
+        if(ShowPassword.IsChecked==true){VisibleConfirmation.Text=ConfirmationBox.Password;ConfirmationBox.Visibility=Visibility.Collapsed;VisibleConfirmation.Visibility=Visibility.Visible;}
+        else{ConfirmationBox.Password=VisibleConfirmation.Text;VisibleConfirmation.Clear();VisibleConfirmation.Visibility=Visibility.Collapsed;ConfirmationBox.Visibility=Visibility.Visible;}
     }
     private void SecretChanged(object sender, RoutedEventArgs e) { if (ErrorLabel is not null) ErrorLabel.Text = ""; }
     private void SaveChanged(object sender, RoutedEventArgs e) { if (!editing && DetailsPanel is not null) DetailsPanel.Visibility = SavePassword.IsChecked == true ? Visibility.Visible : Visibility.Collapsed; }
     private void SavedChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (SavedBox.SelectedItem is SavedPassword value) { SecretBox.Password = value.Secret; if (ShowPassword.IsChecked == true) VisibleSecret.Text = value.Secret; SavePassword.IsChecked = false; }
+        if (SavedBox.SelectedItem is SavedPassword value) { SecretBox.Password = value.Secret;ConfirmationBox.Password=value.Secret;if (ShowPassword.IsChecked == true) {VisibleSecret.Text = value.Secret;VisibleConfirmation.Text=value.Secret;} SavePassword.IsChecked = false; }
     }
     private void OnContinue(object sender, RoutedEventArgs e)
     {
@@ -88,6 +94,8 @@ public partial class PasswordDialog : Window
             return;
         }
         var selected = SavedBox.SelectedItem as SavedPassword;
+        if(compressing && secret!=(ShowPassword.IsChecked==true?VisibleConfirmation.Text:ConfirmationBox.Password))
+        {ErrorLabel.Text=UiText.Get("Password.ConfirmationMismatch");if(ShowPassword.IsChecked==true)VisibleConfirmation.Focus();else ConfirmationBox.Focus();return;}
         Response = new PasswordPromptResponse(secret, SavePassword.IsChecked == true && SavePassword.IsEnabled, NameBox.Text, selected?.Secret == secret ? selected.Id : null);
         if (editing) Edited = new SavedPassword(original?.Id ?? Guid.NewGuid(), string.IsNullOrWhiteSpace(NameBox.Text) ? UiText.Get("T_218e758854ee") : NameBox.Text.Trim(), secret, NotesBox.Text.Trim(), AutoTryBox.IsChecked == true, original?.CreatedAt ?? DateTimeOffset.UtcNow, original?.LastSuccessAt,
             GroupBox.Text.Trim(), SourceBox.Text.Trim(), MatchBox.Text.Trim());

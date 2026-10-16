@@ -37,6 +37,8 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? enabled = null)
 }
 public sealed class ArchiveTaskRow(string path, string? previewSize = null) : ObservableObject
 {
+    public bool IsCompression {get;init;}
+    public string OperationLabel=>UiText.Get(IsCompression?"Redesign.CompressionTask":"Contents.CompactExtract");
     private CheckpointRecord? checkpoint;
     public CheckpointRecord? Checkpoint {get=>checkpoint;set=>Set(ref checkpoint,value);}
     private string? resultOutputPath;
@@ -44,13 +46,14 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     public string? SelectedOutputPath {get=>selectedOutputPath;set {if(Set(ref selectedOutputPath,value)) Changed(nameof(DisplayOutputPath));}}
     public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;
     public string DisplayOutputPath=>LatestOutputPath ?? ShellOutputPath ?? UiText.Get("Redesign.OutputPending");
-    public string PrimaryActionCaption=>UiText.Get(Completed?"Redesign.OpenFolder":"Contents.CompactExtract");
+    public string PrimaryActionCaption=>UiText.Get(Running?IsCompression?"Conflict.Cancel":"Redesign.PauseAll":Completed?"Redesign.OpenFolder":IsCompression?"Redesign.ShowCompression":"Contents.CompactExtract");
     private EngineResult? verificationResult;
     public string? ResultOutputPath { get=>resultOutputPath;set {if(Set(ref resultOutputPath,value)) Changed(nameof(DisplayOutputPath));} }
     public EngineResult? VerificationResult {get=>verificationResult;set=>Set(ref verificationResult,value);}
     private string? shellOutputPath;
     public string? ShellOutputPath { get => shellOutputPath; set {if(Set(ref shellOutputPath,value)) Changed(nameof(DisplayOutputPath));} }
-    public string Path { get; } = path;
+    public string Path { get; private set; } = path;
+    internal void SetArchiveResult(string value) {Path=value;Changed(nameof(Path));Changed(nameof(Name));Changed(nameof(SizeText));}
     public string Name => System.IO.Path.GetFileName(Path);
     private int filenameCodePage;
     public int FilenameCodePage { get=>filenameCodePage; set { if(!ZipFilenameEncoding.IsSupported(value)) throw new ArgumentOutOfRangeException(nameof(value)); if(Set(ref filenameCodePage,value)) Changed(nameof(SizeText)); } }
@@ -60,13 +63,14 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private bool running, indeterminate;
     private bool completed;
     private EngineResult? failure;
-    public bool Completed { get=>completed; set {if(Set(ref completed,value)) {Changed(nameof(PrimaryActionCaption));Changed(nameof(ProgressVisibility));Changed(nameof(DisplayPercent));}} }
+    public bool Completed { get=>completed; set {if(Set(ref completed,value)) {Changed(nameof(PrimaryActionCaption));Changed(nameof(ProgressVisibility));Changed(nameof(DisplayPercent));Changed(nameof(PercentText));}} }
     public EngineResult? Failure { get=>failure; set=>Set(ref failure,value); }
     public string Status { get => status; set => Set(ref status, value); }
-    public double Percent { get => percent; set {if(Set(ref percent, value)) Changed(nameof(DisplayPercent));} }
+    public double Percent { get => percent; set {if(Set(ref percent, value)) {Changed(nameof(DisplayPercent));Changed(nameof(PercentText));}} }
     public double DisplayPercent => Completed ? 100 : Percent;
-    public bool IsIndeterminate { get => indeterminate; set => Set(ref indeterminate, value); }
-    public bool Running { get => running; set { if (Set(ref running, value)) Changed(nameof(ProgressVisibility)); } }
+    public string PercentText=>IsIndeterminate || !Running && !Completed?"":$"{DisplayPercent:0}%";
+    public bool IsIndeterminate { get => indeterminate; set {if(Set(ref indeterminate, value))Changed(nameof(PercentText));} }
+    public bool Running { get => running; set { if (Set(ref running, value)) {Changed(nameof(ProgressVisibility));Changed(nameof(PrimaryActionCaption));} } }
     public Visibility ProgressVisibility => Running || Completed ? Visibility.Visible : Visibility.Collapsed;
     private string FileSize()
     {

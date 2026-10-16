@@ -17,6 +17,10 @@
               <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Surface" Property="Background" Value="{DynamicResource HoverBrush}"/>
               </Trigger>
+              <DataTrigger Binding="{Binding Page}" Value="2">
+                <Setter TargetName="Surface" Property="Background" Value="{DynamicResource SelectionBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource SelectionTextBrush}"/>
+              </DataTrigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Setter.Value>
@@ -166,29 +170,7 @@
               <Path Data="M2,3 L5,3 M10,3 L28,3 M2,12 L5,12 M10,12 L28,12 M2,21 L5,21 M10,21 L28,21" Width="28" Height="26" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,14,0" VerticalAlignment="Center"/>
               <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="28" FontWeight="SemiBold" Margin="0"/>
             </StackPanel>
-            <TextBlock Text="{Binding TaskSummary}" Style="{StaticResource Secondary}"/>
-            <Border x:Name="CompressionActivity" Background="{DynamicResource SurfaceBrush}" Padding="12" Margin="0,12,0,0">
-              <Border.Style>
-                <Style TargetType="Border">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding ShowCompressionActivity}" Value="True">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                </Style>
-              </Border.Style>
-              <StackPanel>
-                <TextBlock Text="{loc:Text Redesign.CompressionTask}" FontWeight="SemiBold"/>
-                <TextBlock Text="{Binding CompressionOutput}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}"/>
-                <TextBlock Text="{Binding CompressionMessage}" Style="{StaticResource Secondary}"/>
-                <ProgressBar Value="{Binding CompressionPercent,Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="4" Margin="0,8,0,0"/>
-                <WrapPanel Margin="0,8,0,0">
-                  <Button Content="{loc:Text Redesign.ShowCompression}" Click="OnCompression" Margin="0,0,8,0"/>
-                  <Button Content="{loc:Text T_348e2fde4e19}" Command="{Binding OpenCreatedArchiveFolderCommand}"/>
-                </WrapPanel>
-              </StackPanel>
-            </Border>
+            <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}"/>
           </StackPanel>
         </DockPanel>
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Background="Transparent">
@@ -199,7 +181,7 @@
             <Button x:Name="QueueActionsAction" Click="OnQueueActions" IsEnabled="{Binding IsIdle}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text T_ca8d1fab2a53}">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" x:Name="QueueActionsMenu" Padding="4" UseLayoutRounding="True" Placement="Bottom" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" FontFamily="Segoe UI, Microsoft YaHei" FontSize="14" Background="{DynamicResource SurfaceBrush}" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text T_5e541773a96b}">
-                  <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueExtractSelectedAction" Header="{loc:Text T_326093a3324d}" Command="{Binding ExtractSelectedTaskCommand}" ToolTip="{loc:Text T_807416f416c4}"/>
+                  <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueExtractSelectedAction" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}" ToolTip="{loc:Text T_807416f416c4}"/>
                   <Separator Style="{StaticResource ActionMenuSeparator}"/>
                   <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueMoveUpAction" Header="{loc:Text T_c9d224fbca48}" Command="{Binding MoveTaskUpCommand}"/>
                   <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueMoveDownAction" Header="{loc:Text T_bf1ed102d858}" Command="{Binding MoveTaskDownCommand}"/>
@@ -242,7 +224,7 @@
                 <DataGrid x:Name="ArchiveTasks" CanUserSortColumns="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="60">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
-                      <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding ExtractSelectedTaskCommand}"/>
+                      <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}"/>
                       <MenuItem x:Name="TaskBrowseAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_393dd8a7f29e}" InputGestureText="Enter" Command="{Binding BrowseArchiveCommand}"/>
                       <MenuItem x:Name="TestArchiveAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_1dafbd6917de}" Command="{Binding TestArchiveCommand}" AutomationProperties.Name="{loc:Text T_38f0ec2e02b3}"/>
                       <MenuItem x:Name="ConvertArchiveAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text Conversion.Title}" Command="{Binding ConvertArchiveCommand}" AutomationProperties.Name="{loc:Text Conversion.Title}"/>
@@ -301,7 +283,7 @@
                             <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
                               <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" FontSize="15"/>
-                              <TextBlock Text="{Binding SizeText}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0"/>
+                              <TextBlock Text="{Binding OperationLabel}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0" ToolTip="{Binding SizeText}"/>
                             </StackPanel>
                           </Grid>
                         </DataTemplate>
@@ -311,7 +293,10 @@
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                           <StackPanel Margin="8" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Status}"/>
+                            <DockPanel>
+                              <TextBlock Text="{Binding PercentText}" DockPanel.Dock="Right" Margin="8,0,0,0"/>
+                              <TextBlock Text="{Binding Status}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Status}"/>
+                            </DockPanel>
                             <ProgressBar Value="{Binding DisplayPercent,Mode=OneWay}" Height="6" Margin="0,6,0,0" IsIndeterminate="{Binding IsIndeterminate}" Visibility="{Binding ProgressVisibility}" AutomationProperties.Name="{loc:Text T_fcef101b1132}">
                               <ProgressBar.Style>
                                 <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
@@ -337,7 +322,31 @@
                     <DataGridTemplateColumn Header="{loc:Text Drag.Actions}" Width="152">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                          <Button Click="OnTaskRowAction" Content="{Binding PrimaryActionCaption}" Margin="8,0,12,0" Padding="14,7" HorizontalAlignment="Left" IsEnabled="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                          <Button Click="OnTaskRowAction" Margin="8,0,12,0" Padding="14,7" HorizontalAlignment="Left">
+                            <Button.Style>
+                              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="IsEnabled" Value="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/>
+                                <Style.Triggers>
+                                  <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                      <Condition Binding="{Binding Running}" Value="True"/>
+                                      <Condition Binding="{Binding IsCompression}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="{Binding DataContext.CanPauseQueue,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                    <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                  </MultiDataTrigger>
+                                  <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                      <Condition Binding="{Binding Running}" Value="True"/>
+                                      <Condition Binding="{Binding IsCompression}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                  </MultiDataTrigger>
+                                </Style.Triggers>
+                              </Style>
+                            </Button.Style>
+                          </Button>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -349,7 +358,7 @@
                     <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
                     <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
                     <DockPanel Margin="0,12,0,0">
-                      <Button x:Name="FilenameEncodingAction" Content="{loc:Text T_2273a2975767}" Command="{Binding FilenameEncodingCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_a16a60f9eb3b}"/>
+                      <Button x:Name="FilenameEncodingAction" Content="{loc:Text T_2273a2975767}" Command="{Binding FilenameEncodingCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_a16a60f9eb3b}" Visibility="Collapsed"/>
                       <Button x:Name="TestResultAction" Content="{loc:Text T_61375d555d33}" Command="{Binding ShowTestResultCommand}" DockPanel.Dock="Right" Margin="12,0,0,0">
                         <Button.Style>
                           <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -373,7 +382,6 @@
                           </Style>
                         </Button.Style>
                       </Button>
-                      <TextBlock Text="{Binding TaskSummary}" Style="{StaticResource Secondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                     </DockPanel>
                   </StackPanel>
                 </Border>
@@ -381,7 +389,7 @@
                   <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding Tasks.Count}" Value="0">
+                        <DataTrigger Binding="{Binding WorkspaceTasks.Count}" Value="0">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                       </Style.Triggers>
@@ -392,26 +400,43 @@
               </Grid>
             </Border>
             <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Visibility="Collapsed">
-              <ScrollViewer x:Name="SettingsScroll" VerticalScrollBarVisibility="Auto">
+              <ScrollViewer x:Name="SettingsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel>
-                  <TextBlock Text="{loc:Text T_e2f5a1f2af3e}" Style="{StaticResource Heading}"/>
-                  <Label Content="{loc:Text T_523a85904c77}" Target="{Binding ElementName=OutputBox}" Padding="0"/>
-                  <TextBox x:Name="OutputBox" Text="{Binding DisplayOutputPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,8" AutomationProperties.Name="{loc:Text T_523a85904c77}" IsEnabled="{Binding CanConfigureExtraction}" IsReadOnly="{Binding IsOutputPathReadOnly}"/>
-                  <WrapPanel Margin="0,0,0,16">
-                    <Button Content="{loc:Text T_5a4540c9b21b}" Command="{Binding BrowseOutputCommand}" Margin="0,0,12,8"/>
-                    <Button x:Name="ExtractionRulesAction" Style="{StaticResource SubtleButton}" Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}"/>
-                  </WrapPanel>
-                  <Label Content="{loc:Text T_5b249813df54}" Target="{Binding ElementName=ConflictBox}" Padding="0"/>
-                  <ComboBox x:Name="ConflictBox" SelectedIndex="{Binding ConflictPolicy}" Margin="0,8,0,16" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text T_88bab2e8302f}">
-                    <ComboBoxItem Content="{loc:Text T_f00ef1be4493}"/>
-                    <ComboBoxItem Content="{loc:Text T_37ef7113fe3c}"/>
-                    <ComboBoxItem Content="{loc:Text T_9c6a9194d6f5}"/>
-                  </ComboBox>
-                  <CheckBox x:Name="RetainProgressChoice" Content="{loc:Text Checkpoint.Enable}" IsChecked="{Binding RetainExtractionProgress}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text Checkpoint.Enable}" AutomationProperties.HelpText="{loc:Text Checkpoint.Hint}" ToolTip="{loc:Text Checkpoint.Hint}"/>
-                  <TextBlock Text="{loc:Text Checkpoint.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,16"/>
-                  <CheckBox Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}"/>
-                  <TextBlock Text="{Binding VaultSummary}" Style="{StaticResource Secondary}"/>
-                  <Button Content="{loc:Text T_6bd33a03586f}" Command="{Binding OpenVaultCommand}" Margin="0,12,0,20"/>
+                  <Label Content="{loc:Text T_523a85904c77}" Target="{Binding ElementName=OutputBox}" Padding="0" Margin="0,0,0,8"/>
+                  <Grid Margin="0,0,0,14">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="OutputBox" Text="{Binding DisplayOutputPath,UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{loc:Text T_523a85904c77}" IsEnabled="{Binding CanConfigureExtraction}" IsReadOnly="{Binding IsOutputPathReadOnly}"/>
+                    <Button Grid.Column="1" Content="{loc:Text T_5a4540c9b21b}" Command="{Binding BrowseOutputCommand}" Margin="12,0,0,0"/>
+                  </Grid>
+                  <CheckBox Content="{loc:Text Extraction.CreateFolder}" IsChecked="{Binding CreateArchiveFolder}" IsThreeState="True" ToolTip="{loc:Text Extraction.LayoutHint}" Margin="0,0,0,12" IsEnabled="{Binding CanChangeExtractionLayout}">
+                  </CheckBox>
+                  <CheckBox Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}" Margin="0,0,0,14"/>
+                  <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="112"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="{loc:Text T_5b249813df54}" Target="{Binding ElementName=ConflictBox}" Padding="0" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="ConflictBox" Grid.Column="1" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text T_88bab2e8302f}">
+                      <ComboBoxItem Content="{loc:Text T_f00ef1be4493}"/>
+                      <ComboBoxItem Content="{loc:Text T_37ef7113fe3c}"/>
+                      <ComboBoxItem Content="{loc:Text T_9c6a9194d6f5}"/>
+                    </ComboBox>
+                  </Grid>
+                  <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+                    <Expander Header="{loc:Text Redesign.Advanced}">
+                      <StackPanel Margin="0,12,0,0">
+                        <TextBlock Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
+                        <Button x:Name="ExtractionRulesAction" Style="{StaticResource SubtleButton}" Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,8,0,12"/>
+                        <CheckBox x:Name="RetainProgressChoice" Content="{loc:Text Checkpoint.Enable}" IsChecked="{Binding RetainExtractionProgress}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text Checkpoint.Enable}" ToolTip="{loc:Text Checkpoint.Hint}"/>
+                        <TextBlock Text="{loc:Text Checkpoint.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,12"/>
+                        <TextBlock Text="{Binding VaultSummary}" Style="{StaticResource Secondary}"/>
+                      </StackPanel>
+                    </Expander>
+                  </Border>
                 </StackPanel>
               </ScrollViewer>
             </Border>

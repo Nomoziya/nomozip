@@ -93,13 +93,16 @@ public partial class MainWindow
 
     private void OnTaskRowAction(object sender, RoutedEventArgs e)
     {
-        if (sender is not Button { DataContext: ArchiveTaskRow row } || DataContext is not MainViewModel vm || !vm.IsIdle) return;
+        if (sender is not Button { DataContext: ArchiveTaskRow row } || DataContext is not MainViewModel vm) return;
         vm.SelectedTask = row;
+        if(row.Running){var command=row.IsCompression?vm.CancelCommand:vm.ToggleQueuePauseCommand;if(command.CanExecute(null))command.Execute(null);return;}
+        if(!vm.IsIdle)return;
         if (row.Completed)
         {
             if (vm.OpenOutputCommand.CanExecute(null)) vm.OpenOutputCommand.Execute(null);
         }
-        else if (vm.ExtractSelectedTaskCommand.CanExecute(null) && ConfirmExtractionOptions()) vm.ExtractSelectedTaskCommand.Execute(null);
+        else if(row.IsCompression)vm.Page=3;
+        else if (vm.PrepareSelectedTaskExtractionCommand.CanExecute(null)) vm.PrepareSelectedTaskExtractionCommand.Execute(null);
     }
 
     private async Task CloseArchiveAsync()
@@ -134,23 +137,40 @@ public partial class MainWindow
         foreach(var child in LogicalTreeHelper.GetChildren(root).OfType<DependencyObject>()) DisableDialogDefaults(child);
     }
 
-    internal bool ConfirmExtractionOptions()
+    internal bool ConfirmExtractionOptions(int? count=null)
     {
         if (DataContext is not MainViewModel vm) return false;
         vm.PreparingExtraction = true;
         var accepted = false;
-        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get("Redesign.ExtractionOptions"), Width = 520, Height = 620, MinWidth = 420, MinHeight = 420, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
-        var container = new Grid { Margin = new Thickness(20) };
-        container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        var taskCount=count ?? vm.Tasks.Count(row=>!row.Completed);var batch=taskCount>1;
+        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get("Redesign.ExtractionOptions"), Width = batch?900:640, Height = batch?620:520, MinWidth = 520, MinHeight = 420, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
+        var container = new Grid { Margin = new Thickness(24) };
+        container.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        var heading=new StackPanel {Margin=new Thickness(0,0,0,24)};
+        heading.Children.Add(new TextBlock {Text=UiText.Get(batch?"Extraction.BatchTitle":"Redesign.ExtractionOptions"),FontSize=24,FontWeight=FontWeights.SemiBold});
+        var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};heading.Children.Add(scopeLabel);container.Children.Add(heading);
+        System.Windows.Data.ListCollectionView? batchView=null;
+        var body=new Grid();body.ColumnDefinitions.Add(new ColumnDefinition {Width=batch?new GridLength(260):new GridLength(0)});body.ColumnDefinitions.Add(new ColumnDefinition());Grid.SetRow(body,1);container.Children.Add(body);
+        if(batch)
+        {
+            var list=new Grid {Margin=new Thickness(0,0,24,0)};list.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});list.RowDefinitions.Add(new RowDefinition());
+            var tools=new WrapPanel {Margin=new Thickness(0,0,0,12)};tools.Children.Add(new Button {Content=UiText.Get("T_309cb972a002"),Command=vm.AddFilesCommand,Margin=new Thickness(0,0,8,0)});tools.Children.Add(new Button {Content=UiText.Get("T_a194128b2939"),Command=vm.RemoveFileCommand});list.Children.Add(tools);
+            var view=new System.Windows.Data.ListCollectionView(vm.Tasks) {Filter=value=>!((ArchiveTaskRow)value).Completed};
+            batchView=view;
+            var table=new DataGrid {ItemsSource=view,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=48,HeadersVisibility=DataGridHeadersVisibility.Column,CanUserAddRows=false};
+            table.Columns.Add(new DataGridTextColumn {Header=UiText.Get("T_d44e9b3d3b31"),Binding=new System.Windows.Data.Binding("Name"),Width=new DataGridLength(1,DataGridLengthUnitType.Star)});table.SelectionChanged+=(_,_)=>vm.SelectedTask=table.SelectedItem as ArchiveTaskRow;table.SelectedItem=vm.Tasks.FirstOrDefault(row=>!row.Completed);Grid.SetRow(table,1);list.Children.Add(table);body.Children.Add(list);
+        }
         SettingsPanel.Visibility = Visibility.Visible; SettingsPanel.DataContext = vm; SettingsPanel.Margin = new Thickness(0); SettingsPanel.Padding = new Thickness(0); SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-        container.Children.Add(SettingsPanel);
+        Grid.SetColumn(SettingsPanel,1);body.Children.Add(SettingsPanel);
         var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0,16,0,0) };
         var start = new Button { Content = UiText.Get("Redesign.ConfirmExtraction"), Style = (Style)FindResource("PrimaryButton"), IsDefault = true, Margin = new Thickness(0,0,8,0) };
         var cancel = new Button { Content = UiText.Get("T_2cd0f3be8738"), IsCancel = true };
+        if(batchView is not null)((System.Collections.Specialized.INotifyCollectionChanged)batchView).CollectionChanged+=(_,_)=>{scopeLabel.Text=UiText.Format("Extraction.BatchCount",batchView.Count);start.IsEnabled=batchView.Count>0;};
         start.Click += (_, _) => { accepted = true; dialog.DialogResult = true; };
-        actions.Children.Add(start); actions.Children.Add(cancel); Grid.SetRow(actions,1); container.Children.Add(actions); dialog.Content = container;
+        actions.Children.Add(start); actions.Children.Add(cancel); Grid.SetRow(actions,2); container.Children.Add(actions);
+        var surface=new Border {Child=container};surface.SetResourceReference(Border.BackgroundProperty,"SurfaceBrush");dialog.Content=surface;
         try { PrepareExtractionOptionsForValidation?.Invoke(dialog);dialog.ShowDialog(); return accepted; }
-        finally { container.Children.Remove(SettingsPanel); SettingsPanel.Visibility = Visibility.Collapsed; SettingsPanel.DataContext = null; vm.PreparingExtraction = false; }
+        finally { body.Children.Remove(SettingsPanel);Grid.SetColumn(SettingsPanel,2);SettingsPanel.Visibility = Visibility.Collapsed; SettingsPanel.DataContext = null; vm.PreparingExtraction = false; }
     }
     internal void OnPrepareExtraction(object sender, RoutedEventArgs e)
     {
