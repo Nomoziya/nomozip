@@ -746,7 +746,7 @@
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{loc:Text T_399ee6934772}" Binding="{Binding Group}" Width="80" MinWidth="64" ElementStyle="{StaticResource TableText}"/>
-                <DataGridTemplateColumn Header="{loc:Text T_2243e0ec8b00}" Width="88">
+                <DataGridTemplateColumn Header="{loc:Text T_2243e0ec8b00}" Width="100">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
