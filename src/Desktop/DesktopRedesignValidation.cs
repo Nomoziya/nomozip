@@ -195,10 +195,11 @@ internal static class DesktopRedesignValidation
             var moreButton=VisualDescendants(browser).OfType<Button>().Single(value=>value.Name=="EditContentsButton");
             moreButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Layout();
             var moreMenu=moreButton.ContextMenu;moreMenu.UpdateLayout();
-            var firstAction=moreMenu.Items.OfType<MenuItem>().First();firstAction.ApplyTemplate();Keyboard.Focus(firstAction);moreMenu.UpdateLayout();
+            var firstAction=moreMenu.Items.OfType<MenuItem>().First();firstAction.ApplyTemplate();Keyboard.Focus(firstAction);await Layout();moreMenu.UpdateLayout();
             var menuIcon=(ContentPresenter)firstAction.Template.FindName("MenuIcon",firstAction);
             var menuFocus=(Border)firstAction.Template.FindName("ItemFocus",firstAction);
             Check("archive more menu retains icons shortcut and actual keyboard focus",moreMenu.IsOpen && menuIcon.IsVisible && menuIcon.ActualWidth>=18 && firstAction.InputGestureText=="Ctrl+A" && moreMenu.InputBindings.OfType<KeyBinding>().Any(binding=>binding.Key==Key.A && binding.Modifiers==ModifierKeys.Control && ReferenceEquals(binding.Command,contents.SelectVisibleCommand)) && firstAction.IsKeyboardFocused && ReferenceEquals(menuFocus.BorderBrush,Application.Current.Resources["FocusBrush"]));
+            await File.WriteAllTextAsync(Path.Combine(folder,"menu-glyphs.json"),JsonSerializer.Serialize(moreMenu.Items.OfType<MenuItem>().Select(item=>new {header=item.Header?.ToString(),iconType=item.Icon?.GetType().Name,width=(item.Icon as FrameworkElement)?.ActualWidth,height=(item.Icon as FrameworkElement)?.ActualHeight,stroke=((item.Icon as System.Windows.Shapes.Path)?.Stroke as SolidColorBrush)?.Color.ToString(),foreground=(item.Foreground as SolidColorBrush)?.Color.ToString()})));
             Check("archive menu glyphs have visible themed strokes",moreMenu.Items.OfType<MenuItem>().All(item=>item.Icon is System.Windows.Shapes.Path icon && icon.ActualWidth>=18 && icon.ActualHeight>=18 && icon.Stroke is SolidColorBrush brush && brush.Color==((SolidColorBrush)item.Foreground).Color));
             var popupBitmap=new RenderTargetBitmap((int)Math.Ceiling(moreMenu.ActualWidth),(int)Math.Ceiling(moreMenu.ActualHeight),96,96,PixelFormats.Pbgra32);popupBitmap.Render(moreMenu);
             var popupEncoder=new PngBitmapEncoder();popupEncoder.Frames.Add(BitmapFrame.Create(popupBitmap));using(var popupFile=File.Create(Path.Combine(folder,"actual-soft-archive-more-menu.png")))popupEncoder.Save(popupFile);
