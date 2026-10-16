@@ -62,15 +62,20 @@ internal static class DesktopDesignDialogValidation
             check("master password mismatch stays inline",master.IsVisible && master.Response is null && master.ErrorLabel.Text.Length>0);
             master.UpdateLayout();var masterError=(Border)master.ConfirmBox.Template.FindName("FieldFocus",master.ConfirmBox);
             check("master mismatch marks the confirmation field",masterError.Visibility==Visibility.Visible && ReferenceEquals(masterError.BorderBrush,Application.Current.Resources["ErrorBrush"]));Capture(master,"master-password-mismatch");
-            master.ConfirmBox.Password=master.NewBox.Password;check("editing master confirmation clears stale error",!FieldState.GetHasError(master.ConfirmBox) && master.ErrorLabel.Text.Length==0);master.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            master.ConfirmBox.Password=master.NewBox.Password;check("editing master confirmation clears stale error",!FieldState.GetHasError(master.ConfirmBox) && master.ErrorLabel.Text.Length==0);
+            master.RevealToggle.IsChecked=true;check("master eye reveals both new fields",master.VisibleNew.Text==master.NewBox.Password && master.VisibleConfirm.Text==master.ConfirmBox.Password && master.VisibleNew.IsVisible);
+            master.VisibleNew.Text="edited-synthetic-master";master.VisibleConfirm.Text="edited-synthetic-master";master.RevealToggle.IsChecked=false;
+            check("master visible edits retain the secret while hiding copies",master.NewBox.Password=="edited-synthetic-master" && master.ConfirmBox.Password==master.NewBox.Password && master.VisibleNew.Text.Length==0 && master.VisibleConfirm.Text.Length==0);master.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         });
-        check("master password inputs clear after close",master.Response is not null && master.NewBox.Password.Length==0 && master.ConfirmBox.Password.Length==0);
+        check("master password inputs clear after close",master.Response is not null && master.NewBox.Password.Length==0 && master.ConfirmBox.Password.Length==0 && master.VisibleCurrent.Text.Length==0 && master.VisibleNew.Text.Length==0 && master.VisibleConfirm.Text.Length==0);
         foreach(var exporting in new[]{false,true})
         {
             var backup=new VaultBackupDialog(exporting,Path.Combine(folder,"synthetic-vault-backup"));
             Show(backup,exporting?"vault-backup-export":"vault-backup-import",()=>
             {
                 backup.SecretBox.Password="synthetic-backup-passphrase";
+                backup.RevealToggle.IsChecked=true;check("backup eye reveals only on explicit request "+exporting,backup.VisibleSecret.IsVisible && backup.VisibleSecret.Text==backup.SecretBox.Password);backup.RevealToggle.IsChecked=false;
+                check("backup eye removes visible copy when hidden "+exporting,backup.VisibleSecret.Text.Length==0 && backup.SecretBox.IsVisible);
                 if(exporting)
                 {
                     backup.ConfirmationBox.Password="different";backup.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));check("backup export rejects mismatched passphrases",backup.IsVisible && backup.Passphrase is null);
@@ -80,7 +85,7 @@ internal static class DesktopDesignDialogValidation
                 }
                 backup.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             });
-            check("backup fields clear after close "+exporting,backup.Passphrase is not null && backup.SecretBox.Password.Length==0 && backup.ConfirmationBox.Password.Length==0);
+            check("backup fields clear after close "+exporting,backup.Passphrase is not null && backup.SecretBox.Password.Length==0 && backup.ConfirmationBox.Password.Length==0 && backup.VisibleSecret.Text.Length==0 && backup.VisibleConfirmation.Text.Length==0);
         }
         var failureDialog=new ExtractionFailureDialog("资料合集.zip",new EngineResult {Code="corrupt_archive",SuccessfulItems=18,Failures=[new(18,"corrupt_archive","损坏文件.dat"),new(19,"unsupported_method","文档.txt")]});
         Show(failureDialog,"extraction-failures");

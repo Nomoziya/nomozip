@@ -3201,4 +3201,8 @@
   <data name="Vault.StatusLocked" xml:space="preserve"><value>已锁定</value></data>
   <data name="Vault.StatusUnlocked" xml:space="preserve"><value>已解锁</value></data>
   <data name="Vault.StatusLocal" xml:space="preserve"><value>本机加密保护</value></data>
+  <data name="Task.ProgressState" xml:space="preserve"><value>进度 / 状态</value></data>
+  <data name="Task.OutputLocation" xml:space="preserve"><value>输出位置</value></data>
+  <data name="Task.Actions" xml:space="preserve"><value>操作</value></data>
+  <data name="Settings.Save" xml:space="preserve"><value>保存</value></data>
 </root>

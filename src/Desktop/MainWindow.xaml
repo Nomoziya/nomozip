@@ -38,7 +38,7 @@
       <ColumnDefinition x:Name="SidebarColumn" Width="200"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
-    <Border Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
+    <Border Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
       <DockPanel x:Name="SidebarContent" Margin="16,24">
         <StackPanel DockPanel.Dock="Top" Margin="8,0,0,24">
           <StackPanel Orientation="Horizontal">
@@ -60,7 +60,7 @@
         <ListBox x:Name="Navigation" Foreground="{DynamicResource TextBrush}" SelectedIndex="{Binding NavigationIndex}" BorderThickness="0" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" AutomationProperties.Name="{loc:Text T_968608e4ff51}" VerticalAlignment="Top">
           <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
-              <Setter Property="Padding" Value="14,14"/>
+              <Setter Property="Padding" Value="14,10"/>
               <Setter Property="Margin" Value="0,0,0,4"/>
               <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
               <Setter Property="Background" Value="Transparent"/>
@@ -343,7 +343,7 @@
                     </Style>
                   </DataGrid.CellStyle>
                   <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="{loc:Text T_39932f24fe11}" Width="1.15*" MinWidth="140">
+                    <DataGridTemplateColumn Header="{loc:Text T_d44e9b3d3b31}" Width="1.15*" MinWidth="140">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                           <Grid Margin="20,0,8,0">
@@ -360,7 +360,7 @@
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="{loc:Text T_6320b4a8722a}" Width="1*" MinWidth="140">
+                    <DataGridTemplateColumn Header="{loc:Text Task.ProgressState}" Width="1*" MinWidth="140">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                           <StackPanel Margin="8" VerticalAlignment="Center">
@@ -421,14 +421,14 @@
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="TaskOutputColumn" Header="{loc:Text T_523a85904c77}" Width="1.15*" MinWidth="100">
+                    <DataGridTemplateColumn x:Name="TaskOutputColumn" Header="{loc:Text Task.OutputLocation}" Width="1.15*" MinWidth="100">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                           <TextBlock Text="{Binding DisplayOutputPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding DisplayOutputPath}" Margin="12,0" VerticalAlignment="Center"/>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="{loc:Text Drag.Actions}" Width="152">
+                    <DataGridTemplateColumn Header="{loc:Text Task.Actions}" Width="152">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -460,7 +460,7 @@
                                 </Style>
                               </Button.Style>
                             </Button>
-                            <Button Content="···" Click="OnTaskMore" Padding="5,4" Margin="0" MinWidth="28" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"/>
+                            <Button Content="•••" Click="OnTaskMore" Padding="5,4" Margin="0" MinWidth="28" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}" FontSize="10" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
                           </StackPanel>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
@@ -624,7 +624,22 @@
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
           <DockPanel>
-            <WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right"><StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0" ToolTip="{Binding VaultProtectionMessage}"><Ellipse Width="9" Height="9" Margin="0,0,8,0"><Ellipse.Style><Style TargetType="Ellipse"><Setter Property="Fill" Value="{DynamicResource SuccessBrush}"/><Style.Triggers><DataTrigger Binding="{Binding VaultLocked}" Value="True"><Setter Property="Fill" Value="{DynamicResource SecondaryBrush}"/></DataTrigger></Style.Triggers></Style></Ellipse.Style></Ellipse><TextBlock Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center"/></StackPanel>
+            <WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0" ToolTip="{Binding VaultProtectionMessage}">
+                <Ellipse Width="9" Height="9" Margin="0,0,8,0">
+                  <Ellipse.Style>
+                    <Style TargetType="Ellipse">
+                      <Setter Property="Fill" Value="{DynamicResource SuccessBrush}"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding VaultLocked}" Value="True">
+                          <Setter Property="Fill" Value="{DynamicResource SecondaryBrush}"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Ellipse.Style>
+                </Ellipse>
+                <TextBlock Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center"/>
+              </StackPanel>
               <Button x:Name="VaultUnlockAction" Content="{loc:Text T_1109737d1829}" Command="{Binding UnlockVaultCommand}" Margin="0,0,8,0">
                 <Button.Style>
                   <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -650,7 +665,6 @@
             </WrapPanel>
             <TextBlock Text="{loc:Text T_9b54fb7636af}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
           </DockPanel>
-          
         </Grid>
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Grid.ColumnSpan="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
           <Grid>
@@ -813,72 +827,74 @@
           <ComboBox x:Name="SettingsCategory" SelectedIndex="{Binding SettingsSection}" ItemsSource="{Binding SettingsCategories}" Width="260" HorizontalAlignment="Left" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" DockPanel.Dock="Right"/>
           <TextBlock Text="{loc:Text T_df3d58c7d84b}" FontSize="24" FontWeight="SemiBold" Margin="0"/>
         </DockPanel>
-        <ListBox x:Name="SettingsCategoryList" Grid.Row="1" ItemsSource="{Binding SettingsCategories}" SelectedIndex="{Binding SettingsSection}" Margin="12,0,12,0" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" AlternationCount="6">
-          <ListBox.ItemContainerStyle>
-            <Style TargetType="ListBoxItem">
-              <Setter Property="Padding" Value="14,13"/>
-              <Setter Property="Margin" Value="0,0,0,6"/>
-              <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-              <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-              <Setter Property="FocusVisualStyle" Value="{StaticResource CapsuleFocusStyle}"/>
-              <Setter Property="Template">
-                <Setter.Value>
-                  <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="ItemSurface" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
-                      <ContentPresenter/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                      <Trigger Property="IsMouseOver" Value="True">
-                        <Setter TargetName="ItemSurface" Property="Background" Value="{DynamicResource HoverBrush}"/>
-                      </Trigger>
-                      <Trigger Property="IsSelected" Value="True">
-                        <Setter TargetName="ItemSurface" Property="Background" Value="{DynamicResource SelectionBrush}"/>
-                        <Setter Property="Foreground" Value="{DynamicResource SelectionTextBrush}"/>
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                      </Trigger>
-                    </ControlTemplate.Triggers>
-                  </ControlTemplate>
-                </Setter.Value>
-              </Setter>
-            </Style>
-          </ListBox.ItemContainerStyle>
-          <ListBox.ItemTemplate>
-            <DataTemplate>
-              <StackPanel Orientation="Horizontal">
-                <Path Width="19" Height="20" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" StrokeThickness="1.5" Margin="0,0,12,0">
-                  <Path.Style>
-                    <Style TargetType="Path">
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="0">
-                          <Setter Property="Data" Value="M12,2 L15,6 L20,7 L22,12 L19,16 L17,21 L11,22 L7,18 L2,16 L2,10 L6,7 L8,2 Z M16,12 A4,4 0 1 1 8,12 A4,4 0 1 1 16,12"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="1">
-                          <Setter Property="Data" Value="M4,1 L14,1 L21,8 L21,24 L4,24 Z M14,1 L14,8 L21,8 M8,13 L17,13 M8,18 L17,18"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="2">
-                          <Setter Property="Data" Value="M5,11 L19,11 L19,23 L5,23 Z M8,11 L8,6 A4,4 0 0 1 16,6 L16,11"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="3">
-                          <Setter Property="Data" Value="M2,3 L22,3 L22,18 L2,18 Z M12,18 L12,23 M7,23 L17,23"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="4">
-                          <Setter Property="Data" Value="M12,2 A10,10 0 1 1 11.9,2 M12,7 L12,18 M7,13 L12,18 L17,13"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="5">
-                          <Setter Property="Data" Value="M12,2 A10,10 0 1 1 11.9,2 M12,7 L12,8 M12,11 L12,18"/>
-                        </DataTrigger>
-                      </Style.Triggers>
-                    </Style>
-                  </Path.Style>
-                </Path>
-                <TextBlock Text="{Binding}" VerticalAlignment="Center" MaxWidth="96" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/>
-              </StackPanel>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
+        <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
+          <ListBox x:Name="SettingsCategoryList" ItemsSource="{Binding SettingsCategories}" SelectedIndex="{Binding SettingsSection}" Margin="12,0,12,0" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" AlternationCount="6">
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="14,13"/>
+                <Setter Property="Margin" Value="0,0,0,6"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource CapsuleFocusStyle}"/>
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                      <Border x:Name="ItemSurface" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter/>
+                      </Border>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                          <Setter TargetName="ItemSurface" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                          <Setter TargetName="ItemSurface" Property="Background" Value="{DynamicResource SelectionBrush}"/>
+                          <Setter Property="Foreground" Value="{DynamicResource SelectionTextBrush}"/>
+                          <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <Path Width="19" Height="20" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" StrokeThickness="1.5" Margin="0,0,12,0">
+                    <Path.Style>
+                      <Style TargetType="Path">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="0">
+                            <Setter Property="Data" Value="M12,2 L15,6 L20,7 L22,12 L19,16 L17,21 L11,22 L7,18 L2,16 L2,10 L6,7 L8,2 Z M16,12 A4,4 0 1 1 8,12 A4,4 0 1 1 16,12"/>
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="1">
+                            <Setter Property="Data" Value="M4,1 L14,1 L21,8 L21,24 L4,24 Z M14,1 L14,8 L21,8 M8,13 L17,13 M8,18 L17,18"/>
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="2">
+                            <Setter Property="Data" Value="M5,11 L19,11 L19,23 L5,23 Z M8,11 L8,6 A4,4 0 0 1 16,6 L16,11"/>
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="3">
+                            <Setter Property="Data" Value="M2,3 L22,3 L22,18 L2,18 Z M12,18 L12,23 M7,23 L17,23"/>
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="4">
+                            <Setter Property="Data" Value="M12,2 A10,10 0 1 1 11.9,2 M12,7 L12,18 M7,13 L12,18 L17,13"/>
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="5">
+                            <Setter Property="Data" Value="M12,2 A10,10 0 1 1 11.9,2 M12,7 L12,8 M12,11 L12,18"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Path.Style>
+                  </Path>
+                  <TextBlock Text="{Binding}" VerticalAlignment="Center" MaxWidth="96" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Border>
         <ScrollViewer x:Name="PreferencesScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
           <StackPanel x:Name="PreferencesCards" MaxWidth="920" HorizontalAlignment="Stretch" Margin="24,0,24,24">
-            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,24">
+            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,20">
               <Border.Style>
                 <Style TargetType="Border" BasedOn="{StaticResource WorkspaceCard}">
                   <Style.Triggers>
@@ -892,22 +908,22 @@
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="220"/>
+                  <ColumnDefinition Width="280"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{loc:Text Appearance.Title}" Style="{StaticResource Heading}" Margin="0,0,16,8" VerticalAlignment="Center"/>
-                <StackPanel Grid.Row="1" Margin="0,0,16,0">
+                <TextBlock Text="{loc:Text Appearance.Label}" Style="{StaticResource Heading}" Margin="0,0,16,8" VerticalAlignment="Center"/>
+                <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock Text="{loc:Text Appearance.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,0"/>
                   <TextBlock x:Name="AppearanceStatus" Text="{Binding AppearanceMessage}" Style="{StaticResource Secondary}" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
                 </StackPanel>
-                <ComboBox x:Name="AppearanceChoice" Width="220" ItemsSource="{Binding AppearanceOptions}" SelectedItem="{Binding SelectedAppearance}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                <Button x:Name="SaveAppearanceAction" Content="{loc:Text Appearance.Save}" Command="{Binding SaveAppearanceCommand}" HorizontalAlignment="Right" Margin="0,8,0,0" Grid.Column="1" Grid.Row="1" Style="{StaticResource SubtleButton}"/>
+                <ComboBox x:Name="AppearanceChoice" ItemsSource="{Binding AppearanceOptions}" SelectedItem="{Binding SelectedAppearance}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1" Margin="0,0,80,0"/>
+                <Button x:Name="SaveAppearanceAction" Content="{loc:Text Settings.Save}" AutomationProperties.Name="{loc:Text Appearance.Save}" Command="{Binding SaveAppearanceCommand}" HorizontalAlignment="Right" Margin="6,0,0,0" Grid.Column="1" Grid.Row="0" Style="{StaticResource SubtleButton}" MaxWidth="80" Padding="6,6"/>
               </Grid>
             </Border>
-            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,24">
+            <Border Margin="0" CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,20">
               <Border.Style>
                 <Style TargetType="Border" BasedOn="{StaticResource WorkspaceCard}">
                   <Style.Triggers>
@@ -921,19 +937,39 @@
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="220"/>
+                  <ColumnDefinition Width="280"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{loc:Text Language.Title}" Style="{StaticResource Heading}" Margin="0,0,16,8" VerticalAlignment="Center"/>
-                <StackPanel Grid.Row="1" Margin="0,0,16,0">
+                <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock x:Name="LanguageStatus" Text="{Binding LanguageMessage}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
                 </StackPanel>
-                <ComboBox x:Name="LanguageChoice" Width="220" ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Language.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1"/>
-                <Button x:Name="SaveLanguageAction" Content="{loc:Text Language.Save}" Command="{Binding SaveLanguageCommand}" HorizontalAlignment="Right" Margin="0,8,0,0" Grid.Column="1" Grid.Row="1" Style="{StaticResource SubtleButton}"/>
+                <ComboBox x:Name="LanguageChoice" ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Language.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1" Margin="0,0,80,0"/>
+                <Button x:Name="SaveLanguageAction" Content="{loc:Text Settings.Save}" AutomationProperties.Name="{loc:Text Language.Save}" Command="{Binding SaveLanguageCommand}" HorizontalAlignment="Right" Margin="6,0,0,0" Grid.Column="1" Grid.Row="0" Style="{StaticResource SubtleButton}" MaxWidth="80" Padding="6,6"/>
               </Grid>
+            </Border>
+            <Border CornerRadius="0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,24" Margin="0">
+              <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource WorkspaceCard}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding SettingsSection}" Value="1">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SettingsSection}" Value="0">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Border.Style>
+              <StackPanel>
+                <TextBlock Text="{loc:Text Redesign.FileDefaults}" Style="{StaticResource Heading}"/>
+                <TextBlock Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
+                <Button Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+              </StackPanel>
             </Border>
             <Border Margin="0,0,0,16" CornerRadius="6" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" Padding="20">
               <Border.Style>
@@ -967,7 +1003,13 @@
               </Border.Style>
               <StackPanel>
                 <TextBlock Text="{loc:Text T_651f27447015}" Style="{StaticResource Heading}"/>
-                <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,0,0,8"/>
+                <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                  <Image Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="34" Height="34" Margin="0,0,14,0"/>
+                  <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="nomozip" FontSize="18" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,4,0,0"/>
+                  </StackPanel>
+                </StackPanel>
                 <TextBlock Text="{loc:Text T_8c321cda91b6}" Style="{StaticResource Secondary}"/>
                 <WrapPanel Margin="0,16,0,0">
                   <Button x:Name="CheckApplicationUpdatesButton" Content="{loc:Text T_e64da2a40b53}" Command="{Binding CheckApplicationUpdatesCommand}" Margin="0,0,12,8"/>
@@ -1016,8 +1058,16 @@
               </Border.Style>
               <StackPanel>
                 <TextBlock Text="{loc:Text T_ad09f3fda29a}" Style="{StaticResource Heading}"/>
-                <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/>
-                <TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,8,0,16"/>
+                <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                  <Grid Width="32" Height="40" Margin="0,0,14,0">
+                    <Path Data="M2,1 L20,1 L30,11 L30,39 L2,39 Z M20,1 L20,11 L30,11" Stroke="{DynamicResource TextBrush}" StrokeThickness="1.5"/>
+                    <TextBlock Text="7z" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,7,0,0"/>
+                  </Grid>
+                  <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding EngineSummary}" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,6,0,0"/>
+                  </StackPanel>
+                </StackPanel>
                 <WrapPanel Margin="0,16,0,0">
                   <Button Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="0,0,12,8"/>
                   <Button Content="{loc:Text T_e4d1595c61be}" Command="{Binding InstallUpdateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,12,8"/>
@@ -1166,23 +1216,6 @@
                 <TextBlock Text="{loc:Text T_52d25a9e30ba}" Style="{StaticResource Heading}"/>
                 <TextBlock Text="{loc:Text T_f8753cf655b4}" Style="{StaticResource Secondary}"/>
                 <Button Content="{loc:Text T_362754cb43df}" Command="{Binding OpenLicensesCommand}" HorizontalAlignment="Left" Margin="0,16,0,0"/>
-              </StackPanel>
-            </Border>
-            <Border CornerRadius="6" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" Padding="20" Margin="0,0,0,16">
-              <Border.Style>
-                <Style TargetType="Border" BasedOn="{StaticResource WorkspaceCard}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding SettingsSection}" Value="1">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                </Style>
-              </Border.Style>
-              <StackPanel>
-                <TextBlock Text="{loc:Text Redesign.FileDefaults}" Style="{StaticResource Heading}"/>
-                <TextBlock Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
-                <Button Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
               </StackPanel>
             </Border>
           </StackPanel>

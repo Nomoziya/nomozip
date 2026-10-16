@@ -11,6 +11,7 @@ public partial class MasterPasswordDialog : Window
     public MasterPasswordDialog(MasterPasswordAction action)
     {
         InitializeComponent(); this.action=action;
+        SecretReveal.Configure(this,RevealToggle,(CurrentBox,VisibleCurrent),(NewBox,VisibleNew),(ConfirmBox,VisibleConfirm));
         Title=Heading.Text=action switch {MasterPasswordAction.Unlock=>UiText.Get("T_1109737d1829"),MasterPasswordAction.Enable=>UiText.Get("T_440f5cfd4823"),MasterPasswordAction.Change=>UiText.Get("T_6b444e0f3275"),MasterPasswordAction.Disable=>UiText.Get("T_aa72684414b8"),_=>UiText.Get("T_7eb10fe1ce8c")};
         ContinueButton.Content=action switch {MasterPasswordAction.Unlock=>UiText.Get("T_70fba17fffb7"),MasterPasswordAction.Disable=>UiText.Get("T_aa72684414b8"),MasterPasswordAction.Recover=>UiText.Get("T_6e38ffe34b8b"),_=>UiText.Get("T_50fcfc7f7af4")};
         Description.Text=action==MasterPasswordAction.Unlock?UiText.Get("T_6d5d0fcd5f97"):action==MasterPasswordAction.Disable?UiText.Get("T_4b67ce3665b0"):UiText.Get("T_edb93ad988fa");
@@ -26,7 +27,7 @@ public partial class MasterPasswordDialog : Window
         if(NewPanel.Visibility==Visibility.Visible && NewBox.Password!=ConfirmBox.Password){Error(UiText.Get("T_d64ffabdbf39"),ConfirmBox);return;}
         Response=new(CurrentBox.Password,NewBox.Password);DialogResult=true;
     }
-    private void Error(string text,UIElement field){ErrorLabel.Text=text;FieldState.SetHasError(field,true);field.Focus();UIElementAutomationPeer.CreatePeerForElement(ErrorLabel)?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);}
+    private void Error(string text,UIElement field){ErrorLabel.Text=text;FieldState.SetHasError(field,true);if(field is System.Windows.Controls.PasswordBox password)SecretReveal.Focus(password);else field.Focus();UIElementAutomationPeer.CreatePeerForElement(ErrorLabel)?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);}
     private void OnPasswordChanged(object sender,RoutedEventArgs e)
     {
         if(ErrorLabel is null)return;
