@@ -2,7 +2,7 @@
   <Grid>
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <StackPanel Margin="0,0,0,20"><TextBlock Text="{loc:Text T_a22879cda61a}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="{loc:Text T_4e66c76ffe75}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/></StackPanel>
-    <Border Grid.Row="1" Style="{StaticResource Card}" Padding="16" Margin="0,0,0,16"><DockPanel>
+    <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="16" Margin="0,0,0,16"><DockPanel>
       <Button Content="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}" AutomationProperties.Name="{loc:Text T_e8166a5ae76c}" DockPanel.Dock="Left"/>
       <Button Content="{loc:Text T_45da2d9c85d1}" Command="{Binding AddCompressionFolderCommand}" DockPanel.Dock="Left" Margin="12,0,0,0"/>
       <Button Content="{loc:Text T_a194128b2939}" Command="{Binding RemoveCompressionSourceCommand}" DockPanel.Dock="Right" Margin="12,0,0,0"/>
@@ -12,7 +12,7 @@
       <Grid x:Name="CompressionLayout">
         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition x:Name="SettingsColumn" Width="280"/></Grid.ColumnDefinitions>
         <Grid.RowDefinitions><RowDefinition x:Name="ListRow" Height="*"/><RowDefinition x:Name="SettingsRow" Height="0"/></Grid.RowDefinitions>
-        <Border Style="{StaticResource Card}" Padding="16"><Grid>
+        <Border Style="{StaticResource WorkspaceCard}" Padding="16"><Grid>
           <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
           <TextBlock Text="{loc:Text T_32a49d3fb90e}" Style="{StaticResource Heading}"/>
           <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="48" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}">
@@ -22,7 +22,7 @@
           <TextBlock Grid.Row="1" Text="{loc:Text T_e7a740c073cb}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Margin="16"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CompressionSources.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
           <TextBlock Grid.Row="2" Text="{Binding SelectedCompressionSource.Path}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding SelectedCompressionSource.Path}" Margin="8,16,0,0"/>
         </Grid></Border>
-        <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource Card}">
+        <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}">
           <ScrollViewer x:Name="SettingsScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"><StackPanel>
             <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}"/>
             <Label Content="{loc:Text T_4628f73171ac}" Target="{Binding ElementName=ArchiveOutputBox}" Padding="0"/><TextBox x:Name="ArchiveOutputBox" Text="{Binding CompressionOutput, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_bb0fa41ea6b8}" Margin="0,8,0,8"/><Button Content="{loc:Text T_edfa33a3f470}" Command="{Binding BrowseCompressionOutputCommand}" HorizontalAlignment="Left" Margin="0,0,0,16"/>
