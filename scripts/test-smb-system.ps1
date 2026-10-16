@@ -44,6 +44,7 @@ try {
  $taskDialects=@($taskConnections | ForEach-Object {[string]$_.Dialect})
  Check-Smb 'actual SMB client connection and negotiated dialect' ($taskConnections.Count -gt 0 -and $taskDialects.Count -gt 0)
  $taskPathProbe=(& (Join-Path $taskRoot 'artifacts/smb-path-probe.exe') ($taskUnc+'\输入示例.txt') ($taskUnc+'\native-create.probe')) | ConvertFrom-Json
+ if($LASTEXITCODE -ne 0 -or $null -eq $taskPathProbe){throw "Native SMB path probe failed: exit $LASTEXITCODE"}
  foreach($taskCase in @(
   @{name='UNC source and local output';source=($taskUnc+'\输入示例.txt');output=(Join-Path $taskRun 'unc-read-control.zip')},
   @{name='local source and UNC output';source=$taskSource;output=($taskUnc+'\unc-write-control.zip')}
