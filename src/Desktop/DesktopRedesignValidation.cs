@@ -92,6 +92,7 @@ internal static class DesktopRedesignValidation
                     }
                     model.Page=1;model.SelectedPassword=model.PasswordRows.FirstOrDefault();await Layout();
                     Check($"{mode}/{width} vault detail adapts",window.VaultDetails.IsVisible==(width>=1000));
+                    if(width>=1000)Check($"{mode}/{width} collapsed vault rules are not clipped",Bounds(window.VaultDetails.RulesExpander).Bottom<=Bounds(window.VaultDetails.DetailScroll).Bottom+1);
                 }
                 if(mode=="contrast") Check("system contrast preserves foreground/background pairs",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush) && ReferenceEquals(Application.Current.Resources["SelectionBrush"],SystemColors.HighlightBrush));
                 if(mode=="soft")
@@ -194,6 +195,7 @@ internal static class DesktopRedesignValidation
                 dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
                 dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
                 {
+                    Check("selected extraction confirmation names its actual scope",dialog.Title==UiText.Get("Extraction.SelectedTitle"));
                     foreach(var appearance in new[]{"light","dark"})
                     {theme.SetMode(appearance);dialog.UpdateLayout();dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(folder,"extraction-single-"+appearance+".png"),1,clientOnly:true);dialog.Opacity=0;}
                     theme.SetMode("light");

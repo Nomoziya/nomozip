@@ -25,13 +25,18 @@
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-          <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M7,14 L16,14 M12,10 L16,14 L12,18" Width="28" Height="34" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.7" StrokeLineJoin="Round" Margin="0,0,16,0"/>
+          <Viewbox Width="28" Height="34" Margin="0,0,24,0">
+            <Grid Width="28" Height="34">
+              <Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/>
+              <Path Data="M18,1 L18,9 L26,9 M8,22 L21,22 M16,16 L22,22 L16,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
+            </Grid>
+          </Viewbox>
           <TextBlock x:Name="ContentsArchiveName" Text="{Binding ArchiveName}" FontSize="28" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding ArchivePath}" VerticalAlignment="Center" MaxWidth="460"/>
         </StackPanel>
         <Grid Grid.Column="1" Width="260" VerticalAlignment="Center">
-          <TextBox x:Name="EntrySearch" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Padding="34,8,12,8" AutomationProperties.Name="{loc:Text T_88a399b911e0}"/>
+          <TextBox x:Name="EntrySearch" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Padding="34,8,12,8" AutomationProperties.Name="{loc:Text T_88a399b911e0}" ToolTip="{loc:Text T_88a399b911e0}"/>
           <Path Data="M8,1 A7,7 0 1 1 7.9,1 M13,13 L20,20" Width="17" Height="17" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="11,0" IsHitTestVisible="False"/>
-          <TextBlock Text="{loc:Text T_88a399b911e0}" Margin="36,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryBrush}" IsHitTestVisible="False">
+          <TextBlock Text="{loc:Text Browser.SearchPlaceholder}" Margin="36,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryBrush}" IsHitTestVisible="False">
             <TextBlock.Style>
               <Style TargetType="TextBlock">
                 <Setter Property="Visibility" Value="Collapsed"/>
