@@ -20,3 +20,17 @@ EXE、窗口和安装/卸载程序使用同一 ICO；侧栏使用同源高分辨
 运行 `scripts/test-visual-refresh.ps1 -ApplicationDirectory <专用候选目录>`：用人工示例数据在隐藏窗口中分别检查简中和英语，每种语言 53 项，覆盖三种主题、800 / 1120 / 1600 DIP、200% 渲染样本、设置换行和菜单真实命令调用。报告和截图保存在 `artifacts/visual-refresh/<语言>/`。渲染缩放不等于物理 DPI 切换；UIA 不等于讲述人真实发声。
 
 原有可访问性和显示布局检查继续保留。完整功能、安装升级与注册表仅在一次性 CI 中执行；本地不安装候选，不公开发行，不读取生产更新私钥。F23 的真实多屏、讲述人、Explorer 等体验仍独立登记。
+
+## 本地候选交接
+
+最终产品源码 `e95a684a6a0c2b03dbcd574d3bddd2f97db1ea35` 的 [x64 CI](https://github.com/Nomoziya/nomozip/actions/runs/38837358763) 和 [原生 ARM64 CI](https://github.com/Nomoziya/nomozip/actions/runs/38837360085) 成功；84 / 83 份报告、两语言各53项及33张图、既有DPI97与安装升级35项已复核。最小工作区首行回归已在同一97项断言下修复，主页面边框不会挤占工具窗口。
+
+候选目录：`artifacts/release-0.2.0-preview.29-final`（x64）、`artifacts/release-0.2.0-preview.29-arm64-final`（ARM64），每个目录有安装包、便携ZIP、源码ZIP和SHA256SUMS。原生ARM64程序及安装器保持已测CI字节。最终源码只补交接文档；包外报告与 `artifacts/visual-final-handoff.json` 记录校验结果。x64载荷11385432字节，54个文件，比上一候选增加60444字节，没有新增运行组件。
+
+如需独立体验，将匹配架构的ZIP解到新目录，在PowerShell切换到该目录，运行：
+
+```powershell
+.\ArchivePassword.exe --data-dir "D:\nomozip-visual-test"
+```
+
+这会使用单独的测试资料目录。可观察程序图标、任务/内容操作菜单、设置页按钮与短选项，并切换语言和主题；新图标在真实Explorer、任务栏、通知区的缓存和外观仍需系统体验。未公开发行，原安装及旧候选保留。
