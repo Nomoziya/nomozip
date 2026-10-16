@@ -37,6 +37,7 @@ internal static class DesktopVisualRefreshValidation
         try
         {
             model.Tasks.Clear(); model.EngineVersions.Clear(); model.CompressionSources.Clear(); model.LoadPreview();
+            model.PasswordRows[0] = model.PasswordRows[0] with { Group = "Example group", Source = "example.test" };
             window.WindowStyle = WindowStyle.None; window.ResizeMode = ResizeMode.NoResize;
             Check("window and sidebar load the product icon", window.Icon is not null && window.BrandMark.Source is not null);
             var icon = new IconBitmapDecoder(new Uri("pack://application:,,,/ArchivePassword;component/Assets/nomozip.ico"), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
@@ -94,6 +95,9 @@ internal static class DesktopVisualRefreshValidation
                     if (page == 1)
                     {
                         model.SelectedPassword = model.PasswordRows.FirstOrDefault(); await Layout();
+                        var passwordRow = (DataGridRow)window.PasswordTable.ItemContainerGenerator.ContainerFromItem(model.SelectedPassword);
+                        var metadata = Descendants(passwordRow).OfType<TextBlock>().Single(block => block.FontSize == 12);
+                        Check(mode + " selected vault metadata follows the readable row color", metadata.IsVisible && ColorOf(metadata.Foreground) == ColorOf(passwordRow.Foreground));
                         Capture($"{mode}-1120-page-1-selected");
                         await Preview(window.PasswordContextMenu, window.PasswordTable, mode + "-vault-row-menu");
                         Check(mode + " vault actions bind to the selected password", ReferenceEquals(window.PasswordEditAction.Command, model.EditPasswordCommand)
@@ -117,7 +121,7 @@ internal static class DesktopVisualRefreshValidation
         }
         catch (Exception error) { checks["exception " + error] = false; }
         finally { theme.Apply(SystemParameters.HighContrast); }
-        var passed = checks.Count == 91 && checks.Values.All(value => value);
+        var passed = checks.Count == 94 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(samples, "report.json"), JsonSerializer.Serialize(new { passed, checks, limitations = "Hidden WPF rendering and UIA do not replace audible Narrator or physical display acceptance." }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;
     }
