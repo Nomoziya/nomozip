@@ -106,6 +106,7 @@ internal static class DesktopRedesignValidation
             var capsule=VisualDescendants(extractAll).OfType<Border>().First();
             Check("capsule radius equals half of actual height",Math.Abs(capsule.CornerRadius.TopLeft-capsule.ActualHeight/2)<.1 && capsule.ActualWidth>capsule.ActualHeight*2);
             var entryTable=VisualDescendants(browser).OfType<DataGrid>().Single(value=>value.Name=="EntryTable");
+            Check("embedded file columns retain readable widths",entryTable.Columns[0].ActualWidth>=48 && entryTable.Columns[1].ActualWidth>=200 && entryTable.Columns[2].ActualWidth>=78 && entryTable.Columns[3].ActualWidth>=80);
             Check("extraction toolbar precedes file list",Bounds(extractAll).Bottom<=Bounds(entryTable).Top);
             Check("archive name occupies shared workspace header",window.ArchiveHeaderHost.Content is FrameworkElement && window.FilesLandingActions.Visibility==Visibility.Collapsed);
             contents.CurrentRow=contents.Rows.Single(value=>value.Path=="notes.txt");contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);

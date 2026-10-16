@@ -26,7 +26,7 @@
             </Style>
           </TextBox.Style>
         </TextBox>
-        <Image x:Name="PreviewImage" Source="{Binding Picture}" Stretch="Uniform" StretchDirection="DownOnly" AutomationProperties.Name="{Binding EntryPath}">
+        <Image x:Name="PreviewImage" Source="{Binding Picture}" Stretch="Uniform" StretchDirection="DownOnly" AutomationProperties.Name="{Binding EntryPath}" VerticalAlignment="Top" MaxHeight="300">
           <Image.Style>
             <Style TargetType="Image">
               <Setter Property="Visibility" Value="Collapsed"/>

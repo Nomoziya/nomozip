@@ -60,13 +60,14 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     private bool running, indeterminate;
     private bool completed;
     private EngineResult? failure;
-    public bool Completed { get=>completed; set {if(Set(ref completed,value)) Changed(nameof(PrimaryActionCaption));} }
+    public bool Completed { get=>completed; set {if(Set(ref completed,value)) {Changed(nameof(PrimaryActionCaption));Changed(nameof(ProgressVisibility));Changed(nameof(DisplayPercent));}} }
     public EngineResult? Failure { get=>failure; set=>Set(ref failure,value); }
     public string Status { get => status; set => Set(ref status, value); }
-    public double Percent { get => percent; set => Set(ref percent, value); }
+    public double Percent { get => percent; set {if(Set(ref percent, value)) Changed(nameof(DisplayPercent));} }
+    public double DisplayPercent => Completed ? 100 : Percent;
     public bool IsIndeterminate { get => indeterminate; set => Set(ref indeterminate, value); }
     public bool Running { get => running; set { if (Set(ref running, value)) Changed(nameof(ProgressVisibility)); } }
-    public Visibility ProgressVisibility => Running ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility ProgressVisibility => Running || Completed ? Visibility.Visible : Visibility.Collapsed;
     private string FileSize()
     {
         try { var bytes = new System.IO.FileInfo(Path).Length; return bytes >= 1048576 ? $"{bytes / 1048576.0:N1} MB" : $"{bytes / 1024.0:N1} KB"; }

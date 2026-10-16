@@ -14,12 +14,20 @@ public partial class ArchiveContentsDialog : Window
         void Arrange()
         {
             var narrow=EntryTable.ActualWidth<680;
-            EntryTable.Columns[1].MinWidth=narrow?130:160;
-            EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
-            EntrySearch.Width=narrow?200:260;
+            if(EntryTable.ActualWidth>0)
+            {
+                EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
+                // Detached content can first measure at zero width. Restore fixed
+                // columns after embedding rather than retaining coerced minima.
+                foreach(var (index,width) in new[]{(0,48d),(2,78d),(3,80d),(4,96d)})
+                {EntryTable.Columns[index].MinWidth=width;EntryTable.Columns[index].Width=width;}
+                EntryTable.Columns[1].MinWidth=130;
+                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-48-78-80-18-(narrow?0:96));
+            }
+            EntrySearch.Width=double.NaN;
             ContentsArchiveName.MaxWidth=Math.Max(160,BrowserHeader.ActualWidth-370);
         }
-        EntryTable.SizeChanged+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
+        EntryTable.SizeChanged+=(_,_)=>Arrange();EntryTable.Loaded+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
         var closing=false;
         Closing+=async (_,e)=>
         {
