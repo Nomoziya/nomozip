@@ -16,6 +16,22 @@ public partial class App : Application
     {
         // Configure before InitializeComponent loads application-level XAML resources.
         var arguments = Environment.GetCommandLineArgs().Skip(1).ToArray();
+        var redesign = Array.IndexOf(arguments, "--validate-redesign");
+        if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" && redesign >= 0 && redesign + 2 < arguments.Length)
+        {
+            // A template failure can occur before OnStartup reaches the test
+            // runner. Preserve that actual failure instead of leaving no report.
+            var reportFolder = Path.Combine(Path.GetFullPath(arguments[redesign + 1]), "artifacts/ui-redesign", arguments[redesign + 2] == "en" ? "en" : "zh-CN");
+            Directory.CreateDirectory(reportFolder);
+            var report = Path.Combine(reportFolder, "report.json");
+            File.WriteAllText(report, "{\"passed\":false,\"state\":\"starting\"}");
+            AppDomain.CurrentDomain.UnhandledException += (_, failure) => File.WriteAllText(report, JsonSerializer.Serialize(new {passed=false,error=failure.ExceptionObject.ToString()}));
+            DispatcherUnhandledException += (_, failure) =>
+            {
+                File.WriteAllText(report, JsonSerializer.Serialize(new {passed=false,error=failure.Exception.ToString()}));
+                failure.Handled=true;Shutdown(1);
+            };
+        }
         var localeIndex = Array.IndexOf(arguments, "--validate-localization");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-language-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme");
