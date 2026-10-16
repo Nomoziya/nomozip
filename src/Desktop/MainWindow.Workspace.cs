@@ -83,7 +83,7 @@ public partial class MainWindow
     private void ApplyWorkspaceMargin()
     {
         var page = (DataContext as MainViewModel)?.Page;
-        MainContent.Margin = page is 0 or 4 ? new Thickness(0) : new Thickness(ActualWidth < 960 ? 12 : 24);
+        MainContent.Margin = page is 0 or 1 or 2 or 3 or 4 ? new Thickness(0) : new Thickness(ActualWidth < 960 ? 12 : 24);
     }
 
     private void OnTaskRowAction(object sender, RoutedEventArgs e)

@@ -92,7 +92,18 @@ public sealed partial class MainViewModel
     public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
     public string CompressionPasswordStatus => compressionPassword is null ? UiText.Get("T_5d8111695438") : UiText.Get("T_bb1057c00cf3");
-    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) createdCompressionPath="";} }
+    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));}} }
+    public string CompressionOutputDirectory
+    {
+        get {var slash=CompressionOutput.LastIndexOfAny(['\\','/']);return slash<0?"":CompressionOutput[..(slash==2 && CompressionOutput[1]==':'?slash+1:slash)];}
+        set {var file=CompressionOutput[(CompressionOutput.LastIndexOfAny(['\\','/'])+1)..];CompressionOutput=JoinOutput(value,file.Length==0?"archive"+CompressionExtension:file);}
+    }
+    public string CompressionOutputName
+    {
+        get {var file=CompressionOutput[(CompressionOutput.LastIndexOfAny(['\\','/'])+1)..];return file.EndsWith(CompressionExtension,StringComparison.OrdinalIgnoreCase)?file[..^CompressionExtension.Length]:file;}
+        set => CompressionOutput=JoinOutput(CompressionOutputDirectory,value.EndsWith(CompressionExtension,StringComparison.OrdinalIgnoreCase)?value:value+CompressionExtension);
+    }
+    private static string JoinOutput(string directory,string file)=>directory.Length==0?file:directory.TrimEnd('\\','/')+"\\"+file;
     public string CompressionMessage { get => compressionMessage; set => Set(ref compressionMessage, value); }
     public double CompressionPercent { get => compressionPercent; private set => Set(ref compressionPercent, value); }
     public bool CompressionIndeterminate { get => compressionIndeterminate; private set => Set(ref compressionIndeterminate, value); }

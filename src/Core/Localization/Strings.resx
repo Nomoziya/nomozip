@@ -3130,4 +3130,6 @@
 <data name="Redesign.OpenFolder" xml:space="preserve"><value>打开文件夹</value></data>
 <data name="Redesign.SampleExtracting" xml:space="preserve"><value>正在解压</value></data>
 <data name="Redesign.SampleCompleted" xml:space="preserve"><value>已完成</value></data>
+<data name="Redesign.SaveLocation" xml:space="preserve"><value>保存位置</value></data>
+<data name="Redesign.ArchiveName" xml:space="preserve"><value>文件名</value></data>
 </root>
