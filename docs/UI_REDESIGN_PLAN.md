@@ -47,16 +47,16 @@
 | 图号 | 对应实现 | 对照状态与下一步 |
 | --- | --- | --- |
 | 01 文件空态 | FilesWorkspace | 已有实际图；须补齐空态双入口、顶部主次操作与图标比例 |
-| 02 浏览与预览 | ArchiveContentsDialog / ArchivePreviewDialog | 已对照两轮，继续修正列宽和预览位置；新候选启动失败，待定位后复验 |
-| 03 单包/批量解压 | ConfirmExtractionOptions | 当前仍复用旧参数表单，须按图重排标题、选项、预览与主操作；待验收 |
-| 04 新建压缩包 | CompressionView | 当前旧卡片偏差明显；须重排左列表、右设置和底部操作 |
-| 05 任务 | TasksWorkspace | 已对照两轮；重复行和按钮比例已修复，继续修正进度、操作与详情层级 |
-| 06 密码库 | PasswordTable / VaultDetailsView | 仍需去卡片拼接、重排详情表单和备份/更多入口；待验收 |
-| 07 校验 | FileHashDialog | 仍是旧工具窗嵌入，须改为左列表/右详情；待验收 |
+| 02 浏览与预览 | ArchiveContentsDialog / ArchivePreviewDialog | 列宽与右侧预览已有实际图，仍缺文件夹层级导航；窄窗切换清理预览已改，待复验 |
+| 03 单包/批量解压 | ConfirmExtractionOptions | 新候选加入批量左列表、单包范围、目录/冲突/自动尝试及高级设置；待真实截图与取消验证 |
+| 04 新建压缩包 | CompressionView | 左列表/右设置、位置/名称已拆分；新候选补图标/大小与紧凑加密行，待截图 |
+| 05 任务 | TasksWorkspace | 重复行已修复；新候选真正统一压缩/解压表、筛选与计数，补百分比和有实际范围的操作；待复验 |
+| 06 密码库 | PasswordTable / VaultDetailsView | 连续工作区、内联编辑和备份更多入口已有实际图；显示开关、状态及细节间距待收敛 |
+| 07 校验 | FileHashDialog | 左列表/右详情已有实际图；新候选压缩工具栏、将主操作放到详情并保留窄窗固定操作，待截图 |
 | 08 常规设置 | PreferencesScroll / SettingsCategoryList | 分类已具备，列表样式和表单布局仍偏离；待验收 |
 | 09 更新 | 软件/引擎设置 | 须按图分软件/引擎面板；保留真实版本与已有渠道；待验收 |
-| 10 密码与安全 | 既有安全对话框 | 须逐框渲染对照；不能只凭共享圆角标完成 |
-| 11 冲突/失败/编辑 | ExistingFileDialog / ArchiveTextEditDialog / ArchiveEditConfirmDialog | 用户新增授权已实现初版，待真实重命名、检查点续作、编辑取消/写回/备份及对话框截图；错误详情仍需对照 |
+| 10 密码与安全 | PasswordDialog / MasterPasswordDialog / VaultBackupDialog | 新候选已重排图标标题、横向字段、分隔和主次操作；补新建压缩密码确认及遮罩清理检查；待截图 |
+| 11 冲突/失败/编辑 | ExistingFileDialog / ArchiveTextEditDialog / ArchiveEditConfirmDialog | ef17940 的四组 CI 各 179 项通过功能；对照发现透明背景，已修正，待复验；错误详情保留实际暂存/交付语义，不伪造输出成功 |
 | 12 英文窄窗口 | 各页 800×600 适配 | 必须使用真实英文控件和实际尺寸对照，检查菜单和主操作 |
-| 13 柔和对比与焦点 | ThemeResources / FocusStyle | 固定图仅作配色参考；系统高对比度仍使用系统语义色，键盘焦点待对照 |
-| 14 组件规范 | App.xaml | 普通胶囊和导航已看到改进，行内按钮已修正；进度条隐式样式重复键导致启动失败，已定位并修复，待复验 |
+| 13 柔和对比与焦点 | ThemeResources / FocusStyle | 新候选加入独立柔和对比主题及保存，系统高对比优先；待实际截图与焦点对照 |
+| 14 组件规范 | App.xaml | 半高胶囊与进度已在真实图和自动检查验证；其他细节随逐页对照继续收敛 |

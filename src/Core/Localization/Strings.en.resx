@@ -3165,4 +3165,16 @@ A password is required to validate the archive data.</value>
   <data name="TextEdit.TooLarge" xml:space="preserve"><value>Text exceeds the 1 MiB editing limit.</value></data>
   <data name="TextEdit.Supported" xml:space="preserve"><value>Supports previewable text up to 1 MiB. Use Replace for other files.</value></data>
   <data name="TextEdit.Discarded" xml:space="preserve"><value>Temporary changes discarded; the original archive is unchanged.</value></data>
+<data name="Redesign.WorkspaceSummary" xml:space="preserve"><value>{0} running · {1} pending · {2} ended</value></data>
+<data name="Redesign.PauseAll" xml:space="preserve"><value>Pause all</value></data>
+<data name="Appearance.Soft" xml:space="preserve"><value>Soft contrast</value></data>
+<data name="Hash.ImportShort" xml:space="preserve"><value>Import</value></data>
+<data name="Hash.ExportShort" xml:space="preserve"><value>Export</value></data>
+<data name="Compression.PasswordShort" xml:space="preserve"><value>Set password</value></data>
+<data name="Password.ConfirmationMismatch" xml:space="preserve"><value>The passwords do not match.</value></data>
+<data name="Extraction.BatchTitle" xml:space="preserve"><value>Batch extraction</value></data>
+<data name="Extraction.BatchCount" xml:space="preserve"><value>{0} pending archives</value></data>
+<data name="Extraction.CreateFolder" xml:space="preserve"><value>Create a folder with the archive name</value></data>
+<data name="Extraction.LayoutHint" xml:space="preserve"><value>Checked: archive folder; unchecked: direct extraction; mixed: smart layout.</value></data>
+<data name="TextEdit.CleanupWarning" xml:space="preserve"><value>The temporary edit copy could not be removed. Delete this folder manually: {0}</value></data>
 </root>

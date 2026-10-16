@@ -9,6 +9,8 @@ namespace ArchivePassword.Desktop;
 public sealed record CompressionSourceRow(string Path, string? PreviewKind = null)
 {
     public string Name => System.IO.Path.GetFileName(System.IO.Path.TrimEndingDirectorySeparator(Path));
+    public bool IsDirectory=>PreviewKind==UiText.Get("T_7c7802d8adae") || Directory.Exists(Path);
+    public string SizeText {get {try {var size=IsDirectory?-1:new FileInfo(Path).Length;return size<0?"—":size<1024?$"{size} B":size<1048576?$"{size/1024.0:0.#} KB":$"{size/1048576.0:0.#} MB";}catch(Exception error) when(error is IOException or UnauthorizedAccessException) {return "—";}}}
     public string Kind => PreviewKind ?? (Directory.Exists(Path) ? UiText.Get("T_7c7802d8adae") : UiText.Get("T_39932f24fe11"));
 }
 public sealed partial class MainViewModel
@@ -141,6 +143,7 @@ public sealed partial class MainViewModel
         if (!Path.GetExtension(CompressionOutput).Equals(CompressionExtension, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = UiText.Get("T_b64114dffb9b"); return; }
         if(volumeSize>0 && VolumeCompressionService.HasExistingTarget(CompressionOutput)) {CompressionMessage=UiText.Get("T_c4d54b1608b5");return;}
         IsBusy=true;idle=new TaskCompletionSource();cancellation=new CancellationTokenSource();
+        ArchiveTaskRow? workspaceTask=null;
         try
         {
         SfxModule? module=null;
@@ -156,19 +159,23 @@ public sealed partial class MainViewModel
         if (CompressionEncrypt && compressionPassword is null) { CompressionMessage = UiText.Get("T_d2011de64a34"); return; }
         compressionActivityStarted=true;Changed(nameof(HasCompressionActivity));Page=0;
         createdCompressionPath="";CompressionRunning = true;CompressionPercent = 0; CompressionIndeterminate = true;
+        workspaceTask=AddCompressionTask();
             var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));
             var progress = new Progress<TaskUpdate>(value =>
             {
                 CompressionMessage = value.Message;
                 if (value.Progress is { } state) { CompressionIndeterminate = state.Total == 0; CompressionPercent = state.Total == 0 ? 0 : Math.Min(100, state.Completed * 100.0 / state.Total); }
                 else CompressionIndeterminate = true;
+                workspaceTask.Status=CompressionMessage;workspaceTask.Percent=CompressionPercent;workspaceTask.IsIndeterminate=CompressionIndeterminate;
             });
             var outcome = module is not null ? await new SfxCompressionService(client,client).CreateAsync(CompressionSources.Select(value=>value.Path).ToArray(),CompressionOutput,module,
                 new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,cancellation.Token)
                 : await new CompressionService(client, client).CreateAsync(CompressionSources.Select(value => value.Path).ToArray(), CompressionOutput,
                 CompressionFormatName, new[] { 0, 1, 5, 7, 9 }[CompressionLevel], CompressionEncrypt ? compressionPassword?.Secret : null, CompressionHeaders, replace, progress, cancellation.Token,volumeSize);
-            if(outcome.Engine.IsSuccess) createdCompressionPath=outcome.OutputPath;
+            if(outcome.Engine.IsSuccess) {createdCompressionPath=outcome.OutputPath;workspaceTask.SetArchiveResult(outcome.OutputPath);}
             CompressionMessage = outcome.Engine.IsSuccess ? module is not null?UiText.Get("T_ada71e8959d8"):outcome.Volumes is { } volumes ? UiText.Format("T_d18624b2347a", volumes.Count, outcome.OutputPath) : UiText.Get("T_1bb010c7351a") : outcome.Engine.Status == "cancelled" ? UiText.Get("T_8e8fba138ab2") : CompressionError(outcome.Engine.Code);
+            workspaceTask.Completed=outcome.Engine.IsSuccess;workspaceTask.Failure=outcome.Engine.IsSuccess?null:outcome.Engine;
+            if(workspaceTask.Completed)workspaceTask.ResultOutputPath=Path.GetDirectoryName(Path.GetFullPath(outcome.OutputPath));
             if (outcome.Engine.IsSuccess && CompressionEncrypt && compressionPassword is { } supplied && (supplied.Save || supplied.SavedId is not null))
             {
                 try
@@ -181,10 +188,11 @@ public sealed partial class MainViewModel
             }
             Footer = CompressionMessage;
         }
-        catch(OperationCanceledException) {CompressionMessage=UiText.Get("T_76756534e51e");}
+        catch(OperationCanceledException) {CompressionMessage=UiText.Get("T_76756534e51e");if(workspaceTask is not null)workspaceTask.Failure=new EngineResult {Status="cancelled",Code="cancelled"};}
         finally
         {
             compressionPassword = null; Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); CompressionIndeterminate = false;
+            if(workspaceTask is not null){workspaceTask.Status=CompressionMessage;workspaceTask.Running=false;workspaceTask.IsIndeterminate=false;}
             Footer=CompressionMessage;cancellation.Dispose(); cancellation = null; CompressionRunning = false; IsBusy = false; idle.TrySetResult();
         }
     }

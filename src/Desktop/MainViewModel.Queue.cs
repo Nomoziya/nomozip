@@ -26,6 +26,7 @@ public sealed partial class MainViewModel
     public ICommand MoveTaskUpCommand {get;private set;}=null!;
     public ICommand MoveTaskDownCommand {get;private set;}=null!;
     public ICommand ExtractSelectedTaskCommand {get;private set;}=null!;
+    public ICommand PrepareSelectedTaskExtractionCommand {get;private set;}=null!;
     public ICommand RemoveCompletedTasksCommand {get;private set;}=null!;
     private void InitializeQueueCommands()
     {
@@ -33,7 +34,8 @@ public sealed partial class MainViewModel
         MoveTaskUpCommand=new RelayCommand(()=>MoveTask(-1),()=>CanMoveTask(-1));
         MoveTaskDownCommand=new RelayCommand(()=>MoveTask(1),()=>CanMoveTask(1));
         ExtractSelectedTaskCommand=new AsyncCommand(()=>ExtractTasksAsync([SelectedTask!]),()=>Page==0 && IsIdle && SelectedTask is {Completed:false} selected && Tasks.Contains(selected) && !string.IsNullOrWhiteSpace(selectedEngine));
-        RemoveCompletedTasksCommand=new RelayCommand(RemoveCompletedTasks,()=>IsIdle && Tasks.Any(task=>task.Completed && task.Checkpoint is null));
+        PrepareSelectedTaskExtractionCommand=new AsyncCommand(async()=>{if(dialogs.ConfirmWorkspaceExtraction(1))await ExtractTasksAsync([SelectedTask!]);},()=>ExtractSelectedTaskCommand.CanExecute(null));
+        RemoveCompletedTasksCommand=new RelayCommand(RemoveCompletedTasks,()=>IsIdle && WorkspaceTasks.Any(task=>task.Completed && task.Checkpoint is null));
     }
     private bool CanMoveTask(int direction)
     {var index=SelectedTask is {} selected?Tasks.IndexOf(selected):-1;return IsIdle && index>=0 && index+direction>=0 && index+direction<Tasks.Count;}
@@ -47,7 +49,10 @@ public sealed partial class MainViewModel
     {
         if(!IsIdle) return;
         var completed=Tasks.Where(task=>task.Completed && task.Checkpoint is null).ToArray();foreach(var task in completed) Tasks.Remove(task);
-        if(SelectedTask is {} selected && !Tasks.Contains(selected)) SelectedTask=Tasks.FirstOrDefault();
-        Footer=UiText.Format("T_1e50592d591a", completed.Length);
+        var compressed=WorkspaceTasks.Where(task=>task.IsCompression && task.Completed).ToArray();
+        foreach(var row in compressed){row.PropertyChanged-=WorkspaceTaskChanged;WorkspaceTasks.Remove(row);}
+        RefreshWorkspaceTasks(false);
+        if(SelectedTask is {} selected && !WorkspaceTasks.Contains(selected)) SelectedTask=WorkspaceTasks.FirstOrDefault();
+        Footer=UiText.Format("T_1e50592d591a", completed.Length+compressed.Length);
     }
 }

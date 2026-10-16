@@ -539,6 +539,7 @@ public partial class App : Application
         dialog.Loaded += (_, _) => dialog.Dispatcher.BeginInvoke(() =>
         {
             ((System.Windows.Controls.PasswordBox)dialog.FindName("SecretBox")).Password = "测试密碼 ' $ & 空格";
+            if(dialog.ConfirmationPanel.Visibility==Visibility.Visible)dialog.ConfirmationBox.Password=dialog.SecretBox.Password;
             ((System.Windows.Controls.CheckBox)dialog.FindName("SavePassword")).IsChecked = true;
             ((System.Windows.Controls.Button)dialog.FindName("ContinueButton")).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         });

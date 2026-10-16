@@ -30,6 +30,7 @@ internal sealed class ThemeResources
     ];
     private readonly Dictionary<string, object> defaults;
     private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#879099", "#3D3D3D", "#75B6E7", "#242424", "#17354A", "#F5F5F5", "#75B6E7", "#F6A6A6", "#303030", "#6BCB8E", "#505050"];
+    private static readonly string[] SoftColors = ["#25282B","#2C3034","#E5E2DA","#C8C5BD","#8F969A","#454C50","#9BBCD0","#25282B","#304858","#E5E2DA","#C5B98B","#E3AAA3","#333B40","#93BAA3","#78858C"];
     internal void SetMode(string mode)
     {
         if (!AppearancePreferenceStore.IsSupported(mode)) throw new ArgumentException("Unsupported appearance mode.", nameof(mode));
@@ -44,10 +45,11 @@ internal sealed class ThemeResources
     internal void Apply(bool highContrast, bool? systemDark = null)
     {
         this.highContrast = highContrast;
-        IsDark = !highContrast && (Mode == "dark" || Mode == "system" && (systemDark ?? ReadSystemDark()));
+        IsDark = !highContrast && (Mode is "dark" or "soft" || Mode == "system" && (systemDark ?? ReadSystemDark()));
         if (!highContrast)
         {
-            for (var index = 0; index < Keys.Length; index++) resources[Keys[index]] = IsDark ? new SolidColorBrush((Color)ColorConverter.ConvertFromString(DarkColors[index])) : defaults[Keys[index]];
+            var colors=Mode=="soft"?SoftColors:DarkColors;
+            for (var index = 0; index < Keys.Length; index++) resources[Keys[index]] = IsDark ? new SolidColorBrush((Color)ColorConverter.ConvertFromString(colors[index])) : defaults[Keys[index]];
         }
         else
         {

@@ -3165,4 +3165,16 @@
   <data name="TextEdit.TooLarge" xml:space="preserve"><value>文本超过 1 MiB，无法写回。</value></data>
   <data name="TextEdit.Supported" xml:space="preserve"><value>支持不超过 1 MiB 的可预览文本；其他文件可使用“替换文件”。</value></data>
   <data name="TextEdit.Discarded" xml:space="preserve"><value>已放弃临时更改，原压缩包保持不变。</value></data>
+<data name="Redesign.WorkspaceSummary" xml:space="preserve"><value>{0} 项进行中 · {1} 项等待处理 · {2} 项已结束</value></data>
+<data name="Redesign.PauseAll" xml:space="preserve"><value>暂停全部</value></data>
+<data name="Appearance.Soft" xml:space="preserve"><value>柔和对比</value></data>
+<data name="Hash.ImportShort" xml:space="preserve"><value>导入</value></data>
+<data name="Hash.ExportShort" xml:space="preserve"><value>导出</value></data>
+<data name="Compression.PasswordShort" xml:space="preserve"><value>设置密码</value></data>
+<data name="Password.ConfirmationMismatch" xml:space="preserve"><value>两次输入的密码不一致。</value></data>
+<data name="Extraction.BatchTitle" xml:space="preserve"><value>批量解压</value></data>
+<data name="Extraction.BatchCount" xml:space="preserve"><value>{0} 个待处理压缩包</value></data>
+<data name="Extraction.CreateFolder" xml:space="preserve"><value>按压缩包名称创建文件夹</value></data>
+<data name="Extraction.LayoutHint" xml:space="preserve"><value>勾选：按包名创建文件夹；未勾选：直接解压；中间态：智能目录布局。</value></data>
+<data name="TextEdit.CleanupWarning" xml:space="preserve"><value>临时编辑副本未能清理，请手动删除此目录：{0}</value></data>
 </root>

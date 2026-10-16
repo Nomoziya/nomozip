@@ -7,7 +7,7 @@ public static class AppearancePreferenceStore
 {
     public const string FileName = "appearance.json";
     private sealed record Preference(int Version, string Mode);
-    public static bool IsSupported(string? mode) => mode is "system" or "light" or "dark";
+    public static bool IsSupported(string? mode) => mode is "system" or "light" or "dark" or "soft";
     public static AppearancePreference Read(string directory)
     {
         var path = Path.Combine(directory, FileName);

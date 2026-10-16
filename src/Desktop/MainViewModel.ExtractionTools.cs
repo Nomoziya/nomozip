@@ -47,7 +47,7 @@ public sealed partial class MainViewModel
     internal void ApplyDirectoryRules(ExtractionDirectoryRules rules,string custom)
     {
         ClearShellDestinations(); directoryRules=rules; OutputPath=custom;
-        Changed(nameof(DirectoryRules)); Changed(nameof(IsOutputPathReadOnly)); Changed(nameof(DisplayOutputPath)); Changed(nameof(ExtractionSubtitle));
+        Changed(nameof(DirectoryRules)); Changed(nameof(IsOutputPathReadOnly)); Changed(nameof(DisplayOutputPath)); Changed(nameof(ExtractionSubtitle));Changed(nameof(CreateArchiveFolder));
     }
     private void SelectCustomOutput(string path)
     { ApplyDirectoryRules(directoryRules with { Location=ExtractionLocation.Custom },path); }

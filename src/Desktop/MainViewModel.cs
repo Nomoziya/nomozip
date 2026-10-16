@@ -53,17 +53,17 @@ public sealed partial class MainViewModel : ObservableObject
             }
             catch (Exception exception) when (exception is JsonException or KeyNotFoundException) { }
         }
-        Tasks.CollectionChanged += (_, e) => { if(e.OldItems is not null) foreach(ArchiveTaskRow row in e.OldItems) row.PropertyChanged-=WorkspaceTaskChanged; if(e.NewItems is not null) foreach(ArchiveTaskRow row in e.NewItems) row.PropertyChanged+=WorkspaceTaskChanged; RefreshWorkspaceTasks(refreshView: false); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
+        Tasks.CollectionChanged += (_, e) => { if(e.OldItems is not null) foreach(ArchiveTaskRow row in e.OldItems) row.PropertyChanged-=WorkspaceTaskChanged; if(e.NewItems is not null) foreach(ArchiveTaskRow row in e.NewItems) row.PropertyChanged+=WorkspaceTaskChanged; SyncExtractionRows();RefreshWorkspaceTasks(refreshView: false); Changed(nameof(ExtractButtonText)); CommandManager.InvalidateRequerySuggested(); };
         AddFilesCommand = new RelayCommand(() => AddFiles(dialogs.SelectArchives()), () => IsIdle);
         OpenInputCommand = new AsyncCommand(async () => { if (Page == 3) AddCompressionFilesCommand.Execute(null); else if (Page == 4) await OpenWorkspaceArchiveAsync(dialogs.SelectArchives()); else AddFilesCommand.Execute(null); }, () => IsIdle);
-        RemoveFileCommand = new RelayCommand(() => { if (SelectedTask is { } task) Tasks.Remove(task); }, () => IsIdle && SelectedTask is {Checkpoint:null});
+        RemoveFileCommand = new RelayCommand(RemoveWorkspaceTask, () => IsIdle && SelectedTask is {Checkpoint:null});
         BrowseOutputCommand = new RelayCommand(() => { if (dialogs.SelectOutput(OutputPath) is { } path) SelectCustomOutput(path); }, () => CanConfigureExtraction && SelectedTask?.Checkpoint is null);
         ExtractCommand = new AsyncCommand(ExtractAsync, () => Page == 0 && IsIdle && Tasks.Any(value => !value.Completed) && !string.IsNullOrWhiteSpace(selectedEngine));
-        BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page is 0 or 4 && IsIdle && SelectedTask is not null && !string.IsNullOrWhiteSpace(activeEngine));
+        BrowseArchiveCommand = new AsyncCommand(BrowseArchiveAsync, () => Page is 0 or 4 && IsIdle && SelectedTask is {} selected && (!selected.IsCompression || selected.Completed) && !string.IsNullOrWhiteSpace(activeEngine));
         ShowFailureCommand = new RelayCommand(() => dialogs.ShowExtractionFailure(SelectedTask!.Name, SelectedTask.Failure!), () => IsIdle && SelectedTask?.Failure?.Failures.Count > 0);
         CancelCommand = new RelayCommand(() => cancellation?.Cancel(), () => IsBusy);
         SkipPasswordsCommand = new RelayCommand(SkipSelectedPasswordAttempts, () => IsBusy && CanSkipPasswords);
-        OpenOutputCommand = new RelayCommand(OpenSelectedOutput, () => IsIdle && (Directory.Exists(OutputPath) || Tasks.Any(task=>task.LatestOutputPath is {} path && Directory.Exists(path))));
+        OpenOutputCommand = new RelayCommand(OpenSelectedOutput, () => IsIdle && (Directory.Exists(OutputPath) || WorkspaceTasks.Any(task=>task.LatestOutputPath is {} path && Directory.Exists(path))));
         OpenVaultCommand = new RelayCommand(() => Page = 1);
         AddPasswordCommand = new AsyncCommand(() => EditPasswordAsync(null), () => IsIdle && vaultAvailable);
         EditPasswordCommand = new AsyncCommand(() => EditPasswordAsync(SelectedPassword), () => IsIdle && vaultAvailable && SelectedPassword is not null);
@@ -119,7 +119,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand OpenLicensesCommand { get; }
     public int Page { get => page; set { if (Set(ref page, value)) { Changed(nameof(NavigationIndex)); CommandManager.InvalidateRequerySuggested(); } } }
     public int NavigationIndex { get => Page switch { 0 => 1, 1 => 2, 5 => 3, 2 => -1, _ => 0 }; set { if (value >= 0) Page = value switch { 1 => 0, 2 => 1, 3 => 5, _ => 4 }; } }
-    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
+    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanChangeExtractionLayout));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
@@ -137,7 +137,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string VaultSummary => VaultLocked ? UiText.Get("T_b4caab65183a") : vaultAvailable ? UiText.Format("T_357176e2a16d", allPasswords.Count(value => value.AutoTry)) : UiText.Get("T_98b23dcfbd8c");
     public string TaskSummary => UiText.Format("T_3292893c1e67", Tasks.Count(value => !value.Completed), Tasks.Count(value => value.Completed));
     public string ExtractButtonText => UiText.Format("T_ab3ecbe376c2", Tasks.Count(value => !value.Completed));
-    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
+    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(CanChangeExtractionLayout));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
     public SavedPassword? SelectedPassword { get => selectedPassword; set { if (Set(ref selectedPassword, value)) { Changed(nameof(DuplicateSummary)); CommandManager.InvalidateRequerySuggested(); } } }
 
     public async Task InitializeAsync()
