@@ -13,16 +13,16 @@ public partial class ArchiveContentsDialog : Window
         InitializeComponent(); DataContext = model;
         void Arrange()
         {
-            var narrow=EntryTable.ActualWidth<680;
+            var narrow=EntryTable.ActualWidth<760;
             if(EntryTable.ActualWidth>0)
             {
                 EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
                 // Detached content can first measure at zero width. Restore fixed
                 // columns after embedding rather than retaining coerced minima.
-                foreach(var (index,width) in new[]{(0,48d),(2,90d),(3,120d),(4,100d)})
+                foreach(var (index,width) in new[]{(0,48d),(2,90d),(3,120d),(4,120d)})
                 {EntryTable.Columns[index].MinWidth=width;EntryTable.Columns[index].Width=width;}
                 EntryTable.Columns[1].MinWidth=130;
-                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-48-90-120-18-(narrow?0:100));
+                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-48-90-120-18-(narrow?0:120));
             }
             EntrySearch.Width=double.NaN;
             ContentsArchiveName.MaxWidth=Math.Max(160,BrowserHeader.ActualWidth-370);
