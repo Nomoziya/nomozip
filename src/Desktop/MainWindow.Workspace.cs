@@ -31,6 +31,12 @@ public partial class MainWindow
         InputBindings.Add(new KeyBinding(new RelayCommand(() => { if (embeddedModel?.PreviewCommand.CanExecute(null) == true) embeddedModel.PreviewCommand.Execute(null); }), Key.P, ModifierKeys.Control));
         InputBindings.Add(new KeyBinding(new RelayCommand(async () => await CloseArchiveAsync()), Key.Escape, ModifierKeys.None));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => embeddedModel?.SelectVisibleCommand.Execute(null), () => embeddedModel?.CanSelect == true), Key.A, ModifierKeys.Control));
+        foreach(var binding in InputBindings.OfType<KeyBinding>().Where(value=>value.Key==Key.E && value.Modifiers==ModifierKeys.Control).ToArray()) InputBindings.Remove(binding);
+        InputBindings.Add(new KeyBinding(new RelayCommand(() =>
+        {
+            if(embeddedModel is not null) {if(embeddedModel.ExtractSelectedCommand.CanExecute(null))embeddedModel.ExtractSelectedCommand.Execute(null);}
+            else OnPrepareExtraction(this,new RoutedEventArgs());
+        }),Key.E,ModifierKeys.Control));
     }
 
     private void WorkspaceChanged(object? sender, PropertyChangedEventArgs e)

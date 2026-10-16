@@ -42,11 +42,15 @@ public partial class MainWindow : Window
             SidebarColumn.Width = new GridLength(compact ? 72 : 176);
             foreach (var text in ((StackPanel)BrandMark.Parent).Children.OfType<TextBlock>()) text.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             SidebarPrivacyNote.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
+            foreach(var text in ((StackPanel)((StackPanel)BrandMark.Parent).Parent).Children.OfType<TextBlock>()) text.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             SettingsNavigation.Content=compact?"…":UiText.Get("T_df3d58c7d84b");
             System.Windows.Automation.AutomationProperties.SetName(SettingsNavigation,UiText.Get("T_df3d58c7d84b"));
             SettingsNavigation.ToolTip=UiText.Get("T_df3d58c7d84b");
             VaultDetailsColumn.Width=new GridLength(narrow?0:320);
             VaultDetails.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
+            SettingsCategoriesColumn.Width=new GridLength(narrow?0:176);
+            SettingsCategoryList.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
+            SettingsCategory.Visibility=narrow?Visibility.Visible:Visibility.Collapsed;
             Navigation.Tag = compact;
             SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(16, 24, 16, 24);
             MainContent.Margin = new Thickness(compact ? 12 : 24);
