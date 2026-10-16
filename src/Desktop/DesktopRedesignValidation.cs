@@ -112,6 +112,14 @@ internal static class DesktopRedesignValidation
                 }
             }
             theme.SetMode("light");theme.Apply(false);window.Width=1040;window.Height=720;
+            model.Page=2;model.SettingsSection=4;await Layout();
+            Check("update cards keep checks visible and secondary actions folded",window.CheckApplicationUpdatesButton.IsVisible && window.CheckEngineUpdatesButton.IsVisible && !window.ApplicationUpdateActions.IsExpanded && !window.EngineUpdateManagement.IsExpanded);
+            window.ApplicationUpdateActions.IsExpanded=true;await Layout();
+            Check("software update expansion retains all existing actions",window.OpenApplicationDownloadButton.IsVisible && window.DownloadApplicationUpdateButton.IsVisible && window.InstallApplicationUpdateButton.IsVisible);
+            Capture("actual-software-update-actions");window.ApplicationUpdateActions.IsExpanded=false;
+            window.EngineUpdateManagement.IsExpanded=true;await Layout();window.EngineUpdateManagement.BringIntoView();await Layout();
+            Check("engine management expansion retains import install and version choices",window.ImportEngineUpdateButton.IsVisible && window.InstallEngineUpdateButton.IsVisible && window.EngineChoice.IsVisible && window.UpdateRepositoryBox.IsVisible);
+            Capture("actual-engine-update-management");window.EngineUpdateManagement.IsExpanded=false;window.PreferencesScroll.ScrollToTop();
             model.Page=1;model.SelectedPassword=model.PasswordRows[0];await Layout();
             Check("vault details populate only on selection",window.VaultDetails.SecretBox.Password.Length>0 && window.VaultDetails.VisibleSecret.Text.Length==0);
             var nameHost=(ScrollViewer)window.VaultDetails.NameBox.Template.FindName("PART_ContentHost",window.VaultDetails.NameBox);

@@ -1072,12 +1072,16 @@
                   </StackPanel>
                 </DockPanel>
                 <TextBlock Text="{loc:Text T_8c321cda91b6}" Style="{StaticResource Secondary}"/>
-                <WrapPanel Margin="0,16,0,0">
+                <Expander x:Name="ApplicationUpdateActions" Header="{loc:Text Updates.SoftwareActions}" Margin="0,12,0,0">
+                <StackPanel>
+                <WrapPanel Margin="0,12,0,0">
                   <Button x:Name="OpenApplicationDownloadButton" Content="{loc:Text T_2381499164c4}" Command="{Binding OpenApplicationDownloadCommand}" Margin="0,0,12,8"/>
                   <Button x:Name="DownloadApplicationUpdateButton" Content="{loc:Text SoftwareUpdate.Download}" Command="{Binding DownloadApplicationUpdateCommand}" Margin="0,0,12,8"/>
                   <Button x:Name="InstallApplicationUpdateButton" Content="{loc:Text SoftwareUpdate.Install}" Command="{Binding InstallApplicationUpdateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,0,8"/>
                 </WrapPanel>
                 <TextBlock Text="{Binding ApplicationInstallationHint}" Style="{StaticResource Secondary}"/>
+                </StackPanel>
+                </Expander>
                 <ProgressBar x:Name="ApplicationDownloadProgressBar" Minimum="0" Maximum="100" Value="{Binding ApplicationDownloadProgress,Mode=OneWay}" Height="6" Margin="0,12,0,0" AutomationProperties.Name="{loc:Text SoftwareUpdate.Progress}">
                   <ProgressBar.Style>
                     <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
@@ -1118,7 +1122,9 @@
               </Border.Style>
               <StackPanel>
                 <TextBlock Text="{loc:Text Updates.EngineTitle}" Style="{StaticResource Heading}" FontSize="20"/>
-                <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                <DockPanel Margin="0,4,0,12">
+                  <Button x:Name="CheckEngineUpdatesButton" Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="12,0,0,0" Style="{StaticResource PrimaryButton}" DockPanel.Dock="Right"/>
+                <StackPanel Orientation="Horizontal">
                   <Grid Width="32" Height="40" Margin="0,0,14,0">
                     <Path Data="M2,1 L20,1 L30,11 L30,39 L2,39 Z M20,1 L20,11 L30,11" Stroke="{DynamicResource TextBrush}" StrokeThickness="1.5"/>
                     <TextBlock Text="7z" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,7,0,0"/>
@@ -1128,11 +1134,7 @@
                     <TextBlock Text="{Binding PreviousEngineSummary}" Style="{StaticResource Secondary}" Margin="0,6,0,0"/>
                   </StackPanel>
                 </StackPanel>
-                <WrapPanel Margin="0,16,0,0">
-                  <Button Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="0,0,12,8" Style="{StaticResource PrimaryButton}"/>
-                  <Button Content="{loc:Text T_e4d1595c61be}" Command="{Binding InstallUpdateCommand}" Margin="0,0,12,8"/>
-                  <Button Content="{loc:Text T_e1189ffd0bcd}" Command="{Binding ImportUpdateCommand}" Margin="0,0,0,8"/>
-                </WrapPanel>
+                </DockPanel>
                 <TextBlock Text="{Binding UpdateMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
                 <Button Content="{loc:Text T_a56b08874f91}" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="0,12,0,0">
                   <Button.Style>
@@ -1150,8 +1152,12 @@
                     </Style>
                   </Button.Style>
                 </Button>
-                <Expander Header="{loc:Text Updates.ManageVersions}" Margin="0,18,0,0">
+                <Expander x:Name="EngineUpdateManagement" Header="{loc:Text Updates.ManageVersions}" Margin="0,18,0,0">
                   <StackPanel Margin="0,12,0,0">
+                    <WrapPanel Margin="0,0,0,8">
+                      <Button x:Name="InstallEngineUpdateButton" Content="{loc:Text T_e4d1595c61be}" Command="{Binding InstallUpdateCommand}" Margin="0,0,12,8"/>
+                      <Button x:Name="ImportEngineUpdateButton" Content="{loc:Text T_e1189ffd0bcd}" Command="{Binding ImportUpdateCommand}" Margin="0,0,0,8"/>
+                    </WrapPanel>
                     <Label Content="{loc:Text T_5dcf192a65bc}" Target="{Binding ElementName=EngineChoice}" Padding="0"/>
                     <ComboBox x:Name="EngineChoice" Width="260" HorizontalAlignment="Left" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
                     <WrapPanel Margin="0,12,0,16">
