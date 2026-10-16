@@ -71,6 +71,7 @@
               <MenuItem x:Name="AddEntryFilesAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_0475bef77baa}" Command="{Binding AddFilesCommand}"/>
               <MenuItem x:Name="AddEntryFolderAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_65c90110f894}" Command="{Binding AddFolderCommand}"/>
               <MenuItem x:Name="ReplaceEntryAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_7e41da13f3e7}" Command="{Binding ReplaceSelectedCommand}"/>
+              <MenuItem Header="{loc:Text TextEdit.EditCopy}" Command="{Binding EditTextCommand}" ToolTip="{loc:Text TextEdit.Supported}" ToolTipService.ShowOnDisabled="True" Style="{StaticResource ArchiveEditItem}"/>
               <MenuItem x:Name="DeleteEntriesAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_5b76f8110c9e}" Command="{Binding DeleteSelectedCommand}"/>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
               <MenuItem Header="{loc:Text Redesign.CloseArchive}" Click="OnClose"/>

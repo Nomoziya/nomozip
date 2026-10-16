@@ -168,6 +168,7 @@ internal static class DesktopRedesignValidation
             Capture("actual-checksum-matched");
             hashes.Selected.ExpectedHash=new string(hashes.Selected.Digest[0]=='0'?'1':'0',64);
             Check("checksum mismatch is not reported as success",hashes.Selected.Status==UiText.Get("T_a50309ed2709"));Capture("actual-checksum-mismatch");
+            await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
         }
         catch(Exception exception) {error=exception.ToString();}
         finally {window.PrepareExtractionOptionsForValidation=null;}

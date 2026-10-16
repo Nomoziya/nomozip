@@ -3,7 +3,7 @@ namespace ArchivePassword.Core;
 public sealed record PasswordPromptResponse(string Secret, bool Save, string Name, Guid? SavedId = null);
 public sealed record ExtractionOutcome(EngineResult Engine, string OutputPath, string? Warning = null);
 public sealed record TaskUpdate(string State, string Message, EngineProgress? Progress = null);
-public enum ExistingFilePolicy { Ask, Skip, Replace }
+public enum ExistingFilePolicy { Ask, Skip, Replace, Rename }
 
 public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vault, IPasswordCandidateProvider candidates, IExtractionOriginReader? origin = null,ExtractionPause? pause=null)
 {
@@ -13,7 +13,8 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
         IProgress<TaskUpdate>? progress = null,
         CancellationToken cancellationToken = default,
         CancellationToken skipSavedPasswordToken = default,
-        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null,IReadOnlyList<ArchiveEntry>? selection=null,bool recordPasswordSuccess=true,ExtractionCheckpointRequest? checkpoint=null)
+        Func<IReadOnlyList<ArchiveEntry>, string>? resolveDestination = null,IReadOnlyList<ArchiveEntry>? selection=null,bool recordPasswordSuccess=true,ExtractionCheckpointRequest? checkpoint=null,
+        Func<ExistingFileConflict,Task<ExistingFileDecision>>? resolveFileConflict=null)
     {
         var destination = Path.GetFullPath(outputPath);
         ExtractionCheckpointSession? session = null;
@@ -113,14 +114,29 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
             if (!result.IsSuccess) return new ExtractionOutcome(result, destination, warning);
             cancellationToken.ThrowIfCancellationRequested();
             var decisions = new List<(string Source, string Target, ExistingFilePolicy Policy)>();
-            var pendingFiles=session is null ? Directory.EnumerateFiles(staging,"*",SearchOption.AllDirectories)
-                :session.StagedFiles;
+            var pendingFiles=(session is null ? Directory.EnumerateFiles(staging,"*",SearchOption.AllDirectories)
+                :session.StagedFiles).ToArray();
+            var reserved=pendingFiles.Select(source=>Path.GetFullPath(Path.Combine(destination,Path.GetRelativePath(staging,source))))
+                .Concat(session?.Record.Entries.Select(session.Target) ?? []).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            ExistingFileDecision? repeated=null;
             foreach (var source in pendingFiles)
             {
-                var target = Path.Combine(destination, Path.GetRelativePath(staging, source));
+                var target = session?.DeliveryTarget(source) ?? Path.Combine(destination, Path.GetRelativePath(staging, source));
                 ValidateOutputPath(destination, target);
-                var policy = File.Exists(target) ? await resolveConflict(target) : ExistingFilePolicy.Replace;
+                var conflict=File.Exists(target) || Directory.Exists(target);
+                var decision=conflict ? repeated ?? (resolveFileConflict is null ? new(await resolveConflict(target)) : await resolveFileConflict(new(target,source,reserved))) : new ExistingFileDecision(ExistingFilePolicy.Replace);
+                var policy=decision.Policy;
                 if (policy == ExistingFilePolicy.Ask) return new ExtractionOutcome(new EngineResult { Status = "cancelled", Code = "cancelled" }, destination, warning);
+                if(conflict && decision.ApplyToAll) repeated=decision with {NewName=null};
+                if(policy==ExistingFilePolicy.Rename)
+                {
+                    var name=decision.NewName ?? ConflictFileNames.Suggest(target,reserved.Contains);
+                    if(!ConflictFileNames.IsValid(name)) throw new IOException("invalid_conflict_name");
+                    target=Path.Combine(Path.GetDirectoryName(target)!,name);
+                    ValidateOutputPath(destination,target);
+                    if(reserved.Contains(target) || File.Exists(target) || Directory.Exists(target)) throw new IOException("conflict_name_exists");
+                    reserved.Add(target);
+                }
                 decisions.Add((source, target, policy));
             }
             // No final files are moved until extraction and all conflict decisions complete.
@@ -136,7 +152,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 cancellationToken.ThrowIfCancellationRequested();
             }
             if(session is not null)
-                foreach(var decision in decisions) await session.SetIntentAsync(decision.Source,decision.Policy,cancellationToken);
+                foreach(var decision in decisions) await session.SetIntentAsync(decision.Source,decision.Policy,cancellationToken,decision.Target);
             foreach (var (source, target, policy) in decisions)
             {
                 if(pause is not null) await pause.WaitAsync(cancellationToken);
@@ -147,7 +163,7 @@ public sealed class ExtractionService(IArchiveEngine engine, IPasswordVault vaul
                 File.Move(source, target, overwrite: policy == ExistingFilePolicy.Replace);
                 if(session is not null)
                 {
-                    await session.SetDeliveredAsync(target,CancellationToken.None);
+                    await session.SetDeliveredAsync(target,CancellationToken.None,source);
                     progress?.Report(new TaskUpdate("checkpoint-commit",UiText.Get("Checkpoint.Committing")));
                 }
             }

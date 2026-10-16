@@ -11,7 +11,8 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<string, int, bool>? confirmPasswordOrganization = null, Action<FileHashDialog>? prepareHashes = null, Action<FilenameEncodingDialog>? prepareEncoding = null,
     Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null,
     Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null,
-    Action<ArchivePreviewDialog>? preparePreview=null,Func<string,bool>? confirmApplicationInstall=null,Func<string,bool>? confirmDiscardCheckpoint=null)
+    Action<ArchivePreviewDialog>? preparePreview=null,Func<string,bool>? confirmApplicationInstall=null,Func<string,bool>? confirmDiscardCheckpoint=null,
+    Action<ExistingFileDialog>? prepareConflict=null,Action<ArchiveTextEditDialog>? prepareTextEdit=null,Action<ArchiveEditConfirmDialog>? prepareEditConfirm=null)
 {
     public bool ConfirmWorkspaceExtraction() => prepareContents is not null || owner is not MainWindow main || main.ConfirmExtractionOptions();
     public bool ConfirmDiscardCheckpoint(string name)=>confirmDiscardCheckpoint?.Invoke(name) ?? MessageBox.Show(owner,
@@ -162,8 +163,22 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
         MessageBox.Show(owner, UiText.Format("T_f321085e8ea2", count), UiText.Get("T_b7cddbf2761a"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
     public bool ConfirmMergePasswords(string name, int count) => confirmPasswordOrganization?.Invoke("merge", count) ??
         MessageBox.Show(owner, UiText.Format("T_e98b7cc07066", name, count), UiText.Get("T_acc3854e8b71"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
-    public ExistingFilePolicy ResolveConflict(string path) => MessageBox.Show(owner, UiText.Get("T_a197a0e5c250") + path + UiText.Get("T_8bdc96d86b79"), UiText.Get("T_5b249813df54"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question) switch
-    { MessageBoxResult.Yes => ExistingFilePolicy.Replace, MessageBoxResult.No => ExistingFilePolicy.Skip, _ => ExistingFilePolicy.Ask };
+    public ExistingFilePolicy ResolveConflict(string path) => ResolveFileConflict(new(path,path)).Policy;
+    public ExistingFileDecision ResolveFileConflict(ExistingFileConflict conflict)
+    {
+        var dialog=new ExistingFileDialog(conflict) {Owner=owner};prepareConflict?.Invoke(dialog);
+        return dialog.ShowDialog()==true?dialog.Decision:new(ExistingFilePolicy.Ask);
+    }
+    public bool ConfirmTextEdit(ArchiveEntry entry,bool writeBack,string encoding,long? editedSize=null)
+    {
+        var dialog=new ArchiveEditConfirmDialog(entry,writeBack,encoding,editedSize) {Owner=owner};prepareEditConfirm?.Invoke(dialog);
+        return dialog.ShowDialog()==true;
+    }
+    public string? EditTextCopy(ArchiveTextEditSession session)
+    {
+        var dialog=new ArchiveTextEditDialog(session) {Owner=owner};prepareTextEdit?.Invoke(dialog);
+        return dialog.ShowDialog()==true?dialog.AcceptedText:null;
+    }
     public bool ConfirmDelete(string name) => MessageBox.Show(owner, UiText.Format("T_2c2b32da9ad3", name), UiText.Get("T_9e08e64ab2ee"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
     public bool ConfirmRestore() => MessageBox.Show(owner, UiText.Get("T_0a2b7a9840b4"), UiText.Get("T_1ae486278078"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
     public string? SelectEngineUpdate()

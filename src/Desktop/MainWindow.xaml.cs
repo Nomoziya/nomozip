@@ -37,6 +37,7 @@ public partial class MainWindow : Window
         {
             var narrow = ActualWidth < 1000;
             var compact = ActualWidth < 960;
+            if(ActualWidth<1040) ClosePreview();
             BrandMark.Width = BrandMark.Height = compact ? 18 : 24;
             BrandMark.Margin = new Thickness(0, 0, compact ? 4 : 8, 0);
             SidebarColumn.Width = new GridLength(compact ? 72 : 200);
