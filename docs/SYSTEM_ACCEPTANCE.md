@@ -25,7 +25,7 @@ SMB 首轮发现 MinGW `std::filesystem::absolute` 改坏 UNC 路径；独立原
 
 ### 剩余四组体验的操作
 
-preview.30最终本地发行资产尚未组装；以下为取得候选后的操作，当前不是下载链接。将轻量 ZIP 解压到新目录，在该目录运行 `ArchivePassword.exe --data-dir "D:\nomozip-acceptance"`，始终使用同一测试资料目录；不要把原密码库复制进去。只使用测试文件和独立输出目录。
+preview.30本地轻量ZIP位于 `artifacts/release-0.2.0-preview.30-final/nomozip-0.2.0-preview.30-light-win-x64.zip`；原生ARM64电脑使用 `artifacts/release-0.2.0-preview.30-arm64-final/nomozip-0.2.0-preview.30-light-win-arm64.zip`。这是本地候选，不是公开发行。将适合本机架构的ZIP解压到新目录，在该目录运行 `ArchivePassword.exe --data-dir "D:\nomozip-acceptance"`，始终使用同一测试资料目录；不要把原密码库复制进去。只使用测试文件和独立输出目录，无需安装或放行辅助脚本。
 
 1. **重启与续作/丢弃**：勾选“保留解压进度”，用包含较多文件的测试包解压，等出现已保存条目后停止。方便时重启 Windows，再按原命令打开候选，选择任务 → “任务操作” → “恢复所选任务”，核对完整输出。另准备一条已停止任务，选择丢弃进度，先取消一次再确认一次，核对原压缩包及其它输出保留。细节见 [续作说明](EXTRACTION_CHECKPOINTS.md)。
 2. **Explorer 拖出**：添加测试包 → “查看内容”，勾选文件并拖动文件名到空的 Explorer 测试文件夹；必要时等准备完成后再次拖动。核对文件内容；再拖到同一目标，检查 Windows 同名冲突提示并取消，原目标内容应保留。见 [拖出说明](DRAG_OUT.md)。
