@@ -3222,4 +3222,6 @@
   <data name="Browser.CompactSelection" xml:space="preserve"><value>已选择 {0} 项</value></data>
   <data name="Extraction.SelectedTitle" xml:space="preserve"><value>解压所选项目</value></data>
   <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} 个项目 · {1}</value></data>
+  <data name="Compression.HeadersHint" xml:space="preserve"><value>7z 格式可用，防止文件名被查看。</value></data>
+  <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>选项根据当前格式与引擎能力启用。</value></data>
 </root>

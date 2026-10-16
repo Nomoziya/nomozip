@@ -3222,4 +3222,6 @@ A password is required to validate the archive data.</value>
   <data name="Browser.CompactSelection" xml:space="preserve"><value>{0} selected</value></data>
   <data name="Extraction.SelectedTitle" xml:space="preserve"><value>Extract selected items</value></data>
   <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} items · {1}</value></data>
+  <data name="Compression.HeadersHint" xml:space="preserve"><value>Available for 7z archives to hide file names.</value></data>
+  <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>Available options depend on the format and engine.</value></data>
 </root>

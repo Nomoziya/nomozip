@@ -4,6 +4,8 @@ using Microsoft.Win32;
 
 namespace ArchivePassword.Desktop;
 
+public sealed record CompressionPasswordSelection(PasswordPromptResponse Password,bool? EncryptHeaders);
+
 public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareDialog = null,
     Func<string?>? selectEngineUpdate = null, Func<string, string, bool>? confirmEngineUpdate = null,
     Action<ArchiveContentsDialog>? prepareContents = null, Action<ExtractionFailureDialog>? prepareFailure = null,
@@ -111,11 +113,12 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     }
     public bool ConfirmArchiveReplacement(string path) => confirmEngineUpdate?.Invoke(path, "archive") ?? (MessageBox.Show(owner,
         UiText.Get("T_19686d32f96f") + path + UiText.Get("T_5c6b348e7c5f"), UiText.Get("T_bcd9ac8817f3"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
-    public Task<PasswordPromptResponse?> AskCompressionPasswordAsync(string name, IReadOnlyList<SavedPassword> saved, bool canSave)
+    public Task<CompressionPasswordSelection?> AskCompressionPasswordAsync(string name, IReadOnlyList<SavedPassword> saved, bool canSave,bool? encryptHeaders=null)
     {
-        var dialog = new PasswordDialog(name, false, saved, canSave, compressing: true) { Owner = owner };
+        var dialog = new PasswordDialog(name, false, saved, canSave, compressing: true,encryptHeaders:encryptHeaders) { Owner = owner };
         prepareDialog?.Invoke(dialog);
-        return Task.FromResult(dialog.ShowDialog() == true ? dialog.Response : null);
+        var response=dialog.ShowDialog()==true?dialog.Response:null;
+        return Task.FromResult(response is null?null:new CompressionPasswordSelection(response,dialog.CompressionHeaderEncryption));
     }
     public string[] SelectArchives()
     {

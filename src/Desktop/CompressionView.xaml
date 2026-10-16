@@ -113,10 +113,10 @@
             <TextBlock Grid.Row="2" Text="{Binding CompressionSourceSummary}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding SelectedCompressionSource.Path}" Margin="20,14,12,14"/>
           </Grid>
         </Border>
-        <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Padding="24" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0">
+        <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Padding="24,12,24,16" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0">
           <ScrollViewer x:Name="SettingsScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.IsSharedSizeScope="True">
-              <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}"/>
+              <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}" FontSize="18"/>
               <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
@@ -158,7 +158,7 @@
                     </DataTemplate>
                   </Label.ContentTemplate>
                 </Label>
-                <ComboBox Grid.Row="0" x:Name="FormatBox" SelectedIndex="{Binding CompressionFormat}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_5e30948d6a8b}" Margin="0,0,0,12" Grid.Column="2">
+                <ComboBox Grid.Row="0" x:Name="FormatBox" SelectedIndex="{Binding CompressionFormat}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_5e30948d6a8b}" Margin="0,0,0,12" Grid.Column="2" ToolTip="{Binding CompressionHint}">
                   <ComboBoxItem Content="7z"/>
                   <ComboBoxItem Content="ZIP"/>
                   <ComboBoxItem Content="TAR"/>
@@ -248,32 +248,8 @@
                         </Style>
                       </TextBlock.Style>
                     </TextBlock>
-                    <CheckBox x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}"/>
-                    <TextBlock Text="{Binding CompressionSfxHint}">
-                      <TextBlock.Style>
-                        <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding CompressionSfxHint}" Value="">
-                              <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-                      </TextBlock.Style>
-                    </TextBlock>
-                    <TextBlock Text="{Binding CompressionHint}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
-                    <StackPanel>
-                      <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                          <Setter Property="Visibility" Value="Collapsed"/>
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding CompressionEncrypt}" Value="True">
-                              <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-                      </StackPanel.Style>
-                      <CheckBox Content="{loc:Text T_6df0322e460d}" IsChecked="{Binding CompressionHeaders}" IsEnabled="{Binding Is7zCompression}"/>
-                    </StackPanel>
+                    <CheckBox x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}" ToolTip="{Binding CompressionSfxHint}" ToolTipService.ShowOnDisabled="True"/>
+                    <TextBlock Text="{loc:Text Compression.AdvancedAvailability}" Style="{StaticResource Secondary}" Margin="24,0,0,0"/>
                   </StackPanel>
                 </Expander>
               </Border>
