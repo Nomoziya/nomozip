@@ -107,6 +107,9 @@ jobs:
             if ($taskProcess.ExitCode -ne 0) { $taskProductFailed = $true; Write-Warning "Redesign validation failed: $taskLanguage" }
             $taskReport = Get-Content "artifacts/ui-redesign/$taskLanguage/report.json" -Raw | ConvertFrom-Json
             if (-not $taskReport.passed) { $taskProductFailed = $true; Write-Warning "Redesign report failed: $taskLanguage" }
+            Write-Host "$taskLanguage product checks: $($taskReport.checks.PSObject.Properties.Count)"
+            $taskReport.checks.PSObject.Properties | Where-Object { -not $_.Value } | ForEach-Object { Write-Warning "Failed check: $($_.Name)" }
+            if ($taskReport.error) { Write-Warning ($taskReport.error | ConvertTo-Json -Depth 5 -Compress) }
           }
           if ($taskProductFailed) { throw 'One or more product language validations failed.' }
       - name: Package the exact tested shared-runtime candidate

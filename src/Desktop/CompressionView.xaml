@@ -8,9 +8,9 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Border Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
-    <StackPanel Margin="24,36,24,20">
+    <StackPanel Margin="34,45,24,47" Height="38">
       <StackPanel Orientation="Horizontal">
-        <loc:FluentIcon Kind="Archive" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,12,0"/>
+        <loc:FluentIcon Kind="Archive" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0"/>
         <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/>
       </StackPanel>
     </StackPanel>
@@ -56,7 +56,7 @@
                 <TextBlock x:Name="DropHint" Text="{loc:Text Menu.SourceHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
               </WrapPanel>
             </Border>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="40" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable" SelectionMode="Extended" SelectionUnit="FullRow" PreviewMouseLeftButtonDown="OnSourceSelectionMouseDown">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding CompressionSources}" SelectedItem="{Binding SelectedCompressionSource}" RowHeight="36" AutomationProperties.Name="{loc:Text T_3514845d4419}" IsEnabled="{Binding IsIdle}" loc:RowActions.Enabled="True" loc:RowActions.DeleteCommand="{Binding RemoveCompressionSourceCommand}" x:Name="CompressionSourceTable" SelectionMode="Extended" SelectionUnit="FullRow" PreviewMouseLeftButtonDown="OnSourceSelectionMouseDown">
               <DataGrid.ContextMenu>
                 <ContextMenu x:Name="SourceContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_3514845d4419}">
                   <MenuItem x:Name="SourceAddFilesAction" Style="{StaticResource ContextActionItem}" Header="{loc:Text T_ad9daebe00dc}" Command="{Binding AddCompressionFilesCommand}"/>
