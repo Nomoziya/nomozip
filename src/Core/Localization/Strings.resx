@@ -3252,4 +3252,11 @@
 <data name="Extraction.RulesAndResume" xml:space="preserve"><value>解压规则与续作</value></data>
 <data name="Extraction.BatchFolder" xml:space="preserve"><value>每个压缩包建立独立文件夹</value></data>
   <data name="Checkpoint.ShortHint" xml:space="preserve"><value>以完整文件为检查点；不保存密码。</value></data>
+  <data name="Browser.GridView" xml:space="preserve"><value>网格视图</value></data>
+  <data name="Browser.ListView" xml:space="preserve"><value>列表视图</value></data>
+  <data name="Browser.Modified" xml:space="preserve"><value>修改时间</value></data>
+  <data name="Preview.OpenImage" xml:space="preserve"><value>打开</value></data>
+  <data name="Preview.OpenHint" xml:space="preserve"><value>在默认图片应用中打开临时副本；退出 nomozip 时尝试清理。</value></data>
+  <data name="Preview.Opened" xml:space="preserve"><value>已打开图片副本</value></data>
+  <data name="Preview.OpenFailed" xml:space="preserve"><value>无法打开图片；请检查默认图片应用。</value></data>
 </root>

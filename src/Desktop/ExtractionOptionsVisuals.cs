@@ -20,12 +20,12 @@ internal static class ExtractionOptionsVisuals
         var table=new DataGrid {Name="BatchArchiveTable",ItemsSource=view,IsSynchronizedWithCurrentItem=false,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=36,Height=Math.Clamp(view.Count*36+2,74,146),HeadersVisibility=DataGridHeadersVisibility.None,CanUserAddRows=false,BorderThickness=new Thickness(0)};
         System.Windows.Automation.AutomationProperties.SetName(table,UiText.Get("Extraction.BatchTitle"));
         var template=(DataTemplate)XamlReader.Parse("""
-          <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+          <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:ArchivePassword.Desktop;assembly=ArchivePassword">
             <DockPanel Margin="12,0,8,0">
               <Button DockPanel.Dock="Right" Tag="RemoveBatchArchive" Style="{DynamicResource SubtleButton}" Width="28" Height="28" MinHeight="28" Padding="6" Margin="8,0,0,0" FocusVisualStyle="{DynamicResource FocusStyle}">
                 <Path Data="M1,1 L11,11 M11,1 L1,11" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.2" Width="12" Height="12"/>
               </Button>
-              <Path DockPanel.Dock="Left" Data="M3,1 L14,1 L20,7 L20,27 L3,27 Z M14,1 L14,7 L20,7 M9,6 L11,6 M9,10 L11,10 M9,14 L11,14 M8,19 L12,19 L12,24 L8,24 Z" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.2" Width="18" Height="24" Stretch="Uniform" Margin="0,0,12,0"/>
+              <local:FileKindIcon DockPanel.Dock="Left" FileName="{Binding Path}" Width="18" Height="24" Margin="0,0,12,0"/>
               <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
             </DockPanel>
           </DataTemplate>

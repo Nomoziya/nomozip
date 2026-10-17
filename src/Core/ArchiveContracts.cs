@@ -1,6 +1,11 @@
 namespace ArchivePassword.Core;
 
-public sealed record ArchiveEntry(uint Index, string Path, ulong Size, bool Directory, bool Encrypted);
+public sealed record ArchiveEntry(uint Index, string Path, ulong Size, bool Directory, bool Encrypted)
+{
+    public long? ModifiedUtcFileTime {get;init;}
+    [System.Text.Json.Serialization.JsonIgnore]
+    public DateTime? ModifiedLocal {get {try {return ModifiedUtcFileTime is >0 and <=2650467743999999999 ? DateTime.FromFileTimeUtc(ModifiedUtcFileTime.Value).ToLocalTime():null;}catch(ArgumentException){return null;}}}
+}
 public sealed record EngineProgress(ulong Completed, ulong Total,bool? PausedState=null);
 public sealed record EngineFailure(uint Index, string Code, string Path = "");
 public sealed record EngineFormat(string Name, string Extensions);

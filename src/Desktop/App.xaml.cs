@@ -64,6 +64,7 @@ public partial class App : Application
     {
         SystemParameters.StaticPropertyChanged -= OnSystemParametersChanged;
         shellServer?.Dispose();
+        PreviewImageFiles.CleanupCurrent();
         base.OnExit(e);
     }
     protected override async void OnStartup(StartupEventArgs e)

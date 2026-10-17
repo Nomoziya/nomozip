@@ -87,7 +87,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                           </Grid.ColumnDefinitions>
-                          <Path Data="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" StrokeThickness="1.25" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False">
+                          <Path x:Name="NavigationIcon" Data="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" StrokeThickness="1.25" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False">
                             <Path.Style>
                               <Style TargetType="Path">
                                 <Style.Triggers>
@@ -154,7 +154,7 @@
           <ListBoxItem Content="{loc:Text Redesign.Files}" Tag="M3,7 L3,5 Q3,3 5,3 L9,3 L12,6 L20,6 Q22,6 22,8 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,8 Q2,7 3,7 L21,7" ToolTip="{loc:Text Redesign.Files}"/>
           <ListBoxItem Content="{loc:Text Redesign.Tasks}" Tag="M3,4 A1,1 0 1 1 3,6 A1,1 0 1 1 3,4 M3,11 A1,1 0 1 1 3,13 A1,1 0 1 1 3,11 M3,18 A1,1 0 1 1 3,20 A1,1 0 1 1 3,18 M8,5 L22,5 M8,12 L22,12 M8,19 L22,19" ToolTip="{loc:Text Redesign.Tasks}" Uid="Tasks"/>
           <ListBoxItem Content="{loc:Text T_9b54fb7636af}" Tag="M4,10 L20,10 L20,22 L4,22 Z M7,10 L7,6 A5,5 0 0 1 17,6 L17,10 M12,14 L12,18 M11,14 A1,1 0 1 1 13,14" ToolTip="{loc:Text T_9b54fb7636af}"/>
-          <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="M14,3 C11,2 8,4 8,8 C8,9 8.2,10 8.7,10.8 L2.8,16.7 C1.6,17.9 1.6,19.7 2.8,20.9 C4,22.1 5.8,22.1 7,20.9 L13,15 C14,15.4 15,15.4 16.1,15 C20,13.8 22,10 20.8,6.5 L17.3,10 L14,6.7 L17.5,3.2 C16.4,2.8 15.2,2.8 14,3 Z" ToolTip="{loc:Text Redesign.Tools}"/>
+          <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="M14.7,6.3 Q14,7 14.7,7.7 L16.3,9.3 Q17,10 17.7,9.3 L21.4,5.6 A6,6 0 0 1 13.4,13.4 L6.1,20.7 A2.1,2.1 0 0 1 3.1,17.7 L10.4,10.4 A6,6 0 0 1 18.4,2.4 Z" ToolTip="{loc:Text Redesign.Tools}"/>
         </ListBox>
       </DockPanel>
     </Border>
@@ -311,7 +311,7 @@
                               <ColumnDefinition Width="30"/>
                               <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M8,13 L8,21 M12,13 L12,21" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.25" VerticalAlignment="Center"/>
+                            <loc:FileKindIcon FileName="{Binding Path}" Width="21" Height="26" Margin="0" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
                               <TextBlock Text="{Binding Name}" Style="{StaticResource BodyText}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                               <TextBlock Text="{Binding OperationLabel}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0" ToolTip="{Binding SizeText}"/>
@@ -433,7 +433,7 @@
                       <ColumnDefinition Width="*"/>
                       <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <Path Data="M3,1 L22,1 L34,13 L34,43 L3,43 Z M22,1 L22,13 L34,13 M12,23 L12,35 M20,23 L20,35" Width="34" Height="44" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,4,0,0"/>
+                    <loc:FileKindIcon FileName="{Binding Path}" Width="34" Height="44" Margin="0,4,0,0" VerticalAlignment="Center"/>
                     <StackPanel Margin="52,0,20,0" VerticalAlignment="Center">
                       <TextBlock Text="{Binding SelectedTask.Name}" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
                       <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
@@ -1432,7 +1432,7 @@
           <Border Background="{DynamicResource SurfaceBrush}">
             <Grid>
               <StackPanel x:Name="FilesEmptyState" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480" Margin="24">
-                <Path Data="M5,1 L30,1 L44,15 L44,53 L5,53 Z M30,1 L30,15 L44,15 M18,8 L23,8 M18,14 L23,14 M18,20 L23,20 M18,26 L23,26 M25,38 A5,5 0 1 1 15,38 A5,5 0 1 1 25,38" Width="48" Height="56" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" Margin="0,0,0,24"/>
+                <loc:FileKindIcon FileName="archive.zip" Width="48" Height="56" Margin="0,0,0,24" VerticalAlignment="Center"/>
                 <TextBlock Text="{loc:Text Redesign.EmptyTitle}" Style="{StaticResource SectionTitle}" TextAlignment="Center" TextWrapping="Wrap"/>
                 <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,0">
                   <Button Click="OnOpenArchive" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" IsEnabled="{Binding IsIdle}" Margin="0,0,12,0" AutomationProperties.Name="{loc:Text Redesign.OpenArchive}">

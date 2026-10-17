@@ -17,15 +17,33 @@ public sealed class ArchivePreviewViewModel : ObservableObject
     public long Bytes {get;private set;}
     public string SizeText=>Bytes>=1048576?$"{Bytes/1048576.0:0.#} MB":Bytes>=1024?$"{Bytes/1024.0:0.#} KB":$"{Bytes} B";
     public string Message {get;private set;}="";
+    private byte[]? imageBytes;
+    private bool cleared;
+    private string openMessage="";
+    public string StatusText=>openMessage.Length>0?openMessage:UiText.Get(HasError?"Preview.Notice":"Preview.Loaded");
+    public string ModifiedText {get;private set;}="—";
+    public System.Windows.Input.ICommand OpenImageCommand {get;}
+    internal Func<string,byte[],Task<string>> ImageOpener {get;set;}=(name,bytes)=>PreviewImageFiles.Current.OpenAsync(name,bytes);
     public bool IsText=>Picture is null && Message.Length==0;
     public bool IsImage=>Picture is not null;
     public bool HasError=>Message.Length>0;
-    private ArchivePreviewViewModel(string path)=>EntryPath=path;
+    private ArchivePreviewViewModel(string path)
+    {
+        EntryPath=path;
+        OpenImageCommand=new AsyncCommand(async()=>
+        {
+            var copy=imageBytes!.ToArray();
+            try {await ImageOpener(EntryName,copy);if(!cleared){openMessage=UiText.Get("Preview.Opened");Changed(nameof(StatusText));}}
+            catch(Exception error) when(error is IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or InvalidOperationException)
+            {if(!cleared){openMessage=UiText.Get("Preview.OpenFailed");Changed(nameof(StatusText));}}
+            finally {System.Security.Cryptography.CryptographicOperations.ZeroMemory(copy);}
+        },()=>!cleared && IsImage && imageBytes is not null);
+    }
     public static async Task<ArchivePreviewViewModel> CreateAsync(ArchiveEntry entry,byte[] bytes,CancellationToken token=default)
         =>await Task.Run(()=>Decode(entry,bytes,token),token);
     internal static ArchivePreviewViewModel Decode(ArchiveEntry entry,byte[] bytes,CancellationToken token=default)
     {
-        var model=new ArchivePreviewViewModel(entry.Path){Bytes=bytes.Length};
+        var model=new ArchivePreviewViewModel(entry.Path){Bytes=bytes.Length,ModifiedText=entry.ModifiedLocal?.ToString("yyyy/MM/dd HH:mm") ?? "—"};
         try
         {
             token.ThrowIfCancellationRequested();
@@ -53,6 +71,7 @@ public sealed class ArchivePreviewViewModel : ObservableObject
                 var stride=checked(width*4);var pixels=new byte[checked(stride*height)];converted.CopyPixels(pixels,stride,0);
                 token.ThrowIfCancellationRequested();
                 model.Picture=BitmapSource.Create(width,height,96,96,PixelFormats.Pbgra32,null,pixels,stride);model.Picture.Freeze();
+                model.imageBytes=bytes.ToArray();
                 model.Details=UiText.Format("Preview.ImageDetails",width,height,bytes.Length);
                 if(Path.GetExtension(entry.Path).Equals(".gif",StringComparison.OrdinalIgnoreCase)) model.Details+=" · "+UiText.Get("Preview.FirstFrame");
             }
@@ -62,5 +81,5 @@ public sealed class ArchivePreviewViewModel : ObservableObject
         {model.Message=UiText.Get("Preview.ImageInvalid");}
         return model;
     }
-    internal void Clear() {Text="";Picture=null;Changed(nameof(Text));Changed(nameof(Picture));}
+    internal void Clear() {cleared=true;Text="";Picture=null;if(imageBytes is not null)System.Security.Cryptography.CryptographicOperations.ZeroMemory(imageBytes);imageBytes=null;Changed(nameof(Text));Changed(nameof(Picture));System.Windows.Input.CommandManager.InvalidateRequerySuggested();}
 }
