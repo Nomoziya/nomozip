@@ -28,23 +28,23 @@ jobs:
         with:
           global-json-file: global.json
       - name: Build independent shared-runtime prototype
-        run: dotnet publish prototypes/UiNext/UiNext.csproj -c Release -o artifacts/ui-next-prototype/app --no-self-contained --nologo -m:1 -nr:false
+        run: dotnet publish prototypes/UiOption2/UiOption2.csproj -c Release -o artifacts/ui-option2-prototype/app --no-self-contained --nologo -m:1 -nr:false
       - name: Capture running WPF prototype using generated archive only
         run: |
-          $taskOutput = Join-Path $PWD 'artifacts/ui-next-prototype/evidence'
-          $taskProcess = Start-Process ./artifacts/ui-next-prototype/app/nomozip-design-preview.exe -ArgumentList @('--capture', $taskOutput) -WindowStyle Hidden -Wait -PassThru
+          $taskOutput = Join-Path $PWD 'artifacts/ui-option2-prototype/evidence'
+          $taskProcess = Start-Process ./artifacts/ui-option2-prototype/app/nomozip-option-two.exe -ArgumentList @('--capture', $taskOutput) -WindowStyle Hidden -Wait -PassThru
           if ($taskProcess.ExitCode -ne 0) { throw 'Core visual prototype validation failed.' }
           $taskReport = Get-Content (Join-Path $taskOutput 'report.json') -Raw | ConvertFrom-Json
           if (-not $taskReport.passed) { throw 'Core visual prototype report failed.' }
       - name: Package exact prototype bytes
-        run: Compress-Archive -Path artifacts/ui-next-prototype/app/* -DestinationPath artifacts/nomozip-ui-next-prototype-x64.zip
+        run: Compress-Archive -Path artifacts/ui-option2-prototype/app/* -DestinationPath artifacts/nomozip-ui-option2-prototype-x64.zip
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: ui-next-core-prototype
+          name: ui-option2-core-prototype
           path: |
-            artifacts/ui-next-prototype/evidence/**/*
-            artifacts/nomozip-ui-next-prototype-x64.zip
+            artifacts/ui-option2-prototype/evidence/**/*
+            artifacts/nomozip-ui-option2-prototype-x64.zip
           if-no-files-found: error
   ui:
     if: github.event.inputs.scope == 'product'
