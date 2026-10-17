@@ -111,6 +111,8 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         {row.ShowPath=search.Length>0;VisibleRows.Add(row);}
         Changed(nameof(Summary));Changed(nameof(CompactSummary));Changed(nameof(VisibleSelection));
     }
+    private bool gridView;
+    public bool GridView {get=>gridView;set=>Set(ref gridView,value);}
     private string currentFolder="";
     public string CurrentFolder=>currentFolder;
     public string ArchiveLocation=>System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(ArchivePath))) is {Length:>0} name?name:System.IO.Path.GetPathRoot(System.IO.Path.GetFullPath(ArchivePath)) ?? "";
@@ -280,5 +282,6 @@ public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=fals
     public string Path => entry.Path;
     public string Kind => FileKindIcon.TypeDescription(Path,entry.Directory);
     public string SizeText => entry.Directory ? "—" : entry.Size < 1024 ? $"{entry.Size} B" : entry.Size < 1024 * 1024 ? $"{entry.Size / 1024.0:0.#} KB" : entry.Size < 1024ul * 1024 * 1024 ? $"{entry.Size / (1024.0 * 1024):0.#} MB" : $"{entry.Size / (1024.0 * 1024 * 1024):0.#} GB";
+    public string ModifiedText=>entry.ModifiedLocal?.ToString("yyyy/MM/dd HH:mm") ?? "—";
     public string EncryptionText => entry.Directory?"—":entry.Encrypted ? UiText.Get("T_b66975fbd35f") : UiText.Get("T_7c568abbd672");
 }

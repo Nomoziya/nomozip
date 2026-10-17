@@ -3252,4 +3252,11 @@ A password is required to validate the archive data.</value>
 <data name="Extraction.RulesAndResume" xml:space="preserve"><value>Rules and resume</value></data>
 <data name="Extraction.BatchFolder" xml:space="preserve"><value>Create a separate folder for each archive</value></data>
   <data name="Checkpoint.ShortHint" xml:space="preserve"><value>Checkpoints use complete files; passwords are not saved.</value></data>
+  <data name="Browser.GridView" xml:space="preserve"><value>Grid view</value></data>
+  <data name="Browser.ListView" xml:space="preserve"><value>List view</value></data>
+  <data name="Browser.Modified" xml:space="preserve"><value>Modified</value></data>
+  <data name="Preview.OpenImage" xml:space="preserve"><value>Open</value></data>
+  <data name="Preview.OpenHint" xml:space="preserve"><value>Open a temporary copy in your default image app. nomozip tries to remove it on exit.</value></data>
+  <data name="Preview.Opened" xml:space="preserve"><value>Image copy opened</value></data>
+  <data name="Preview.OpenFailed" xml:space="preserve"><value>Could not open the image. Check your default image app.</value></data>
 </root>

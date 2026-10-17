@@ -477,7 +477,15 @@ static json run(json& request, const wchar_t* dllPath) {
     }
     if (operation == "list") {
         json items = json::array();
-        for (UInt32 index = 0; index < itemCount && !cancelled; ++index) items.push_back({{"index", index}, {"path", utf8(itemPath(archive.ptr, index, context.archivePath))}, {"size", property(archive.ptr, index, kpidSize).number()}, {"directory", property(archive.ptr, index, kpidIsDir).boolean()}, {"encrypted", property(archive.ptr, index, kpidEncrypted).boolean()}});
+        for (UInt32 index = 0; index < itemCount && !cancelled; ++index) {
+            json item={{"index", index}, {"path", utf8(itemPath(archive.ptr, index, context.archivePath))}, {"size", property(archive.ptr, index, kpidSize).number()}, {"directory", property(archive.ptr, index, kpidIsDir).boolean()}, {"encrypted", property(archive.ptr, index, kpidEncrypted).boolean()}};
+            auto modified=property(archive.ptr,index,kpidMTime);
+            if(modified.value.vt==VT_FILETIME) {
+                ULARGE_INTEGER time{};time.LowPart=modified.value.filetime.dwLowDateTime;time.HighPart=modified.value.filetime.dwHighDateTime;
+                if(time.QuadPart>0 && time.QuadPart<=2650467743999999999ULL)item["modifiedUtcFileTime"]=time.QuadPart;
+            }
+            items.push_back(std::move(item));
+        }
         archive->Close();
         return {{"kind", "result"}, {"status", cancelled ? "cancelled" : "success"}, {"format", utf8(usedFormat)}, {"items", items},{"sourcePaths",context.Sources()}};
     }
