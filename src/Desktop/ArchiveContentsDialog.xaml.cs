@@ -19,7 +19,7 @@ public partial class ArchiveContentsDialog : Window
             var narrow=Window.GetWindow(EntryTable)?.ActualWidth<960;
             if(EntryTable.ActualWidth>0)
             {
-                var detailWidth=ArchivePassword.Core.UiText.LanguageCode=="en"?112d:88d;
+                var detailWidth=ArchivePassword.Core.UiText.LanguageCode=="en"?128d:88d;
                 var showEncryption=!narrow && EntryTable.ActualWidth>=680;
                 EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
                 EntryTable.Columns[5].Visibility=showEncryption?Visibility.Visible:Visibility.Collapsed;
