@@ -28,7 +28,8 @@ public partial class ArchiveContentsDialog : Window
                 foreach (var (index, width) in new[] { (0,54d), (2,compactPreview ? 94d : 103d), (3,detailWidth), (4,171d), (5,detailWidth) })
                 { EntryTable.Columns[index].MinWidth = width; EntryTable.Columns[index].Width = width; }
                 EntryTable.Columns[1].MinWidth = 130;
-                EntryTable.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                var fixedWidth = 54 + (compactPreview ? 94 : 103) + (compactPreview ? 0 : detailWidth) + (narrow ? 0 : 171) + (showEncryption ? detailWidth : 0);
+                EntryTable.Columns[1].Width = Math.Max(130, EntryTable.ActualWidth - fixedWidth - 18);
             }
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
             EditContentsButton.Visibility = compactPreview ? Visibility.Collapsed : Visibility.Visible;

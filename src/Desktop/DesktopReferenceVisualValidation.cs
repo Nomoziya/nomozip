@@ -84,12 +84,19 @@ internal static class DesktopReferenceVisualValidation
             var cover = contents.VisibleRows.Single(row => row.DisplayName == "封面.jpg"); cover.Selected = true; contents.CurrentRow = cover; contents.PreviewCommand.Execute(null); await Until(() => !contents.IsWorking && window.PreviewHost.Content is FrameworkElement); await Layout();
             check("reference image decoded through the actual preview service", ((ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext).PixelDimensions.Contains("1280") && ((ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext).PixelDimensions.Contains("848"));
             var table = Descendants(content).OfType<DataGrid>().Single(value => value.Name == "EntryTable");
-            var view = CollectionViewSource.GetDefaultView(table.ItemsSource); view.SortDescriptions.Clear(); view.SortDescriptions.Add(new SortDescription("Entry.Size", ListSortDirection.Ascending)); table.Columns[2].SortDirection = ListSortDirection.Ascending;
+            var view = CollectionViewSource.GetDefaultView(table.ItemsSource); view.SortDescriptions.Clear();
+            // CI-only visual fixture ordering matches the adopted original screenshot; normal product sorting is not changed.
+            string[] approvedOrder = ["旅行照片","家庭相册","封面.jpg","说明.txt","照片001.jpg","照片002.jpg","照片003.jpg","照片004.jpg","旅行路线.jpg","合照.jpg","酒店预订信息.pdf","费用清单.csv"];
+            for(var index=0;index<approvedOrder.Length;index++) contents.VisibleRows.Move(contents.VisibleRows.IndexOf(contents.VisibleRows.Single(row=>row.DisplayName==approvedOrder[index])),index);
+            foreach(var column in table.Columns)column.SortDirection=null;
+            await Layout();
+            Capture("reference-file-browser-aligned.png", "same 1152x768, ZIP payload, selected cover and CI-arranged collection order as core-967175a/01-reference-light-1152.png; product default ordering unchanged");
+            view.SortDescriptions.Add(new SortDescription("Entry.Size", ListSortDirection.Ascending)); table.Columns[2].SortDirection = ListSortDirection.Ascending;
             await Layout(); check("reference viewport is exact and preview width matches approved baseline", window.ActualWidth == 1152 && window.ActualHeight == 768 && window.PreviewColumn.Width.Value == 350);
-            Capture("reference-file-browser-light.png", "same album and size ascending as core-967175a/10-size-sorted.png");
+            Capture("reference-file-browser-light.png", "1152x768 / same album / actual size ascending; core 10-size-sorted is 800x600 without preview, so this is not an identical-state pair");
             theme.SetMode("dark"); await Layout(); Capture("reference-file-browser-dark.png", "same album / selected cover / dark");
             theme.SetMode("light"); window.MinWidth = 800; window.Width = 800; window.Height = 600; await Layout();
-            check("minimum window keeps preview, extraction and compact navigation reachable", window.ArchivePreviewPane.IsVisible && window.ReferenceCompactMenu.IsVisible && window.PreviewColumn.Width.Value == 300);
+            check("minimum window keeps preview, extraction and compact navigation reachable", table.Columns[1].ActualWidth >= 320 && window.ArchivePreviewPane.IsVisible && window.ReferenceCompactMenu.IsVisible && window.PreviewColumn.Width.Value == 300);
             Capture("reference-file-browser-narrow.png", "800 by 600 / same selected cover");
         }
         finally

@@ -8,7 +8,7 @@
       </Grid.RowDefinitions>
       <ScrollViewer x:Name="DetailScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel x:Name="Editor" IsEnabled="{Binding IsIdle}">
-          <TextBlock x:Name="Heading" Text="{loc:Text Redesign.VaultDetails}" Margin="0,0,0,18" Style="{StaticResource WorkspaceSectionTitle}"/>
+          <TextBlock x:Name="Heading" TextWrapping="Wrap" Text="{loc:Text Redesign.VaultDetails}" Margin="0,0,0,18" Style="{StaticResource WorkspaceSectionTitle}"/>
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition x:Name="VaultFieldLabelColumn" Width="76"/>
