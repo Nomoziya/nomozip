@@ -14,7 +14,7 @@ internal static class Capture
     {
         if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") throw new InvalidOperationException("Isolated CI required.");
         var output = Path.GetFullPath(outputDirectory); Directory.CreateDirectory(output);
-        var checks = new Dictionary<string, bool>(); var pictures = new List<object>(); var frames = new List<BitmapFrame>(); var motionValues = new List<double>(); string? error = null;
+        var checks = new Dictionary<string, bool>(); var pictures = new List<object>(); var frames = new List<BitmapFrame>(); var motionValues = new List<double>(); string? error = null; object? sorting = null;
         void Check(string name, bool passed) => checks.Add(name, passed);
         async Task Layout(int delay = 80) { await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.ApplicationIdle); await Task.Delay(delay); }
         BitmapSource Render(FrameworkElement visual, double scale = 1)
@@ -60,7 +60,8 @@ internal static class Capture
             var folder = window.Model.Entries.First(row => row.Name == "旅行照片"); window.Model.Navigate(folder); await Layout();
             Check("directory navigation filters actual nested entry", window.Model.VisibleEntries.Cast<Entry>().Single().Name == "山间湖泊.jpg"); window.Model.Navigate();
             window.Model.Sort(nameof(Entry.Name), System.ComponentModel.ListSortDirection.Ascending);
-            Check("name sorting affects displayed entries", window.Model.VisibleEntries.Cast<Entry>().Select(row => row.Name).SequenceEqual(window.Model.VisibleEntries.Cast<Entry>().OrderBy(row => row.Name, StringComparer.CurrentCulture).Select(row => row.Name)));
+            sorting = new { collectionCulture = window.Model.VisibleEntries.Culture.Name, threadCulture = System.Globalization.CultureInfo.CurrentCulture.Name, displayedNames = window.Model.VisibleEntries.Cast<Entry>().Select(row => row.Name).ToArray() };
+            Check("name sorting follows current UI collection culture", window.Model.VisibleEntries.Cast<Entry>().Select(row => row.Name).SequenceEqual(window.Model.VisibleEntries.Cast<Entry>().OrderBy(row => row.Name, StringComparer.Create(window.Model.VisibleEntries.Culture, false)).Select(row => row.Name)));
             window.Model.VisibleEntries.SortDescriptions.Clear(); window.Model.CurrentEntry = window.Model.Entries.Single(row => row.Name == "封面.jpg");
             window.MinWidth = 1152; window.Width = 1152; window.Height = 768; window.ShowPreview(); await Layout();
             window.ApplyMotion(false, true); window.SetPose(0, "准备解压"); window.ApplyMotion(true, true); window.SetPose(62, "正在解压");
@@ -87,7 +88,7 @@ internal static class Capture
         }
         catch (Exception exception) { error = exception.ToString(); }
         var passed = error is null && checks.Values.All(value => value); var gifPath = Path.Combine(output, "07-extraction-motion.gif");
-        await File.WriteAllTextAsync(Path.Combine(output, "report.json"), JsonSerializer.Serialize(new { passed, checks, error, sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA"), pictures,
+        await File.WriteAllTextAsync(Path.Combine(output, "report.json"), JsonSerializer.Serialize(new { passed, checks, error, sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA"), pictures, sorting,
             animation = new { frames = frames.Count, frameDelayMs = 100, sha256 = File.Exists(gifPath) ? Hash(gifPath) : null, motionValues, systemClientAreaAnimation = SystemParameters.ClientAreaAnimation, preferenceSimulatedOnInIsolatedCi = true },
             font = ((FontFamily)Application.Current.Resources["UiFont"]).Source, reference = "concepts-2026-10-16/02-archive-browser-preview.png", scope = "x64 standalone WPF reference reproduction; generated ZIP, memory-only paced extraction; no production services", userApproved = false, physicalDpiAccepted = false }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;

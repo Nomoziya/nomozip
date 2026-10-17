@@ -13,7 +13,7 @@ namespace Nomozip.DesignPreview;
 public partial class MainWindow : Window
 {
     private CancellationTokenSource? demoCancellation;
-    private bool paused, requestedMotion = true, previewRequested = true, sortAscending = true;
+    private bool paused, requestedMotion = true, previewRequested = true, sortAscending = false;
     private Entry? preview;
     public bool IsRunning { get; private set; }
     public bool MotionEnabled => Progress.MotionEnabled;
@@ -92,7 +92,7 @@ public partial class MainWindow : Window
         RailColumn.Width = new GridLength(compact ? 0 : 186); NavigationRail.Visibility = compact ? Visibility.Collapsed : Visibility.Visible; CompactNavigation.Visibility = compact ? Visibility.Visible : Visibility.Collapsed;
         SearchColumn.Width = new GridLength(compact ? 230 : 286);
         PreviewPane.Visibility = previewRequested ? Visibility.Visible : Visibility.Collapsed; PreviewColumn.Width = new GridLength(previewRequested ? (compact ? 300 : 350) : 0);
-        SizeWidth = new GridLength(narrowPreview ? 74 : 103); TypeWidth = new GridLength(narrowPreview ? 0 : 113); DateWidth = new GridLength(compact ? 0 : 171);
+        SizeWidth = new GridLength(narrowPreview ? 94 : 103); TypeWidth = new GridLength(narrowPreview ? 0 : 113); DateWidth = new GridLength(compact ? 0 : 171);
         SizeHeaderColumn.Width = SizeWidth; TypeHeaderColumn.Width = TypeWidth; DateHeaderColumn.Width = DateWidth;
         MoreButton.Visibility = narrowPreview ? Visibility.Collapsed : Visibility.Visible;
     }
