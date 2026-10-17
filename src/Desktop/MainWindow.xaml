@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+﻿<?xml version="1.0" ?>
 <Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ArchivePassword.Desktop" x:Class="ArchivePassword.Desktop.MainWindow" Style="{StaticResource AppWindow}" Title="nomozip" Width="1040" Height="720" MinWidth="800" MinHeight="600" WindowStartupLocation="CenterScreen" AllowDrop="True" Drop="OnDrop" Closing="OnClosing">
   <Window.Resources>
     <local:PasswordMetadataConverter x:Key="PasswordMetadata"/>
@@ -420,7 +420,7 @@
                                 </Style>
                               </Button.Style>
                             </Button>
-                            <Button Click="OnTaskMore" Padding="6" Margin="4,0,0,0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><Path Data="M2,5 A1,1 0 1 1 2,7 A1,1 0 1 1 2,5 M8,5 A1,1 0 1 1 8,7 A1,1 0 1 1 8,5 M14,5 A1,1 0 1 1 14,7 A1,1 0 1 1 14,5" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="16" Height="12"/></Button>
+                            <Button Click="OnTaskMore" Padding="6" Margin="4,0,0,0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><Path Data="M2,4 A1.4,1.4 0 1 1 2,6.8 A1.4,1.4 0 1 1 2,4 M8,4 A1.4,1.4 0 1 1 8,6.8 A1.4,1.4 0 1 1 8,4 M14,4 A1.4,1.4 0 1 1 14,6.8 A1.4,1.4 0 1 1 14,4" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="16" Height="12"/></Button>
                           </StackPanel>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
@@ -585,7 +585,7 @@
                         <TextBlock x:Name="ExtractionRuleDescription" Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
                         <Button x:Name="ExtractionRulesAction" Style="{StaticResource SubtleButton}" Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,8,0,12"/>
                         <CheckBox x:Name="RetainProgressChoice" Content="{loc:Text Checkpoint.Enable}" IsChecked="{Binding RetainExtractionProgress}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text Checkpoint.Enable}" ToolTip="{loc:Text Checkpoint.Hint}"/>
-                        <TextBlock Text="{loc:Text Checkpoint.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,12"/>
+                        <TextBlock x:Name="ExtractionRetainHint" Text="{loc:Text Checkpoint.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,12"/>
                         <TextBlock x:Name="ExtractionVaultSummary" Text="{Binding VaultSummary}" Style="{StaticResource Secondary}"/>
                       </StackPanel>
                     </Expander>

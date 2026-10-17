@@ -197,17 +197,17 @@ public partial class MainWindow
     {
         if(!batch)return ()=>{};
         var advanced=(StackPanel)ExtractionAdvancedOptions.Content;
-        var header=ExtractionAdvancedOptions.Header;var expanded=ExtractionAdvancedOptions.IsExpanded;var folderLabel=ExtractionFolderChoice.Content;
+        var header=ExtractionAdvancedOptions.Header;var expanded=ExtractionAdvancedOptions.IsExpanded;var folderLabel=ExtractionFolderChoice.Content;var retainHint=ExtractionRetainHint.Text;var retainMargin=RetainProgressChoice.Margin;
         var controls=new FrameworkElement[]{ExtractionConflictPanel,ExtractionAutoTryChoice,ExtractionRuleDescription,ExtractionRulesAction,ExtractionVaultSummary};
         var positions=controls.Select(control=>(Control:control,Parent:(Panel)control.Parent,Index:((Panel)control.Parent).Children.IndexOf(control))).ToArray();
         var extraContent=new StackPanel();var extra=new Expander {Header=UiText.Get("Redesign.Advanced"),Content=extraContent,Margin=new Thickness(0,4,0,0)};
         foreach(var item in positions){item.Parent.Children.Remove(item.Control);extraContent.Children.Add(item.Control);}
-        advanced.Children.Add(extra);ExtractionAdvancedOptions.Header=UiText.Get("Extraction.RulesAndResume");ExtractionAdvancedOptions.IsExpanded=true;ExtractionFolderChoice.Content=UiText.Get("Extraction.BatchFolder");
+        advanced.Children.Add(extra);ExtractionAdvancedOptions.Header=UiText.Get("Extraction.RulesAndResume");ExtractionAdvancedOptions.IsExpanded=true;ExtractionFolderChoice.Content=UiText.Get("Extraction.BatchFolder");ExtractionRetainHint.Text=UiText.Get("Checkpoint.ShortHint");ExtractionRetainHint.ToolTip=retainHint;RetainProgressChoice.Margin=new Thickness(24,0,0,0);
         return ()=>
         {
             advanced.Children.Remove(extra);
             foreach(var item in positions.OrderBy(item=>item.Index)) {extraContent.Children.Remove(item.Control);item.Parent.Children.Insert(Math.Min(item.Index,item.Parent.Children.Count),item.Control);}
-            ExtractionAdvancedOptions.Header=header;ExtractionAdvancedOptions.IsExpanded=expanded;ExtractionFolderChoice.Content=folderLabel;
+            ExtractionAdvancedOptions.Header=header;ExtractionAdvancedOptions.IsExpanded=expanded;ExtractionFolderChoice.Content=folderLabel;ExtractionRetainHint.Text=retainHint;ExtractionRetainHint.ToolTip=null;RetainProgressChoice.Margin=retainMargin;
         };
     }
     internal void OnPrepareExtraction(object sender, RoutedEventArgs e)

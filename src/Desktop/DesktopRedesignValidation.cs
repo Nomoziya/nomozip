@@ -280,6 +280,7 @@ internal static class DesktopRedesignValidation
                     foreach(var appearance in new[]{"light","dark"}) {theme.SetMode(appearance);dialog.UpdateLayout();dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(folder,"extraction-batch-"+appearance+".png"),1,clientOnly:true);dialog.Opacity=0;}
                     var previewTexts=VisualDescendants((DependencyObject)window.ExtractionOutputPreview.Content).OfType<TextBlock>().Select(value=>value.Text).ToArray();
                     Check("batch preview shows rule-based archive destinations",previewTexts.Any(text=>text.Contains(Path.GetFullPath(Path.Combine(model.OutputPath,"sample")),StringComparison.Ordinal)) && previewTexts.Any(text=>text.Contains(Path.GetFullPath(Path.Combine(model.OutputPath,"third")),StringComparison.Ordinal)));
+                    Check("batch resume explanation is fully visible without scrolling",window.ExtractionRetainHint.TransformToAncestor(window.SettingsScroll).TransformBounds(new Rect(window.ExtractionRetainHint.RenderSize)).Bottom<=window.SettingsScroll.ActualHeight+1);
                     var batchTable=VisualDescendants((DependencyObject)dialog.Content).OfType<DataGrid>().Single(value=>value.Name=="BatchArchiveTable");
                     var remove=VisualDescendants(batchTable).OfType<Button>().Single(value=>value.Tag as string=="RemoveBatchArchive" && value.DataContext is ArchiveTaskRow row && row.Path==thirdArchive);
                     remove.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));dialog.UpdateLayout();

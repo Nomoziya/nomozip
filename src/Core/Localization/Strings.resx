@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><root>
+﻿<?xml version="1.0" ?><root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -3251,4 +3251,5 @@
 <data name="Extraction.EstimatedPath" xml:space="preserve"><value>预计位置：{0}</value></data>
 <data name="Extraction.RulesAndResume" xml:space="preserve"><value>解压规则与续作</value></data>
 <data name="Extraction.BatchFolder" xml:space="preserve"><value>每个压缩包建立独立文件夹</value></data>
+  <data name="Checkpoint.ShortHint" xml:space="preserve"><value>以完整文件为检查点；不保存密码。</value></data>
 </root>

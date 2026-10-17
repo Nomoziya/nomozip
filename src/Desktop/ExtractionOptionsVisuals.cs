@@ -83,7 +83,7 @@ internal static class ExtractionOptionsVisuals
                     }
                 }
                 catch(Exception exception) when(exception is ArgumentException or IOException or UnauthorizedAccessException or NotSupportedException) {invalid=true;path=UiText.Get("Settings.InvalidOutput");}
-                var item=new DockPanel {Margin=new Thickness(0,0,0,2)};if(batch){var icon=new FileKindIcon {Width=16,Height=16,IsDirectory=true,Margin=new Thickness(0,0,8,0)};DockPanel.SetDock(icon,Dock.Left);item.Children.Add(icon);}item.Children.Add(new TextBlock {Text=batch?path:UiText.Format("Extraction.EstimatedPath",path),ToolTip=path,TextTrimming=TextTrimming.CharacterEllipsis,Style=(Style)Application.Current.FindResource("Secondary")});paths.Children.Add(item);
+                var item=new DockPanel {Margin=new Thickness(0,0,0,2)};if(batch){var icon=new FileKindIcon {Width=16,Height=16,IsDirectory=true,Margin=new Thickness(0,0,8,0)};DockPanel.SetDock(icon,Dock.Left);item.Children.Add(icon);}item.Children.Add(new TextBlock {Text=batch?path:UiText.Format("Extraction.EstimatedPath",path),ToolTip=path,TextWrapping=TextWrapping.NoWrap,TextTrimming=TextTrimming.CharacterEllipsis,Style=(Style)Application.Current.FindResource("Secondary")});paths.Children.Add(item);
             }
             hint.Text=UiText.Get(invalid?"Settings.InvalidOutput":pending?"Extraction.PreviewPending":"Extraction.PreviewEstimated");
             hint.Visibility=invalid || pending?Visibility.Visible:Visibility.Collapsed;

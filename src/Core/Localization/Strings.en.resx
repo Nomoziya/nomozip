@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><root>
+﻿<?xml version="1.0" ?><root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -3251,4 +3251,5 @@ A password is required to validate the archive data.</value>
 <data name="Extraction.EstimatedPath" xml:space="preserve"><value>Estimated location: {0}</value></data>
 <data name="Extraction.RulesAndResume" xml:space="preserve"><value>Rules and resume</value></data>
 <data name="Extraction.BatchFolder" xml:space="preserve"><value>Create a separate folder for each archive</value></data>
+  <data name="Checkpoint.ShortHint" xml:space="preserve"><value>Checkpoints use complete files; passwords are not saved.</value></data>
 </root>
