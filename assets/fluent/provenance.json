@@ -283,6 +283,41 @@
       "file": "folder_add.svg",
       "sha256": "cd3f4b271eb744513906a76684d7a3993e6fba41d5a594c92fd88ae84b975436",
       "resourceKey": "Icon.FolderAdd"
+    },
+    {
+      "name": "Error Circle",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Error%20Circle/SVG/ic_fluent_error_circle_20_regular.svg",
+      "sha256": "fcc37b8366fc8d0c31457cd1299807dff0f00fe7ef2c944ea2744c200ab0c7c9",
+      "file": "error_circle.svg",
+      "resourceKey": "Icon.ErrorCircle"
+    },
+    {
+      "name": "Warning",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Warning/SVG/ic_fluent_warning_20_regular.svg",
+      "sha256": "c3bdfef09229240562268d03a5036cdd8185b7d25c2f21f572add0f3aeb62eb2",
+      "file": "warning.svg",
+      "resourceKey": "Icon.Warning"
+    },
+    {
+      "name": "Clock",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Clock/SVG/ic_fluent_clock_20_regular.svg",
+      "sha256": "a8330d82a8701f240a5e92fabadb6f73a4179f5980c7e329440f542ceb8deee2",
+      "file": "clock.svg",
+      "resourceKey": "Icon.Clock"
+    },
+    {
+      "name": "Desktop",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Desktop/SVG/ic_fluent_desktop_20_regular.svg",
+      "sha256": "07c553f0bc7c79deec787f4c8eda5276873f80241a7970e38cba88620ba9f046",
+      "file": "desktop.svg",
+      "resourceKey": "Icon.Desktop"
+    },
+    {
+      "name": "Chevron Right",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Chevron%20Right/SVG/ic_fluent_chevron_right_20_regular.svg",
+      "sha256": "212c611689abb60d2cd56d868e070e44a4c4fbe1d4392622040d1d10a46463e2",
+      "file": "chevron_right.svg",
+      "resourceKey": "Icon.ChevronRight"
     }
   ]
 }

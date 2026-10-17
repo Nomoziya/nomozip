@@ -10,7 +10,7 @@ public partial class ExtractionFailureDialog : Window
     public ExtractionFailureDialog(string archiveName, EngineResult failure,bool testing=false)
     {
         InitializeComponent();
-        if(failure.IsSuccess) {ResultIcon.Data=System.Windows.Media.Geometry.Parse("M7,14 L12,19 L21,9");ResultBackground.SetResourceReference(System.Windows.Shapes.Shape.FillProperty,"SuccessBrush");}
+        if(failure.IsSuccess) {ResultIcon.Kind="CheckmarkCircle";ResultIcon.SetResourceReference(System.Windows.Controls.Control.ForegroundProperty,"SuccessBrush");}
         ArchiveName.Text = archiveName; ArchiveName.ToolTip = archiveName;
         ResultSummary.Text = UiText.Format("T_825e66873fc3", failure.SuccessfulItems, failure.Failures.Count);
         if(testing)

@@ -9,12 +9,7 @@
       <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
           <DockPanel Margin="0,0,0,24">
-            <Viewbox Width="30" Height="36" DockPanel.Dock="Left" Margin="0,0,16,0">
-              <Grid Width="30" Height="36">
-                <Path Data="M2,1 L19,1 L28,10 L28,35 L2,35 Z" Fill="{DynamicResource AccentBrush}"/>
-                <Path Data="M19,1 L19,10 L28,10 M11,23 L11,19 A4,4 0 0 1 19,19 L19,23 M9,23 L21,23 L21,33 L9,33 Z M15,26 L15,30" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.6" StrokeLineJoin="Round"/>
-              </Grid>
-            </Viewbox>
+            <loc:FluentIcon Kind="LockClosed" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" DockPanel.Dock="Left" Margin="0,0,16,0"/>
             <TextBlock x:Name="Heading" TextWrapping="Wrap" Margin="0" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
           </DockPanel>
           <TextBlock x:Name="Description" Style="{StaticResource Secondary}" Margin="0,0,0,16"/>

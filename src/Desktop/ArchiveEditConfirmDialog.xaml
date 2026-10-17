@@ -8,13 +8,7 @@
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       <StackPanel Orientation="Horizontal" Margin="0,0,0,28">
-        <Viewbox Width="29" Height="34" Margin="0,0,16,0">
-          <Grid Width="28" Height="34">
-            <Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/>
-            <Path Data="M18,1 L18,9 L26,9" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.5"/>
-            <Path x:Name="ActionIcon" Data="M9,23 L18,14 L21,17 L12,26 L8,27 Z" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8"/>
-          </Grid>
-        </Viewbox>
+        <loc:FluentIcon x:Name="ActionIcon" Kind="Edit" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,16,0"/>
         <TextBlock x:Name="Heading" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
       </StackPanel>
       <StackPanel Grid.Row="1">
@@ -24,7 +18,7 @@
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
           <Border BorderBrush="{DynamicResource DividerBrush}" Background="{DynamicResource CanvasBrush}" BorderThickness="1" CornerRadius="6" Margin="0,0,18,0" Height="70">
-            <Path Data="M2,1 L16,1 L23,8 L23,29 L2,29 Z M16,1 L16,8 L23,8 M7,15 L18,15 M7,20 L18,20 M7,25 L15,25" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Width="28" Height="36" Stretch="Uniform"/>
+            <loc:FluentIcon Kind="DocumentText" Width="34" Height="34" Foreground="{DynamicResource SecondaryBrush}"/>
           </Border>
           <StackPanel Grid.Column="1" VerticalAlignment="Center">
             <TextBlock x:Name="FileNameLabel" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>

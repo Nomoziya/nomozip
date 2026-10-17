@@ -9,10 +9,7 @@
       </Grid.RowDefinitions>
       <StackPanel Margin="0,0,0,12">
         <DockPanel Margin="0,0,0,24">
-          <Grid Width="32" Height="32" DockPanel.Dock="Left" Margin="0,0,16,0">
-            <Ellipse x:Name="ResultBackground" Fill="{DynamicResource ErrorBrush}"/>
-            <Path x:Name="ResultIcon" Data="M14,7 L14,16 M14,20 L14,22" Stroke="{DynamicResource SurfaceBrush}" StrokeThickness="2" Margin="2"/>
-          </Grid>
+          <loc:FluentIcon x:Name="ResultIcon" Kind="ErrorCircle" Width="34" Height="34" Foreground="{DynamicResource ErrorBrush}" DockPanel.Dock="Left" Margin="0,0,16,0"/>
           <TextBlock x:Name="ResultHeading" Text="{loc:Text T_1f45f5276e0b}" Margin="0" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
         </DockPanel>
         <TextBlock x:Name="ArchiveName" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,4,0,0"/>
@@ -31,10 +28,7 @@
                       <ColumnDefinition Width="28"/>
                       <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Width="15" Height="15" VerticalAlignment="Center" HorizontalAlignment="Left">
-                      <Ellipse Fill="{DynamicResource ErrorBrush}"/>
-                      <Path Data="M7,3 L7,8 M7,11 L7,12" Stroke="{DynamicResource SurfaceBrush}" StrokeThickness="1.5"/>
-                    </Grid>
+                    <loc:FluentIcon Kind="ErrorCircle" Width="20" Height="20" Foreground="{DynamicResource ErrorBrush}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <loc:FileKindIcon Grid.Column="1" FileName="{Binding Path}" Width="19" Height="24" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <TextBlock Grid.Column="2" Text="{Binding Path}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                   </Grid>
