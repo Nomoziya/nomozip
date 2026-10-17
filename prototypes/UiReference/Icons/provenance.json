@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/microsoft/fluentui-system-icons",
+  "commit": "a347af95478f989038cccbf085978865264c048a",
+  "license": "MIT",
+  "conversion": "Unmodified official path to WPF Geometry; no added stroke",
+  "icons": [
+    {
+      "name": "Eye",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Eye/SVG/ic_fluent_eye_20_regular.svg",
+      "sha256": "3fedb211bdbd5d47c9d1e2a820fe73ffd0067ebf555ed8fe435033a09d0d2d1d"
+    },
+    {
+      "name": "Open",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Open/SVG/ic_fluent_open_20_regular.svg",
+      "sha256": "a6a9e0bcb65b97529e3904b3966b7d9f725d6d9c318aca98ca33827ec514b066"
+    }
+  ]
+}
