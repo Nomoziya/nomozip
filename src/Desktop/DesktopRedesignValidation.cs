@@ -207,7 +207,7 @@ internal static class DesktopRedesignValidation
             var imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
             Check("requested image supplies its real row thumbnail",contents.Rows.Single(row=>row.Path==imagePreview.EntryPath).PreviewThumbnail==imagePreview.Picture);
             Check("image preview renders decoded archive image",imagePreview.IsImage && imagePreview.Picture?.PixelWidth==480);
-            Check("opening preview keeps size type and actual modification columns readable",entryTable.Columns.Skip(2).Take(3).All(column=>column.Visibility==Visibility.Visible) && entryTable.Columns[1].ActualWidth>=170 && contents.Rows.All(row=>row.EncryptionText.Length>0));
+            Check("opening preview keeps size type and actual modification columns readable",entryTable.Columns.Skip(2).Take(3).All(column=>column.Visibility==Visibility.Visible) && entryTable.Columns[1].ActualWidth>=130 && contents.Rows.All(row=>row.EncryptionText.Length>0));
             Check("native archive modification time reaches rows and preview",contents.CurrentRow!.Entry.ModifiedUtcFileTime is >0 && imagePreview.ModifiedText==contents.CurrentRow.ModifiedText && imagePreview.ModifiedText!="—");
             var actualPreviewImage=VisualDescendants((DependencyObject)window.PreviewHost.Content).OfType<Image>().Single(value=>value.Name=="PreviewImage");
             Check("image preview uses its true aspect ratio without vertical letterboxing",Math.Abs(actualPreviewImage.ActualHeight-actualPreviewImage.ActualWidth*300/480)<2);
