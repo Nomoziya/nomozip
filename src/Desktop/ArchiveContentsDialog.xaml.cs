@@ -12,8 +12,8 @@ public partial class ArchiveContentsDialog : Window
     {
         InitializeComponent(); DataContext = model;
         foreach(var item in EditContentsMenu.Items.OfType<MenuItem>())
-            if(item.Icon is System.Windows.Shapes.Path icon)
-                icon.SetBinding(System.Windows.Shapes.Shape.FillProperty,new System.Windows.Data.Binding(nameof(Control.Foreground)) {Source=item});
+            if(item.Icon is FluentIcon icon)
+                icon.SetBinding(Control.ForegroundProperty,new System.Windows.Data.Binding(nameof(Control.Foreground)) {Source=item});
         void Arrange()
         {
             var narrow = Window.GetWindow(EntryTable)?.ActualWidth < 1050;
