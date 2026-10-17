@@ -32,7 +32,8 @@ internal static class DesktopTypographyValidation
                     if(ReferenceEquals(style,window.TryFindResource(expected.Key)))
                     {
                         role=expected.Key;
-                        if(Math.Abs(size-expected.Size)>.1 || weight.ToOpenTypeWeight()!=expected.Weight)
+                        var expectedLineHeight=expected.Key switch {"EmptyTitle"=>34,"WorkspacePageTitle"=>38,"WorkspaceSectionTitle"=>26,"PageTitle"=>32,"Caption" or "Secondary"=>20,_=>22};
+                        if(Math.Abs(size-expected.Size)>.1 || weight.ToOpenTypeWeight()!=expected.Weight || element is TextBlock roleText && Math.Abs(roleText.LineHeight-expectedLineHeight)>.1)
                             roleIssues.Add($"{Path.GetFileName(path)}:{element.Name}:{expected.Key}:{size}/{weight}");
                         break;
                     }
@@ -43,7 +44,7 @@ internal static class DesktopTypographyValidation
                     buttonIssues.Add($"{Path.GetFileName(path)}:{element.Name}:{size}/{weight}/{family.Source}");
             }
             entries.Add(new {kind=element.GetType().Name,name=element.Name,role,fontSize=size,fontWeight=weight.ToOpenTypeWeight(),fontFamily=family.Source,
-                width=element.ActualWidth,height=element.ActualHeight});
+                lineHeight=element is TextBlock textBlock && double.IsFinite(textBlock.LineHeight)?(double?)textBlock.LineHeight:null,width=element.ActualWidth,height=element.ActualHeight});
         }
         snapshots.Add(new {screenshot=Path.GetFileName(path),controls=entries});
     }

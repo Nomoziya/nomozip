@@ -40,6 +40,7 @@
         <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="LineHeight" Value="22"/>
       </Style>
       <SolidColorBrush x:Key="NavigationTextBrush" Color="#006CD9"/>
     <SolidColorBrush x:Key="HeaderHoverBrush" Color="#E8EDF3"/>
@@ -53,13 +54,16 @@
     <Style x:Key="PageTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="LineHeight" Value="32"/>
       </Style>
       <Style x:Key="SectionTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="LineHeight" Value="22"/>
       </Style>
       <Style x:Key="Caption" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
         <Setter Property="FontSize" Value="13"/>
+        <Setter Property="LineHeight" Value="20"/>
       </Style>
       <Style TargetType="ListBox" BasedOn="{StaticResource BodyControl}"/>
       <Style x:Key="AppWindow" TargetType="Window">
@@ -78,6 +82,7 @@
         <Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="LineHeight" Value="20"/>
       </Style>
       <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource SectionTitle}">
         <Setter Property="FontSize" Value="16"/>
