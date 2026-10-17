@@ -49,26 +49,23 @@
             </TextBlock.Style>
           </TextBlock>
         </Grid>
-        <DockPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0" ToolTip="{Binding ArchivePath}">
-          <Button DockPanel.Dock="Left" Command="{Binding FolderUpCommand}" Style="{StaticResource SubtleButton}" Padding="8,6" Margin="0,0,8,0" AutomationProperties.Name="{loc:Text Browser.Up}" ToolTip="{loc:Text Browser.Up}">
-            <Path Data="M2,10 L10,2 L18,10 M10,2 L10,20" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" Width="14" Height="16" Stretch="Uniform"/>
-          </Button>
-          <ItemsControl ItemsSource="{Binding Breadcrumbs}" VerticalAlignment="Center">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <WrapPanel/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="›" Style="{StaticResource Secondary}" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                  <Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource SubtleButton}" Padding="6,4" MaxWidth="240" ToolTip="{Binding Label}"/>
-                </StackPanel>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </DockPanel>
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,-6" Padding="0,10,0,0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" ToolTip="{Binding ArchivePath}">
+          <DockPanel LastChildFill="True">
+            <Path DockPanel.Dock="Left" Data="M3,7 L3,4 L9,4 L12,7 L21,7 L21,21 L3,21 Z" Width="16" Height="17" Stretch="Uniform" Stroke="{DynamicResource TextBrush}" StrokeThickness="1.3" StrokeLineJoin="Round" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <TextBlock DockPanel.Dock="Left" Text="{Binding ArchiveLocation}" VerticalAlignment="Center" MaxWidth="160" TextTrimming="CharacterEllipsis"/>
+            <ItemsControl ItemsSource="{Binding Breadcrumbs}" VerticalAlignment="Center">
+              <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <Path Data="M0,0 L4,4 L0,8" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.2" Width="4" Height="8" Margin="14,0" VerticalAlignment="Center"/>
+                    <Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource SubtleButton}" Foreground="{DynamicResource TextBrush}" FontWeight="Normal" Padding="0,4" MaxWidth="240" ToolTip="{Binding Label}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </DockPanel>
+        </Border>
       </Grid>
     </Border>
     <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="16,10">
@@ -236,26 +233,22 @@
         </TextBlock.Style>
       </TextBlock>
     </Grid>
-    <Border Grid.Row="3" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="20,12">
+    <Border x:Name="BrowserFooter" ToolTip="{Binding OutputPath}" Grid.Row="3" MinHeight="48" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="16,8">
       <StackPanel>
         <DockPanel>
-          <TextBlock Text="{Binding OperationMessage}" Style="{StaticResource Secondary}" Margin="12,0,0,0" AutomationProperties.LiveSetting="Polite" DockPanel.Dock="Right" MaxWidth="280" ToolTip="{Binding OperationMessage}"/>
-          <WrapPanel>
-            <TextBlock x:Name="ContentsSummary" Text="{Binding CompactSummary}" Style="{StaticResource Secondary}" Margin="0,0,16,0" ToolTip="{Binding Summary}"/>
+          <Button x:Name="BrowserTasksAction" DockPanel.Dock="Right" Style="{StaticResource SubtleButton}" Click="OnShowTasks" Visibility="Collapsed" Padding="8,4" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.Tasks}" ToolTip="{loc:Text Redesign.Tasks}">
+            <Path Data="M2,3 L4,3 M8,3 L20,3 M2,10 L4,10 M8,10 L20,10 M2,17 L4,17 M8,17 L20,17" Width="20" Height="18" Stroke="{DynamicResource TextBrush}" StrokeThickness="1.5"/>
+          </Button>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{Binding OperationMessage}" TextTrimming="CharacterEllipsis" MaxWidth="200" ToolTip="{Binding OperationMessage}" AutomationProperties.LiveSetting="Polite"/>
+            <TextBlock x:Name="BrowserTaskActivity" Margin="16,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+          </StackPanel>
+          <WrapPanel VerticalAlignment="Center">
+            <TextBlock x:Name="ContentsSummary" Text="{Binding CompactSummary}" Margin="0,0,8,0" ToolTip="{Binding Summary}"/>
+            <TextBlock Text="·" Margin="0,0,8,0"/>
             <TextBlock x:Name="SelectionSummary" Text="{Binding CompactSelectionSummary}" AutomationProperties.LiveSetting="Polite" ToolTip="{Binding SelectionSummary}"/>
           </WrapPanel>
         </DockPanel>
-        <TextBlock x:Name="ContentsOutputPath" Text="{Binding OutputPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding OutputPath}">
-          <TextBlock.Style>
-            <Style TargetType="TextBlock">
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding OutputPath}" Value="">
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </TextBlock.Style>
-        </TextBlock>
       </StackPanel>
     </Border>
     <Label x:Name="ContentsSearchLabel" Visibility="Collapsed"/>

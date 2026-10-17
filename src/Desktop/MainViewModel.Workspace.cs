@@ -25,6 +25,15 @@ public sealed partial class MainViewModel
     private ListCollectionView? taskView;
     public ObservableCollection<ArchiveTaskRow> WorkspaceTasks {get;}=[];
     public string WorkspaceTaskSummary=>UiText.Format("Redesign.WorkspaceSummary",WorkspaceTasks.Count(row=>row.Running),WorkspaceTasks.Count(row=>!row.Running && !row.Completed && row.Failure is null),WorkspaceTasks.Count(row=>row.Completed || row.Failure is not null));
+    public string FileWorkspaceTaskSummary
+    {
+        get
+        {
+            var running=WorkspaceTasks.Count(row=>row.Running);
+            var pending=WorkspaceTasks.Count(row=>!row.Running && !row.Completed && row.Failure is null);
+            return running>0?UiText.Format("Browser.RunningTasks",running):pending>0?UiText.Format("Browser.PendingTasks",pending):"";
+        }
+    }
     public int ActiveTaskCount=>WorkspaceTasks.Count(row=>row.Running || !row.Completed && row.Failure is null);
     public ICollectionView TaskView => taskView ??= new ListCollectionView(WorkspaceTasks) { Filter = value => MatchesTaskFilter((ArchiveTaskRow)value) };
     private void SyncExtractionRows()
@@ -68,7 +77,7 @@ public sealed partial class MainViewModel
             if(selected is not null && taskView.Contains(selected)){taskView.MoveCurrentTo(selected);SelectedTask=selected;}
         }
         for(var index=0;index<4;index++) TaskFilterBadges[index].Count=WorkspaceTasks.Count(row=>index switch {1=>row.Running,2=>!row.Running && !row.Completed && row.Failure is null,3=>row.Completed || row.Failure is not null,_=>true});
-        Changed(nameof(TaskSummary));Changed(nameof(WorkspaceTaskSummary));Changed(nameof(ActiveTaskCount));Changed(nameof(ShowCompressionActivity));
+        Changed(nameof(TaskSummary));Changed(nameof(WorkspaceTaskSummary));Changed(nameof(ActiveTaskCount));Changed(nameof(FileWorkspaceTaskSummary));Changed(nameof(ShowCompressionActivity));
     }
     private void WorkspaceTaskChanged(object? sender,PropertyChangedEventArgs e)
     {if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure)) RefreshWorkspaceTasks();}

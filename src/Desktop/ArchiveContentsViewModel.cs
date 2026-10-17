@@ -113,6 +113,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     }
     private string currentFolder="";
     public string CurrentFolder=>currentFolder;
+    public string ArchiveLocation=>System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(ArchivePath))) is {Length:>0} name?name:System.IO.Path.GetPathRoot(System.IO.Path.GetFullPath(ArchivePath)) ?? "";
     public ObservableCollection<ArchiveBreadcrumb> Breadcrumbs {get;}=[];
     public ObservableCollection<ArchiveContentRow> VisibleRows {get;}
     public ICommand FolderUpCommand {get;}
