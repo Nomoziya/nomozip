@@ -5,6 +5,10 @@ public sealed record ArchiveEntry(uint Index, string Path, ulong Size, bool Dire
     public long? ModifiedUtcFileTime {get;init;}
     [System.Text.Json.Serialization.JsonIgnore]
     public DateTime? ModifiedLocal {get {try {return ModifiedUtcFileTime is >0 and <=2650467743999999999 ? DateTime.FromFileTimeUtc(ModifiedUtcFileTime.Value).ToLocalTime():null;}catch(ArgumentException){return null;}}}
+    // Display metadata is optional in older worker responses and checkpoints.
+    // Keep the established inventory identity independent of its availability.
+    public bool Equals(ArchiveEntry? other)=>other is not null && Index==other.Index && Path==other.Path && Size==other.Size && Directory==other.Directory && Encrypted==other.Encrypted;
+    public override int GetHashCode()=>HashCode.Combine(Index,Path,Size,Directory,Encrypted);
 }
 public sealed record EngineProgress(ulong Completed, ulong Total,bool? PausedState=null);
 public sealed record EngineFailure(uint Index, string Code, string Path = "");

@@ -179,7 +179,7 @@
       </WrapPanel>
     </Border>
     <Grid Grid.Row="2">
-      <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow}" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="36" ColumnHeaderStyle="{StaticResource FileHeader}" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="OnOpenEntry">
+      <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow,Mode=TwoWay}" IsSynchronizedWithCurrentItem="False" CanUserSortColumns="True" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="36" ColumnHeaderStyle="{StaticResource FileHeader}" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="OnOpenEntry">
         <DataGrid.Style><Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}"><Style.Triggers><DataTrigger Binding="{Binding GridView}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></DataGrid.Style>
         <DataGrid.InputBindings>
           <KeyBinding Key="Enter" Command="{Binding OpenCurrentEntryCommand}"/>
@@ -225,7 +225,7 @@
           </DataGridTemplateColumn>
           <DataGridTextColumn Header="{loc:Text Contents.CompactSize}" Binding="{Binding SizeText}" SortMemberPath="Entry.Size" CanUserSort="True" Width="80" ElementStyle="{StaticResource TableText}"/>
           <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" CanUserSort="False" Width="96" ElementStyle="{StaticResource TableText}"/>
-          <DataGridTextColumn Header="{loc:Text Browser.Modified}" Binding="{Binding ModifiedText}" CanUserSort="False" Width="132" ElementStyle="{StaticResource TableText}"/>
+          <DataGridTextColumn Header="{loc:Text Browser.Modified}" Binding="{Binding ModifiedText}" CanUserSort="False" Width="144" ElementStyle="{StaticResource TableText}"/>
           <DataGridTextColumn CanUserSort="False" Header="{loc:Text T_320c254572c4}" Binding="{Binding EncryptionText}" Width="120" ElementStyle="{StaticResource TableText}"/>
         </DataGrid.Columns>
       </DataGrid>

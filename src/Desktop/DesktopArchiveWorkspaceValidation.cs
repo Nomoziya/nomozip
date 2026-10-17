@@ -121,6 +121,13 @@ internal static class DesktopArchiveWorkspaceValidation
             new ForwardProgress<TaskUpdate>(value=>{if(value.State=="checkpoint-commit")cancel.Cancel();}),cancel.Token,checkpoint:new(store,binding));
         var prior=store.ReadPending().Single();
         check("checkpoint durably records renamed destination",interrupted.Engine.Status=="cancelled" && prior.Version==2 && prior.Receipts.Any(value=>value.State=="delivered" && value.TargetPath is not null));
+        // Older checkpoints have no optional display timestamp. Their validated
+        // source digest and established inventory must remain resumable.
+        var legacyPath=Path.Combine(data,"checkpoints",prior.Id.ToString("N"),"session.json");
+        var legacy=System.Text.Json.Nodes.JsonNode.Parse(await File.ReadAllTextAsync(legacyPath))!;
+        foreach(var item in legacy["entries"]!.AsArray())item!.AsObject().Remove("modifiedUtcFileTime");
+        await File.WriteAllTextAsync(legacyPath,legacy.ToJsonString());
+        check("legacy checkpoint without display timestamps remains readable",store.ReadPending().Single().Entries.All(entry=>entry.ModifiedUtcFileTime is null));
         var resumed=await new ExtractionService(client,vault,candidates).ExtractAsync(archive,checkpointRoot,false,NoPassword,_=>Task.FromResult(ExistingFilePolicy.Rename),checkpoint:new(store,binding,prior.Id));
         check("checkpoint resumes rename without duplicate delivery",resumed.Engine.IsSuccess && Directory.GetFiles(checkpointRoot).Length==4 && store.ReadPending().Count==0);
         check("checkpoint rename preserves existing originals",File.ReadAllText(Path.Combine(checkpointRoot,"keep.txt"))=="existing checkpoint file");
