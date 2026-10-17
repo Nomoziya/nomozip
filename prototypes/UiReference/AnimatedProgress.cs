@@ -17,10 +17,11 @@ public sealed class AnimatedProgress : Control
     {
         var bar = (AnimatedProgress)sender; var from = bar.DisplayedValue; var to = Math.Clamp(bar.Value, 0, 100);
         bar.BeginAnimation(DisplayedValueProperty, null); bar.DisplayedValue = to;
-        if (bar.MotionEnabled && Math.Abs(from - to) > .01)
+        if (bar.MotionEnabled && to > 0 && to < 100 && Math.Abs(from - to) > .01)
             bar.BeginAnimation(DisplayedValueProperty, new DoubleAnimation(from, to, TimeSpan.FromMilliseconds(220))
             { EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }, FillBehavior = FillBehavior.Stop });
     }
+    public void SnapToValue() { BeginAnimation(DisplayedValueProperty, null); DisplayedValue = Math.Clamp(Value, 0, 100); }
     protected override void OnRender(DrawingContext context)
     {
         base.OnRender(context);

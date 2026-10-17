@@ -23,6 +23,11 @@
       "name": "ChevronUp",
       "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Chevron%20Up/SVG/ic_fluent_chevron_up_20_regular.svg",
       "sha256": "5d2c30dd49be34bcba7daaf1a46ff9c18db1c301d4433a0ec85e9255c50dec60"
+    },
+    {
+      "name": "DocumentArrowDown",
+      "source": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/a347af95478f989038cccbf085978865264c048a/assets/Document%20Arrow%20Down/SVG/ic_fluent_document_arrow_down_20_regular.svg",
+      "sha256": "a436dde487c5c04b96855a3ab9969481e15b74b7f0f195e061be896dc1b6ccd2"
     }
   ]
 }
