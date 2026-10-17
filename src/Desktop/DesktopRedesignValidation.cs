@@ -380,6 +380,7 @@ internal static class DesktopRedesignValidation
         }
         catch(Exception exception) {error=exception.ToString();}
         finally {window.PrepareExtractionOptionsForValidation=null;}
+        DesktopTypographyValidation.Save(folder,Check);
         var passed=error is null && checks.Count>100 && checks.Values.All(value=>value);
         await File.WriteAllTextAsync(Path.Combine(folder,"report.json"),JsonSerializer.Serialize(new {passed,checks,error,viewports,scope="isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"},new JsonSerializerOptions{WriteIndented=true}));
         return passed;

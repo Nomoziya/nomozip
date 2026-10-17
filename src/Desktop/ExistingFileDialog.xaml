@@ -12,7 +12,7 @@
           <Border Background="{DynamicResource AccentBrush}" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0">
             <TextBlock Text="!" Foreground="{DynamicResource OnAccentBrush}" FontSize="25" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
-          <TextBlock Text="{loc:Text Conflict.Title}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
+          <TextBlock Text="{loc:Text Conflict.Title}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
         </StackPanel>
         <TextBlock Text="{loc:Text Conflict.Description}" TextWrapping="Wrap" Margin="0,0,0,24"/>
       </StackPanel>
@@ -36,7 +36,7 @@
                   <Image x:Name="ExistingThumbnail" Width="44" Height="44" Stretch="UniformToFill" Visibility="Collapsed"/>
                 </Grid>
                 <StackPanel Grid.Column="1">
-                  <TextBlock x:Name="ExistingName" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock x:Name="ExistingName" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
                   <TextBlock x:Name="ExistingDetails" Style="{StaticResource Secondary}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
               </Grid>
@@ -54,7 +54,7 @@
                   <Image x:Name="IncomingThumbnail" Width="44" Height="44" Stretch="UniformToFill" Visibility="Collapsed"/>
                 </Grid>
                 <StackPanel Grid.Column="1">
-                  <TextBlock x:Name="IncomingName" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock x:Name="IncomingName" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
                   <TextBlock x:Name="IncomingDetails" Style="{StaticResource Secondary}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
               </Grid>
@@ -70,10 +70,10 @@
       </ScrollViewer>
       <Border Grid.Row="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,18,0,0" Margin="0,14,0,0">
         <WrapPanel HorizontalAlignment="Right">
-          <Button x:Name="ReplaceButton" MinWidth="100" Content="{loc:Text Conflict.Replace}" Style="{StaticResource PrimaryButton}" Click="OnReplace" Margin="0,0,8,4"/>
-          <Button MinWidth="100" Content="{loc:Text Conflict.Skip}" Click="OnSkip" Margin="0,0,8,4"/>
-          <Button x:Name="RenameButton" MinWidth="100" Content="{loc:Text Conflict.Rename}" Click="OnRename" Margin="0,0,8,4"/>
-          <Button Content="{loc:Text Conflict.Cancel}" IsCancel="True" Margin="0,0,0,4"/>
+          <Button x:Name="ReplaceButton" MinWidth="100" Content="{loc:Text Conflict.Replace}" Style="{StaticResource PrimaryButton}" Click="OnReplace" Margin="0,0,8,4" MinHeight="40"/>
+          <Button MinWidth="100" Content="{loc:Text Conflict.Skip}" Click="OnSkip" Margin="0,0,8,4" MinHeight="40"/>
+          <Button x:Name="RenameButton" MinWidth="100" Content="{loc:Text Conflict.Rename}" Click="OnRename" Margin="0,0,8,4" MinHeight="40"/>
+          <Button Content="{loc:Text Conflict.Cancel}" IsCancel="True" Margin="0,0,0,4" MinHeight="40"/>
         </WrapPanel>
       </Border>
     </Grid>

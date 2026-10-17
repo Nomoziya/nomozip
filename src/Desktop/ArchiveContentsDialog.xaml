@@ -31,7 +31,7 @@
               <Path Data="M18,1 L18,9 L26,9 M8,22 L21,22 M16,16 L22,22 L16,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
             </Grid>
           </Viewbox>
-          <TextBlock x:Name="ContentsArchiveName" Text="{Binding ArchiveName}" FontSize="22" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding ArchivePath}" VerticalAlignment="Center" MaxWidth="460"/>
+          <TextBlock x:Name="ContentsArchiveName" Text="{Binding ArchiveName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ArchivePath}" VerticalAlignment="Center" MaxWidth="460" Style="{StaticResource PageTitle}"/>
         </StackPanel>
         <Grid Grid.Column="1" Width="260" VerticalAlignment="Center">
           <TextBox x:Name="EntrySearch" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Padding="34,8,12,8" AutomationProperties.Name="{loc:Text T_88a399b911e0}" ToolTip="{loc:Text T_88a399b911e0}"/>

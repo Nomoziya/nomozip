@@ -2860,7 +2860,7 @@
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_f8c32297384e">
-    <value>打开输出目录</value>
+    <value>打开输出文件夹</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_f8fcd8c32414">
@@ -3061,7 +3061,7 @@
   <data name="Preview.CompactAction" xml:space="preserve"><value>预览</value></data>
   <data name="Contents.CompactExtract" xml:space="preserve"><value>解压</value></data>
   <data name="Contents.CompactCancel" xml:space="preserve"><value>取消</value></data>
-  <data name="Contents.CompactOpen" xml:space="preserve"><value>打开目录</value></data>
+  <data name="Contents.CompactOpen" xml:space="preserve"><value>打开文件夹</value></data>
   <data name="Contents.CompactSearch" xml:space="preserve"><value>搜索</value></data>
   <data name="Contents.CompactSelect" xml:space="preserve"><value>全选可见</value></data>
   <data name="Contents.CompactClear" xml:space="preserve"><value>清空</value></data>
