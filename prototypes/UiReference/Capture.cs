@@ -84,6 +84,7 @@ internal static class Capture
             Screenshot("08-reference-completed.png"); window.TaskCard.Visibility = Visibility.Collapsed;
             ((App)Application.Current).ApplyTheme(false, true); await Layout();
             Check("system contrast preserves selection color pair", ((SolidColorBrush)Application.Current.Resources["Selected"]).Color == SystemColors.HighlightColor && ((SolidColorBrush)Application.Current.Resources["SelectedText"]).Color == SystemColors.HighlightTextColor);
+            Check("contrast secondary action text stays visible on selection", ((SolidColorBrush)window.ExtractChecked.Foreground).Color == SystemColors.HighlightTextColor && ((SolidColorBrush)window.ExtractChecked.Background).Color == SystemColors.HighlightColor);
             Screenshot("09-reference-contrast-resources.png");
         }
         catch (Exception exception) { error = exception.ToString(); }
