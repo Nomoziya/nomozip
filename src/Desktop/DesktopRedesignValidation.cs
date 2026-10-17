@@ -163,6 +163,11 @@ internal static class DesktopRedesignValidation
             Check("embedded file columns retain readable widths",entryTable.Columns[0].ActualWidth>=48 && entryTable.Columns[1].ActualWidth>=200 && entryTable.Columns[2].ActualWidth>=78 && entryTable.Columns[3].ActualWidth>=80);
             Check("extraction toolbar precedes file list",Bounds(extractAll).Bottom<=Bounds(entryTable).Top);
             Check("archive name occupies shared workspace header",window.ArchiveHeaderHost.Content is FrameworkElement && window.FilesLandingActions.Visibility==Visibility.Collapsed);
+            Check("breadcrumb includes the actual containing directory",contents.ArchiveLocation==Path.GetFileName(Path.GetDirectoryName(archive)));
+            Check("archive has one full-width footer below the preview",window.ArchiveFooterHost.Content is Border && window.GlobalStatus.Visibility==Visibility.Collapsed && Math.Abs(window.ArchiveFooterHost.ActualWidth-window.FilesWorkspace.ActualWidth)<1);
+            var filesNav=(ListBoxItem)window.Navigation.Items[0];filesNav.ApplyTemplate();
+            var navSurface=(Border)filesNav.Template.FindName("Pill",filesNav);
+            Check("navigation uses the reference rounded rectangle and regular label",navSurface.CornerRadius.TopLeft==12 && filesNav.FontWeight==FontWeights.Normal && filesNav.ActualHeight>=40);
             Check("archive root hides nested file paths",contents.VisibleRows.All(row=>!row.Path.TrimEnd('/','\\').Replace('\\','/').Contains('/')));
             contents.CurrentRow=contents.VisibleRows.Single(row=>row.Path.TrimEnd('/','\\')=="Documents");contents.OpenCurrentEntryCommand.Execute(null);await Layout();
             Check("opening folder shows its children and breadcrumb",contents.CurrentFolder=="Documents" && contents.VisibleRows.Count==2 && contents.Breadcrumbs.Count==2 && contents.VisibleRows.All(row=>!row.DisplayName.Contains('/')));
@@ -184,6 +189,15 @@ internal static class DesktopRedesignValidation
             var imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
             Check("requested image supplies its real row thumbnail",contents.Rows.Single(row=>row.Path==imagePreview.EntryPath).PreviewThumbnail==imagePreview.Picture);
             Check("image preview renders decoded archive image",imagePreview.IsImage && imagePreview.Picture?.PixelWidth==480);
+            Check("footer spans beneath the visible preview pane",window.ArchivePreviewPane.IsVisible && Bounds(window.ArchiveFooterHost).Top>=Bounds(window.ArchivePreviewPane).Bottom-1);
+            var footerTasks=VisualDescendants((DependencyObject)window.ArchiveFooterHost.Content).OfType<Button>().Single(value=>value.Name=="BrowserTasksAction");
+            footerTasks.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Layout();
+            Check("file overview task action opens the real task workspace",model.Page==0 && window.ArchiveFooterHost.Visibility==Visibility.Collapsed);
+            model.Page=4;await Layout();
+            Check("returning to files restores the overview and suppresses duplicate status",window.ArchiveFooterHost.IsVisible && window.GlobalStatus.Visibility==Visibility.Collapsed);
+            // Reopen the explicitly requested preview after navigating away cleared it.
+            contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
+            imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;
             Capture("actual-embedded-browser-image-preview");
             theme.SetMode("dark");await Layout();Capture("actual-embedded-browser-image-preview-dark");theme.SetMode("light");
             theme.SetMode("soft");window.Opacity=1;window.Activate();

@@ -3227,4 +3227,6 @@
   <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>搜索包内文件</value></data>
   <data name="Compression.AdvancedTitle" xml:space="preserve"><value>高级选项</value></data>
   <data name="Updates.SoftwareActions" xml:space="preserve"><value>下载与安装</value></data>
+  <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} 个任务正在运行</value></data>
+  <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} 个任务待处理</value></data>
 </root>

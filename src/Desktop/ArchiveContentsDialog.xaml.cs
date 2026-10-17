@@ -56,6 +56,10 @@ public partial class ArchiveContentsDialog : Window
         };
     }
     private async void OnClose(object sender, RoutedEventArgs e) {if(EmbeddedClose is not null) await EmbeddedClose();else Close();}
+    private void OnShowTasks(object sender,RoutedEventArgs e)
+    {
+        if(Window.GetWindow(BrowserFooter)?.DataContext is MainViewModel model) model.Page=0;
+    }
     private void OnEditContents(object sender,RoutedEventArgs e)
     {EditContentsMenu.PlacementTarget=EditContentsButton;EditContentsMenu.IsOpen=true;}
     private void OnOpenEntry(object sender,MouseButtonEventArgs e)

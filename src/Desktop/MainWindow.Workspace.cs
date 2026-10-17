@@ -35,6 +35,7 @@ public partial class MainWindow
             {if(embeddedHashes.Model.IsBusy) embeddedHashes.Model.Cancel();else workspaceModel.Page=4;}
             else if(workspaceModel?.Page==4) await CloseArchiveAsync();
         }), Key.Escape, ModifierKeys.None));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => embeddedModel?.FolderUpCommand.Execute(null),()=>workspaceModel?.Page==4 && embeddedModel?.FolderUpCommand.CanExecute(null)==true),Key.Left,ModifierKeys.Alt));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => embeddedModel?.SelectVisibleCommand.Execute(null), () => embeddedModel?.CanSelect == true), Key.A, ModifierKeys.Control));
         foreach(var binding in InputBindings.OfType<KeyBinding>().Where(value=>value.Key==Key.E && value.Modifiers==ModifierKeys.Control).ToArray()) InputBindings.Remove(binding);
         InputBindings.Add(new KeyBinding(new RelayCommand(() =>
@@ -57,6 +58,8 @@ public partial class MainWindow
             ToolsHost.Content = content;
             embeddedHashes.EmbeddedClose = () => workspaceModel.Page = 4;
         }
+        ArchiveFooterHost.Visibility=workspaceModel.Page==4 && embeddedModel is not null?Visibility.Visible:Visibility.Collapsed;
+        GlobalStatus.Visibility=workspaceModel.Page==4 && embeddedModel is not null?Visibility.Collapsed:Visibility.Visible;
         if (workspaceModel.Page != 4) ClosePreview();
     }
 
@@ -70,6 +73,13 @@ public partial class MainWindow
         dialog.BrowserRoot.Children.Remove(dialog.BrowserHeader);
         dialog.BrowserHeader.DataContext = model;
         ArchiveHeaderHost.Content = dialog.BrowserHeader;
+        dialog.BrowserRoot.Children.Remove(dialog.BrowserFooter);
+        dialog.BrowserFooter.DataContext=model;
+        ArchiveFooterHost.Content=dialog.BrowserFooter;
+        dialog.BrowserTasksAction.Visibility=Visibility.Visible;
+        dialog.BrowserTaskActivity.SetBinding(TextBlock.TextProperty,new System.Windows.Data.Binding(nameof(MainViewModel.FileWorkspaceTaskSummary)) {Source=workspaceModel});
+        dialog.BrowserTaskActivity.Visibility=Visibility.Visible;
+        ArchiveFooterHost.Visibility=Visibility.Visible;GlobalStatus.Visibility=Visibility.Collapsed;
         ArchiveHost.Content = content; FilesEmptyState.Visibility = Visibility.Collapsed;
         FilesLandingHeader.Visibility = FilesLandingActions.Visibility = Visibility.Collapsed;
         ApplyWorkspaceMargin();
@@ -77,7 +87,7 @@ public partial class MainWindow
         try { await archiveClosed.Task; }
         finally
         {
-            ClosePreview(); ArchiveHost.Content = null; ArchiveHeaderHost.Content = null; dialog.EmbeddedClose = null; model.ClearDrag();
+            ClosePreview(); ArchiveHost.Content = null; ArchiveHeaderHost.Content = null; ArchiveFooterHost.Content=null;ArchiveFooterHost.Visibility=Visibility.Collapsed;GlobalStatus.Visibility=Visibility.Visible; dialog.EmbeddedClose = null; model.ClearDrag();
             embeddedModel = null; embeddedArchive = null; archiveClosed = null;
             FilesEmptyState.Visibility = Visibility.Visible;
             FilesLandingHeader.Visibility = FilesLandingActions.Visibility = Visibility.Visible;

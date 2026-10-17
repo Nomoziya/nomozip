@@ -3227,4 +3227,6 @@ A password is required to validate the archive data.</value>
   <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>Search archive contents</value></data>
   <data name="Compression.AdvancedTitle" xml:space="preserve"><value>Advanced options</value></data>
   <data name="Updates.SoftwareActions" xml:space="preserve"><value>Download and install</value></data>
+  <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} tasks running</value></data>
+  <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} tasks pending</value></data>
 </root>
