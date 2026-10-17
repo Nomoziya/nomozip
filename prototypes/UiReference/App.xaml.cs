@@ -9,14 +9,15 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e); ApplyTheme(false);
-        var capture = e.Args.Length == 2 && e.Args[0] == "--capture";
+        var capturePages = e.Args.Length == 2 && e.Args[0] == "--capture-pages";
+        var capture = capturePages || e.Args.Length == 2 && e.Args[0] == "--capture";
         if (capture && Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true")
             throw new InvalidOperationException("Automated screenshot capture is restricted to isolated CI.");
         var window = new MainWindow(); MainWindow = window;
         if (capture)
             window.ContentRendered += async (_, _) =>
             {
-                var passed = await Capture.RunAsync(window, e.Args[1]); Shutdown(passed ? 0 : 1);
+                var passed = capturePages ? await PagesCapture.RunAsync(window, e.Args[1]) : await Capture.RunAsync(window, e.Args[1]); Shutdown(passed ? 0 : 1);
             };
         window.Show();
     }

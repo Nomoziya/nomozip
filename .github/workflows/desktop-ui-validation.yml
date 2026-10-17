@@ -36,7 +36,14 @@ jobs:
           if ($taskProcess.ExitCode -ne 0) { throw 'Core visual prototype validation failed.' }
           $taskReport = Get-Content (Join-Path $taskOutput 'report.json') -Raw | ConvertFrom-Json
           if (-not $taskReport.passed) { throw 'Core visual prototype report failed.' }
-      - name: Package exact prototype bytes
+      - name: Capture expanded design pages and form states
+        run: |
+          $taskOutput = Join-Path $PWD 'artifacts/ui-reference-prototype/evidence/pages'
+          $taskProcess = Start-Process ./artifacts/ui-reference-prototype/app/nomozip-reference-preview.exe -ArgumentList @('--capture-pages', $taskOutput) -WindowStyle Hidden -Wait -PassThru
+          if ($taskProcess.ExitCode -ne 0) { throw 'Expanded design page validation failed.' }
+          $taskReport = Get-Content (Join-Path $taskOutput 'report.json') -Raw | ConvertFrom-Json
+          if (-not $taskReport.passed) { throw 'Expanded design page report failed.' }
+      - name: Package exact expanded prototype bytes
         run: Compress-Archive -Path artifacts/ui-reference-prototype/app/* -DestinationPath artifacts/nomozip-ui-reference-prototype-x64.zip
       - uses: actions/upload-artifact@v7
         if: always()

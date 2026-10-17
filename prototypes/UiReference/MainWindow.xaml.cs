@@ -134,6 +134,7 @@ public partial class MainWindow : Window
     private void OnSortSize(object sender, RoutedEventArgs e) => SortBy("Bytes.Length");
     public void ShowTasks(bool show)
     {
+        ExpandedWorkspace.Visibility = Visibility.Collapsed;
         ArchiveWorkspace.Visibility = BrowserFooter.Visibility = ArchiveHeading.Visibility = SearchPane.Visibility = Breadcrumbs.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         TaskWorkspace.Visibility = TaskHeading.Visibility = TaskFilters.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         TaskCard.Visibility = TaskDetails.Visibility = TotalBytes > 0 ? Visibility.Visible : Visibility.Collapsed;
