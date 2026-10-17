@@ -17,7 +17,7 @@ internal sealed class PreviewImageFiles(string root,Action<ProcessStartInfo>? la
         var extension=Path.GetExtension(name).ToLowerInvariant();
         if(extension is not (".png" or ".jpg" or ".jpeg" or ".bmp" or ".gif"))throw new InvalidOperationException();
         var directory=Path.Combine(root,Guid.NewGuid().ToString("N"));Directory.CreateDirectory(directory);
-        var path=Path.Combine(directory,"preview"+extension);files.Add(path);
+        var path=Path.Combine(directory,Path.GetFileName(name));files.Add(path);
         await File.WriteAllBytesAsync(path,bytes);File.SetAttributes(path,FileAttributes.ReadOnly);
         var info=new ProcessStartInfo {FileName=path,UseShellExecute=true,Verb="open"};
         if(launch is null)Process.Start(info)?.Dispose();else launch(info);
