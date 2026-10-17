@@ -1,0 +1,202 @@
+{
+  "passed": true,
+  "checks": {
+    "core capture uses the exact 1120 by 760 DIP viewport": true,
+    "sample archive contains eight verified entries": true,
+    "initial preview is actual selected UTF-8 sample": true,
+    "checked range starts empty despite highlighted row": true,
+    "main action and file list remain inside client": true,
+    "brand image decoded at original aspect": true,
+    "filter preserves hidden checked range": true,
+    "highlight does not silently decode a new preview": true,
+    "explicit preview reads requested sample": true,
+    "checked action is available independently of current row": true,
+    "minimum window preserves file list and search": true,
+    "minimum window removes optional date column": true,
+    "minimum window preview overlay remains inside client": true,
+    "minimum window preview keeps its edit action completely visible": true,
+    "minimum window preview content has a usable scroll viewport": true,
+    "search empty state matches real filtered result": true,
+    "search text stays inside its input frame": true,
+    "contrast selection pairs use system colors": true
+  },
+  "failure": null,
+  "captures": [
+    {
+      "file": "01-core-light-1120.png",
+      "sha256": "e9fd71ed3b61d917d0f55195392b288a95f4d9aaa04c1d73e98f6bb93482e385",
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "pixelWidth": 1120,
+      "pixelHeight": 760,
+      "actualWindowDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "renderDensity": 1,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "",
+      "dark": false
+    },
+    {
+      "file": "02-core-light-density-150.png",
+      "sha256": "dd0d71bae3cffc44e83092e556c386eff9fe0e0957e7911b426c02f193f3a29d",
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "pixelWidth": 1680,
+      "pixelHeight": 1140,
+      "actualWindowDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "renderDensity": 1.5,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "",
+      "dark": false
+    },
+    {
+      "file": "03-core-dark-1120.png",
+      "sha256": "aa54f26b1ff3d252a9ea8cab399d2283c8dae55718e8a389ff678987233985e9",
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "pixelWidth": 1120,
+      "pixelHeight": 760,
+      "actualWindowDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "renderDensity": 1,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "",
+      "dark": true
+    },
+    {
+      "file": "04-core-light-800.png",
+      "sha256": "ebf28caf724e5c2eaa8a91d7441156ed2f8780bdcd9a2e4b6c65b3f6de27470d",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "pixelWidth": 800,
+      "pixelHeight": 600,
+      "actualWindowDip": {
+        "width": 800,
+        "height": 600
+      },
+      "renderDensity": 1,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "",
+      "dark": false
+    },
+    {
+      "file": "05-core-preview-overlay-800.png",
+      "sha256": "a6893d95bd44bfde76a6f0ba5093c2e9b88ae4882402a68f5c46234e366db432",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "pixelWidth": 800,
+      "pixelHeight": 600,
+      "actualWindowDip": {
+        "width": 800,
+        "height": 600
+      },
+      "renderDensity": 1,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "",
+      "dark": false
+    },
+    {
+      "file": "06-core-search-empty-800.png",
+      "sha256": "e0065f878ca5d7a5331de50ed8e819221ee976fd0bd57a9028c93ad79bf57f7d",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "pixelWidth": 800,
+      "pixelHeight": 600,
+      "actualWindowDip": {
+        "width": 800,
+        "height": 600
+      },
+      "renderDensity": 1,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": null,
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "\u4E0D\u5B58\u5728\u7684\u6587\u4EF6",
+      "dark": false
+    },
+    {
+      "file": "07-core-system-contrast-resources.png",
+      "sha256": "d0dd8eee5aab5e66c5cc7bb30c71e06a1c99b9048ff8a234925f33b00e642455",
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "pixelWidth": 1120,
+      "pixelHeight": 760,
+      "actualWindowDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "renderDensity": 1,
+      "actualVisualDpi": 1,
+      "method": "RenderTargetBitmap of the running WPF window client, including integrated title bar",
+      "nativeDesktopCapture": false,
+      "composited": false,
+      "selected": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "checkedFiles": [],
+      "preview": "\u4EA4\u4ED8\u8BF4\u660E.txt",
+      "search": "",
+      "dark": false
+    }
+  ],
+  "sourceCommit": "f76d5f9a9fb140c844acf4fed69ef179fdbe2d3f",
+  "evidenceScope": "Standalone WPF visual prototype, generated ZIP fixture, core layout and limited prototype interactions only",
+  "productFeatureAcceptance": false,
+  "userDirectionApproved": false,
+  "physicalDpiAccepted": false,
+  "uiFont": "Segoe UI, Microsoft YaHei UI, Microsoft YaHei, Global User Interface",
+  "previewFont": "Consolas, Microsoft YaHei UI, Microsoft YaHei, Global User Interface",
+  "fixtureSha256": "e983893c8dca4f34a3bbf92744d3e8dcab93bf2c13f3565208dc12f2a17690bc"
+}
