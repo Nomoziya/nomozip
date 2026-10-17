@@ -29,12 +29,14 @@ public partial class ArchiveContentsDialog : Window
                 { EntryTable.Columns[index].MinWidth = width; EntryTable.Columns[index].Width = width; }
                 EntryTable.Columns[1].MinWidth = 130;
                 var fixedWidth = 54 + (compactPreview ? 94 : 103) + (compactPreview ? 0 : detailWidth) + (narrow ? 0 : 171) + (showEncryption ? detailWidth : 0);
-                EntryTable.Columns[1].Width = Math.Max(130, EntryTable.ActualWidth - fixedWidth - 18);
+                var scrollGutter = EntryTable.Template.FindName("DG_ScrollViewer", EntryTable) is ScrollViewer { ComputedVerticalScrollBarVisibility: Visibility.Visible } ? SystemParameters.VerticalScrollBarWidth : 0;
+                EntryTable.Columns[1].Width = Math.Max(130, EntryTable.ActualWidth - fixedWidth - scrollGutter);
             }
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
             EditContentsButton.Visibility = compactPreview ? Visibility.Collapsed : Visibility.Visible;
             ContentsArchiveName.MaxWidth = double.PositiveInfinity;
         }
+        EntryTable.AddHandler(ScrollViewer.ScrollChangedEvent,new ScrollChangedEventHandler((_,args)=>{if(args.ExtentHeightChange!=0 || args.ViewportHeightChange!=0)Arrange();}));
         EntryTable.SizeChanged+=(_,_)=>Arrange();EntryTable.Loaded+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
         model.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(model.GridView)) {ListViewAction.IsChecked=!model.GridView;GridViewAction.IsChecked=model.GridView;}};
         Point? tileDragStart=null;
