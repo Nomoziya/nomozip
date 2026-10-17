@@ -9,9 +9,7 @@
       </Grid.RowDefinitions>
       <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-          <Border Background="{DynamicResource AccentBrush}" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0">
-            <TextBlock Text="!" Foreground="{DynamicResource OnAccentBrush}" FontSize="25" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Border>
+          <loc:FluentIcon Kind="Warning" Foreground="{DynamicResource AccentBrush}" Width="34" Height="34" Margin="0,0,16,0"/>
           <TextBlock Text="{loc:Text Conflict.Title}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
         </StackPanel>
         <TextBlock Text="{loc:Text Conflict.Description}" TextWrapping="Wrap" Margin="0,0,0,24"/>

@@ -763,7 +763,7 @@
         </DockPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
-          <ListBox x:Name="SettingsCategoryList" ItemsSource="{Binding SettingsCategories}" SelectedIndex="{Binding SettingsSection}" Margin="12,0,12,0" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" AlternationCount="6">
+          <ListBox x:Name="SettingsCategoryList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding SettingsCategories}" SelectedIndex="{Binding SettingsSection}" Margin="12,0,12,0" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" AlternationCount="6">
             <ListBox.ItemContainerStyle>
               <Style TargetType="ListBoxItem">
                 <Setter Property="Padding" Value="14,13"/>
@@ -796,7 +796,7 @@
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
                   <loc:FluentIcon Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Margin="0,0,12,0"><loc:FluentIcon.Style><Style TargetType="loc:FluentIcon"><Style.Triggers><DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="0"><Setter Property="Kind" Value="Settings"/></DataTrigger><DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="1"><Setter Property="Kind" Value="DocumentText"/></DataTrigger><DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="2"><Setter Property="Kind" Value="LockClosed"/></DataTrigger><DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="3"><Setter Property="Kind" Value="Desktop"/></DataTrigger><DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="4"><Setter Property="Kind" Value="ArrowDownload"/></DataTrigger><DataTrigger Binding="{Binding (ItemsControl.AlternationIndex),RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="5"><Setter Property="Kind" Value="Info"/></DataTrigger></Style.Triggers></Style></loc:FluentIcon.Style></loc:FluentIcon>
-                  <TextBlock Text="{Binding}" VerticalAlignment="Center" MaxWidth="108" ToolTip="{Binding}" TextWrapping="Wrap"/>
+                  <TextBlock Text="{Binding}" VerticalAlignment="Center" MaxWidth="96" ToolTip="{Binding}" TextWrapping="Wrap"/>
                 </StackPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>
@@ -978,13 +978,13 @@
                 <TextBlock Text="{loc:Text T_651f27447015}" Style="{StaticResource Heading}" FontSize="16"/>
                 <DockPanel Margin="0,0,0,4">
                   <Button x:Name="CheckApplicationUpdatesButton" Content="{loc:Text T_e64da2a40b53}" Command="{Binding CheckApplicationUpdatesCommand}" Margin="12,0,0,0" Style="{StaticResource PrimaryButton}" DockPanel.Dock="Right"/>
-                  <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
-                    <Image Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="34" Height="34" Margin="0,0,14,0"/>
-                    <StackPanel VerticalAlignment="Center">
+                  <Grid Margin="0,4,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Image Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="34" Height="34" Margin="0,0,14,0" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
                       <TextBlock Text="nomozip" FontFamily="Segoe UI" FontSize="22" FontWeight="Bold"/>
-                      <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" Margin="0,4,0,0"/>
+                      <TextBlock x:Name="ApplicationVersionText" Text="{Binding ApplicationVersionDescription}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                     </StackPanel>
-                  </StackPanel>
+                  </Grid>
                 </DockPanel>
                 <TextBlock Text="{loc:Text T_8c321cda91b6}" Style="{StaticResource Secondary}"/>
                 <Expander x:Name="ApplicationUpdateActions" Header="{loc:Text Updates.SoftwareActions}" Margin="0,12,0,0">

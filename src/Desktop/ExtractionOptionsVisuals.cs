@@ -22,8 +22,8 @@ internal static class ExtractionOptionsVisuals
         var template=(DataTemplate)XamlReader.Parse("""
           <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:ArchivePassword.Desktop;assembly=ArchivePassword">
             <DockPanel Margin="12,0,8,0">
-              <Button DockPanel.Dock="Right" Tag="RemoveBatchArchive" Style="{DynamicResource SubtleButton}" Width="28" Height="28" MinHeight="28" Padding="6" Margin="8,0,0,0" FocusVisualStyle="{DynamicResource FocusStyle}">
-                <Path Data="M1,1 L11,11 M11,1 L1,11" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.2" Width="12" Height="12"/>
+              <Button DockPanel.Dock="Right" Tag="RemoveBatchArchive" Style="{DynamicResource SubtleButton}" Width="28" Height="28" MinHeight="28" Padding="4" Margin="8,0,0,0" FocusVisualStyle="{DynamicResource FocusStyle}">
+                <local:FluentIcon Kind="Dismiss" Foreground="{DynamicResource SecondaryBrush}" Width="20" Height="20"/>
               </Button>
               <local:FileKindIcon DockPanel.Dock="Left" FileName="{Binding Path}" Width="18" Height="24" Margin="0,0,12,0"/>
               <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
@@ -51,7 +51,7 @@ internal static class ExtractionOptionsVisuals
         var actions=new WrapPanel();tools.Children.Add(actions);
         var add=new Button {Command=model.AddFilesCommand,Style=(Style)Application.Current.FindResource("PrimaryButton"),Margin=new Thickness(0,0,8,0)};
         var addContent=new StackPanel {Orientation=Orientation.Horizontal};
-        var plus=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M1,7 L13,7 M7,1 L7,13"),Width=14,Height=14,StrokeThickness=1.3,Margin=new Thickness(0,0,8,0),VerticalAlignment=VerticalAlignment.Center};plus.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"OnAccentBrush");addContent.Children.Add(plus);addContent.Children.Add(new TextBlock {Text=UiText.Get("Extraction.AddFiles")});add.Content=addContent;actions.Children.Add(add);
+        var plus=new FluentIcon {Kind="Add",Width=20,Height=20,Margin=new Thickness(0,0,8,0),VerticalAlignment=VerticalAlignment.Center};plus.SetResourceReference(Control.ForegroundProperty,"OnAccentBrush");addContent.Children.Add(plus);addContent.Children.Add(new TextBlock {Text=UiText.Get("Extraction.AddFiles")});add.Content=addContent;actions.Children.Add(add);
         var remove=new Button {Content=UiText.Get("T_a194128b2939"),Command=model.RemoveFileCommand};actions.Children.Add(remove);
         remove.SetBinding(UIElement.IsEnabledProperty,new Binding("SelectedItem") {Source=table,Converter=new NonNullBooleanConverter()});
         var current=view;
