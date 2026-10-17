@@ -44,6 +44,7 @@ internal static class Capture
             Check("opaque themed client surface", window.Client.Background is SolidColorBrush { Color.A: 255 });
             Check("original brand asset is loaded", window.Brand.Source is BitmapSource { PixelWidth: 256, PixelHeight: 256 });
             Check("reference layout proportions", Math.Abs(Bounds(window.PreviewPane).X - 801) < 3 && Math.Abs(Bounds(window.FileHeader).Y - 183) < 3 && Math.Abs(window.RailColumn.Width.Value - 186) < .1);
+            Check("archive title aligns with reference heading", Math.Abs(Bounds(window.ArchiveTitle).X - 285) < 2);
             Check("twelve real ZIP entries shown in album", window.Model.VisibleEntries.Cast<Entry>().Count() == 12 && window.Model.Entries.Count == 14);
             Check("photo preview comes from selected ZIP payload", window.PreviewImage.Source == window.Model.CurrentEntry?.Thumbnail && window.PreviewImage.Source is BitmapSource { PixelWidth: 1280, PixelHeight: 848 });
             Check("preview and toolbar fit client", Bounds(window.MoreButton).Right <= Bounds(window.PreviewPane).Left && Bounds(window.PreviewPane).Bottom <= window.Client.ActualHeight);
@@ -77,7 +78,7 @@ internal static class Capture
                 if (frames.Count == 12) Screenshot("06-reference-extracting.png");
             }
             await demo; await Layout(320); motionValues.Add(window.Progress.DisplayedValue); frames.Add(BitmapFrame.Create(TaskFrame(), null, new BitmapMetadata("gif"), null));
-            Check("extraction completes after comparing actual payload bytes", window.ProcessedBytes == window.TotalBytes && window.TaskTitle.Text == "演示完成");
+            Check("extraction completes after comparing actual payload bytes", window.ProcessedBytes == window.TotalBytes && window.TaskTitle.Text == "演示完成" && !window.PauseButton.IsEnabled && !window.CancelButton.IsEnabled);
             Check("animation progresses monotonically with multiple positions", motionValues.Zip(motionValues.Skip(1), (a, b) => b >= a - .01).All(value => value) && motionValues.Select(value => Math.Round(value)).Distinct().Count() >= 8);
             Check("animation contains visible task pixels", frames.Count >= 12 && frames.All(HasVisibleSurface));
             var gif = new GifBitmapEncoder(); foreach (var frame in frames) gif.Frames.Add(frame); using (var stream = File.Create(Path.Combine(output, "07-extraction-motion.gif"))) gif.Save(stream);
