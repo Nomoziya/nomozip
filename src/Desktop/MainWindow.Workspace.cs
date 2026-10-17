@@ -139,7 +139,7 @@ public partial class MainWindow
         var content = (FrameworkElement)dialog.Content; dialog.Content = null; content.DataContext = model;
         DisableDialogDefaults(content);
         dialog.EmbeddedClose = ClosePreview; PreviewHost.Content = content;
-        ArchivePreviewPane.Visibility = Visibility.Visible; PreviewColumn.Width = new GridLength(Math.Min(360, Math.Max(260, ActualWidth * .28)));
+        ArchivePreviewPane.Visibility = Visibility.Visible; PreviewColumn.Width = new GridLength(ArchivePassword.Core.UiText.LanguageCode=="en"?260:Math.Min(360, Math.Max(260, ActualWidth * .28)));
         dialog.ClosePreviewButton.Focus();
         return true;
     }
