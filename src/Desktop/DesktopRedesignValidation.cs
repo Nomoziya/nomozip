@@ -37,6 +37,7 @@ internal static class DesktopRedesignValidation
         try
         {
             model.LoadPreview();
+            await DesktopFrameValidation.RunAsync(window,Check);
             var previewSources=Path.Combine(folder,"synthetic","source-list");Directory.CreateDirectory(previewSources);
             var sourceFolder=Path.Combine(previewSources,"项目文件");Directory.CreateDirectory(sourceFolder);
             var previewText=Path.Combine(previewSources,"说明.txt");await File.WriteAllTextAsync(previewText,"Synthetic source text for visual verification.\r\n");
@@ -249,7 +250,7 @@ internal static class DesktopRedesignValidation
             window.PrepareExtractionOptionsForValidation=dialog=>
             {
                 dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
-                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
+                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(()=>
                 {
                     Check("selected extraction confirmation names its actual scope",dialog.Title==UiText.Get("Extraction.SelectedTitle"));
                     foreach(var appearance in new[]{"light","dark"})
@@ -257,7 +258,7 @@ internal static class DesktopRedesignValidation
                     theme.SetMode("light");
                     var start=Descendants((DependencyObject)dialog.Content).OfType<Button>().Single(value=>value.IsDefault);
                     start.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                });
+                }));
             };
             model.OutputPath=Path.Combine(data,"output");model.ConflictPolicy=1;
             contents.Rows.Single(value=>value.Path=="notes.txt").Selected=true;
@@ -269,14 +270,23 @@ internal static class DesktopRedesignValidation
             window.PrepareExtractionOptionsForValidation=null;
 
             var secondArchive=Path.Combine(data,"second.zip");File.Copy(archive,secondArchive);model.AddFiles([secondArchive]);
+            var thirdArchive=Path.Combine(data,"third.zip");File.Copy(archive,thirdArchive);model.AddFiles([thirdArchive]);var originalRules=model.DirectoryRules;
             window.PrepareExtractionOptionsForValidation=dialog=>
             {
                 dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
-                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
+                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(()=>
                 {
+                    model.CreateArchiveFolder=true;dialog.UpdateLayout();
                     foreach(var appearance in new[]{"light","dark"}) {theme.SetMode(appearance);dialog.UpdateLayout();dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(folder,"extraction-batch-"+appearance+".png"),1,clientOnly:true);dialog.Opacity=0;}
+                    var previewTexts=VisualDescendants((DependencyObject)window.ExtractionOutputPreview.Content).OfType<TextBlock>().Select(value=>value.Text).ToArray();
+                    Check("batch preview shows rule-based archive destinations",previewTexts.Any(text=>text.Contains(Path.Combine(model.OutputPath,"sample"),StringComparison.Ordinal)) && previewTexts.Any(text=>text.Contains(Path.Combine(model.OutputPath,"third"),StringComparison.Ordinal)));
+                    var batchTable=VisualDescendants((DependencyObject)dialog.Content).OfType<DataGrid>().Single(value=>value.Name=="BatchArchiveTable");
+                    var remove=VisualDescendants(batchTable).OfType<Button>().Single(value=>value.Tag as string=="RemoveBatchArchive" && value.DataContext is ArchiveTaskRow row && row.Path==thirdArchive);
+                    remove.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));dialog.UpdateLayout();
+                    Check("batch inline remove updates the actual queue and retains the archive",!model.Tasks.Any(row=>row.Path==thirdArchive) && File.Exists(thirdArchive) && batchTable.Items.Count==2);
+                    model.ApplyDirectoryRules(originalRules,model.OutputPath);
                     theme.SetMode("light");dialog.Close();
-                });
+                }));
             };
             Check("batch extraction confirmation can cancel without running",!window.ConfirmExtractionOptions() && model.IsIdle && model.Tasks.All(row=>!row.Running));window.PrepareExtractionOptionsForValidation=null;
 
@@ -361,11 +371,11 @@ internal static class DesktopRedesignValidation
             var passwordStage=0;
             var compressionDialogs=new WindowDialogs(window,prepareDialog:dialog=>
             {
-                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
+                dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(()=>
                 {
                     if(passwordStage==0){dialog.SecretBox.Password="synthetic-settings-password";dialog.ConfirmationBox.Password=dialog.SecretBox.Password;dialog.EncryptHeadersBox.IsChecked=false;dialog.ContinueButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));}
                     else{if(passwordStage==2)Check("ZIP password settings omit unsupported filename encryption",!dialog.CompressionHeadersPanel.IsVisible && dialog.CompressionHeaderEncryption is null);dialog.EncryptHeadersBox.IsChecked=true;dialog.Close();}
-                });
+                }));
             });
             var passwordSettingsModel=new MainViewModel(AppContext.BaseDirectory,data,vault,compressionDialogs);await passwordSettingsModel.InitializeAsync();passwordSettingsModel.Page=3;
             Check("setting a password is available before encryption is enabled",!passwordSettingsModel.CompressionEncrypt && passwordSettingsModel.SetCompressionPasswordCommand.CanExecute(null));

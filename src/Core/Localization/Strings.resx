@@ -279,7 +279,7 @@
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_176f8887e229">
-    <value>删除所选密码</value>
+    <value>删除</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_17a8f74d32e3">
@@ -969,7 +969,7 @@
     <comment>src\Core\SfxCompressionService.cs:25</comment>
   </data>
   <data xml:space="preserve" name="T_523a85904c77">
-    <value>输出目录</value>
+    <value>输出位置</value>
     <comment>src/Desktop/MainWindow.xaml; src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_5266972ebb28">
@@ -1873,7 +1873,7 @@
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a3610c2b94b0">
-    <value>解压时自动尝试此密码</value>
+    <value>自动尝试此密码</value>
     <comment>src/Desktop/PasswordDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a37778f17c5f">
@@ -1889,7 +1889,7 @@
     <comment>src\Desktop\FileHashViewModel.cs:154</comment>
   </data>
   <data xml:space="preserve" name="T_a465dc5d7781">
-    <value>自动尝试保存的密码</value>
+    <value>尝试密码库中的密码</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a49163724694">
@@ -1973,7 +1973,7 @@
     <comment>src\Desktop\CompressionViewModel.cs:184</comment>
   </data>
   <data xml:space="preserve" name="T_abab7359518e">
-    <value>优先尝试规则（可选）</value>
+    <value>匹配与优先规则</value>
     <comment>src/Desktop/PasswordDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_abb6a356f9a2">
@@ -2249,7 +2249,7 @@
     <comment>src\Desktop\MainViewModel.cs:26</comment>
   </data>
   <data xml:space="preserve" name="T_c4bf814baf3d">
-    <value>继续队列</value>
+    <value>继续全部</value>
     <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
   </data>
   <data xml:space="preserve" name="T_c4d54b1608b5">
@@ -2680,7 +2680,7 @@
     <comment>src\Desktop\CompressionViewModel.cs:191</comment>
   </data>
   <data xml:space="preserve" name="T_e90e4d4b3a66">
-    <value>暂停队列</value>
+    <value>暂停全部</value>
     <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
   </data>
   <data xml:space="preserve" name="T_e98b7cc07066">
@@ -3230,4 +3230,22 @@
   <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} 个任务正在运行</value></data>
   <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} 个任务待处理</value></data>
   <data name="Preview.Loaded" xml:space="preserve"><value>已加载只读预览</value></data>
+  <data name="Window.Minimize" xml:space="preserve"><value>最小化</value></data>
+  <data name="Window.Maximize" xml:space="preserve"><value>最大化</value></data>
+  <data name="Window.Restore" xml:space="preserve"><value>还原</value></data>
+  <data name="Window.Close" xml:space="preserve"><value>关闭</value></data>
+  <data name="Extraction.PreviewTitle" xml:space="preserve"><value>输出位置预览</value></data>
+  <data name="Extraction.PreviewPending" xml:space="preserve"><value>需读取压缩包内容后确定最终位置。</value></data>
+  <data name="Extraction.PreviewEstimated" xml:space="preserve"><value>预计位置；开始时重新检查目录冲突。</value></data>
+  <data name="Extraction.AddFiles" xml:space="preserve"><value>添加文件...</value></data>
+  <data name="Compression.EncryptionLabel" xml:space="preserve"><value>加密</value></data>
+  <data name="Compression.Parameters" xml:space="preserve"><value>压缩参数</value></data>
+  <data name="Compression.GeneratedParameters" xml:space="preserve"><value>使用所选格式和压缩级别</value></data>
+  <data name="Extraction.RemoveArchive" xml:space="preserve"><value>从列表移除此压缩包</value></data>
+  <data name="Compression.VolumeSize" xml:space="preserve"><value>分卷大小</value></data>
+  <data name="Compression.SelfExtract" xml:space="preserve"><value>自解压</value></data>
+  <data name="Compression.AdvancedSummary" xml:space="preserve"><value>分卷：{0} · 自解压：{1}</value></data>
+  <data name="Compression.Yes" xml:space="preserve"><value>是</value></data>
+  <data name="Compression.No" xml:space="preserve"><value>否</value></data>
+<data name="Vault.SetMaster" xml:space="preserve"><value>设置主密码</value></data>
 </root>

@@ -38,7 +38,7 @@
                 </DataTemplate>
               </Label.ContentTemplate>
             </Label>
-            <Grid Grid.Row="1" Grid.Column="1" Margin="0">
+            <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,0,12">
               <PasswordBox x:Name="SecretBox" Padding="10,6,36,6" Height="36"/>
               <TextBox x:Name="VisibleSecret" Visibility="Collapsed" Padding="10,6,36,6" Height="36"/>
             </Grid>
@@ -57,8 +57,8 @@
                 </DataTemplate>
               </Label.ContentTemplate>
             </Label>
-            <TextBox x:Name="NotesBox" TextWrapping="Wrap" AcceptsReturn="True" Height="64" MinHeight="64" Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" VerticalContentAlignment="Top"/>
-            <CheckBox x:Name="ShowSecret" Checked="OnVisibilityChanged" Unchecked="OnVisibilityChanged" Grid.Row="1" Grid.Column="1" Margin="0,0,8,8" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="30" ToolTip="{loc:Text T_ffe21a671190}" AutomationProperties.Name="{loc:Text T_ffe21a671190}">
+            <TextBox x:Name="NotesBox" TextWrapping="Wrap" AcceptsReturn="True" Height="80" MinHeight="80" Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" VerticalContentAlignment="Top"/>
+            <CheckBox x:Name="ShowSecret" Checked="OnVisibilityChanged" Unchecked="OnVisibilityChanged" Grid.Row="1" Grid.Column="1" Margin="0,0,4,12" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="30" ToolTip="{loc:Text T_ffe21a671190}" AutomationProperties.Name="{loc:Text T_ffe21a671190}">
               <CheckBox.Template>
                 <ControlTemplate TargetType="CheckBox">
                   <Grid Background="Transparent">
@@ -100,7 +100,7 @@
           <TextBlock x:Name="Error" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
         </StackPanel>
       </ScrollViewer>
-      <Grid Grid.Row="1" Margin="0,16,0,0">
+      <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0" Margin="0,16,0,0"><Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
@@ -109,10 +109,10 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="SaveButton" Content="{loc:Text Redesign.SaveChanges}" Click="OnSave" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Grid.Column="0" HorizontalAlignment="Stretch"/>
-        <Button Content="{loc:Text T_2cd0f3be8738}" Click="OnCancel" Margin="0,0,8,0" Grid.Column="1" HorizontalAlignment="Stretch"/>
-        <Button Content="{loc:Text T_176f8887e229}" Command="{Binding DeletePasswordCommand}" Margin="0,12,0,0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Style="{StaticResource SubtleButton}" Foreground="{DynamicResource ErrorBrush}" MinHeight="28" Padding="8,4"/>
-      </Grid>
+        <Button x:Name="SaveButton" MinHeight="40" Content="{loc:Text Redesign.SaveChanges}" Click="OnSave" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Grid.Column="0" HorizontalAlignment="Stretch"/>
+        <Button MinHeight="40" Content="{loc:Text T_2cd0f3be8738}" Click="OnCancel" Margin="0,0,8,0" Grid.Column="1" HorizontalAlignment="Stretch"/>
+        <Border Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,16,0,0" Padding="0,12,0,0"><Button Content="{loc:Text T_176f8887e229}" Command="{Binding DeletePasswordCommand}" HorizontalAlignment="Left" Style="{StaticResource SubtleButton}" Foreground="{DynamicResource ErrorBrush}" MinHeight="28" Padding="0,4"/></Border>
+      </Grid></Border>
     </Grid>
   </Border>
 </UserControl>

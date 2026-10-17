@@ -12,9 +12,9 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="Button">
-            <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+            <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
               <Grid>
-                <Border x:Name="SettingsMarker" Width="3" Height="26" HorizontalAlignment="Left" Margin="-16,0,0,0" CornerRadius="2" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
+                <Border x:Name="SettingsMarker" Width="3" Height="26" HorizontalAlignment="Left" Margin="-8,0,0,0" CornerRadius="2" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
                 <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
               </Grid>
             </Border>
@@ -57,17 +57,17 @@
           <Path DockPanel.Dock="Left" Data="M6,11 L18,11 L18,20 L6,20 Z M8,11 L8,7 A4,4 0 0 1 16,7 L16,11" Width="14" Height="14" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" StrokeLineJoin="Round" Margin="0,2,6,0" VerticalAlignment="Top" IsHitTestVisible="False"/>
           <TextBlock x:Name="SidebarPrivacyNote" Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}"/>
         </DockPanel>
-        <Button x:Name="SettingsNavigation" DockPanel.Dock="Bottom" Click="OnSettings" HorizontalAlignment="Stretch" Margin="0,0,0,12" Padding="20,7,8,7" Style="{StaticResource SidebarButton}">
+        <Button x:Name="SettingsNavigation" DockPanel.Dock="Bottom" Click="OnSettings" HorizontalAlignment="Stretch" Margin="8,0,8,12" Padding="12,7,12,7" Style="{StaticResource SidebarButton}">
           <StackPanel Orientation="Horizontal">
-            <Path Data="M10,2 L14,2 L15,5 L18,6 L21,5 L23,9 L20,11 L20,14 L23,16 L21,20 L18,19 L15,21 L14,24 L10,24 L9,21 L6,19 L3,20 L1,16 L4,14 L4,11 L1,9 L3,5 L6,6 L9,5 Z M16,13 A4,4 0 1 1 8,13 A4,4 0 1 1 16,13" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.4" StrokeLineJoin="Round" Margin="0,0,18,0"/>
+            <Path Data="M10,2 L14,2 L15,5 L18,6 L21,5 L23,9 L20,11 L20,14 L23,16 L21,20 L18,19 L15,21 L14,24 L10,24 L9,21 L6,19 L3,20 L1,16 L4,14 L4,11 L1,9 L3,5 L6,6 L9,5 Z M16,13 A4,4 0 1 1 8,13 A4,4 0 1 1 16,13" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.25" StrokeLineJoin="Round" Margin="0,0,12,0"/>
             <TextBlock x:Name="SettingsNavigationText" Text="{loc:Text T_df3d58c7d84b}" VerticalAlignment="Center"/>
           </StackPanel>
         </Button>
         <ListBox x:Name="Navigation" Foreground="{DynamicResource TextBrush}" SelectedIndex="{Binding NavigationIndex}" BorderThickness="0" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" AutomationProperties.Name="{loc:Text T_968608e4ff51}" VerticalAlignment="Top">
           <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
-              <Setter Property="Padding" Value="20,7,8,7"/>
-              <Setter Property="Margin" Value="0,0,0,4"/>
+              <Setter Property="Padding" Value="12,7,12,7"/>
+              <Setter Property="Margin" Value="8,0,8,4"/>
               <Setter Property="MinHeight" Value="40"/>
               <Setter Property="FontSize" Value="14"/>
               <Setter Property="FontWeight" Value="Normal"/>
@@ -78,16 +78,16 @@
               <Setter Property="Template">
                 <Setter.Value>
                   <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="Pill" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="6,0,0,6">
+                    <Border x:Name="Pill" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="10">
                       <Grid>
-                        <Border x:Name="NavigationMarker" Width="3" Height="26" HorizontalAlignment="Left" Margin="-16,0,0,0" CornerRadius="2" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
+                        <Border x:Name="NavigationMarker" Width="3" Height="26" HorizontalAlignment="Left" Margin="-8,0,0,0" CornerRadius="2" Background="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
                         <Grid>
                           <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                           </Grid.ColumnDefinitions>
-                          <Path Data="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" StrokeThickness="1.4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False">
+                          <Path Data="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" StrokeThickness="1.25" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False">
                             <Path.Style>
                               <Style TargetType="Path">
                                 <Style.Triggers>
@@ -109,7 +109,7 @@
                               </Style>
                             </ContentPresenter.Style>
                           </ContentPresenter>
-                          <Border Grid.Column="2" CornerRadius="11" MinWidth="22" Height="22" Padding="4,0" Margin="4,0,0,0" Background="{DynamicResource HoverBrush}" ToolTip="{loc:Text Redesign.ActiveTaskHelp}">
+                          <Border x:Name="NavigationCount" Grid.Column="2" CornerRadius="11" MinWidth="22" Height="22" Padding="4,0" Margin="4,0,0,0" Background="{DynamicResource HoverBrush}" ToolTip="{loc:Text Redesign.ActiveTaskHelp}">
                             <Border.Style>
                               <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -127,7 +127,7 @@
                                 </Style.Triggers>
                               </Style>
                             </Border.Style>
-                            <TextBlock Text="{Binding ActiveTaskCount}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}"/>
+                            <TextBlock x:Name="NavigationCountText" Text="{Binding ActiveTaskCount}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush}"/>
                           </Border>
                         </Grid>
                       </Grid>
@@ -139,6 +139,8 @@
                       <Trigger Property="IsSelected" Value="True">
                         <Setter TargetName="Pill" Property="Background" Value="{DynamicResource NavigationSelectionBrush}"/>
                         <Setter TargetName="NavigationMarker" Property="Visibility" Value="Visible"/>
+                        <Setter TargetName="NavigationCountText" Property="Foreground" Value="{DynamicResource OnAccentBrush}"/>
+                        <Setter TargetName="NavigationCount" Property="Background" Value="{DynamicResource AccentBrush}"/>
                         <Setter Property="Background" Value="{DynamicResource SelectionBrush}"/>
                         <Setter Property="Foreground" Value="{DynamicResource SelectionTextBrush}"/>
                         <Setter Property="FontWeight" Value="Normal"/>
@@ -152,7 +154,7 @@
           <ListBoxItem Content="{loc:Text Redesign.Files}" Tag="M3,7 L3,5 Q3,3 5,3 L9,3 L12,6 L20,6 Q22,6 22,8 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,8 Q2,7 3,7 L21,7" ToolTip="{loc:Text Redesign.Files}"/>
           <ListBoxItem Content="{loc:Text Redesign.Tasks}" Tag="M3,4 A1,1 0 1 1 3,6 A1,1 0 1 1 3,4 M3,11 A1,1 0 1 1 3,13 A1,1 0 1 1 3,11 M3,18 A1,1 0 1 1 3,20 A1,1 0 1 1 3,18 M8,5 L22,5 M8,12 L22,12 M8,19 L22,19" ToolTip="{loc:Text Redesign.Tasks}" Uid="Tasks"/>
           <ListBoxItem Content="{loc:Text T_9b54fb7636af}" Tag="M4,10 L20,10 L20,22 L4,22 Z M7,10 L7,6 A5,5 0 0 1 17,6 L17,10 M12,14 L12,18 M11,14 A1,1 0 1 1 13,14" ToolTip="{loc:Text T_9b54fb7636af}"/>
-          <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="M14,7 L18,11 L22,7 A7,7 0 0 1 13,15 L6,22 A3,3 0 0 1 2,18 L9,11 A7,7 0 0 1 17,2 Z" ToolTip="{loc:Text Redesign.Tools}"/>
+          <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="M14,3 C11,2 8,4 8,8 C8,9 8.2,10 8.7,10.8 L2.8,16.7 C1.6,17.9 1.6,19.7 2.8,20.9 C4,22.1 5.8,22.1 7,20.9 L13,15 C14,15.4 15,15.4 16.1,15 C20,13.8 22,10 20.8,6.5 L17.3,10 L14,6.7 L17.5,3.2 C16.4,2.8 15.2,2.8 14,3 Z" ToolTip="{loc:Text Redesign.Tools}"/>
         </ListBox>
       </DockPanel>
     </Border>
@@ -191,14 +193,8 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="24,20,24,12">
-          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top" Margin="16,0,0,0">
-            <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
-            <ComboBox x:Name="QueueConcurrencyChoice" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" Width="144" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
-              <ComboBoxItem Content="{loc:Text T_df0142916f7f}"/>
-              <ComboBoxItem Content="{loc:Text T_d722534ab0db}"/>
-            </ComboBox>
-          </StackPanel>
+        <DockPanel Margin="24,36,24,12">
+
           <StackPanel Margin="0">
             <StackPanel Orientation="Horizontal" Margin="0">
               <Path Data="M2,3 L5,3 M10,3 L28,3 M2,12 L5,12 M10,12 L28,12 M2,21 L5,21 M10,21 L28,21" Width="22" Height="22" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,12,0" VerticalAlignment="Center"/>
@@ -207,10 +203,7 @@
             <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}" Visibility="Collapsed"/>
           </StackPanel>
         </DockPanel>
-        <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,10" Margin="0" Background="Transparent">
-          <WrapPanel>
-            <ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/>
-            <Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
+        <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,10" Margin="0" Background="Transparent"><DockPanel><WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right"><Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" ContentTemplate="{StaticResource PauseActionContent}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
               <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                   <Style.Triggers>
@@ -218,11 +211,10 @@
                       <Setter Property="Visibility" Value="Visible"/>
                     </DataTrigger>
                   </Style.Triggers>
-                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Setter Property="Visibility" Value="Visible"/>
                 </Style>
               </Button.Style>
-            </Button>
-            <Button x:Name="QueueActionsAction" Click="OnQueueActions" IsEnabled="{Binding IsIdle}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text T_ca8d1fab2a53}">
+            </Button><Button x:Name="QueueActionsAction" Content="{loc:Text Redesign.More}" ContentTemplate="{StaticResource MoreActionContent}" Click="OnQueueActions" IsEnabled="{Binding IsIdle}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text T_ca8d1fab2a53}">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" x:Name="QueueActionsMenu" Padding="4" UseLayoutRounding="True" Placement="Bottom" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" FontFamily="Segoe UI, Microsoft YaHei" FontSize="14" Background="{DynamicResource SurfaceBrush}" Foreground="{DynamicResource TextBrush}" AutomationProperties.Name="{loc:Text T_5e541773a96b}">
                   <MenuItem Header="{loc:Text T_309cb972a002}" Command="{Binding AddFilesCommand}" Style="{StaticResource QueueMenuItem}"/>
@@ -237,49 +229,8 @@
                   <MenuItem Style="{StaticResource QueueMenuItem}" x:Name="QueueRemoveCompletedAction" Header="{loc:Text T_f4d9761756f5}" Command="{Binding RemoveCompletedTasksCommand}" ToolTip="{loc:Text T_4fd9ef5e6208}"/>
                 </ContextMenu>
               </Button.ContextMenu>
-              <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{loc:Text T_21a07234feb3}" Margin="0,0,8,0"/>
-                <Path Data="M0,0 L8,0 L4,4 Z" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="8" Height="4" Stretch="Fill" VerticalAlignment="Center"/>
-              </StackPanel>
-            </Button>
-            <TextBlock x:Name="ExtractionDropHint" Text="{loc:Text Menu.ExtractHint}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="16,0" Visibility="Collapsed"/>
-            <Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="36" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,8,4" Click="OnPrepareExtraction">
-              <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsIdle}" Value="False">
-                      <Setter Property="Visibility" Value="Collapsed"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </Button.Style>
-            </Button>
-            <Button x:Name="QueueCancelAction" Content="{Binding CancelActionCaption}" Command="{Binding CancelCommand}" Margin="0,0,8,4" MinHeight="36">
-              <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsBusy}" Value="True">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                </Style>
-              </Button.Style>
-            </Button>
-            <Button Content="{loc:Text T_32993c531afb}" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8">
-              <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding CanSkipPasswords}" Value="True">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                </Style>
-              </Button.Style>
-            </Button>
-          </WrapPanel>
-        </Border>
+
+            </Button></WrapPanel><ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/></DockPanel></Border>
         <ScrollViewer Grid.Row="2" x:Name="ExtractionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0">
           <Grid x:Name="ExtractionLayout">
             <Grid.ColumnDefinitions>
@@ -360,7 +311,7 @@
                               <ColumnDefinition Width="30"/>
                               <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M8,13 L8,21 M12,13 L12,21" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
+                            <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M8,13 L8,21 M12,13 L12,21" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.25" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
                               <TextBlock Text="{Binding Name}" Style="{StaticResource BodyText}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                               <TextBlock Text="{Binding OperationLabel}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0" ToolTip="{Binding SizeText}"/>
@@ -453,7 +404,7 @@
                                         <Condition Binding="{Binding IsCompression}" Value="False"/>
                                       </MultiDataTrigger.Conditions>
                                       <Setter Property="IsEnabled" Value="{Binding DataContext.CanPauseQueue,RelativeSource={RelativeSource AncestorType=Window}}"/>
-                                      <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                      <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=Window}}"/><Setter Property="ContentTemplate" Value="{StaticResource PauseActionContent}"/>
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                       <MultiDataTrigger.Conditions>
@@ -469,7 +420,7 @@
                                 </Style>
                               </Button.Style>
                             </Button>
-                            <Button Content="•••" Click="OnTaskMore" Padding="5,4" Margin="0" MinWidth="28" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}" FontSize="10" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                            <Button Click="OnTaskMore" Padding="6" Margin="4,0,0,0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><Path Data="M2,5 A1,1 0 1 1 2,7 A1,1 0 1 1 2,5 M8,5 A1,1 0 1 1 8,7 A1,1 0 1 1 8,5 M14,5 A1,1 0 1 1 14,7 A1,1 0 1 1 14,5" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="16" Height="12"/></Button>
                           </StackPanel>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
@@ -477,7 +428,7 @@
                   </DataGrid.Columns>
                 </DataGrid>
                 <Border Grid.Row="2" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="24,16">
-                  <Grid>
+                  <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="*"/>
                       <ColumnDefinition Width="300"/>
@@ -528,7 +479,7 @@
                                   <Condition Binding="{Binding IsCompression}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="IsEnabled" Value="{Binding DataContext.CanPauseQueue,RelativeSource={RelativeSource AncestorType=Window}}"/>
-                                <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                <Setter Property="Content" Value="{Binding DataContext.QueuePauseCaption,RelativeSource={RelativeSource AncestorType=Window}}"/><Setter Property="ContentTemplate" Value="{StaticResource PauseActionContent}"/>
                               </MultiDataTrigger>
                               <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -545,7 +496,45 @@
                         </Button.Style>
                       </Button>
                       <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
-                    </WrapPanel>
+                    </WrapPanel><DockPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0"><StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
+            <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
+            <ComboBox x:Name="QueueConcurrencyChoice" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" Width="144" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
+              <ComboBoxItem Content="{loc:Text T_df0142916f7f}"/>
+              <ComboBoxItem Content="{loc:Text T_d722534ab0db}"/>
+            </ComboBox>
+          </StackPanel><WrapPanel HorizontalAlignment="Right"><Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="36" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,8,4" Click="OnPrepareExtraction">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsIdle}" Value="False">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Button.Style>
+            </Button><Button x:Name="QueueCancelAction" Content="{Binding CancelActionCaption}" Command="{Binding CancelCommand}" Margin="0,0,8,4" MinHeight="36">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Button.Style>
+            </Button><Button Content="{loc:Text T_32993c531afb}" Command="{Binding SkipPasswordsCommand}" Margin="0,0,12,8">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanSkipPasswords}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+              </Button.Style>
+            </Button></WrapPanel></DockPanel>
                   </Grid>
                 </Border>
                 <TextBlock Grid.Row="1" Text="{loc:Text T_e5689e06217c}" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
@@ -589,6 +578,7 @@
                     </ComboBox>
                   </Grid>
                   <CheckBox Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}" Margin="0,0,0,20"/>
+                  <ContentControl x:Name="ExtractionOutputPreview" Margin="0,0,0,16"/>
                   <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
                     <Expander Header="{loc:Text Redesign.Advanced}">
                       <StackPanel Margin="0,12,0,0">
@@ -627,7 +617,7 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition x:Name="VaultDetailsColumn" Width="320"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="24,24,24,12" Grid.ColumnSpan="2">
+        <Grid Margin="24,36,24,12" Grid.ColumnSpan="2">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -649,6 +639,7 @@
                 </Ellipse>
                 <TextBlock Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center"/>
               </StackPanel>
+              <Button x:Name="VaultProtectAction" Command="{Binding EnableMasterCommand}" Margin="0,0,8,0" AutomationProperties.Name="{loc:Text Vault.SetMaster}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding VaultMasterEnabled}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel Orientation="Horizontal"><Path Data="M3,8 L15,8 L15,18 L3,18 Z M6,8 L6,5 A3,3 0 0 1 12,5 L12,8" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" Width="16" Height="18" Stretch="Uniform" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text Vault.SetMaster}"/></StackPanel></Button>
               <Button x:Name="VaultUnlockAction" Content="{loc:Text T_1109737d1829}" Command="{Binding UnlockVaultCommand}" Margin="0,0,8,0">
                 <Button.Style>
                   <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -708,7 +699,7 @@
               <Label Content="{loc:Text T_399ee6934772}" Target="{Binding ElementName=PasswordGroupBox}" Padding="0" Margin="0,0,0,8" Visibility="Collapsed"/>
               <ComboBox x:Name="PasswordGroupBox" ItemsSource="{Binding PasswordGroups}" SelectedItem="{Binding SelectedPasswordGroup}" DisplayMemberPath="Label" AutomationProperties.Name="{loc:Text T_d6a38b364511}"/>
             </StackPanel>
-            <Button Grid.Column="2" Content="{loc:Text T_36b2403fa140}" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="12,0,0,0"/>
+            <Button Grid.Column="2" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_36b2403fa140}"><StackPanel Orientation="Horizontal"><Path Data="M1,7 L13,7 M7,1 L7,13" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.25" Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_36b2403fa140}"/></StackPanel></Button>
             <Button Grid.Column="3" Content="{loc:Text Redesign.More}" ContentTemplate="{StaticResource MoreActionContent}" Click="OnQueueActions" Margin="12,0,0,0" VerticalAlignment="Bottom">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}">
@@ -826,7 +817,7 @@
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.ColumnSpan="2" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
-        <DockPanel Margin="24,24,24,20">
+        <DockPanel Margin="24,36,24,20">
           <ComboBox x:Name="SettingsCategory" SelectedIndex="{Binding SettingsSection}" ItemsSource="{Binding SettingsCategories}" Width="260" HorizontalAlignment="Left" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" DockPanel.Dock="Right"/>
           <TextBlock Text="{loc:Text T_df3d58c7d84b}" Margin="0" Style="{StaticResource PageTitle}"/>
         </DockPanel>
@@ -1415,20 +1406,20 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="24,24,24,12" x:Name="FilesLandingHeader">
+        <DockPanel Margin="24,36,24,12" x:Name="FilesLandingHeader">
           <TextBlock Text="{loc:Text Redesign.Files}" Style="{StaticResource PageTitle}"/>
           <Button x:Name="CloseArchiveButton" DockPanel.Dock="Right" Content="{loc:Text Redesign.CloseArchive}" Click="OnCloseArchive" Visibility="Collapsed"/>
         </DockPanel>
         <WrapPanel Grid.Row="1" Margin="24,0,24,12" x:Name="FilesLandingActions">
           <Button Click="OnOpenArchive" IsEnabled="{Binding IsIdle}" Margin="0,0,8,8" Style="{StaticResource PrimaryButton}">
             <StackPanel Orientation="Horizontal">
-              <Path Data="M3,7 L3,5 Q3,3 5,3 L9,3 L12,6 L20,6 Q22,6 22,8 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,8 Q2,7 3,7 L21,7" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.4" StrokeLineJoin="Round" Margin="0,0,10,0"/>
+              <Path Data="M3,7 L3,5 Q3,3 5,3 L9,3 L12,6 L20,6 Q22,6 22,8 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,8 Q2,7 3,7 L21,7" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.25" StrokeLineJoin="Round" Margin="0,0,10,0"/>
               <TextBlock Text="{loc:Text Redesign.OpenArchive}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
           <Button Click="OnCompression" IsEnabled="{Binding IsIdle}" Margin="0,0,8,8" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
             <StackPanel Orientation="Horizontal">
-              <Path Data="M4,1 L15,1 L22,8 L22,28 L4,28 Z M15,1 L15,8 L22,8 M8,18 L18,18 M13,13 L13,23" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.4" StrokeLineJoin="Round" Margin="0,0,10,0"/>
+              <Path Data="M4,1 L15,1 L22,8 L22,28 L4,28 Z M15,1 L15,8 L22,8 M8,18 L18,18 M13,13 L13,23" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.25" StrokeLineJoin="Round" Margin="0,0,10,0"/>
               <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>

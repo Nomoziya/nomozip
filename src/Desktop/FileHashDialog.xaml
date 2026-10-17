@@ -51,7 +51,7 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Border Grid.ColumnSpan="2" Background="{DynamicResource ChromeBrush}">
-      <StackPanel x:Name="HashHeading" Margin="24,24,24,20">
+      <StackPanel x:Name="HashHeading" Margin="24,36,24,20">
         <DockPanel>
           <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
           <StackPanel Orientation="Horizontal">

@@ -8,7 +8,7 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Border Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
-    <StackPanel Margin="24,24,24,20">
+    <StackPanel Margin="24,36,24,20">
       <StackPanel Orientation="Horizontal">
         <Viewbox Width="22" Height="28" Margin="0,0,12,0">
           <Grid Width="28" Height="34">
@@ -42,19 +42,19 @@
               <WrapPanel>
                 <Button Command="{Binding AddCompressionFilesCommand}" AutomationProperties.Name="{loc:Text T_e8166a5ae76c}" Margin="0,0,8,4" Style="{StaticResource PrimaryButton}">
                   <StackPanel Orientation="Horizontal">
-                    <Path Data="M3,1 L14,1 L20,7 L20,25 L3,25 Z M14,1 L14,7 L20,7 M7,16 L16,16 M12,11 L12,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="18" Height="22" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <Path Data="M3,1 L14,1 L20,7 L20,25 L3,25 Z M14,1 L14,7 L20,7 M7,16 L16,16 M12,11 L12,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" Width="16" Height="18" Stretch="Uniform" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_ad9daebe00dc}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
                 <Button Command="{Binding AddCompressionFolderCommand}" Margin="0,0,8,4" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
                   <StackPanel Orientation="Horizontal">
-                    <Path Data="M1,5 L9,5 L12,8 L23,8 L23,24 L1,24 Z M8,16 L17,16 M12,11 L12,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="18" Height="22" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <Path Data="M1,5 L9,5 L12,8 L23,8 L23,24 L1,24 Z M8,16 L17,16 M12,11 L12,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" Width="16" Height="18" Stretch="Uniform" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_45da2d9c85d1}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
                 <Button Command="{Binding RemoveCompressionSourceCommand}" Margin="0,0,8,4" x:Name="CompressionRemoveButton">
                   <StackPanel Orientation="Horizontal">
-                    <Path Data="M4,7 L20,7 M8,7 L8,3 L16,3 L16,7 M6,7 L7,25 L17,25 L18,7 M10,11 L10,21 M14,11 L14,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Width="18" Height="22" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <Path Data="M3,6 L21,6 M9,6 L9,3 L15,3 L15,6 M5,6 L6,21 Q6,23 8,23 L16,23 Q18,23 18,21 L19,6 M10,10 L10,19 M14,10 L14,19" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" Width="16" Height="18" Stretch="Uniform" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_a194128b2939}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
@@ -181,9 +181,9 @@
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                <Label Content="{loc:Text Compression.EncryptionLabel}" Padding="0" VerticalAlignment="Center" MinWidth="64" Margin="0,0,8,0"/>
                 <TextBlock Text="{Binding CompressionPasswordSummary}" Style="{StaticResource Secondary}" ToolTip="{Binding CompressionPasswordStatus}" Grid.Column="1" VerticalAlignment="Center"/>
-                <Button Content="{loc:Text Compression.PasswordShort}" Command="{Binding SetCompressionPasswordCommand}" HorizontalAlignment="Left" Margin="12,0,0,0" Grid.Column="2" Padding="12,8"/>
+                <Button Content="{loc:Text Compression.PasswordShort}" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}" Command="{Binding SetCompressionPasswordCommand}" HorizontalAlignment="Left" Margin="12,0,0,0" Grid.Column="2" Padding="12,8"/>
               </Grid>
               <TextBlock x:Name="FormatSourceError" Text="{Binding CompressionSourceError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
                 <TextBlock.Style>
@@ -197,14 +197,15 @@
                 </TextBlock.Style>
               </TextBlock>
               <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0">
-                <Expander x:Name="AdvancedOptions" Header="{loc:Text Compression.AdvancedTitle}" IsExpanded="True" Margin="0,16,0,12">
+                <Expander x:Name="AdvancedOptions" IsExpanded="True" Margin="0,16,0,12">
+                  <Expander.Header><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="{loc:Text Compression.AdvancedTitle}" Margin="0,0,12,0"/><TextBlock Grid.Column="1" Text="{Binding CompressionAdvancedSummary}" Style="{StaticResource Caption}" Foreground="{DynamicResource SecondaryBrush}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding CompressionAdvancedSummary}"/></Grid></Expander.Header>
                   <StackPanel>
                     <Grid Margin="0,0,0,8">
                       <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="72"/>
                         <ColumnDefinition Width="*"/>
                       </Grid.ColumnDefinitions>
-                      <Label Margin="0,0,8,0" Content="{loc:Text T_5473b9b24a75}" Target="{Binding ElementName=VolumeOptionBox}" Padding="0" VerticalAlignment="Center"/>
+                      <Label Margin="0,0,8,0" Content="{loc:Text Compression.VolumeSize}" Target="{Binding ElementName=VolumeOptionBox}" Padding="0" VerticalAlignment="Center"/>
                       <ComboBox Grid.Column="1" x:Name="VolumeOptionBox" SelectedIndex="{Binding CompressionVolumeOption}" IsEnabled="{Binding CanSplitCompression}" AutomationProperties.Name="{loc:Text T_a49163724694}" ToolTip="{loc:Text T_b3b8e461c196}">
                         <ComboBoxItem Content="{loc:Text T_13fa566b385e}"/>
                         <ComboBoxItem Content="100 MiB"/>
@@ -250,8 +251,8 @@
                         </Style>
                       </TextBlock.Style>
                     </TextBlock>
-                    <CheckBox x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}" ToolTip="{Binding CompressionSfxHint}" ToolTipService.ShowOnDisabled="True"/>
-                    <TextBlock Text="{loc:Text Compression.AdvancedAvailability}" Style="{StaticResource Secondary}" Margin="24,0,0,0"/>
+                    <Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Label Content="{loc:Text Compression.SelfExtract}" Padding="0" VerticalAlignment="Center"/><CheckBox Grid.Column="1" x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}" ToolTip="{Binding CompressionSfxHint}" ToolTipService.ShowOnDisabled="True"/></Grid>
+                    <TextBlock Text="{loc:Text Compression.AdvancedAvailability}" Style="{StaticResource Secondary}" Margin="72,4,0,0"/><Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Label Content="{loc:Text Compression.Parameters}" Padding="0" VerticalAlignment="Center"/><TextBox Grid.Column="1" Text="{loc:Text Compression.GeneratedParameters}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center"/></Grid><CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}" Margin="72,12,0,0" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Expander>
               </Border>
