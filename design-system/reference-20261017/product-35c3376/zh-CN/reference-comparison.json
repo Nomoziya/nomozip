@@ -1,0 +1,52 @@
+{
+  "sourceCommit": "35c3376581121b56bf561e83c9e09c41d7fd13cf",
+  "approvedCore": "967175a4274835fbfefeb75a6b30718051dfa41c",
+  "fixture": "Same names, bytes and ZIP dates as the approved standalone sample; photo attributed in prototypes/UiReference/Assets/ATTRIBUTION.md",
+  "screenshots": [
+    {
+      "file": "reference-file-browser-aligned.png",
+      "state": "same 1152x768, ZIP payload, selected cover and CI-arranged collection order as core-967175a/01-reference-light-1152.png; product default ordering unchanged",
+      "language": "zh-CN",
+      "theme": "light",
+      "windowDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "sha256": "5d3c45d4d382fc6e09e6f138dc66843e9f5f33d950acdc17deae1edcb477845d"
+    },
+    {
+      "file": "reference-file-browser-light.png",
+      "state": "1152x768 / same album / actual size ascending; core 10-size-sorted is 800x600 without preview, so this is not an identical-state pair",
+      "language": "zh-CN",
+      "theme": "light",
+      "windowDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "sha256": "1a9b156e629b478cfad128e389a929544ad9b77df922e125ef418a209ba22349"
+    },
+    {
+      "file": "reference-file-browser-dark.png",
+      "state": "same album / selected cover / dark",
+      "language": "zh-CN",
+      "theme": "dark",
+      "windowDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "sha256": "931d50e412cc21fb0bd655d2a8230c5392942e03704a65d4e9a9b576e70fe437"
+    },
+    {
+      "file": "reference-file-browser-narrow.png",
+      "state": "800 by 600 / same selected cover",
+      "language": "zh-CN",
+      "theme": "light",
+      "windowDip": {
+        "width": 800,
+        "height": 600
+      },
+      "sha256": "ba91315d8f942c0d012b1a68baaf3bc1ba177953a7833666bcd29ebd69ea1309"
+    }
+  ],
+  "physicalDpiAccepted": false
+}
