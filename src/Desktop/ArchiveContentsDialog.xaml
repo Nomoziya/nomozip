@@ -26,6 +26,7 @@
         <Trigger Property="DisplayIndex" Value="0"><Setter TargetName="HeaderSurface" Property="MinWidth" Value="0"/><Setter TargetName="HeaderSurface" Property="Margin" Value="0"/><Setter TargetName="HeaderSurface" Property="HorizontalAlignment" Value="Center"/><Setter Property="Focusable" Value="False"/></Trigger>
       </ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
     </Style>
+    <Style x:Key="ReferenceDetailText" TargetType="TextBlock" BasedOn="{StaticResource TableText}"><Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/><Style.Triggers><DataTrigger Binding="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True"><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/></DataTrigger></Style.Triggers></Style>
     <Style x:Key="ReferenceDateText" TargetType="TextBlock" BasedOn="{StaticResource GridSecondary}"><Setter Property="Margin" Value="12,0,4,0"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="ToolTip" Value="{Binding Text,RelativeSource={RelativeSource Self}}"/></Style>
     <Style x:Key="ArchiveEditItem" TargetType="MenuItem" BasedOn="{StaticResource ActionMenuItem}"/>
   </Window.Resources>
@@ -193,8 +194,8 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          <DataGridTextColumn Header="{loc:Text Contents.CompactSize}" Binding="{Binding SizeText}" SortMemberPath="Entry.Size" CanUserSort="True" Width="80" ElementStyle="{StaticResource TableText}"/>
-          <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" CanUserSort="False" Width="96" ElementStyle="{StaticResource TableText}"/>
+          <DataGridTextColumn Header="{loc:Text Contents.CompactSize}" Binding="{Binding SizeText}" SortMemberPath="Entry.Size" CanUserSort="True" Width="80" ElementStyle="{StaticResource ReferenceDetailText}"/>
+          <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" CanUserSort="False" Width="96" ElementStyle="{StaticResource ReferenceDetailText}"/>
           <DataGridTextColumn Header="{loc:Text Browser.Modified}" Binding="{Binding ModifiedText}" CanUserSort="False" Width="144" ElementStyle="{StaticResource ReferenceDateText}"/>
           <DataGridTextColumn CanUserSort="False" Header="{loc:Text T_320c254572c4}" Binding="{Binding EncryptionText}" Width="120" ElementStyle="{StaticResource TableText}"/>
         </DataGrid.Columns>
