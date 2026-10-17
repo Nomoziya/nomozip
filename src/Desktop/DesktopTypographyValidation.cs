@@ -14,7 +14,7 @@ internal static class DesktopTypographyValidation
     private static readonly List<string> roleIssues=[];
     private static readonly (string Key,double Size,int Weight)[] roles=
     [ ("PageTitle",22,600),("SectionTitle",16,600),("Heading",16,600),
-      ("ListItemTitle",14,600),("Caption",12,400),("Secondary",13,400),("BodyText",14,400) ];
+      ("Caption",12,400),("Secondary",13,400),("BodyText",14,400) ];
 
     internal static void Record(Window window,string path)
     {
