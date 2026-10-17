@@ -1,0 +1,567 @@
+{
+  "passed": true,
+  "checks": {
+    "01-files-empty: page title and fixed status visible": true,
+    "02-create: page title and fixed status visible": true,
+    "create uses real source count and removes only the selection": true,
+    "source table fills the left pane below its toolbar": true,
+    "missing archive name has inline error": true,
+    "04-create-advanced: page title and fixed status visible": true,
+    "05-create-empty: page title and fixed status visible": true,
+    "empty sources cannot create an archive": true,
+    "06-vault: page title and fixed status visible": true,
+    "vault search retains usable width above the table": true,
+    "vault checkbox includes readable content": true,
+    "primary save label uses the on-accent foreground": true,
+    "vault form rejects incomplete entry": true,
+    "07-vault-locked: page title and fixed status visible": true,
+    "leaving editable vault clears previous secret control": true,
+    "08-vault-empty: page title and fixed status visible": true,
+    "09a-vault-before-search: page title and fixed status visible": true,
+    "vault search changes visible sample records": true,
+    "09b-vault-many: page title and fixed status visible": true,
+    "large record set remains scrollable": true,
+    "10-checksum-ready: page title and fixed status visible": true,
+    "checksum without expectation never claims match": true,
+    "checksum computed from actual ZIP payload": true,
+    "mismatch is displayed as mismatch": true,
+    "matching expectation agrees with computed hash": true,
+    "13-checksum-empty: page title and fixed status visible": true,
+    "empty checksum list cannot calculate": true,
+    "14-settings: page title and fixed status visible": true,
+    "15-settings-file-operations: page title and fixed status visible": true,
+    "16-settings-security: page title and fixed status visible": true,
+    "17-updates: page title and fixed status visible": true,
+    "updates start unchecked without fabricated remote status": true,
+    "18-vault-dark: page title and fixed status visible": true,
+    "19-updates-dark: page title and fixed status visible": true,
+    "20-create-narrow-english: page title and fixed status visible": true,
+    "21-vault-narrow-english: page title and fixed status visible": true,
+    "English password label fits one line": true,
+    "vault save remains visible without scrolling at minimum size": true,
+    "22-settings-narrow-english: page title and fixed status visible": true,
+    "23-checksum-narrow-english: page title and fixed status visible": true,
+    "extract: submit is fully visible inside fixed footer": true,
+    "batch: submit is fully visible inside fixed footer": true,
+    "password: submit is fully visible inside fixed footer": true,
+    "blank password rejected inline": true,
+    "password mismatch rejected inline": true,
+    "password: close clears secret input": true,
+    "master: submit is fully visible inside fixed footer": true,
+    "master: close clears secret input": true,
+    "backup: submit is fully visible inside fixed footer": true,
+    "backup: close clears secret input": true,
+    "conflict: submit is fully visible inside fixed footer": true,
+    "rename rejects invalid file name": true,
+    "error: submit is fully visible inside fixed footer": true,
+    "edit: submit is fully visible inside fixed footer": true,
+    "unlock: submit is fully visible inside fixed footer": true,
+    "unlock: close clears secret input": true,
+    "26-vault-system-colour-resources: page title and fixed status visible": true,
+    "high contrast uses paired selection colours": true,
+    "selected vault navigation label uses highlight text": true,
+    "keyboard tab advances to the next settings field": true,
+    "theme choice opens a real WPF popup": true
+  },
+  "error": null,
+  "sourceCommit": "fec274bd781be2f9ffaffbd57750ba684eeded5e",
+  "pictures": [
+    {
+      "file": "01-files-empty.png",
+      "scene": "home",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "efa925430a8f714b216c1941f324696e6570e2bba9f4489ee947468d73c80d15"
+    },
+    {
+      "file": "02-create.png",
+      "scene": "create",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "67004bb02f122a02686165783f93bc62e2d4b82bec4c21b678a8b541f1259aab"
+    },
+    {
+      "file": "03-create-long-name.png",
+      "scene": "create",
+      "state": "long name",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "959878493dbd76fd49c303231b7dd5692fb3a61c7cce37a7c59def8b71a9738d"
+    },
+    {
+      "file": "04-create-advanced.png",
+      "scene": "create",
+      "state": "advanced",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "352c78cfa35ac7699271b8d3af77771fdb0386febf95022bfac6d2901ac163fd"
+    },
+    {
+      "file": "05-create-empty.png",
+      "scene": "create",
+      "state": "empty",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "afa9ffb3b9567732e71d0761b21c5eeec42985e8296f38700ab4c240275d2512"
+    },
+    {
+      "file": "06-vault.png",
+      "scene": "vault",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "5e8b7b4da38c3d4b97848a7f358ee8bde70531040c6668bf915d430f46782adf"
+    },
+    {
+      "file": "07-vault-locked.png",
+      "scene": "vault",
+      "state": "locked",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "0e4ee5e0e89cb306e3ca03e319e327f8580ae70124e1e2dd4728592448321bc3"
+    },
+    {
+      "file": "08-vault-empty.png",
+      "scene": "vault",
+      "state": "empty",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "340de95ba27e29b1af2ba08334ffff7bde28b5ef1aab444af489004aa2ca15b5"
+    },
+    {
+      "file": "09a-vault-before-search.png",
+      "scene": "vault",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "5e8b7b4da38c3d4b97848a7f358ee8bde70531040c6668bf915d430f46782adf"
+    },
+    {
+      "file": "09-vault-search.png",
+      "scene": "vault",
+      "state": "filtered",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "2014c58b7bd34796d85f50c02a841724cad58314f84243fa4ec4087b4bdc11c9"
+    },
+    {
+      "file": "09b-vault-many.png",
+      "scene": "vault",
+      "state": "many",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "2cfa6421fb1ed6de6870ba43a4720156f7b8f6e8d44d029298be8a7ed12fa6cb"
+    },
+    {
+      "file": "10-checksum-ready.png",
+      "scene": "tools",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "977bf5f0d113fec7b6217b3fcd09e0001d03781233e37369803fad4777a04ebe"
+    },
+    {
+      "file": "11-checksum-mismatch.png",
+      "scene": "tools",
+      "state": "mismatch",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "3fada52732cd3b3f276ef9c2170c6658ef6b4a7b9c0935f3a1fd20e388a0c981"
+    },
+    {
+      "file": "12-checksum-match.png",
+      "scene": "tools",
+      "state": "match",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "b5a3c00cc89c9eacb70585d180feaa1ccac34a553e57d75a2778d40981ba5223"
+    },
+    {
+      "file": "13-checksum-empty.png",
+      "scene": "tools",
+      "state": "empty",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "a17e4785c46b3d23ea038bf78406a9e15708bfc9c5c62317d1a6462367ede584"
+    },
+    {
+      "file": "14-settings.png",
+      "scene": "settings",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "17f433474dab91344f4342081f094abe73a01db07ff4309bb71a4165a5458a14"
+    },
+    {
+      "file": "15-settings-file-operations.png",
+      "scene": "settings",
+      "state": "filesettings",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "e88d93ab8cc508ef8237d529c01ca51c9bfc328af109a8ba5d6f19e0a78b3a34"
+    },
+    {
+      "file": "16-settings-security.png",
+      "scene": "settings",
+      "state": "security",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "6fe94df26339f1a028bfcff4299c088252f87eeb7581d4d35c4b143af8673b18"
+    },
+    {
+      "file": "17-updates.png",
+      "scene": "updates",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "e86d2a019fc8327cd9b11b23dcc5b91e2a65c799a4b4204541991b5aeb317f4b"
+    },
+    {
+      "file": "18-vault-dark.png",
+      "scene": "vault",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "dark",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "baba4a9e4b18f84945e5606a0db4b2aa62473af322ce38527dc0a89cda2e921f"
+    },
+    {
+      "file": "19-updates-dark.png",
+      "scene": "updates",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "dark",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "37924cc8d5249619e1129b57b19c75b629bb5aeb6539a9e3b742eef8024fa7fd"
+    },
+    {
+      "file": "20-create-narrow-english.png",
+      "scene": "create",
+      "state": "typical",
+      "language": "en",
+      "theme": "light",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "e20dc5318b290af8eab4c7a9e743cf5d3d00aaaabc0a4571db677dc25778c928"
+    },
+    {
+      "file": "21-vault-narrow-english.png",
+      "scene": "vault",
+      "state": "typical",
+      "language": "en",
+      "theme": "light",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "b1d0621aceda07b59931f81642f2876c5adb7c1c69fdec6797fcb58dc0a99caa"
+    },
+    {
+      "file": "22-settings-narrow-english.png",
+      "scene": "settings",
+      "state": "typical",
+      "language": "en",
+      "theme": "light",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "579d49effaa7cf6d285f75a273ae3573dd8d4e2749167152af60f422f953b204"
+    },
+    {
+      "file": "23-checksum-narrow-english.png",
+      "scene": "tools",
+      "state": "typical",
+      "language": "en",
+      "theme": "light",
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "b0f512478c5eb46c247e119596731a2068d06af154e050b4467fdd7f416b0fbe"
+    },
+    {
+      "file": "24-dialog-extract.png",
+      "scene": "extract",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 720
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "c5bc4b7895ce36ca4d6433e11325a3a530eac46f1e0ebd12eb3f8fecec6ac8b6"
+    },
+    {
+      "file": "24-dialog-batch.png",
+      "scene": "batch",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 760
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "be537120479c61b03134c96fc235100cfef263d44d57290dfccf51fbc8b71d8f"
+    },
+    {
+      "file": "24-dialog-password.png",
+      "scene": "password",
+      "state": "validation error",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 520
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "b915bc4ca3f22130b5610798e0423950aaf9d32a11db83de2d1385663b349d12"
+    },
+    {
+      "file": "24-dialog-master.png",
+      "scene": "master",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 520
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "a1c0d330cb4e8dca19f1917b00dbf6729baa57604da09e21cd97ac7fe26509e3"
+    },
+    {
+      "file": "24-dialog-backup.png",
+      "scene": "backup",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 520
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "0503e943efa29f587bb3cb40e91c017f00ab7beea6c0980f8c1bf3c9251a8b98"
+    },
+    {
+      "file": "24-dialog-conflict.png",
+      "scene": "conflict",
+      "state": "validation error",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 520
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "a3d656e2b567c17c6af109aa96929bdaacf59b29b314431423d1cfc4c6784315"
+    },
+    {
+      "file": "24-dialog-error.png",
+      "scene": "error",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 560
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "20d47196914ac2ebb4506d7efdbcda3e5770aa22a9450bafccb4600c1578f067"
+    },
+    {
+      "file": "24-dialog-edit.png",
+      "scene": "edit",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 560
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "ce0081657aca3332b75f03a0d0328a141e01a1ec62c98f55fc41d0dad67a0c8a"
+    },
+    {
+      "file": "24-dialog-unlock.png",
+      "scene": "unlock",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 520
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "8b96e07931e12fba722f9a9d6d37c4461d7999fdb68c38f855961e499b499ff0"
+    },
+    {
+      "file": "25-dialog-batch-english.png",
+      "scene": "batch",
+      "state": "typical",
+      "language": "en",
+      "theme": "light",
+      "clientDip": {
+        "width": 560,
+        "height": 760
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "d3c772e5517f63214a30ac35768e7fa9380cb34edc0097f42e1a22a652382f4f"
+    },
+    {
+      "file": "26-vault-system-colour-resources.png",
+      "scene": "vault",
+      "state": "typical",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "637f3be86c43e90c0341e83327e56b143b1c04f94b1e7f202a1cab1cac376131"
+    },
+    {
+      "file": "27-settings-keyboard-focus.png",
+      "scene": "settings",
+      "state": "keyboard focus",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 1152,
+        "height": 768
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "9746b9d7dea8f55f845244093c5bf2f71f2aa79b1871f3616355e458ee356b87"
+    },
+    {
+      "file": "28-settings-theme-popup.png",
+      "scene": "settings",
+      "state": "theme popup only",
+      "language": "zh-CN",
+      "theme": "light",
+      "clientDip": {
+        "width": 711,
+        "height": 78
+      },
+      "offscreenPixelScale": 1,
+      "sha256": "97390c4d337570a787b4eab5a8b37df4311d081f514fadb279038b8b96e3f78e"
+    }
+  ],
+  "acceptedCore": "967175a4274835fbfefeb75a6b30718051dfa41c",
+  "scope": "R2 standalone WPF design surfaces; in-memory examples, no production services or disk extraction",
+  "physicalDpiAccepted": false
+}
