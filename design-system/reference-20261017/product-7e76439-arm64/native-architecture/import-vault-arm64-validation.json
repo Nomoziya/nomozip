@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "total": 7,
+  "checks": {
+    "actual target process on ARM64 Windows": true,
+    "dpapi reads previous architecture secret and metadata": true,
+    "dpapi reading preserves encrypted file": true,
+    "dpapi native save keeps secret": true,
+    "master reads previous architecture secret and metadata": true,
+    "master reading preserves encrypted file": true,
+    "master native save keeps secret": true
+  },
+  "architecture": "arm64",
+  "osArchitecture": "Arm64",
+  "syntheticOnly": true
+}
