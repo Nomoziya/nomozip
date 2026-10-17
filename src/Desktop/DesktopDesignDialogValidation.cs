@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ArchivePassword.Core;
+using ArchivePassword.Infrastructure;
 
 namespace ArchivePassword.Desktop;
 
@@ -121,6 +122,17 @@ internal static class DesktopDesignDialogValidation
             });
         }).ShowCompressionResult("synthetic.7z","Synthetic compression failure",new EngineResult {Code="source_or_output_unavailable"});
         check("compression failure details keep the selected job status",compressionResultShown);
+        var supplemental=Path.Combine(folder,"synthetic","supplemental-dialogs");Directory.CreateDirectory(supplemental);
+        Show(new ExtractionRulesDialog(new(),supplemental,[supplemental]),"extraction-rules");
+        Show(new ResultDirectoriesDialog([supplemental],_=>throw new InvalidOperationException("This capture does not open folders.")),"result-directories");
+        var incoming=new SavedPassword(Guid.NewGuid(),"Synthetic import","synthetic-import-secret","",true,DateTimeOffset.UtcNow);
+        Show(new VaultImportDialog([], [incoming]),"vault-import-preview");
+        var names=new FilenameEncodingViewModel(Path.Combine(supplemental,"synthetic.zip"),0,(_,_)=>Task.FromResult(new EngineResult {Status="ok",Format="zip",Items=[new ArchiveEntry(0,"说明.txt",32,false,false)]}));
+        Show(new FilenameEncodingDialog(names),"filename-encoding");
+        var conversionClient=new ArchiveEngineClient(Path.Combine(AppContext.BaseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(AppContext.BaseDirectory,"engines","26.04","7z.dll"));
+        var conversionService=new ArchiveConversionService(conversionClient,conversionClient,new PasswordCandidateProvider(new DpapiPasswordVault(Path.Combine(supplemental,"vault.apv"))));
+        var conversion=new ArchiveConversionViewModel(Path.Combine(supplemental,"synthetic.zip"),conversionService,false,_=>Task.FromResult<PasswordPromptResponse?>(null),_=>false);
+        Show(new ArchiveConversionDialog(conversion),"archive-conversion");
         theme.SetMode("light");
     }
 }

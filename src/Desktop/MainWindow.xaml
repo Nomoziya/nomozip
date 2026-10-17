@@ -741,7 +741,7 @@
                         <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
                         <TextBlock Text="{Binding Converter={StaticResource PasswordMetadata}}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Converter={StaticResource PasswordMetadata}}" TextWrapping="NoWrap">
                           <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource GridSecondary}">
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource GridCaption}">
                               <Style.Triggers>
                                 <DataTrigger Binding="{Binding Converter={StaticResource PasswordMetadata}}" Value="">
                                   <Setter Property="Visibility" Value="Collapsed"/>
