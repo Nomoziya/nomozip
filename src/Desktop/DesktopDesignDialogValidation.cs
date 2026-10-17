@@ -21,7 +21,7 @@ internal static class DesktopDesignDialogValidation
         {
             dialog.Owner=owner;dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
             Exception? failure=null;
-            dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(() =>
+            dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(() =>
             {
                 try
                 {
@@ -30,7 +30,7 @@ internal static class DesktopDesignDialogValidation
                 }
                 catch(Exception error){failure=error;}
                 finally {if(dialog.IsVisible)dialog.Close();}
-            });
+            }));
             dialog.ShowDialog();if(failure is not null)throw failure;
         }
         var password=new PasswordDialog("资料合集.7z",false,[],true);
@@ -126,9 +126,15 @@ internal static class DesktopDesignDialogValidation
         Show(new ExtractionRulesDialog(new(),supplemental,[supplemental]),"extraction-rules");
         Show(new ResultDirectoriesDialog([supplemental],_=>throw new InvalidOperationException("This capture does not open folders.")),"result-directories");
         var incoming=new SavedPassword(Guid.NewGuid(),"Synthetic import","synthetic-import-secret","",true,DateTimeOffset.UtcNow);
-        Show(new VaultImportDialog([], [incoming]),"vault-import-preview");
+        var import=new VaultImportDialog([], [incoming]);
+        Show(import,"vault-import-preview",()=>check("supplemental import columns fill the available table width",Math.Abs(import.PreviewTable.Columns.Sum(column=>column.ActualWidth)-import.PreviewTable.ActualWidth)<=24));
         var names=new FilenameEncodingViewModel(Path.Combine(supplemental,"synthetic.zip"),0,(_,_)=>Task.FromResult(new EngineResult {Status="success",Format="zip",Items=[new ArchiveEntry(0,"说明.txt",32,false,false)]}));
-        Show(new FilenameEncodingDialog(names),"filename-encoding",()=>check("supplemental encoding capture uses a ready preview",names.CanApply && names.Names.Count==1));
+        var encoding=new FilenameEncodingDialog(names);
+        Show(encoding,"filename-encoding",()=>
+        {
+            check("supplemental encoding capture uses a ready preview",names.CanApply && names.Names.Count==1);
+            check("supplemental encoding column fills the available table width",Math.Abs(encoding.EncodingNames.Columns[0].ActualWidth-encoding.EncodingNames.ActualWidth)<=24);
+        });
         var conversionClient=new ArchiveEngineClient(Path.Combine(AppContext.BaseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(AppContext.BaseDirectory,"engines","26.04","7z.dll"));
         var conversionService=new ArchiveConversionService(conversionClient,conversionClient,new PasswordCandidateProvider(new DpapiPasswordVault(Path.Combine(supplemental,"vault.apv"))));
         var conversion=new ArchiveConversionViewModel(Path.Combine(supplemental,"synthetic.zip"),conversionService,false,_=>Task.FromResult<PasswordPromptResponse?>(null),_=>false);
