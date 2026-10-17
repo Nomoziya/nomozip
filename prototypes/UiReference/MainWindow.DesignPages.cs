@@ -37,6 +37,12 @@ public partial class MainWindow
     {
         for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++) { var child = VisualTreeHelper.GetChild(parent, i); if (child is T target) yield return target; foreach (var nested in Descendants<T>(child)) yield return nested; }
     }
+    private void ResetWorkspaceNavigation()
+    {
+        if (!IsInitialized || NavigationRail is null) return;
+        foreach (var button in Descendants<Button>(NavigationRail).Where(button => button.Tag is "vault" or "tools" or "settings"))
+        { button.SetResourceReference(Control.BackgroundProperty, "Canvas"); button.SetResourceReference(Control.ForegroundProperty, "Text"); }
+    }
     public DialogPreview ShowDesignDialog(string scene, bool english = false) => new(this, scene, english);
     private void OnWorkspaceNavigation(object sender, RoutedEventArgs e)
     {

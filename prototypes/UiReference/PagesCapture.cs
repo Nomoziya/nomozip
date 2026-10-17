@@ -36,14 +36,19 @@ internal static class PagesCapture
             await Scene("home", "01-files-empty"); await Scene("create", "02-create");
             var view = window.WorkspaceView;
             Check("create uses real source count and removes only the selection", ((ListBox)view.Controls["sources"]).Items.Count == 4);
+            Check("source table fills the left pane below its toolbar", view.Controls["sources"].ActualWidth > 450 && view.Controls["sources"].TransformToAncestor(view).Transform(new Point()).X < 30);
             ((TextBox)view.Controls["create-name"]).Text = ""; Click((Button)view.Controls["create-submit"]); Check("missing archive name has inline error", ((TextBlock)view.Controls["page-status"]).Text == "请输入文件名。");
             ((TextBox)view.Controls["create-name"]).Text = "很长的项目资料备份名称_原始照片与长期归档_2026年十月"; await Layout(); Shot("03-create-long-name.png", window.Client, "create", "long name", false);
             await Scene("create", "04-create-advanced", "advanced"); await Scene("create", "05-create-empty", "empty"); Check("empty sources cannot create an archive", !((Button)view.Controls["create-submit"]).IsEnabled);
             await Scene("vault", "06-vault"); var secret = (PasswordBox)view.Controls["vault-secret"];
+            Check("vault search retains usable width above the table", view.Controls["vault-search"].ActualWidth >= 200 && view.Controls["vault-search"].TransformToAncestor(view).Transform(new Point()).Y < 160);
+            Check("vault checkbox includes readable content", TextDescendants(view.Controls["vault-auto"]).Any(text => text.Text == "自动尝试此密码" && text.IsVisible && text.ActualWidth > 100));
+            Check("primary save label uses the on-accent foreground", TextDescendants(view.Controls["vault-save"]).Any(text => text.Text == "保存更改" && text.Foreground is SolidColorBrush colour && colour.Color == ((SolidColorBrush)Application.Current.Resources["OnAccent"]).Color));
             ((TextBox)view.Controls["vault-name"]).Text = ""; Click((Button)view.Controls["vault-save"]); Check("vault form rejects incomplete entry", ((TextBlock)view.Controls["page-status"]).Text == "请填写名称和密码。");
             await Scene("vault", "07-vault-locked", "locked"); Check("leaving editable vault clears previous secret control", secret.Password.Length == 0 && !view.Controls.ContainsKey("vault-secret"));
             await Scene("vault", "08-vault-empty", "empty"); await Scene("vault", "09-vault-search"); ((TextBox)view.Controls["vault-search"]).Text = "摄影"; await Layout(); Check("vault search changes visible sample records", ((ListBox)view.Controls["vault-records"]).Items.Cast<ListBoxItem>().Count(row => row.Visibility == Visibility.Visible) == 1);
             Shot("09-vault-search.png", window.Client, "vault", "filtered", false);
+            await Scene("vault", "09b-vault-many", "many"); Check("large record set remains scrollable", ((ListBox)view.Controls["vault-records"]).Items.Count == 500);
             await Scene("tools", "10-checksum-ready");
             Click((Button)view.Controls["hash-start"]); Check("checksum without expectation never claims match", ((TextBlock)view.Controls["hash-result"]).Text == "已计算 · 未提供期望值");
             var bytes = window.Model.Entries.First(row => row.Name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)).Bytes; Check("checksum computed from actual ZIP payload", ((TextBox)view.Controls["hash-computed"]).Text == Convert.ToHexString(SHA256.HashData(bytes)));
@@ -71,5 +76,9 @@ internal static class PagesCapture
         var passed = error is null && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(output, "report.json"), JsonSerializer.Serialize(new { passed, checks, error, sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA"), pictures, acceptedCore = "967175a4274835fbfefeb75a6b30718051dfa41c", scope = "R2 standalone WPF design surfaces; in-memory examples, no production services or disk extraction", physicalDpiAccepted = false }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;
+    }
+    private static IEnumerable<TextBlock> TextDescendants(DependencyObject parent)
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++) { var child = VisualTreeHelper.GetChild(parent, i); if (child is TextBlock text) yield return text; foreach (var nested in TextDescendants(child)) yield return nested; }
     }
 }
