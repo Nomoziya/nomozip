@@ -193,11 +193,11 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="24,36,24,12">
+        <DockPanel Margin="34,45,24,47" Height="38">
 
           <StackPanel Margin="0">
             <StackPanel Orientation="Horizontal" Margin="0">
-              <loc:FluentIcon Kind="TaskListSquareLtr" Width="20" Height="20" Foreground="{DynamicResource AccentBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+              <loc:FluentIcon Kind="TaskListSquareLtr" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0" VerticalAlignment="Center"/>
               <TextBlock Text="{loc:Text Redesign.Tasks}" Margin="0" Style="{StaticResource WorkspacePageTitle}"/>
             </StackPanel>
             <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}" Visibility="Collapsed"/>
@@ -252,7 +252,7 @@
                 <DockPanel Margin="24,8,24,12" Visibility="Collapsed">
                   <TextBlock Text="{loc:Text T_8f10dc147500}" Style="{StaticResource Heading}" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                 </DockPanel>
-                <DataGrid x:Name="ArchiveTasks" ColumnHeaderHeight="40" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="54">
+                <DataGrid x:Name="ArchiveTasks" ColumnHeaderHeight="40" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="88">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
                       <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}"/>
@@ -557,7 +557,7 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition x:Name="VaultDetailsColumn" Width="320"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="24,36,24,12" Grid.ColumnSpan="2">
+        <Grid Margin="34,45,24,47" Height="38" Grid.ColumnSpan="2">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -603,7 +603,7 @@
                 </Button.Style>
               </Button>
             </WrapPanel>
-            <TextBlock Text="{loc:Text T_9b54fb7636af}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/>
+            <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Key" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0"/><TextBlock Text="{loc:Text T_9b54fb7636af}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></StackPanel>
           </DockPanel>
         </Grid>
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Grid.ColumnSpan="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
@@ -757,9 +757,9 @@
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.ColumnSpan="2" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
-        <DockPanel Margin="24,36,24,20">
+        <DockPanel Margin="34,45,24,47" Height="38">
           <ComboBox x:Name="SettingsCategory" SelectedIndex="{Binding SettingsSection}" ItemsSource="{Binding SettingsCategories}" Width="260" HorizontalAlignment="Left" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" DockPanel.Dock="Right"/>
-          <TextBlock Text="{loc:Text T_df3d58c7d84b}" Margin="0" Style="{StaticResource WorkspacePageTitle}"/>
+          <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Settings" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0"/><TextBlock Text="{loc:Text T_df3d58c7d84b}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></StackPanel>
         </DockPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
@@ -1346,8 +1346,8 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="24,36,24,12" x:Name="FilesLandingHeader">
-          <TextBlock Text="{loc:Text Redesign.Files}" Style="{StaticResource WorkspacePageTitle}"/>
+        <DockPanel Margin="34,45,24,47" Height="38" x:Name="FilesLandingHeader">
+          <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="FolderOpen" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0"/><TextBlock Text="{loc:Text Redesign.Files}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></StackPanel>
           <Button x:Name="CloseArchiveButton" DockPanel.Dock="Right" Content="{loc:Text Redesign.CloseArchive}" Click="OnCloseArchive" Visibility="Collapsed"/>
         </DockPanel>
         <WrapPanel Grid.Row="1" Margin="24,0,24,12" x:Name="FilesLandingActions" Visibility="Collapsed">

@@ -44,6 +44,7 @@ internal static class DesktopReferenceVisualValidation
         var sampleTask = new ArchiveTaskRow(archive) { Running = true, Status = UiText.Get("Redesign.SampleExtracting"), Percent = 10 };
         model.Tasks.Add(sampleTask); model.SelectedTask = sampleTask; model.Page = 0; await Layout();
         window.ArchiveTasks.ScrollIntoView(sampleTask); await Layout();
+        check("actual task row and header match the adopted 88 and 40 DIP metrics", window.ArchiveTasks.RowHeight == 88 && window.ArchiveTasks.ColumnHeaderHeight == 40);
         var taskView = Descendants(window.ArchiveTasks).OfType<TaskProgressView>().Single(view => ReferenceEquals(view.DataContext, sampleTask));
         var track = Descendants(taskView).OfType<TaskProgressTrack>().Single(); var ring = Descendants(taskView).OfType<TaskProgressRing>().Single(); var percent = Descendants(taskView).OfType<TextBlock>().Single(text => text.Name == "Percentage");
         track.SetAnimationPreferenceForValidation(true); sampleTask.Percent = 70; await Task.Delay(70); await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.Render);

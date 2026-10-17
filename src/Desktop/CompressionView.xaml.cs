@@ -54,8 +54,8 @@ public partial class CompressionView : UserControl
         CompressionLayout.Height = narrow ? double.NaN : Math.Max(280, CompressionViewport.ActualHeight);
         CompressionViewport.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
         SettingsScroll.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;
-        ListRow.Height = narrow ? new GridLength(240) : new GridLength(1, GridUnitType.Star);
-        SettingsColumn.Width = narrow ? new GridLength(0) : new GridLength(Math.Clamp(ActualWidth * .46,340,480));
+        ListRow.Height = narrow ? new GridLength(220) : new GridLength(1, GridUnitType.Star);
+        SettingsColumn.Width = narrow ? new GridLength(0) : new GridLength(440);
         SettingsRow.Height = narrow ? GridLength.Auto : new GridLength(0);
         FooterSettingsColumn.Width=SettingsColumn.Width;
         Grid.SetColumn(CompressionActionsPanel,narrow?0:1);

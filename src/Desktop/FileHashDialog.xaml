@@ -55,8 +55,8 @@
         <DockPanel>
           <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
           <StackPanel Orientation="Horizontal">
-            <loc:FluentIcon Kind="DocumentText" Width="26" Height="32" Foreground="{DynamicResource AccentBrush}" Margin="0,0,24,0"/>
-            <TextBlock Text="{loc:Text T_b3d70cc43d2a}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
+            <loc:FluentIcon x:Name="HashPageIcon" Kind="Wrench" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,24,0"/>
+            <TextBlock x:Name="HashPageTitle" Text="{loc:Text T_b3d70cc43d2a}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
           </StackPanel>
         </DockPanel>
         <TextBlock x:Name="HashSubtitle" Text="{loc:Text T_282d839a46b1}" Style="{StaticResource Secondary}" Margin="0,10,0,0"/>
