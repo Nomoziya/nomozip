@@ -136,7 +136,7 @@ public sealed class WorkspacePreview : Grid
     }
     private Grid InlineField(string label, FrameworkElement input)
     {
-        var grid = new Grid { Margin = new Thickness(0, 0, 0, 14) }; grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(76) }); grid.ColumnDefinitions.Add(new ColumnDefinition()); var caption = Keep("label:" + label, Paragraph(label)); caption.VerticalAlignment = VerticalAlignment.Top; caption.Margin = new Thickness(0, 6, 10, 0); grid.Children.Add(caption); Grid.SetColumn(input, 1); grid.Children.Add(input); AutomationProperties.SetName(input, label); return grid;
+        var grid = new Grid { Margin = new Thickness(0, 0, 0, 14) }; grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(English ? 96 : 76) }); grid.ColumnDefinitions.Add(new ColumnDefinition()); var caption = Keep("label:" + label, Paragraph(label)); caption.VerticalAlignment = VerticalAlignment.Top; caption.Margin = new Thickness(0, 6, 10, 0); grid.Children.Add(caption); Grid.SetColumn(input, 1); grid.Children.Add(input); AutomationProperties.SetName(input, label); return grid;
     }
     private void Vault()
     {
