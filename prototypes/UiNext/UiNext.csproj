@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>nomozip-design-preview</AssemblyName>
+    <ApplicationIcon>../../assets/nomozip.ico</ApplicationIcon>
+    <ApplicationManifest>../../src/Desktop/app.manifest</ApplicationManifest>
+    <Version>0.0.0</Version>
+    <Product>nomozip design preview</Product>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="../../assets/nomozip-256.png" Link="Assets/nomozip-256.png" />
+    <Content Include="Icons/LICENSE" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="README.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
