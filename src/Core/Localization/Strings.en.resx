@@ -1090,7 +1090,7 @@ Browsing only. To save a new password, save it after successful extraction.</val
     <comment>src\Infrastructure\GitHubEngineChannel.cs:80</comment>
   </data>
   <data xml:space="preserve" name="T_5a4540c9b21b">
-    <value>Browse folder</value>
+    <value>_Browse...</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_5b249813df54">
@@ -3124,7 +3124,7 @@ A password is required to validate the archive data.</value>
   <data name="Menu.SourceHint" xml:space="preserve"><value>Drop content here, or right-click the list to add or remove</value></data>
   <data name="Menu.ExtractHint" xml:space="preserve"><value>Drop files here, or right-click a task for more actions</value></data>
 <data name="Redesign.Files" xml:space="preserve"><value>Files</value></data><data name="Redesign.Tasks" xml:space="preserve"><value>Tasks</value></data><data name="Redesign.Tools" xml:space="preserve"><value>Tools</value></data><data name="Redesign.General" xml:space="preserve"><value>General</value></data><data name="Redesign.FileOperations" xml:space="preserve"><value>File operations</value></data><data name="Redesign.Security" xml:space="preserve"><value>Passwords and security</value></data><data name="Redesign.Integration" xml:space="preserve"><value>System integration</value></data><data name="Redesign.Updates" xml:space="preserve"><value>Updates</value></data><data name="Redesign.About" xml:space="preserve"><value>About</value></data><data name="Redesign.SettingsCategory" xml:space="preserve"><value>Settings category</value></data><data name="Redesign.FileDefaults" xml:space="preserve"><value>Default file behavior</value></data><data name="Redesign.OpenArchive" xml:space="preserve"><value>Open archive</value></data><data name="Redesign.CreateArchive" xml:space="preserve"><value>Create archive</value></data><data name="Redesign.BatchExtract" xml:space="preserve"><value>Batch extraction</value></data><data name="Redesign.CloseArchive" xml:space="preserve"><value>Close archive</value></data><data name="Redesign.EmptyTitle" xml:space="preserve"><value>Open an archive or create a new one</value></data><data name="Redesign.EmptyHint" xml:space="preserve"><value>Drop an archive to browse it, or drop files to create an archive.</value></data><data name="Redesign.CompressionTask" xml:space="preserve"><value>Compression task</value></data><data name="Redesign.ShowCompression" xml:space="preserve"><value>Show compression settings</value></data><data name="Redesign.ExtractionOptions" xml:space="preserve"><value>Confirm extraction settings</value></data><data name="Redesign.ConfirmExtraction" xml:space="preserve"><value>Extract</value></data><data name="Redesign.VaultDetails" xml:space="preserve"><value>Select a password to view details</value></data><data name="Redesign.SaveChanges" xml:space="preserve"><value>Save changes</value></data><data name="Redesign.ExtractAll" xml:space="preserve"><value>Extract all</value></data><data name="Redesign.AllTasks" xml:space="preserve"><value>All</value></data><data name="Redesign.RunningTasks" xml:space="preserve"><value>Running</value></data><data name="Redesign.PendingTasks" xml:space="preserve"><value>Pending</value></data><data name="Redesign.EndedTasks" xml:space="preserve"><value>Ended</value></data><data name="Redesign.TaskFilter" xml:space="preserve"><value>Task filter</value></data><data name="Redesign.Advanced" xml:space="preserve"><value>More options</value></data><data name="Redesign.BackFiles" xml:space="preserve"><value>Back to files</value></data><data name="Redesign.ExtractSelected" xml:space="preserve"><value>Extract selected</value></data>
-<data name="Redesign.More" xml:space="preserve"><value>•••  More ⌄</value></data>
+<data name="Redesign.More" xml:space="preserve"><value>More</value></data>
 <data name="Redesign.ClosePreview" xml:space="preserve"><value>Close preview</value></data>
 <data name="Redesign.OutputPending" xml:space="preserve"><value>Confirm destination before starting</value></data>
 <data name="Redesign.OpenFolder" xml:space="preserve"><value>Open folder</value></data>
@@ -3174,7 +3174,7 @@ A password is required to validate the archive data.</value>
 <data name="Password.ConfirmationMismatch" xml:space="preserve"><value>The passwords do not match.</value></data>
 <data name="Extraction.BatchTitle" xml:space="preserve"><value>Batch extraction</value></data>
 <data name="Extraction.BatchCount" xml:space="preserve"><value>{0} pending archives</value></data>
-<data name="Extraction.CreateFolder" xml:space="preserve"><value>Create a folder with the archive name</value></data>
+<data name="Extraction.CreateFolder" xml:space="preserve"><value>Create matching folder</value></data>
 <data name="Extraction.LayoutHint" xml:space="preserve"><value>Checked: archive folder; unchecked: direct extraction; mixed: smart layout.</value></data>
 <data name="TextEdit.CleanupWarning" xml:space="preserve"><value>The temporary edit copy could not be removed. Delete this folder manually: {0}</value></data>
 <data name="Browser.Up" xml:space="preserve"><value>Up one level (Alt+Left)</value></data>
@@ -3229,4 +3229,5 @@ A password is required to validate the archive data.</value>
   <data name="Updates.SoftwareActions" xml:space="preserve"><value>Download and install</value></data>
   <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} tasks running</value></data>
   <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} tasks pending</value></data>
+  <data name="Preview.Loaded" xml:space="preserve"><value>Read-only preview loaded</value></data>
 </root>

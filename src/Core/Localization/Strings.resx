@@ -1090,7 +1090,7 @@
     <comment>src\Infrastructure\GitHubEngineChannel.cs:80</comment>
   </data>
   <data xml:space="preserve" name="T_5a4540c9b21b">
-    <value>浏览目录</value>
+    <value>浏览(_B)...</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_5b249813df54">
@@ -3124,7 +3124,7 @@
   <data name="Menu.SourceHint" xml:space="preserve"><value>拖入内容，或右键列表添加、移除</value></data>
   <data name="Menu.ExtractHint" xml:space="preserve"><value>拖入文件，或在任务上右键查看更多操作</value></data>
 <data name="Redesign.Files" xml:space="preserve"><value>文件</value></data><data name="Redesign.Tasks" xml:space="preserve"><value>任务</value></data><data name="Redesign.Tools" xml:space="preserve"><value>工具</value></data><data name="Redesign.General" xml:space="preserve"><value>常规</value></data><data name="Redesign.FileOperations" xml:space="preserve"><value>文件操作</value></data><data name="Redesign.Security" xml:space="preserve"><value>密码与安全</value></data><data name="Redesign.Integration" xml:space="preserve"><value>系统集成</value></data><data name="Redesign.Updates" xml:space="preserve"><value>更新</value></data><data name="Redesign.About" xml:space="preserve"><value>关于</value></data><data name="Redesign.SettingsCategory" xml:space="preserve"><value>设置分类</value></data><data name="Redesign.FileDefaults" xml:space="preserve"><value>文件操作默认值</value></data><data name="Redesign.OpenArchive" xml:space="preserve"><value>打开压缩包</value></data><data name="Redesign.CreateArchive" xml:space="preserve"><value>新建压缩包</value></data><data name="Redesign.BatchExtract" xml:space="preserve"><value>批量解压</value></data><data name="Redesign.CloseArchive" xml:space="preserve"><value>关闭压缩包</value></data><data name="Redesign.EmptyTitle" xml:space="preserve"><value>打开压缩包，或创建新的压缩包</value></data><data name="Redesign.EmptyHint" xml:space="preserve"><value>拖入压缩包以浏览；拖入普通文件后创建压缩包。</value></data><data name="Redesign.CompressionTask" xml:space="preserve"><value>压缩任务</value></data><data name="Redesign.ShowCompression" xml:space="preserve"><value>查看压缩设置</value></data><data name="Redesign.ExtractionOptions" xml:space="preserve"><value>确认解压设置</value></data><data name="Redesign.ConfirmExtraction" xml:space="preserve"><value>开始解压</value></data><data name="Redesign.VaultDetails" xml:space="preserve"><value>选择密码以查看详情</value></data><data name="Redesign.SaveChanges" xml:space="preserve"><value>保存更改</value></data><data name="Redesign.ExtractAll" xml:space="preserve"><value>解压全部</value></data><data name="Redesign.AllTasks" xml:space="preserve"><value>全部</value></data><data name="Redesign.RunningTasks" xml:space="preserve"><value>进行中</value></data><data name="Redesign.PendingTasks" xml:space="preserve"><value>等待处理</value></data><data name="Redesign.EndedTasks" xml:space="preserve"><value>已结束</value></data><data name="Redesign.TaskFilter" xml:space="preserve"><value>任务筛选</value></data><data name="Redesign.Advanced" xml:space="preserve"><value>更多选项</value></data><data name="Redesign.BackFiles" xml:space="preserve"><value>返回文件</value></data><data name="Redesign.ExtractSelected" xml:space="preserve"><value>解压所选</value></data>
-<data name="Redesign.More" xml:space="preserve"><value>•••  更多 ⌄</value></data>
+<data name="Redesign.More" xml:space="preserve"><value>更多</value></data>
 <data name="Redesign.ClosePreview" xml:space="preserve"><value>关闭预览</value></data>
 <data name="Redesign.OutputPending" xml:space="preserve"><value>开始前确认输出位置</value></data>
 <data name="Redesign.OpenFolder" xml:space="preserve"><value>打开文件夹</value></data>
@@ -3174,7 +3174,7 @@
 <data name="Password.ConfirmationMismatch" xml:space="preserve"><value>两次输入的密码不一致。</value></data>
 <data name="Extraction.BatchTitle" xml:space="preserve"><value>批量解压</value></data>
 <data name="Extraction.BatchCount" xml:space="preserve"><value>{0} 个待处理压缩包</value></data>
-<data name="Extraction.CreateFolder" xml:space="preserve"><value>按压缩包名称创建文件夹</value></data>
+<data name="Extraction.CreateFolder" xml:space="preserve"><value>建立同名文件夹</value></data>
 <data name="Extraction.LayoutHint" xml:space="preserve"><value>勾选：按包名创建文件夹；未勾选：直接解压；中间态：智能目录布局。</value></data>
 <data name="TextEdit.CleanupWarning" xml:space="preserve"><value>临时编辑副本未能清理，请手动删除此目录：{0}</value></data>
 <data name="Browser.Up" xml:space="preserve"><value>上一级（Alt+←）</value></data>
@@ -3229,4 +3229,5 @@
   <data name="Updates.SoftwareActions" xml:space="preserve"><value>下载与安装</value></data>
   <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} 个任务正在运行</value></data>
   <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} 个任务待处理</value></data>
+  <data name="Preview.Loaded" xml:space="preserve"><value>已加载只读预览</value></data>
 </root>

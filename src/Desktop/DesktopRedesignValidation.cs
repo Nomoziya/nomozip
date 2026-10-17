@@ -171,7 +171,7 @@ internal static class DesktopRedesignValidation
             Check("archive has one full-width footer below the preview",window.ArchiveFooterHost.Content is Border && window.GlobalStatus.Visibility==Visibility.Collapsed && Math.Abs(window.ArchiveFooterHost.ActualWidth-window.FilesWorkspace.ActualWidth)<1);
             var filesNav=(ListBoxItem)window.Navigation.Items[0];filesNav.ApplyTemplate();
             var navSurface=(Border)filesNav.Template.FindName("Pill",filesNav);
-            Check("navigation uses the reference rounded rectangle and regular label",navSurface.CornerRadius.TopLeft==12 && filesNav.FontWeight==FontWeights.Normal && filesNav.ActualHeight>=40);
+            Check("selected navigation retains its blue marker and regular label",((Border)filesNav.Template.FindName("NavigationMarker",filesNav)).IsVisible && filesNav.FontWeight==FontWeights.Normal && filesNav.ActualHeight>=36);
             Check("archive root hides nested file paths",contents.VisibleRows.All(row=>!row.Path.TrimEnd('/','\\').Replace('\\','/').Contains('/')));
             contents.CurrentRow=contents.VisibleRows.Single(row=>row.Path.TrimEnd('/','\\')=="Documents");contents.OpenCurrentEntryCommand.Execute(null);await Layout();
             Check("opening folder shows its children and breadcrumb",contents.CurrentFolder=="Documents" && contents.VisibleRows.Count==2 && contents.Breadcrumbs.Count==2 && contents.VisibleRows.All(row=>!row.DisplayName.Contains('/')));
@@ -195,6 +195,10 @@ internal static class DesktopRedesignValidation
             var imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content).DataContext;
             Check("requested image supplies its real row thumbnail",contents.Rows.Single(row=>row.Path==imagePreview.EntryPath).PreviewThumbnail==imagePreview.Picture);
             Check("image preview renders decoded archive image",imagePreview.IsImage && imagePreview.Picture?.PixelWidth==480);
+            Check("opening preview preserves file size type and encryption columns",entryTable.Columns.Skip(2).All(column=>column.Visibility==Visibility.Visible) && entryTable.Columns[1].ActualWidth>=170);
+            var actualPreviewImage=VisualDescendants((DependencyObject)window.PreviewHost.Content).OfType<Image>().Single(value=>value.Name=="PreviewImage");
+            Check("image preview uses its true aspect ratio without vertical letterboxing",Math.Abs(actualPreviewImage.ActualHeight-actualPreviewImage.ActualWidth*300/480)<2);
+            nativeWindows.Add(await DesktopNativeWindowCapture.CaptureAsync(window,Path.Combine(folder,"actual-embedded-browser-image-preview-light-window.png")));
             Check("footer spans beneath the visible preview pane",window.ArchivePreviewPane.IsVisible && Bounds(window.ArchiveFooterHost).Top>=Bounds(window.ArchivePreviewPane).Bottom-1);
             var footerTasks=VisualDescendants((DependencyObject)window.ArchiveFooterHost.Content).OfType<Button>().Single(value=>value.Name=="BrowserTasksAction");
             footerTasks.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Layout();
