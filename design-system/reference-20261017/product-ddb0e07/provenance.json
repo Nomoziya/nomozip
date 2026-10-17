@@ -1,0 +1,3604 @@
+{
+  "sourceCommit": "ddb0e071eb5bc7e68e6b4b0b54beb6f95ac538e6",
+  "previousCandidate": "5da56161e216a398b8ff2cd140177a47fecc2eea",
+  "ciRun": "https://github.com/Nomoziya/nomozip/actions/runs/39074626667",
+  "scope": "Actual WPF product, isolated Windows CI and synthetic profiles; downloaded evidence bytes preserved",
+  "results": {
+    "zh-CN": {
+      "passed": true,
+      "checks": 447,
+      "typographySnapshots": 186,
+      "typographyRoleIssues": 0,
+      "buttonIssues": 0
+    },
+    "en": {
+      "passed": true,
+      "checks": 447,
+      "typographySnapshots": 186,
+      "typographyRoleIssues": 0,
+      "buttonIssues": 0
+    }
+  },
+  "package": {
+    "sourceCommit": "ddb0e071eb5bc7e68e6b4b0b54beb6f95ac538e6",
+    "ciRun": "https://github.com/Nomoziya/nomozip/actions/runs/39074626667",
+    "file": "nomozip-ui-redesign-x64.zip",
+    "bytes": 4699130,
+    "sha256": "abede02e40b654bcb81253d8aad74dee19ebbe35ba150235b0b0573c833cf8cf",
+    "architecture": "x64",
+    "agentExecutedLocally": false,
+    "zipCrcPassed": true,
+    "fileCount": 40,
+    "peMachines": {
+      "ArchivePassword.exe": "0x8664",
+      "ArchiveEngineWorker.exe": "0x8664",
+      "engines/26.03/7z.dll": "0x8664",
+      "engines/26.04/7z.dll": "0x8664"
+    },
+    "frameworkDependent": true,
+    "runtime": [
+      {
+        "name": "Microsoft.NETCore.App",
+        "version": "10.0.0"
+      },
+      {
+        "name": "Microsoft.WindowsDesktop.App",
+        "version": "10.0.0"
+      }
+    ],
+    "extractedBytesMatch": true
+  },
+  "physicalDpiAccepted": false,
+  "userFinalAcceptance": "pending",
+  "coreScreenshotsUnchanged": [
+    "reference-file-browser-aligned.png",
+    "reference-file-browser-dark.png",
+    "reference-file-browser-narrow.png"
+  ],
+  "reviewedVaultStates": [
+    "zh-CN/vault-unlocked-light-1152.png",
+    "en/vault-unlocked-light-800.png",
+    "zh-CN/vault-unlocked-dark-1152.png",
+    "zh-CN/vault-unlocked-light-800.png",
+    "zh-CN/vault-locked-light-1152.png",
+    "en/vault-unlocked-contrast-800.png"
+  ],
+  "files": [
+    {
+      "file": "zh-CN/actual-archive-folder-navigation.png",
+      "bytes": 46823,
+      "sha256": "3de0f9df683ab00176792b70b4460606b861f42dd1550e605b8b4453cd635f41",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-archive-grid-dark.png",
+      "bytes": 63383,
+      "sha256": "276a6906c20d70d0c841aff0e6f65b4a2d6914d7db45fd6ddfe3cb3a37379fe6",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-archive-grid.png",
+      "bytes": 63022,
+      "sha256": "6b46a43f0dd9a46cd6369adcba6750cad54b6338db9eea6ccef0d2cef567f2e9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-checksum-invalid-expected.png",
+      "bytes": 71369,
+      "sha256": "a4263e0e818411c355597af1fc0e5b1ab12939dc335711af4a94caadfdd990a3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-checksum-matched.png",
+      "bytes": 71395,
+      "sha256": "c2cd530d8690e5ed83a47827b26987106edb823886a75e8ed0278f31b2bfe4b0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-checksum-mismatch.png",
+      "bytes": 69887,
+      "sha256": "30980cb82356003368870e8f7e2131d18fa74c7d76daa0842ed260b879c213ae",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-compact-browser.png",
+      "bytes": 40993,
+      "sha256": "31a63580c10d1dea286716a7777f2306bbbc6b9c6a10ced51a6a887bcfd96d97",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/actual-compression-multiselection.png",
+      "bytes": 63314,
+      "sha256": "a436ba7501bca506efb9e5260264a20db4c75545b14e58f86c48c54da8cc2b36",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-compression-result.png",
+      "bytes": 70654,
+      "sha256": "3922a4181d6abe1adab56a3e969d276239a0a6541febf82d5570721b18013dba",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-embedded-browser-image-preview-dark-window.png",
+      "bytes": 70320,
+      "sha256": "d88a86f86b76d6e1d31fa8777139db1fbb4190fa22ec09f4e3d8c16bd29deca2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-embedded-browser-image-preview-dark.png",
+      "bytes": 79168,
+      "sha256": "36fd3703ec774676c9d6c658f3a1046e68ad2f0b7b4bdb8b8fe88be083901160",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-embedded-browser-image-preview-light-window.png",
+      "bytes": 75965,
+      "sha256": "73c2d088b873b375de3957898c0bbbef5e8d291743281a0aacc82f00e9661081",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-embedded-browser-image-preview.png",
+      "bytes": 79002,
+      "sha256": "ae3aaa8862c9d3977dedf9301dd6bea90930f308421b6c355899b666c2bcc894",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-embedded-browser-preview.png",
+      "bytes": 70828,
+      "sha256": "127181cf871c4bd192a4bfd27f1bcc1a296d4ff68b8be74362faddbe29798517",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-engine-update-management.png",
+      "bytes": 61395,
+      "sha256": "a728799c66985f588f7881435d8822b97ba034e5c3c2950b9c6f1075671c1550",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-file-defaults-error.png",
+      "bytes": 56314,
+      "sha256": "a3440f496917f372481b8c21c00a8c70f6f0442ace21eba716e89fa461ce7325",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-file-defaults-saved.png",
+      "bytes": 56498,
+      "sha256": "246d8bec5ed7fd5b4780f1ab9ad8d6e15f194473e1f65f640f5569ef7da99130",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-preview-open-error.png",
+      "bytes": 79835,
+      "sha256": "a225a719d5c5856321714ff099467e9cbe86ea0437e6325c3a0d37444e0a0ae3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-selection-result.png",
+      "bytes": 64043,
+      "sha256": "93057662b5b00fbb5598d08b4eb83bf44eb1d2ff755a2627f298aef01d133009",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-soft-archive-more-menu.png",
+      "bytes": 17120,
+      "sha256": "940f71761a599a44d30e4132b43c6eed437bc7cccf2186e3e408913fea2792ef",
+      "pixelSize": {
+        "width": 258,
+        "height": 360
+      }
+    },
+    {
+      "file": "zh-CN/actual-soft-browser-keyboard-focus.png",
+      "bytes": 81206,
+      "sha256": "3c46e40ba40deb4da8cd7a4dd5f103b94731b7a77c2f495ffb5bc87a040fc436",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/actual-software-update-actions.png",
+      "bytes": 67868,
+      "sha256": "f94c9ac73bfb94c9fedc1f70f762fd1b48abdb1cf2fb2b8fa89e40258bdfe468",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/archive-conversion-dark.png",
+      "bytes": 46055,
+      "sha256": "39dee307f126a4410aec1bcb61f65491381cc831e9939c72a5ee53e7521c2efb",
+      "pixelSize": {
+        "width": 700,
+        "height": 660
+      }
+    },
+    {
+      "file": "zh-CN/archive-conversion-light.png",
+      "bytes": 46365,
+      "sha256": "cf2199dab7ef0ec2eb00fd35ac397df572cf2ac8a9e66c71e551665fd6e87a25",
+      "pixelSize": {
+        "width": 700,
+        "height": 660
+      }
+    },
+    {
+      "file": "zh-CN/compression-failure-result.png",
+      "bytes": 12027,
+      "sha256": "2a98a2437f9033a23ac272241e1edfe6365543d68f156d8125e7aa005a1c5ffb",
+      "pixelSize": {
+        "width": 640,
+        "height": 360
+      }
+    },
+    {
+      "file": "zh-CN/compression-password-dark.png",
+      "bytes": 25750,
+      "sha256": "9eb8864f49bb1d3cfa1e4d08971c72a5acda59c51f3f46f167d9cf8b09cf1fb1",
+      "pixelSize": {
+        "width": 560,
+        "height": 514
+      }
+    },
+    {
+      "file": "zh-CN/compression-password-light.png",
+      "bytes": 26107,
+      "sha256": "8ea43d40306ce7fb491fcf0d23f2b192397213dbd3061f2bcbef3a4970ac9c2d",
+      "pixelSize": {
+        "width": 560,
+        "height": 514
+      }
+    },
+    {
+      "file": "zh-CN/compression-password-mismatch.png",
+      "bytes": 28853,
+      "sha256": "a71153e12aff3a70880c0a09b2dcc2e6efb65cb486d6059df6b110cd58d508c9",
+      "pixelSize": {
+        "width": 560,
+        "height": 514
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-page-0.png",
+      "bytes": 66504,
+      "sha256": "0d3e7bdba94c365ba8988046b57384dcf398b2c64a02545235b280d730c59d28",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-page-1.png",
+      "bytes": 65022,
+      "sha256": "e42e86ba142b0c10be2fba22a3d43276cb66bdc3aa4307111516dabe67a51a25",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-page-2.png",
+      "bytes": 53181,
+      "sha256": "a79851b9f9e30e853a1346ea94044d72e99f2899d62a18cbfb208820b6dd4fbc",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-page-3.png",
+      "bytes": 68085,
+      "sha256": "d1148b7924a87fe60d24799f707b698ea3870bdae682ea53a9e65786b261f586",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-page-4.png",
+      "bytes": 35626,
+      "sha256": "ca3466286d321b4c73d54a81cd69db486601e0a0a25f9851079592733e1672ca",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-page-5.png",
+      "bytes": 51723,
+      "sha256": "3880ac43f52b3dc7db80f54cd0fffe7029c09cd99ae0c4e867a75079f36e09d2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-settings-0.png",
+      "bytes": 53181,
+      "sha256": "a79851b9f9e30e853a1346ea94044d72e99f2899d62a18cbfb208820b6dd4fbc",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-settings-1.png",
+      "bytes": 56964,
+      "sha256": "ebfa1a9c7251686a4da7a800293f8e85c9d140488ac27278f8f01139deb6314a",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-settings-2.png",
+      "bytes": 55515,
+      "sha256": "5751dbcc1726c4d7d0ecfbafa52948df3ffe53ca0a79dfc5d11c523be6ec5e9e",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-settings-3.png",
+      "bytes": 65856,
+      "sha256": "ddf40734a9a3f6db288d385732d6a77c41379e211146a4eddadf72372767423d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-settings-4.png",
+      "bytes": 55591,
+      "sha256": "7030d83c8feb5de15abd79c5543bfc6973c6bd2cb438900694ea581119df33c1",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-1152-settings-5.png",
+      "bytes": 42796,
+      "sha256": "4581886edd8549db7f6e5e6068baef351b51891c3aa1bf0f70aa8d09ffdfc8e0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-page-0.png",
+      "bytes": 42146,
+      "sha256": "54d64f147d3137787435877699d263314e875edc1ae4a0b68d042e5f234f83ad",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-page-1.png",
+      "bytes": 49897,
+      "sha256": "849fe05b1664f80aa7249407563b5421cfffc2538093f8bab79a9f672c63ae25",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-page-2.png",
+      "bytes": 39642,
+      "sha256": "7869b5be1e79c5edf0444bb64b4e314299da4378d4db00c707e76871c8f9f100",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-page-3.png",
+      "bytes": 36583,
+      "sha256": "c7291772bcd6b77d4be7d0d35114adaff3fdcc53d781734691a97454303f718a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-page-4.png",
+      "bytes": 25397,
+      "sha256": "9704cebad65905d9cba0b0ae902e372616fc6f90c3877ce69efba1c5ac80fa32",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-page-5.png",
+      "bytes": 37035,
+      "sha256": "04f7bf79f193fea453531a65bcc36118c48175e4ce35a248c5cdb8fb0c4b56fe",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-settings-0.png",
+      "bytes": 39642,
+      "sha256": "7869b5be1e79c5edf0444bb64b4e314299da4378d4db00c707e76871c8f9f100",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-settings-1.png",
+      "bytes": 39620,
+      "sha256": "7ec3b48bc574905013091fd82a5fd54841cba3893cfe46611d03f7ed7605ac28",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-settings-2.png",
+      "bytes": 46382,
+      "sha256": "a429c3adafdab4d11c9c3c70c0198853716733e057f79f37703e1574db5d17ac",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-settings-3.png",
+      "bytes": 53952,
+      "sha256": "4b1a91d71fe5f23dd665fec6483273f83606d5001cf6fd1cef1bc9aae0c4d41e",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-settings-4.png",
+      "bytes": 43574,
+      "sha256": "a920615506acb49733ede8680d24f8f89cb1931a679b7b82d0052c9acf7c609a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/contrast-800-settings-5.png",
+      "bytes": 33101,
+      "sha256": "9b84692a19ddf5cae1eb566abe3060de2093689bd559a4ba62a69752052e76ed",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-0-window.png",
+      "bytes": 63419,
+      "sha256": "fcae833519ecc7a32e538c3e86b6d6327c58d85aa4179911474a00c3d712b581",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-0.png",
+      "bytes": 70075,
+      "sha256": "4561f298b407e97385dcea078670bde56989b154730cd9d28621ab6c1d237f0b",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-1.png",
+      "bytes": 67596,
+      "sha256": "b80bf967398f984beadf76aff1850258e37db12a49a92de2c47f5214b426834a",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-2.png",
+      "bytes": 54750,
+      "sha256": "d2622acca17a0824f8b43b585b4000d52c21f830114663d5e0ad0bada03691a8",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-3.png",
+      "bytes": 72836,
+      "sha256": "319733c799825e9b6a150bf515fe3b01a924cd71613560e06692db586983b398",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-4.png",
+      "bytes": 37297,
+      "sha256": "88daa36ab03db3fa1454d303e38e9ec9286abac2afed2dc58caf75cab7038640",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-page-5.png",
+      "bytes": 52949,
+      "sha256": "49a0c9813b1b0d8a886cf9719cca1d62fb6ce46ad2a748e03c37173d337013ca",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-settings-0.png",
+      "bytes": 54750,
+      "sha256": "d2622acca17a0824f8b43b585b4000d52c21f830114663d5e0ad0bada03691a8",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-settings-1.png",
+      "bytes": 59726,
+      "sha256": "51b7f2437a130f920608cc930ff586fb0394ee40463d75ad40dd600be0377fb3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-settings-2.png",
+      "bytes": 57272,
+      "sha256": "b1461ce867cba32123e78ef451a071141de3bc58072ddac82fc8744c826c991d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-settings-3.png",
+      "bytes": 68159,
+      "sha256": "2cc114234644b18c30fdb8b6dc92b0a5926fb4eea0d03b1bbadeae2fb01e26c0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-settings-4.png",
+      "bytes": 57209,
+      "sha256": "2061883e13940066678796aa2c6c497e8fd1668cd2159cd600ca89486c1745f9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-1152-settings-5.png",
+      "bytes": 44053,
+      "sha256": "1a390fee48150196fa9167ddc7c92161551874312b8b6d03dd980572589143f9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-page-0.png",
+      "bytes": 43838,
+      "sha256": "3a5bfa740904ff4966d6cc9293a23f80540094b3358b6cb089f635de2a0750f3",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-page-1.png",
+      "bytes": 51266,
+      "sha256": "395097ed1e8e068e58e75d7f5e022022e2dc75e7be80da1d2dc130705027b424",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-page-2.png",
+      "bytes": 40034,
+      "sha256": "46be3927fe4ff5a22f2a14927de116e941e2d7a870760eb2e197ed713b0ed0e8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-page-3.png",
+      "bytes": 38756,
+      "sha256": "f9b374cb4c37fca22c3289dd961c2677d40dd79a3e39f9c47f4c341018630a94",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-page-4.png",
+      "bytes": 26456,
+      "sha256": "a64a5c62779d7924091a5f6c273d8b1dd7d6afa1aea532f439ba4c649b78bcd4",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-page-5.png",
+      "bytes": 37008,
+      "sha256": "e426513cc71e38a0a76e5f8d71c82cb79e956621efc1553b2730184b2aff4e2f",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-settings-0.png",
+      "bytes": 40034,
+      "sha256": "46be3927fe4ff5a22f2a14927de116e941e2d7a870760eb2e197ed713b0ed0e8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-settings-1.png",
+      "bytes": 41261,
+      "sha256": "89a6186fac89e141f589e32098ed93f5ed919f3ab55ad657eaa90aac4314c74c",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-settings-2.png",
+      "bytes": 46675,
+      "sha256": "89b5ffd04d62938d48a1636a2f5e4df18e5ae0936546a4dff6461f2e1310fe22",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-settings-3.png",
+      "bytes": 54655,
+      "sha256": "cc77fb55d6c39f2d89752c4531e899323d089e1042f34beae22d888c16e19388",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-settings-4.png",
+      "bytes": 44079,
+      "sha256": "ab8ca09781a239cd75ff75962719616df0b88d5060ffeb49d599929c6a19a487",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/dark-800-settings-5.png",
+      "bytes": 33333,
+      "sha256": "9ae648fe7bd633b613a9744cfca62c9de7659b2f9a1086eddbb2921219f056c2",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/edit-copy-cancel-dark.png",
+      "bytes": 20165,
+      "sha256": "e3266f30fd75ccf4c5196709177e0e14dfea26300a0fadfc6649f708f34fdbb8",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "zh-CN/edit-copy-cancel-light.png",
+      "bytes": 20050,
+      "sha256": "2661531807e8879b44d9f593175140806305aab14c05b26e3dc00e9d29ff4894",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "zh-CN/edit-copy-discard-confirmation-dark.png",
+      "bytes": 20165,
+      "sha256": "e3266f30fd75ccf4c5196709177e0e14dfea26300a0fadfc6649f708f34fdbb8",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "zh-CN/edit-copy-discard-confirmation-light.png",
+      "bytes": 20050,
+      "sha256": "2661531807e8879b44d9f593175140806305aab14c05b26e3dc00e9d29ff4894",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "zh-CN/edit-copy-write-dark.png",
+      "bytes": 20165,
+      "sha256": "e3266f30fd75ccf4c5196709177e0e14dfea26300a0fadfc6649f708f34fdbb8",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "zh-CN/edit-copy-write-light.png",
+      "bytes": 20050,
+      "sha256": "2661531807e8879b44d9f593175140806305aab14c05b26e3dc00e9d29ff4894",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "zh-CN/extraction-batch-dark.png",
+      "bytes": 51642,
+      "sha256": "0f3f5e118c95c151246018f8597e6d604c203ca130bb435c3c9fa50d1724a78f",
+      "pixelSize": {
+        "width": 560,
+        "height": 760
+      }
+    },
+    {
+      "file": "zh-CN/extraction-batch-light.png",
+      "bytes": 52560,
+      "sha256": "b077f42a6586a7559f5f6a9fde8d5b01b53fd289b19f0891c561377e6f84d30b",
+      "pixelSize": {
+        "width": 560,
+        "height": 760
+      }
+    },
+    {
+      "file": "zh-CN/extraction-failures-dark.png",
+      "bytes": 21788,
+      "sha256": "0ea5d6db76311afde4574ab2205dc179f73324da9fb5a53cb952eee067b8301c",
+      "pixelSize": {
+        "width": 640,
+        "height": 440
+      }
+    },
+    {
+      "file": "zh-CN/extraction-failures-light.png",
+      "bytes": 22293,
+      "sha256": "9008202f69bf3b3481f3393d6749b1b86e54da037b04097911036832693df5cd",
+      "pixelSize": {
+        "width": 640,
+        "height": 440
+      }
+    },
+    {
+      "file": "zh-CN/extraction-rules-dark.png",
+      "bytes": 33648,
+      "sha256": "11f6afe62fdd4c1cac22ccd407f7333a98e22a8a07a3292170ea33d12113c93b",
+      "pixelSize": {
+        "width": 540,
+        "height": 630
+      }
+    },
+    {
+      "file": "zh-CN/extraction-rules-light.png",
+      "bytes": 33429,
+      "sha256": "07ba2a38c29c5c85c5ca167a97368821d6e2cc9ba90dd5159b85052ef0e2b99b",
+      "pixelSize": {
+        "width": 540,
+        "height": 630
+      }
+    },
+    {
+      "file": "zh-CN/extraction-single-dark.png",
+      "bytes": 32297,
+      "sha256": "fee8dc880821b3e8dfcc2aa4c91638519acc8bc12ff0eac7610208ee22497e67",
+      "pixelSize": {
+        "width": 560,
+        "height": 720
+      }
+    },
+    {
+      "file": "zh-CN/extraction-single-light.png",
+      "bytes": 32558,
+      "sha256": "b3a034c97b69474f692b0402acc9385b02a6b56857257e5008a29c8c46db5094",
+      "pixelSize": {
+        "width": 560,
+        "height": 720
+      }
+    },
+    {
+      "file": "zh-CN/file-conflict-image-dark.png",
+      "bytes": 21990,
+      "sha256": "f634dbabd730e8277d4d491e4745e49ac40ec851ac4efbc0be7510e55d726e1d",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "zh-CN/file-conflict-image-light.png",
+      "bytes": 22299,
+      "sha256": "84025c0835c5c91a0d30d80aca348c1fd77a004cb245e69fd6471bdc2386858d",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "zh-CN/file-conflict-rename-dark.png",
+      "bytes": 21829,
+      "sha256": "494cfa77854378d76169577c3249593d835ad478d29b84f5b00551d8c3572a0c",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "zh-CN/file-conflict-rename-light.png",
+      "bytes": 22134,
+      "sha256": "8c2a1bdd670d41357f595511eadb79247719f9ae28bb19f5a76cbf5ca988e5d9",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "zh-CN/file-conflict-rename.png",
+      "bytes": 25213,
+      "sha256": "9b629e0fa9a19e51d598d6a8ab3e98177d8bfefd70dd931846d9eed71d1a9893",
+      "pixelSize": {
+        "width": 620,
+        "height": 467
+      }
+    },
+    {
+      "file": "zh-CN/filename-encoding-dark.png",
+      "bytes": 30059,
+      "sha256": "7ed578c7c4ed9680e4f17771dbe7ec0219be17d1918614566feff1cba5c053e8",
+      "pixelSize": {
+        "width": 720,
+        "height": 580
+      }
+    },
+    {
+      "file": "zh-CN/filename-encoding-light.png",
+      "bytes": 30270,
+      "sha256": "49f49329e45b4cb7c1dd9c49bf50fc7a3cdb0e52f62be396ffb946b5606a4fc5",
+      "pixelSize": {
+        "width": 720,
+        "height": 580
+      }
+    },
+    {
+      "file": "zh-CN/grid-navigation.json",
+      "bytes": 110,
+      "sha256": "a61e803c1e56bdf1e34951012f71671d2582419ba32a61ac97acb599db679af2"
+    },
+    {
+      "file": "zh-CN/light-1152-page-0-window.png",
+      "bytes": 67053,
+      "sha256": "23c9a8385d5ab00c99850d8de601bd5d1518d199d76f8b54bda6cea0d8bafbcb",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-page-0.png",
+      "bytes": 69807,
+      "sha256": "349d23a2e34e2b8b4d18e9280edbda8002c05dbf3d935925d04b669ab27bf949",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-page-1.png",
+      "bytes": 68581,
+      "sha256": "3b3654dab88f6c9b81cbe873dcae11972daeccdeecfe89f5080b15d50785d3ec",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-page-2.png",
+      "bytes": 54512,
+      "sha256": "be6a911ecb8c293dafc37855562070c021e71e4b833d6fa8ec4be53bceda2910",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-page-3.png",
+      "bytes": 72432,
+      "sha256": "21990e327dbdc8aa62edb8330c7d8df150844468c4a4440aa046a4faae72a22b",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-page-4.png",
+      "bytes": 37443,
+      "sha256": "5aa46d98d2a5afeebc1b53f6346fa986b960891e6d55be5682690db56620647e",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-page-5.png",
+      "bytes": 52765,
+      "sha256": "7b6f761b5e3b83c10a9380e97aaf2a431417afd773e5e757afa5066cad117b20",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-settings-0.png",
+      "bytes": 54512,
+      "sha256": "be6a911ecb8c293dafc37855562070c021e71e4b833d6fa8ec4be53bceda2910",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-settings-1.png",
+      "bytes": 59531,
+      "sha256": "7d81b118be5fc82be67909ced76276620035f9921d2faa6bab38437dde96fde4",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-settings-2.png",
+      "bytes": 56828,
+      "sha256": "f4ba68b6569510a3bdaf70be0bfd1c26c983500aa80acdebd4e41480bce31712",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-settings-3.png",
+      "bytes": 68375,
+      "sha256": "65edfb6ec408d0b1f5832e56522de9bf96926a7e849fdb81e662b5d8a057dfcf",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-settings-4.png",
+      "bytes": 57111,
+      "sha256": "225f1423ea04a85ec58a44d759de6d6ccca137464ac9941ed3741c295542a7ce",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-1152-settings-5.png",
+      "bytes": 43819,
+      "sha256": "8edabcea3d41172650dfb03a103b3077d24025a0dfe228f746d6433bcc41ede7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/light-800-page-0.png",
+      "bytes": 43389,
+      "sha256": "a72866952d64d6affcd96f197e7a4ddd54527d74d1ff801b6596db7cad1c2996",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-page-1.png",
+      "bytes": 51089,
+      "sha256": "c326e91a7000290c533c5033654d8adc68b4e2a88421fe1e516ac8d0483e0c50",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-page-2.png",
+      "bytes": 40385,
+      "sha256": "035f58473456607bd10f84da08f016c81c6aad38886a3ceb9dc9ba6ebf38d7d3",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-page-3.png",
+      "bytes": 38286,
+      "sha256": "193fcb2b7db3c9fa87a49fd08cbc2e8f6640ce088f8658b51cfbb52da9f100b4",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-page-4.png",
+      "bytes": 26680,
+      "sha256": "ddc7e0b8839352d801fee51c08529c6a7b63dd481a63c7d3b44cbd4de92e93d9",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-page-5.png",
+      "bytes": 37067,
+      "sha256": "1f7376758012dfef8cb6b278a9e38e4e74dc49b2d3b1d5740e03ee4b1bb0aac8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-settings-0.png",
+      "bytes": 40385,
+      "sha256": "035f58473456607bd10f84da08f016c81c6aad38886a3ceb9dc9ba6ebf38d7d3",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-settings-1.png",
+      "bytes": 41407,
+      "sha256": "20403c6c7f327e47012869df8229655646751f0182775178bf2d8e8f7681ac43",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-settings-2.png",
+      "bytes": 47308,
+      "sha256": "3c2a455e095508b551555343382e3ed9b00114d7ffc807bb963691e5f5d94028",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-settings-3.png",
+      "bytes": 55267,
+      "sha256": "ccc61abfb3f518c5d647693615aacb6f6353399c91ee942e73519912c56924fe",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-settings-4.png",
+      "bytes": 44153,
+      "sha256": "801f75fec607275659590781ca4b4fdd726cb0f9eabe306ba026b9fc91eee9a4",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/light-800-settings-5.png",
+      "bytes": 33369,
+      "sha256": "bc81052f924f852e7a13fb4f78caa062bc2acd4e45022e6b913af3e0ea71d0d8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/master-password-dark.png",
+      "bytes": 19171,
+      "sha256": "4e1cf606299364bff7264a8ae98569ed585c8f504e5f6eab640312ff4dd656c3",
+      "pixelSize": {
+        "width": 560,
+        "height": 372
+      }
+    },
+    {
+      "file": "zh-CN/master-password-light.png",
+      "bytes": 19418,
+      "sha256": "60f99057610f56c6113acad89d3932089df6fa93773a3e50e78f91f06a63daf2",
+      "pixelSize": {
+        "width": 560,
+        "height": 372
+      }
+    },
+    {
+      "file": "zh-CN/master-password-mismatch.png",
+      "bytes": 22403,
+      "sha256": "faacc50ff7f0103b23119646d6a74c8779f523b526322dbabdf887ef5c2b1187",
+      "pixelSize": {
+        "width": 560,
+        "height": 372
+      }
+    },
+    {
+      "file": "zh-CN/master-unlock-dark.png",
+      "bytes": 15684,
+      "sha256": "764b7946170ddd736ca1b4db36e7bbf73bc26a7bb342f06fabad0add39e7070c",
+      "pixelSize": {
+        "width": 560,
+        "height": 340
+      }
+    },
+    {
+      "file": "zh-CN/master-unlock-light.png",
+      "bytes": 15792,
+      "sha256": "eded0d49d4284f0d5019fd008d5f1743a9c23e2fc9d9f7badbe837cb46b36a25",
+      "pixelSize": {
+        "width": 560,
+        "height": 340
+      }
+    },
+    {
+      "file": "zh-CN/master-unlock-required.png",
+      "bytes": 17228,
+      "sha256": "743e3343d392a8cec3ed53834b424684bb4138b3ccc8bf89a0ac5a9ec9dea8c6",
+      "pixelSize": {
+        "width": 560,
+        "height": 340
+      }
+    },
+    {
+      "file": "zh-CN/menu-glyphs.json",
+      "bytes": 1360,
+      "sha256": "0b2ed280dba7be24919d507448c9bb765e1270870fb67b82845536baefd78890"
+    },
+    {
+      "file": "zh-CN/native-window-captures.json",
+      "bytes": 1310,
+      "sha256": "6f537299673a0597f05ad3e617de90592974033a9198b4a5ac3dcb28a108b955"
+    },
+    {
+      "file": "zh-CN/password-prompt-dark.png",
+      "bytes": 19723,
+      "sha256": "832d4b032337ee43988aac25221ad2a4510fd31f285b4c7cd31dc65362c22dd7",
+      "pixelSize": {
+        "width": 560,
+        "height": 402
+      }
+    },
+    {
+      "file": "zh-CN/password-prompt-light.png",
+      "bytes": 19911,
+      "sha256": "351ac441352413d66121876ee2bc26e3c1e80f8bea5608ae185e2dc78ce8c201",
+      "pixelSize": {
+        "width": 560,
+        "height": 402
+      }
+    },
+    {
+      "file": "zh-CN/password-retry-dark.png",
+      "bytes": 22123,
+      "sha256": "b3feb70492a194d7c0f5a3612f66d9e3c7f16e6aee43397c0e60bdb7f53b9b81",
+      "pixelSize": {
+        "width": 560,
+        "height": 441
+      }
+    },
+    {
+      "file": "zh-CN/password-retry-light.png",
+      "bytes": 22329,
+      "sha256": "60e6824eb1dbf17291e51363b6a7697cfd3cdb606524eaa30053ac475e91ca1d",
+      "pixelSize": {
+        "width": 560,
+        "height": 441
+      }
+    },
+    {
+      "file": "zh-CN/reference-comparison.json",
+      "bytes": 1898,
+      "sha256": "4be7aba46bc45b940b747473015edd01361fea95a521cc9cd88ffa014742eaab"
+    },
+    {
+      "file": "zh-CN/reference-file-browser-aligned.png",
+      "bytes": 248950,
+      "sha256": "5d3c45d4d382fc6e09e6f138dc66843e9f5f33d950acdc17deae1edcb477845d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/reference-file-browser-dark.png",
+      "bytes": 248404,
+      "sha256": "931d50e412cc21fb0bd655d2a8230c5392942e03704a65d4e9a9b576e70fe437",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/reference-file-browser-light.png",
+      "bytes": 249300,
+      "sha256": "1a9b156e629b478cfad128e389a929544ad9b77df922e125ef418a209ba22349",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/reference-file-browser-narrow.png",
+      "bytes": 152776,
+      "sha256": "ba91315d8f942c0d012b1a68baaf3bc1ba177953a7833666bcd29ebd69ea1309",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/reference-task-motion.gif",
+      "bytes": 47787,
+      "sha256": "16012f681cd17113f8777dcc363f9e0d5f9096b97f5ff46211658b2820650456"
+    },
+    {
+      "file": "zh-CN/reference-task-motion.json",
+      "bytes": 971,
+      "sha256": "473d9b11c20da4984746bf644d5dc19294ce1b016f156ec97af7659f6efbabd3"
+    },
+    {
+      "file": "zh-CN/report.json",
+      "bytes": 39212,
+      "sha256": "cc423d2fb51ea50f7a6ea937102e49636fabee87b98261e03b9d602a6c252c37"
+    },
+    {
+      "file": "zh-CN/result-directories-dark.png",
+      "bytes": 17308,
+      "sha256": "58a880ee1b56871a2e0d5e61d08e3deb30c3868da4ed63729675d6aa1c41e1d9",
+      "pixelSize": {
+        "width": 660,
+        "height": 420
+      }
+    },
+    {
+      "file": "zh-CN/result-directories-light.png",
+      "bytes": 17158,
+      "sha256": "5794ae8789b74d5716830e7dd5fd686442f59547bfcd38a363892f13764515b0",
+      "pixelSize": {
+        "width": 660,
+        "height": 420
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-0-window.png",
+      "bytes": 67232,
+      "sha256": "816f1b856276ed9c3f91366cd8a43ca2897295bda9d0937ac8ff4bba6e430db6",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-0.png",
+      "bytes": 70415,
+      "sha256": "bd865c4bf7102bdbc2da6e7acef730b5a9bd798d255967df9653b06badd876a0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-1.png",
+      "bytes": 68702,
+      "sha256": "edb42555db7739717d5f2f49773e7b82dee02f2dd040f375cc0a3e7e354fc3f2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-2.png",
+      "bytes": 56143,
+      "sha256": "c94a891bfe5072d2dcdce204768df9b1cca1290b8f73e85ad937953174f89070",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-3.png",
+      "bytes": 74073,
+      "sha256": "04be63a717d0f74887fd23da820ec40593f19bfc1bb3c25a7571c962d3649556",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-4.png",
+      "bytes": 37864,
+      "sha256": "df8bafdfd371b5dd2f4367754173d88933ecf3ab9027928bc3504ee3b078d6b8",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-page-5.png",
+      "bytes": 53409,
+      "sha256": "1b43fb2fa3c2878246241c183b7243c6e5d6ec8f71b697cbfda2d2e0fa6bc5ed",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-settings-0.png",
+      "bytes": 56143,
+      "sha256": "c94a891bfe5072d2dcdce204768df9b1cca1290b8f73e85ad937953174f89070",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-settings-1.png",
+      "bytes": 60983,
+      "sha256": "07113d4adfddb61fb7b644abc71f12238f95a69e733159c0b933ff61613e41ff",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-settings-2.png",
+      "bytes": 58454,
+      "sha256": "7becd86e34403737605f66e396d7c8249a4d8b770bde54decf6d6798ff615878",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-settings-3.png",
+      "bytes": 69425,
+      "sha256": "c08bd04e94fa5d541f2c62bd792bb8453ed60714d4313df03c3027d7c10c05f7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-settings-4.png",
+      "bytes": 58076,
+      "sha256": "a3ae75e37e1eaa06b3a26b43134699c541e4ce222d91f1e01dbb4a65e3cd8688",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-1152-settings-5.png",
+      "bytes": 44798,
+      "sha256": "c15b606bc58c621b3f96698c94a8323f06940bb96e8281032b3c2bc1a019b170",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-page-0.png",
+      "bytes": 43809,
+      "sha256": "6fcac1fb9883279763c85b2d5073612d0c8c3c125aef22088cf6fd4b0463f11a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-page-1.png",
+      "bytes": 52076,
+      "sha256": "fdeb703f7a133d875f407ccb52eb06d793364525ffacab8929f5e2a4485fe388",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-page-2.png",
+      "bytes": 41314,
+      "sha256": "0a7799dcab387bcff5695e7d9c7f64e112e1911a327328368df30c5a4630cde2",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-page-3.png",
+      "bytes": 39698,
+      "sha256": "f42c4c623849991dff290effa219cdd06b2a8c67d474f94742ebdec563f2172e",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-page-4.png",
+      "bytes": 26866,
+      "sha256": "21f4c4726a838877f437efcf7de16bf29305854ffb0cab33baf1cc14cceecd4c",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-page-5.png",
+      "bytes": 37201,
+      "sha256": "7a52bbf69a17da5e647c02f9c4e9f08871a8ea499052b7b6fd17d1c74f9eb3c4",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-settings-0.png",
+      "bytes": 41314,
+      "sha256": "0a7799dcab387bcff5695e7d9c7f64e112e1911a327328368df30c5a4630cde2",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-settings-1.png",
+      "bytes": 42267,
+      "sha256": "b6bee2ba47799d579a3cb8c76445b273f94b41133a1cc0522775ebd21ae205dc",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-settings-2.png",
+      "bytes": 47728,
+      "sha256": "fd21608ebf628d1e5be3fd443fa4c69f709812df8c0bd4e48bb5daa23292e1e9",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-settings-3.png",
+      "bytes": 55942,
+      "sha256": "f27e14b1d60ec5ec31577d5cba2e7384259fdf023ba612d5180a06362c9da7da",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-settings-4.png",
+      "bytes": 44728,
+      "sha256": "18c318e647abd809caf95fb1d7da17d48bd2288a0f0f8495705c9129462eb057",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-800-settings-5.png",
+      "bytes": 33851,
+      "sha256": "ff8acd8221413341b6b5d370813839754b7738f97374f4e8765f4b9cf53bcbe6",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/soft-password-keyboard-focus.png",
+      "bytes": 20130,
+      "sha256": "4fe75d0ba4141b7ba488f3afdb0c1e97eef0a3165cba546b1de594ff73899a9a",
+      "pixelSize": {
+        "width": 560,
+        "height": 402
+      }
+    },
+    {
+      "file": "zh-CN/soft-task-keyboard-focus.png",
+      "bytes": 70893,
+      "sha256": "c1bd860595288fbeb9d9f1aa02bb38bcfdbdd190b00e2953ce4d2c0d32c2eff3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/text-edit-cancel-dark.png",
+      "bytes": 17613,
+      "sha256": "d0c3d5b48722f7a4c90d8f753aacd2b882964cc5b7612e179f1ba290f13c66eb",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "zh-CN/text-edit-cancel-light.png",
+      "bytes": 17728,
+      "sha256": "5487a53a49747fd47b9fea8368e510838eeae74a0d09d01375c0d70fb052b5d4",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "zh-CN/text-edit-discard-confirmation-dark.png",
+      "bytes": 17613,
+      "sha256": "d0c3d5b48722f7a4c90d8f753aacd2b882964cc5b7612e179f1ba290f13c66eb",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "zh-CN/text-edit-discard-confirmation-light.png",
+      "bytes": 17728,
+      "sha256": "5487a53a49747fd47b9fea8368e510838eeae74a0d09d01375c0d70fb052b5d4",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "zh-CN/text-edit-write-dark.png",
+      "bytes": 17613,
+      "sha256": "d0c3d5b48722f7a4c90d8f753aacd2b882964cc5b7612e179f1ba290f13c66eb",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "zh-CN/text-edit-write-light.png",
+      "bytes": 17728,
+      "sha256": "5487a53a49747fd47b9fea8368e510838eeae74a0d09d01375c0d70fb052b5d4",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "zh-CN/typography-audit.json",
+      "bytes": 3124603,
+      "sha256": "982d7a6bc9bb272f8be252591efd233446001541ec46e9f4624dbdcbf157bfcc"
+    },
+    {
+      "file": "zh-CN/vault-backup-export-dark.png",
+      "bytes": 24765,
+      "sha256": "1d5e30fbf57a640cd2df6041f5a350df5fa1289dd7d0de3b98b43e3617c0e30c",
+      "pixelSize": {
+        "width": 560,
+        "height": 407
+      }
+    },
+    {
+      "file": "zh-CN/vault-backup-export-light.png",
+      "bytes": 25117,
+      "sha256": "73ba9b2db72c7e0f1d584d5e4038f26cb6ab6f1957aff2c6d779827e6a495110",
+      "pixelSize": {
+        "width": 560,
+        "height": 407
+      }
+    },
+    {
+      "file": "zh-CN/vault-backup-import-dark.png",
+      "bytes": 20065,
+      "sha256": "5881b2523657762a73bc19b9d4d7452371cce0286d6ebd9dcbafea2792fddbd2",
+      "pixelSize": {
+        "width": 560,
+        "height": 355
+      }
+    },
+    {
+      "file": "zh-CN/vault-backup-import-light.png",
+      "bytes": 20241,
+      "sha256": "4a687fadd86d5ad0cf72c834056027a72aa3c22258acb1a37c93d6d6b5035bf1",
+      "pixelSize": {
+        "width": 560,
+        "height": 355
+      }
+    },
+    {
+      "file": "zh-CN/vault-backup-mismatch.png",
+      "bytes": 28000,
+      "sha256": "c328698ec48ffa536696233db0c8256b8a9555f131286f9a1b55fa7e8611a47d",
+      "pixelSize": {
+        "width": 560,
+        "height": 407
+      }
+    },
+    {
+      "file": "zh-CN/vault-import-preview-dark.png",
+      "bytes": 25849,
+      "sha256": "a230a363e0cdf42d38de3f4588ac2bb0cf179155842eb18a2b7ea22de1d745b1",
+      "pixelSize": {
+        "width": 700,
+        "height": 540
+      }
+    },
+    {
+      "file": "zh-CN/vault-import-preview-light.png",
+      "bytes": 26032,
+      "sha256": "81fab03e77afaa6320385df8e13ef7d54d77130fd408e6510b5c949c63aaad60",
+      "pixelSize": {
+        "width": 700,
+        "height": 540
+      }
+    },
+    {
+      "file": "zh-CN/vault-local-protection.png",
+      "bytes": 64300,
+      "sha256": "2a6c75fa3b5fe510088334417580a0b1a96cfc7a59e7cf7a164cd2c6f3465021",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/vault-locked-light-1152.png",
+      "bytes": 55284,
+      "sha256": "9f703832b3ef3d779592ed03bed764610212456fec2ec5e36b95734ed5b3a8a2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/vault-locked-light-800.png",
+      "bytes": 40469,
+      "sha256": "3c9e806b279a1117e5dcaa3df7d41eb9858bd681daa414a9d5b86df697417a41",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/vault-unlocked-contrast-1152.png",
+      "bytes": 62047,
+      "sha256": "13d04614fc9b3972b13a5ecf609132968eef5d2df45f4e1a3cf1dd9d557d23f0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/vault-unlocked-contrast-800.png",
+      "bytes": 47310,
+      "sha256": "a72d7ead00924ae12a9033bf3c61b6e144ccd0905165bea1db8b7c6ee12f0b64",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/vault-unlocked-dark-1152.png",
+      "bytes": 63627,
+      "sha256": "c154cc3938f3f720d92a34f2c7b4909558ce13006d1dd5be30a4d6999c9d6a1b",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/vault-unlocked-dark-800.png",
+      "bytes": 48352,
+      "sha256": "510f5fe605fb27769136ec981c804b120738d565ae57c9bf2c0620c98fd92540",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/vault-unlocked-light-1152.png",
+      "bytes": 64408,
+      "sha256": "3013594d072429f15a71e1f7737b48366a463a73e2d8859c651a4d8276ad2a22",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "zh-CN/vault-unlocked-light-800.png",
+      "bytes": 49194,
+      "sha256": "bae42a4a71f826aa6ee6a989eae9e136f90462ea339e731faa438482dfc46855",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "zh-CN/write-back-discard-confirmation-dark.png",
+      "bytes": 20325,
+      "sha256": "eadb27050e777f095ebb6e228bde36e217c3b7b1b8d221441a9e361a2c8c5190",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "zh-CN/write-back-discard-confirmation-light.png",
+      "bytes": 20196,
+      "sha256": "789dd9aa58c432f996e8d4b86ab7bcf4ddb4733be8a1a032c7295627c8e6a1ba",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "zh-CN/write-back-write-dark.png",
+      "bytes": 20325,
+      "sha256": "eadb27050e777f095ebb6e228bde36e217c3b7b1b8d221441a9e361a2c8c5190",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "zh-CN/write-back-write-light.png",
+      "bytes": 20196,
+      "sha256": "789dd9aa58c432f996e8d4b86ab7bcf4ddb4733be8a1a032c7295627c8e6a1ba",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/actual-archive-folder-navigation.png",
+      "bytes": 46500,
+      "sha256": "1787ae60d0849ff8f7e09d998f77bd6d2345d9f36d8570265995bab536036d96",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-archive-grid-dark.png",
+      "bytes": 63717,
+      "sha256": "2a35053bdc5ea9db968db7b861dbcbd96a010251c86231e3090481c2da3b5fff",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-archive-grid.png",
+      "bytes": 63584,
+      "sha256": "238788d0babd91fe6e65f067195e57497dfe3993db5f8898b533807cd2d784d3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-checksum-invalid-expected.png",
+      "bytes": 70926,
+      "sha256": "29a933947a19c6f46f0de4af0db5ef043757d2bef75a6d8fa58b364402c653d3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-checksum-matched.png",
+      "bytes": 71474,
+      "sha256": "2ab292cc8d886e3e0837ec425fd14f256b86a6f1f3ce0f119a745eed3cf01c9a",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-checksum-mismatch.png",
+      "bytes": 70031,
+      "sha256": "d865306c263d8ceed98cbbb5f738d1bf6395385645ba773edc128e82a30815f8",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-compact-browser.png",
+      "bytes": 40456,
+      "sha256": "23a76fd57970d22c37d32046b8579bccca5a8284c0e4bbf216a72d38a249d75c",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/actual-compression-multiselection.png",
+      "bytes": 61735,
+      "sha256": "cde4f819f486ff07adb5ecf457e3f5ab912620d5e3fe76e97d4c8b4be1fb03f1",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-compression-result.png",
+      "bytes": 69283,
+      "sha256": "70b35913f8a97e0631d6cd9e1798b1beb1f688e7c2eb6453dbd7007356ebe745",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-embedded-browser-image-preview-dark-window.png",
+      "bytes": 68800,
+      "sha256": "a87643cab588f905518a2145d564cc60b92d57fe138c354f6197d1fb6b81b0e0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-embedded-browser-image-preview-dark.png",
+      "bytes": 78500,
+      "sha256": "04dc6a11f0ebe1a68e2680f7cac8b450fa4bc471b10aa41d8e4de88141ec6276",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-embedded-browser-image-preview-light-window.png",
+      "bytes": 76799,
+      "sha256": "1d42d4184d6864bb93c795eb31308871457d4c1cdf6123ec95025f32fb70235f",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-embedded-browser-image-preview.png",
+      "bytes": 78839,
+      "sha256": "089cceeafdfd19bc239d6c8ab71eb019d82fc410240772af41d4162f7f18e498",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-embedded-browser-preview.png",
+      "bytes": 70029,
+      "sha256": "8a7ceac04d9eeac0092cdc658333900f44330610cca1fa10f6addc9be0de3f22",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-engine-update-management.png",
+      "bytes": 66023,
+      "sha256": "3430075e7348a62418785986bf1d541f83c57423dc610abbb3aadadc60a0ed68",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-file-defaults-error.png",
+      "bytes": 59249,
+      "sha256": "3aafe08c68426a4a3c3fa08709d398fef0f87910fc902e40fcfaea8d0a5ac65d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-file-defaults-saved.png",
+      "bytes": 60216,
+      "sha256": "b65ace90aa0f7886743e0f4092c1d6d306b0740700b3d039ea7d291657d0f810",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-preview-open-error.png",
+      "bytes": 77371,
+      "sha256": "415ae0ea5953d5a1a5057dc5445c98c60e0e0720b9d4c7ab2742f9c5957dda3c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-selection-result.png",
+      "bytes": 64116,
+      "sha256": "dbbd16846853eb82c8bcddef3f1ab0a57538c61432873f6120305ee44fb4444c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-soft-archive-more-menu.png",
+      "bytes": 19080,
+      "sha256": "c91be6ea814aa6ccbb7eb3528c8df4ffc08e4bace47e1f1405757d5f4cf3cbd2",
+      "pixelSize": {
+        "width": 412,
+        "height": 360
+      }
+    },
+    {
+      "file": "en/actual-soft-browser-keyboard-focus.png",
+      "bytes": 81128,
+      "sha256": "46edaba294d0d03cc7f80b2f2a8af45acee1c49d9b4ca1a91beb37403f215fc7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/actual-software-update-actions.png",
+      "bytes": 69980,
+      "sha256": "5b25023be653500f453221560151d5acbd1fdcf112a92b048cfeb68280738dac",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/archive-conversion-dark.png",
+      "bytes": 46292,
+      "sha256": "c7bde0ace81747a2d361ef1fec508f8653b879af7c897efc78875cb37efc09b4",
+      "pixelSize": {
+        "width": 700,
+        "height": 660
+      }
+    },
+    {
+      "file": "en/archive-conversion-light.png",
+      "bytes": 46261,
+      "sha256": "f1c6bbef50bf2c66b94b0e74bf85e6747be1b09c8d3bc3b921b79d2f483d8956",
+      "pixelSize": {
+        "width": 700,
+        "height": 660
+      }
+    },
+    {
+      "file": "en/compression-failure-result.png",
+      "bytes": 11987,
+      "sha256": "c54b14fe974f0e84d300b67b0b5973e7712fc490e3532bbad9c9dcdd02cdff58",
+      "pixelSize": {
+        "width": 640,
+        "height": 360
+      }
+    },
+    {
+      "file": "en/compression-password-dark.png",
+      "bytes": 27529,
+      "sha256": "9940537949eb678e16bc728fd889a119a2dfd39caa9290363509dbe33cde1ad9",
+      "pixelSize": {
+        "width": 560,
+        "height": 536
+      }
+    },
+    {
+      "file": "en/compression-password-light.png",
+      "bytes": 27872,
+      "sha256": "a326bc408fdc2ff4c91d2b1a74198e28fe5d1597dc7d5d8f8994dd2100c61cd6",
+      "pixelSize": {
+        "width": 560,
+        "height": 536
+      }
+    },
+    {
+      "file": "en/compression-password-mismatch.png",
+      "bytes": 29956,
+      "sha256": "6e9a3fca36d8598bfba1a09bd37e2ba741dfdb33eadd3d53b24291e80e7f2b90",
+      "pixelSize": {
+        "width": 560,
+        "height": 536
+      }
+    },
+    {
+      "file": "en/contrast-1152-page-0.png",
+      "bytes": 64591,
+      "sha256": "71dd9ef321d95e8e34cff365d37c9a689caaf42f730eddb4e1d4bb8bfc4defc9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-page-1.png",
+      "bytes": 64824,
+      "sha256": "0f7182d99b9c4ac7571f2c4c7770a37d656e61e90abe1440ae31e34e962c3258",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-page-2.png",
+      "bytes": 54420,
+      "sha256": "5f449480a0acef33a70d3badd54f6159dac20081a32c27a2436afe1eb261b9ff",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-page-3.png",
+      "bytes": 66420,
+      "sha256": "e4b3bdd81529a1bc238304d1b844b88cbb839bfe4505763e123c2d11fb556186",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-page-4.png",
+      "bytes": 35155,
+      "sha256": "77a545320514e1e234826cb6f1aa484ee5e663da8ae9f86cebb1a69bd5d0ca97",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-page-5.png",
+      "bytes": 50124,
+      "sha256": "8adcbdcc4ee413a0f75af492da76df3cfdc6e028e888c90d736ef4caccd45058",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-settings-0.png",
+      "bytes": 54420,
+      "sha256": "5f449480a0acef33a70d3badd54f6159dac20081a32c27a2436afe1eb261b9ff",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-settings-1.png",
+      "bytes": 58228,
+      "sha256": "27fed4aecdb2f2dff3c9d6a49fdf33ce5df5b5405a8f5a280e03611619be296c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-settings-2.png",
+      "bytes": 61783,
+      "sha256": "04bb6cd9908410092f0302236a5b5fb6022b9322611323e9ad09ddfcb1279228",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-settings-3.png",
+      "bytes": 63493,
+      "sha256": "41ae8823223fa945ce90829e3cdd6bc14e0fc1f2b952669012272555e3daceb2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-settings-4.png",
+      "bytes": 55779,
+      "sha256": "b1527cd93ac6612280a8978185010c6a5cb1f14c38af95c941a11deaeb9decbf",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-1152-settings-5.png",
+      "bytes": 42586,
+      "sha256": "4233400c527958bfa56b06039f8a4fb3fb9b368afb4300858b3fe91bfad26a8a",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/contrast-800-page-0.png",
+      "bytes": 41049,
+      "sha256": "ab51d146baf2b19b55c359767dbec1e0171b27506cf7d551345be59ca4a82d4f",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-page-1.png",
+      "bytes": 49060,
+      "sha256": "0f87d2de3dfe56de3ffcb2d4fedd0434115cc5702213086208cdbe78b4d02b4e",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-page-2.png",
+      "bytes": 40525,
+      "sha256": "6657561e25ccc30b2c09dc746d20d6afc9eb245666c9ed1852c87908f39b6ca5",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-page-3.png",
+      "bytes": 35835,
+      "sha256": "9b5d1c8e23db12d9eabf056129b6b86dee149fe5e6393ce9caf222da04ae8d99",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-page-4.png",
+      "bytes": 24720,
+      "sha256": "d58d611108145e5e441f673f29727b07d41560300f2d9001b9c25f811507dc27",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-page-5.png",
+      "bytes": 34813,
+      "sha256": "562dc13c07950e75330a03a951151981e45d61821b3d751fe1ba533c87922a72",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-settings-0.png",
+      "bytes": 40525,
+      "sha256": "6657561e25ccc30b2c09dc746d20d6afc9eb245666c9ed1852c87908f39b6ca5",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-settings-1.png",
+      "bytes": 38766,
+      "sha256": "ec9e3bc188e1c3107b9cd80b29e3a507ea4f25e9959a19bffd9533354e88c997",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-settings-2.png",
+      "bytes": 49866,
+      "sha256": "4a5f24b4707241f029c942554a13d7fdaf8fdd1504239b8babb68d306fcc844f",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-settings-3.png",
+      "bytes": 46783,
+      "sha256": "151b1cd35829fd240506c930bf05d479d8134696b4f9248766be89e010cb5a1b",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-settings-4.png",
+      "bytes": 42765,
+      "sha256": "2975b6d56489fa435aa000061107c5ef883e48f714f12baf246a792701103bc2",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/contrast-800-settings-5.png",
+      "bytes": 35474,
+      "sha256": "83f6da4ad234862569fc278f950ad36c1290369a3c3286f71d481e212702f248",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-1152-page-0-window.png",
+      "bytes": 62021,
+      "sha256": "7f245754e68926ed4d15c803bda8a25e681f87897af338ff08ea41ecf880d181",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-page-0.png",
+      "bytes": 68853,
+      "sha256": "23e300bdad7e91d0975a2f3a458486e1f7ca050b25e4236932e7f90a623be703",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-page-1.png",
+      "bytes": 69005,
+      "sha256": "1a83058ea7309cd7e01742e100ce00967aae31e0a57760c751101d8a9fa7ead1",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-page-2.png",
+      "bytes": 57342,
+      "sha256": "eb7d8941c4a31a08aa8aa41ac5810831fea6e3a87fbfdb4451904b94bf6df1a9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-page-3.png",
+      "bytes": 71033,
+      "sha256": "4640c846a67b6ab99c0beb87f7dac4c5209ce1c9f3079ee56db858665175582b",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-page-4.png",
+      "bytes": 37611,
+      "sha256": "661a81926f8cebb43a8df77d4c926822a176ad7eaec61b547ecf0928b62e0ac2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-page-5.png",
+      "bytes": 52812,
+      "sha256": "40ece1a3c237664f5645bff253b1b578e93a6c5b4826d6c828715ecad41c19c3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-settings-0.png",
+      "bytes": 57342,
+      "sha256": "eb7d8941c4a31a08aa8aa41ac5810831fea6e3a87fbfdb4451904b94bf6df1a9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-settings-1.png",
+      "bytes": 60748,
+      "sha256": "dc3c1f260f544f9485995ca31d8061fe9708e183a5420055b42439d99676b86c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-settings-2.png",
+      "bytes": 65109,
+      "sha256": "b9410999e731c3d0df304141a5c235ffb680b1585cb49b0c43028af11a99dde7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-settings-3.png",
+      "bytes": 66830,
+      "sha256": "3bf5bdad9e2dbf9adc8b0b72c17803ae635fdadb066f2a24cb57892d4921c5b3",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-settings-4.png",
+      "bytes": 58900,
+      "sha256": "a21aaaab26ed7717c722b4a4e4537501664105a3690c2c7aaf1e85f5e68fd3bb",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-1152-settings-5.png",
+      "bytes": 44757,
+      "sha256": "3512b7c79e3c169c49f3dd83e65dcbe6259a16d03cb1b6288810db592f526e2a",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/dark-800-page-0.png",
+      "bytes": 43167,
+      "sha256": "4d6d7ca9445b25d8169f30677f4b25e147a6c66ce95e843783ad92eda73f6a4a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-page-1.png",
+      "bytes": 51476,
+      "sha256": "813020b365cc47ef8e4a4b3c9447c8b232e9eba528c95dbca9467a09de7de104",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-page-2.png",
+      "bytes": 42421,
+      "sha256": "22fe2a88353bb91ccf52651c2b190acb20d50391d78f6b45cf7fede272b53fa8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-page-3.png",
+      "bytes": 37525,
+      "sha256": "c4238fb1447e6f8d046364185e6e215c1457f9f8e1f10a564ba31f7a3830b25d",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-page-4.png",
+      "bytes": 27131,
+      "sha256": "691b4ca82f5db7aaafef2b2beca59a3641ed183550b3487fa464ab07afb97390",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-page-5.png",
+      "bytes": 36817,
+      "sha256": "3f64b0b74de9562534b429623266bdaaa348512c741645da488b7b53a97cdf7a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-settings-0.png",
+      "bytes": 42421,
+      "sha256": "22fe2a88353bb91ccf52651c2b190acb20d50391d78f6b45cf7fede272b53fa8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-settings-1.png",
+      "bytes": 40239,
+      "sha256": "3b0e2cddf841152c143cf20481aa7bdc7610e91cf23b26cb6345c30fe41554bf",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-settings-2.png",
+      "bytes": 52663,
+      "sha256": "17fd97a2a6cc30ff0c227080d1ecfcec8ff026b805a40f8d7c894e1c7a1cf551",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-settings-3.png",
+      "bytes": 48903,
+      "sha256": "3de2f1f8f2586b09ab65794672e1ce97507555291dc656b52bd041a93c8248a2",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-settings-4.png",
+      "bytes": 44782,
+      "sha256": "672528fa40b0c5473900a665452dde45b82a5018cf7b7465f6914949cef6bca6",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/dark-800-settings-5.png",
+      "bytes": 37519,
+      "sha256": "709238239034c2a4038e4673aad5378f579032fa31dcbe14202611e5903b32e5",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/edit-copy-cancel-dark.png",
+      "bytes": 20728,
+      "sha256": "470480758cc64d5aead8c75399eb4fe5a59618bb9b86c5b69506fc86cfb9263b",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "en/edit-copy-cancel-light.png",
+      "bytes": 20438,
+      "sha256": "55ceb864e11ecd4c7805e00be629c1ed504eff5e33db565d465e1cab67fc6f4c",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "en/edit-copy-discard-confirmation-dark.png",
+      "bytes": 20728,
+      "sha256": "470480758cc64d5aead8c75399eb4fe5a59618bb9b86c5b69506fc86cfb9263b",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "en/edit-copy-discard-confirmation-light.png",
+      "bytes": 20438,
+      "sha256": "55ceb864e11ecd4c7805e00be629c1ed504eff5e33db565d465e1cab67fc6f4c",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "en/edit-copy-write-dark.png",
+      "bytes": 20728,
+      "sha256": "470480758cc64d5aead8c75399eb4fe5a59618bb9b86c5b69506fc86cfb9263b",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "en/edit-copy-write-light.png",
+      "bytes": 20438,
+      "sha256": "55ceb864e11ecd4c7805e00be629c1ed504eff5e33db565d465e1cab67fc6f4c",
+      "pixelSize": {
+        "width": 600,
+        "height": 333
+      }
+    },
+    {
+      "file": "en/extraction-batch-dark.png",
+      "bytes": 53132,
+      "sha256": "65e571e2ae4c7cf5ee7a0d8c3eb75d1fc8f73daf90245b05246ac32640fea793",
+      "pixelSize": {
+        "width": 560,
+        "height": 760
+      }
+    },
+    {
+      "file": "en/extraction-batch-light.png",
+      "bytes": 53127,
+      "sha256": "cb94ca7ba32ea19e24cb9d41ad934b87d23e6a300914b0b191858d67d6eb54dc",
+      "pixelSize": {
+        "width": 560,
+        "height": 760
+      }
+    },
+    {
+      "file": "en/extraction-failures-dark.png",
+      "bytes": 22839,
+      "sha256": "b6c3526e8eaba32a5ac3d4407dcefa2d87ef9bd0f7a1c48dcb63c3db5abf5478",
+      "pixelSize": {
+        "width": 640,
+        "height": 440
+      }
+    },
+    {
+      "file": "en/extraction-failures-light.png",
+      "bytes": 23142,
+      "sha256": "6da16719ae3b9119e990810596dc841a39e94169e6f42c3d82975ce8072c63b1",
+      "pixelSize": {
+        "width": 640,
+        "height": 440
+      }
+    },
+    {
+      "file": "en/extraction-rules-dark.png",
+      "bytes": 38368,
+      "sha256": "58b5ff6b40330e708ece7a3457cd0567d0f17080c6d0cc09704f10d4a851a8a5",
+      "pixelSize": {
+        "width": 540,
+        "height": 630
+      }
+    },
+    {
+      "file": "en/extraction-rules-light.png",
+      "bytes": 39000,
+      "sha256": "d2d136cbb66c1cc787a63ac8207f6128a63d164c147129c9198d67fe57a05b42",
+      "pixelSize": {
+        "width": 540,
+        "height": 630
+      }
+    },
+    {
+      "file": "en/extraction-single-dark.png",
+      "bytes": 31627,
+      "sha256": "fc4f1ab1e39d60728262e6458e5724c79f234ea7d4b00d4fc2d6d8f47424ecd8",
+      "pixelSize": {
+        "width": 560,
+        "height": 720
+      }
+    },
+    {
+      "file": "en/extraction-single-light.png",
+      "bytes": 31899,
+      "sha256": "5a744fbe6381cd3065ac8628f1ee61a87c7ef98f4308ecfec6ccbf9591d69c59",
+      "pixelSize": {
+        "width": 560,
+        "height": 720
+      }
+    },
+    {
+      "file": "en/file-conflict-image-dark.png",
+      "bytes": 23130,
+      "sha256": "d5a70494c069a303c69ce7aa0e9bb2822243cd0e4b0a4e9140925e380516ef26",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "en/file-conflict-image-light.png",
+      "bytes": 23130,
+      "sha256": "7ae6a72c357c8fffa231cd756cf320f9468eab2dc98334de28be3c63c4a8971c",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "en/file-conflict-rename-dark.png",
+      "bytes": 22981,
+      "sha256": "1a1344960a21a96b1eca2678572e072d8f65a064a5dbefa2a42cc4c2373acad1",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "en/file-conflict-rename-light.png",
+      "bytes": 23013,
+      "sha256": "f81435d61d43fe6d67cbf415355c4ce6a836e7b2f9c95fdc18b2c8adfd35f126",
+      "pixelSize": {
+        "width": 620,
+        "height": 381
+      }
+    },
+    {
+      "file": "en/file-conflict-rename.png",
+      "bytes": 26161,
+      "sha256": "5dd447ad179cde8ef31af872a0c2331799c45d1c7e439b07d1078e3c585ac9fb",
+      "pixelSize": {
+        "width": 620,
+        "height": 467
+      }
+    },
+    {
+      "file": "en/filename-encoding-dark.png",
+      "bytes": 30659,
+      "sha256": "da1764a6cf984fc6fa5b91d5a04ee22c17658308b6be6028a1a9258696508625",
+      "pixelSize": {
+        "width": 720,
+        "height": 580
+      }
+    },
+    {
+      "file": "en/filename-encoding-light.png",
+      "bytes": 30894,
+      "sha256": "426c2727d39fcca5c0d05b44041b458c69ad606ccd7e7ee81d77dcd8abc0c2ca",
+      "pixelSize": {
+        "width": 720,
+        "height": 580
+      }
+    },
+    {
+      "file": "en/grid-navigation.json",
+      "bytes": 110,
+      "sha256": "a61e803c1e56bdf1e34951012f71671d2582419ba32a61ac97acb599db679af2"
+    },
+    {
+      "file": "en/light-1152-page-0-window.png",
+      "bytes": 67141,
+      "sha256": "ff20b5f5dc221424295c7e469a7abeed51fb0202c240997683cfb1dfd39b9ea7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-page-0.png",
+      "bytes": 68268,
+      "sha256": "63e1690ec26c072fd7f57eedb8968f21a94480bc7a74631e72a673fe36e316e7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-page-1.png",
+      "bytes": 69780,
+      "sha256": "ee62dabc900785957f99ab0939f399ae23222dbbe6425b570449f76ce55afb96",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-page-2.png",
+      "bytes": 57303,
+      "sha256": "632645aca9dd7ff923123eadba4af4904dec410e62ba23e8ee8d937a7721b987",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-page-3.png",
+      "bytes": 70653,
+      "sha256": "b9b3bd2e244241a5e98bfde87218f78d89d0bcb4b33aae23dfaa2e4d8cd2adfe",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-page-4.png",
+      "bytes": 37582,
+      "sha256": "5bc764044cf0c13d02b4ff7ae4b36f6809f899f99e530d02442428036af27dbc",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-page-5.png",
+      "bytes": 52787,
+      "sha256": "aebfc288917d0eb11ad1ce16a6b84fe248987ae8e3b3739d9d46c6c07220fce5",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-settings-0.png",
+      "bytes": 57303,
+      "sha256": "632645aca9dd7ff923123eadba4af4904dec410e62ba23e8ee8d937a7721b987",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-settings-1.png",
+      "bytes": 60863,
+      "sha256": "dc774f2015ad51d5dcc00dd42ab82e270ecb83b813cc55c42d9a777274edee5b",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-settings-2.png",
+      "bytes": 65080,
+      "sha256": "a0966bb15a68b5b6d266dbc08a3749683be37ec72260cb300d5524f13ca3f1b0",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-settings-3.png",
+      "bytes": 67308,
+      "sha256": "7a1c7fecc6493e74d809b3b520cd77e792645761acbe16a80e41c0201a0a66e1",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-settings-4.png",
+      "bytes": 59102,
+      "sha256": "38c285c41aa775121d8f1233bd5038c9e58973c4bcebf5ab34f1335deacba3ef",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-1152-settings-5.png",
+      "bytes": 44409,
+      "sha256": "b95dfe77e22ad9c9c75184463a6ca9186e3f43a963e158c7e1bd0c4f5b4df265",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/light-800-page-0.png",
+      "bytes": 43212,
+      "sha256": "9d4ad3ec6251e41d67fc389805b8be5a25ae565dad38fa6ed86e541d55fc7313",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-page-1.png",
+      "bytes": 51957,
+      "sha256": "1316914338dd8dc703ff595a2e1cbdfa588948f5f77bb634f9c610c062c15ba3",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-page-2.png",
+      "bytes": 43091,
+      "sha256": "f9df5c837f796627971d484e121d87e9bd41a978a0a64c7f7da865ce579a0517",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-page-3.png",
+      "bytes": 37671,
+      "sha256": "84cb27f3fed0d49723f56fb19c19083aff205816934281c8f5f378193f773309",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-page-4.png",
+      "bytes": 26951,
+      "sha256": "41dd97fcda3e785ca47f65d5a164036079263ea5b8d87e931f6c7d86254c0b14",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-page-5.png",
+      "bytes": 36672,
+      "sha256": "c4f07860b55084646fa3952f837f22bba20cfe4ac0d8426d8544c224790da577",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-settings-0.png",
+      "bytes": 43091,
+      "sha256": "f9df5c837f796627971d484e121d87e9bd41a978a0a64c7f7da865ce579a0517",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-settings-1.png",
+      "bytes": 40560,
+      "sha256": "77036c94b2cf51e31162a065da5c7a575e6e16e4b33dfc9a0eb0090c61d05c41",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-settings-2.png",
+      "bytes": 53442,
+      "sha256": "3ce7ed7f36abe4db0c213273d36e085551d82bbce449d8ef8ab18f4c306eac1a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-settings-3.png",
+      "bytes": 49928,
+      "sha256": "feaad61025cbbaf634ff414a166420d9d7042fa0294209221e6183553e7812bc",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-settings-4.png",
+      "bytes": 45381,
+      "sha256": "7d99614a125e87fc97d4d3bea38f28c4de618ad5888a7decc159418788db1957",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/light-800-settings-5.png",
+      "bytes": 37646,
+      "sha256": "c1755f059c9d59a2a2511b3ecfc9cc69316233d515bb177a792dc68cb2f11404",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/master-password-dark.png",
+      "bytes": 25576,
+      "sha256": "45b9cad4cba48c2ecea9d5af6a6fba897ffa8e7fdb623becb65b6de48c6b1a6a",
+      "pixelSize": {
+        "width": 560,
+        "height": 396
+      }
+    },
+    {
+      "file": "en/master-password-light.png",
+      "bytes": 25683,
+      "sha256": "eab93e0ee9e1021c9debb956e6383b94b9400b326b7c0ccb91bf245ebd1e8a06",
+      "pixelSize": {
+        "width": 560,
+        "height": 396
+      }
+    },
+    {
+      "file": "en/master-password-mismatch.png",
+      "bytes": 28365,
+      "sha256": "568ca5a67cd7c90ba9794ca45f0d1e83158e9ffa1fed6c4697ba7904390f7be1",
+      "pixelSize": {
+        "width": 560,
+        "height": 396
+      }
+    },
+    {
+      "file": "en/master-unlock-dark.png",
+      "bytes": 17208,
+      "sha256": "d8b0f534586465006414c41c44bf44f6dd46f40f8fd7ce8da979090d7286c389",
+      "pixelSize": {
+        "width": 560,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/master-unlock-light.png",
+      "bytes": 17332,
+      "sha256": "47327dd38113a27a34922aefe2c6234b060351cf41bab3b8e8b401b986bb049b",
+      "pixelSize": {
+        "width": 560,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/master-unlock-required.png",
+      "bytes": 18858,
+      "sha256": "37cde489be8dea4fa7062d6a45ebc682221d4bff1a8f6d26ce8ddbc5f4b26e0a",
+      "pixelSize": {
+        "width": 560,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/menu-glyphs.json",
+      "bytes": 1185,
+      "sha256": "4cc8eaadbf5088757759cfa4e1ab42d3722d698dee1ac2c5b2ce3cf9080ab753"
+    },
+    {
+      "file": "en/native-window-captures.json",
+      "bytes": 1310,
+      "sha256": "6f537299673a0597f05ad3e617de90592974033a9198b4a5ac3dcb28a108b955"
+    },
+    {
+      "file": "en/password-prompt-dark.png",
+      "bytes": 20249,
+      "sha256": "ab333b6841d405559417019121c7ec71a7e1b4074e65ee2647fc17d96f43d1bd",
+      "pixelSize": {
+        "width": 560,
+        "height": 402
+      }
+    },
+    {
+      "file": "en/password-prompt-light.png",
+      "bytes": 20335,
+      "sha256": "832ad3f2ced0ad4ced2abd35955c3fba60a770822d3161dc2533cc79ab46a018",
+      "pixelSize": {
+        "width": 560,
+        "height": 402
+      }
+    },
+    {
+      "file": "en/password-retry-dark.png",
+      "bytes": 24445,
+      "sha256": "a1fa9b147e66316bb0e77596727649038ab35b9c3b6c779080659a4e0842f67d",
+      "pixelSize": {
+        "width": 560,
+        "height": 460
+      }
+    },
+    {
+      "file": "en/password-retry-light.png",
+      "bytes": 24445,
+      "sha256": "8afda73eb03a997ced4243d488ab0b96a9f84f537f1d44406aebd39082f70585",
+      "pixelSize": {
+        "width": 560,
+        "height": 460
+      }
+    },
+    {
+      "file": "en/reference-comparison.json",
+      "bytes": 1886,
+      "sha256": "fcc31997d2c60c1317f9fb91f879cee1cd6fc5e928c2d8267fcd28f29300037d"
+    },
+    {
+      "file": "en/reference-file-browser-aligned.png",
+      "bytes": 247236,
+      "sha256": "957fa11eaaab9bc6f8841b2df56972c1f6ef9fa03dabe0e369b987a055a3d0e7",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/reference-file-browser-dark.png",
+      "bytes": 246381,
+      "sha256": "b1ab58861fbbccfd6f6b3489507c6fc47bf527a97af5d4a0735e9e3a18d7a6e9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/reference-file-browser-light.png",
+      "bytes": 247687,
+      "sha256": "e49f3242afba7a7093387090fe22d17c965f0ed0f252af9510c9700fa618e5d9",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/reference-file-browser-narrow.png",
+      "bytes": 152983,
+      "sha256": "570fe8af43473daca9687552cbd0cf6285e55691cf8769ffa05a021eb6982f23",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/reference-task-motion.gif",
+      "bytes": 47964,
+      "sha256": "8161c513b04052452cbac59812202212f8e188bab96525d0e0ac8af48684204d"
+    },
+    {
+      "file": "en/reference-task-motion.json",
+      "bytes": 968,
+      "sha256": "a8eb8190a0294a8fad7a576944c05a3638262d0834a64862a1db0f445712eac8"
+    },
+    {
+      "file": "en/report.json",
+      "bytes": 39212,
+      "sha256": "cc423d2fb51ea50f7a6ea937102e49636fabee87b98261e03b9d602a6c252c37"
+    },
+    {
+      "file": "en/result-directories-dark.png",
+      "bytes": 18587,
+      "sha256": "9e76c90dad2459431e4d903393415ab00c50cbd8f3c664bc6585ce10aed25694",
+      "pixelSize": {
+        "width": 660,
+        "height": 420
+      }
+    },
+    {
+      "file": "en/result-directories-light.png",
+      "bytes": 18647,
+      "sha256": "a0e9a97f2d04fa2fe2ddbdd8970f791850d9cb767ddf8e8711f530480d1eb3f9",
+      "pixelSize": {
+        "width": 660,
+        "height": 420
+      }
+    },
+    {
+      "file": "en/soft-1152-page-0-window.png",
+      "bytes": 67850,
+      "sha256": "d795eaa0466b3acbfa781c83da5becc7fa2234633bcd65798ab787a0dbd1b447",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-page-0.png",
+      "bytes": 69666,
+      "sha256": "abc6b5960096bf37bca97c757adf6e7621ffb986cc45f8d2d9db59f5f5cd0d93",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-page-1.png",
+      "bytes": 70757,
+      "sha256": "fbd7a613494fc96305a9adaeb7571ad09c2de451a464dfd025a1f21ae3f2a211",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-page-2.png",
+      "bytes": 59811,
+      "sha256": "eb3dc028c5acbea7fdf9c9538adaf429d6cb654292244450ee23df594407fb1c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-page-3.png",
+      "bytes": 73219,
+      "sha256": "bb1af589863c19d137a73d0743b8d80e4c50edcb6bc42eb7357d3ce545a5f2c8",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-page-4.png",
+      "bytes": 38358,
+      "sha256": "247ec1ffc121f060e2e06cf8f726da855528b1486eccc54cc646d5a80919890c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-page-5.png",
+      "bytes": 53537,
+      "sha256": "360357144b15fb6d57c578852123d6d3255b4c82cf11e5ac8c76f78cb6eb0311",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-settings-0.png",
+      "bytes": 59811,
+      "sha256": "eb3dc028c5acbea7fdf9c9538adaf429d6cb654292244450ee23df594407fb1c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-settings-1.png",
+      "bytes": 62993,
+      "sha256": "82b1189ca3abac482c3ae4f6aaafc6758bcfec340551e76c7dc07f869e3f530d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-settings-2.png",
+      "bytes": 66617,
+      "sha256": "b71fe4d8e17461c69a5cfe9f086628b44431c129b94d7c67962eb28076e846fa",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-settings-3.png",
+      "bytes": 68973,
+      "sha256": "e284b869519a07f55865c070edab78e33eb3f51f6ca24a1085a7c7143383737d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-settings-4.png",
+      "bytes": 60461,
+      "sha256": "d03d1359233a3b2822bab7891d5eff44237501cff01b596aa885ab9ac779879d",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-1152-settings-5.png",
+      "bytes": 45927,
+      "sha256": "7a4cb7c75f1b73c62d13ebc90888bcdac6e85fbed5885e24a3f7783fef731d62",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/soft-800-page-0.png",
+      "bytes": 43419,
+      "sha256": "fcbeb3f92750420bb393241602a52ebe53ca5298f2c916da8128bbe1dc176bc9",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-page-1.png",
+      "bytes": 52871,
+      "sha256": "8ab5c96b82d5cfdbfbc215afe6bc641cd589b8d0fc2c918bdb82cad366a6f69a",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-page-2.png",
+      "bytes": 44684,
+      "sha256": "bd4f854ff4504e135e7cf14cf61547c598507ea62c59e08bbb30d2b6b11e38a7",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-page-3.png",
+      "bytes": 38604,
+      "sha256": "f08c0d87738830ec7de0458d2acda8a3f9a0d0edb240ea96d885079333b08618",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-page-4.png",
+      "bytes": 27541,
+      "sha256": "a28c0f7ef442351cfb0890a49fb681cabc7abea50fcb52266a982e1c3e98a6f4",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-page-5.png",
+      "bytes": 37483,
+      "sha256": "bd1fc7620981bbd54f1143fe66e24f6b14c585f04c070731d0aaff71b1124bca",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-settings-0.png",
+      "bytes": 44684,
+      "sha256": "bd4f854ff4504e135e7cf14cf61547c598507ea62c59e08bbb30d2b6b11e38a7",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-settings-1.png",
+      "bytes": 41804,
+      "sha256": "5f04bb2c8999a56007dba8fa52ecdb547f3610dca61121f2d67fd5e173b84b3d",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-settings-2.png",
+      "bytes": 54733,
+      "sha256": "db84ac055a1625336582146f9425f044aa1053f0970d3e72f2b2de97b10b79b8",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-settings-3.png",
+      "bytes": 50899,
+      "sha256": "7c191c870a962d7c2a943af942a9c97a544b7981808209f5d6d329f056ec78f9",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-settings-4.png",
+      "bytes": 45975,
+      "sha256": "435589c2640e54070fe829e274e3f84219e41b424569672d94e9b0aa85908f4c",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-800-settings-5.png",
+      "bytes": 38732,
+      "sha256": "cb9d13debba0a50cb9c7fc07fabb5d5d94756297e936245a891c1dce9ac217b7",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/soft-password-keyboard-focus.png",
+      "bytes": 20736,
+      "sha256": "ffd1c95998b8466b1914098b0399926077ccf0863cdf7b1c1f703d30b7c45b46",
+      "pixelSize": {
+        "width": 560,
+        "height": 402
+      }
+    },
+    {
+      "file": "en/soft-task-keyboard-focus.png",
+      "bytes": 70086,
+      "sha256": "61adeb159586ab69ce06e3ce770253422f02660ebde52be5fe85670d57c0a61c",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/text-edit-cancel-dark.png",
+      "bytes": 18641,
+      "sha256": "ff3e8deb87edc2a3f8cbb78b997deb0f8894a2828ef489af8b19d1cd2ee1cb84",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "en/text-edit-cancel-light.png",
+      "bytes": 18741,
+      "sha256": "5a5976196a68f0d04eb8816d8729ad296bf9d13a1079b97bcbeedd7fb31c008a",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "en/text-edit-discard-confirmation-dark.png",
+      "bytes": 18641,
+      "sha256": "ff3e8deb87edc2a3f8cbb78b997deb0f8894a2828ef489af8b19d1cd2ee1cb84",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "en/text-edit-discard-confirmation-light.png",
+      "bytes": 18741,
+      "sha256": "5a5976196a68f0d04eb8816d8729ad296bf9d13a1079b97bcbeedd7fb31c008a",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "en/text-edit-write-dark.png",
+      "bytes": 18641,
+      "sha256": "ff3e8deb87edc2a3f8cbb78b997deb0f8894a2828ef489af8b19d1cd2ee1cb84",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "en/text-edit-write-light.png",
+      "bytes": 18741,
+      "sha256": "5a5976196a68f0d04eb8816d8729ad296bf9d13a1079b97bcbeedd7fb31c008a",
+      "pixelSize": {
+        "width": 800,
+        "height": 620
+      }
+    },
+    {
+      "file": "en/typography-audit.json",
+      "bytes": 3126821,
+      "sha256": "bdf00c82d62e32511f21d2a4ac965b864d8d6ffaf4daf04871387ddf4149fb27"
+    },
+    {
+      "file": "en/vault-backup-export-dark.png",
+      "bytes": 27306,
+      "sha256": "519cafc9d91fe83b2f8d375982f2fa4676b2963f0c57cc2d975539f177d317c5",
+      "pixelSize": {
+        "width": 560,
+        "height": 431
+      }
+    },
+    {
+      "file": "en/vault-backup-export-light.png",
+      "bytes": 27456,
+      "sha256": "ae2a972452d85dc9d134519915a3a61a574c6964e9d1914e0d1efca8b8d2824e",
+      "pixelSize": {
+        "width": 560,
+        "height": 431
+      }
+    },
+    {
+      "file": "en/vault-backup-import-dark.png",
+      "bytes": 21833,
+      "sha256": "f1ef87f7780df16600c1faa80f7ce33da644bc8b0324f3199c9114fbef186d06",
+      "pixelSize": {
+        "width": 560,
+        "height": 357
+      }
+    },
+    {
+      "file": "en/vault-backup-import-light.png",
+      "bytes": 22071,
+      "sha256": "5b233445bd92ff06bd3b7c8ec1f4f410b7ecd61f275af643ef63e08211892c69",
+      "pixelSize": {
+        "width": 560,
+        "height": 357
+      }
+    },
+    {
+      "file": "en/vault-backup-mismatch.png",
+      "bytes": 29966,
+      "sha256": "0394e2e62f3f2832e7237dd15588fd703e50c6c1f0a482da8938e897ee1c5cf1",
+      "pixelSize": {
+        "width": 560,
+        "height": 431
+      }
+    },
+    {
+      "file": "en/vault-import-preview-dark.png",
+      "bytes": 26886,
+      "sha256": "ab281e4b7334d4bb8f322d16e9b7db2f0e55b43e371e97814eea061027906801",
+      "pixelSize": {
+        "width": 700,
+        "height": 540
+      }
+    },
+    {
+      "file": "en/vault-import-preview-light.png",
+      "bytes": 27299,
+      "sha256": "ef495b18e4d264e7c479c46b4077461be78765fd90a19dce16b652faf11418b9",
+      "pixelSize": {
+        "width": 700,
+        "height": 540
+      }
+    },
+    {
+      "file": "en/vault-local-protection.png",
+      "bytes": 64745,
+      "sha256": "2443b4347b312519f13775b591ec6f5468477a48bcca30577bd2eed998f1d6bb",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/vault-locked-light-1152.png",
+      "bytes": 54063,
+      "sha256": "3d6d6fa4478a24f2d1116a4afd1dd3c8f5594febbf220b81d9faaf82452f04ef",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/vault-locked-light-800.png",
+      "bytes": 39661,
+      "sha256": "9590159b7fac1690122b4e35eb00e93975f39492965a301a2d31bfe7350dfc92",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/vault-unlocked-contrast-1152.png",
+      "bytes": 62008,
+      "sha256": "4c74732dab3510bcad6431af605a934fd868c65ee1d9fa2d8df611ec98520ff8",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/vault-unlocked-contrast-800.png",
+      "bytes": 46626,
+      "sha256": "e3a574d41ad21c91d47e9f7e1d6be17ea9cbdbf1e7296b3c1290aad477922356",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/vault-unlocked-dark-1152.png",
+      "bytes": 64775,
+      "sha256": "b28f12778f1606f1ba5630c889980a4b49701b91fb17cc5176647072c63b224b",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/vault-unlocked-dark-800.png",
+      "bytes": 48792,
+      "sha256": "ab06ccde792f4349a72049d2fb4c83871437a95f4bfcf3c3140788dc8cab8a25",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/vault-unlocked-light-1152.png",
+      "bytes": 65876,
+      "sha256": "68188c3b0f5ff48d0a09dba58de5650f9105d8845034cd7ad7cd9ee2411d1fa2",
+      "pixelSize": {
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "file": "en/vault-unlocked-light-800.png",
+      "bytes": 49975,
+      "sha256": "3fad4031b838276d2e797e5168226249bab6eec87e646dcdca6527742bbce246",
+      "pixelSize": {
+        "width": 800,
+        "height": 600
+      }
+    },
+    {
+      "file": "en/write-back-discard-confirmation-dark.png",
+      "bytes": 24272,
+      "sha256": "76c38457d0762a1da99ff54e5e8c0efc77e8fba4b10fed2f3ccb2459151b9491",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/write-back-discard-confirmation-light.png",
+      "bytes": 24132,
+      "sha256": "8c5d2aa675dd8bd33ee98e3f45ef30ecccbc7444ea8594b70e37a8af45828a8e",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/write-back-write-dark.png",
+      "bytes": 24272,
+      "sha256": "76c38457d0762a1da99ff54e5e8c0efc77e8fba4b10fed2f3ccb2459151b9491",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    },
+    {
+      "file": "en/write-back-write-light.png",
+      "bytes": 24132,
+      "sha256": "8c5d2aa675dd8bd33ee98e3f45ef30ecccbc7444ea8594b70e37a8af45828a8e",
+      "pixelSize": {
+        "width": 600,
+        "height": 340
+      }
+    }
+  ]
+}
