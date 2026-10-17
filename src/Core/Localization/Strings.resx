@@ -3260,4 +3260,8 @@
   <data name="Preview.Opened" xml:space="preserve"><value>已打开图片副本</value></data>
   <data name="Preview.OpenFailed" xml:space="preserve"><value>无法打开图片；请检查默认图片应用。</value></data>
   <data name="Reference.Navigation" xml:space="preserve"><value>菜单</value></data>
+  <data name="Vault.LastSuccess" xml:space="preserve"><value>最近成功</value></data>
+  <data name="Vault.LastSuccessHint" xml:space="preserve"><value>此密码最近一次成功用于解压或创建压缩包的时间；查看、复制或尝试失败不会更新。</value></data>
+  <data name="Vault.UsedToday" xml:space="preserve"><value>今天 {0}</value></data>
+  <data name="Vault.UsedYesterday" xml:space="preserve"><value>昨天</value></data>
 </root>

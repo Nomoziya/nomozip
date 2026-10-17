@@ -3260,4 +3260,8 @@ A password is required to validate the archive data.</value>
   <data name="Preview.Opened" xml:space="preserve"><value>Image copy opened</value></data>
   <data name="Preview.OpenFailed" xml:space="preserve"><value>Could not open the image. Check your default image app.</value></data>
   <data name="Reference.Navigation" xml:space="preserve"><value>Menu</value></data>
+  <data name="Vault.LastSuccess" xml:space="preserve"><value>Last success</value></data>
+  <data name="Vault.LastSuccessHint" xml:space="preserve"><value>Last successful use for extraction or archive creation. Viewing, copying and failed attempts do not update this time.</value></data>
+  <data name="Vault.UsedToday" xml:space="preserve"><value>Today {0}</value></data>
+  <data name="Vault.UsedYesterday" xml:space="preserve"><value>Yesterday</value></data>
 </root>

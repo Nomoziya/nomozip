@@ -445,6 +445,7 @@ internal static class DesktopRedesignValidation
             Check("cancel preserves prior password and header settings",passwordSettingsModel.CompressionPasswordSummary==passwordSummary && !passwordSettingsModel.CompressionHeaders);
             passwordStage=2;passwordSettingsModel.CompressionFormat=1;passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
+            await DesktopVaultPresentationValidation.RunAsync(window,theme,folder,Check);
             DesktopDesignDialogValidation.Run(window,theme,folder,Check);
             await DesktopReferenceVisualValidation.RunAsync(window,theme,root,folder,Check);
         }

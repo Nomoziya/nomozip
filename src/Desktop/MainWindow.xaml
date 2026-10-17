@@ -2,6 +2,7 @@
 <Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ArchivePassword.Desktop" x:Class="ArchivePassword.Desktop.MainWindow" Style="{StaticResource AppWindow}" Title="nomozip" Width="1152" Height="768" MinWidth="800" MinHeight="600" WindowStartupLocation="CenterScreen" AllowDrop="True" Drop="OnDrop" Closing="OnClosing">
   <Window.Resources>
     <local:PasswordMetadataConverter x:Key="PasswordMetadata"/>
+    <local:PasswordLastUsedConverter x:Key="PasswordLastUsed"/>
     <Style x:Key="QueueMenuItem" TargetType="MenuItem" BasedOn="{StaticResource ActionMenuItem}"/>
     <Style x:Key="SidebarButton" TargetType="Button" BasedOn="{StaticResource SubtleButton}">
       <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
@@ -564,7 +565,7 @@
           </Grid.RowDefinitions>
           <DockPanel>
             <WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
-              <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0" ToolTip="{Binding VaultProtectionMessage}">
+              <StackPanel x:Name="VaultProtectionStatus" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0" ToolTip="{Binding VaultProtectionMessage}" AutomationProperties.Name="{Binding VaultProtectionStatusLabel}" AutomationProperties.LiveSetting="Polite">
                 <Ellipse Width="9" Height="9" Margin="0,0,8,0">
                   <Ellipse.Style>
                     <Style TargetType="Ellipse">
@@ -577,30 +578,26 @@
                     </Style>
                   </Ellipse.Style>
                 </Ellipse>
-                <TextBlock Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="VaultProtectionStatusText" Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center" TextWrapping="NoWrap"/>
               </StackPanel>
               <Button x:Name="VaultProtectAction" Command="{Binding EnableMasterCommand}" Margin="0,0,8,0" AutomationProperties.Name="{loc:Text Vault.SetMaster}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding VaultMasterEnabled}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text Vault.SetMaster}"/></StackPanel></Button>
-              <Button x:Name="VaultUnlockAction" Content="{loc:Text T_1109737d1829}" Command="{Binding UnlockVaultCommand}" Margin="0,0,8,0">
+              <Button x:Name="VaultUnlockAction" Command="{Binding UnlockVaultCommand}" AutomationProperties.Name="{loc:Text T_1109737d1829}">
                 <Button.Style>
                   <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Style.Triggers>
-                      <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </Trigger>
-                    </Style.Triggers>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers><DataTrigger Binding="{Binding VaultLocked}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
                   </Style>
                 </Button.Style>
+                <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_1109737d1829}"/></StackPanel>
               </Button>
-              <Button x:Name="VaultLockAction" Content="{loc:Text T_6d9f3b6f019c}" Command="{Binding LockVaultCommand}">
+              <Button x:Name="VaultLockAction" Command="{Binding LockVaultCommand}" AutomationProperties.Name="{loc:Text T_6d9f3b6f019c}">
                 <Button.Style>
                   <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Style.Triggers>
-                      <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </Trigger>
-                    </Style.Triggers>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding VaultMasterEnabled}" Value="True"/><Condition Binding="{Binding VaultLocked}" Value="False"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible"/></MultiDataTrigger></Style.Triggers>
                   </Style>
                 </Button.Style>
+                <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_6d9f3b6f019c}"/></StackPanel>
               </Button>
             </WrapPanel>
             <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Key" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0"/><TextBlock Text="{loc:Text T_9b54fb7636af}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></StackPanel>
@@ -718,7 +715,10 @@
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{loc:Text T_39a9046f9c8c}" Binding="{Binding LastSuccessAt, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue={loc:Text T_9bd11dda28fc}}" Width="148" ElementStyle="{StaticResource TableText}"/>
+                <DataGridTextColumn x:Name="PasswordLastUsedColumn" Header="{loc:Text Vault.LastSuccess}" SortMemberPath="LastSuccessAt" Binding="{Binding LastSuccessAt, Converter={StaticResource PasswordLastUsed}}" Width="124">
+                  <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource TableText}"><Setter Property="ToolTip" Value="{Binding LastSuccessAt, Converter={StaticResource PasswordLastUsed}, ConverterParameter=Full}"/></Style></DataGridTextColumn.ElementStyle>
+                  <DataGridTextColumn.HeaderStyle><Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="ToolTip" Value="{loc:Text Vault.LastSuccessHint}"/></Style></DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
               </DataGrid.Columns>
             </DataGrid>
             <TextBlock Text="{Binding PasswordEmptyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" TextWrapping="Wrap" Margin="16">
