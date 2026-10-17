@@ -30,6 +30,19 @@ internal static class Capture
                 motionEnabled = window.MotionEnabled, sha256 = Hash(Path.Combine(output, file)) });
         }
         Rect Bounds(FrameworkElement element) => element.TransformToAncestor(window.Client).TransformBounds(new Rect(element.RenderSize));
+        BitmapSource TaskFrame()
+        {
+            // Child visuals retain their layout offset. Crop the actual client render instead
+            // of rendering that child into an origin-sized target (which produces empty frames).
+            var bounds = Bounds(window.TaskCard);
+            return new CroppedBitmap(Render(window.Client), new Int32Rect((int)Math.Round(bounds.X), (int)Math.Round(bounds.Y), (int)Math.Round(bounds.Width), (int)Math.Round(bounds.Height)));
+        }
+        bool HasVisibleSurface(BitmapSource bitmap)
+        {
+            var converted = new FormatConvertedBitmap(bitmap, PixelFormats.Bgra32, null, 0); var pixel = new byte[4];
+            converted.CopyPixels(new Int32Rect(12, 12, 1, 1), pixel, 4, 0);
+            return pixel[0] + pixel[1] + pixel[2] > 300;
+        }
         try
         {
             window.IsHitTestVisible = false; window.MinWidth = 1120; window.Width = 1120; window.Height = 760;
@@ -63,15 +76,21 @@ internal static class Capture
             {
                 await Layout(100); motionValues.Add(window.Progress.DisplayedValue);
                 var metadata = new BitmapMetadata("gif"); metadata.SetQuery("/grctlext/Delay", (ushort)10); metadata.SetQuery("/grctlext/Disposal", (byte)2);
-                frames.Add(BitmapFrame.Create(Render(window.TaskCard), null, metadata, null));
+                frames.Add(BitmapFrame.Create(TaskFrame(), null, metadata, null));
             }
             await demo; await Layout(320); motionValues.Add(window.Progress.DisplayedValue);
-            frames.Add(BitmapFrame.Create(Render(window.TaskCard), null, new BitmapMetadata("gif"), null));
+            frames.Add(BitmapFrame.Create(TaskFrame(), null, new BitmapMetadata("gif"), null));
             Check("sample extraction finishes only after matching actual bytes", window.ProcessedBytes == window.TotalBytes && window.TaskTitle.Text == "演示完成");
             Check("recorded progress advances monotonically", motionValues.Zip(motionValues.Skip(1), (a, b) => b >= a - .01).All(value => value));
             Check("actual animation includes multiple intermediate visual positions", motionValues.Select(value => Math.Round(value)).Distinct().Count() >= 8 && frames.Count >= 10);
+            Check("captured animation frames contain the visible task surface", frames.All(frame => HasVisibleSurface(frame)));
             var gif = new GifBitmapEncoder(); foreach (var frame in frames) gif.Frames.Add(frame);
             using (var stream = File.Create(Path.Combine(output, "05-progress-motion.gif"))) gif.Save(stream);
+            using (var stream = File.OpenRead(Path.Combine(output, "05-progress-motion.gif")))
+            {
+                var decoded = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                Check("encoded GIF preserves visible first and last frames", decoded.Frames.Count == frames.Count && HasVisibleSurface(decoded.Frames[0]) && HasVisibleSurface(decoded.Frames[^1]));
+            }
             Screenshot("06-option2-completed.png");
             window.ApplyMotion(false, true); window.SetPose(62, "正在解压"); ((App)Application.Current).ApplyTheme(false, true); await Layout();
             Check("contrast resources preserve system selection pair", ((SolidColorBrush)Application.Current.Resources["Selected"]).Color == SystemColors.HighlightColor && ((SolidColorBrush)Application.Current.Resources["SelectedText"]).Color == SystemColors.HighlightTextColor);
