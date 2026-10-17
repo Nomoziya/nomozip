@@ -362,7 +362,7 @@
                             </Grid.ColumnDefinitions>
                             <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M8,13 L8,21 M12,13 L12,21" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
-                              <TextBlock Text="{Binding Name}" Style="{StaticResource ListItemTitle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
+                              <TextBlock Text="{Binding Name}" Style="{StaticResource BodyText}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                               <TextBlock Text="{Binding OperationLabel}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0" ToolTip="{Binding SizeText}"/>
                             </StackPanel>
                           </Grid>

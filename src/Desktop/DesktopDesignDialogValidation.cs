@@ -127,8 +127,8 @@ internal static class DesktopDesignDialogValidation
         Show(new ResultDirectoriesDialog([supplemental],_=>throw new InvalidOperationException("This capture does not open folders.")),"result-directories");
         var incoming=new SavedPassword(Guid.NewGuid(),"Synthetic import","synthetic-import-secret","",true,DateTimeOffset.UtcNow);
         Show(new VaultImportDialog([], [incoming]),"vault-import-preview");
-        var names=new FilenameEncodingViewModel(Path.Combine(supplemental,"synthetic.zip"),0,(_,_)=>Task.FromResult(new EngineResult {Status="ok",Format="zip",Items=[new ArchiveEntry(0,"说明.txt",32,false,false)]}));
-        Show(new FilenameEncodingDialog(names),"filename-encoding");
+        var names=new FilenameEncodingViewModel(Path.Combine(supplemental,"synthetic.zip"),0,(_,_)=>Task.FromResult(new EngineResult {Status="success",Format="zip",Items=[new ArchiveEntry(0,"说明.txt",32,false,false)]}));
+        Show(new FilenameEncodingDialog(names),"filename-encoding",()=>check("supplemental encoding capture uses a ready preview",names.CanApply && names.Names.Count==1));
         var conversionClient=new ArchiveEngineClient(Path.Combine(AppContext.BaseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(AppContext.BaseDirectory,"engines","26.04","7z.dll"));
         var conversionService=new ArchiveConversionService(conversionClient,conversionClient,new PasswordCandidateProvider(new DpapiPasswordVault(Path.Combine(supplemental,"vault.apv"))));
         var conversion=new ArchiveConversionViewModel(Path.Combine(supplemental,"synthetic.zip"),conversionService,false,_=>Task.FromResult<PasswordPromptResponse?>(null),_=>false);

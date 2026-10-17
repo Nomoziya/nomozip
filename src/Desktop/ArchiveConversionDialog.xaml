@@ -1,4 +1,5 @@
 <Window x:Class="ArchivePassword.Desktop.ArchiveConversionDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="clr-namespace:ArchivePassword.Desktop" Style="{StaticResource AppWindow}" Title="{loc:Text Conversion.Title}" Width="700" Height="660" MinWidth="540" MinHeight="420" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+  <Border Background="{DynamicResource CanvasBrush}">
   <Grid Margin="16" Background="{DynamicResource CanvasBrush}" KeyboardNavigation.TabNavigation="Cycle">
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <StackPanel Margin="0,0,0,12"><TextBlock Text="{loc:Text Conversion.Title}" Style="{StaticResource PageTitle}"/><TextBlock Text="{loc:Text Conversion.Subtitle}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,6,0,0"/></StackPanel>
@@ -21,4 +22,5 @@
     <StackPanel Grid.Row="2" Margin="0,10,0,10"><ProgressBar Height="4" IsIndeterminate="{Binding IsWorking}"/><TextBlock x:Name="StatusText" Text="{Binding Message}" TextWrapping="Wrap" Margin="0,6,0,0" AutomationProperties.LiveSetting="Polite"/></StackPanel>
     <WrapPanel Grid.Row="3" HorizontalAlignment="Right"><Button x:Name="StartButton" Content="{loc:Text Conversion.Start}" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding CanEdit}" Click="OnStart" Margin="0,0,8,0" MinHeight="40"/><Button x:Name="CancelButton" MinHeight="40" Content="{loc:Text Conversion.Cancel}" IsEnabled="{Binding IsWorking}" Click="OnCancel" Margin="0,0,8,0"/><Button x:Name="CloseButton" Content="{loc:Text Conversion.Close}" IsCancel="True" Click="OnClose" MinHeight="40"/></WrapPanel>
   </Grid>
+  </Border>
 </Window>
