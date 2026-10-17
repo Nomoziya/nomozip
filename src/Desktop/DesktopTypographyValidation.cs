@@ -13,8 +13,8 @@ internal static class DesktopTypographyValidation
     private static readonly List<string> buttonIssues=[];
     private static readonly List<string> roleIssues=[];
     private static readonly (string Key,double Size,int Weight)[] roles=
-    [ ("PageTitle",22,600),("SectionTitle",16,600),("Heading",16,600),
-      ("Caption",12,400),("Secondary",13,400),("BodyText",14,400) ];
+    [ ("WorkspacePageTitle",26,700),("WorkspaceSectionTitle",18,600),("PageTitle",22,600),("SectionTitle",16,600),("Heading",16,600),
+      ("Caption",13,400),("Secondary",13,400),("BodyText",15,400) ];
 
     internal static void Record(Window window,string path)
     {
@@ -39,7 +39,7 @@ internal static class DesktopTypographyValidation
             if(element is Button button)
             {
                 var icon=button.Content is string glyph && glyph.Length>0 && glyph.All(value=>value is '•' or '…');
-                if(!icon && (Math.Abs(size-14)>.1 || weight!=FontWeights.Normal || family.Source!="Segoe UI, Microsoft YaHei"))
+                if(!icon && (Math.Abs(size-15)>.1 || weight!=FontWeights.Normal || family.Source!="Microsoft YaHei UI, Segoe UI, Microsoft YaHei, Global User Interface"))
                     buttonIssues.Add($"{Path.GetFileName(path)}:{element.Name}:{size}/{weight}/{family.Source}");
             }
             entries.Add(new {kind=element.GetType().Name,name=element.Name,role,fontSize=size,fontWeight=weight.ToOpenTypeWeight(),fontFamily=family.Source,

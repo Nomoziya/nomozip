@@ -36,23 +36,26 @@ public partial class MainWindow : Window
         void ArrangePanels()
         {
             var narrow = ActualWidth < 1000;
-            var compact = ActualWidth < 960;
-            if(ActualWidth<1040) ClosePreview();
-            BrandMark.Width = BrandMark.Height = compact ? 18 : 24;
-            BrandMark.Margin = new Thickness(0, 0, compact ? 4 : 8, 0);
-            SidebarColumn.Width = new GridLength(compact ? 72 : Math.Clamp(ActualWidth*.163,168,208));
+            var compact = ActualWidth < 1050;
+            System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(ReferenceCompactMenu, true);
+            ReferenceSidebar.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            ReferenceCompactMenu.Visibility = compact ? Visibility.Visible : Visibility.Collapsed;
+            if (ArchivePreviewPane.Visibility == Visibility.Visible) PreviewColumn.Width = new GridLength(compact ? 300 : 350);
+            BrandMark.Width = BrandMark.Height = 26;
+            BrandMark.Margin = new Thickness(0, 0, 10, 0);
+            SidebarColumn.Width = new GridLength(compact ? 0 : 186);
             foreach (var text in ((StackPanel)BrandMark.Parent).Children.OfType<TextBlock>()) text.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             SidebarPrivacyNote.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             SettingsNavigationText.Visibility=compact?Visibility.Collapsed:Visibility.Visible;
             System.Windows.Automation.AutomationProperties.SetName(SettingsNavigation,UiText.Get("T_df3d58c7d84b"));
             SettingsNavigation.ToolTip=UiText.Get("T_df3d58c7d84b");
-            VaultDetailsColumn.Width=new GridLength(narrow?0:320);
-            VaultDetails.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
-            SettingsCategoriesColumn.Width=new GridLength(narrow?0:192);
-            SettingsCategoryList.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
-            SettingsCategory.Visibility=narrow?Visibility.Visible:Visibility.Collapsed;
+            VaultDetailsColumn.Width=new GridLength(360);
+            VaultDetails.Visibility=Visibility.Visible;
+            SettingsCategoriesColumn.Width=new GridLength(180);
+            SettingsCategoryList.Visibility=Visibility.Visible;
+            SettingsCategory.Visibility=Visibility.Collapsed;
             Navigation.Tag = compact;
-            SidebarContent.Margin = compact ? new Thickness(0, 12, 0, 12) : new Thickness(0, 20, 0, 8);
+            SidebarContent.Margin = new Thickness(0, 17, 0, 8);
             ApplyWorkspaceMargin();
             TaskOutputColumn.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
             TaskActionsColumn.Width = UiText.LanguageCode=="en"?196:172;

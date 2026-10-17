@@ -133,13 +133,13 @@ public partial class MainWindow
 
     internal bool HostPreview(ArchivePreviewDialog dialog, ArchivePreviewViewModel model)
     {
-        if (embeddedArchive is null || ActualWidth < 1040) return false;
+        if (embeddedArchive is null) return false;
         ClosePreview(); embeddedPreview = dialog; previewModel = model;
         if(model.Picture is not null && embeddedModel?.Rows.FirstOrDefault(row=>row.Path==model.EntryPath) is {} previewRow)previewRow.PreviewThumbnail=model.Picture;
         var content = (FrameworkElement)dialog.Content; dialog.Content = null; content.DataContext = model;
-        DisableDialogDefaults(content);
+        DisableDialogDefaults(content); content.Margin = new Thickness(0);
         dialog.EmbeddedClose = ClosePreview; PreviewHost.Content = content;
-        ArchivePreviewPane.Visibility = Visibility.Visible; PreviewColumn.Width = new GridLength(ArchivePassword.Core.UiText.LanguageCode=="en"?260:Math.Min(360, Math.Max(260, ActualWidth * .28)));
+        ArchivePreviewPane.Visibility = Visibility.Visible; PreviewColumn.Width = new GridLength(ActualWidth < 1050 ? 300 : 350);
         dialog.ClosePreviewButton.Focus();
         return true;
     }

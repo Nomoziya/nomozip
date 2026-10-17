@@ -195,7 +195,7 @@ public sealed partial class MainViewModel : ObservableObject
     private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch)
     {
         if (batch.Any(task=>task.Checkpoint is null) && directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = UiText.Get("T_36711b07451f"); return; }
-        IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
+        IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(IsQueuePaused));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
         using var prompts=new SemaphoreSlim(1,1);
         var openResults=new List<string>();
         string Destination(ArchiveTaskRow task)=>task.Checkpoint?.Destination ?? task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
@@ -264,7 +264,7 @@ public sealed partial class MainViewModel : ObservableObject
             var shouldOpen=directoryRules.OpenAfterSuccess && batchSucceeded;
             try {RefreshCheckpointRows();}
             catch(Exception error) when(error is IOException or UnauthorizedAccessException) {Banner=UiText.Get("Checkpoint.ScanFailed");}
-            CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
+            CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(IsQueuePaused));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
             try {if(batchSucceeded) NotifyCompletedBatch(batch.Count);if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray());}
             finally {idle.TrySetResult();}
         }

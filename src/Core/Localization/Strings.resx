@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?><root>
+<?xml version="1.0" ?><root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -3259,4 +3259,5 @@
   <data name="Preview.OpenHint" xml:space="preserve"><value>在默认图片应用中打开临时副本；退出 nomozip 时尝试清理。</value></data>
   <data name="Preview.Opened" xml:space="preserve"><value>已打开图片副本</value></data>
   <data name="Preview.OpenFailed" xml:space="preserve"><value>无法打开图片；请检查默认图片应用。</value></data>
+  <data name="Reference.Navigation" xml:space="preserve"><value>菜单</value></data>
 </root>

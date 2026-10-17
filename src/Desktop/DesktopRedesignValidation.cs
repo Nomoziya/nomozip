@@ -62,15 +62,15 @@ internal static class DesktopRedesignValidation
                 model.SelectedAppearance=model.AppearanceOptions.Single(option=>option.Code==(mode=="contrast"?"system":mode));
                 if(mode!="contrast")foreach(var pair in new[]{("TextBrush","SurfaceBrush",4.5),("SecondaryBrush","SurfaceBrush",4.5),("OnAccentBrush","AccentBrush",4.5),("SelectionTextBrush","SelectionBrush",4.5),("ErrorBrush","SurfaceBrush",4.5),("WarningTextBrush","WarningSurfaceBrush",4.5),("BorderBrush","SurfaceBrush",3.0),("FocusBrush","SurfaceBrush",3.0)})
                     Check(mode+" contrast "+pair.Item1+" on "+pair.Item2,DesktopThemeValidation.Contrast(((SolidColorBrush)Application.Current.Resources[pair.Item1]).Color,((SolidColorBrush)Application.Current.Resources[pair.Item2]).Color)>=pair.Item3);
-                foreach(var width in new[]{800,1040})
+                foreach(var width in new[]{800,1152})
                 {
-                    window.Width=width;window.Height=width==800?600:720;
+                    window.MinWidth=width;window.Width=width;window.Height=width==800?600:768;
                     foreach(var page in new[]{4,0,1,3,5,2})
                     {
                         model.Page=page;model.SettingsSection=0;await Layout();
                         viewports.Add(new {mode,page,requestedWidth=width,actualWindowWidth=window.ActualWidth,actualWindowHeight=window.ActualHeight,clientWidth=((FrameworkElement)window.Content).ActualWidth,clientHeight=((FrameworkElement)window.Content).ActualHeight});
                         Check($"{mode}/{width}/{page} main workspace remains inside window",Bounds(window.MainContent).Right<=window.ActualWidth+1 && window.MainContent.ActualWidth>400);
-                        Check($"{mode}/{width}/{page} navigation remains reachable",window.SettingsNavigation.IsVisible && Bounds(window.SettingsNavigation).Bottom<=window.ActualHeight+1);
+                        Check($"{mode}/{width}/{page} navigation remains reachable",width==800 ? window.ReferenceCompactMenu.IsVisible && window.ReferenceCompactMenu.ContextMenu.Items.Count==5 : window.SettingsNavigation.IsVisible && Bounds(window.SettingsNavigation).Bottom<=window.ActualHeight+1);
                         if(page==0)
                         {
                             Check($"{mode}/{width} each source task appears exactly once",window.ArchiveTasks.Items.Count==model.Tasks.Count && model.TaskView.Cast<ArchiveTaskRow>().Distinct().Count()==model.Tasks.Count);
@@ -94,7 +94,7 @@ internal static class DesktopRedesignValidation
                             Check($"{mode}/{width} compression supports enabled 7z level and encryption",window.CompressionPage.LevelBox.IsEnabled && window.CompressionPage.EncryptBox.IsEnabled);
                         }
                         Capture($"{mode}-{width}-page-{page}");
-                        if(width==1040 && page==0 && mode is "light" or "dark" or "soft")
+                        if(width==1152 && page==0 && mode is "light" or "dark" or "soft")
                             nativeWindows.Add(await DesktopNativeWindowCapture.CaptureAsync(window,Path.Combine(folder,$"{mode}-{width}-page-{page}-window.png")));
                     }
                     model.Page=2;
@@ -114,7 +114,7 @@ internal static class DesktopRedesignValidation
                     Check("soft contrast uses graphite warm text and muted focus",((SolidColorBrush)Application.Current.Resources["CanvasBrush"]).Color==Color.FromRgb(0x25,0x28,0x2b) && ((SolidColorBrush)Application.Current.Resources["TextBrush"]).Color==Color.FromRgb(0xe5,0xe2,0xda) && ((SolidColorBrush)Application.Current.Resources["FocusBrush"]).Color==Color.FromRgb(0xc5,0xb9,0x8b));
                     theme.Apply(true);Check("system high contrast takes priority over soft palette",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush));theme.Apply(false);
                     var preference=Path.Combine(folder,"synthetic","soft-appearance");await AppearancePreferenceStore.SaveAsync(preference,"soft");Check("soft appearance preference survives save and reload",AppearancePreferenceStore.Read(preference).Mode=="soft");
-                    window.Width=1040;window.Height=720;model.Page=0;await Layout();
+                    window.MinWidth=1152;window.Width=1152;window.Height=768;model.Page=0;await Layout();
                     window.Opacity=1;window.Activate();window.ArchiveTasks.ScrollIntoView(model.Tasks[0]);await Layout();
                     var row=(DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.Tasks[0]);
                     var cell=VisualDescendants(row).OfType<DataGridCell>().First();
@@ -125,7 +125,7 @@ internal static class DesktopRedesignValidation
                     Capture("soft-task-keyboard-focus");
                 }
             }
-            theme.SetMode("light");theme.Apply(false);window.Width=1040;window.Height=720;
+            theme.SetMode("light");theme.Apply(false);window.MinWidth=1152;window.Width=1152;window.Height=768;
             model.Page=2;model.SettingsSection=4;await Layout();
             Check("update cards keep checks visible and secondary actions folded",window.CheckApplicationUpdatesButton.IsVisible && window.CheckEngineUpdatesButton.IsVisible && !window.ApplicationUpdateActions.IsExpanded && !window.EngineUpdateManagement.IsExpanded);
             window.ApplicationUpdateActions.IsExpanded=true;await Layout();
@@ -291,14 +291,16 @@ internal static class DesktopRedesignValidation
             var previewStatus=VisualDescendants((DependencyObject)window.PreviewHost.Content).OfType<TextBlock>().Single(text=>text.Name=="PreviewNotice");
             Check("unavailable image association keeps the image and bounds its error text",imagePreview.IsImage && Equals(previewStatus.Foreground,Application.Current.Resources["ErrorBrush"]) && Bounds(previewStatus).Right<=Bounds(window.ArchivePreviewPane).Right && Bounds(previewStatus).Bottom<=Bounds(window.ArchivePreviewPane).Bottom);Capture("actual-preview-open-error");
             contents.Search="metadata";await Layout();
-            window.Width=800;window.Height=600;await Layout();
-            Check("opened image copy survives preview close until application cleanup",File.Exists(launchedImage!.FileName) && !imagePreview.OpenImageCommand.CanExecute(null));openedImages.Dispose();
+            window.MinWidth=800;window.Width=800;window.Height=600;await Layout();
+            Check("minimum window retains the requested image preview",imagePreview.Picture is not null && window.ArchivePreviewPane.IsVisible && Math.Abs(window.PreviewColumn.Width.Value-300)<1);
+            var closePreviewAtMinimum=VisualDescendants((DependencyObject)window.PreviewHost.Content).OfType<Button>().Single(value=>value.Name=="ClosePreviewButton");closePreviewAtMinimum.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));await Layout();
+            Check("opened image copy survives explicit preview close until application cleanup",File.Exists(launchedImage!.FileName) && !imagePreview.OpenImageCommand.CanExecute(null));openedImages.Dispose();
             Check("application image cleanup removes the opened temporary copy",!Directory.Exists(openedRoot));
-            Check("compact archive resize clears decoded preview",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
+            Check("explicit preview close clears decoded image",imagePreview.Picture is null && window.PreviewHost.Content is null && !window.ArchivePreviewPane.IsVisible);
             contents.Search="";contents.CurrentRow=contents.Rows.Single(row=>row.Path=="cover.png");await Layout();
             Check("closing preview releases thumbnails hidden by filtering",contents.Rows.All(row=>row.PreviewThumbnail is null));
             Check("compact browser keeps primary columns readable",entryTable.Columns[4].Visibility==Visibility.Collapsed && entryTable.Columns[2].ActualWidth>=90);
-            Capture("actual-compact-browser");window.Width=1040;window.Height=720;await Layout();
+            Capture("actual-compact-browser");window.MinWidth=1152;window.Width=1152;window.Height=768;await Layout();
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;contents.CurrentRow.Selected=false;
             model.Page=0;await Layout();Check("switching away clears decoded preview",preview.Text.Length==0 && imagePreview.Picture is null && window.PreviewHost.Content is null);model.Page=4;
@@ -443,6 +445,7 @@ internal static class DesktopRedesignValidation
             passwordStage=2;passwordSettingsModel.CompressionFormat=1;passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
             DesktopDesignDialogValidation.Run(window,theme,folder,Check);
+            await DesktopReferenceVisualValidation.RunAsync(window,theme,root,folder,Check);
         }
         catch(Exception exception) {error=exception.ToString();}
         finally {window.PrepareExtractionOptionsForValidation=null;}
