@@ -52,7 +52,7 @@ public partial class MainWindow : Window
             SettingsCategoryList.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
             SettingsCategory.Visibility=narrow?Visibility.Visible:Visibility.Collapsed;
             Navigation.Tag = compact;
-            SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(8, 24, 8, 24);
+            SidebarContent.Margin = compact ? new Thickness(8, 12, 8, 12) : new Thickness(8, 16, 8, 8);
             ApplyWorkspaceMargin();
             ExtractionDropHint.Visibility = Visibility.Collapsed;
             TaskOutputColumn.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
