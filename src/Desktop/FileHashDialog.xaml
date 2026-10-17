@@ -242,9 +242,9 @@
             </Grid>
           </Border>
           <Label Content="{loc:Text T_2e9a859d8486}" Target="{Binding ElementName=HashDigestBox}" Padding="0" Margin="0,0,0,8"/>
-          <TextBox x:Name="HashDigestBox" Text="{Binding Selected.Digest,Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="56" FontFamily="Consolas" FontSize="12" AutomationProperties.Name="{loc:Text T_cf5d453b4cbe}" Margin="0,0,0,20"/>
+          <TextBox x:Name="HashDigestBox" Text="{Binding Selected.Digest,Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="76" FontFamily="Consolas, Microsoft YaHei UI" FontSize="14" AutomationProperties.Name="{loc:Text T_cf5d453b4cbe}" Margin="0,0,0,20"/>
           <Label Content="{loc:Text T_80eae77ee4ed}" Target="{Binding ElementName=HashExpectedBox}" Padding="0" Margin="0,0,0,8"/>
-          <TextBox x:Name="HashExpectedBox" Text="{Binding Selected.ExpectedHash,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="52" FontFamily="Consolas" FontSize="12" AutomationProperties.Name="{loc:Text T_422af596a866}" loc:FieldState.HasError="{Binding Selected.HasExpectedError}"/>
+          <TextBox x:Name="HashExpectedBox" Text="{Binding Selected.ExpectedHash,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" TextWrapping="Wrap" VerticalContentAlignment="Top" MinHeight="76" FontFamily="Consolas, Microsoft YaHei UI" FontSize="14" AutomationProperties.Name="{loc:Text T_422af596a866}" loc:FieldState.HasError="{Binding Selected.HasExpectedError}"/>
           <TextBlock x:Name="HashExpectedError" Text="{Binding Selected.ExpectedError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,8,0,0">
             <TextBlock.Style>
               <Style TargetType="TextBlock">
