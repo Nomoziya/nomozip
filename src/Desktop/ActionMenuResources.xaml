@@ -3,6 +3,9 @@
   <!-- Flat command menus share their entire surface, not only the item rows. -->
   <Style x:Key="ActionMenuItem" TargetType="MenuItem">
     <Setter Property="MinHeight" Value="36"/>
+    <Setter Property="FontFamily" Value="{DynamicResource UiFontFamily}"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Normal"/>
     <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">
@@ -45,7 +48,10 @@
   </Style>
   <!-- Right-click rows: same surface, plus a quiet shortcut column. Availability is decided by RowActions.Tidy. -->
   <Style x:Key="ContextActionItem" TargetType="MenuItem">
-    <Setter Property="MinHeight" Value="34"/>
+    <Setter Property="MinHeight" Value="36"/>
+    <Setter Property="FontFamily" Value="{DynamicResource UiFontFamily}"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Normal"/>
     <Setter Property="MinWidth" Value="200"/>
     <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
     <Setter Property="Background" Value="Transparent"/>

@@ -210,6 +210,7 @@ internal static class DesktopAccessibilityValidation
     private static Color ColorOf(Brush brush) => ((SolidColorBrush)brush).Color;
     internal static void Render(Window window, string path, double scale, bool clientOnly = false)
     {
+        DesktopTypographyValidation.Record(window, path);
         // A bordered Window's native frame is not part of its WPF visual. Capture
         // the actual client dimensions to avoid an empty strip beneath the image.
         var content = (FrameworkElement)window.Content;

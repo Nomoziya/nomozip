@@ -28,22 +28,49 @@
       <SolidColorBrush x:Key="ErrorBrush" Color="#C42B1C"/>
       <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF4CE"/>
       <SolidColorBrush x:Key="WarningTextBrush" Color="#795600"/>
+      <FontFamily x:Key="UiFontFamily">Segoe UI, Microsoft YaHei</FontFamily>
+      <Style x:Key="BodyControl" TargetType="Control">
+        <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+      </Style>
+      <Style x:Key="BodyText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+      </Style>
+      <Style x:Key="PageTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+      </Style>
+      <Style x:Key="SectionTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+      </Style>
+      <Style x:Key="ListItemTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
+        <Setter Property="FontWeight" Value="SemiBold"/>
+      </Style>
+      <Style x:Key="Caption" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
+        <Setter Property="FontSize" Value="12"/>
+      </Style>
+      <Style TargetType="ListBox" BasedOn="{StaticResource BodyControl}"/>
+      <Style TargetType="ComboBoxItem" BasedOn="{StaticResource BodyControl}"/>
       <Style x:Key="AppWindow" TargetType="Window">
         <Setter Property="Icon" Value="/ArchivePassword;component/Assets/nomozip.ico"/>
         <Setter Property="local:WindowPlacement.AutoFit" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="FontFamily" Value="Segoe UI, Microsoft YaHei"/>
+        <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource CanvasBrush}"/>
       </Style>
-      <Style x:Key="Secondary" TargetType="TextBlock">
+      <Style x:Key="Secondary" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
         <Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
       </Style>
-      <Style x:Key="Heading" TargetType="TextBlock">
+      <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource SectionTitle}">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Margin" Value="0,0,0,16"/>
@@ -100,13 +127,13 @@
           </DataTrigger>
         </Style.Triggers>
       </Style>
-      <Style x:Key="TableText" TargetType="TextBlock">
+      <Style x:Key="TableText" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="12,0"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
       </Style>
-      <Style TargetType="DataGridColumnHeader">
+      <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource BodyControl}">
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}"/>
@@ -116,7 +143,7 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
       </Style>
-      <Style TargetType="Button">
+      <Style TargetType="Button" BasedOn="{StaticResource BodyControl}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="Padding" Value="16,8"/>
@@ -190,7 +217,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="TextBox">
+      <Style TargetType="TextBox" BasedOn="{StaticResource BodyControl}">
         <Setter Property="CaretBrush" Value="{DynamicResource TextBrush}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="SelectionTextBrush" Value="{DynamicResource OnAccentBrush}"/>
@@ -230,7 +257,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="PasswordBox">
+      <Style TargetType="PasswordBox" BasedOn="{StaticResource BodyControl}">
         <Setter Property="CaretBrush" Value="{DynamicResource TextBrush}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="SelectionTextBrush" Value="{DynamicResource OnAccentBrush}"/>
@@ -316,7 +343,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="ComboBox">
+      <Style TargetType="ComboBox" BasedOn="{StaticResource BodyControl}">
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="Padding" Value="8,6"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
@@ -396,7 +423,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="CheckBox">
+      <Style TargetType="CheckBox" BasedOn="{StaticResource BodyControl}">
         <Setter Property="ContentTemplate">
           <Setter.Value>
             <DataTemplate>
@@ -445,7 +472,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="Label">
+      <Style TargetType="Label" BasedOn="{StaticResource BodyControl}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
       </Style>
       <Style TargetType="ToolTip">
@@ -589,7 +616,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="DataGrid">
+      <Style TargetType="DataGrid" BasedOn="{StaticResource BodyControl}">
         <Setter Property="AutoGenerateColumns" Value="False"/>
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="IsReadOnly" Value="True"/>
@@ -603,7 +630,7 @@
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="SelectionMode" Value="Single"/>
       </Style>
-      <Style x:Key="PillTabs" TargetType="ListBox">
+      <Style x:Key="PillTabs" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>

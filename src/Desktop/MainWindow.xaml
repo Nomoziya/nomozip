@@ -202,7 +202,7 @@
           <StackPanel Margin="0">
             <StackPanel Orientation="Horizontal" Margin="0">
               <Path Data="M2,3 L5,3 M10,3 L28,3 M2,12 L5,12 M10,12 L28,12 M2,21 L5,21 M10,21 L28,21" Width="22" Height="22" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,12,0" VerticalAlignment="Center"/>
-              <TextBlock Text="{loc:Text Redesign.Tasks}" FontSize="22" FontWeight="SemiBold" Margin="0"/>
+              <TextBlock Text="{loc:Text Redesign.Tasks}" Margin="0" Style="{StaticResource PageTitle}"/>
             </StackPanel>
             <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}" Visibility="Collapsed"/>
           </StackPanel>
@@ -362,7 +362,7 @@
                             </Grid.ColumnDefinitions>
                             <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M8,13 L8,21 M12,13 L12,21" Width="21" Height="26" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" StrokeThickness="1.4" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center" Margin="6,6,0,6" Grid.Column="1">
-                              <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" FontSize="15"/>
+                              <TextBlock Text="{Binding Name}" Style="{StaticResource ListItemTitle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/>
                               <TextBlock Text="{Binding OperationLabel}" Style="{StaticResource GridSecondary}" Margin="0,4,0,0" ToolTip="{Binding SizeText}"/>
                             </StackPanel>
                           </Grid>
@@ -484,7 +484,7 @@
                     </Grid.ColumnDefinitions>
                     <Path Data="M3,1 L22,1 L34,13 L34,43 L3,43 Z M22,1 L22,13 L34,13 M12,23 L12,35 M20,23 L20,35" Width="34" Height="44" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,4,0,0"/>
                     <StackPanel Margin="52,0,20,0" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding SelectedTask.Name}" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Text="{Binding SelectedTask.Name}" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
                       <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
                       <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
                       <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
@@ -672,7 +672,7 @@
                 </Button.Style>
               </Button>
             </WrapPanel>
-            <TextBlock Text="{loc:Text T_9b54fb7636af}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            <TextBlock Text="{loc:Text T_9b54fb7636af}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
           </DockPanel>
         </Grid>
         <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,16" Margin="0" Grid.ColumnSpan="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
@@ -739,7 +739,7 @@
                     <DataTemplate>
                       <StackPanel VerticalAlignment="Center" Margin="12,0">
                         <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-                        <TextBlock Text="{Binding Converter={StaticResource PasswordMetadata}}" FontSize="12" TextTrimming="CharacterEllipsis" ToolTip="{Binding Converter={StaticResource PasswordMetadata}}" TextWrapping="NoWrap">
+                        <TextBlock Text="{Binding Converter={StaticResource PasswordMetadata}}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Converter={StaticResource PasswordMetadata}}" TextWrapping="NoWrap">
                           <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource GridSecondary}">
                               <Style.Triggers>
@@ -828,7 +828,7 @@
         <Border Grid.ColumnSpan="2" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
         <DockPanel Margin="24,24,24,20">
           <ComboBox x:Name="SettingsCategory" SelectedIndex="{Binding SettingsSection}" ItemsSource="{Binding SettingsCategories}" Width="260" HorizontalAlignment="Left" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.SettingsCategory}" DockPanel.Dock="Right"/>
-          <TextBlock Text="{loc:Text T_df3d58c7d84b}" FontSize="22" FontWeight="SemiBold" Margin="0"/>
+          <TextBlock Text="{loc:Text T_df3d58c7d84b}" Margin="0" Style="{StaticResource PageTitle}"/>
         </DockPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
@@ -898,9 +898,9 @@
         </Border>
         <ScrollViewer x:Name="PreferencesScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
           <StackPanel x:Name="PreferencesCards" MaxWidth="920" HorizontalAlignment="Stretch" Margin="24,0,24,12">
-            <TextBlock Text="{loc:Text Appearance.Title}" FontSize="16" FontWeight="SemiBold" Margin="0,24,0,8">
+            <TextBlock Text="{loc:Text Appearance.Title}" Margin="0,24,0,8">
               <TextBlock.Style>
-                <Style TargetType="TextBlock">
+                <Style TargetType="TextBlock" BasedOn="{StaticResource SectionTitle}">
                   <Setter Property="Visibility" Value="Collapsed"/>
                   <Style.Triggers>
                     <DataTrigger Binding="{Binding SettingsSection}" Value="0">
@@ -930,7 +930,7 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{loc:Text Appearance.Label}" Style="{StaticResource Heading}" Margin="0,0,16,0" VerticalAlignment="Center" FontSize="14" FontWeight="Normal"/>
+                <TextBlock Text="{loc:Text Appearance.Label}" Style="{StaticResource BodyText}" Margin="0,0,16,0" VerticalAlignment="Center"/>
                 <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock Text="{loc:Text Appearance.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,0"/>
                   <TextBlock x:Name="AppearanceStatus" Text="{Binding AppearanceMessage}" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite">
@@ -969,7 +969,7 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{loc:Text Language.Title}" Style="{StaticResource Heading}" Margin="0,0,16,0" VerticalAlignment="Center" FontSize="14" FontWeight="Normal"/>
+                <TextBlock Text="{loc:Text Language.Title}" Style="{StaticResource BodyText}" Margin="0,0,16,0" VerticalAlignment="Center"/>
                 <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock x:Name="LanguageStatus" Text="{Binding LanguageMessage}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
                 </StackPanel>
@@ -1416,7 +1416,7 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Margin="24,24,24,12" x:Name="FilesLandingHeader">
-          <TextBlock Text="{loc:Text Redesign.Files}" FontSize="22" FontWeight="SemiBold"/>
+          <TextBlock Text="{loc:Text Redesign.Files}" Style="{StaticResource PageTitle}"/>
           <Button x:Name="CloseArchiveButton" DockPanel.Dock="Right" Content="{loc:Text Redesign.CloseArchive}" Click="OnCloseArchive" Visibility="Collapsed"/>
         </DockPanel>
         <WrapPanel Grid.Row="1" Margin="24,0,24,12" x:Name="FilesLandingActions">
@@ -1442,7 +1442,7 @@
             <Grid>
               <StackPanel x:Name="FilesEmptyState" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480" Margin="24">
                 <Path Data="M5,1 L30,1 L44,15 L44,53 L5,53 Z M30,1 L30,15 L44,15 M18,8 L23,8 M18,14 L23,14 M18,20 L23,20 M18,26 L23,26 M25,38 A5,5 0 1 1 15,38 A5,5 0 1 1 25,38" Width="48" Height="56" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" Margin="0,0,0,24"/>
-                <TextBlock Text="{loc:Text Redesign.EmptyTitle}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap"/>
+                <TextBlock Text="{loc:Text Redesign.EmptyTitle}" Style="{StaticResource SectionTitle}" TextAlignment="Center" TextWrapping="Wrap"/>
                 <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,0">
                   <Button Click="OnOpenArchive" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" IsEnabled="{Binding IsIdle}" Margin="0,0,12,0" AutomationProperties.Name="{loc:Text Redesign.OpenArchive}">
                     <StackPanel Orientation="Horizontal">
