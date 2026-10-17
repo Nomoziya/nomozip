@@ -198,6 +198,12 @@ internal static class DesktopRedesignValidation
             Check("opening preview preserves file size type and encryption columns",entryTable.Columns.Skip(2).All(column=>column.Visibility==Visibility.Visible) && entryTable.Columns[1].ActualWidth>=170);
             var actualPreviewImage=VisualDescendants((DependencyObject)window.PreviewHost.Content).OfType<Image>().Single(value=>value.Name=="PreviewImage");
             Check("image preview uses its true aspect ratio without vertical letterboxing",Math.Abs(actualPreviewImage.ActualHeight-actualPreviewImage.ActualWidth*300/480)<2);
+            var detailText=VisualDescendants(entryTable).OfType<TextBlock>().Where(text=>text.DataContext is ArchiveContentRow row && (text.Text==row.Kind || text.Text==row.EncryptionText)).ToArray();
+            Check("visible file detail text fits beside the preview",detailText.All(text=>
+            {
+                var formatted=new FormattedText(text.Text,System.Globalization.CultureInfo.CurrentUICulture,text.FlowDirection,new Typeface(text.FontFamily,text.FontStyle,text.FontWeight,text.FontStretch),text.FontSize,Brushes.Black,VisualTreeHelper.GetDpi(text).PixelsPerDip);
+                return formatted.WidthIncludingTrailingWhitespace<=text.ActualWidth+.5;
+            }));
             nativeWindows.Add(await DesktopNativeWindowCapture.CaptureAsync(window,Path.Combine(folder,"actual-embedded-browser-image-preview-light-window.png")));
             Check("footer spans beneath the visible preview pane",window.ArchivePreviewPane.IsVisible && Bounds(window.ArchiveFooterHost).Top>=Bounds(window.ArchivePreviewPane).Bottom-1);
             var footerTasks=VisualDescendants((DependencyObject)window.ArchiveFooterHost.Content).OfType<Button>().Single(value=>value.Name=="BrowserTasksAction");
