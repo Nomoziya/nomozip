@@ -64,9 +64,10 @@ internal sealed class ThemeResources
         resources["WarningSurfaceBrush"] = SystemColors.WindowBrush;
         resources["WarningTextBrush"] = SystemColors.WindowTextBrush;
         }
+        resources["NavigationSelectionBrush"]=highContrast?SystemColors.HighlightBrush:IsDark?resources["SelectionBrush"]:new LinearGradientBrush((Color)ColorConverter.ConvertFromString("#E0EDFC"),(Color)ColorConverter.ConvertFromString("#D4E4F6"),0);
         resources["ChromeBrush"]=highContrast?SystemColors.WindowBrush:new LinearGradientBrush(
-            (Color)ColorConverter.ConvertFromString(Mode=="soft"?"#2A2E31":IsDark?"#252525":"#E9EEF5"),
-            (Color)ColorConverter.ConvertFromString(Mode=="soft"?"#25282B":IsDark?"#202020":"#F3F5F8"),90);
+            (Color)ColorConverter.ConvertFromString(Mode=="soft"?"#2A2E31":IsDark?"#252525":"#EAF0F7"),
+            (Color)ColorConverter.ConvertFromString(Mode=="soft"?"#25282B":IsDark?"#202020":"#F6F8FB"),90);
         // Native templates use these WPF system-resource keys. These are application
         // resources only; Windows settings and other applications are never changed.
         foreach (var key in new[] { SystemColors.WindowBrushKey, SystemColors.ControlBrushKey, SystemColors.InfoBrushKey }) resources[key] = resources["SurfaceBrush"];

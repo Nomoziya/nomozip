@@ -6,24 +6,25 @@
         <ResourceDictionary Source="ActionMenuResources.xaml"/>
       </ResourceDictionary.MergedDictionaries>
       <local:HalfHeightCornerRadiusConverter x:Key="HalfHeightRadius"/>
-      <SolidColorBrush x:Key="CanvasBrush" Color="#F3F3F3"/>
+      <SolidColorBrush x:Key="CanvasBrush" Color="#F6F8FB"/>
       <LinearGradientBrush x:Key="ChromeBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#E9EEF5" Offset="0"/>
         <GradientStop Color="#F3F5F8" Offset="1"/>
       </LinearGradientBrush>
       <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
-      <SolidColorBrush x:Key="TextBrush" Color="#1B1B1B"/>
-      <SolidColorBrush x:Key="SecondaryBrush" Color="#616161"/>
-      <SolidColorBrush x:Key="AccentBrush" Color="#0F6CBD"/>
+      <SolidColorBrush x:Key="TextBrush" Color="#0F172A"/>
+      <SolidColorBrush x:Key="SecondaryBrush" Color="#475569"/>
+      <SolidColorBrush x:Key="AccentBrush" Color="#0067E6"/>
       <SolidColorBrush x:Key="OnAccentBrush" Color="#FFFFFF"/>
       <SolidColorBrush x:Key="SuccessBrush" Color="#168248"/>
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="#D1D5DB"/>
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="#D8E0EA"/>
       <SolidColorBrush x:Key="BorderBrush" Color="#8491A3"/>
-      <SolidColorBrush x:Key="DividerBrush" Color="#E0E0E0"/>
-      <SolidColorBrush x:Key="SelectionBrush" Color="#E5F1FD"/>
+      <SolidColorBrush x:Key="DividerBrush" Color="#E1E7EF"/>
+      <SolidColorBrush x:Key="NavigationSelectionBrush" Color="#D9E8F9"/>
+      <SolidColorBrush x:Key="SelectionBrush" Color="#E4F0FE"/>
       <SolidColorBrush x:Key="HoverBrush" Color="#F1F5F9"/>
-      <SolidColorBrush x:Key="SelectionTextBrush" Color="#0F6CBD"/>
-      <SolidColorBrush x:Key="FocusBrush" Color="#0F6CBD"/>
+      <SolidColorBrush x:Key="SelectionTextBrush" Color="#0067E6"/>
+      <SolidColorBrush x:Key="FocusBrush" Color="#0067E6"/>
       <SolidColorBrush x:Key="ErrorBrush" Color="#C42B1C"/>
       <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF4CE"/>
       <SolidColorBrush x:Key="WarningTextBrush" Color="#795600"/>
@@ -148,11 +149,18 @@
           </Setter.Value>
         </Setter>
       </Style>
+      <DataTemplate x:Key="MoreActionContent">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Path Data="M2,2 A1.4,1.4 0 1 1 2,4.8 A1.4,1.4 0 1 1 2,2 M8,2 A1.4,1.4 0 1 1 8,4.8 A1.4,1.4 0 1 1 8,2 M14,2 A1.4,1.4 0 1 1 14,4.8 A1.4,1.4 0 1 1 14,2" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="16" Height="4" Stretch="Uniform" Margin="0,0,10,0" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+          <Path Data="M0,0 L4,4 L8,0" Width="8" Height="4" Stretch="Fill" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="8,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+      </DataTemplate>
       <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnAccentBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontWeight" Value="Normal"/>
       </Style>
       <Style x:Key="SubtleButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="Transparent"/>
