@@ -270,7 +270,7 @@ internal static class DesktopRedesignValidation
             window.PrepareExtractionOptionsForValidation=null;
 
             var secondArchive=Path.Combine(data,"second.zip");File.Copy(archive,secondArchive);model.AddFiles([secondArchive]);
-            var thirdArchive=Path.Combine(data,"third.zip");File.Copy(archive,thirdArchive);model.AddFiles([thirdArchive]);var originalRules=model.DirectoryRules;
+            var thirdArchive=Path.GetFullPath(Path.Combine(data,"third.zip"));File.Copy(archive,thirdArchive);model.AddFiles([thirdArchive]);var originalRules=model.DirectoryRules;
             window.PrepareExtractionOptionsForValidation=dialog=>
             {
                 dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;
@@ -279,7 +279,7 @@ internal static class DesktopRedesignValidation
                     model.CreateArchiveFolder=true;dialog.UpdateLayout();
                     foreach(var appearance in new[]{"light","dark"}) {theme.SetMode(appearance);dialog.UpdateLayout();dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(folder,"extraction-batch-"+appearance+".png"),1,clientOnly:true);dialog.Opacity=0;}
                     var previewTexts=VisualDescendants((DependencyObject)window.ExtractionOutputPreview.Content).OfType<TextBlock>().Select(value=>value.Text).ToArray();
-                    Check("batch preview shows rule-based archive destinations",previewTexts.Any(text=>text.Contains(Path.Combine(model.OutputPath,"sample"),StringComparison.Ordinal)) && previewTexts.Any(text=>text.Contains(Path.Combine(model.OutputPath,"third"),StringComparison.Ordinal)));
+                    Check("batch preview shows rule-based archive destinations",previewTexts.Any(text=>text.Contains(Path.GetFullPath(Path.Combine(model.OutputPath,"sample")),StringComparison.Ordinal)) && previewTexts.Any(text=>text.Contains(Path.GetFullPath(Path.Combine(model.OutputPath,"third")),StringComparison.Ordinal)));
                     var batchTable=VisualDescendants((DependencyObject)dialog.Content).OfType<DataGrid>().Single(value=>value.Name=="BatchArchiveTable");
                     var remove=VisualDescendants(batchTable).OfType<Button>().Single(value=>value.Tag as string=="RemoveBatchArchive" && value.DataContext is ArchiveTaskRow row && row.Path==thirdArchive);
                     remove.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));dialog.UpdateLayout();

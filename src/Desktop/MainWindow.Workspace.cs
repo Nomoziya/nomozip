@@ -163,10 +163,10 @@ public partial class MainWindow
         var accepted = false;
         var taskCount=count ?? vm.Tasks.Count(row=>!row.Completed);var batch=taskCount>1;
         var titleKey=batch?"Extraction.BatchTitle":selectedItemCount is not null?"Extraction.SelectedTitle":"Redesign.ExtractionOptions";
-        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get(titleKey), Width = batch?700:640, Height = batch?760:600, MinWidth = 520, MinHeight = 500, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
+        var dialog = new Window { Owner = this, Style = (Style)FindResource("AppWindow"), Title = UiText.Get(titleKey), Width = 560, Height = batch?760:720, MinWidth = 500, MinHeight = 500, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, DataContext = vm };
         var container = new Grid { Margin = new Thickness(24) };
         container.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        var titleRow=new DockPanel {Margin=new Thickness(0,0,0,24)};
+        var titleRow=new DockPanel {Margin=new Thickness(0,0,0,16)};
         var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M18,2 L6,2 Q3,2 3,5 L3,29 Q3,32 6,32 L25,32 Q28,32 28,29 L28,12 L20,12 L20,2 Z M8,7 L15,7 M14,6 L14,24 M8,18 L14,24 L20,18"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
         icon.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
         var heading=new StackPanel();titleRow.Children.Add(heading);
@@ -178,7 +178,9 @@ public partial class MainWindow
         {
             body.Children.Add(ExtractionOptionsVisuals.BatchList(vm,out batchView));
         }
-        ExtractionOutputPreview.Content=ExtractionOptionsVisuals.OutputPreview(vm,batch);
+        var pathPreview=ExtractionOptionsVisuals.OutputPreview(vm,batch);ExtractionOutputPreview.Content=pathPreview.View;
+        var restoreBatchLayout=ConfigureBatchOptions(batch);
+
         SettingsPanel.Visibility = Visibility.Visible; SettingsPanel.DataContext = vm; SettingsPanel.Margin = new Thickness(0); SettingsPanel.Padding = new Thickness(0); SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
         Grid.SetColumn(SettingsPanel,0);Grid.SetRow(SettingsPanel,1);body.Children.Add(SettingsPanel);
         var actions = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0,16,0,0) };
@@ -189,7 +191,24 @@ public partial class MainWindow
         actions.Children.Add(start); actions.Children.Add(cancel);var actionBorder=new Border {BorderThickness=new Thickness(0,1,0,0),Padding=new Thickness(0,4,0,0),Child=actions};actionBorder.SetResourceReference(Border.BorderBrushProperty,"DividerBrush");Grid.SetRow(actionBorder,2);container.Children.Add(actionBorder);
         var surface=new Border {Child=container};surface.SetResourceReference(Border.BackgroundProperty,"SurfaceBrush");dialog.Content=surface;
         try { PrepareExtractionOptionsForValidation?.Invoke(dialog);dialog.ShowDialog(); return accepted; }
-        finally { ExtractionOutputPreview.Content=null;body.Children.Remove(SettingsPanel);Grid.SetColumn(SettingsPanel,2);Grid.SetRow(SettingsPanel,0);SettingsPanel.Visibility = Visibility.Collapsed; SettingsPanel.DataContext = null; vm.PreparingExtraction = false; }
+        finally { restoreBatchLayout();pathPreview.Dispose();ExtractionOutputPreview.Content=null;body.Children.Remove(SettingsPanel);Grid.SetColumn(SettingsPanel,2);Grid.SetRow(SettingsPanel,0);SettingsPanel.Visibility = Visibility.Collapsed; SettingsPanel.DataContext = null; vm.PreparingExtraction = false; }
+    }
+    private Action ConfigureBatchOptions(bool batch)
+    {
+        if(!batch)return ()=>{};
+        var advanced=(StackPanel)ExtractionAdvancedOptions.Content;
+        var header=ExtractionAdvancedOptions.Header;var expanded=ExtractionAdvancedOptions.IsExpanded;var folderLabel=ExtractionFolderChoice.Content;
+        var controls=new FrameworkElement[]{ExtractionConflictPanel,ExtractionAutoTryChoice,ExtractionRuleDescription,ExtractionRulesAction,ExtractionVaultSummary};
+        var positions=controls.Select(control=>(Control:control,Parent:(Panel)control.Parent,Index:((Panel)control.Parent).Children.IndexOf(control))).ToArray();
+        var extraContent=new StackPanel();var extra=new Expander {Header=UiText.Get("Redesign.Advanced"),Content=extraContent,Margin=new Thickness(0,4,0,0)};
+        foreach(var item in positions){item.Parent.Children.Remove(item.Control);extraContent.Children.Add(item.Control);}
+        advanced.Children.Add(extra);ExtractionAdvancedOptions.Header=UiText.Get("Extraction.RulesAndResume");ExtractionAdvancedOptions.IsExpanded=true;ExtractionFolderChoice.Content=UiText.Get("Extraction.BatchFolder");
+        return ()=>
+        {
+            advanced.Children.Remove(extra);
+            foreach(var item in positions.OrderBy(item=>item.Index)) {extraContent.Children.Remove(item.Control);item.Parent.Children.Insert(Math.Min(item.Index,item.Parent.Children.Count),item.Control);}
+            ExtractionAdvancedOptions.Header=header;ExtractionAdvancedOptions.IsExpanded=expanded;ExtractionFolderChoice.Content=folderLabel;
+        };
     }
     internal void OnPrepareExtraction(object sender, RoutedEventArgs e)
     {

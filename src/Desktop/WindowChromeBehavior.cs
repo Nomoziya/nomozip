@@ -19,7 +19,7 @@ internal static class WindowChromeBehavior
         if(value is not Window window || args.NewValue is not true)return;
         window.Language=XmlLanguage.GetLanguage(UiText.LanguageCode);
         SetShowSystemButtons(window,window is MainWindow);
-        WindowChrome.SetWindowChrome(window,new WindowChrome {CaptionHeight=28,ResizeBorderThickness=new Thickness(6),GlassFrameThickness=new Thickness(0),CornerRadius=new CornerRadius(8),UseAeroCaptionButtons=false});
+        WindowChrome.SetWindowChrome(window,new WindowChrome {CaptionHeight=28,ResizeBorderThickness=SystemParameters.WindowResizeBorderThickness,GlassFrameThickness=new Thickness(0),CornerRadius=new CornerRadius(8),UseAeroCaptionButtons=false});
         window.CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand,(_,_)=>SystemCommands.MinimizeWindow(window)));
         window.CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand,(_,_)=>
         {

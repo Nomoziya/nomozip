@@ -17,7 +17,7 @@ internal static class ExtractionOptionsVisuals
         view=new ListCollectionView(model.Tasks) {Filter=value=>!((ArchiveTaskRow)value).Completed};
         var grid=new Grid {Margin=new Thickness(0,0,0,16)};
         grid.RowDefinitions.Add(new RowDefinition());grid.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});
-        var table=new DataGrid {Name="BatchArchiveTable",ItemsSource=view,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=40,Height=Math.Clamp(view.Count*40+2,82,162),HeadersVisibility=DataGridHeadersVisibility.None,CanUserAddRows=false,BorderThickness=new Thickness(0)};
+        var table=new DataGrid {Name="BatchArchiveTable",ItemsSource=view,IsSynchronizedWithCurrentItem=false,AutoGenerateColumns=false,IsReadOnly=true,RowHeight=36,Height=Math.Clamp(view.Count*36+2,74,146),HeadersVisibility=DataGridHeadersVisibility.None,CanUserAddRows=false,BorderThickness=new Thickness(0)};
         System.Windows.Automation.AutomationProperties.SetName(table,UiText.Get("Extraction.BatchTitle"));
         var template=(DataTemplate)XamlReader.Parse("""
           <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
@@ -55,18 +55,18 @@ internal static class ExtractionOptionsVisuals
         var remove=new Button {Content=UiText.Get("T_a194128b2939"),Command=model.RemoveFileCommand};actions.Children.Add(remove);
         remove.SetBinding(UIElement.IsEnabledProperty,new Binding("SelectedItem") {Source=table,Converter=new NonNullBooleanConverter()});
         var current=view;
-        void Update() {count.Text=UiText.Format("Extraction.BatchCount",current.Count);table.Height=Math.Clamp(current.Count*40+2,82,162);}
+        void Update() {count.Text=UiText.Format("Extraction.BatchCount",current.Count);table.Height=Math.Clamp(current.Count*36+2,74,146);}
         ((INotifyCollectionChanged)view).CollectionChanged+=(_,_)=>Update();Update();
         return grid;
     }
 
-    internal static FrameworkElement OutputPreview(MainViewModel model,bool batch)
+    internal static (FrameworkElement View,Action Dispose) OutputPreview(MainViewModel model,bool batch)
     {
-        var content=new StackPanel();content.Children.Add(new TextBlock {Text=UiText.Get("Extraction.PreviewTitle"),Margin=new Thickness(0,0,0,8)});
+        var content=new StackPanel();if(batch)content.Children.Add(new TextBlock {Text=UiText.Get("Extraction.PreviewTitle"),Margin=new Thickness(0,0,0,6),FontSize=13});
         var paths=new StackPanel();content.Children.Add(new ScrollViewer {Content=paths,MaxHeight=100,VerticalScrollBarVisibility=ScrollBarVisibility.Auto,HorizontalScrollBarVisibility=ScrollBarVisibility.Disabled});
         var hint=new TextBlock {Style=(Style)Application.Current.FindResource("Secondary"),Margin=new Thickness(0,6,0,0)};content.Children.Add(hint);
-        var border=new Border {Child=content,Padding=new Thickness(12),CornerRadius=new CornerRadius(4),BorderThickness=new Thickness(1)};
-        border.SetResourceReference(Border.BackgroundProperty,"CanvasBrush");border.SetResourceReference(Border.BorderBrushProperty,"DividerBrush");
+        var border=new Border {Child=content,Padding=new Thickness(batch?10:0),CornerRadius=new CornerRadius(4),BorderThickness=new Thickness(batch?1:0),ToolTip=UiText.Get("Extraction.PreviewEstimated")};
+        border.SetResourceReference(Border.BackgroundProperty,batch?"CanvasBrush":"SurfaceBrush");border.SetResourceReference(Border.BorderBrushProperty,"DividerBrush");
         void Update()
         {
             paths.Children.Clear();var pending=false;var invalid=false;
@@ -83,14 +83,17 @@ internal static class ExtractionOptionsVisuals
                     }
                 }
                 catch(Exception exception) when(exception is ArgumentException or IOException or UnauthorizedAccessException or NotSupportedException) {invalid=true;path=UiText.Get("Settings.InvalidOutput");}
-                var item=new DockPanel {Margin=new Thickness(0,0,0,4)};var icon=new FileKindIcon {Width=16,Height=16,IsDirectory=true,Margin=new Thickness(0,0,8,0)};DockPanel.SetDock(icon,Dock.Left);item.Children.Add(icon);item.Children.Add(new TextBlock {Text=path,ToolTip=path,TextTrimming=TextTrimming.CharacterEllipsis,FontSize=13});paths.Children.Add(item);
+                var item=new DockPanel {Margin=new Thickness(0,0,0,2)};if(batch){var icon=new FileKindIcon {Width=16,Height=16,IsDirectory=true,Margin=new Thickness(0,0,8,0)};DockPanel.SetDock(icon,Dock.Left);item.Children.Add(icon);}item.Children.Add(new TextBlock {Text=batch?path:UiText.Format("Extraction.EstimatedPath",path),ToolTip=path,TextTrimming=TextTrimming.CharacterEllipsis,Style=(Style)Application.Current.FindResource("Secondary")});paths.Children.Add(item);
             }
             hint.Text=UiText.Get(invalid?"Settings.InvalidOutput":pending?"Extraction.PreviewPending":"Extraction.PreviewEstimated");
+            hint.Visibility=invalid || pending?Visibility.Visible:Visibility.Collapsed;
         }
         PropertyChangedEventHandler changed=(_,_)=>Update();NotifyCollectionChangedEventHandler collection=(_,_)=>Update();
-        border.Loaded+=(_,_)=>{model.PropertyChanged+=changed;model.Tasks.CollectionChanged+=collection;Update();};
-        border.Unloaded+=(_,_)=>{model.PropertyChanged-=changed;model.Tasks.CollectionChanged-=collection;};
-        Update();return border;
+        var attached=false;var disposed=false;
+        void Detach() {if(!attached)return;model.PropertyChanged-=changed;model.Tasks.CollectionChanged-=collection;attached=false;}
+        border.Loaded+=(_,_)=>{if(attached || disposed)return;model.PropertyChanged+=changed;model.Tasks.CollectionChanged+=collection;attached=true;Update();};
+        border.Unloaded+=(_,_)=>Detach();
+        Update();return (border,()=>{disposed=true;Detach();});
     }
 
     private sealed class NonNullBooleanConverter:IValueConverter

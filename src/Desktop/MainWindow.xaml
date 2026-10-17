@@ -563,9 +563,10 @@
                     <TextBox x:Name="OutputBox" Text="{Binding DisplayOutputPath,UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{loc:Text T_523a85904c77}" IsEnabled="{Binding CanConfigureExtraction}" IsReadOnly="{Binding IsOutputPathReadOnly}"/>
                     <Button Grid.Column="1" Content="{loc:Text T_5a4540c9b21b}" Command="{Binding BrowseOutputCommand}" Margin="12,0,0,0"/>
                   </Grid>
-                  <CheckBox Content="{loc:Text Extraction.CreateFolder}" IsChecked="{Binding CreateArchiveFolder}" IsThreeState="True" ToolTip="{loc:Text Extraction.LayoutHint}" Margin="0,0,0,12" IsEnabled="{Binding CanChangeExtractionLayout}">
+                  <CheckBox x:Name="ExtractionFolderChoice" Content="{loc:Text Extraction.CreateFolder}" IsChecked="{Binding CreateArchiveFolder}" IsThreeState="True" ToolTip="{loc:Text Extraction.LayoutHint}" Margin="0,0,0,12" IsEnabled="{Binding CanChangeExtractionLayout}">
                   </CheckBox>
-                  <Grid Margin="0,8,0,20">
+                  <ContentControl x:Name="ExtractionOutputPreview" Margin="0,0,0,16"/>
+                  <Grid x:Name="ExtractionConflictPanel" Margin="0,8,0,20">
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto"/>
                       <RowDefinition Height="Auto"/>
@@ -577,16 +578,15 @@
                       <ComboBoxItem Content="{loc:Text T_9c6a9194d6f5}"/>
                     </ComboBox>
                   </Grid>
-                  <CheckBox Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}" Margin="0,0,0,20"/>
-                  <ContentControl x:Name="ExtractionOutputPreview" Margin="0,0,0,16"/>
+                  <CheckBox x:Name="ExtractionAutoTryChoice" Content="{loc:Text T_a465dc5d7781}" IsChecked="{Binding AutoTry}" IsEnabled="{Binding CanConfigureExtraction}" Margin="0,0,0,20"/>
                   <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
-                    <Expander Header="{loc:Text Redesign.Advanced}">
+                    <Expander x:Name="ExtractionAdvancedOptions" Header="{loc:Text Redesign.Advanced}">
                       <StackPanel Margin="0,12,0,0">
-                        <TextBlock Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
+                        <TextBlock x:Name="ExtractionRuleDescription" Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
                         <Button x:Name="ExtractionRulesAction" Style="{StaticResource SubtleButton}" Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,8,0,12"/>
                         <CheckBox x:Name="RetainProgressChoice" Content="{loc:Text Checkpoint.Enable}" IsChecked="{Binding RetainExtractionProgress}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text Checkpoint.Enable}" ToolTip="{loc:Text Checkpoint.Hint}"/>
                         <TextBlock Text="{loc:Text Checkpoint.Hint}" Style="{StaticResource Secondary}" Margin="0,4,0,12"/>
-                        <TextBlock Text="{Binding VaultSummary}" Style="{StaticResource Secondary}"/>
+                        <TextBlock x:Name="ExtractionVaultSummary" Text="{Binding VaultSummary}" Style="{StaticResource Secondary}"/>
                       </StackPanel>
                     </Expander>
                   </Border>

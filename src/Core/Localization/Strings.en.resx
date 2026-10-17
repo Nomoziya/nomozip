@@ -3248,4 +3248,7 @@ A password is required to validate the archive data.</value>
   <data name="Compression.Yes" xml:space="preserve"><value>Yes</value></data>
   <data name="Compression.No" xml:space="preserve"><value>No</value></data>
 <data name="Vault.SetMaster" xml:space="preserve"><value>Set master password</value></data>
+<data name="Extraction.EstimatedPath" xml:space="preserve"><value>Estimated location: {0}</value></data>
+<data name="Extraction.RulesAndResume" xml:space="preserve"><value>Rules and resume</value></data>
+<data name="Extraction.BatchFolder" xml:space="preserve"><value>Create a separate folder for each archive</value></data>
 </root>
