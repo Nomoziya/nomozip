@@ -46,7 +46,7 @@ internal static class PagesCapture
             Check("primary save label uses the on-accent foreground", TextDescendants(view.Controls["vault-save"]).Any(text => text.Text == "保存更改" && text.Foreground is SolidColorBrush colour && colour.Color == ((SolidColorBrush)Application.Current.Resources["OnAccent"]).Color));
             ((TextBox)view.Controls["vault-name"]).Text = ""; Click((Button)view.Controls["vault-save"]); Check("vault form rejects incomplete entry", ((TextBlock)view.Controls["page-status"]).Text == "请填写名称和密码。");
             await Scene("vault", "07-vault-locked", "locked"); Check("leaving editable vault clears previous secret control", secret.Password.Length == 0 && !view.Controls.ContainsKey("vault-secret"));
-            await Scene("vault", "08-vault-empty", "empty"); await Scene("vault", "09-vault-search"); ((TextBox)view.Controls["vault-search"]).Text = "摄影"; await Layout(); Check("vault search changes visible sample records", ((ListBox)view.Controls["vault-records"]).Items.Cast<ListBoxItem>().Count(row => row.Visibility == Visibility.Visible) == 1);
+            await Scene("vault", "08-vault-empty", "empty"); await Scene("vault", "09a-vault-before-search"); ((TextBox)view.Controls["vault-search"]).Text = "摄影"; await Layout(); Check("vault search changes visible sample records", ((ListBox)view.Controls["vault-records"]).Items.Cast<ListBoxItem>().Count(row => row.Visibility == Visibility.Visible) == 1);
             Shot("09-vault-search.png", window.Client, "vault", "filtered", false);
             await Scene("vault", "09b-vault-many", "many"); Check("large record set remains scrollable", ((ListBox)view.Controls["vault-records"]).Items.Count == 500);
             await Scene("tools", "10-checksum-ready");
@@ -58,6 +58,7 @@ internal static class PagesCapture
             await Scene("settings", "14-settings"); await Scene("settings", "15-settings-file-operations", "filesettings"); await Scene("settings", "16-settings-security", "security"); await Scene("updates", "17-updates"); Check("updates start unchecked without fabricated remote status", ((TextBlock)view.Controls["update-status"]).Text == "尚未检查");
             ((App)Application.Current).ApplyTheme(true); await Scene("vault", "18-vault-dark"); await Scene("updates", "19-updates-dark"); ((App)Application.Current).ApplyTheme(false);
             window.MinWidth = 800; window.Width = 800; window.Height = 600; await Layout(); await Scene("create", "20-create-narrow-english", english: true); await Scene("vault", "21-vault-narrow-english", english: true);
+            Check("English password label fits one line", view.Controls["label:Password"].ActualHeight <= 23);
             Check("vault save remains visible without scrolling at minimum size", view.Controls["vault-save"].IsVisible && view.Controls["vault-save"].TransformToAncestor(window.Client).TransformBounds(new Rect(view.Controls["vault-save"].RenderSize)).Bottom < window.Client.ActualHeight - 49);
             await Scene("settings", "22-settings-narrow-english", english: true); await Scene("tools", "23-checksum-narrow-english", english: true);
             window.MinWidth = 1152; window.Width = 1152; window.Height = 768; await Layout();
@@ -67,6 +68,7 @@ internal static class PagesCapture
                 var bounds = dialog.Submit.TransformToAncestor(dialog.Client).TransformBounds(new Rect(dialog.Submit.RenderSize)); Check(scene + ": submit is fully visible inside fixed footer", bounds.Bottom <= dialog.Client.ActualHeight && bounds.Right <= dialog.Client.ActualWidth && dialog.Submit.IsVisible);
                 if (scene == "password") { Click(dialog.Submit); Check("blank password rejected inline", dialog.Feedback.Text == "请输入密码。"); ((PasswordBox)dialog.Controls["password"]).Password = "sample-1"; ((PasswordBox)dialog.Controls["confirm"]).Password = "sample-2"; Click(dialog.Submit); Check("password mismatch rejected inline", dialog.Feedback.Text == "两次输入的密码不一致。"); }
                 if (scene == "conflict") { ((TextBox)dialog.Controls["rename"]).Text = "invalid/name"; Click(dialog.Submit); Check("rename rejects invalid file name", dialog.Feedback.Text == "请输入有效文件名。"); }
+                await Layout();
                 Shot("24-dialog-" + scene + ".png", dialog.Client, scene, scene is "password" or "conflict" ? "validation error" : "typical", false);
                 var oldSecret = dialog.Controls.GetValueOrDefault("password") as PasswordBox; dialog.Close(); if (oldSecret is not null) Check(scene + ": close clears secret input", oldSecret.Password.Length == 0);
             }

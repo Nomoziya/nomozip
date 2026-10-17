@@ -6,7 +6,7 @@ on:
         description: 'Standalone design prototype or existing full product validation'
         type: choice
         default: prototype
-        options: [prototype, product]
+        options: [prototype, pages, product]
 permissions:
   contents: read
 jobs:
@@ -30,6 +30,7 @@ jobs:
       - name: Build independent shared-runtime prototype
         run: dotnet publish prototypes/UiReference/UiReference.csproj -c Release -o artifacts/ui-reference-prototype/app --no-self-contained --nologo -m:1 -nr:false
       - name: Capture running WPF prototype using generated archive only
+        if: github.event.inputs.scope != 'pages'
         run: |
           $taskOutput = Join-Path $PWD 'artifacts/ui-reference-prototype/evidence'
           $taskProcess = Start-Process ./artifacts/ui-reference-prototype/app/nomozip-reference-preview.exe -ArgumentList @('--capture', $taskOutput) -WindowStyle Hidden -Wait -PassThru

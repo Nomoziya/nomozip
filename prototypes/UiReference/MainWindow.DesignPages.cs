@@ -61,7 +61,7 @@ public partial class MainWindow
     }
     private void SetWorkspaceNavigationLanguage(bool english)
     {
-        FilesNavLabel.Text = english ? "Files" : "文件"; TasksNavLabel.Text = english ? "Tasks" : "任务"; CompactNavigation.Content = english ? "Menu" : "菜单";
+        FilesNavLabel.Text = english ? "Files" : "文件"; TasksNavLabel.Text = english ? "Tasks" : "任务"; CompactNavigation.Content = english ? "Menu" : "菜单"; CompactNavigation.Width = english ? 76 : 56;
         foreach (var button in Descendants<Button>(NavigationRail).Where(button => button.Tag is "vault" or "tools" or "settings"))
             foreach (var label in Descendants<TextBlock>(button)) label.Text = (string)button.Tag switch { "vault" => english ? "Vault" : "密码库", "tools" => english ? "Tools" : "工具", _ => english ? "Settings" : "设置" };
     }
