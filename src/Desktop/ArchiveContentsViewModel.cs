@@ -204,7 +204,14 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     {"preview_too_large"=>UiText.Get("Preview.TooLarge"),"preview_unsupported"=>UiText.Get("Preview.Unsupported"),_=>UiText.Get("Preview.Shortcut")};
     public ICommand OpenResultCommand {get;}
     private IReadOnlyList<ArchiveEntry> EntriesFor(IEnumerable<ArchiveContentRow> rows)=>ArchiveSelection.Expand(items,rows.SelectMany(row=>row.Virtual?items.Where(entry=>Normalize(entry.Path).StartsWith(Normalize(row.Path)+"/",StringComparison.OrdinalIgnoreCase)).Select(entry=>entry.Index):[row.Entry.Index]));
-    public IReadOnlyList<ArchiveEntry> SelectedEntries=>ArchiveSelection.Expand(items,allRows.Where(row=>!row.Virtual && row.Selected).Select(row=>row.Entry.Index));
+    public IReadOnlyList<ArchiveEntry> SelectedEntries
+    {
+        get
+        {
+            var selected=allRows.Where(row=>!row.Virtual && row.Selected).Select(row=>row.Entry.Index).ToArray();
+            return selected.Length==0?[]:ArchiveSelection.Expand(items,selected);
+        }
+    }
     public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
     public string CompactSelectionSummary=>UiText.Format("Browser.CompactSelection",SelectedEntries.Count);
     public string CompactSummary=>UiText.Format("Browser.CompactCount",VisibleRows.Count);
