@@ -1,0 +1,2467 @@
+{
+  "nativeWindowCaptures": [
+    {
+      "architecture": "x64",
+      "language": "zh-CN",
+      "windows": [
+        {
+          "file": "light-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "dark-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "soft-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-light-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-dark-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        }
+      ]
+    },
+    {
+      "architecture": "x64",
+      "language": "en",
+      "windows": [
+        {
+          "file": "light-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "dark-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "soft-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-light-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-dark-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        }
+      ]
+    },
+    {
+      "architecture": "arm64",
+      "language": "zh-CN",
+      "windows": [
+        {
+          "file": "light-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "dark-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "soft-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-light-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-dark-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        }
+      ]
+    },
+    {
+      "architecture": "arm64",
+      "language": "en",
+      "windows": [
+        {
+          "file": "light-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "dark-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "soft-1040-page-0-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-light-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        },
+        {
+          "file": "actual-embedded-browser-image-preview-dark-window.png",
+          "width": 1040,
+          "height": 720,
+          "method": "PrintWindow/PW_RENDERFULLCONTENT",
+          "nativeFrame": true,
+          "composited": false,
+          "nativeCaption": true,
+          "minimizeBox": true,
+          "maximizeBox": true,
+          "systemMenu": true
+        }
+      ]
+    }
+  ],
+  "sourceCommit": "888994f",
+  "sourceCommitFull": "888994f7c6a97a5af0e1ff5d5354324a23050b3d",
+  "ciRun": "38999435114",
+  "reports": [
+    {
+      "architecture": "x64",
+      "language": "zh-CN",
+      "checks": 366,
+      "viewports": [
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        }
+      ],
+      "scope": "isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"
+    },
+    {
+      "architecture": "x64",
+      "language": "en",
+      "checks": 366,
+      "viewports": [
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        }
+      ],
+      "scope": "isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"
+    },
+    {
+      "architecture": "arm64",
+      "language": "zh-CN",
+      "checks": 366,
+      "viewports": [
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        }
+      ],
+      "scope": "isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"
+    },
+    {
+      "architecture": "arm64",
+      "language": "en",
+      "checks": 366,
+      "viewports": [
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "light",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "light",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "dark",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "dark",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "soft",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "soft",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 800,
+          "actualWindowWidth": 800,
+          "actualWindowHeight": 600,
+          "clientWidth": 784,
+          "clientHeight": 561
+        },
+        {
+          "mode": "contrast",
+          "page": 4,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 0,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 1,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 3,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 5,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        },
+        {
+          "mode": "contrast",
+          "page": 2,
+          "requestedWidth": 1040,
+          "actualWindowWidth": 1040,
+          "actualWindowHeight": 720,
+          "clientWidth": 1024,
+          "clientHeight": 681
+        }
+      ],
+      "scope": "isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"
+    }
+  ],
+  "images": [
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-light-1040-page-4.png",
+      "source": "x64/zh-CN/light-1040-page-4.png",
+      "sha256": "1288cce25774a892e4679852bff3ce62a08f82aff632fdf5dca5a23b583b228f",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-dark-1040-page-4.png",
+      "source": "x64/zh-CN/dark-1040-page-4.png",
+      "sha256": "aeb259066d1186557d9139944121cee32a65101ed7aabbb2b50a76770a30dcb0",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": true,
+      "file": "zh-CN-actual-embedded-browser-image-preview-light-window.png",
+      "source": "x64/zh-CN/actual-embedded-browser-image-preview-light-window.png",
+      "sha256": "76284967437b8e543ab249b7d98ecaf0990cdb4c88ea23f9ed1723b97e4c8fe1",
+      "width": 1040,
+      "height": 720
+    },
+    {
+      "nativeFrame": true,
+      "file": "zh-CN-actual-embedded-browser-image-preview-dark-window.png",
+      "source": "x64/zh-CN/actual-embedded-browser-image-preview-dark-window.png",
+      "sha256": "0ca6666da5f42d4d01c2f04e7dfa8c14882fd4c73eb37fc9013716f9555020a5",
+      "width": 1040,
+      "height": 720
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-embedded-browser-image-preview.png",
+      "source": "x64/zh-CN/actual-embedded-browser-image-preview.png",
+      "sha256": "7823b952d57ae34cd0375092107c2f53ef5a423d73f53c79abd64601f7654787",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-archive-folder-navigation.png",
+      "source": "x64/zh-CN/actual-archive-folder-navigation.png",
+      "sha256": "d121df2d422a92dd9fd650516171b40f8d3538ec36fc11daf24a5518cfcca20e",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-embedded-browser-image-preview-dark.png",
+      "source": "x64/zh-CN/actual-embedded-browser-image-preview-dark.png",
+      "sha256": "a63b8db0cc098faf6de362db5f175f889b1106e77f3754cd92aa8e528d265d46",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-extraction-single-light.png",
+      "source": "x64/zh-CN/extraction-single-light.png",
+      "sha256": "b164eab737ba0dda76eae186d34668a8e7cfa965e72765ef20634ec6c7d47b7f",
+      "width": 624,
+      "height": 561
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-extraction-batch-light.png",
+      "source": "x64/zh-CN/extraction-batch-light.png",
+      "sha256": "335ff17c3dfb0af701dc8c65b2831686e4c766125dbd0e036ca60e529d8f921f",
+      "width": 684,
+      "height": 721
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-extraction-batch-dark.png",
+      "source": "x64/zh-CN/extraction-batch-dark.png",
+      "sha256": "bc854ab3ffd4ecf79324c4c42115bfb7ed7ff0e95e23e772497fa9bfbd96862c",
+      "width": 684,
+      "height": 721
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-light-1040-page-3.png",
+      "source": "x64/zh-CN/light-1040-page-3.png",
+      "sha256": "1b5087436540d32ae46b2b6753aab239f51d2fa3640e46af0da4350ccd86b29a",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-dark-1040-page-3.png",
+      "source": "x64/zh-CN/dark-1040-page-3.png",
+      "sha256": "b107a8c41495b044786048dcc8f1ba56e8a7c3104b7b9586404c1ef09f7bb050",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-compression-multiselection.png",
+      "source": "x64/zh-CN/actual-compression-multiselection.png",
+      "sha256": "0a98e484d9fa7034cdda57328f9460e45f67837a700e73b8a52387f3cc5c63aa",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": true,
+      "file": "zh-CN-dark-1040-page-0-window.png",
+      "source": "x64/zh-CN/dark-1040-page-0-window.png",
+      "sha256": "605bc2785c46af9d7c07bfb461e9b61e267d446f4c9a1db40776436a04880af9",
+      "width": 1040,
+      "height": 720
+    },
+    {
+      "nativeFrame": true,
+      "file": "zh-CN-light-1040-page-0-window.png",
+      "source": "x64/zh-CN/light-1040-page-0-window.png",
+      "sha256": "cf75ee3c0198c8aa2068fad81667f42177a3a39b97a0d53a801ad4fe312d3e71",
+      "width": 1040,
+      "height": 720
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-dark-1040-page-0.png",
+      "source": "x64/zh-CN/dark-1040-page-0.png",
+      "sha256": "f2f89208bb0fd93a5d9fba87bc8521ed61ba53ce7a02459e6c5f9f4b0ccf6dfd",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-compression-result.png",
+      "source": "x64/zh-CN/actual-compression-result.png",
+      "sha256": "29249944c4caee08838c787c072948d065f089013ced089c108475ad691b3559",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-light-1040-page-1.png",
+      "source": "x64/zh-CN/light-1040-page-1.png",
+      "sha256": "2db6b06d9b2c489a72d59b9d065d79b39e08be62977c064624014dd62efc0b34",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-dark-1040-page-1.png",
+      "source": "x64/zh-CN/dark-1040-page-1.png",
+      "sha256": "f1cc8947f3b0599cd9a7f3992ac7de71bd5d9228d549e9d76361a8188b5e335f",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-checksum-matched.png",
+      "source": "x64/zh-CN/actual-checksum-matched.png",
+      "sha256": "d99c54fc027c15ec4d56f98c95fb9da35bda94d928954fbf6c60592ab0fcbf97",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-checksum-mismatch.png",
+      "source": "x64/zh-CN/actual-checksum-mismatch.png",
+      "sha256": "b76f9fde2fed6b349d00fdf90ac4235bfd00752b95d9b20b524ada16d11bdaad",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-checksum-invalid-expected.png",
+      "source": "x64/zh-CN/actual-checksum-invalid-expected.png",
+      "sha256": "5df6095fe41ba510fcf1db118d2d3475a5daa7b6f9bedbc3261bbb7d73fb2dba",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-light-1040-settings-0.png",
+      "source": "x64/zh-CN/light-1040-settings-0.png",
+      "sha256": "4a340b0613980d76f0a8e1984268c45c10d7707628116bd6211aaeffd128fd02",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-light-1040-settings-1.png",
+      "source": "x64/zh-CN/light-1040-settings-1.png",
+      "sha256": "5736ff665b667c47ab4aa0220eb4a925565a2b4a5b4ff6d3c3413cfb885c98e3",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-file-defaults-saved.png",
+      "source": "x64/zh-CN/actual-file-defaults-saved.png",
+      "sha256": "d6def3141d07d8fc0bf089d9c9dc936363b229006921ddf74c004b71d96b27a8",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-file-defaults-error.png",
+      "source": "x64/zh-CN/actual-file-defaults-error.png",
+      "sha256": "7754ef86597f8bea54c853c793ff7235d55ac04d3dd0e999983e334d0d298d3f",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-light-1040-settings-4.png",
+      "source": "x64/zh-CN/light-1040-settings-4.png",
+      "sha256": "995e78895398bcec44b7e38368bed67909a88592805b87da08b0d06af6965037",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-dark-1040-settings-4.png",
+      "source": "x64/zh-CN/dark-1040-settings-4.png",
+      "sha256": "6151226e50913e4e00dbb22708cad127d24116c9a5b16c7ce3b0e6cef23ee1a1",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-software-update-actions.png",
+      "source": "x64/zh-CN/actual-software-update-actions.png",
+      "sha256": "376e9ce997932709c1a83ae6aa68fb5652698bf757de6eff313e219843a24292",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-engine-update-management.png",
+      "source": "x64/zh-CN/actual-engine-update-management.png",
+      "sha256": "af2531aa34349b7363ba3bf03418d3539cb02eff33af3dc4039e443960df75a1",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-compression-password-mismatch.png",
+      "source": "x64/zh-CN/compression-password-mismatch.png",
+      "sha256": "cfb19b656599a6734be391fc54547e8769fbcbab68fb690c21b9207443139d97",
+      "width": 544,
+      "height": 510
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-password-prompt-light.png",
+      "source": "x64/zh-CN/password-prompt-light.png",
+      "sha256": "5d3fd052b534b069df65cbec73f4c90bb894459fcb7b6e352b334ccaa8a23b30",
+      "width": 544,
+      "height": 399
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-password-retry-light.png",
+      "source": "x64/zh-CN/password-retry-light.png",
+      "sha256": "7c7c61d957285e95821d8965d4a5b23869cd536688c0c5225ccf97f48e5ac70e",
+      "width": 544,
+      "height": 440
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-master-unlock-required.png",
+      "source": "x64/zh-CN/master-unlock-required.png",
+      "sha256": "f09e27bd33ff0998c5ad3470897830a091ab0aa6bf01891bf5d2036d93519984",
+      "width": 544,
+      "height": 301
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-master-password-mismatch.png",
+      "source": "x64/zh-CN/master-password-mismatch.png",
+      "sha256": "7cae4c1894f0c4123dc2d86d70f479214d368c06ab5fb259270b8a4b3ba962fa",
+      "width": 544,
+      "height": 365
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-vault-backup-mismatch.png",
+      "source": "x64/zh-CN/vault-backup-mismatch.png",
+      "sha256": "8d849cf3a19114d67d6aa2ed4f92ca29b49b034e403892d455309ae666afcc34",
+      "width": 544,
+      "height": 402
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-file-conflict-rename-light.png",
+      "source": "x64/zh-CN/file-conflict-rename-light.png",
+      "sha256": "25bfb891d92d18b606b6992ce88b3fcb338fda13d85addc1772e786e91845f77",
+      "width": 604,
+      "height": 378
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-file-conflict-rename.png",
+      "source": "x64/zh-CN/file-conflict-rename.png",
+      "sha256": "3555aaaf0d5341ced91a23d540d12178ddd08ee18833277b314798704bb08faa",
+      "width": 604,
+      "height": 464
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-file-conflict-image-light.png",
+      "source": "x64/zh-CN/file-conflict-image-light.png",
+      "sha256": "1112aeb546dfe9bf21d7fc242ae4f60d9eaf71ef54be780966ff855f6b66c3a1",
+      "width": 604,
+      "height": 378
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-edit-copy-write-light.png",
+      "source": "x64/zh-CN/edit-copy-write-light.png",
+      "sha256": "1371c20d2993019e1e39db49c65425ccab5fafa764579b9d5b1825793e59bdd5",
+      "width": 584,
+      "height": 312
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-text-edit-write-light.png",
+      "source": "x64/zh-CN/text-edit-write-light.png",
+      "sha256": "7d03872aa86dad2a8d4c01219a0cd9d8a6636d9a74be1a7e69517428429c54e5",
+      "width": 784,
+      "height": 581
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-write-back-write-light.png",
+      "source": "x64/zh-CN/write-back-write-light.png",
+      "sha256": "73bbeabdb6a05850e5a816867cd0ec116dcd8e6e04756a2c060657397659a9bc",
+      "width": 584,
+      "height": 336
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-extraction-failures-light.png",
+      "source": "x64/zh-CN/extraction-failures-light.png",
+      "sha256": "000ec8e88e020eab08a8b1c53db80df2d455509d4b22fda321ef4e225f03c802",
+      "width": 624,
+      "height": 401
+    },
+    {
+      "nativeFrame": false,
+      "file": "en-actual-compact-browser.png",
+      "source": "x64/en/actual-compact-browser.png",
+      "sha256": "6552aa3dbdbd26c2e0a0155fba1586579d2475eef7b2dfb8122ebf2b4bcefd6c",
+      "width": 784,
+      "height": 561
+    },
+    {
+      "nativeFrame": false,
+      "file": "en-light-800-page-3.png",
+      "source": "x64/en/light-800-page-3.png",
+      "sha256": "1347cb9e8dd7b08ab73bb56591040692197e261367e34ef0f9646c314f9dd055",
+      "width": 784,
+      "height": 561
+    },
+    {
+      "nativeFrame": false,
+      "file": "en-extraction-single-light.png",
+      "source": "x64/en/extraction-single-light.png",
+      "sha256": "5ae1dae29d16ba70545b775f34e738681f12c75ed5f8c7ac1c9d60f0beca93fc",
+      "width": 624,
+      "height": 561
+    },
+    {
+      "nativeFrame": false,
+      "file": "en-light-1040-settings-0.png",
+      "source": "x64/en/light-1040-settings-0.png",
+      "sha256": "bbcc3773440df2e02cc3f593775114c466dc9d9ebc8869c79010cce3f0037fa7",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "en-light-800-page-1.png",
+      "source": "x64/en/light-800-page-1.png",
+      "sha256": "2143ac12ef747abe6b64008e2d426bee90fcf741345ee5d51de5ea6c8bd3bfd0",
+      "width": 784,
+      "height": 561
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-soft-browser-keyboard-focus.png",
+      "source": "x64/zh-CN/actual-soft-browser-keyboard-focus.png",
+      "sha256": "a1a83fbb244edb26409f72611fbfa37a51666971e1ab3f3822a6896a563a71e9",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": true,
+      "file": "zh-CN-soft-1040-page-0-window.png",
+      "source": "x64/zh-CN/soft-1040-page-0-window.png",
+      "sha256": "0cdb7056aaac751f6156dd99d3eb9000fecf4bcb482f565c680db78c613d6204",
+      "width": 1040,
+      "height": 720
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-soft-password-keyboard-focus.png",
+      "source": "x64/zh-CN/soft-password-keyboard-focus.png",
+      "sha256": "c3e0c65059c6e02529a13a70ba7bf765b400ed73973fa90c0d83d2e191811a68",
+      "width": 544,
+      "height": 399
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-actual-soft-archive-more-menu.png",
+      "source": "x64/zh-CN/actual-soft-archive-more-menu.png",
+      "sha256": "1d4768631e1e833ddd3773fd0cd0bac570f8864700c6171733a4fade38b2a8ac",
+      "width": 258,
+      "height": 360
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-contrast-1040-page-0.png",
+      "source": "x64/zh-CN/contrast-1040-page-0.png",
+      "sha256": "7622f429e432aebdd4aab64fdc5a8c0bf6ce10b7d50f3abfeda262f315741a17",
+      "width": 1024,
+      "height": 681
+    },
+    {
+      "nativeFrame": false,
+      "file": "zh-CN-soft-task-keyboard-focus.png",
+      "source": "x64/zh-CN/soft-task-keyboard-focus.png",
+      "sha256": "4c9708cf28c25b1f6dae3b3eb64c3f523b447691f116ab14b06e76077c16ea8c",
+      "width": 1024,
+      "height": 681
+    }
+  ]
+}
