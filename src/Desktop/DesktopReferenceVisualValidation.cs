@@ -64,7 +64,10 @@ internal static class DesktopReferenceVisualValidation
             var crop=new CroppedBitmap(bitmap,new Int32Rect((int)Math.Round(bounds.X),(int)Math.Round(bounds.Y),(int)Math.Floor(bounds.Width),(int)Math.Floor(bounds.Height)));
             var metadata=new BitmapMetadata("gif");metadata.SetQuery("/grctlext/Delay",(ushort)8);metadata.SetQuery("/grctlext/Disposal",(byte)2);frames.Add(BitmapFrame.Create(crop,null,metadata,null)); values.Add(track.DisplayedValue);
         }
-        var gif=new GifBitmapEncoder();foreach(var frame in frames)gif.Frames.Add(frame);using(var stream=File.Create(Path.Combine(folder,"reference-task-motion.gif")))gif.Save(stream);
+        var gif=new GifBitmapEncoder();foreach(var frame in frames)gif.Frames.Add(frame);
+        using(var stream=new MemoryStream()) {gif.Save(stream);await File.WriteAllBytesAsync(Path.Combine(folder,"reference-task-motion.gif"),EncodeFrameTiming(stream.ToArray(),8));}
+        var exported=new GifBitmapDecoder(new Uri(Path.Combine(folder,"reference-task-motion.gif")),BitmapCreateOptions.PreservePixelFormat,BitmapCacheOption.OnLoad);
+        check("exported task GIF has thirty six frames with actual eighty millisecond delays",exported.Frames.Count==36 && exported.Frames.All(frame=>frame.Metadata is BitmapMetadata metadata && metadata.GetQuery("/grctlext/Delay") is ushort delay && delay==8));
         void CurrentTaskVisuals()
         {
             taskView=Descendants(window.ArchiveTasks).OfType<TaskProgressView>().Single(view=>ReferenceEquals(view.DataContext,sampleTask));
@@ -105,6 +108,38 @@ internal static class DesktopReferenceVisualValidation
             window.DataContext = oldContext; window.MinWidth = 1152; window.Width = 1152; window.Height = 768; theme.SetMode("light");
         }
         await File.WriteAllTextAsync(Path.Combine(folder, "reference-comparison.json"), JsonSerializer.Serialize(new { sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA"), approvedCore = "967175a4274835fbfefeb75a6b30718051dfa41c", fixture = "Same names, bytes and ZIP dates as the approved standalone sample; photo attributed in prototypes/UiReference/Assets/ATTRIBUTION.md", screenshots, physicalDpiAccepted = false }, new JsonSerializerOptions { WriteIndented = true }));
+    }
+    // WPF's GIF encoder drops per-frame metadata. Set only the graphic-control timing and disposal fields;
+    // preserve the actual rendered frames, colour tables, image descriptors and compressed pixel payloads.
+    private static byte[] EncodeFrameTiming(byte[] encoded,ushort delay)
+    {
+        var offset=13;
+        if((encoded[10]&128)!=0)offset+=3*(1<<((encoded[10]&7)+1));
+        while(offset<encoded.Length)
+        {
+            var tag=encoded[offset++];
+            if(tag==0x3b)break;
+            if(tag==0x21)
+            {
+                var label=encoded[offset++];
+                if(label==0xf9)
+                {
+                    if(encoded[offset]!=4)throw new InvalidDataException("Unexpected GIF graphic control block.");
+                    encoded[offset+1]=(byte)((encoded[offset+1]&~0x1c)|8);
+                    encoded[offset+2]=(byte)(delay&255);encoded[offset+3]=(byte)(delay>>8);
+                }
+            }
+            else if(tag==0x2c)
+            {
+                var packed=encoded[offset+8];offset+=9;
+                if((packed&128)!=0)offset+=3*(1<<((packed&7)+1));
+                offset++; // LZW minimum code size.
+            }
+            else throw new InvalidDataException("Unexpected GIF block.");
+            while(encoded[offset]!=0)offset+=encoded[offset]+1;
+            offset++;
+        }
+        return encoded;
     }
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
     {
