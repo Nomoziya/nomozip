@@ -48,6 +48,7 @@ internal static class Capture
             Check("twelve real ZIP entries shown in album", window.Model.VisibleEntries.Cast<Entry>().Count() == 12 && window.Model.Entries.Count == 14);
             Check("photo preview comes from selected ZIP payload", window.PreviewImage.Source == window.Model.CurrentEntry?.Thumbnail && window.PreviewImage.Source is BitmapSource { PixelWidth: 1280, PixelHeight: 848 });
             Check("preview and toolbar fit client", Bounds(window.MoreButton).Right <= Bounds(window.PreviewPane).Left && Bounds(window.PreviewPane).Bottom <= window.Client.ActualHeight);
+            Check("unsorted headers have no dropdown-like arrows", window.NameSortArrow.Visibility == Visibility.Collapsed && window.SizeSortArrow.Visibility == Visibility.Collapsed);
             Screenshot("01-reference-light-1152.png"); Screenshot("02-reference-aligned-1536.png", 4d / 3);
             ((App)Application.Current).ApplyTheme(true); await Layout(); Screenshot("03-reference-dark-1152.png");
             ((App)Application.Current).ApplyTheme(false); window.MinWidth = 800; window.Width = 800; window.Height = 600; await Layout();
@@ -60,10 +61,16 @@ internal static class Capture
             Screenshot("05-reference-empty-800.png"); window.Model.Search = "";
             var folder = window.Model.Entries.First(row => row.Name == "旅行照片"); window.Model.Navigate(folder); await Layout();
             Check("directory navigation filters actual nested entry", window.Model.VisibleEntries.Cast<Entry>().Single().Name == "山间湖泊.jpg"); window.Model.Navigate();
-            window.Model.Sort(nameof(Entry.Name), System.ComponentModel.ListSortDirection.Ascending);
+            window.SortBy(nameof(Entry.Name));
+            Check("active name sort has ascending vector indicator", window.NameSortArrow.IsVisible && !window.SizeSortArrow.IsVisible && window.NameSortArrow.Kind == "ChevronUp");
             sorting = new { collectionCulture = window.Model.VisibleEntries.Culture.Name, threadCulture = System.Globalization.CultureInfo.CurrentCulture.Name, displayedNames = window.Model.VisibleEntries.Cast<Entry>().Select(row => row.Name).ToArray() };
             Check("name sorting follows current UI collection culture", window.Model.VisibleEntries.Cast<Entry>().Select(row => row.Name).SequenceEqual(window.Model.VisibleEntries.Cast<Entry>().OrderBy(row => row.Name, StringComparer.Create(window.Model.VisibleEntries.Culture, false)).Select(row => row.Name)));
-            window.Model.VisibleEntries.SortDescriptions.Clear(); window.Model.CurrentEntry = window.Model.Entries.Single(row => row.Name == "封面.jpg");
+            window.SortBy(nameof(Entry.Name)); await Layout();
+            Check("second name sort reverses vector indicator", window.NameSortArrow.Kind == "ChevronDown");
+            window.SortBy("Bytes.Length"); await Layout();
+            Check("size sort moves the only indicator to size column", !window.NameSortArrow.IsVisible && window.SizeSortArrow.IsVisible && window.SizeSortArrow.Kind == "ChevronUp" && window.Model.VisibleEntries.Cast<Entry>().Select(row => row.Bytes.Length).Zip(window.Model.VisibleEntries.Cast<Entry>().Skip(1).Select(row => row.Bytes.Length), (a,b) => a <= b).All(value => value));
+            Screenshot("10-size-sorted.png");
+            window.Model.VisibleEntries.SortDescriptions.Clear(); window.NameSortArrow.Visibility = window.SizeSortArrow.Visibility = Visibility.Collapsed; window.Model.CurrentEntry = window.Model.Entries.Single(row => row.Name == "封面.jpg");
             window.MinWidth = 1152; window.Width = 1152; window.Height = 768; window.ShowPreview(); await Layout();
             window.ApplyMotion(false, true); window.SetPose(0, "准备解压"); window.ApplyMotion(true, true); window.SetPose(62, "正在解压");
             Check("progress has real WPF animation clock", window.Progress.HasAnimatedProperties); await Layout(320);
