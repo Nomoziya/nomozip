@@ -80,7 +80,7 @@ internal static class Capture
             Screenshot("11-name-header-hover.png");
             try { IsolatedInput.LeftDown(); await Layout(100); Check("real pointer press reaches the header", window.NameHeaderButton.IsPressed); Screenshot("12-name-header-pressed.png"); }
             finally { IsolatedInput.LeftUp(); }
-            await Layout(); IsolatedInput.MoveTo(window.ArchiveTitle); window.NameHeaderButton.Focus(); IsolatedInput.Tab(); await Layout(140);
+            await Layout(); window.SortBy("Bytes.Length"); IsolatedInput.MoveTo(window.ArchiveTitle); window.NameHeaderButton.Focus(); IsolatedInput.Tab(); await Layout(140);
             var focus = (Border)window.SizeHeaderButton.Template.FindName("HeaderFocus", window.SizeHeaderButton);
             var focusBounds = Bounds(focus); var buttonBounds = Bounds(window.SizeHeaderButton);
             Check("tab reaches size header with an inset visible focus", window.SizeHeaderButton.IsKeyboardFocused && focus.IsVisible && focusBounds.Left >= buttonBounds.Left && focusBounds.Top >= buttonBounds.Top && focusBounds.Right <= buttonBounds.Right && focusBounds.Bottom <= buttonBounds.Bottom);
@@ -112,6 +112,7 @@ internal static class Capture
             Check("animation progresses monotonically with multiple positions", motionValues.Zip(motionValues.Skip(1), (a, b) => b >= a - .01).All(value => value) && motionValues.Select(value => Math.Round(value)).Distinct().Count() >= 8);
             Check("animation contains visible task pixels", frames.Count >= 12 && frames.All(HasVisibleSurface));
             var gif = new GifBitmapEncoder(); foreach (var frame in frames) gif.Frames.Add(frame); using (var stream = File.Create(Path.Combine(output, "07-extraction-motion.gif"))) gif.Save(stream);
+            Check("completed actions visibly communicate disabled state", window.PauseButton.Opacity < .5 && window.CancelButton.Opacity < .5);
             Check("completion percentage and bar agree without settling delay", window.PercentLabel.Text == "100%" && window.Progress.DisplayedValue == 100 && window.TaskRing.Value == 100);
             Screenshot("08-reference-completed.png");
             ((App)Application.Current).ApplyTheme(true); await Layout(); Screenshot("15-task-dark.png");
