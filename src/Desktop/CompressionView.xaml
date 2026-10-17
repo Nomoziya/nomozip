@@ -10,12 +10,7 @@
     <Border Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
     <StackPanel Margin="24,36,24,20">
       <StackPanel Orientation="Horizontal">
-        <Viewbox Width="22" Height="28" Margin="0,0,12,0">
-          <Grid Width="28" Height="34">
-            <Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/>
-            <Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
-          </Grid>
-        </Viewbox>
+        <loc:FluentIcon Kind="Archive" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,12,0"/>
         <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/>
       </StackPanel>
     </StackPanel>
@@ -42,19 +37,19 @@
               <WrapPanel>
                 <Button Command="{Binding AddCompressionFilesCommand}" AutomationProperties.Name="{loc:Text T_e8166a5ae76c}" Margin="0,0,8,4" Style="{StaticResource PrimaryButton}">
                   <StackPanel Orientation="Horizontal">
-                    <Path Data="M3,1 L14,1 L20,7 L20,25 L3,25 Z M14,1 L14,7 L20,7 M7,16 L16,16 M12,11 L12,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" Width="16" Height="18" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <loc:FluentIcon Kind="Add" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_ad9daebe00dc}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
                 <Button Command="{Binding AddCompressionFolderCommand}" Margin="0,0,8,4" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
                   <StackPanel Orientation="Horizontal">
-                    <Path Data="M1,5 L9,5 L12,8 L23,8 L23,24 L1,24 Z M8,16 L17,16 M12,11 L12,21" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" Width="16" Height="18" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <loc:FluentIcon Kind="FolderAdd" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_45da2d9c85d1}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
                 <Button Command="{Binding RemoveCompressionSourceCommand}" Margin="0,0,8,4" x:Name="CompressionRemoveButton">
                   <StackPanel Orientation="Horizontal">
-                    <Path Data="M3,6 L21,6 M9,6 L9,3 L15,3 L15,6 M5,6 L6,21 Q6,23 8,23 L16,23 Q18,23 18,21 L19,6 M10,10 L10,19 M14,10 L14,19" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" Width="16" Height="18" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <loc:FluentIcon Kind="Delete" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_a194128b2939}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>

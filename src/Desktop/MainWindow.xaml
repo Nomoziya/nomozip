@@ -54,7 +54,7 @@
           <TextBlock Text="{loc:Text T_cb42c2f7aa25}" Style="{StaticResource Secondary}" Margin="0,6,0,0" Visibility="Collapsed"/>
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="8,12,0,0" Visibility="Collapsed">
-          <Path DockPanel.Dock="Left" Data="M6,11 L18,11 L18,20 L6,20 Z M8,11 L8,7 A4,4 0 0 1 16,7 L16,11" Width="14" Height="14" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" StrokeLineJoin="Round" Margin="0,2,6,0" VerticalAlignment="Top" IsHitTestVisible="False"/>
+          <loc:FluentIcon DockPanel.Dock="Left" Kind="LockClosed" Width="20" Height="20" Foreground="{DynamicResource SecondaryBrush}" Margin="0,2,6,0" VerticalAlignment="Top" IsHitTestVisible="False"/>
           <TextBlock x:Name="SidebarPrivacyNote" Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}"/>
         </DockPanel>
         <Button x:Name="SettingsNavigation" DockPanel.Dock="Bottom" Click="OnSettings" HorizontalAlignment="Stretch" Margin="6,0,6,10" Padding="16,7,16,7" Style="{StaticResource SidebarButton}">
@@ -87,17 +87,17 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                           </Grid.ColumnDefinitions>
-                          <Path x:Name="NavigationIcon" Data="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" Stretch="Uniform" Fill="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False">
-                            <Path.Style>
-                              <Style TargetType="Path">
+                          <local:FluentIcon x:Name="NavigationIcon" Kind="{Binding Tag,RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <local:FluentIcon.Style>
+                              <Style TargetType="local:FluentIcon">
                                 <Style.Triggers>
                                   <DataTrigger Binding="{Binding Tag,RelativeSource={RelativeSource AncestorType=ListBox}}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
                                   </DataTrigger>
                                 </Style.Triggers>
                               </Style>
-                            </Path.Style>
-                          </Path>
+                            </local:FluentIcon.Style>
+                          </local:FluentIcon>
                           <ContentPresenter VerticalAlignment="Center" Grid.Column="1">
                             <ContentPresenter.Style>
                               <Style TargetType="ContentPresenter">
@@ -151,10 +151,10 @@
               </Setter>
             </Style>
           </ListBox.ItemContainerStyle>
-          <ListBoxItem Content="{loc:Text Redesign.Files}" Tag="{StaticResource Icon.Folder}" ToolTip="{loc:Text Redesign.Files}"/>
-          <ListBoxItem Content="{loc:Text Redesign.Tasks}" Tag="{StaticResource Icon.TaskListSquareLtr}" ToolTip="{loc:Text Redesign.Tasks}" Uid="Tasks"/>
-          <ListBoxItem Content="{loc:Text T_9b54fb7636af}" Tag="{StaticResource Icon.Key}" ToolTip="{loc:Text T_9b54fb7636af}"/>
-          <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="{StaticResource Icon.Wrench}" ToolTip="{loc:Text Redesign.Tools}"/>
+          <ListBoxItem Content="{loc:Text Redesign.Files}" Tag="Folder" ToolTip="{loc:Text Redesign.Files}"/>
+          <ListBoxItem Content="{loc:Text Redesign.Tasks}" Tag="TaskListSquareLtr" ToolTip="{loc:Text Redesign.Tasks}" Uid="Tasks"/>
+          <ListBoxItem Content="{loc:Text T_9b54fb7636af}" Tag="Key" ToolTip="{loc:Text T_9b54fb7636af}"/>
+          <ListBoxItem Content="{loc:Text Redesign.Tools}" Tag="Wrench" ToolTip="{loc:Text Redesign.Tools}"/>
         </ListBox>
       </DockPanel>
     </Border>
@@ -197,7 +197,7 @@
 
           <StackPanel Margin="0">
             <StackPanel Orientation="Horizontal" Margin="0">
-              <Path Data="M2,3 L5,3 M10,3 L28,3 M2,12 L5,12 M10,12 L28,12 M2,21 L5,21 M10,21 L28,21" Width="22" Height="22" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,12,0" VerticalAlignment="Center"/>
+              <loc:FluentIcon Kind="TaskListSquareLtr" Width="20" Height="20" Foreground="{DynamicResource AccentBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
               <TextBlock Text="{loc:Text Redesign.Tasks}" Margin="0" Style="{StaticResource WorkspacePageTitle}"/>
             </StackPanel>
             <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}" Visibility="Collapsed"/>
@@ -360,7 +360,7 @@
                                 </Style>
                               </Button.Style>
                             </Button>
-                            <Button Click="OnTaskMore" Grid.Column="2" Padding="6" Margin="0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><Path Data="M2,4 A1.4,1.4 0 1 1 2,6.8 A1.4,1.4 0 1 1 2,4 M8,4 A1.4,1.4 0 1 1 8,6.8 A1.4,1.4 0 1 1 8,4 M14,4 A1.4,1.4 0 1 1 14,6.8 A1.4,1.4 0 1 1 14,4" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="18" Height="4" Stretch="Uniform" VerticalAlignment="Center"/></Button>
+                            <Button Click="OnTaskMore" Grid.Column="2" Padding="6" Margin="0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><loc:FluentIcon Kind="MoreHorizontal" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="20" Height="4" VerticalAlignment="Center"/></Button>
                           </Grid>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
@@ -579,7 +579,7 @@
                 </Ellipse>
                 <TextBlock Text="{Binding VaultProtectionStatusLabel}" VerticalAlignment="Center"/>
               </StackPanel>
-              <Button x:Name="VaultProtectAction" Command="{Binding EnableMasterCommand}" Margin="0,0,8,0" AutomationProperties.Name="{loc:Text Vault.SetMaster}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding VaultMasterEnabled}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel Orientation="Horizontal"><Path Data="M3,8 L15,8 L15,18 L3,18 Z M6,8 L6,5 A3,3 0 0 1 12,5 L12,8" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" Width="16" Height="18" Stretch="Uniform" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text Vault.SetMaster}"/></StackPanel></Button>
+              <Button x:Name="VaultProtectAction" Command="{Binding EnableMasterCommand}" Margin="0,0,8,0" AutomationProperties.Name="{loc:Text Vault.SetMaster}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding VaultMasterEnabled}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text Vault.SetMaster}"/></StackPanel></Button>
               <Button x:Name="VaultUnlockAction" Content="{loc:Text T_1109737d1829}" Command="{Binding UnlockVaultCommand}" Margin="0,0,8,0">
                 <Button.Style>
                   <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -633,13 +633,13 @@
                   </Style>
                 </TextBlock.Style>
               </TextBlock>
-              <Path Grid.Row="1" Data="M8,1 A7,7 0 1 1 7.9,1 M13,13 L20,20" Width="16" Height="16" Stretch="Uniform" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.6" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" IsHitTestVisible="False"/>
+              <loc:FluentIcon Grid.Row="1" Kind="Search" Width="20" Height="20" Foreground="{DynamicResource SecondaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" IsHitTestVisible="False"/>
             </Grid>
             <StackPanel Grid.Column="1" Margin="12,0,0,0">
               <Label Content="{loc:Text T_399ee6934772}" Target="{Binding ElementName=PasswordGroupBox}" Padding="0" Margin="0,0,0,8" Visibility="Collapsed"/>
               <ComboBox x:Name="PasswordGroupBox" ItemsSource="{Binding PasswordGroups}" SelectedItem="{Binding SelectedPasswordGroup}" DisplayMemberPath="Label" AutomationProperties.Name="{loc:Text T_d6a38b364511}"/>
             </StackPanel>
-            <Button Grid.Column="2" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_36b2403fa140}"><StackPanel Orientation="Horizontal"><Path Data="M1,7 L13,7 M7,1 L7,13" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.25" Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_36b2403fa140}"/></StackPanel></Button>
+            <Button Grid.Column="2" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_36b2403fa140}"><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Add" Foreground="{DynamicResource OnAccentBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_36b2403fa140}"/></StackPanel></Button>
             <Button Grid.Column="3" Content="{loc:Text Redesign.More}" ContentTemplate="{StaticResource MoreActionContent}" Click="OnQueueActions" Margin="12,0,0,0" VerticalAlignment="Bottom">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}">
@@ -1066,7 +1066,7 @@
                   <Button x:Name="CheckEngineUpdatesButton" Content="{loc:Text T_2604bd11a6e8}" Command="{Binding CheckUpdatesCommand}" Margin="12,0,0,0" Style="{StaticResource PrimaryButton}" DockPanel.Dock="Right"/>
                 <StackPanel Orientation="Horizontal">
                   <Grid Width="32" Height="40" Margin="0,0,14,0">
-                    <Path Data="M2,1 L20,1 L30,11 L30,39 L2,39 Z M20,1 L20,11 L30,11" Stroke="{DynamicResource TextBrush}" StrokeThickness="1.5"/>
+                    <loc:FluentIcon Kind="Archive" Foreground="{DynamicResource TextBrush}"/>
                     <TextBlock Text="7z" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,7,0,0"/>
                   </Grid>
                   <StackPanel VerticalAlignment="Center">
@@ -1301,7 +1301,7 @@
           <DockPanel>
             <TextBlock DockPanel.Dock="Right" Text="{Binding PasswordListSummary}" Style="{StaticResource Secondary}" Margin="12,0,0,0"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-              <Path Data="M12,2 L21,6 L20,17 Q17,22 12,24 Q7,22 4,17 L3,6 Z M7,12 L11,16 L17,9" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Width="18" Height="21" Stretch="Uniform" Margin="0,0,10,0"/>
+              <loc:FluentIcon Kind="ShieldCheckmark" Foreground="{DynamicResource SecondaryBrush}" Width="20" Height="20" Margin="0,0,10,0"/>
               <TextBlock Text="{loc:Text T_9338f02fd12a}" Style="{StaticResource Secondary}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{loc:Text Menu.VaultHint}"/>
             </StackPanel>
           </DockPanel>
@@ -1350,16 +1350,16 @@
           <TextBlock Text="{loc:Text Redesign.Files}" Style="{StaticResource WorkspacePageTitle}"/>
           <Button x:Name="CloseArchiveButton" DockPanel.Dock="Right" Content="{loc:Text Redesign.CloseArchive}" Click="OnCloseArchive" Visibility="Collapsed"/>
         </DockPanel>
-        <WrapPanel Grid.Row="1" Margin="24,0,24,12" x:Name="FilesLandingActions">
+        <WrapPanel Grid.Row="1" Margin="24,0,24,12" x:Name="FilesLandingActions" Visibility="Collapsed">
           <Button Click="OnOpenArchive" IsEnabled="{Binding IsIdle}" Margin="0,0,8,8" Style="{StaticResource PrimaryButton}">
             <StackPanel Orientation="Horizontal">
-              <Path Data="M3,7 L3,5 Q3,3 5,3 L9,3 L12,6 L20,6 Q22,6 22,8 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,8 Q2,7 3,7 L21,7" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.25" StrokeLineJoin="Round" Margin="0,0,10,0"/>
+              <loc:FluentIcon Kind="FolderOpen" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,10,0"/>
               <TextBlock Text="{loc:Text Redesign.OpenArchive}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
           <Button Click="OnCompression" IsEnabled="{Binding IsIdle}" Margin="0,0,8,8" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
             <StackPanel Orientation="Horizontal">
-              <Path Data="M4,1 L15,1 L22,8 L22,28 L4,28 Z M15,1 L15,8 L22,8 M8,18 L18,18 M13,13 L13,23" Width="18" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.25" StrokeLineJoin="Round" Margin="0,0,10,0"/>
+              <loc:FluentIcon Kind="Archive" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,10,0"/>
               <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
@@ -1372,24 +1372,26 @@
           <Border Background="{DynamicResource SurfaceBrush}">
             <Grid>
               <StackPanel x:Name="FilesEmptyState" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480" Margin="24">
-                <loc:FileKindIcon FileName="archive.zip" Width="48" Height="56" Margin="0,0,0,24" VerticalAlignment="Center"/>
-                <TextBlock Text="{loc:Text Redesign.EmptyTitle}" Style="{StaticResource SectionTitle}" TextAlignment="Center" TextWrapping="Wrap"/>
+                <Image Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="72" Height="72" Margin="0,0,0,20"/>
+                <TextBlock Text="{loc:Text Redesign.EmptyTitle}" Style="{StaticResource EmptyTitle}" TextAlignment="Center" TextWrapping="Wrap"/>
                 <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,0">
                   <Button Click="OnOpenArchive" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" IsEnabled="{Binding IsIdle}" Margin="0,0,12,0" AutomationProperties.Name="{loc:Text Redesign.OpenArchive}">
                     <StackPanel Orientation="Horizontal">
-                      <Path Data="M3,7 L3,5 Q3,3 5,3 L9,3 L12,6 L20,6 Q22,6 22,8 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,8 Q2,7 3,7 L21,7" Width="18" Height="20" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Margin="0,0,10,0"/>
+                      <loc:FluentIcon Kind="FolderOpen" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,10,0"/>
                       <TextBlock Text="{loc:Text Redesign.OpenArchive}" VerticalAlignment="Center"/>
                     </StackPanel>
                   </Button>
-                  <Button Click="OnCreateFromFiles" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Redesign.AddForCompression}">
+                  <Button Click="OnCompression" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Redesign.CreateArchive}">
                     <StackPanel Orientation="Horizontal">
-                      <Path Data="M3,1 L13,1 L20,8 L20,25 L3,25 Z M13,1 L13,8 L20,8 M7,16 L16,16 M12,11 L12,21" Width="18" Height="20" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6" Margin="0,0,10,0"/>
-                      <TextBlock Text="{loc:Text Redesign.AddForCompression}" VerticalAlignment="Center"/>
+                      <loc:FluentIcon Kind="Add" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,10,0"/>
+                      <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center"/>
                     </StackPanel>
                   </Button>
                 </WrapPanel>
                 <TextBlock Text="{loc:Text Redesign.EmptyHint}" Style="{StaticResource Secondary}" Margin="0,20,0,0" TextAlignment="Center"/>
-              </StackPanel>
+
+                <Button Click="OnAddBatch" Content="{loc:Text Redesign.BatchExtract}" Style="{StaticResource SubtleButton}" HorizontalAlignment="Center" Margin="0,16,0,0" IsEnabled="{Binding IsIdle}"/>
+</StackPanel>
               <ContentControl x:Name="ArchiveHost" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
             </Grid>
           </Border>
@@ -1413,6 +1415,7 @@
         <ContentControl x:Name="ToolsHost" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
       </Grid>
     </Grid>
+    <Button x:Name="ReferenceThemeAction" Grid.Column="1" Width="36" Height="34" MinHeight="0" Padding="0" Margin="0,0,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource SubtleButton}" Foreground="{DynamicResource TextBrush}" Click="OnReferenceTheme" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" ToolTip="{loc:Text Appearance.Label}"><local:FluentIcon Kind="WeatherMoon" Width="20" Height="20"/></Button>
     <Button x:Name="ReferenceCompactMenu" Grid.Column="1" Visibility="Collapsed" Content="{loc:Text Reference.Navigation}" AutomationProperties.Name="{loc:Text T_968608e4ff51}" Width="76" Height="34" MinHeight="0" Padding="8,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,0,0,0" Click="OnReferenceMenu" Style="{StaticResource SubtleButton}">
       <Button.ContextMenu><ContextMenu>
         <MenuItem Header="{loc:Text Redesign.Files}" Tag="4" Click="OnReferencePage"/>

@@ -90,7 +90,7 @@ public partial class MainWindow
             ClosePreview(); ArchiveHost.Content = null; ArchiveHeaderHost.Content = null; ArchiveFooterHost.Content=null;ArchiveFooterHost.Visibility=Visibility.Collapsed;GlobalStatus.Visibility=Visibility.Visible; dialog.EmbeddedClose = null; model.ClearDrag();
             embeddedModel = null; embeddedArchive = null; archiveClosed = null;
             FilesEmptyState.Visibility = Visibility.Visible;
-            FilesLandingHeader.Visibility = FilesLandingActions.Visibility = Visibility.Visible;
+            FilesLandingHeader.Visibility = Visibility.Visible; FilesLandingActions.Visibility = Visibility.Collapsed;
             dialog.Close();
         }
     }
@@ -135,6 +135,7 @@ public partial class MainWindow
     {
         if (embeddedArchive is null) return false;
         ClosePreview(); embeddedPreview = dialog; previewModel = model;
+        dialog.ConfigureEmbeddedImageLayout();
         if(model.Picture is not null && embeddedModel?.Rows.FirstOrDefault(row=>row.Path==model.EntryPath) is {} previewRow)previewRow.PreviewThumbnail=model.Picture;
         var content = (FrameworkElement)dialog.Content; dialog.Content = null; content.DataContext = model;
         DisableDialogDefaults(content); content.Margin = new Thickness(0);
@@ -167,8 +168,8 @@ public partial class MainWindow
         var container = new Grid { Margin = new Thickness(24) };
         container.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});container.RowDefinitions.Add(new RowDefinition()); container.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         var titleRow=new DockPanel {Margin=new Thickness(0,0,0,16)};
-        var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M18,2 L6,2 Q3,2 3,5 L3,29 Q3,32 6,32 L25,32 Q28,32 28,29 L28,12 L20,12 L20,2 Z M8,7 L15,7 M14,6 L14,24 M8,18 L14,24 L20,18"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
-        icon.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
+        var icon=new FluentIcon {Kind="DocumentArrowDown",Width=28,Height=28,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
+        icon.SetResourceReference(System.Windows.Controls.Control.ForegroundProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
         var heading=new StackPanel();titleRow.Children.Add(heading);
         heading.Children.Add(new TextBlock {Text=UiText.Get(titleKey),Style=(Style)FindResource("PageTitle")});
         var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):selectedItemCount is {} itemCount?UiText.Format("Extraction.SelectedCount",itemCount,vm.SelectedTask?.Name ?? ""):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};scopeLabel.SetResourceReference(TextBlock.ForegroundProperty,"SecondaryBrush");heading.Children.Add(scopeLabel);container.Children.Add(titleRow);

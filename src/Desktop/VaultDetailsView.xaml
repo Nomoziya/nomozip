@@ -8,10 +8,10 @@
       </Grid.RowDefinitions>
       <ScrollViewer x:Name="DetailScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel x:Name="Editor" IsEnabled="{Binding IsIdle}">
-          <TextBlock x:Name="Heading" Text="{loc:Text Redesign.VaultDetails}" Margin="0,0,0,12" Style="{StaticResource SectionTitle}"/>
+          <TextBlock x:Name="Heading" Text="{loc:Text Redesign.VaultDetails}" Margin="0,0,0,18" Style="{StaticResource WorkspaceSectionTitle}"/>
           <Grid>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="64"/>
+              <ColumnDefinition x:Name="VaultFieldLabelColumn" Width="76"/>
               <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -62,12 +62,11 @@
               <CheckBox.Template>
                 <ControlTemplate TargetType="CheckBox">
                   <Grid Background="Transparent">
-                    <Path Data="M1,10 Q12,-3 23,10 Q12,23 1,10 M16,10 A4,4 0 1 1 8,10 A4,4 0 1 1 16,10" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Width="22" Height="18" Stretch="Uniform"/>
-                    <Path x:Name="Slash" Data="M3,2 L21,20" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.5" Visibility="Collapsed" Width="22" Height="20" Stretch="Uniform"/>
+                    <loc:FluentIcon x:Name="RevealEye" Kind="Eye" Foreground="{DynamicResource SecondaryBrush}" Width="20" Height="20"/>
                   </Grid>
                   <ControlTemplate.Triggers>
                     <Trigger Property="IsChecked" Value="True">
-                      <Setter TargetName="Slash" Property="Visibility" Value="Visible"/>
+                      <Setter TargetName="RevealEye" Property="loc:FluentIcon.Kind" Value="EyeOff"/>
                     </Trigger>
                   </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -10,7 +10,7 @@ public partial class VaultDetailsView : UserControl
     private SavedPassword? original;
     public VaultDetailsView()
     {
-        InitializeComponent();
+        InitializeComponent(); VaultFieldLabelColumn.Width = new GridLength(UiText.LanguageCode == "en" ? 96 : 76);
         GroupBox.Loaded+=(_,_)=>{if(GroupBox.Template.FindName("PART_EditableTextBox",GroupBox) is TextBox editor)editor.MaxLength=128;};
         DataContextChanged += (_, _) => { if (model is not null) model.PropertyChanged -= OnModelChanged; model = DataContext as MainViewModel; if (model is not null) model.PropertyChanged += OnModelChanged; LoadSelection(); };
         IsVisibleChanged += (_, _) => { if (IsVisible) LoadSelection(); else Clear(); };

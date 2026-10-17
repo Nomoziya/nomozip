@@ -55,7 +55,7 @@
         <DockPanel>
           <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
           <StackPanel Orientation="Horizontal">
-            <Path Data="M3,1 L14,1 L21,8 L21,27 L3,27 Z M14,1 L14,8 L21,8 M8,12 L7,23 M14,12 L13,23 M5,16 L17,16 M5,20 L17,20" Width="26" Height="32" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" Margin="0,0,24,0"/>
+            <loc:FluentIcon Kind="DocumentText" Width="26" Height="32" Foreground="{DynamicResource AccentBrush}" Margin="0,0,24,0"/>
             <TextBlock Text="{loc:Text T_b3d70cc43d2a}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
           </StackPanel>
         </DockPanel>
@@ -72,13 +72,13 @@
         <WrapPanel>
           <Button x:Name="HashAddButton" Command="{Binding AddFilesCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4" Padding="12,7">
             <StackPanel Orientation="Horizontal">
-              <Path Data="M1,9 L17,9 M9,1 L9,17" Width="16" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Margin="0,0,8,0"/>
+              <loc:FluentIcon Kind="Add" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,8,0"/>
               <TextBlock Text="{loc:Text T_ad9daebe00dc}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
           <Button x:Name="HashRemoveButton" Command="{Binding RemoveCommand}" Margin="0,0,8,4" Padding="12,7">
             <StackPanel Orientation="Horizontal">
-              <Path Data="M9,1 A8,8 0 1 1 8.9,1 M4,9 L14,9" Width="16" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Margin="0,0,8,0"/>
+              <loc:FluentIcon Kind="Delete" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,8,0"/>
               <TextBlock Text="{loc:Text T_a194128b2939}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
@@ -259,14 +259,14 @@
           <WrapPanel x:Name="HashActions" HorizontalAlignment="Left" Margin="0,24,0,0">
             <Button x:Name="HashCalculateButton" Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4" Padding="12,7">
               <StackPanel Orientation="Horizontal">
-                <Path Data="M2,1 L16,9 L2,17 Z" Width="16" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Margin="0,0,8,0"/>
+                <loc:FluentIcon Kind="Play" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,8,0"/>
                 <TextBlock Text="{loc:Text T_446518e7ac65}" VerticalAlignment="Center"/>
               </StackPanel>
             </Button>
             <Button x:Name="HashCancelButton" Content="{loc:Text T_2cd0f3be8738}" Command="{Binding CancelCommand}" Margin="0,0,8,4"/>
             <Button x:Name="HashCopyButton" Command="{Binding CopyCommand}" Margin="0,0,0,4" AutomationProperties.Name="{loc:Text T_4d9ff0ad6b7c}" Padding="12,7">
               <StackPanel Orientation="Horizontal">
-                <Path Data="M6,2 L16,2 L16,14 L6,14 Z M3,6 L3,18 L13,18" Width="16" Height="18" Stretch="Uniform" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Margin="0,0,8,0"/>
+                <loc:FluentIcon Kind="Copy" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,8,0"/>
                 <TextBlock Text="{loc:Text T_63d90d977348}" VerticalAlignment="Center"/>
               </StackPanel>
             </Button>

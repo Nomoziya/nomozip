@@ -14,17 +14,19 @@
       <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="DataGridColumnHeader"><Grid Background="{TemplateBinding Background}">
         <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1"/>
         <Border x:Name="HeaderSurface" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" MinWidth="64" Margin="2,0,4,0" CornerRadius="3" Background="Transparent">
-          <Grid><StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center"><ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True"/><Path x:Name="SortGlyph" Data="{StaticResource Icon.ChevronDown}" Width="12" Height="12" Stretch="Uniform" Fill="{TemplateBinding Foreground}" Margin="6,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/></StackPanel><Border x:Name="HeaderFocus" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="2" Margin="2" CornerRadius="3" Visibility="Collapsed" IsHitTestVisible="False"/></Grid>
+          <Grid><StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center"><ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True"/><loc:FluentIcon x:Name="SortGlyph" Kind="ChevronDown" Width="12" Height="12" Foreground="{TemplateBinding Foreground}" Margin="6,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/></StackPanel><Border x:Name="HeaderFocus" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="2" Margin="2" CornerRadius="3" Visibility="Collapsed" IsHitTestVisible="False"/></Grid>
         </Border><Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Width="4" Background="Transparent" Opacity="0"/><Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Width="4" Background="Transparent" Opacity="0"/>
       </Grid><ControlTemplate.Triggers>
         <Trigger SourceName="HeaderSurface" Property="IsMouseOver" Value="True"><Setter TargetName="HeaderSurface" Property="Background" Value="{DynamicResource HeaderHoverBrush}"/></Trigger>
         <Trigger Property="IsPressed" Value="True"><Setter TargetName="HeaderSurface" Property="Background" Value="{DynamicResource HeaderPressedBrush}"/></Trigger>
         <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="HeaderFocus" Property="Visibility" Value="Visible"/></Trigger>
-        <Trigger Property="SortDirection" Value="Ascending"><Setter TargetName="SortGlyph" Property="Visibility" Value="Visible"/><Setter TargetName="SortGlyph" Property="Data" Value="{StaticResource Icon.ChevronUp}"/></Trigger>
+        <Trigger Property="SortDirection" Value="Ascending"><Setter TargetName="SortGlyph" Property="Visibility" Value="Visible"/><Setter TargetName="SortGlyph" Property="loc:FluentIcon.Kind" Value="ChevronUp"/></Trigger>
         <Trigger Property="SortDirection" Value="Descending"><Setter TargetName="SortGlyph" Property="Visibility" Value="Visible"/></Trigger>
+        <Trigger Property="CanUserSort" Value="False"><Setter Property="FontSize" Value="13"/></Trigger>
         <Trigger Property="DisplayIndex" Value="0"><Setter TargetName="HeaderSurface" Property="MinWidth" Value="0"/><Setter TargetName="HeaderSurface" Property="Margin" Value="0"/><Setter TargetName="HeaderSurface" Property="HorizontalAlignment" Value="Center"/><Setter Property="Focusable" Value="False"/></Trigger>
       </ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
     </Style>
+    <Style x:Key="ReferenceDateText" TargetType="TextBlock" BasedOn="{StaticResource GridSecondary}"><Setter Property="Margin" Value="12,0,4,0"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="ToolTip" Value="{Binding Text,RelativeSource={RelativeSource Self}}"/></Style>
     <Style x:Key="ArchiveEditItem" TargetType="MenuItem" BasedOn="{StaticResource ActionMenuItem}"/>
   </Window.Resources>
   <Grid x:Name="BrowserRoot" KeyboardNavigation.TabNavigation="Cycle" Background="{DynamicResource SurfaceBrush}">
@@ -40,18 +42,18 @@
           <Grid VerticalAlignment="Center" Margin="0,0,16,0"><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="31"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><loc:FluentIcon Kind="Archive" Foreground="{DynamicResource AccentBrush}" Width="34" Height="34"/><TextBlock x:Name="ContentsArchiveName" Grid.Column="2" Text="{Binding ArchiveName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ArchivePath}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></Grid>
           <Grid x:Name="ReferenceArchiveSearch" Grid.Column="1" Width="286" VerticalAlignment="Center"><TextBox x:Name="EntrySearch" BorderBrush="{DynamicResource ButtonBorderBrush}" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Height="34" MinHeight="34" Padding="42,5,10,5" AutomationProperties.Name="{loc:Text T_88a399b911e0}" ToolTip="{loc:Text T_88a399b911e0}"/><loc:FluentIcon Kind="Search" Width="20" Height="20" Foreground="{DynamicResource SecondaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"/><TextBlock Text="{loc:Text Browser.SearchPlaceholder}" FontSize="14" Margin="44,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryBrush}" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Search}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
         </Grid>
-        <Border Grid.Row="2" Margin="18,0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" ToolTip="{Binding ArchivePath}"><DockPanel LastChildFill="True" VerticalAlignment="Center"><loc:FluentIcon DockPanel.Dock="Left" Kind="FolderOpen" Foreground="{DynamicResource SecondaryBrush}" Width="16" Height="16" Margin="0,0,12,0"/><TextBlock DockPanel.Dock="Left" Text="{Binding ArchiveLocation}" VerticalAlignment="Center" MaxWidth="160" TextTrimming="CharacterEllipsis"/><ItemsControl ItemsSource="{Binding Breadcrumbs}" VerticalAlignment="Center"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><StackPanel Orientation="Horizontal"><Path Data="{StaticResource Icon.ChevronDown}" RenderTransformOrigin="0.5,0.5" Fill="{DynamicResource SecondaryBrush}" Stretch="Uniform" Width="12" Height="12" Margin="12,0" VerticalAlignment="Center"><Path.RenderTransform><RotateTransform Angle="-90"/></Path.RenderTransform></Path><Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource BreadcrumbButton}" Foreground="{DynamicResource TextBrush}" FontWeight="Normal" MaxWidth="240" ToolTip="{Binding Label}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></DockPanel></Border>
+        <Border Grid.Row="2" Margin="18,0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" ToolTip="{Binding ArchivePath}"><DockPanel LastChildFill="True" VerticalAlignment="Center"><loc:FluentIcon DockPanel.Dock="Left" Kind="FolderOpen" Foreground="{DynamicResource SecondaryBrush}" Width="16" Height="16" Margin="0,0,12,0"/><TextBlock DockPanel.Dock="Left" Text="{Binding ArchiveLocation}" VerticalAlignment="Center" MaxWidth="160" TextTrimming="CharacterEllipsis"/><ItemsControl ItemsSource="{Binding Breadcrumbs}" VerticalAlignment="Center"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="ChevronDown" RenderTransformOrigin="0.5,0.5" Foreground="{DynamicResource SecondaryBrush}" Width="12" Height="12" Margin="12,0" VerticalAlignment="Center"><loc:FluentIcon.RenderTransform><RotateTransform Angle="-90"/></loc:FluentIcon.RenderTransform></loc:FluentIcon><Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource BreadcrumbButton}" Foreground="{DynamicResource TextBrush}" FontWeight="Normal" MaxWidth="240" ToolTip="{Binding Label}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></DockPanel></Border>
       </Grid>
     </Border>
     <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="11,7" MinHeight="52">
       <WrapPanel x:Name="ContentsActions">
         <Button x:Name="ExtractAllButton" Command="{Binding ExtractAllCommand}" Margin="0,0,8,0">
           <StackPanel Orientation="Horizontal">
-            <loc:FluentIcon Kind="DocumentArrowDown" Width="20" Height="20" Margin="0,0,8,0" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"/>
+            <loc:FluentIcon Kind="DocumentArrowDown" Width="20" Height="20" Margin="0,0,8,0" Foreground="{DynamicResource AccentBrush}"/>
             <TextBlock Text="{loc:Text Redesign.ExtractAll}" VerticalAlignment="Center"/>
           </StackPanel>
         </Button>
-        <Button x:Name="ExtractSelectedButton" AutomationProperties.Name="{loc:Text Redesign.ExtractSelected}" Command="{Binding ExtractSelectedCommand}" Margin="0,0,8,0" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
+        <Button x:Name="ExtractSelectedButton" AutomationProperties.Name="{loc:Text Redesign.ExtractSelected}" Command="{Binding ExtractSelectedCommand}" Margin="0,0,8,0" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource NavigationTextBrush}">
           <StackPanel Orientation="Horizontal">
             <loc:FluentIcon Kind="DocumentArrowDown" Width="20" Height="20" Margin="0,0,8,0" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}"/>
             <TextBlock Text="{loc:Text Redesign.ExtractSelected}" VerticalAlignment="Center"/>
@@ -74,49 +76,49 @@
               </ContextMenu.ItemContainerStyle>
               <MenuItem Header="{loc:Text T_08f316ab8225}" Command="{Binding SelectVisibleCommand}" InputGestureText="Ctrl+A">
                 <MenuItem.Icon>
-                  <Path Data="M2,3 L5,3 M9,3 L24,3 M2,11 L5,11 M9,11 L24,11 M2,19 L5,19 M9,19 L24,19" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="CheckmarkCircle" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem Header="{loc:Text T_a3c974892464}" Command="{Binding ClearSelectionCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M3,3 L21,21 M21,3 L3,21" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="Dismiss" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
               <MenuItem x:Name="PrepareDragAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text Drag.PrepareAction}" Command="{Binding PrepareDragCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M3,8 L3,23 L23,23 L23,8 M13,17 L13,1 M7,7 L13,1 L19,7" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="ArrowUp" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="AddEntryFilesAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_0475bef77baa}" Command="{Binding AddFilesCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M3,1 L16,1 L23,8 L23,29 L3,29 Z M16,1 L16,8 L23,8 M8,18 L18,18 M13,13 L13,23" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="Add" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="AddEntryFolderAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_65c90110f894}" Command="{Binding AddFolderCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M1,6 L10,6 L13,10 L26,10 L26,27 L1,27 Z M8,19 L20,19 M14,13 L14,25" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="FolderAdd" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="ReplaceEntryAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_7e41da13f3e7}" Command="{Binding ReplaceSelectedCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M2,7 L20,7 L16,3 M20,7 L16,11 M22,20 L4,20 L8,16 M4,20 L8,24" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="ArrowSync" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem Header="{loc:Text TextEdit.EditCopy}" Command="{Binding EditTextCommand}" ToolTip="{loc:Text TextEdit.Supported}" ToolTipService.ShowOnDisabled="True" Style="{StaticResource ArchiveEditItem}">
                 <MenuItem.Icon>
-                  <Path Data="M3,1 L17,1 L24,8 L24,29 L3,29 Z M7,23 L9,17 L21,5 L25,9 L13,21 Z" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="Edit" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <MenuItem x:Name="DeleteEntriesAction" Style="{StaticResource ArchiveEditItem}" Header="{loc:Text T_5b76f8110c9e}" Command="{Binding DeleteSelectedCommand}">
                 <MenuItem.Icon>
-                  <Path Data="M2,6 L24,6 M8,6 L8,1 L18,1 L18,6 M5,6 L7,28 L19,28 L21,6 M10,11 L10,22 M16,11 L16,22" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="Delete" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
               <MenuItem Header="{loc:Text Redesign.CloseArchive}" Click="OnClose">
                 <MenuItem.Icon>
-                  <Path Data="M1,4 L10,4 L14,8 L26,8 L26,27 L1,27 Z M10,14 L19,23 M19,14 L10,23" StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="18" Height="20"/>
+                  <loc:FluentIcon Kind="Dismiss" Width="20" Height="20"/>
                 </MenuItem.Icon>
               </MenuItem>
             </ContextMenu>
@@ -193,7 +195,7 @@
           </DataGridTemplateColumn>
           <DataGridTextColumn Header="{loc:Text Contents.CompactSize}" Binding="{Binding SizeText}" SortMemberPath="Entry.Size" CanUserSort="True" Width="80" ElementStyle="{StaticResource TableText}"/>
           <DataGridTextColumn Header="{loc:Text T_ba40014ff496}" Binding="{Binding Kind}" CanUserSort="False" Width="96" ElementStyle="{StaticResource TableText}"/>
-          <DataGridTextColumn Header="{loc:Text Browser.Modified}" Binding="{Binding ModifiedText}" CanUserSort="False" Width="144" ElementStyle="{StaticResource TableText}"/>
+          <DataGridTextColumn Header="{loc:Text Browser.Modified}" Binding="{Binding ModifiedText}" CanUserSort="False" Width="144" ElementStyle="{StaticResource ReferenceDateText}"/>
           <DataGridTextColumn CanUserSort="False" Header="{loc:Text T_320c254572c4}" Binding="{Binding EncryptionText}" Width="120" ElementStyle="{StaticResource TableText}"/>
         </DataGrid.Columns>
       </DataGrid>
@@ -217,10 +219,10 @@
         </TextBlock.Style>
       </TextBlock>
     </Grid>
-    <Border x:Name="BrowserFooter" ToolTip="{Binding OutputPath}" Grid.Row="3" MinHeight="48" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="16,8">
+    <Border x:Name="BrowserFooter" Height="49" ToolTip="{Binding OutputPath}" Grid.Row="3" MinHeight="48" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="18,0">
       <StackPanel>
         <DockPanel>
-          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="12,0,0,0"><ToggleButton x:Name="ListViewAction" Tag="list" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.ListView}" ToolTip="{loc:Text Browser.ListView}" Margin="0,0,4,0" IsChecked="True"><Path Data="M1,2 L2,2 M6,2 L17,2 M1,8 L2,8 M6,8 L17,8 M1,14 L2,14 M6,14 L17,14" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" StrokeThickness="1.3" StrokeStartLineCap="Round" Width="18" Height="16"/></ToggleButton><ToggleButton x:Name="GridViewAction" Tag="grid" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.GridView}" ToolTip="{loc:Text Browser.GridView}"><Path Data="M1,1 L7,1 L7,7 L1,7 Z M11,1 L17,1 L17,7 L11,7 Z M1,11 L7,11 L7,17 L1,17 Z M11,11 L17,11 L17,17 L11,17 Z" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" StrokeThickness="1.2" StrokeLineJoin="Round" Width="18" Height="18"/></ToggleButton></StackPanel>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="12,0,0,0"><ToggleButton x:Name="ListViewAction" Tag="list" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.ListView}" ToolTip="{loc:Text Browser.ListView}" Margin="0,0,4,0" IsChecked="True"><loc:FluentIcon Kind="TaskListSquareLtr" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton><ToggleButton x:Name="GridViewAction" Tag="grid" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.GridView}" ToolTip="{loc:Text Browser.GridView}"><loc:FluentIcon Kind="Grid" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton></StackPanel>
           <Button x:Name="BrowserTasksAction" DockPanel.Dock="Right" Style="{StaticResource SubtleButton}" Click="OnShowTasks" Visibility="Collapsed" Padding="4" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.Tasks}"><TextBlock x:Name="BrowserTaskActivity" TextTrimming="CharacterEllipsis" MaxWidth="150" AutomationProperties.LiveSetting="Polite" VerticalAlignment="Center"/></Button>
           <TextBlock DockPanel.Dock="Right" Text="{Binding OperationMessage}" TextTrimming="CharacterEllipsis" MaxWidth="160" VerticalAlignment="Center" ToolTip="{Binding OperationMessage}" AutomationProperties.LiveSetting="Polite"/>
           <TextBlock x:Name="ContentsSummary" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectionSummary}" AutomationProperties.LiveSetting="Polite">
