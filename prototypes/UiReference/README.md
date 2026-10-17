@@ -9,3 +9,7 @@ Requires shared .NET 10 Windows Desktop runtime, x64 Windows.
 The original nomozip desktop icon is retained. Function icons: Microsoft Fluent
 System Icons Regular 20, MIT (Icons/LICENSE). Photograph credit: Assets/ATTRIBUTION.md.
 Screenshots are restricted to isolated GitHub CI; the normal application does not capture.
+
+Extraction runs in a dedicated sample task workspace. Progress ring, bar and percentage
+share the displayed value; pause freezes all progress. Header hover/press uses a compact
+rectangle and keyboard focus is inset. Native input helpers are used only by isolated CI.
