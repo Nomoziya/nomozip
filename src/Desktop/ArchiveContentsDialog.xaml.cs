@@ -16,20 +16,23 @@ public partial class ArchiveContentsDialog : Window
                 icon.SetBinding(System.Windows.Shapes.Shape.StrokeProperty,new System.Windows.Data.Binding(nameof(Control.Foreground)) {Source=item});
         void Arrange()
         {
-            var narrow=Window.GetWindow(EntryTable)?.ActualWidth<960;
-            if(EntryTable.ActualWidth>0)
+            var narrow = Window.GetWindow(EntryTable)?.ActualWidth < 1050;
+            var compactPreview = narrow && EntryTable.ActualWidth < 600;
+            if (EntryTable.ActualWidth > 0)
             {
-                var detailWidth=ArchivePassword.Core.UiText.LanguageCode=="en"?128d:88d;
-                var showEncryption=!narrow && EntryTable.ActualWidth>=680;
-                EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
-                EntryTable.Columns[5].Visibility=showEncryption?Visibility.Visible:Visibility.Collapsed;
-                foreach(var (index,width) in new[]{(0,40d),(2,90d),(3,detailWidth),(4,144d),(5,detailWidth)})
-                {EntryTable.Columns[index].MinWidth=width;EntryTable.Columns[index].Width=width;}
-                EntryTable.Columns[1].MinWidth=130;
-                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-40-90-detailWidth-18-(narrow?0:144)-(showEncryption?detailWidth:0));
+                var detailWidth = ArchivePassword.Core.UiText.LanguageCode == "en" ? 144d : 113d;
+                var showEncryption = !narrow && EntryTable.ActualWidth >= 850;
+                EntryTable.Columns[3].Visibility = compactPreview ? Visibility.Collapsed : Visibility.Visible;
+                EntryTable.Columns[4].Visibility = narrow ? Visibility.Collapsed : Visibility.Visible;
+                EntryTable.Columns[5].Visibility = showEncryption ? Visibility.Visible : Visibility.Collapsed;
+                foreach (var (index, width) in new[] { (0,54d), (2,compactPreview ? 94d : 103d), (3,detailWidth), (4,171d), (5,detailWidth) })
+                { EntryTable.Columns[index].MinWidth = width; EntryTable.Columns[index].Width = width; }
+                EntryTable.Columns[1].MinWidth = 130;
+                EntryTable.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             }
-            EntrySearch.Width=double.NaN;
-            ContentsArchiveName.MaxWidth=Math.Max(160,BrowserHeader.ActualWidth-370);
+            ReferenceArchiveSearch.Width = narrow ? 230 : 286;
+            EditContentsButton.Visibility = compactPreview ? Visibility.Collapsed : Visibility.Visible;
+            ContentsArchiveName.MaxWidth = double.PositiveInfinity;
         }
         EntryTable.SizeChanged+=(_,_)=>Arrange();EntryTable.Loaded+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
         model.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(model.GridView)) {ListViewAction.IsChecked=!model.GridView;GridViewAction.IsChecked=model.GridView;}};

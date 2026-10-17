@@ -16,7 +16,7 @@
             <Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
           </Grid>
         </Viewbox>
-        <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
+        <TextBlock Text="{loc:Text Redesign.CreateArchive}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/>
       </StackPanel>
     </StackPanel>
     </Border>

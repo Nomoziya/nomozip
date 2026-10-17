@@ -5,6 +5,7 @@ public sealed partial class MainViewModel
 {
     private ArchivePassword.Core.ExtractionPause? queuePause;
     public ICommand ToggleQueuePauseCommand {get;private set;}=null!;
+    public bool IsQueuePaused => queuePause?.IsRequested == true;
     public bool CanPauseQueue=>IsBusy && queuePause is not null;
     public string QueuePauseCaption=>queuePause?.IsRequested==true?UiText.Get("T_c4bf814baf3d"):UiText.Get("T_e90e4d4b3a66");
     public string CancelActionCaption=>CanPauseQueue?UiText.Get("T_5d83503a78bc"):UiText.Get("T_d0356fd00208");
@@ -13,7 +14,7 @@ public sealed partial class MainViewModel
         if(queuePause is null) return;
         if(queuePause.IsRequested) {queuePause.Resume();Footer=UiText.Get("T_fb1f94c09208");}
         else {queuePause.Pause();Footer=UiText.Get("T_642a46d4d83a");}
-        Changed(nameof(QueuePauseCaption));RefreshQueuePasswordAction();
+        Changed(nameof(QueuePauseCaption));Changed(nameof(IsQueuePaused));RefreshQueuePasswordAction();
     }
     private int queueConcurrency=1;
     private readonly Dictionary<ArchiveTaskRow,(CancellationTokenSource Skip,bool Trying)> queueAttempts=[];

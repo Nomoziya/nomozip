@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?><root>
+<?xml version="1.0" ?><root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -3259,4 +3259,5 @@ A password is required to validate the archive data.</value>
   <data name="Preview.OpenHint" xml:space="preserve"><value>Open a temporary copy in your default image app. nomozip tries to remove it on exit.</value></data>
   <data name="Preview.Opened" xml:space="preserve"><value>Image copy opened</value></data>
   <data name="Preview.OpenFailed" xml:space="preserve"><value>Could not open the image. Check your default image app.</value></data>
+  <data name="Reference.Navigation" xml:space="preserve"><value>Menu</value></data>
 </root>
