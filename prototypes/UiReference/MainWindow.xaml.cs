@@ -15,6 +15,7 @@ public partial class MainWindow : Window
     private CancellationTokenSource? demoCancellation;
     private bool paused, requestedMotion = true, previewRequested = true, sortAscending = false;
     private Entry? preview;
+    private string? sortProperty;
     public bool IsRunning { get; private set; }
     public bool MotionEnabled => Progress.MotionEnabled;
     public long ProcessedBytes { get; private set; }
@@ -112,8 +113,16 @@ public partial class MainWindow : Window
     private void OnPreview(object sender, RoutedEventArgs e) => ShowPreview();
     private void OnClosePreview(object sender, RoutedEventArgs e) => ClosePreview();
     private void OnTogglePreview(object sender, RoutedEventArgs e) { if (previewRequested) ClosePreview(); else ShowPreview(); }
-    private void OnSortName(object sender, RoutedEventArgs e) { sortAscending = !sortAscending; Model.Sort(nameof(Entry.Name), sortAscending ? ListSortDirection.Ascending : ListSortDirection.Descending); }
-    private void OnSortSize(object sender, RoutedEventArgs e) { sortAscending = !sortAscending; Model.Sort("Bytes.Length", sortAscending ? ListSortDirection.Ascending : ListSortDirection.Descending); }
+    public void SortBy(string property)
+    {
+        sortAscending = sortProperty != property || !sortAscending; sortProperty = property;
+        Model.Sort(property, sortAscending ? ListSortDirection.Ascending : ListSortDirection.Descending);
+        NameSortArrow.Visibility = property == nameof(Entry.Name) ? Visibility.Visible : Visibility.Collapsed;
+        SizeSortArrow.Visibility = property == "Bytes.Length" ? Visibility.Visible : Visibility.Collapsed;
+        NameSortArrow.Kind = SizeSortArrow.Kind = sortAscending ? "ChevronUp" : "ChevronDown";
+    }
+    private void OnSortName(object sender, RoutedEventArgs e) => SortBy(nameof(Entry.Name));
+    private void OnSortSize(object sender, RoutedEventArgs e) => SortBy("Bytes.Length");
     private void OnTask(object sender, RoutedEventArgs e) { if (TotalBytes > 0) TaskCard.Visibility = Visibility.Visible; else OnNotice(sender, e); }
     private void OnHideTask(object sender, RoutedEventArgs e) => TaskCard.Visibility = Visibility.Collapsed;
     private void OnOpenImage(object sender, RoutedEventArgs e)
