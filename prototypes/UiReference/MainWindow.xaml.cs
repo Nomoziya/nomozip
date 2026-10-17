@@ -28,7 +28,7 @@ public partial class MainWindow : Window
     public GridLength DateWidth { get => (GridLength)GetValue(DateWidthProperty); set => SetValue(DateWidthProperty, value); }
     public MainWindow()
     {
-        InitializeComponent(); DataContext = Model; ShowPreview(); ApplyMotion(true);
+        InitializeComponent(); PauseButton.IsEnabled = CancelButton.IsEnabled = false; DataContext = Model; ShowPreview(); ApplyMotion(true);
         SystemParameters.StaticPropertyChanged += OnSystemSettingsChanged;
         Closed += (_, _) => { demoCancellation?.Cancel(); SystemParameters.StaticPropertyChanged -= OnSystemSettingsChanged; };
     }
@@ -51,7 +51,7 @@ public partial class MainWindow : Window
         if (IsRunning) return;
         var rows = Model.Entries.Where(row => !row.Directory && (!checkedOnly || row.Checked)).ToArray(); if (rows.Length == 0) return;
         TotalBytes = rows.Sum(row => row.Bytes.LongLength); IsRunning = true; paused = false; demoCancellation = new(); var token = demoCancellation.Token;
-        PauseButton.Content = "暂停"; TaskCard.Visibility = Visibility.Visible; TaskBadge.Visibility = Visibility.Visible; SetPose(0, "正在解压");
+        PauseButton.Content = "暂停"; PauseButton.IsEnabled = CancelButton.IsEnabled = true; TaskCard.Visibility = Visibility.Visible; TaskBadge.Visibility = Visibility.Visible; SetPose(0, "正在解压");
         if (MotionEnabled) TaskCard.BeginAnimation(OpacityProperty, new DoubleAnimation(.65, 1, TimeSpan.FromMilliseconds(170)) { FillBehavior = FillBehavior.Stop });
         long count = 0;
         try
@@ -71,7 +71,7 @@ public partial class MainWindow : Window
             SetPose(100, "演示完成");
         }
         catch (OperationCanceledException) { TaskTitle.Text = "演示已取消"; }
-        finally { IsRunning = false; demoCancellation.Dispose(); demoCancellation = null; paused = false; PauseButton.Content = "暂停"; TaskBadge.Visibility = Visibility.Collapsed; }
+        finally { PauseButton.IsEnabled = CancelButton.IsEnabled = false; IsRunning = false; demoCancellation.Dispose(); demoCancellation = null; paused = false; PauseButton.Content = "暂停"; TaskBadge.Visibility = Visibility.Collapsed; }
     }
     public void ShowPreview()
     {
