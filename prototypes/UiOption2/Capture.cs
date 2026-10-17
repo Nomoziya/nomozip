@@ -33,8 +33,9 @@ internal static class Capture
         try
         {
             window.IsHitTestVisible = false; window.MinWidth = 1120; window.Width = 1120; window.Height = 760;
-            window.ApplyMotion(false, true); window.SetPose(62, "正在解压"); await Layout();
+            window.ApplyMotion(true, true); window.SetPose(62, "正在解压"); await Layout(320);
             Check("exact core viewport", window.Client.ActualWidth == 1120 && window.Client.ActualHeight == 760);
+            Check("captured client has an opaque themed canvas", window.Client.Background is SolidColorBrush { Color.A: 255 });
             Check("brand asset retains original size", window.Brand.Source is BitmapSource brand && brand.PixelWidth == 256 && brand.PixelHeight == 256);
             Check("same eight-entry ZIP fixture is used", window.Model.Entries.Count == 8 && window.TotalBytes == 799);
             Check("task panel and action stay fully visible", Bounds(window.TaskCard).Bottom <= window.Client.ActualHeight && Bounds(window.ExtractAll).Right <= window.Client.ActualWidth);
