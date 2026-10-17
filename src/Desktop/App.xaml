@@ -54,7 +54,6 @@
         <Setter Property="FontSize" Value="12"/>
       </Style>
       <Style TargetType="ListBox" BasedOn="{StaticResource BodyControl}"/>
-      <Style TargetType="ComboBoxItem" BasedOn="{StaticResource BodyControl}"/>
       <Style x:Key="AppWindow" TargetType="Window">
         <Setter Property="Icon" Value="/ArchivePassword;component/Assets/nomozip.ico"/>
         <Setter Property="local:WindowPlacement.AutoFit" Value="True"/>
@@ -121,6 +120,14 @@
         </Setter>
       </Style>
       <Style x:Key="GridSecondary" TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="GridCaption" TargetType="TextBlock" BasedOn="{StaticResource Caption}">
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryBrush}"/>
         <Style.Triggers>
           <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
             <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
@@ -297,7 +304,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="Expander">
+      <Style TargetType="Expander" BasedOn="{StaticResource BodyControl}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="Template">
           <Setter.Value>
@@ -395,7 +402,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <Style TargetType="ComboBoxItem">
+      <Style TargetType="ComboBoxItem" BasedOn="{StaticResource BodyControl}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="Padding" Value="8,6"/>

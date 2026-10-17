@@ -61,6 +61,7 @@ public partial class PasswordDialog : Window
             SavePassword.IsEnabled=false;SavePassword.Visibility=Visibility.Collapsed;
             Description.Text=archiveName+(failed?UiText.Get("T_dcfba7612da5"):UiText.Get("T_feaebc29ef3e"))+UiText.Get("T_0da2931b10ac");
         }
+        if(!editing && !compressing && !browsing && !testing)CancelButton.Content=UiText.Get("Conflict.Cancel");
         if(failed && !editing && !compressing)
         {
             RetryBanner.Visibility=Visibility.Visible;
