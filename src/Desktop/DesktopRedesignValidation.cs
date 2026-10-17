@@ -273,7 +273,7 @@ internal static class DesktopRedesignValidation
             imagePreview.ImageOpener=(_,_)=>throw new System.ComponentModel.Win32Exception("Synthetic association unavailable");
             ((System.Windows.Automation.Provider.IInvokeProvider)System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(openImageButton)!.GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Until(()=>imagePreview.StatusText==UiText.Get("Preview.OpenFailed"));
             var previewStatus=VisualDescendants((DependencyObject)window.PreviewHost.Content).OfType<TextBlock>().Single(text=>text.Name=="PreviewNotice");
-            Check("unavailable image association keeps the image and bounds its error text",imagePreview.IsImage && Bounds(previewStatus).Right<=Bounds(window.ArchivePreviewPane).Right && Bounds(previewStatus).Bottom<=Bounds(window.ArchivePreviewPane).Bottom);Capture("actual-preview-open-error");
+            Check("unavailable image association keeps the image and bounds its error text",imagePreview.IsImage && Equals(previewStatus.Foreground,Application.Current.Resources["ErrorBrush"]) && Bounds(previewStatus).Right<=Bounds(window.ArchivePreviewPane).Right && Bounds(previewStatus).Bottom<=Bounds(window.ArchivePreviewPane).Bottom);Capture("actual-preview-open-error");
             contents.Search="metadata";await Layout();
             window.Width=800;window.Height=600;await Layout();
             Check("opened image copy survives preview close until application cleanup",File.Exists(launchedImage!.FileName) && !imagePreview.OpenImageCommand.CanExecute(null));openedImages.Dispose();
