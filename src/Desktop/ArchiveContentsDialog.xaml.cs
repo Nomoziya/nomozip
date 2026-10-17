@@ -23,10 +23,10 @@ public partial class ArchiveContentsDialog : Window
                 var showEncryption=!narrow && EntryTable.ActualWidth>=680;
                 EntryTable.Columns[4].Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
                 EntryTable.Columns[5].Visibility=showEncryption?Visibility.Visible:Visibility.Collapsed;
-                foreach(var (index,width) in new[]{(0,40d),(2,90d),(3,detailWidth),(4,132d),(5,detailWidth)})
+                foreach(var (index,width) in new[]{(0,40d),(2,90d),(3,detailWidth),(4,144d),(5,detailWidth)})
                 {EntryTable.Columns[index].MinWidth=width;EntryTable.Columns[index].Width=width;}
                 EntryTable.Columns[1].MinWidth=130;
-                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-40-90-detailWidth-18-(narrow?0:132)-(showEncryption?detailWidth:0));
+                EntryTable.Columns[1].Width=Math.Max(130,EntryTable.ActualWidth-40-90-detailWidth-18-(narrow?0:144)-(showEncryption?detailWidth:0));
             }
             EntrySearch.Width=double.NaN;
             ContentsArchiveName.MaxWidth=Math.Max(160,BrowserHeader.ActualWidth-370);

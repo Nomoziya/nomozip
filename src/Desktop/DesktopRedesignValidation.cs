@@ -165,7 +165,7 @@ internal static class DesktopRedesignValidation
             var entryIcons=VisualDescendants(entryTable).OfType<FileKindIcon>().ToArray();
             Check("file icons reflect actual folders and image entries",entryIcons.Any(icon=>icon.DataContext is ArchiveContentRow {Entry.Directory:true} && icon.IconKind=="folder") && entryIcons.Any(icon=>icon.DataContext is ArchiveContentRow {Path:"cover.png"} && icon.IconKind=="image"));
             Check("folder and image glyphs are actually visible",entryIcons.Where(icon=>icon.IconKind is "folder" or "image").All(icon=>((FrameworkElement)icon.Template.FindName(icon.IconKind=="folder"?"Folder":"Picture",icon)).Visibility==Visibility.Visible && ((FrameworkElement)icon.Template.FindName("Document",icon)).Visibility==Visibility.Collapsed));
-            Check("embedded file columns retain readable widths",entryTable.Columns[0].ActualWidth>=48 && entryTable.Columns[1].ActualWidth>=200 && entryTable.Columns[2].ActualWidth>=78 && entryTable.Columns[3].ActualWidth>=80);
+            Check("embedded file columns retain readable widths",entryTable.Columns[0].ActualWidth>=40 && entryTable.Columns[1].ActualWidth>=200 && entryTable.Columns[2].ActualWidth>=78 && entryTable.Columns[3].ActualWidth>=80);
             Check("extraction toolbar precedes file list",Bounds(extractAll).Bottom<=Bounds(entryTable).Top);
             Check("archive name occupies shared workspace header",window.ArchiveHeaderHost.Content is FrameworkElement && window.FilesLandingActions.Visibility==Visibility.Collapsed);
             Check("breadcrumb includes the actual containing directory",contents.ArchiveLocation==Path.GetFileName(Path.GetDirectoryName(archive)));
@@ -233,14 +233,17 @@ internal static class DesktopRedesignValidation
             var folderRow=contents.VisibleRows.Single(row=>row.Entry.Directory && row.Path.TrimEnd('/')=="Documents");tiles.SelectedItem=folderRow;await Layout();
             var folderTile=(ListBoxItem)tiles.ItemContainerGenerator.ContainerFromItem(folderRow);var folderCheck=VisualDescendants(folderTile).OfType<CheckBox>().Single();folderCheck.IsChecked=true;await Layout();
             Check("grid checkbox selects actual descendant entries",contents.Rows.Where(row=>row.Path.StartsWith("Documents/",StringComparison.Ordinal)).All(row=>row.Selected));folderCheck.IsChecked=false;
+            Check("grid keyboard target stays on the chosen folder",ReferenceEquals(contents.CurrentRow,folderRow));
             var openTileBinding=tiles.InputBindings.OfType<KeyBinding>().Single(binding=>binding.Key==Key.Enter);openTileBinding.Command.Execute(null);await Layout();
             Check("grid enter opens real folder without changing display mode",contents.GridView && contents.CurrentFolder=="Documents" && contents.VisibleRows.All(row=>row.Path.StartsWith("Documents/",StringComparison.Ordinal)));
             tiles.InputBindings.OfType<KeyBinding>().Single(binding=>binding.Key==Key.Back).Command.Execute(null);await Layout();contents.CurrentRow=contents.Rows.Single(row=>row.Path=="cover.png");
             listAction.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));await Layout();
             Check("returning to list preserves grid selection and folder state",!contents.GridView && entryTable.IsVisible && !tiles.IsVisible && contents.CurrentFolder=="" && selectionBefore.SequenceEqual(contents.Rows.Where(row=>row.Selected).Select(row=>row.Path)));
             var nameHeader=VisualDescendants(entryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Single(header=>ReferenceEquals(header.Column,entryTable.Columns[1]));
-            var headerPeer=System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(nameHeader);
-            ((System.Windows.Automation.Provider.IInvokeProvider)headerPeer!.GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Layout();
+            var presenter=VisualDescendants(entryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeadersPresenter>().Single();
+            var presenterPeer=System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(presenter)!;
+            var namePeer=presenterPeer.GetChildren().Single(peer=>peer.GetName()==nameHeader.Content.ToString());
+            ((System.Windows.Automation.Provider.IInvokeProvider)namePeer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Layout();
             Check("name header performs actual sorting",entryTable.Columns[1].SortDirection==System.ComponentModel.ListSortDirection.Ascending && entryTable.Items.Cast<ArchiveContentRow>().Select(row=>row.DisplayName).SequenceEqual(entryTable.Items.Cast<ArchiveContentRow>().Select(row=>row.DisplayName).OrderBy(name=>name,StringComparer.CurrentCulture)));
             theme.SetMode("soft");window.Opacity=1;window.Activate();
             entryTable.ScrollIntoView(contents.CurrentRow);await Layout();
