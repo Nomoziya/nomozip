@@ -56,7 +56,7 @@
           <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
           <StackPanel Orientation="Horizontal">
             <Path Data="M3,1 L14,1 L21,8 L21,27 L3,27 Z M14,1 L14,8 L21,8 M8,12 L7,23 M14,12 L13,23 M5,16 L17,16 M5,20 L17,20" Width="26" Height="32" Stretch="Uniform" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.6" Margin="0,0,24,0"/>
-            <TextBlock Text="{loc:Text T_b3d70cc43d2a}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            <TextBlock Text="{loc:Text T_b3d70cc43d2a}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
           </StackPanel>
         </DockPanel>
         <TextBlock x:Name="HashSubtitle" Text="{loc:Text T_282d839a46b1}" Style="{StaticResource Secondary}" Margin="0,10,0,0"/>
@@ -198,7 +198,7 @@
           <DockPanel Margin="0,0,0,20">
             <loc:FileKindIcon FileName="{Binding Selected.Path}" Width="32" Height="40" Margin="0,0,14,0" DockPanel.Dock="Left"/>
             <StackPanel VerticalAlignment="Center">
-              <TextBlock Text="{Binding Selected.Name}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,0,0,6" ToolTip="{Binding Selected.Path}"/>
+              <TextBlock Text="{Binding Selected.Name}" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,0,0,6" ToolTip="{Binding Selected.Path}"/>
               <TextBlock Style="{StaticResource Secondary}">
                 <TextBlock.Text>
                   <MultiBinding StringFormat="{}{0} | SHA-256">

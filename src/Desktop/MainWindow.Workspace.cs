@@ -170,7 +170,7 @@ public partial class MainWindow
         var icon=new System.Windows.Shapes.Path {Data=System.Windows.Media.Geometry.Parse("M18,2 L6,2 Q3,2 3,5 L3,29 Q3,32 6,32 L25,32 Q28,32 28,29 L28,12 L20,12 L20,2 Z M8,7 L15,7 M14,6 L14,24 M8,18 L14,24 L20,18"),StrokeThickness=1.8,Width=29,Height=34,Stretch=System.Windows.Media.Stretch.Uniform,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Top};
         icon.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty,"AccentBrush");DockPanel.SetDock(icon,Dock.Left);titleRow.Children.Add(icon);
         var heading=new StackPanel();titleRow.Children.Add(heading);
-        heading.Children.Add(new TextBlock {Text=UiText.Get(titleKey),FontSize=24,FontWeight=FontWeights.SemiBold});
+        heading.Children.Add(new TextBlock {Text=UiText.Get(titleKey),FontSize=22,FontWeight=FontWeights.SemiBold});
         var scopeLabel=new TextBlock {Text=batch?UiText.Format("Extraction.BatchCount",taskCount):selectedItemCount is {} itemCount?UiText.Format("Extraction.SelectedCount",itemCount,vm.SelectedTask?.Name ?? ""):vm.SelectedTask?.Name ?? "",Margin=new Thickness(0,8,0,0),TextTrimming=TextTrimming.CharacterEllipsis};scopeLabel.SetResourceReference(TextBlock.ForegroundProperty,"SecondaryBrush");heading.Children.Add(scopeLabel);container.Children.Add(titleRow);
         System.Windows.Data.ListCollectionView? batchView=null;
         var body=new Grid();body.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});body.RowDefinitions.Add(new RowDefinition());Grid.SetRow(body,1);container.Children.Add(body);

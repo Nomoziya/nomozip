@@ -6,25 +6,25 @@
         <ResourceDictionary Source="ActionMenuResources.xaml"/>
       </ResourceDictionary.MergedDictionaries>
       <local:HalfHeightCornerRadiusConverter x:Key="HalfHeightRadius"/>
-      <SolidColorBrush x:Key="CanvasBrush" Color="#F6F8FB"/>
+      <SolidColorBrush x:Key="CanvasBrush" Color="#F3F3F3"/>
       <LinearGradientBrush x:Key="ChromeBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#E9EEF5" Offset="0"/>
         <GradientStop Color="#F3F5F8" Offset="1"/>
       </LinearGradientBrush>
       <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
-      <SolidColorBrush x:Key="TextBrush" Color="#0F172A"/>
-      <SolidColorBrush x:Key="SecondaryBrush" Color="#475569"/>
-      <SolidColorBrush x:Key="AccentBrush" Color="#0067E6"/>
+      <SolidColorBrush x:Key="TextBrush" Color="#1B1B1B"/>
+      <SolidColorBrush x:Key="SecondaryBrush" Color="#616161"/>
+      <SolidColorBrush x:Key="AccentBrush" Color="#0F66BD"/>
       <SolidColorBrush x:Key="OnAccentBrush" Color="#FFFFFF"/>
       <SolidColorBrush x:Key="SuccessBrush" Color="#168248"/>
       <SolidColorBrush x:Key="ButtonBorderBrush" Color="#D8E0EA"/>
       <SolidColorBrush x:Key="BorderBrush" Color="#8491A3"/>
       <SolidColorBrush x:Key="DividerBrush" Color="#E1E7EF"/>
       <SolidColorBrush x:Key="NavigationSelectionBrush" Color="#D9E8F9"/>
-      <SolidColorBrush x:Key="SelectionBrush" Color="#E4F0FE"/>
+      <SolidColorBrush x:Key="SelectionBrush" Color="#E5F1FD"/>
       <SolidColorBrush x:Key="HoverBrush" Color="#F1F5F9"/>
-      <SolidColorBrush x:Key="SelectionTextBrush" Color="#0067E6"/>
-      <SolidColorBrush x:Key="FocusBrush" Color="#0067E6"/>
+      <SolidColorBrush x:Key="SelectionTextBrush" Color="#0F66BD"/>
+      <SolidColorBrush x:Key="FocusBrush" Color="#0F66BD"/>
       <SolidColorBrush x:Key="ErrorBrush" Color="#C42B1C"/>
       <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF4CE"/>
       <SolidColorBrush x:Key="WarningTextBrush" Color="#795600"/>
@@ -341,7 +341,7 @@
                 <ContentPresenter x:Name="SelectionContent" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" IsHitTestVisible="False" Margin="8,6,32,6" VerticalAlignment="Center" TextElement.Foreground="{TemplateBinding Foreground}"/>
                 <TextBox x:Name="PART_EditableTextBox" Visibility="Hidden" Style="{x:Null}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" CaretBrush="{DynamicResource TextBrush}" BorderThickness="0" Margin="8,6,32,6" VerticalContentAlignment="Center" IsReadOnly="{TemplateBinding IsReadOnly}" FocusVisualStyle="{StaticResource FocusStyle}"/>
                 <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
-                  <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" MinWidth="{Binding ActualWidth,RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{TemplateBinding MaxDropDownHeight}" Padding="2">
+                  <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6" MinWidth="{Binding ActualWidth,RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{TemplateBinding MaxDropDownHeight}" Padding="2">
                     <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled">
                       <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
                     </ScrollViewer>
