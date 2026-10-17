@@ -10,13 +10,13 @@
     <Border Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
     <StackPanel Margin="24,24,24,20">
       <StackPanel Orientation="Horizontal">
-        <Viewbox Width="28" Height="34" Margin="0,0,24,0">
+        <Viewbox Width="22" Height="28" Margin="0,0,12,0">
           <Grid Width="28" Height="34">
             <Path Data="M3,1 L18,1 L26,9 L26,33 L3,33 Z" Fill="{DynamicResource AccentBrush}"/>
             <Path Data="M18,1 L18,9 L26,9 M9,22 L21,22 M15,16 L15,28" Stroke="{DynamicResource OnAccentBrush}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
           </Grid>
         </Viewbox>
-        <TextBlock Text="{loc:Text Redesign.CreateArchive}" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        <TextBlock Text="{loc:Text Redesign.CreateArchive}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
       </StackPanel>
     </StackPanel>
     </Border>
@@ -118,7 +118,7 @@
         <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Padding="24,12,24,16" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0">
           <ScrollViewer x:Name="SettingsScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.IsSharedSizeScope="True">
-              <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}" FontSize="18"/>
+              <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}" FontSize="16"/>
               <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
