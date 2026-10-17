@@ -48,6 +48,8 @@ Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol
 复选框用于解压。样本文件夹双击进入，路径按钮返回相册；只有显式预览才更换右侧
 内容。当前原型图片“打开”使用独立 WPF 查看窗；正式版仍须按已有系统关联能力接入。
 
+参数冲突取舍：图 14 的通用页面标题标注 22 DIP，但图 02 的归档标题按 0.75 比例约为 26 DIP。本轮归档标题采用 26，以核心图实际比例为准；旧 MASTER 与其他候选的参数不自动适用于本版。用户确认后，再统一其他页面标题和规范。
+
 错误/成功/处理中：当前 R1 覆盖取消、暂停、完成与空结果；产品冲突、引擎错误、
 长路径、多任务、英文及真实系统 DPI 属于 R2/R3，不能宣称本轮已验收。
 
@@ -55,7 +57,7 @@ Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol
 
 - 原设计图：当前仓库另一分支保留的 14 张概念图；以布局观感复现为目标，字体/功能图标可按用户授权调整。
 - [Files](https://github.com/files-community/Files)：列表与预览分区；[NanaZip](https://github.com/M2Team/NanaZip)：桌面归档操作流程；[WPF UI](https://github.com/lepoco/wpfui)：WPF 组件可实现性。复用前两版研究，不新增整库依赖。
-- [Fluent System Icons](https://github.com/microsoft/fluentui-system-icons)：MIT，固定提交 a347af95478f989038cccbf085978865264c048a。既有 21 枚 + 本版 Eye/Open；新增原 SVG 和 Geometry 保留来源。
+- [Fluent System Icons](https://github.com/microsoft/fluentui-system-icons)：MIT，固定提交 a347af95478f989038cccbf085978865264c048a。既有 21 枚 + 本版 Eye/Open/ChevronDown/ChevronUp；新增原 SVG 和 Geometry 保留来源。后续按用户反馈追加 Chevron Down / Chevron Up，同源同版本。
 - [Windows 字体](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/typography)、[动态效果](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/motion)：字体层级和短时反馈。
 - 示例照片为 [Brett Hamm 的 Moraine Lake](https://commons.wikimedia.org/wiki/File:Moraine_Lake,_Banff_National_Park.jpg)，CC BY-SA 4.0，非概念图中的照片。归档实际生成并回读，大小、像素和数量来自样本，不沿用图中虚构统计。
 
@@ -63,8 +65,10 @@ Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol
 
 原品牌图标替换概念图的 N 方块；Fluent 图标统一；真实照片、文件大小、12 项统计与
 样本日期；标题栏增加主题切换。原图的 24 项与可见 12 项不一致，本版不复制该矛盾。
+更多菜单箭头改用 12×12 DIP Fluent ChevronDown，文字间距 7 DIP；名称/大小不显示静态下拉符号，仅当前排序列显示 12×12 DIP 上/下矢量箭头，间距 6 DIP，切换列后旧指示消失。
+
 底栏预览切换实际可操作，未实现的完整产品页面不伪装已接入。系统高对比与窄窗按
-实际可用性适配。上述不代表方向已获用户认可。
+实际可用性适配。原概念图的轻微纹理与字体笔画没有逐像素复制；实现采用稳定纯色与系统字体，不编造还原百分比。上述不代表方向已获用户认可。
 
 
 ## 本阶段检查记录
@@ -74,4 +78,36 @@ Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol
 - e0e3f77 实际图检查：固定窄窗预览底部操作；扩大字号并按原图列边界校准。排序比较检查错误地使用运行线程文化，改为集合实际使用的 Culture（[WPF CollectionView 文档](https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.collectionview?view=windowsdesktop-10.0)）。未关闭排序检查。
 - 系统对比色资源图暴露解压所选蓝底蓝字；c631d22 使用成对系统颜色，文件图标也映射主题资源。该图仍不是实际切换 Windows 高对比模式的验收。
 - 解压动画从实际运行 WPF 任务区裁取并编码，未重新绘制、拼接或修饰。GIF 首帧的透明过渡来自原型 170ms 面板淡入。
-- 最终取图、包摘要和检查结果在确认后补记于此，不把前次失败记录当作最终通过。
+- c631d22 隔离 CI 39030107532 的 21 项检查通过；并排复核仍发现标题横向与导航纵向偏移，c78515f 按原图校准，并禁用演示结束后的暂停/取消。最终证据以下列记录为准。
+
+
+## 当前交付证据（9c52303）
+
+[隔离 x64 CI 39030648355](https://github.com/Nomoziya/nomozip/actions/runs/39030648355)
+**26/26 项通过**，源码 9c523038dfee16f532f3c2ce7f125546659336f8。
+9 张 PNG 和 210 帧实际 WPF 任务区 GIF（101 个四舍五入进度位置）保存于
+`core-9c52303/`，逐一核对 SHA-256；代理已查看本轮核心、排序、深色、窄窗与对比色图，其余状态沿用前轮有效视觉检查；动画区域样式未变，全部原图摘要核对。
+GIF 时序/进度由原始记录验证，最终主观流畅度仍由用户体验确认。
+
+| 视觉核对 | 结果与限制 |
+| --- | --- |
+| 布局 | 相同比例检查左侧导航、标题、面包屑、表头/行、预览分界与底栏；修正标题偏左、导航偏下；主客户区 1152×768 DIP |
+| 文字与字体 | 中文文案可读，无核心区文字裁切；字号按核心图比例，未复刻概念图笔画。窄窗文件大小单位已完整 |
+| 图标与颜色 | 保留原品牌；功能图标统一；浅/深色及系统对比色资源分别查看，修正选择按钮文字与文件图标。系统主题切换与真实 DPI 待后续 |
+| 预览与操作 | 照片保持真实比例，元数据来自 ZIP，预览关闭扩展列表；800×600 下按钮固定可见、内容滚动 |
+| 进度状态 | 真实字节读取、220ms 进度插值、170ms 淡入、减少动态效果、完成到 100%；完成后暂停/取消已禁用 |
+| 剩余差异 | 照片、真实计数/大小、字体、功能图标及轻微纹理与概念图不同；完整页面、长路径/多任务、英文、实际引擎与物理缩放未在 R1 验收 |
+
+主目录体验包：`artifacts/ui-reference-candidate-9c52303/x64/nomozip-ui-reference-prototype-x64.zip`，
+448107 字节，SHA-256 `398ad13c6001b6a5b581ee5752094a968177665567d0a64920db3658427c7d7b`。
+`preview/nomozip-reference-preview.exe` 为同包原字节，PE x64 与 ZIP CRC 已核对；共享
+.NET 10 桌面运行库，无打包 coreclr。未在本机启动或安装。
+
+[并排与叠加审阅页](index.html)仍标记为方向待确认。等待用户判断复现方向，随后才
+展开 R2/R3；未把独立原型冒充正式产品完成。前两版与已安装版本保持，ARM64 未启动。
+
+
+用户随后要求调整“更多、名称、大小”的箭头：9c52303 移除字符箭头；更多用 Fluent
+ChevronDown，排序只在活动列显示 ChevronUp/Down。26 项包含初始无箭头、名称升降序
+与大小列切换、真实数值排序核对。`core-9c52303/10-size-sorted.png` 展示当前大小升序。
+中间截图副本保留，未按清理提议删除；当前对照入口指向 9c52303，不将旧图当作新结果。
