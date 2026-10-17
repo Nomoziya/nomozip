@@ -36,7 +36,11 @@ internal static class Capture
         }
         try
         {
-            window.Width = 1120; window.Height = 760; await Layout();
+            window.IsHitTestVisible = false; // neutral screenshots do not inherit the runner cursor's incidental hover.
+            // The isolated runner's desktop may be narrower than the design viewport.
+            // WPF honors an explicit temporary minimum; normal manual use retains 800 DIP.
+            window.MinWidth = 1120; window.Width = 1120; window.Height = 760; await Layout();
+            Check("core capture uses the exact 1120 by 760 DIP viewport", window.Client.ActualWidth == 1120 && window.Client.ActualHeight == 760);
             Check("sample archive contains eight verified entries", window.Model.Entries.Count == 8 && window.Model.ArchiveBytes.Length > 0);
             Check("initial preview is actual selected UTF-8 sample", window.Model.PreviewName == "交付说明.txt" && window.Model.PreviewText.Contains("本次交付包含"));
             Check("checked range starts empty despite highlighted row", !window.Model.HasSelection && !window.ExtractSelected.IsEnabled);
@@ -55,17 +59,22 @@ internal static class Capture
             window.Model.CurrentEntry = window.Model.Entries.Single(item => item.Name == "交付说明.txt"); window.RequestPreview();
             window.Model.Entries.Single(item => item.Name == "配置.json").Checked = false;
             ((App)Application.Current).ApplyTheme(true); await Layout(); Screenshot("03-core-dark-1120");
-            ((App)Application.Current).ApplyTheme(false); window.Width = 800; window.Height = 600; window.HidePreview(); await Layout();
+            ((App)Application.Current).ApplyTheme(false); window.MinWidth = 800; window.Width = 800; window.Height = 600; window.HidePreview(); await Layout();
             Check("minimum window preserves file list and search", window.Files.ActualWidth > 650 && Bounds(window.Search).Right <= window.Client.ActualWidth);
             Check("minimum window removes optional date column", window.Model.DateColumnWidth.Value == 0);
             Screenshot("04-core-light-800");
             window.RequestPreview(); await Layout();
             Check("minimum window preview overlay remains inside client", window.PreviewPane.ActualWidth == 292 && Bounds(window.PreviewPane).Right <= window.Client.ActualWidth);
+            Check("minimum window preview keeps its edit action completely visible", Bounds(window.PreviewEdit).Bottom <= Bounds(window.PreviewPane).Bottom && window.PreviewEdit.ActualHeight == 36);
+            Check("minimum window preview content has a usable scroll viewport", window.PreviewScroll.ViewportHeight >= 180);
             Screenshot("05-core-preview-overlay-800");
             window.HidePreview(); window.Model.Search = "不存在的文件"; await Layout();
             Check("search empty state matches real filtered result", window.Model.VisibleEntries.IsEmpty && window.Model.EmptyVisibility == Visibility.Visible);
+            var textBounds = window.Search.GetRectFromCharacterIndex(0);
+            Check("search text stays inside its input frame", !textBounds.IsEmpty && textBounds.Top >= 0 && textBounds.Bottom <= window.Search.ActualHeight);
             Screenshot("06-core-search-empty-800");
-            window.Model.Search = ""; window.Width = 1120; window.Height = 760; window.RequestPreview();
+            window.Model.Search = ""; window.MinWidth = 1120; window.Width = 1120; window.Height = 760;
+            window.Model.CurrentEntry = window.Model.Entries.Single(item => item.Name == "交付说明.txt"); window.RequestPreview();
             ((App)Application.Current).ApplyTheme(false, true); await Layout();
             Check("contrast selection pairs use system colors", ((SolidColorBrush)Application.Current.Resources["Selected"]).Color == SystemColors.HighlightColor && ((SolidColorBrush)Application.Current.Resources["SelectedText"]).Color == SystemColors.HighlightTextColor);
             Screenshot("07-core-system-contrast-resources");

@@ -50,7 +50,7 @@
           <Button Grid.Column="2" Style="{StaticResource Quiet}" VerticalAlignment="Top" Margin="0,8,0,0" Click="OnPrototypeAction" Tag="关闭压缩包" Foreground="{DynamicResource Muted}"><StackPanel Orientation="Horizontal"><local:Symbol Kind="Dismiss"/><TextBlock Text="关闭压缩包" Foreground="{DynamicResource Muted}" Margin="8,0,0,0"/></StackPanel></Button>
         </Grid>
         <Border Grid.Row="1" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="8">
-          <Grid>
+          <Grid x:Name="ArchiveCard">
             <Grid.RowDefinitions><RowDefinition Height="56"/><RowDefinition Height="44"/><RowDefinition Height="*"/><RowDefinition Height="36"/></Grid.RowDefinitions>
             <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1">
               <DockPanel Margin="12,0">
@@ -77,7 +77,7 @@
                   </TextBlock>
                 </Grid>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                  <Button Style="{StaticResource IconButton}" Width="28" Height="28" IsEnabled="False" AutomationProperties.Name="上一级，已在根目录"><local:Symbol Kind="ArrowUp"/></Button>
+                  <Button Style="{StaticResource IconButton}" Width="28" Height="28" Padding="4" IsEnabled="False" AutomationProperties.Name="上一级，已在根目录"><local:Symbol Kind="ArrowUp"/></Button>
                   <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,0,1,0" Margin="8,5,12,5"/>
                   <local:Symbol Kind="Archive" Foreground="{DynamicResource Muted}"/><TextBlock Text="项目交付.zip" Margin="8,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -115,13 +115,19 @@
               </Grid>
               <Border Grid.Column="1" x:Name="PreviewPane" Background="{DynamicResource Inset}" BorderBrush="{DynamicResource Line}" BorderThickness="1,0,0,0">
                 <Grid Margin="20,16,20,16">
-                  <Grid.RowDefinitions><RowDefinition Height="36"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                  <DockPanel><Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Height="28" Width="28" Click="OnClosePreview" AutomationProperties.Name="关闭预览"><local:Symbol Kind="Dismiss"/></Button><TextBlock Text="文件预览" FontSize="12" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/></DockPanel>
-                  <StackPanel Grid.Row="1" Margin="0,8,0,16"><local:Symbol Kind="DocumentText" Width="28" Height="28" HorizontalAlignment="Left" Foreground="{DynamicResource Accent}"/><TextBlock Text="{Binding PreviewName}" FontSize="16" FontWeight="SemiBold" Margin="0,12,0,4" ToolTip="{Binding PreviewName}"/><TextBlock Text="{Binding PreviewMetadata}" Style="{StaticResource Caption}"/></StackPanel>
-                  <Border Grid.Row="2" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><TextBlock x:Name="PreviewText" Text="{Binding PreviewText}" FontFamily="{StaticResource PreviewFont}" FontSize="13" LineHeight="23" TextWrapping="Wrap" TextTrimming="None"/></ScrollViewer>
-                  </Border>
-                  <Button Grid.Row="3" Content="编辑文本" HorizontalAlignment="Stretch" Margin="0,16,0,0" Click="OnEditPreview"/>
+                  <Grid.RowDefinitions><RowDefinition Height="36"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                  <DockPanel><Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Height="28" Width="28" Padding="4" Click="OnClosePreview" AutomationProperties.Name="关闭预览"><local:Symbol Kind="Dismiss"/></Button><TextBlock Text="文件预览" FontSize="12" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/></DockPanel>
+                  <ScrollViewer Grid.Row="1" x:Name="PreviewScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,8,0,0">
+                      <local:Symbol Kind="DocumentText" Width="28" Height="28" HorizontalAlignment="Left" Foreground="{DynamicResource Accent}"/>
+                      <TextBlock Text="{Binding PreviewName}" FontSize="16" FontWeight="SemiBold" Margin="0,12,0,4" ToolTip="{Binding PreviewName}"/>
+                      <TextBlock Text="{Binding PreviewMetadata}" Style="{StaticResource Caption}"/>
+                      <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Margin="0,16,0,0" Padding="0,16,0,0">
+                        <TextBlock x:Name="PreviewText" Text="{Binding PreviewText}" FontFamily="{StaticResource PreviewFont}" FontSize="13" LineHeight="23" TextWrapping="Wrap" TextTrimming="None"/>
+                      </Border>
+                    </StackPanel>
+                  </ScrollViewer>
+                  <Button Grid.Row="2" x:Name="PreviewEdit" Content="编辑文本" HorizontalAlignment="Stretch" Margin="0,12,0,0" Click="OnEditPreview"/>
                 </Grid>
               </Border>
             </Grid>
