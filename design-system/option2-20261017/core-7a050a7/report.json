@@ -1,0 +1,158 @@
+{
+  "passed": true,
+  "checks": {
+    "exact core viewport": true,
+    "captured client has an opaque themed canvas": true,
+    "brand asset retains original size": true,
+    "same eight-entry ZIP fixture is used": true,
+    "task panel and action stay fully visible": true,
+    "narrow navigation remains reachable through menu": true,
+    "narrow task actions stay inside client": true,
+    "search empty result is real and text remains inside input": true,
+    "progress starts a real WPF animation clock": true,
+    "progress settles to the reported value": true,
+    "reduced motion removes animation while retaining progress": true,
+    "disabling motion interrupts an active animation immediately": true,
+    "sample extraction finishes only after matching actual bytes": true,
+    "recorded progress advances monotonically": true,
+    "actual animation includes multiple intermediate visual positions": true,
+    "captured animation frames contain the visible task surface": true,
+    "encoded GIF preserves visible first and last frames": true,
+    "contrast resources preserve system selection pair": true
+  },
+  "error": null,
+  "sourceCommit": "7a050a735a1a40d8a483ac29efe115e3c33db608",
+  "pictures": [
+    {
+      "file": "01-option2-light-1120.png",
+      "width": 1120,
+      "height": 760,
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "dark": false,
+      "progress": 62,
+      "displayedProgress": 62,
+      "motionEnabled": true,
+      "sha256": "ca33ebc3584bd968b6ea045dc8f66aebff83513b8ca4924e75fed7445917fe08"
+    },
+    {
+      "file": "02-option2-dark-1120.png",
+      "width": 1120,
+      "height": 760,
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "dark": true,
+      "progress": 62,
+      "displayedProgress": 62,
+      "motionEnabled": true,
+      "sha256": "804bf15af3f342bd17dc9eb9d4af37cb2de6e7d165df4f6e0cbfe343a6650b24"
+    },
+    {
+      "file": "03-option2-light-800.png",
+      "width": 800,
+      "height": 600,
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "dark": false,
+      "progress": 62,
+      "displayedProgress": 62,
+      "motionEnabled": true,
+      "sha256": "f237f7b112a8d8ee9fed5a7401d8cce8a8a7ac127a0cc014c19b832e5b0d4b94"
+    },
+    {
+      "file": "04-option2-empty-800.png",
+      "width": 800,
+      "height": 600,
+      "clientDip": {
+        "width": 800,
+        "height": 600
+      },
+      "dark": false,
+      "progress": 62,
+      "displayedProgress": 62,
+      "motionEnabled": true,
+      "sha256": "00c3c09fba92996a730c3cbcd860b7ef5e5184bc90e69454a39e1d33ecf6d1f1"
+    },
+    {
+      "file": "06-option2-completed.png",
+      "width": 1120,
+      "height": 760,
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "dark": false,
+      "progress": 100,
+      "displayedProgress": 100,
+      "motionEnabled": true,
+      "sha256": "718b0f7e07a867865bf9fafc5f1491120f5cd8a4088c317a06105e3a86908641"
+    },
+    {
+      "file": "07-option2-contrast-resources.png",
+      "width": 1120,
+      "height": 760,
+      "clientDip": {
+        "width": 1120,
+        "height": 760
+      },
+      "dark": false,
+      "progress": 62,
+      "displayedProgress": 62,
+      "motionEnabled": false,
+      "sha256": "54dce8a47c9267f4ec675393c4b9b570cf9d1bafc8784191d68538cd85f284a6"
+    }
+  ],
+  "animation": {
+    "file": "05-progress-motion.gif",
+    "frames": 32,
+    "frameDelayMs": 100,
+    "sha256": "409478724681ce2fb497b6f9fccc8042d36117af9950b3bb3f4c408450344d22",
+    "motionValues": [
+      7.413360583434343,
+      8.010012515644556,
+      15.962813286485215,
+      16.020025031289112,
+      23.78902795711997,
+      24.030037546933666,
+      31.229284155740228,
+      31.664580725907385,
+      39.25920441335339,
+      39.67459324155194,
+      43.29545770555885,
+      43.55444305381727,
+      51.41127262298311,
+      56.5264730092278,
+      59.057631672576534,
+      63.32853445810932,
+      67.0110750944485,
+      68.0770408792144,
+      68.58251685251739,
+      73.24989520860778,
+      76.54954156172198,
+      80.88954162213561,
+      84.26815523466216,
+      85.6784042413064,
+      86.35062526207204,
+      86.35794743429287,
+      94.0812113093602,
+      94.36795994993741,
+      99.77926184493306,
+      100,
+      100,
+      100
+    ],
+    "recordedFrom": "Actual running WPF task panel, no image composition",
+    "preferenceSimulatedOnInIsolatedCi": true,
+    "systemClientAreaAnimation": false
+  },
+  "font": "Microsoft YaHei UI, Segoe UI, Microsoft YaHei, Global User Interface",
+  "scope": "x64 option two standalone prototype; real generated ZIP read to memory with intentional pacing; no production extraction/vault or disk writes",
+  "userApproved": false,
+  "physicalDpiAccepted": false
+}
