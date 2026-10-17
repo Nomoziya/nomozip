@@ -30,8 +30,15 @@ public partial class MainWindow : Window
         // At narrow widths the same preview becomes a bounded overlay, preserving file-name space.
         if (!IsInitialized) return;
         var overlay = ActualWidth < 960;
+        var destination = overlay ? ArchiveCard : Workspace;
+        if (PreviewPane.Parent is Panel parent && parent != destination)
+        {
+            parent.Children.Remove(PreviewPane); destination.Children.Add(PreviewPane);
+        }
         PreviewColumn.Width = new GridLength(previewVisible && !overlay ? 292 : 0);
         PreviewPane.Visibility = previewVisible ? Visibility.Visible : Visibility.Collapsed;
+        Grid.SetRow(PreviewPane, 0);
+        Grid.SetRowSpan(PreviewPane, overlay ? 3 : 1);
         Grid.SetColumn(PreviewPane, overlay ? 0 : 1);
         PreviewPane.HorizontalAlignment = overlay ? HorizontalAlignment.Right : HorizontalAlignment.Stretch;
         PreviewPane.Width = overlay ? 292 : double.NaN;
