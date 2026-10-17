@@ -1,10 +1,53 @@
 name: Desktop UI and lightweight package validation
 on:
   workflow_dispatch:
+    inputs:
+      scope:
+        description: 'Standalone design prototype or existing full product validation'
+        type: choice
+        default: prototype
+        options: [prototype, product]
 permissions:
   contents: read
 jobs:
+  prototype:
+    if: github.event.inputs.scope != 'product'
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - name: Build independent shared-runtime prototype
+        run: dotnet publish prototypes/UiNext/UiNext.csproj -c Release -o artifacts/ui-next-prototype/app --no-self-contained --nologo -m:1 -nr:false
+      - name: Capture running WPF prototype using generated archive only
+        run: |
+          $taskOutput = Join-Path $PWD 'artifacts/ui-next-prototype/evidence'
+          $taskProcess = Start-Process ./artifacts/ui-next-prototype/app/nomozip-design-preview.exe -ArgumentList @('--capture', $taskOutput) -WindowStyle Hidden -Wait -PassThru
+          if ($taskProcess.ExitCode -ne 0) { throw 'Core visual prototype validation failed.' }
+          $taskReport = Get-Content (Join-Path $taskOutput 'report.json') -Raw | ConvertFrom-Json
+          if (-not $taskReport.passed) { throw 'Core visual prototype report failed.' }
+      - name: Package exact prototype bytes
+        run: Compress-Archive -Path artifacts/ui-next-prototype/app/* -DestinationPath artifacts/nomozip-ui-next-prototype-x64.zip
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: ui-next-core-prototype
+          path: |
+            artifacts/ui-next-prototype/evidence/**/*
+            artifacts/nomozip-ui-next-prototype-x64.zip
+          if-no-files-found: error
   ui:
+    if: github.event.inputs.scope == 'product'
     strategy:
       fail-fast: false
       matrix:
