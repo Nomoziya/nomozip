@@ -13,7 +13,7 @@ internal static class DesktopTypographyValidation
     private static readonly List<string> buttonIssues=[];
     private static readonly List<string> roleIssues=[];
     private static readonly (string Key,double Size,int Weight)[] roles=
-    [ ("WorkspacePageTitle",26,700),("WorkspaceSectionTitle",18,600),("PageTitle",22,600),("SectionTitle",16,600),("Heading",16,600),
+    [ ("EmptyTitle",25,600),("WorkspacePageTitle",26,700),("WorkspaceSectionTitle",18,600),("PageTitle",22,600),("SectionTitle",16,600),("Heading",16,600),
       ("Caption",13,400),("Secondary",13,400),("BodyText",15,400) ];
 
     internal static void Record(Window window,string path)

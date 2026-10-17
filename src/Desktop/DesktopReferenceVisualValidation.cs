@@ -21,7 +21,8 @@ internal static class DesktopReferenceVisualValidation
     {
         if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") throw new InvalidOperationException("Isolated CI only.");
         var data = Path.Combine(folder, "synthetic", "reference-baseline"); Directory.CreateDirectory(data);
-        var archive = Path.Combine(data, "图片备份.zip");
+        var downloads=Path.Combine(data,UiText.LanguageCode=="en"?"Downloads":"下载");Directory.CreateDirectory(downloads);
+        var archive = Path.Combine(downloads, "图片备份.zip");
         CreateFixture(archive, Path.Combine(root, "prototypes", "UiReference", "Assets", "moraine-lake.jpg"));
         var oldContext = window.DataContext;
         var vault = new DpapiPasswordVault(Path.Combine(data, "synthetic-vault.apv"));
@@ -63,8 +64,13 @@ internal static class DesktopReferenceVisualValidation
             var metadata=new BitmapMetadata("gif");metadata.SetQuery("/grctlext/Delay",(ushort)8);metadata.SetQuery("/grctlext/Disposal",(byte)2);frames.Add(BitmapFrame.Create(crop,null,metadata,null)); values.Add(track.DisplayedValue);
         }
         var gif=new GifBitmapEncoder();foreach(var frame in frames)gif.Frames.Add(frame);using(var stream=File.Create(Path.Combine(folder,"reference-task-motion.gif")))gif.Save(stream);
-        sampleTask.Completed = true; sampleTask.Running = false; await Layout(); check("completed task displays exact one hundred immediately", track.DisplayedValue == 100 && ring.Value == 100 && percent.Text == "100%");
-        track.SetAnimationPreferenceForValidation(false); sampleTask.Completed=false;sampleTask.Running=true;sampleTask.Percent=37;await Layout();check("reduced motion snaps task progress without interpolation",track.DisplayedValue==37);track.SetAnimationPreferenceForValidation(null);
+        void CurrentTaskVisuals()
+        {
+            taskView=Descendants(window.ArchiveTasks).OfType<TaskProgressView>().Single(view=>ReferenceEquals(view.DataContext,sampleTask));
+            track=Descendants(taskView).OfType<TaskProgressTrack>().Single();ring=Descendants(taskView).OfType<TaskProgressRing>().Single();percent=Descendants(taskView).OfType<TextBlock>().Single(text=>text.Name=="Percentage");
+        }
+        sampleTask.Completed = true; sampleTask.Running = false; await Layout(); CurrentTaskVisuals(); check("completed task displays exact one hundred immediately", track.DisplayedValue == 100 && ring.Value == 100 && percent.Text == "100%");
+        sampleTask.Completed=false;sampleTask.Running=true;sampleTask.Percent=37;await Layout();CurrentTaskVisuals();track.SetAnimationPreferenceForValidation(false);sampleTask.Percent=51;await Layout();check("reduced motion snaps task progress without interpolation",track.DisplayedValue==51);track.SetAnimationPreferenceForValidation(null);
         sampleTask.IsIndeterminate=true;await Layout();check("unknown total does not display a percentage or determinate ring",!percent.IsVisible && !ring.IsVisible && !track.IsVisible);model.Tasks.Clear();
         await File.WriteAllTextAsync(Path.Combine(folder,"reference-task-motion.json"),JsonSerializer.Serialize(new {scope="Actual product task control and ArchiveTaskRow binding; controlled progress/pause UI fixture, not engine throughput or a queue-pause integration test",simulationForAnimationEnabledInIsolatedCi=true,frames=frames.Count,frameDelayMs=80,values,sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(folder,"reference-task-motion.gif")))).ToLowerInvariant()}));
         var opening = model.OpenWorkspaceArchiveAsync([archive]);

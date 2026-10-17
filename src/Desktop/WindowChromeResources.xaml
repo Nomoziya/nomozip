@@ -22,7 +22,7 @@
   </Style>
   <ControlTemplate x:Key="IntegratedWindowTemplate" TargetType="Window">
     <Grid>
-    <Border x:Name="WindowInset" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" CornerRadius="8">
+    <Border x:Name="WindowInset" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ButtonBorderBrush}" BorderThickness="1" CornerRadius="7">
       <Grid>
         <AdornerDecorator><ContentPresenter/></AdornerDecorator>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" shell:WindowChrome.IsHitTestVisibleInChrome="True">

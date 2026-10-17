@@ -101,12 +101,14 @@ jobs:
           ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker
       - name: Validate redesigned pages and actual archive operations in both languages
         run: |
+          $taskProductFailed = $false
           foreach ($taskLanguage in @('zh-CN','en')) {
             $taskProcess = Start-Process ./artifacts/app/ArchivePassword.exe -ArgumentList @('--validate-redesign',$PWD.Path,$taskLanguage) -WindowStyle Hidden -Wait -PassThru
-            if ($taskProcess.ExitCode -ne 0) { throw "Redesign validation failed: $taskLanguage" }
+            if ($taskProcess.ExitCode -ne 0) { $taskProductFailed = $true; Write-Warning "Redesign validation failed: $taskLanguage" }
             $taskReport = Get-Content "artifacts/ui-redesign/$taskLanguage/report.json" -Raw | ConvertFrom-Json
-            if (-not $taskReport.passed) { throw "Redesign report failed: $taskLanguage" }
+            if (-not $taskReport.passed) { $taskProductFailed = $true; Write-Warning "Redesign report failed: $taskLanguage" }
           }
+          if ($taskProductFailed) { throw 'One or more product language validations failed.' }
       - name: Package the exact tested shared-runtime candidate
         run: |
           Compress-Archive -Path artifacts/app/* -DestinationPath 'artifacts/nomozip-ui-redesign-${{ matrix.architecture }}.zip'

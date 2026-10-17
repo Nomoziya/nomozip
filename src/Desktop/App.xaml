@@ -44,8 +44,11 @@
       <SolidColorBrush x:Key="NavigationTextBrush" Color="#006CD9"/>
     <SolidColorBrush x:Key="HeaderHoverBrush" Color="#E8EDF3"/>
     <SolidColorBrush x:Key="HeaderPressedBrush" Color="#DBE3ED"/>
+    <SolidColorBrush x:Key="PressedBrush" Color="#D4E6FA"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#005BBC"/>
     <Style TargetType="local:FluentIcon"><Setter Property="Width" Value="20"/><Setter Property="Height" Value="20"/><Setter Property="Focusable" Value="False"/><Setter Property="IsHitTestVisible" Value="False"/><Setter Property="Foreground" Value="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Control}}"/></Style>
     <Style x:Key="WorkspacePageTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}"><Setter Property="FontSize" Value="26"/><Setter Property="FontWeight" Value="Bold"/><Setter Property="LineHeight" Value="38"/></Style>
+    <Style x:Key="EmptyTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}"><Setter Property="FontSize" Value="25"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="LineHeight" Value="34"/></Style>
     <Style x:Key="WorkspaceSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}"><Setter Property="FontSize" Value="18"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="LineHeight" Value="26"/></Style>
     <Style x:Key="PageTitle" TargetType="TextBlock" BasedOn="{StaticResource BodyText}">
         <Setter Property="FontSize" Value="22"/>
@@ -110,13 +113,12 @@
             <ControlTemplate TargetType="ToggleButton">
               <Border x:Name="RevealSurface" Background="{TemplateBinding Background}" CornerRadius="4">
                 <Grid>
-                  <Path Data="M1,10 Q12,-3 23,10 Q12,23 1,10 M16,10 A4,4 0 1 1 8,10 A4,4 0 1 1 16,10" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" Width="22" Height="18" Stretch="Uniform"/>
-                  <Path x:Name="RevealSlash" Data="M3,2 L21,20" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" Width="22" Height="20" Stretch="Uniform" Visibility="Collapsed"/>
+                  <local:FluentIcon x:Name="RevealEye" Kind="Eye" Foreground="{TemplateBinding Foreground}" Width="20" Height="20"/>
                 </Grid>
               </Border>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                  <Setter TargetName="RevealSlash" Property="Visibility" Value="Visible"/>
+                  <Setter TargetName="RevealEye" Property="local:FluentIcon.Kind" Value="EyeOff"/>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                   <Setter TargetName="RevealSurface" Property="Background" Value="{DynamicResource HoverBrush}"/>
@@ -162,7 +164,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="Padding" Value="15,0"/>
-        <Setter Property="Background" Value="{DynamicResource CanvasBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -174,17 +176,17 @@
                 <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
                   <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                 </Border>
-                <Border x:Name="Overlay" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Background="{TemplateBinding Foreground}" Opacity="0" IsHitTestVisible="False"/>
+                <Border x:Name="Overlay" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Background="{DynamicResource HoverBrush}" Opacity="0" IsHitTestVisible="False"/>
               </Grid>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                  <Setter TargetName="Overlay" Property="Opacity" Value="0.08"/>
+                  <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
                 </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                  <Setter TargetName="Overlay" Property="Opacity" Value="0.16"/>
+                <Trigger Property="IsPressed" Value="True"><Setter TargetName="Overlay" Property="Background" Value="{DynamicResource PressedBrush}"/>
+                  <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                  <Setter Property="Opacity" Value="0.6"/>
+                  <Setter Property="Opacity" Value="0.45"/>
                 </Trigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -193,9 +195,9 @@
       </Style>
       <DataTemplate x:Key="MoreActionContent">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <Path Data="{StaticResource Icon.MoreHorizontal}" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Stretch="Uniform" Margin="0,0,10,0" VerticalAlignment="Center"/>
+          <loc:FluentIcon Kind="MoreHorizontal" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center"/>
           <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
-          <Path Data="{StaticResource Icon.ChevronDown}" Width="12" Height="12" Stretch="Fill" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="8,0,0,0" VerticalAlignment="Center"/>
+          <loc:FluentIcon Kind="ChevronDown" Width="12" Height="12" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="8,0,0,0" VerticalAlignment="Center"/>
         </StackPanel>
       </DataTemplate>
       <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -203,6 +205,7 @@
         <Setter Property="Foreground" Value="{DynamicResource OnAccentBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="FontWeight" Value="Normal"/>
+              <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="PrimarySurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" RecognizesAccessKey="True"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PrimarySurface" Property="Background" Value="{DynamicResource AccentHoverBrush}"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter TargetName="PrimarySurface" Property="Background" Value="{DynamicResource AccentHoverBrush}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
       </Style>
       <Style x:Key="SubtleButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="Transparent"/>
@@ -590,7 +593,7 @@
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="DataGridRow">
-              <Border x:Name="RowSurface" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="4">
+              <Border x:Name="RowSurface" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="0">
                 <Grid>
                   <DataGridCellsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                   <Border Height="1" VerticalAlignment="Bottom" Background="{DynamicResource DividerBrush}" IsHitTestVisible="False"/>
@@ -604,7 +607,7 @@
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
                   <Setter TargetName="RowSurface" Property="Background" Value="{DynamicResource SelectionBrush}"/>
-                  <Setter TargetName="SelectionBar" Property="Visibility" Value="Visible"/>
+
                   <Setter Property="Foreground" Value="{DynamicResource SelectionTextBrush}"/>
                 </Trigger>
                 <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -645,7 +648,7 @@
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="SelectionMode" Value="Single"/>
       </Style>
-      <DataTemplate x:Key="PauseActionContent"><StackPanel Orientation="Horizontal"><Path Stretch="Uniform" Data="{StaticResource Icon.Pause}" Fill="{DynamicResource AccentBrush}" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{Binding}" VerticalAlignment="Center"/></StackPanel></DataTemplate>
+      <DataTemplate x:Key="PauseActionContent"><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Pause" Foreground="{DynamicResource AccentBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{Binding}" VerticalAlignment="Center"/></StackPanel></DataTemplate>
       <Style x:Key="BreadcrumbButton" TargetType="Button" BasedOn="{StaticResource SubtleButton}">
         <Setter Property="MinWidth" Value="24"/><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="4,2"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/>
@@ -730,7 +733,7 @@
           </Setter.Value>
         </Setter>
       </Style>
-      <SolidColorBrush x:Key="FolderIconBrush" Color="#F4B83B"/>
+      <SolidColorBrush x:Key="FolderIconBrush" Color="#AD6C00"/>
       <SolidColorBrush x:Key="PdfIconBrush" Color="#D74842"/>
       <SolidColorBrush x:Key="SheetIconBrush" Color="#16845C"/>
       <SolidColorBrush x:Key="IconOnFillBrush" Color="#FFFFFF"/>

@@ -55,6 +55,7 @@ internal static class DesktopRedesignValidation
             var failedPreviewTask=new ArchiveTaskRow(@"D:\Downloads\damaged.7z","8 MB") {Status=UiText.Get("T_db5cb5a070e6"),Failure=new EngineResult {Status="error",Code="synthetic-preview"}};
             model.Tasks.Add(failedPreviewTask);
             Check("failed task offers details rather than extract",failedPreviewTask.StateKind=="error" && failedPreviewTask.PrimaryActionCaption==UiText.Get("Redesign.ViewDetails"));
+            window.MinWidth=1152;window.Width=1152;window.Height=768;await Layout();
             Check("five destinations use four sidebar items plus bottom settings",window.Navigation.Items.Count==4 && window.SettingsNavigation.IsVisible);
             foreach(var mode in new[]{"light","dark","soft","contrast"})
             {
@@ -105,7 +106,7 @@ internal static class DesktopRedesignValidation
                         Capture($"{mode}-{width}-settings-{section}");
                     }
                     model.Page=1;model.SelectedPassword=model.PasswordRows.FirstOrDefault();await Layout();
-                    Check($"{mode}/{width} vault detail adapts",window.VaultDetails.IsVisible==(width>=1000));
+                    Check($"{mode}/{width} vault detail adapts",window.VaultDetails.IsVisible && Math.Abs(window.VaultDetailsColumn.Width.Value-360)<1);
                     if(width>=1000)Check($"{mode}/{width} collapsed vault rules are not clipped",Bounds(window.VaultDetails.RulesExpander).Bottom<=Bounds(window.VaultDetails.DetailScroll).Bottom+1);
                 }
                 if(mode=="contrast") Check("system contrast preserves foreground/background pairs",ReferenceEquals(Application.Current.Resources["TextBrush"],SystemColors.WindowTextBrush) && ReferenceEquals(Application.Current.Resources["SelectionBrush"],SystemColors.HighlightBrush));
@@ -275,8 +276,8 @@ internal static class DesktopRedesignValidation
             var menuIcon=(ContentPresenter)firstAction.Template.FindName("MenuIcon",firstAction);
             var menuFocus=(Border)firstAction.Template.FindName("ItemFocus",firstAction);
             Check("archive more menu retains icons shortcut and actual keyboard focus",moreMenu.IsOpen && menuIcon.IsVisible && menuIcon.ActualWidth>=18 && firstAction.InputGestureText=="Ctrl+A" && moreMenu.InputBindings.OfType<KeyBinding>().Any(binding=>binding.Key==Key.A && binding.Modifiers==ModifierKeys.Control && ReferenceEquals(binding.Command,contents.SelectVisibleCommand)) && firstAction.IsKeyboardFocused && ReferenceEquals(menuFocus.BorderBrush,Application.Current.Resources["FocusBrush"]));
-            await File.WriteAllTextAsync(Path.Combine(folder,"menu-glyphs.json"),JsonSerializer.Serialize(moreMenu.Items.OfType<MenuItem>().Select(item=>new {header=item.Header?.ToString(),iconType=item.Icon?.GetType().Name,width=(item.Icon as FrameworkElement)?.ActualWidth,height=(item.Icon as FrameworkElement)?.ActualHeight,stroke=((item.Icon as System.Windows.Shapes.Path)?.Stroke as SolidColorBrush)?.Color.ToString(),foreground=(item.Foreground as SolidColorBrush)?.Color.ToString()})));
-            Check("archive menu glyphs have visible themed strokes",moreMenu.Items.OfType<MenuItem>().All(item=>item.Icon is System.Windows.Shapes.Path icon && icon.ActualWidth>0 && icon.ActualHeight>0 && Math.Max(icon.ActualWidth,icon.ActualHeight)>=18 && icon.Stroke is SolidColorBrush brush && brush.Color==((SolidColorBrush)item.Foreground).Color));
+            await File.WriteAllTextAsync(Path.Combine(folder,"menu-glyphs.json"),JsonSerializer.Serialize(moreMenu.Items.OfType<MenuItem>().Select(item=>new {header=item.Header?.ToString(),iconType=item.Icon?.GetType().Name,width=(item.Icon as FrameworkElement)?.ActualWidth,height=(item.Icon as FrameworkElement)?.ActualHeight,fill=((item.Icon as FluentIcon)?.Foreground as SolidColorBrush)?.Color.ToString(),foreground=(item.Foreground as SolidColorBrush)?.Color.ToString()})));
+            Check("archive menu glyphs have visible themed strokes",moreMenu.Items.OfType<MenuItem>().All(item=>item.Icon is FluentIcon icon && icon.ActualWidth>0 && icon.ActualHeight>0 && Math.Max(icon.ActualWidth,icon.ActualHeight)>=18 && icon.Foreground is SolidColorBrush brush && brush.Color==((SolidColorBrush)item.Foreground).Color));
             var popupBitmap=new RenderTargetBitmap((int)Math.Ceiling(moreMenu.ActualWidth),(int)Math.Ceiling(moreMenu.ActualHeight),96,96,PixelFormats.Pbgra32);popupBitmap.Render(moreMenu);
             var popupEncoder=new PngBitmapEncoder();popupEncoder.Frames.Add(BitmapFrame.Create(popupBitmap));using(var popupFile=File.Create(Path.Combine(folder,"actual-soft-archive-more-menu.png")))popupEncoder.Save(popupFile);
             moreMenu.IsOpen=false;theme.SetMode("light");

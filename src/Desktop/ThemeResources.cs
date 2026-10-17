@@ -29,7 +29,7 @@ internal sealed class ThemeResources
         "AccentBrush", "OnAccentBrush", "SelectionBrush", "SelectionTextBrush", "FocusBrush", "ErrorBrush", "HoverBrush", "SuccessBrush", "ButtonBorderBrush", "FolderIconBrush", "PdfIconBrush", "SheetIconBrush", "IconOnFillBrush", "WarningSurfaceBrush", "WarningTextBrush"
     ];
     private readonly Dictionary<string, object> defaults;
-    private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#737B85", "#3C3C3C", "#75B6E7", "#102435", "#263E50", "#F2F7FC", "#75B6E7", "#F1B5AF", "#30363C", "#8BD5A8", "#737B85", "#F4B83B", "#D74842", "#16845C", "#FFFFFF", "#3B3423", "#E8C878"];
+    private static readonly string[] DarkColors = ["#202020", "#242424", "#F5F5F5", "#BDBDBD", "#737B85", "#3C3C3C", "#75B6E7", "#102435", "#263E50", "#F2F7FC", "#75B6E7", "#F1B5AF", "#30363C", "#8BD5A8", "#737B85", "#E2B251", "#D74842", "#16845C", "#FFFFFF", "#3B3423", "#E8C878"];
     private static readonly string[] SoftColors = ["#25282B","#2C3034","#E5E2DA","#C8C5BD","#8F969A","#454C50","#9BBCD0","#25282B","#304858","#E5E2DA","#C5B98B","#E3AAA3","#333B40","#93BAA3","#78858C","#C7AB65","#BC827D","#729B84","#25282B","#39372D","#CAB77C"];
     internal void SetMode(string mode)
     {
@@ -64,6 +64,8 @@ internal sealed class ThemeResources
         resources["WarningSurfaceBrush"] = SystemColors.WindowBrush;
         resources["WarningTextBrush"] = SystemColors.WindowTextBrush;
         }
+        resources["PressedBrush"] = highContrast ? SystemColors.ControlBrush : new SolidColorBrush((Color)ColorConverter.ConvertFromString(IsDark ? "#354858" : "#D4E6FA"));
+        resources["AccentHoverBrush"] = highContrast ? SystemColors.HighlightBrush : new SolidColorBrush((Color)ColorConverter.ConvertFromString(IsDark ? "#98C9EE" : "#005BBC"));
         resources["NavigationSelectionBrush"] = resources["SelectionBrush"];
         resources["NavigationTextBrush"] = highContrast ? SystemColors.HighlightTextBrush : resources["AccentBrush"];
         resources["HeaderHoverBrush"] = highContrast ? SystemColors.ControlBrush : new SolidColorBrush((Color)ColorConverter.ConvertFromString(IsDark ? "#31363C" : "#E8EDF3"));

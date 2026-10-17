@@ -38,6 +38,7 @@ public partial class MainWindow : Window
             var narrow = ActualWidth < 1000;
             var compact = ActualWidth < 1050;
             System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(ReferenceCompactMenu, true);
+            System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(ReferenceThemeAction, true);
             ReferenceSidebar.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
             ReferenceCompactMenu.Visibility = compact ? Visibility.Visible : Visibility.Collapsed;
             if (ArchivePreviewPane.Visibility == Visibility.Visible) PreviewColumn.Width = new GridLength(compact ? 300 : 350);
