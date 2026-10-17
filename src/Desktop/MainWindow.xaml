@@ -388,11 +388,11 @@
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="{loc:Text Task.Actions}" Width="152">
+                    <DataGridTemplateColumn x:Name="TaskActionsColumn" Header="{loc:Text Task.Actions}" Width="172" CanUserResize="False">
                       <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Button Click="OnTaskRowAction" Margin="4,0,4,0" Padding="12,6" HorizontalAlignment="Left" Tag="TaskPrimary">
+                          <Grid Margin="8,0" VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                            <Button Click="OnTaskRowAction" Margin="0" Height="36" MinHeight="36" Padding="10,0" HorizontalAlignment="Stretch" Tag="TaskPrimary">
                               <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                   <Setter Property="IsEnabled" Value="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=Window}}"/>
@@ -420,8 +420,8 @@
                                 </Style>
                               </Button.Style>
                             </Button>
-                            <Button Click="OnTaskMore" Padding="6" Margin="4,0,0,0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><Path Data="M2,4 A1.4,1.4 0 1 1 2,6.8 A1.4,1.4 0 1 1 2,4 M8,4 A1.4,1.4 0 1 1 8,6.8 A1.4,1.4 0 1 1 8,4 M14,4 A1.4,1.4 0 1 1 14,6.8 A1.4,1.4 0 1 1 14,4" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="16" Height="12"/></Button>
-                          </StackPanel>
+                            <Button Click="OnTaskMore" Grid.Column="2" Padding="6" Margin="0" Width="32" Height="32" MinHeight="32" Style="{StaticResource SubtleButton}" AutomationProperties.Name="{loc:Text Redesign.More}"><Path Data="M2,4 A1.4,1.4 0 1 1 2,6.8 A1.4,1.4 0 1 1 2,4 M8,4 A1.4,1.4 0 1 1 8,6.8 A1.4,1.4 0 1 1 8,4 M14,4 A1.4,1.4 0 1 1 14,6.8 A1.4,1.4 0 1 1 14,4" Fill="{Binding Foreground,RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="18" Height="4" Stretch="Uniform" VerticalAlignment="Center"/></Button>
+                          </Grid>
                         </DataTemplate>
                       </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
