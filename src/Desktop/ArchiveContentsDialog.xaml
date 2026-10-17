@@ -14,7 +14,7 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Border x:Name="BrowserHeader" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="24,24,24,16">
+    <Border x:Name="BrowserHeader" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="24,36,24,16">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
@@ -59,7 +59,7 @@
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal">
                     <Path Data="M0,0 L4,4 L0,8" Stroke="{DynamicResource SecondaryBrush}" StrokeThickness="1.2" Width="4" Height="8" Margin="14,0" VerticalAlignment="Center"/>
-                    <Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource SubtleButton}" Foreground="{DynamicResource TextBrush}" FontWeight="Normal" Padding="0,4" MaxWidth="240" ToolTip="{Binding Label}"/>
+                    <Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource BreadcrumbButton}" Foreground="{DynamicResource TextBrush}" FontWeight="Normal" MaxWidth="240" ToolTip="{Binding Label}"/>
                   </StackPanel>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>

@@ -279,7 +279,7 @@ This check produces no extracted files and does not save or update vault passwor
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_176f8887e229">
-    <value>Delete selected password</value>
+    <value>Delete</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_17a8f74d32e3">
@@ -1873,7 +1873,7 @@ Verified passwords apply to the corresponding files. Enter another password for 
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a3610c2b94b0">
-    <value>Automatically try this password during extraction</value>
+    <value>Automatically try this password</value>
     <comment>src/Desktop/PasswordDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a37778f17c5f">
@@ -1889,7 +1889,7 @@ Verified passwords apply to the corresponding files. Enter another password for 
     <comment>src\Desktop\FileHashViewModel.cs:154</comment>
   </data>
   <data xml:space="preserve" name="T_a465dc5d7781">
-    <value>Automatically try saved passwords</value>
+    <value>Try passwords from the vault</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a49163724694">
@@ -1973,7 +1973,7 @@ Verified passwords apply to the corresponding files. Enter another password for 
     <comment>src\Desktop\CompressionViewModel.cs:184</comment>
   </data>
   <data xml:space="preserve" name="T_abab7359518e">
-    <value>Priority matching rule (optional)</value>
+    <value>Matching and priority rules</value>
     <comment>src/Desktop/PasswordDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_abb6a356f9a2">
@@ -3230,4 +3230,22 @@ A password is required to validate the archive data.</value>
   <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} tasks running</value></data>
   <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} tasks pending</value></data>
   <data name="Preview.Loaded" xml:space="preserve"><value>Read-only preview loaded</value></data>
+  <data name="Window.Minimize" xml:space="preserve"><value>Minimize</value></data>
+  <data name="Window.Maximize" xml:space="preserve"><value>Maximize</value></data>
+  <data name="Window.Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Window.Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Extraction.PreviewTitle" xml:space="preserve"><value>Output location preview</value></data>
+  <data name="Extraction.PreviewPending" xml:space="preserve"><value>The final location is determined after reading the archive.</value></data>
+  <data name="Extraction.PreviewEstimated" xml:space="preserve"><value>Estimated location; directory conflicts are checked again when starting.</value></data>
+  <data name="Extraction.AddFiles" xml:space="preserve"><value>Add files...</value></data>
+  <data name="Compression.EncryptionLabel" xml:space="preserve"><value>Encryption</value></data>
+  <data name="Compression.Parameters" xml:space="preserve"><value>Parameters</value></data>
+  <data name="Compression.GeneratedParameters" xml:space="preserve"><value>Use the selected format and compression level</value></data>
+  <data name="Extraction.RemoveArchive" xml:space="preserve"><value>Remove this archive from the list</value></data>
+  <data name="Compression.VolumeSize" xml:space="preserve"><value>Volume size</value></data>
+  <data name="Compression.SelfExtract" xml:space="preserve"><value>Self-extract</value></data>
+  <data name="Compression.AdvancedSummary" xml:space="preserve"><value>Volumes: {0} · SFX: {1}</value></data>
+  <data name="Compression.Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Compression.No" xml:space="preserve"><value>No</value></data>
+<data name="Vault.SetMaster" xml:space="preserve"><value>Set master password</value></data>
 </root>

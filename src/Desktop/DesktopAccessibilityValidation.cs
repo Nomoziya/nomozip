@@ -214,11 +214,12 @@ internal static class DesktopAccessibilityValidation
         // A bordered Window's native frame is not part of its WPF visual. Capture
         // the actual client dimensions to avoid an empty strip beneath the image.
         var content = (FrameworkElement)window.Content;
-        var width = content.ActualWidth + content.Margin.Left + content.Margin.Right;
-        var height = content.ActualHeight + content.Margin.Top + content.Margin.Bottom;
+        var integrated=WindowChromeBehavior.GetEnabled(window);
+        var width = integrated?window.ActualWidth:content.ActualWidth + content.Margin.Left + content.Margin.Right;
+        var height = integrated?window.ActualHeight:content.ActualHeight + content.Margin.Top + content.Margin.Bottom;
         var bitmap = new RenderTargetBitmap((int)Math.Ceiling(width * scale), (int)Math.Ceiling(height * scale),
             96 * scale, 96 * scale, PixelFormats.Pbgra32);
-        bitmap.Render(clientOnly ? content : window);
+        bitmap.Render(clientOnly && !integrated ? content : window);
         var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(bitmap));
         using var stream = File.Create(path); encoder.Save(stream);
     }

@@ -36,7 +36,7 @@ internal static class DesktopNativeWindowCapture
                 using(var stream=File.Create(path))encoder.Save(stream);
                 var style=GetWindowLongW(handle,-16);
                 return new {file=Path.GetFileName(path),width,height,method="PrintWindow/PW_RENDERFULLCONTENT",nativeFrame=true,composited=false,
-                    nativeCaption=(style&0x00C00000)==0x00C00000,minimizeBox=(style&0x00020000)!=0,maximizeBox=(style&0x00010000)!=0,systemMenu=(style&0x00080000)!=0};
+                    nativeCaption=(style&0x00C00000)==0x00C00000,captionMode=WindowChromeBehavior.GetEnabled(window)?"integrated":"system",minimizeBox=(style&0x00020000)!=0,maximizeBox=(style&0x00010000)!=0,systemMenu=(style&0x00080000)!=0};
             }
             finally {SelectObject(memoryDc,previous);DeleteObject(bitmap);DeleteDC(memoryDc);ReleaseDC(handle,windowDc);}
         }

@@ -52,9 +52,8 @@ public partial class MainWindow : Window
             SettingsCategoryList.Visibility=narrow?Visibility.Collapsed:Visibility.Visible;
             SettingsCategory.Visibility=narrow?Visibility.Visible:Visibility.Collapsed;
             Navigation.Tag = compact;
-            SidebarContent.Margin = compact ? new Thickness(0, 12, 0, 12) : new Thickness(0, 16, 0, 8);
+            SidebarContent.Margin = compact ? new Thickness(0, 12, 0, 12) : new Thickness(0, 20, 0, 8);
             ApplyWorkspaceMargin();
-            ExtractionDropHint.Visibility = Visibility.Collapsed;
             TaskOutputColumn.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
             CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
