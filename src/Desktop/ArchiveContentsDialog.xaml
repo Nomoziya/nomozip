@@ -241,13 +241,13 @@
           </Button>
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{Binding OperationMessage}" TextTrimming="CharacterEllipsis" MaxWidth="200" ToolTip="{Binding OperationMessage}" AutomationProperties.LiveSetting="Polite"/>
-            <TextBlock x:Name="BrowserTaskActivity" Margin="16,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+            <TextBlock x:Name="BrowserTaskActivity" AutomationProperties.LiveSetting="Polite" Margin="16,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
           </StackPanel>
-          <WrapPanel VerticalAlignment="Center">
-            <TextBlock x:Name="ContentsSummary" Text="{Binding CompactSummary}" Margin="0,0,8,0" ToolTip="{Binding Summary}"/>
-            <TextBlock Text="·" Margin="0,0,8,0"/>
-            <TextBlock x:Name="SelectionSummary" Text="{Binding CompactSelectionSummary}" AutomationProperties.LiveSetting="Polite" ToolTip="{Binding SelectionSummary}"/>
-          </WrapPanel>
+          <TextBlock x:Name="ContentsSummary" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectionSummary}" AutomationProperties.LiveSetting="Polite">
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{}{0} · {1}"><Binding Path="CompactSummary"/><Binding Path="CompactSelectionSummary"/></MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
         </DockPanel>
       </StackPanel>
     </Border>

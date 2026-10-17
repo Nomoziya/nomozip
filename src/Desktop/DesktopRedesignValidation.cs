@@ -21,6 +21,7 @@ internal static class DesktopRedesignValidation
         var folder=Path.Combine(root,"artifacts/ui-redesign",UiText.LanguageCode);Directory.CreateDirectory(folder);
         var checks=new Dictionary<string,bool>();string? error=null;
         var viewports=new List<object>();
+        var nativeWindows=new List<object>();
         void Check(string name,bool passed)=>checks.Add(name,passed);
         async Task Layout()=>await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
         async Task Until(Func<bool> predicate)
@@ -82,6 +83,8 @@ internal static class DesktopRedesignValidation
                             Check($"{mode}/{width} compression supports enabled 7z level and encryption",window.CompressionPage.LevelBox.IsEnabled && window.CompressionPage.EncryptBox.IsEnabled);
                         }
                         Capture($"{mode}-{width}-page-{page}");
+                        if(width==1040 && page==0 && mode is "light" or "dark" or "soft")
+                            nativeWindows.Add(await DesktopNativeWindowCapture.CaptureAsync(window,Path.Combine(folder,$"{mode}-{width}-page-{page}-window.png")));
                     }
                     model.Page=2;
                     for(var section=0;section<6;section++)
@@ -134,7 +137,8 @@ internal static class DesktopRedesignValidation
             var vault=new DpapiPasswordVault(Path.Combine(data,"passwords.apv"));
             model=new MainViewModel(AppContext.BaseDirectory,data,vault,new WindowDialogs(window));window.DataContext=model;await model.InitializeAsync();
             var openedResults=new List<string[]>();model.ConfigureResultDirectoryValidation(paths=>openedResults.Add(paths.ToArray()));
-            var archive=Path.Combine(data,"sample.zip");
+            var downloads=Path.Combine(data,UiText.LanguageCode=="en"?"Downloads":"下载");Directory.CreateDirectory(downloads);
+            var archive=Path.Combine(downloads,"sample.zip");
             using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create))
             {
                 foreach(var name in new[]{"notes.txt","other.txt"}) {var entry=zip.CreateEntry(name);using var writer=new StreamWriter(entry.Open());writer.Write("Synthetic UI validation "+name);}
@@ -171,6 +175,8 @@ internal static class DesktopRedesignValidation
             Check("archive root hides nested file paths",contents.VisibleRows.All(row=>!row.Path.TrimEnd('/','\\').Replace('\\','/').Contains('/')));
             contents.CurrentRow=contents.VisibleRows.Single(row=>row.Path.TrimEnd('/','\\')=="Documents");contents.OpenCurrentEntryCommand.Execute(null);await Layout();
             Check("opening folder shows its children and breadcrumb",contents.CurrentFolder=="Documents" && contents.VisibleRows.Count==2 && contents.Breadcrumbs.Count==2 && contents.VisibleRows.All(row=>!row.DisplayName.Contains('/')));
+            var overview=(TextBlock)VisualDescendants((DependencyObject)window.ArchiveFooterHost.Content).Single(value=>value is TextBlock {Name:"ContentsSummary"});
+            Check("unselected folder overview still displays both real counts",overview.Text.Contains(contents.CompactSummary,StringComparison.Ordinal) && overview.Text.Contains(contents.CompactSelectionSummary,StringComparison.Ordinal));
             Capture("actual-archive-folder-navigation");contents.Search="changes";
             Check("archive search finds complete paths across folders",contents.VisibleRows.Count==1 && contents.VisibleRows[0].DisplayName.Contains("Documents"));contents.Search="";
             contents.FolderUpCommand.Execute(null);Check("folder up returns to archive root",contents.CurrentFolder.Length==0 && !contents.FolderUpCommand.CanExecute(null));
@@ -199,7 +205,11 @@ internal static class DesktopRedesignValidation
             contents.PreviewCommand.Execute(null);await Until(()=>!contents.IsWorking);await Layout();
             imagePreview=(ArchivePreviewViewModel)((FrameworkElement)window.PreviewHost.Content!).DataContext;
             Capture("actual-embedded-browser-image-preview");
-            theme.SetMode("dark");await Layout();Capture("actual-embedded-browser-image-preview-dark");theme.SetMode("light");
+            theme.SetMode("dark");await Layout();Capture("actual-embedded-browser-image-preview-dark");
+            nativeWindows.Add(await DesktopNativeWindowCapture.CaptureAsync(window,Path.Combine(folder,"actual-embedded-browser-image-preview-dark-window.png")));
+            await File.WriteAllTextAsync(Path.Combine(folder,"native-window-captures.json"),JsonSerializer.Serialize(nativeWindows));
+            Check("main window retains native caption and all three system controls",window.WindowStyle==WindowStyle.SingleBorderWindow && window.ResizeMode==ResizeMode.CanResize);
+            theme.SetMode("light");
             theme.SetMode("soft");window.Opacity=1;window.Activate();
             entryTable.ScrollIntoView(contents.CurrentRow);await Layout();
             var entryRow=(DataGridRow)entryTable.ItemContainerGenerator.ContainerFromItem(contents.CurrentRow);

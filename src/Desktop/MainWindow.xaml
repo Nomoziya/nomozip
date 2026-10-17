@@ -42,7 +42,7 @@
     </Grid.ColumnDefinitions>
     <Border Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,0">
       <DockPanel x:Name="SidebarContent" Margin="16,24">
-        <StackPanel DockPanel.Dock="Top" Margin="8,0,0,24">
+        <StackPanel DockPanel.Dock="Top" Margin="8,0,0,16">
           <StackPanel Orientation="Horizontal">
             <Image x:Name="BrandMark" Source="/ArchivePassword;component/Assets/nomozip-256.png" Width="24" Height="24" Margin="0,0,8,0" Focusable="False" IsHitTestVisible="False"/>
             <TextBlock Text="nomozip" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
@@ -62,9 +62,9 @@
         <ListBox x:Name="Navigation" Foreground="{DynamicResource TextBrush}" SelectedIndex="{Binding NavigationIndex}" BorderThickness="0" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" AutomationProperties.Name="{loc:Text T_968608e4ff51}" VerticalAlignment="Top">
           <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
-              <Setter Property="Padding" Value="12,9"/>
-              <Setter Property="Margin" Value="0,0,0,10"/>
-              <Setter Property="MinHeight" Value="42"/>
+              <Setter Property="Padding" Value="12,7"/>
+              <Setter Property="Margin" Value="0,0,0,4"/>
+              <Setter Property="MinHeight" Value="40"/>
               <Setter Property="FontSize" Value="14"/>
               <Setter Property="FontWeight" Value="Normal"/>
               <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
