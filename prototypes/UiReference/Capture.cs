@@ -51,6 +51,7 @@ internal static class Capture
             ((App)Application.Current).ApplyTheme(true); await Layout(); Screenshot("03-reference-dark-1152.png");
             ((App)Application.Current).ApplyTheme(false); window.MinWidth = 800; window.Width = 800; window.Height = 600; await Layout();
             Check("narrow navigation remains reachable", window.CompactNavigation.IsVisible && !window.NavigationRail.IsVisible);
+            Check("narrow preview actions stay fixed inside client", Bounds(window.PreviewActions).Bottom < window.Client.ActualHeight - 49 && window.PreviewActions.IsVisible);
             Check("narrow preview and extraction stay within client", Bounds(window.PreviewPane).Right <= window.Client.ActualWidth && Bounds(window.ExtractAll).Right < Bounds(window.PreviewPane).Left);
             Screenshot("04-reference-narrow-800.png");
             window.ClosePreview(); window.Model.Search = "不存在"; await Layout();
