@@ -31,7 +31,7 @@
   </Style>
   <Style TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
-    <Setter Property="FontSize" Value="14"/><Setter Property="Foreground" Value="{DynamicResource Text}"/>
+    <Setter Property="FontSize" Value="15"/><Setter Property="Foreground" Value="{DynamicResource Text}"/>
     <Setter Property="LineHeight" Value="22"/>
     <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
   </Style>
@@ -40,7 +40,7 @@
     <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
   </Style>
   <Style TargetType="Button">
-    <Setter Property="FontFamily" Value="{StaticResource UiFont}"/><Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFont}"/><Setter Property="FontSize" Value="15"/>
     <Setter Property="Height" Value="36"/><Setter Property="Padding" Value="15,0"/>
     <Setter Property="Foreground" Value="{DynamicResource Text}"/>
     <Setter Property="Background" Value="{DynamicResource Surface}"/>
@@ -127,11 +127,11 @@
     <Setter Property="Foreground" Value="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
   </Style>
   <Style x:Key="RowMetadata" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-    <Setter Property="FontSize" Value="14"/><Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+    <Setter Property="FontSize" Value="15"/><Setter Property="Foreground" Value="{DynamicResource Muted}"/>
     <Style.Triggers><DataTrigger Binding="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"><Setter Property="Foreground" Value="{DynamicResource SelectedText}"/></DataTrigger></Style.Triggers>
   </Style>
   <Style x:Key="Secondary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Background" Value="{DynamicResource Selected}"/><Setter Property="Foreground" Value="{DynamicResource Accent}"/><Setter Property="BorderBrush" Value="{DynamicResource Selected}"/></Style>
   <Style x:Key="CaptionButton" TargetType="Button" BasedOn="{StaticResource IconButton}"><Setter Property="Width" Value="50"/><Setter Property="Height" Value="34"/></Style>
   <Style x:Key="Breadcrumb" TargetType="Button" BasedOn="{StaticResource Quiet}"><Setter Property="Padding" Value="0"/><Setter Property="Height" Value="28"/></Style>
-  <Style x:Key="TableHeader" TargetType="Button" BasedOn="{StaticResource Quiet}"><Setter Property="Foreground" Value="{DynamicResource Muted}"/><Setter Property="Padding" Value="12,0"/><Setter Property="HorizontalContentAlignment" Value="Left"/><Setter Property="Height" Value="30"/></Style>
+  <Style x:Key="TableHeader" TargetType="Button" BasedOn="{StaticResource Quiet}"><Setter Property="Foreground" Value="{DynamicResource Muted}"/><Setter Property="Padding" Value="0"/><Setter Property="HorizontalContentAlignment" Value="Left"/><Setter Property="Height" Value="30"/></Style>
 </ResourceDictionary>

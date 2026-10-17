@@ -75,7 +75,7 @@ public sealed class ArchiveModel : Observable
                 row.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(Entry.Checked)) RefreshSelection(); }; Entries.Add(row);
             }
         VisibleEntries = CollectionViewSource.GetDefaultView(Entries);
-        VisibleEntries.Filter = obj => obj is Entry row && row.Path.StartsWith(folder, StringComparison.Ordinal) && !row.Path[folder.Length..].TrimEnd('/').Contains('/') && row.Name.Contains(Search, StringComparison.CurrentCultureIgnoreCase);
+        VisibleEntries.Filter = obj => obj is Entry row && row.Path.Length > folder.Length && row.Path.StartsWith(folder, StringComparison.Ordinal) && !row.Path[folder.Length..].TrimEnd('/').Contains('/') && row.Name.Contains(Search, StringComparison.CurrentCultureIgnoreCase);
         current = Entries.Single(row => row.Name == "封面.jpg"); current.Checked = true;
     }
     public static BitmapSource Decode(byte[] bytes)

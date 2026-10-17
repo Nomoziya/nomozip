@@ -20,9 +20,9 @@ public partial class MainWindow : Window
     public long ProcessedBytes { get; private set; }
     public long TotalBytes { get; private set; }
     public ArchiveModel Model { get; } = new();
-    public static readonly DependencyProperty SizeWidthProperty = DependencyProperty.Register(nameof(SizeWidth), typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(100)));
-    public static readonly DependencyProperty TypeWidthProperty = DependencyProperty.Register(nameof(TypeWidth), typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(110)));
-    public static readonly DependencyProperty DateWidthProperty = DependencyProperty.Register(nameof(DateWidth), typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(160)));
+    public static readonly DependencyProperty SizeWidthProperty = DependencyProperty.Register(nameof(SizeWidth), typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(103)));
+    public static readonly DependencyProperty TypeWidthProperty = DependencyProperty.Register(nameof(TypeWidth), typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(113)));
+    public static readonly DependencyProperty DateWidthProperty = DependencyProperty.Register(nameof(DateWidth), typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(171)));
     public GridLength SizeWidth { get => (GridLength)GetValue(SizeWidthProperty); set => SetValue(SizeWidthProperty, value); }
     public GridLength TypeWidth { get => (GridLength)GetValue(TypeWidthProperty); set => SetValue(TypeWidthProperty, value); }
     public GridLength DateWidth { get => (GridLength)GetValue(DateWidthProperty); set => SetValue(DateWidthProperty, value); }
@@ -92,7 +92,7 @@ public partial class MainWindow : Window
         RailColumn.Width = new GridLength(compact ? 0 : 186); NavigationRail.Visibility = compact ? Visibility.Collapsed : Visibility.Visible; CompactNavigation.Visibility = compact ? Visibility.Visible : Visibility.Collapsed;
         SearchColumn.Width = new GridLength(compact ? 230 : 286);
         PreviewPane.Visibility = previewRequested ? Visibility.Visible : Visibility.Collapsed; PreviewColumn.Width = new GridLength(previewRequested ? (compact ? 300 : 350) : 0);
-        SizeWidth = new GridLength(narrowPreview ? 74 : 100); TypeWidth = new GridLength(narrowPreview ? 0 : 110); DateWidth = new GridLength(compact ? 0 : 160);
+        SizeWidth = new GridLength(narrowPreview ? 74 : 103); TypeWidth = new GridLength(narrowPreview ? 0 : 113); DateWidth = new GridLength(compact ? 0 : 171);
         SizeHeaderColumn.Width = SizeWidth; TypeHeaderColumn.Width = TypeWidth; DateHeaderColumn.Width = DateWidth;
         MoreButton.Visibility = narrowPreview ? Visibility.Collapsed : Visibility.Visible;
     }
