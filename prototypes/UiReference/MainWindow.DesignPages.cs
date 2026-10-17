@@ -53,6 +53,7 @@ public partial class MainWindow
         foreach (var button in Descendants<Button>(NavigationRail).Where(button => button.Tag is "vault" or "tools" or "settings").ToArray())
         {
             if (button.Parent is not Panel parent) continue;
+            foreach (var label in Descendants<TextBlock>(button)) label.SetBinding(TextBlock.ForegroundProperty, new System.Windows.Data.Binding("Foreground") { Source = button });
             var index = parent.Children.IndexOf(button); var dock = DockPanel.GetDock(button); parent.Children.RemoveAt(index);
             var grid = new Grid(); DockPanel.SetDock(grid, dock); grid.Children.Add(button);
             var indicator = new Border { Width = 4, Height = 28, CornerRadius = new CornerRadius(2), HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(button.Margin.Left, 7, 0, 0), IsHitTestVisible = false, Visibility = Visibility.Collapsed };
