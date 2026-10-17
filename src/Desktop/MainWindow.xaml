@@ -165,13 +165,14 @@
         <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
-      <Border Background="{DynamicResource SelectionBrush}" CornerRadius="6" Padding="12" Margin="0,0,0,16">
+      <Border x:Name="WorkspaceBanner" Background="{DynamicResource SelectionBrush}" CornerRadius="6" Padding="12" Margin="0,0,0,16">
         <Border.Style>
           <Style TargetType="Border">
             <Style.Triggers>
               <DataTrigger Binding="{Binding Banner}" Value="">
                 <Setter Property="Visibility" Value="Collapsed"/>
               </DataTrigger>
+              <DataTrigger Binding="{Binding Page}" Value="1"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
             </Style.Triggers>
             <Setter Property="Visibility" Value="Visible"/>
           </Style>
@@ -588,7 +589,7 @@
                     <Style.Triggers><DataTrigger Binding="{Binding VaultLocked}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
                   </Style>
                 </Button.Style>
-                <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_1109737d1829}"/></StackPanel>
+                <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text Vault.Unlock}"/></StackPanel>
               </Button>
               <Button x:Name="VaultLockAction" Command="{Binding LockVaultCommand}" AutomationProperties.Name="{loc:Text T_6d9f3b6f019c}">
                 <Button.Style>
@@ -597,7 +598,7 @@
                     <Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding VaultMasterEnabled}" Value="True"/><Condition Binding="{Binding VaultLocked}" Value="False"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible"/></MultiDataTrigger></Style.Triggers>
                   </Style>
                 </Button.Style>
-                <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_6d9f3b6f019c}"/></StackPanel>
+                <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="LockClosed" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text Vault.Lock}"/></StackPanel>
               </Button>
             </WrapPanel>
             <StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Key" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,31,0"/><TextBlock Text="{loc:Text T_9b54fb7636af}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></StackPanel>
@@ -1260,14 +1261,17 @@
           <Button x:Name="ExportVaultButton" Content="{loc:Text T_e9d3dd690a4e}" Command="{Binding ExportVaultCommand}" Margin="0,0,12,8" Visibility="Collapsed"/>
           <Button x:Name="MergePasswordsButton" Content="{loc:Text T_fcdc3edb34ff}" Command="{Binding MergePasswordsCommand}" Margin="0,0,12,8" Visibility="Collapsed"/>
         </WrapPanel>
-        <TextBlock x:Name="GlobalStatus" Grid.Row="2" Text="{Binding Footer}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
+        <TextBlock x:Name="GlobalStatus" Grid.Row="2" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
           <TextBlock.Style>
             <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
               <Setter Property="Margin" Value="20,10"/>
+              <Setter Property="Text" Value="{Binding Footer}"/>
               <Style.Triggers>
                 <DataTrigger Binding="{Binding Page}" Value="1">
                   <Setter Property="Margin" Value="20,4,20,10"/>
+                  <Setter Property="Text" Value="{Binding Banner}"/>
                 </DataTrigger>
+                <MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding Page}" Value="1"/><Condition Binding="{Binding Banner}" Value=""/></MultiDataTrigger.Conditions><Setter Property="Text" Value="{Binding Footer}"/></MultiDataTrigger>
               </Style.Triggers>
             </Style>
           </TextBlock.Style>

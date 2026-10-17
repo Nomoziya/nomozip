@@ -54,11 +54,12 @@ internal static class DesktopVaultPresentationValidation
         try
         {
             window.DataContext=model;await model.InitializeAsync();model.Page=1;
-            window.MinWidth=1152;window.Width=1152;window.Height=768;theme.SetMode("light");await Layout();
+            window.MinWidth=1152;window.Width=1152;window.Height=768;theme.SetMode("light");theme.Apply(false);await Layout();
             check("vault local protection never claims master unlock",!model.VaultMasterEnabled && window.VaultProtectAction.IsVisible && !window.VaultLockAction.IsVisible && window.VaultProtectionStatusText.Text==UiText.Get("Vault.StatusLocal"));
             Capture("vault-local-protection");
             await Execute(window.VaultProtectAction);
             check("vault set-master action exposes actual unlocked state and lock",model.VaultMasterEnabled && !model.VaultLocked && window.VaultLockAction.IsVisible && !window.VaultUnlockAction.IsVisible && window.VaultProtectionStatusText.Text==UiText.Get("Vault.StatusUnlocked"));
+            check("vault protection notice uses footer without covering caption or shifting header",!window.WorkspaceBanner.IsVisible && window.GlobalStatus.Text==model.Banner && Bounds(window.VaultProtectionStatus).Top<100);
 
             var converter = new PasswordLastUsedConverter();
             var fixedNow = new DateTimeOffset(new DateTime(2026,10,18,16,0,0,DateTimeKind.Local));
@@ -87,7 +88,7 @@ internal static class DesktopVaultPresentationValidation
                     window.VaultLockAction.Focus();await Layout();Capture($"vault-unlocked-{mode}-{width}");
                 }
             }
-            theme.SetMode("light");window.MinWidth=1152;window.Width=1152;window.Height=768;await Layout();
+            theme.SetMode("light");theme.Apply(false);window.MinWidth=1152;window.Width=1152;window.Height=768;await Layout();
             await Execute(window.VaultLockAction);
             check("vault lock action clears list selected secret and exposes unlock",model.VaultLocked && model.PasswordRows.Count==0 && model.SelectedPassword is null && window.VaultDetails.SecretBox.Password.Length==0 && window.VaultUnlockAction.IsVisible && !window.VaultLockAction.IsVisible && window.VaultProtectionStatusText.Text==UiText.Get("Vault.StatusLocked"));
             Capture("vault-locked-light-1152");
@@ -103,7 +104,7 @@ internal static class DesktopVaultPresentationValidation
         }
         finally
         {
-            await model.ReleaseVaultSessionAsync();window.DataContext=original;theme.SetMode("light");
+            await model.ReleaseVaultSessionAsync();window.DataContext=original;theme.SetMode("light");theme.Apply(false);
             window.MinWidth=1152;window.Width=1152;window.Height=768;
         }
     }

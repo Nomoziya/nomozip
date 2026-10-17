@@ -3264,4 +3264,6 @@ A password is required to validate the archive data.</value>
   <data name="Vault.LastSuccessHint" xml:space="preserve"><value>Last successful use for extraction or archive creation. Viewing, copying and failed attempts do not update this time.</value></data>
   <data name="Vault.UsedToday" xml:space="preserve"><value>Today {0}</value></data>
   <data name="Vault.UsedYesterday" xml:space="preserve"><value>Yesterday</value></data>
+  <data name="Vault.Lock" xml:space="preserve"><value>Lock</value></data>
+  <data name="Vault.Unlock" xml:space="preserve"><value>Unlock</value></data>
 </root>

@@ -3264,4 +3264,6 @@
   <data name="Vault.LastSuccessHint" xml:space="preserve"><value>此密码最近一次成功用于解压或创建压缩包的时间；查看、复制或尝试失败不会更新。</value></data>
   <data name="Vault.UsedToday" xml:space="preserve"><value>今天 {0}</value></data>
   <data name="Vault.UsedYesterday" xml:space="preserve"><value>昨天</value></data>
+  <data name="Vault.Lock" xml:space="preserve"><value>锁定</value></data>
+  <data name="Vault.Unlock" xml:space="preserve"><value>解锁</value></data>
 </root>
