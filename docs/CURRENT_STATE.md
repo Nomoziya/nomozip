@@ -4,10 +4,10 @@
 
 - 用户要求尝试实现另一分支的设计图效果，字体与功能图标可调整；选用既有 `design-system/concepts-2026-10-16/02-archive-browser-preview.png` 作为代表性核心目标。此前待选 1、待选 2 均保留，不覆盖。
 - 独立分支 **`codex/ui-reference-20261017`**，源码目录 **`D:\Codex\7zip-password\.tools\ui-reference-20261017`**，起点 `1db551a`。独立 WPF 原型 `prototypes/UiReference/`，方案/参数/阶段/差异入口 `design-system/reference-20261017/MASTER.md`；并排与同画布叠加审阅 `index.html`。
-- 当前源码 **`9c52303`**，[隔离 x64 CI 39030648355](https://github.com/Nomoziya/nomozip/actions/runs/39030648355) **26/26 项通过**。9 张原始 PNG 与 210 帧实际进度 GIF 已下载核对摘要并查看；客户区 1152×768 DIP、最小 800×600；1536×1024 对照图为 4/3 离屏像素密度，不代表物理 DPI 验收。
+- 当前源码 **`967175a`**，[隔离 x64 CI 39034614227](https://github.com/Nomoziya/nomozip/actions/runs/39034614227) **37/37 项通过**。16 张原始 PNG 与 220 帧实际进度 GIF 已下载核对摘要并查看；客户区 1152×768 DIP、最小 800×600；1536×1024 对照图为 4/3 离屏像素密度，不代表物理 DPI 验收。
 - 复现左侧导航、双层顶部、胶囊按钮、细线表格与右侧预览；统一 Fluent Regular 20、Microsoft YaHei UI，原 ICO/PNG 摘要保持。使用授权示例照片和实际生成 ZIP，数量/大小/尺寸真实。样本解压只写内存并刻意放慢；真实产品引擎、其他完整页面、英文/长路径/多任务和真实系统模式待后续，不冒充已完成产品接入。
-- 体验包：主目录 `artifacts/ui-reference-candidate-9c52303/x64/nomozip-ui-reference-prototype-x64.zip`，解压后 `preview/nomozip-reference-preview.exe`；CI 原字节，x64 PE/ZIP CRC/摘要核对，代理未在本机启动。需要共享 .NET 10 桌面运行库。
-- 根据用户最新反馈，更换“更多、名称、大小”字符箭头：更多为 Fluent 矢量下拉；名称/大小只在当前排序列显示升降序指示，补充实际排序图与检查。
+- 体验包：主目录 `artifacts/ui-reference-candidate-967175a/x64/nomozip-ui-reference-prototype-x64.zip`，解压后 `preview/nomozip-reference-preview.exe`；CI 原字节，x64 PE/ZIP CRC/摘要核对，代理未在本机启动。需要共享 .NET 10 桌面运行库。
+- 本轮按用户附图修正：逐张查看 14 组概念图（含图 13 新旧版共 15 张）；解压全部/所选换为同套 Fluent 文件提取图标，名称/大小采用紧凑矩形悬停/按下及内收焦点，移除整列胶囊。解压进度进入独立任务区域，圆环/条/百分比绑定同一显示值，暂停同步冻结、完成 100%，取消浮层淡入；完成按钮显式禁用。隔离 CI 实际操作鼠标和 Tab；本地没有输入自动化。
 - **下一步由用户确认参考图复现方向**，随后补齐其他设计和统一基准，再按完整流程接入正式产品。保持 x64 优先，ARM64 尚未启动。已授权公开独立分支和隔离 CI；不重复索要该授权，不合并、不发布、不改渠道、不恢复自动任务，不读取真实库或本机桌面自动化。
 
 ## 当前比较：待选 1 与待选 2（2026-10-17）

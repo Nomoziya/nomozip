@@ -10,7 +10,7 @@
 
 项目规划与 ui-ux-pro-max：复用已确认的 WPF/.NET 10 共享运行库架构、功能盘点、
 Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol / high；本回合
-本轮已核对宿主 turn_context（01a149e0-9934-72d0-8c77-2b1a61955eec）。继续相同组合，
+本轮已核对宿主 turn_context（01a149f9-b12e-7610-9529-5c7b26b1c13b）。继续相同组合，
 不切换或委派。参考图现成，未知集中在 WPF 布局与视觉还原，主会话直接执行。
 
 | 阶段 | 范围与交付 | 验收与下一步 |
@@ -57,7 +57,7 @@ Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol
 
 - 原设计图：当前仓库另一分支保留的 14 张概念图；以布局观感复现为目标，字体/功能图标可按用户授权调整。
 - [Files](https://github.com/files-community/Files)：列表与预览分区；[NanaZip](https://github.com/M2Team/NanaZip)：桌面归档操作流程；[WPF UI](https://github.com/lepoco/wpfui)：WPF 组件可实现性。复用前两版研究，不新增整库依赖。
-- [Fluent System Icons](https://github.com/microsoft/fluentui-system-icons)：MIT，固定提交 a347af95478f989038cccbf085978865264c048a。既有 21 枚 + 本版 Eye/Open/ChevronDown/ChevronUp；新增原 SVG 和 Geometry 保留来源。后续按用户反馈追加 Chevron Down / Chevron Up，同源同版本。
+- [Fluent System Icons](https://github.com/microsoft/fluentui-system-icons)：MIT，固定提交 a347af95478f989038cccbf085978865264c048a。既有 21 枚 + 本版 Eye/Open/ChevronDown/ChevronUp/DocumentArrowDown；新增原 SVG 和 Geometry 保留来源。后续按用户反馈追加 Chevron Down / Chevron Up，同源同版本。
 - [Windows 字体](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/typography)、[动态效果](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/motion)：字体层级和短时反馈。
 - 示例照片为 [Brett Hamm 的 Moraine Lake](https://commons.wikimedia.org/wiki/File:Moraine_Lake,_Banff_National_Park.jpg)，CC BY-SA 4.0，非概念图中的照片。归档实际生成并回读，大小、像素和数量来自样本，不沿用图中虚构统计。
 
@@ -77,11 +77,11 @@ Fluent 图标和前两版 CI 经验。当前主会话及执行者均 gpt-6.1-sol
 - 首轮 ae0b6c1 的核心布局/原图比例/12 项/真实照片检查通过，但目录进入包含目录自身；修正直接子项筛选，不改变参考布局。
 - e0e3f77 实际图检查：固定窄窗预览底部操作；扩大字号并按原图列边界校准。排序比较检查错误地使用运行线程文化，改为集合实际使用的 Culture（[WPF CollectionView 文档](https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.collectionview?view=windowsdesktop-10.0)）。未关闭排序检查。
 - 系统对比色资源图暴露解压所选蓝底蓝字；c631d22 使用成对系统颜色，文件图标也映射主题资源。该图仍不是实际切换 Windows 高对比模式的验收。
-- 解压动画从实际运行 WPF 任务区裁取并编码，未重新绘制、拼接或修饰。GIF 首帧的透明过渡来自原型 170ms 面板淡入。
+- 解压动画从实际运行 WPF 任务区裁取并编码，未重新绘制、拼接或修饰。旧版 GIF 首帧的透明过渡来自原型 170ms 面板淡入；本轮已删除该浮层与淡入。
 - c631d22 隔离 CI 39030107532 的 21 项检查通过；并排复核仍发现标题横向与导航纵向偏移，c78515f 按原图校准，并禁用演示结束后的暂停/取消。最终证据以下列记录为准。
 
 
-## 当前交付证据（9c52303）
+## 前轮交付证据（9c52303）
 
 [隔离 x64 CI 39030648355](https://github.com/Nomoziya/nomozip/actions/runs/39030648355)
 **26/26 项通过**，源码 9c523038dfee16f532f3c2ce7f125546659336f8。
@@ -113,7 +113,7 @@ ChevronDown，排序只在活动列显示 ChevronUp/Down。26 项包含初始无
 中间截图副本保留，未按清理提议删除；当前对照入口指向 9c52303，不将旧图当作新结果。
 
 
-## 本轮反馈修正（2026-10-17，验证中）
+## 本轮反馈修正（2026-10-17，隔离检查已完成，待用户视觉确认）
 
 用户指出原型解压动画不符、解压全部误用下载图标、表头胶囊底色和聚焦框异常。
 本轮直接修复上述范围，仍为独立 x64 原型；任务页只承载一个实际示例任务，不扩展
@@ -147,3 +147,39 @@ ChevronDown，排序只在活动列显示 ChevronUp/Down。26 项包含初始无
 本轮隔离验证将覆盖实际鼠标悬停/按下/键盘 Tab 焦点、焦点边界与文字间距、图标、
 暂停冻结、百分比/圆环/进度条同步、完成态及宽/窄任务视图。本机只编译，不执行输入
 自动化。原图/中间图/先前候选保留；新证据不覆盖旧证据。
+
+
+## 最新交付：反馈修正版 967175a
+
+[隔离 x64 CI 39034614227](https://github.com/Nomoziya/nomozip/actions/runs/39034614227)，
+源码 `967175a4274835fbfefeb75a6b30718051dfa41c`，**37/37 项通过**。
+证据为 `core-967175a/` 的 16 张原始 PNG、220 帧实际任务行 GIF 及 report.json，
+全部摘要核对；已查看核心反馈状态、实际悬停/按下/Tab 焦点、执行/暂停/完成、
+窄窗任务及系统对比色焦点，并复用前轮未变部分的有效检查。未声称看过真实显示器
+上的每帧流畅度或完成物理 DPI/真实系统主题切换的验收。
+
+- 表头与附图：独立 ControlTemplate，不继承 Quiet 的胶囊；可点击区域只包标题附近，
+  最小宽 64、高 27、内距 8、圆角 3；内部 2 DIP 焦点，边界与内容间距检查通过。
+  CI 使用真实鼠标按下/释放与键盘 Tab，截图 11/12/13/17；本地未调用输入自动化。
+- 提取图标：Fluent Regular 20 Document Arrow Down，固定原 SVG/Geometry/来源；
+  全部和所选一致。原 nomozip ICO/PNG 未改。
+- 任务布局：参考图 05/14，独立区域，表头 40、任务行 88、详情区 156 DIP；任务列为
+  名称 200、进度弹性、输出说明 220、操作 176，行左右内距 20；窄窗隐藏输出列。
+  一个实际示例任务，未复制六条概念占位内容，也未编造磁盘输出和速率。
+- 动画：220ms 缓动；圆环、条和百分比来自同一 DisplayedValue；0/100 立即到位，
+  暂停冻结，成功校验所有字节才显示完成，返回文件页不取消任务；透明度始终 1。
+  系统减少动态效果和应用开关保持。普通按钮禁用时整体透明度 0.45，完成后暂停/取消
+  既不可操作，也有清楚的禁用外观。
+- [WPF 焦点样式](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/how-to-apply-a-focusvisualstyle-to-a-control)
+  说明通用外伸矩形的尺寸来自整个控件，本轮以内部可见焦点替换，保留键盘可见性；
+  [Windows 进度控件](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/progress-controls)
+  区分确定/不确定进度，本轮已知样本总字节，使用确定进度，不使用任意旋转冒充完成比例。
+
+主目录候选：`artifacts/ui-reference-candidate-967175a/x64/nomozip-ui-reference-prototype-x64.zip`，
+454896 字节，SHA-256 `0470963370b7e5b94ec0138cee8a8648da71cc7a128bed42fb1c14b0bdaccfe4`；
+ZIP CRC/x64 PE/所有截图和 GIF 摘要通过，CI 原字节解压为 `preview/nomozip-reference-preview.exe`。
+需要共享 .NET 10 桌面运行库。代理没有在本机启动、安装或替换正式程序。
+
+当前对照页 [index.html](index.html) 指向本轮证据，含真实状态局部放大、图 05 任务
+参考/实现并排、任务 GIF。先前候选/图册/中间证据保留。剩余：完整产品引擎与队列、
+多任务/真实路径错误、英文与物理 DPI 等不在本轮原型修正验收内；仍由用户决定方向。
