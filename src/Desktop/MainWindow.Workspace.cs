@@ -145,7 +145,7 @@ public partial class MainWindow
     }
     private void ClosePreview()
     {
-        if(embeddedModel is not null)foreach(var row in embeddedModel.Rows)row.PreviewThumbnail=null;
+        embeddedModel?.ClearPreviewThumbnails();
         PreviewHost.Content = null; ArchivePreviewPane.Visibility = Visibility.Collapsed; PreviewColumn.Width = new GridLength(0);
         previewModel?.Clear(); previewModel = null;
         if (embeddedPreview is not null) { embeddedPreview.EmbeddedClose = null; embeddedPreview.Close(); embeddedPreview = null; }

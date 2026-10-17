@@ -113,6 +113,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     }
     private bool gridView;
     public bool GridView {get=>gridView;set=>Set(ref gridView,value);}
+    internal void ClearPreviewThumbnails() {foreach(var row in allRows)row.PreviewThumbnail=null;}
     private string currentFolder="";
     public string CurrentFolder=>currentFolder;
     public string ArchiveLocation=>System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(ArchivePath))) is {Length:>0} name?name:System.IO.Path.GetPathRoot(System.IO.Path.GetFullPath(ArchivePath)) ?? "";
