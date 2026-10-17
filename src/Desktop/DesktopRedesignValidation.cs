@@ -75,6 +75,16 @@ internal static class DesktopRedesignValidation
                         {
                             Check($"{mode}/{width} each source task appears exactly once",window.ArchiveTasks.Items.Count==model.Tasks.Count && model.TaskView.Cast<ArchiveTaskRow>().Distinct().Count()==model.Tasks.Count);
                             Check($"{mode}/{width} row actions keep compact height",VisualDescendants(window.ArchiveTasks).OfType<Button>().Where(value=>value.DataContext is ArchiveTaskRow).All(value=>value.ActualHeight<=44));
+                            var rowButtons=VisualDescendants(window.ArchiveTasks).OfType<Button>().Where(value=>value.DataContext is ArchiveTaskRow && value.IsVisible).ToArray();
+                            Check($"{mode}/{width} every task action stays inside its cell and table",rowButtons.Length>=2 && rowButtons.All(button=>
+                            {
+                                DependencyObject? parent=button;while(parent is not null && parent is not DataGridCell)parent=VisualTreeHelper.GetParent(parent);
+                                var cell=parent as DataGridCell;
+                                return cell is not null && Bounds(button).Left>=Bounds(cell).Left-.5 && Bounds(button).Right<=Math.Min(Bounds(cell).Right,Bounds(window.ArchiveTasks).Right)+.5;
+                            }));
+                            var primaryWidths=rowButtons.Where(button=>Equals(button.Tag,"TaskPrimary")).Select(button=>Math.Round(button.ActualWidth,1)).Distinct().ToArray();
+                            Check($"{mode}/{width} task primary pills share one width",primaryWidths.Length==1 && primaryWidths[0]>=100);
+
                         }
                         if(page==3)
                         {
@@ -240,6 +250,12 @@ internal static class DesktopRedesignValidation
             tiles.InputBindings.OfType<KeyBinding>().Single(binding=>binding.Key==Key.Back).Command.Execute(null);await Layout();contents.CurrentRow=contents.Rows.Single(row=>row.Path=="cover.png");
             listAction.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));await Layout();
             Check("returning to list preserves grid selection and folder state",!contents.GridView && entryTable.IsVisible && !tiles.IsVisible && contents.CurrentFolder=="" && selectionBefore.SequenceEqual(contents.Rows.Where(row=>row.Selected).Select(row=>row.Path)));
+            var selectionHeader=VisualDescendants(entryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Single(header=>ReferenceEquals(header.Column,entryTable.Columns[0]));
+            var selectionCheck=VisualDescendants(selectionHeader).OfType<CheckBox>().Single();
+            var selectionBox=(FrameworkElement)selectionCheck.Template.FindName("Box",selectionCheck);
+            var rowSelection=VisualDescendants(entryTable).OfType<DataGridRow>().SelectMany(row=>VisualDescendants(row).OfType<CheckBox>()).First();
+            var rowSelectionBox=(FrameworkElement)rowSelection.Template.FindName("Box",rowSelection);
+            Check("select-all checkbox is fully visible and aligned with row checkboxes",Bounds(selectionBox).Left>=Bounds(selectionHeader).Left && Bounds(selectionBox).Right<=Bounds(selectionHeader).Right && Math.Abs(Bounds(selectionBox).Left-Bounds(rowSelectionBox).Left)<.5);
             var nameHeader=VisualDescendants(entryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Single(header=>ReferenceEquals(header.Column,entryTable.Columns[1]));
             var presenter=VisualDescendants(entryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeadersPresenter>().Single();
             var presenterPeer=System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(presenter)!;

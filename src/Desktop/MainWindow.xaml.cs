@@ -55,6 +55,7 @@ public partial class MainWindow : Window
             SidebarContent.Margin = compact ? new Thickness(0, 12, 0, 12) : new Thickness(0, 20, 0, 8);
             ApplyWorkspaceMargin();
             TaskOutputColumn.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            TaskActionsColumn.Width = UiText.LanguageCode=="en"?196:172;
             CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
