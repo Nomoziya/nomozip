@@ -21,6 +21,7 @@
     </Setter>
   </Style>
   <ControlTemplate x:Key="IntegratedWindowTemplate" TargetType="Window">
+    <Grid>
     <Border x:Name="WindowInset" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" CornerRadius="8">
       <Grid>
         <AdornerDecorator><ContentPresenter/></AdornerDecorator>
@@ -37,6 +38,7 @@
         </StackPanel>
       </Grid>
     </Border>
+    </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="local:WindowChromeBehavior.ShowSystemButtons" Value="False"><Setter TargetName="CaptionMinimize" Property="Visibility" Value="Collapsed"/><Setter TargetName="CaptionMaximize" Property="Visibility" Value="Collapsed"/></Trigger>
       <Trigger Property="WindowState" Value="Maximized"><Setter TargetName="MaximizeGlyph" Property="Data" Value="M3.5,1.5 L10.5,1.5 L10.5,8.5 M1.5,3.5 L8.5,3.5 L8.5,10.5 L1.5,10.5 Z"/><Setter TargetName="CaptionMaximize" Property="AutomationProperties.Name" Value="{local:Text Window.Restore}"/><Setter TargetName="CaptionMaximize" Property="ToolTip" Value="{local:Text Window.Restore}"/><Setter TargetName="WindowInset" Property="Margin" Value="{x:Static SystemParameters.WindowResizeBorderThickness}"/></Trigger>

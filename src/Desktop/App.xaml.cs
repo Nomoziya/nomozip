@@ -197,7 +197,7 @@ public partial class App : Application
         {
             if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true") {Shutdown(2);return;}
             var root=Path.GetFullPath(e.Args[redesignIndex+1]);var reports=Path.Combine(root,"artifacts/ui-redesign",UiText.LanguageCode);Directory.CreateDirectory(reports);
-            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(Path.Combine(reports,"report.json"),JsonSerializer.Serialize(new{passed=false,error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
+            DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(Path.Combine(reports,"report.json"),JsonSerializer.Serialize(new{passed=false,error=failure.Exception.ToString()}));File.WriteAllText(Path.Combine(reports,"dispatcher-error.json"),JsonSerializer.Serialize(new{error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
             window.SuppressExitConfirmationForValidation=true;window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
             var passed=await DesktopRedesignValidation.RunAsync(window,model,theme,root);Shutdown(passed?0:1);return;
         }

@@ -3173,7 +3173,7 @@
 <data name="Compression.PasswordShort" xml:space="preserve"><value>设置密码</value></data>
 <data name="Password.ConfirmationMismatch" xml:space="preserve"><value>两次输入的密码不一致。</value></data>
 <data name="Extraction.BatchTitle" xml:space="preserve"><value>批量解压</value></data>
-<data name="Extraction.BatchCount" xml:space="preserve"><value>{0} 个待处理压缩包</value></data>
+<data name="Extraction.BatchCount" xml:space="preserve"><value>{0} 个压缩包</value></data>
 <data name="Extraction.CreateFolder" xml:space="preserve"><value>建立同名文件夹</value></data>
 <data name="Extraction.LayoutHint" xml:space="preserve"><value>勾选：按包名创建文件夹；未勾选：直接解压；中间态：智能目录布局。</value></data>
 <data name="TextEdit.CleanupWarning" xml:space="preserve"><value>临时编辑副本未能清理，请手动删除此目录：{0}</value></data>
@@ -3248,4 +3248,7 @@
   <data name="Compression.Yes" xml:space="preserve"><value>是</value></data>
   <data name="Compression.No" xml:space="preserve"><value>否</value></data>
 <data name="Vault.SetMaster" xml:space="preserve"><value>设置主密码</value></data>
+<data name="Extraction.EstimatedPath" xml:space="preserve"><value>预计位置：{0}</value></data>
+<data name="Extraction.RulesAndResume" xml:space="preserve"><value>解压规则与续作</value></data>
+<data name="Extraction.BatchFolder" xml:space="preserve"><value>每个压缩包建立独立文件夹</value></data>
 </root>
