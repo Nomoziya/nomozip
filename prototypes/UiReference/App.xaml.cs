@@ -28,14 +28,14 @@ public partial class App : Application
             ? new[] { "#202020", "#242424", "#202020", "#F5F5F5", "#BDBDBD", "#3C3C3C", "#737B85", "#75B6E7", "#102435", "#263E50", "#F2F7FC", "#30363C", "#354858", "#98C9EE", "#9098A0", "#8BD5A8", "#F1B5AF" }
             : new[] { "#F3F4F6", "#FFFFFF", "#F3F4F6", "#111722", "#515D6C", "#E3E7ED", "#BAC3CF", "#006CD9", "#FFFFFF", "#E2EFFD", "#111722", "#EAF2FA", "#D4E6FA", "#005BBC", "#8290A1", "#008F56", "#B52C2C" };
         for (var i = 0; i < keys.Length; i++) Resources[keys[i]] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(colors[i]));
-        Resources["NavText"] = Resources["Accent"]; Resources["ActivitySurface"] = Resources["Surface"]; Resources["ActivityText"] = Resources["Text"];
+        Resources["FolderIcon"] = new SolidColorBrush(dark ? Color.FromRgb(226,178,81) : Color.FromRgb(173,108,0)); Resources["NavText"] = Resources["Accent"]; Resources["ActivitySurface"] = Resources["Surface"]; Resources["ActivityText"] = Resources["Text"];
         if (highContrast || SystemParameters.HighContrast)
         {
             foreach (var key in new[] { "Canvas", "Surface", "Inset", "Hover", "Pressed" }) Resources[key] = SystemColors.WindowBrush;
             foreach (var key in new[] { "Text", "Muted", "Line", "ControlLine", "Success", "Danger" }) Resources[key] = SystemColors.WindowTextBrush;
             foreach (var key in new[] { "Accent", "Selected", "AccentHover" }) Resources[key] = SystemColors.HighlightBrush;
             foreach (var key in new[] { "OnAccent", "SelectedText" }) Resources[key] = SystemColors.HighlightTextBrush;
-            Resources["NavText"] = SystemColors.HighlightTextBrush; Resources["Disabled"] = SystemColors.GrayTextBrush;
+            Resources["FolderIcon"] = SystemColors.WindowTextBrush; Resources["NavText"] = SystemColors.HighlightTextBrush; Resources["Disabled"] = SystemColors.GrayTextBrush;
             Resources["ActivitySurface"] = SystemColors.WindowBrush; Resources["ActivityText"] = SystemColors.WindowTextBrush;
         }
     }
