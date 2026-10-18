@@ -471,7 +471,6 @@ internal static class DesktopRedesignValidation
             passwordStage=1;passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
             Check("cancel preserves prior password and header settings",passwordSettingsModel.CompressionPasswordSummary==passwordSummary && !passwordSettingsModel.CompressionHeaders);
             passwordStage=2;passwordSettingsModel.CompressionFormat=1;passwordSettingsModel.SetCompressionPasswordCommand.Execute(null);await Until(()=>passwordSettingsModel.IsIdle);
-            await DesktopButtonStateValidation.RunAsync(window,model,theme,folder,Check);
             await DesktopArchiveWorkspaceValidation.RunAsync(window,theme,folder,Check);
             await DesktopVaultPresentationValidation.RunAsync(window,theme,folder,Check);
             DesktopDesignDialogValidation.Run(window,theme,folder,Check);

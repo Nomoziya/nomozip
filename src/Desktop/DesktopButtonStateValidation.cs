@@ -18,7 +18,7 @@ internal static class DesktopButtonStateValidation
         string folder, Action<string, bool> check)
     {
         if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") throw new InvalidOperationException("Isolated CI only.");
-        var left=window.Left;var top=window.Top;var opacity=window.Opacity;var topmost=window.Topmost;var page=model.Page;var section=model.SettingsSection;var mode=theme.Mode;var contrast=theme.IsHighContrast;
+        var width=window.Width;var height=window.Height;var minWidth=window.MinWidth;var minHeight=window.MinHeight;var left=window.Left;var top=window.Top;var opacity=window.Opacity;var topmost=window.Topmost;var page=model.Page;var section=model.SettingsSection;var mode=theme.Mode;var contrast=theme.IsHighContrast;
         var evidence=new List<object>();
         async Task Layout() { await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);await Task.Delay(70); }
         async Task Move(Button button)
@@ -27,26 +27,39 @@ internal static class DesktopButtonStateValidation
             if(!SetCursorPos((int)point.X,(int)point.Y))throw new InvalidOperationException("CI cursor movement failed.");
             await Layout();
         }
+        RenderTargetBitmap RenderWindow()
+        {
+            var bitmap=new RenderTargetBitmap((int)Math.Ceiling(window.ActualWidth),(int)Math.Ceiling(window.ActualHeight),96,96,PixelFormats.Pbgra32);
+            bitmap.Render(window);return bitmap;
+        }
         void Capture(Button button,string name)
         {
             var presenter=DesktopRedesignValidation.VisualDescendants(button).OfType<ContentPresenter>().First();
-            var area=presenter.TransformToAncestor(button).TransformBounds(new Rect(presenter.RenderSize));
-            var bitmap=new RenderTargetBitmap((int)Math.Ceiling(button.ActualWidth),(int)Math.Ceiling(button.ActualHeight),96,96,PixelFormats.Pbgra32);
-            var drawing=new DrawingVisual();
-            using(var context=drawing.RenderOpen())context.DrawRectangle(new VisualBrush(button) {ViewboxUnits=BrushMappingMode.Absolute,Viewbox=new Rect(button.RenderSize),Stretch=Stretch.Fill},null,new Rect(button.RenderSize));
-            bitmap.Render(drawing);var pixels=new byte[bitmap.PixelWidth*bitmap.PixelHeight*4];bitmap.CopyPixels(pixels,bitmap.PixelWidth*4,0);
-            var foreground=((SolidColorBrush)button.Foreground).Color;var ink=0;
+            var area=presenter.TransformToAncestor(window).TransformBounds(new Rect(presenter.RenderSize));
+            var bitmap=RenderWindow();var pixels=new byte[bitmap.PixelWidth*bitmap.PixelHeight*4];bitmap.CopyPixels(pixels,bitmap.PixelWidth*4,0);
+            byte[]? underlay=null;var buttonOpacity=button.Opacity;
+            if(buttonOpacity<1)
+            {
+                var local=button.ReadLocalValue(UIElement.OpacityProperty);button.Opacity=0;
+                try {var background=RenderWindow();underlay=new byte[pixels.Length];background.CopyPixels(underlay,bitmap.PixelWidth*4,0);}
+                finally {if(local==DependencyProperty.UnsetValue)button.ClearValue(UIElement.OpacityProperty);else button.SetValue(UIElement.OpacityProperty,local);}
+            }
+            var foreground=((SolidColorBrush)button.Foreground).Color;var ink=0;var closest=double.MaxValue;
             for(var y=Math.Max(0,(int)Math.Ceiling(area.Top));y<Math.Min(bitmap.PixelHeight,(int)Math.Floor(area.Bottom));y++)
                 for(var x=Math.Max(0,(int)Math.Ceiling(area.Left));x<Math.Min(bitmap.PixelWidth,(int)Math.Floor(area.Right));x++)
                 {
                     var at=(y*bitmap.PixelWidth+x)*4;var alpha=pixels[at+3];if(alpha<60)continue;
-                    var distance=Math.Abs(pixels[at]*255.0/alpha-foreground.B)+Math.Abs(pixels[at+1]*255.0/alpha-foreground.G)+Math.Abs(pixels[at+2]*255.0/alpha-foreground.R);
-                    if(distance<45)ink++;
+                    var red=foreground.R*buttonOpacity+(underlay is null?0:underlay[at+2]*(1-buttonOpacity));
+                    var green=foreground.G*buttonOpacity+(underlay is null?0:underlay[at+1]*(1-buttonOpacity));
+                    var blue=foreground.B*buttonOpacity+(underlay is null?0:underlay[at]*(1-buttonOpacity));
+                    var distance=Math.Abs(pixels[at]*255.0/alpha-blue)+Math.Abs(pixels[at+1]*255.0/alpha-green)+Math.Abs(pixels[at+2]*255.0/alpha-red);
+                    closest=Math.Min(closest,distance);if(distance<45)ink++;
                 }
             check(name+" rendered foreground glyphs remain visible",ink>=8);
-            evidence.Add(new {name,foregroundPixels=ink,button.IsMouseOver,button.IsPressed,button.IsKeyboardFocused,button.IsEnabled,area,
+            evidence.Add(new {name,foregroundPixels=ink,closestForegroundDistance=closest,foreground=foreground.ToString(),button.IsMouseOver,button.IsPressed,button.IsKeyboardFocused,button.IsEnabled,area,
                 window.Left,window.Top,window.Width,window.Height,window.Opacity,window.IsActive,screenPoint=button.PointToScreen(new Point(button.ActualWidth/2,button.ActualHeight/2))});
-            DesktopAccessibilityValidation.Render(window,Path.Combine(folder,"button-state-"+name.Replace('/','-')+".png"),1,clientOnly:true);
+            var path=Path.Combine(folder,"button-state-"+name.Replace('/','-')+".png");DesktopTypographyValidation.Record(window,path);
+            var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));using var stream=File.Create(path);encoder.Save(stream);
         }
         async Task Exercise(Button button,string name)
         {
@@ -75,7 +88,7 @@ internal static class DesktopButtonStateValidation
         }
         try
         {
-            window.Left=32;window.Top=32;window.Opacity=1;window.Topmost=true;
+            window.MinWidth=800;window.MinHeight=600;window.Width=800;window.Height=600;window.Left=32;window.Top=32;window.Opacity=1;window.Topmost=true;
             var handle=new WindowInteropHelper(window).Handle;ShowWindow(handle,9);window.Activate();SetForegroundWindow(handle);await Layout();
             foreach(var appearance in new[]{"light","dark","soft","contrast"})
             {
@@ -92,8 +105,8 @@ internal static class DesktopButtonStateValidation
         finally
         {
             mouse_event(4,0,0,0,0);SetCursorPos(0,0);theme.SetMode(mode);theme.Apply(contrast);model.Page=page;model.SettingsSection=section;
-            window.Topmost=topmost;window.Left=left;window.Top=top;window.Opacity=opacity;
-            File.WriteAllText(Path.Combine(folder,"button-state-audit.json"),JsonSerializer.Serialize(new {actualMouseInput=true,fieldValuesRecorded=false,states=evidence}));
+            window.Topmost=topmost;window.MinWidth=minWidth;window.MinHeight=minHeight;window.Width=width;window.Height=height;window.Left=left;window.Top=top;window.Opacity=opacity;
+            File.WriteAllText(Path.Combine(folder,"button-state-audit.json"),JsonSerializer.Serialize(new {actualMouseInput=true,fieldValuesRecorded=false,desktopWidth=SystemParameters.VirtualScreenWidth,desktopHeight=SystemParameters.VirtualScreenHeight,states=evidence}));
         }
     }
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x,int y);

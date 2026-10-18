@@ -147,13 +147,35 @@ jobs:
                 $taskReport.checks.'light/hash-import/hover rendered foreground glyphs remain visible' -ne $false) {
               throw 'The original hover occlusion was not reproduced by real mouse input and rendered glyph checks.'
             }
-            Copy-Item -LiteralPath artifacts/ui-redesign -Destination artifacts/button-before-0.3.0 -Recurse
-          } finally { Copy-Item artifacts/button-fixed.xaml src/Desktop/App.xaml -Force }
+          } finally {
+            if (Test-Path artifacts/ui-redesign) { Copy-Item -LiteralPath artifacts/ui-redesign -Destination artifacts/button-before-0.3.0 -Recurse }
+            Copy-Item artifacts/button-fixed.xaml src/Desktop/App.xaml -Force
+          }
       - uses: actions/upload-artifact@v7
         if: always() && inputs.reproduce_button_hover && matrix.architecture == 'x64'
         with:
           name: released-0.3.0-button-state-reproduction
           path: artifacts/button-before-0.3.0/**/*
+          if-no-files-found: error
+      - name: Validate real button states in fresh bilingual application processes
+        run: |
+          New-Item -ItemType Directory -Force artifacts/button-states | Out-Null
+          $taskFailed = $false
+          foreach ($taskLanguage in @('zh-CN','en')) {
+            $taskProcess = Start-Process ./artifacts/app/ArchivePassword.exe -ArgumentList @('--validate-redesign',$PWD.Path,$taskLanguage,'--button-states-only') -WindowStyle Hidden -Wait -PassThru
+            Copy-Item -LiteralPath "artifacts/ui-redesign/$taskLanguage" -Destination "artifacts/button-states/$taskLanguage" -Recurse
+            $taskReport = Get-Content "artifacts/button-states/$taskLanguage/report.json" -Raw | ConvertFrom-Json
+            Write-Host "$taskLanguage button state checks: $($taskReport.checks.PSObject.Properties.Count)"
+            $taskReport.checks.PSObject.Properties | Where-Object { -not $_.Value } | ForEach-Object { Write-Warning "Failed check: $($_.Name)" }
+            if ($taskReport.error) { Write-Warning $taskReport.error }
+            if ($taskProcess.ExitCode -ne 0 -or -not $taskReport.passed) { $taskFailed = $true }
+          }
+          if ($taskFailed) { throw 'Actual button input or rendered glyph validation failed.' }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: actual-button-states-${{ matrix.architecture }}
+          path: artifacts/button-states/**/*
           if-no-files-found: error
       - name: Validate redesigned pages and actual archive operations in both languages
         run: |
