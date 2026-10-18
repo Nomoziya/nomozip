@@ -63,9 +63,10 @@ public partial class MainWindow : Window
             CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
-            ExtractionLayout.Height = Math.Max(0, ExtractionViewport.ActualHeight);
+            var shortWorkArea=ActualHeight<480;
+            ExtractionLayout.Height = shortWorkArea?double.NaN:Math.Max(0, ExtractionViewport.ActualHeight);
             DefaultOutputPanel.Width = Math.Min(360, Math.Max(160, PreferencesScroll.ActualWidth-200));
-            ExtractionViewport.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            ExtractionViewport.VerticalScrollBarVisibility = shortWorkArea?ScrollBarVisibility.Auto:ScrollBarVisibility.Disabled;
             SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             ListRow.Height = new GridLength(1, GridUnitType.Star);
             SettingsColumn.Width = new GridLength(0);

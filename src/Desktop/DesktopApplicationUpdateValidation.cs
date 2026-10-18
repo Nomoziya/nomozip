@@ -49,7 +49,7 @@ internal static class DesktopApplicationUpdateValidation
                 return new HttpResponseMessage(HttpStatusCode.OK) { Content=new StringContent(JsonSerializer.Serialize(new[] { new { tag_name="v"+version,draft=false,prerelease=false,assets=new[] { new { name,size=payload.Length,digest=mode=="no-digest"?null:"sha256:"+sha,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/v{version}/{name}" } } } })) };
             })),uri=>opened=uri);
             model.ConfigureApplicationInstallValidation(true,start=>{if(launchFailure)throw new System.ComponentModel.Win32Exception();installed=start;},()=>exits++);
-            window.DataContext=model; await model.InitializeAsync(); model.Page=2; model.SettingsSection=4; await Layout();
+            window.DataContext=model; await model.InitializeAsync(); model.Page=2; model.SettingsSection=4; window.ApplicationUpdateActions.IsExpanded=true; await Layout();
             model.UpdateRepository="other/engine-test";
             var before = model.UpdateMessage; var engine=model.EngineSummary;
             var expectedVersion=System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(App).Assembly.Location).ProductVersion!.Split('+')[0];
@@ -123,7 +123,7 @@ internal static class DesktopApplicationUpdateValidation
                 await Layout();((Border)window.FindName("SoftwareUpdateCard")).BringIntoView();await Layout();
                 foreach(var name in new[]{"CheckApplicationUpdatesButton","OpenApplicationDownloadButton","DownloadApplicationUpdateButton","InstallApplicationUpdateButton"})
                 {
-                    var b=(Button)window.FindName(name);var box=b.TransformToAncestor(window).TransformBounds(new Rect(b.RenderSize));
+                    var b=(Button)window.FindName(name);b.BringIntoView();await Layout();var box=b.TransformToAncestor(window).TransformBounds(new Rect(b.RenderSize));
                     Check($"ready action fully visible {name} {modeName} {width}",box.Left>=0 && box.Right<=window.ActualWidth && box.Top>=0 && box.Bottom<=window.ActualHeight && b.ActualHeight>=36);
                 }
                 DesktopAccessibilityValidation.Render(window,Path.Combine(samples,$"{language}-{modeName}-{width}-ready.png"),1,clientOnly:true);

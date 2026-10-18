@@ -156,11 +156,7 @@ jobs:
           name: release-followup-${{ matrix.architecture }}-reports
           path: |
             artifacts/*validation.json
-            artifacts/accessibility-preview/*.png
-            artifacts/localization-preview/*.png
-            artifacts/theme-preview/*.png
-            artifacts/pause-preview/*.png
-            artifacts/master-vault-preview/*.png
+            artifacts/*-preview/*.png
           if-no-files-found: ignore
       - name: Upgrade the published 0.2.1 lightweight installation and package release
         if: inputs.release_followup

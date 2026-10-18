@@ -47,7 +47,7 @@ internal static class DesktopPauseValidation
             {
                 var folder=Path.Combine(data,version+"-"+cancel);Directory.CreateDirectory(folder);var vaultPath=Path.Combine(folder,"passwords.apv");var vault=new DpapiPasswordVault(vaultPath);await vault.SaveAsync(new(Guid.NewGuid(),"unused synthetic","unused-secret","",true,DateTimeOffset.UtcNow));var vaultBefore=File.ReadAllBytes(vaultPath);
                 model=new MainViewModel(baseDirectory,folder,vault,new WindowDialogs(window));window.DataContext=model;await model.InitializeAsync();model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();await Layout(window);
-                Check(version+" idle has no pause entry "+cancel,!window.QueuePauseAction.IsVisible && !model.ToggleQueuePauseCommand.CanExecute(null));model.QueueConcurrency=2;model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
+                Check(version+" idle pause action stays disabled "+cancel,!window.QueuePauseAction.IsEnabled && !model.ToggleQueuePauseCommand.CanExecute(null));model.QueueConcurrency=2;model.ConflictPolicy=2;model.OutputPath=Path.Combine(folder,"fallback");
                 var paths=new[] {"a.7z","b.7z","waiting.7z"}.Select(name=>Path.Combine(folder,name)).ToArray();foreach(var path in paths) File.Copy(fixture,path);model.AddFiles(paths);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++) rows[index].ShellOutputPath=Path.Combine(folder,"output-"+index);
                 var launches=new List<ArchiveTaskRow>();foreach(var row in rows) row.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(ArchiveTaskRow.Running) && row.Running) launches.Add(row);};
                 sizeSamples=0;maximumLiveLength=0;
@@ -58,7 +58,7 @@ internal static class DesktopPauseValidation
                 // every fast native task has finished, losing the pause boundary entirely.
                 await Wait("two active extraction workers with partial output",()=>WorkerIds().Length==2 && rows.Take(2).All(row=>row.Running && HasPartialExtraction(row)),layout:false);model.ToggleQueuePauseCommand.Execute(null);
                 await Wait("two native pause acknowledgements",()=>rows.Take(2).All(row=>row.Status=="已暂停"));var ids=WorkerIds();var percents=rows.Select(row=>row.Percent).ToArray();await Task.Delay(200);await Layout(window);
-                Check(version+" actual pause entry changes to continue "+cancel,window.QueuePauseAction.IsVisible && window.QueuePauseAction.IsEnabled && model.QueuePauseCaption=="继续队列");
+                Check(version+" actual pause entry changes to continue "+cancel,window.QueuePauseAction.IsVisible && window.QueuePauseAction.IsEnabled && model.QueuePauseCaption==UiText.Get("T_c4bf814baf3d"));
                 Check(version+" two acknowledged workers remain paused "+cancel,ids.Length==2 && WorkerIds().SequenceEqual(ids) && rows.Take(2).All(row=>row.Status=="已暂停" && !row.IsIndeterminate));
                 Check(version+" progress stable and waiting task not launched "+cancel,rows.Select(row=>row.Percent).SequenceEqual(percents) && launches.SequenceEqual(rows.Take(2)) && !rows[2].Running && !Directory.Exists(rows[2].ShellOutputPath));
                 Check(version+" paused task saves no password record "+cancel,File.ReadAllBytes(vaultPath).SequenceEqual(vaultBefore));
@@ -68,7 +68,7 @@ internal static class DesktopPauseValidation
                     foreach(var contrast in new[] {false,true}) foreach(var size in new[] {(1120.0,760.0),(800.0,600.0)})
                     {
                         theme.Apply(contrast);window.Width=size.Item1;window.Height=size.Item2;await Layout(window);var button=window.QueuePauseAction;var bounds=button.TransformToAncestor(window).TransformBounds(new Rect(button.RenderSize));var peer=UIElementAutomationPeer.CreatePeerForElement(button)!;
-                        Check(version+" continue visible focusable and named "+contrast+" "+size.Item1,bounds.Left>=0 && bounds.Top>=0 && bounds.Right<=window.ActualWidth && bounds.Bottom<=window.ActualHeight && peer.IsKeyboardFocusable() && peer.GetName()=="继续队列");
+                        Check(version+" continue visible focusable and named "+contrast+" "+size.Item1,bounds.Left>=0 && bounds.Top>=0 && bounds.Right<=window.ActualWidth && bounds.Bottom<=window.ActualHeight && peer.IsKeyboardFocusable() && peer.GetName()==UiText.Get("T_c4bf814baf3d"));
                         if(version=="26.04") {window.Opacity=1;DesktopAccessibilityValidation.Render(window,Path.Combine(preview,"paused-"+contrast+"-"+size.Item1+".png"),1);window.Opacity=0;}
                     }
                     theme.Apply(false);Invoke(window.QueuePauseAction);await Layout(window);await model.WaitForIdleAsync().WaitAsync(TimeSpan.FromSeconds(30));await Layout(window);
@@ -83,7 +83,7 @@ internal static class DesktopPauseValidation
                     Check(version+" cancellation keeps queued task pending",launches.SequenceEqual(rows.Take(2)) && !rows[2].Completed && rows[2].Status=="准备就绪");
                     Check(version+" cancelled pause leaves no successful output",rows.All(row=>!row.Completed) && !Directory.EnumerateDirectories(folder,".archive-password-*",SearchOption.AllDirectories).Any());
                 }
-                Check(version+" pause resets after ending "+cancel,!model.CanPauseQueue && model.QueuePauseCaption=="暂停队列" && !window.QueuePauseAction.IsVisible && WorkerIds().Length==0);
+                Check(version+" pause resets after ending "+cancel,!model.CanPauseQueue && model.QueuePauseCaption==UiText.Get("T_e90e4d4b3a66") && !window.QueuePauseAction.IsEnabled && WorkerIds().Length==0);
                 Check(version+" source archives unchanged "+cancel,paths.All(path=>Hash(path)==Hash(fixture))) ;
                 // Reports retain the assertions; successful cases need no GiB-sized outputs.
                 var cleanup=Path.GetFullPath(folder);var scope=Path.GetFullPath(data).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar;

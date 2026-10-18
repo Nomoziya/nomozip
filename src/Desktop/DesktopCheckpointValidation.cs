@@ -45,10 +45,13 @@ internal static class DesktopCheckpointValidation
                     var model=Model();window.DataContext=model;await model.InitializeAsync();model.Page=0;await Layout(window);
                     var choice=(CheckBox)window.FindName("RetainProgressChoice");
                     Check(language+" retention defaults off for old profile",!model.RetainExtractionProgress && choice.IsChecked==false);
-                    var peer=UIElementAutomationPeer.CreatePeerForElement(choice)!;
-                    Check(language+" option has localized accessible name and focus",peer.GetName()==UiText.Get("Checkpoint.Enable") && peer.IsKeyboardFocusable());
-                    ((IToggleProvider)peer.GetPattern(PatternInterface.Toggle)).Toggle();await Layout(window);
-                    Check(language+" UIA option changes bound setting",model.RetainExtractionProgress);
+                    DesktopExtractionConfirmationValidation.Inspect(window,async dialog=>
+                    {
+                        choice.BringIntoView();dialog.UpdateLayout();var peer=UIElementAutomationPeer.CreatePeerForElement(choice)!;
+                        Check(language+" option has localized accessible name and focus",peer.GetName()==UiText.Get("Checkpoint.Enable") && peer.IsKeyboardFocusable());
+                        ((IToggleProvider)peer.GetPattern(PatternInterface.Toggle)).Toggle();await Layout(dialog);
+                        Check(language+" UIA option changes bound setting",model.RetainExtractionProgress);
+                    });
                     model.OutputPath=output;
                     var version=model.SelectedEngineVersion;
                     var dll=Path.Combine(baseDirectory,"engines",version,"7z.dll");
@@ -71,10 +74,14 @@ internal static class DesktopCheckpointValidation
                     foreach(var mode in new[]{"light","dark","high-contrast"}) foreach(var width in new[]{1120d,800d})
                     {
                         theme.SetMode(mode=="dark"?"dark":"light");theme.Apply(mode=="high-contrast");window.Width=width;window.Height=width==800?600:760;await Layout(window);
-                        var checkbox=(CheckBox)window.FindName("RetainProgressChoice");checkbox.BringIntoView();await Layout(window);
                         var primary=(Button)window.FindName("ExtractAction");var table=(DataGrid)window.FindName("ArchiveTasks");
                         var row=table.ItemContainerGenerator.ContainerFromItem(task) as DataGridRow;
-                        Check(language+mode+width+" layout retains reachable option and fixed primary",Fits(window,checkbox) && Fits(window,primary));
+                        DesktopExtractionConfirmationValidation.Inspect(window,async dialog=>
+                        {
+                            var checkbox=window.RetainProgressChoice;checkbox.BringIntoView();await Layout(dialog);
+                            Check(language+mode+width+" layout retains reachable option and fixed primary",Fits(dialog,checkbox) && Fits(dialog,DesktopExtractionConfirmationValidation.StartButton(dialog)) && Fits(window,primary));
+                            dialog.Opacity=1;DesktopAccessibilityValidation.Render(dialog,Path.Combine(screenshots,language+"-"+mode+width+"-options.png"),1,clientOnly:true);dialog.Opacity=0;
+                        });
                         window.Opacity=1;Render(window,Path.Combine(screenshots,language+"-"+mode+width+".png"));window.Opacity=0;
                         if(row is not null) {row.BringIntoView();await Layout(window);}
                         Check(language+mode+width+" saved row reachable inside scrolling viewport",row is not null && Fits(window,row) && Fits(window,primary));
@@ -112,8 +119,11 @@ internal static class DesktopCheckpointValidation
                     Check(language+" discard clears original task after selection changes",ReferenceEquals(model.SelectedTask,otherTask) && discardedTask.Checkpoint is null);
                     model.SelectedTask=discardedTask;await Layout(window);
                     Check(language+" actual discard removes private progress and keeps archive",store.ReadPending().Count==0 && model.SelectedTask.Checkpoint is null && !model.SelectedTask.Completed && File.ReadAllText(unrelated)=="keep" && File.Exists(archive));
-                    var resetOutput=(TextBox)window.FindName("OutputBox");
-                    Check(language+" discard refreshes displayed destination and editability",resetOutput.Text==model.OutputPath && !resetOutput.IsReadOnly && model.BrowseOutputCommand.CanExecute(null) && model.EditExtractionRulesCommand.CanExecute(null));
+                    DesktopExtractionConfirmationValidation.Inspect(window,async dialog=>
+                    {
+                        var resetOutput=window.OutputBox;resetOutput.BringIntoView();await Layout(dialog);
+                        Check(language+" discard refreshes displayed destination and editability",resetOutput.Text==model.OutputPath && !resetOutput.IsReadOnly && model.BrowseOutputCommand.CanExecute(null) && model.EditExtractionRulesCommand.CanExecute(null));
+                    });
                     Check(language+" final actions disable after discard",!model.ResumeCheckpointCommand.CanExecute(null) && !model.DiscardCheckpointCommand.CanExecute(null) && model.RemoveFileCommand.CanExecute(null));
                 }
                 finally {window.Close();}

@@ -6,6 +6,22 @@ namespace ArchivePassword.Desktop;
 
 internal static class DesktopExtractionConfirmationValidation
 {
+    internal static void Inspect(MainWindow window,Func<Window,Task> inspect)
+    {
+        if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true")throw new InvalidOperationException("Confirmation inspection requires isolated CI.");
+        var previous=window.PrepareExtractionOptionsForValidation;
+        window.PrepareExtractionOptionsForValidation=dialog=>
+        {
+            dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.ShowActivated=false;dialog.Opacity=0;
+            dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(async()=>
+            {
+                foreach(var expander in Descendants((DependencyObject)dialog.Content).OfType<Expander>())expander.IsExpanded=true;
+                dialog.UpdateLayout();await inspect(dialog);dialog.Close();
+            }));
+        };
+        try{window.ConfirmExtractionOptions();}finally{window.PrepareExtractionOptionsForValidation=previous;}
+    }
+    internal static Button StartButton(Window dialog)=>Descendants((DependencyObject)dialog.Content).OfType<Button>().Single(button=>button.IsDefault);
     internal static IDisposable Accept(MainWindow window)
     {
         if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true") throw new InvalidOperationException("Confirmation automation requires isolated CI.");
