@@ -1,8 +1,10 @@
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -18,11 +20,21 @@ internal static class DesktopButtonStateValidation
         string folder, Action<string, bool> check)
     {
         if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") throw new InvalidOperationException("Isolated CI only.");
+        // ARM hosted runners have no interactive desktop. This explicitly selected
+        // mode verifies native WPF trigger rendering, never OS mouse injection.
+        var renderOnly=Environment.GetEnvironmentVariable("NOMOZIP_BUTTON_INPUT")=="wpf-render-states";
+        void State(Button button,Type owner,string field,bool value)
+        {
+            var key=(DependencyPropertyKey)(owner.GetField(field,BindingFlags.Static|BindingFlags.NonPublic)?.GetValue(null)
+                ?? throw new InvalidOperationException("WPF state key unavailable: "+field));
+            button.SetValue(key,value);
+        }
         var width=window.Width;var height=window.Height;var minWidth=window.MinWidth;var minHeight=window.MinHeight;var left=window.Left;var top=window.Top;var opacity=window.Opacity;var topmost=window.Topmost;var page=model.Page;var section=model.SettingsSection;var mode=theme.Mode;var contrast=theme.IsHighContrast;
         var evidence=new List<object>();
         async Task Layout() { await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);await Task.Delay(70); }
         async Task Move(Button button)
         {
+            if(renderOnly) {State(button,typeof(UIElement),"IsMouseOverPropertyKey",true);await Layout();return;}
             var point=button.PointToScreen(new Point(button.ActualWidth/2,button.ActualHeight/2));
             if(!SetCursorPos((int)point.X,(int)point.Y))throw new InvalidOperationException("CI cursor movement failed.");
             await Layout();
@@ -56,7 +68,7 @@ internal static class DesktopButtonStateValidation
                     closest=Math.Min(closest,distance);if(distance<45)ink++;
                 }
             check(name+" rendered foreground glyphs remain visible",ink>=8);
-            evidence.Add(new {name,foregroundPixels=ink,closestForegroundDistance=closest,foreground=foreground.ToString(),button.IsMouseOver,button.IsPressed,button.IsKeyboardFocused,button.IsEnabled,area,
+            evidence.Add(new {name,foregroundPixels=ink,closestForegroundDistance=closest,foreground=foreground.ToString(),button.IsMouseOver,hoverDependencyState=button.GetValue(UIElement.IsMouseOverProperty),button.IsPressed,button.IsKeyboardFocused,button.IsEnabled,area,
                 window.Left,window.Top,window.Width,window.Height,window.Opacity,window.IsActive,screenPoint=button.PointToScreen(new Point(button.ActualWidth/2,button.ActualHeight/2))});
             var path=Path.Combine(folder,"button-state-"+name.Replace('/','-')+".png");DesktopTypographyValidation.Record(window,path);
             var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));using var stream=File.Create(path);encoder.Save(stream);
@@ -66,16 +78,20 @@ internal static class DesktopButtonStateValidation
             button.BringIntoView();await Layout();
             check(name+" actual action is visible and enabled",button.IsVisible && button.IsEnabled && button.ActualWidth>20);
             if(!button.IsVisible || !button.IsEnabled)throw new InvalidOperationException("State validation action unavailable: "+name);
-            SetCursorPos(0,0);await Layout();Capture(button,name+"/normal");
-            await Move(button);check(name+" actual mouse hover reached action",button.IsMouseOver);Capture(button,name+"/hover");
+            if(renderOnly)State(button,typeof(UIElement),"IsMouseOverPropertyKey",false);else SetCursorPos(0,0);
+            await Layout();Capture(button,name+"/normal");
+            await Move(button);check(name+(renderOnly?" explicit WPF hover state applied":" actual mouse hover reached action"),renderOnly?(bool)button.GetValue(UIElement.IsMouseOverProperty):button.IsMouseOver);Capture(button,name+"/hover");
             try
             {
-                mouse_event(2,0,0,0,0);await Layout();check(name+" actual mouse press reached action",button.IsPressed);Capture(button,name+"/pressed");
+                if(renderOnly)State(button,typeof(ButtonBase),"IsPressedPropertyKey",true);else mouse_event(2,0,0,0,0);
+                await Layout();check(name+(renderOnly?" explicit WPF pressed state applied":" actual mouse press reached action"),button.IsPressed);Capture(button,name+"/pressed");
             }
             finally
             {
                 // Release outside the control so no import dialog or command is invoked.
-                SetCursorPos(0,0);await Layout();mouse_event(4,0,0,0,0);await Layout();
+                if(renderOnly) {State(button,typeof(ButtonBase),"IsPressedPropertyKey",false);State(button,typeof(UIElement),"IsMouseOverPropertyKey",false);}
+                else {SetCursorPos(0,0);await Layout();mouse_event(4,0,0,0,0);}
+                await Layout();
             }
             button.Focus();await Layout();check(name+" keyboard focus is retained",button.IsKeyboardFocused);Capture(button,name+"/focus");
             var binding=BindingOperations.GetBindingBase(button,UIElement.IsEnabledProperty);var local=button.ReadLocalValue(UIElement.IsEnabledProperty);
@@ -106,7 +122,7 @@ internal static class DesktopButtonStateValidation
         {
             mouse_event(4,0,0,0,0);SetCursorPos(0,0);theme.SetMode(mode);theme.Apply(contrast);model.Page=page;model.SettingsSection=section;
             window.Topmost=topmost;window.MinWidth=minWidth;window.MinHeight=minHeight;window.Width=width;window.Height=height;window.Left=left;window.Top=top;window.Opacity=opacity;
-            File.WriteAllText(Path.Combine(folder,"button-state-audit.json"),JsonSerializer.Serialize(new {actualMouseInput=true,fieldValuesRecorded=false,desktopWidth=SystemParameters.VirtualScreenWidth,desktopHeight=SystemParameters.VirtualScreenHeight,states=evidence}));
+            File.WriteAllText(Path.Combine(folder,"button-state-audit.json"),JsonSerializer.Serialize(new {actualMouseInput=!renderOnly,explicitWpfRenderStates=renderOnly,Environment.UserInteractive,sessionId=System.Diagnostics.Process.GetCurrentProcess().SessionId,fieldValuesRecorded=false,desktopWidth=SystemParameters.VirtualScreenWidth,desktopHeight=SystemParameters.VirtualScreenHeight,states=evidence}));
         }
     }
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x,int y);
