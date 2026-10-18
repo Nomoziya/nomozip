@@ -1,0 +1,400 @@
+{
+  "productBaselineCommit": "3a4a6cc361d9812a31743b59c985984ea2a53d01",
+  "note": "Only original UI candidate ZIPs; no local candidate profiles or vault files. Historical candidates are not current acceptance evidence. Full source history preserved by the release Git bundle; final freeze is tag v0.3.0.",
+  "branchesAtInventory": {
+    "codex/ui-next-20261017": "e566466ac0d1800dcdcb1e944a2fcf3a0c6797ed",
+    "codex/ui-option2-20261017": "1db551aecacac8c89d9d24c6140bc66399edf6ed",
+    "codex/ui-redesign-20261016": "c602c3ac442e2bc5cf829610b3515cabcf27afd4",
+    "codex/ui-reference-20261017": "77eaf5d05431f842e76c97fc002bf154d780cbdb",
+    "main": "09ef7f631fab891b00e59f33788858c72bf878fd"
+  },
+  "candidates": [
+    {
+      "path": "ui-next-candidate-f76d5f9/x64/nomozip-ui-next-prototype-x64.zip",
+      "bytes": 162301,
+      "sha256": "32895bb38b83924dbcbf0128311e6343d99fbf3387d433ddb9668b91716ef014",
+      "sourceCommit": "f76d5f9a9fb140c844acf4fed69ef179fdbe2d3f",
+      "status": "alternative-not-adopted",
+      "files": 7,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-option2-candidate-7a050a7/x64/nomozip-ui-option2-prototype-x64.zip",
+      "bytes": 165779,
+      "sha256": "50f8bfd7fc2d7b79ae64cd7a384bd9aac2820d5ccbed5eadc3f37629766026cc",
+      "sourceCommit": "7a050a735a1a40d8a483ac29efe115e3c33db608",
+      "status": "alternative-not-adopted",
+      "files": 7,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-0a09be9/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3818660,
+      "sha256": "fe61c3094e83fdbd0f504cdcec52ea75b01f3448b60ef1479479401b3051f7a5",
+      "sourceCommit": "0a09be93c26e5aba3c09da24dfb00a45012e8819",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-0a09be9/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4628047,
+      "sha256": "e7805fa328b78cec76bb87c6b75e0b350ae3900316f9f77aa8aab3ad4b8a26f9",
+      "sourceCommit": "0a09be93c26e5aba3c09da24dfb00a45012e8819",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-3667c99/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3813908,
+      "sha256": "3faba34fcb51b664da42ed3660d008b0de7ab7881dfcde1b70a2e5d4e3aa4f53",
+      "sourceCommit": "3667c997b1353bc245a9d5b68a767874a43575f9",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-3667c99/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4623421,
+      "sha256": "c8b04b86b604174c23f728e37f73a1b8b06247e53199f71f7dd27bfec528e06d",
+      "sourceCommit": "3667c997b1353bc245a9d5b68a767874a43575f9",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-592263b/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3847718,
+      "sha256": "5bb3bd2c9f81dfc7f0fd1b99e36bd0fbfaca6015513c5616190df17436706d37",
+      "sourceCommit": "592263ba724a6d34d269eec1301ab4820026e7f8",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-592263b/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4657421,
+      "sha256": "1c0da4e76b476338eb2ad01556261d6b4a51a565743801c98db5fce002130569",
+      "sourceCommit": "592263ba724a6d34d269eec1301ab4820026e7f8",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-7012c92/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3813949,
+      "sha256": "dfdf08e603fe3a3600e3416939412d42d8f2ff11d132df844a21859dcb2df0bd",
+      "sourceCommit": "7012c9244f2e53d00e977bb1214bcb4af1e21f93",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-7012c92/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4623408,
+      "sha256": "ef1e7f24d1153cb4c41716df918128347bdbb487a4a114fd89f3f3297acb580f",
+      "sourceCommit": "7012c9244f2e53d00e977bb1214bcb4af1e21f93",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-84e99f1/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3769534,
+      "sha256": "718dd7a3bb44af80266614283693201fd0bcc97f3f7f9ed5b3fb6b00ef46eeb2",
+      "sourceCommit": "84e99f17903c1b059bf3fa7fe32c017630caa7a3",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-84e99f1/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4578818,
+      "sha256": "1a86663901546eb188d0537e1a27af2b245efde22395e58613859325c679c025",
+      "sourceCommit": "84e99f17903c1b059bf3fa7fe32c017630caa7a3",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-888994f/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3814277,
+      "sha256": "67352a6c277360cd27266959caa93d96bf7baa61e79ecbbdd822aaeaf9794d97",
+      "sourceCommit": "888994f7c6a97a5af0e1ff5d5354324a23050b3d",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-888994f/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4623724,
+      "sha256": "4220ede346552aed3e7f4574f75bac86b507a529c4d187cec6828a5bb212a6d4",
+      "sourceCommit": "888994f7c6a97a5af0e1ff5d5354324a23050b3d",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-9598fe2/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3846518,
+      "sha256": "9c965b6ffc655ead9dc8a3f7854ce1df54a055bf6e51e48b6dab5acb07492ce9",
+      "sourceCommit": "9598fe231396b9df1a05b1da82d2818bf84efb01",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-9598fe2/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4656216,
+      "sha256": "db9435f1cf6a4cf70af0bf51583b5efe17d0b830b9b0b54d39cf1ab9fd0196ac",
+      "sourceCommit": "9598fe231396b9df1a05b1da82d2818bf84efb01",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-9b2e521/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3806562,
+      "sha256": "e70bbda15c35e16a5bc7b42491fa58c426847cfd62194920c53e3cb5b740aca0",
+      "sourceCommit": "9b2e5212135de02e55f0411eddf316e491d47b01",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-9b2e521/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4616068,
+      "sha256": "3e1e1baa14e6aeeb81e222333f2e04a3c0285099119b506f4aa8a68299272c0d",
+      "sourceCommit": "9b2e5212135de02e55f0411eddf316e491d47b01",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-a223bc0/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3832568,
+      "sha256": "eaba22853f70e24143c71ad04609982f5b79c8a03c771eff6e139c402a80db2d",
+      "sourceCommit": "a223bc0d5a63f67e64bb07f7f896ff11f6acf616",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-a223bc0/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4641983,
+      "sha256": "fa7ebbf0d448de848b12763b5b1f6bb286897e765501505987422c01307692c5",
+      "sourceCommit": "a223bc0d5a63f67e64bb07f7f896ff11f6acf616",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-ad9f2ea/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3818852,
+      "sha256": "ab6dc934fb79bafc3aedfd4784d36eeba83968857ee93f58bdc5a906a6c42f78",
+      "sourceCommit": "ad9f2ea9ae28ac3a4d24a3cc6e1afe92601d932e",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-ad9f2ea/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4628244,
+      "sha256": "e4795451f542be06d78fa6016439d9804f952766724a504cc1f64cebdec18acd",
+      "sourceCommit": "ad9f2ea9ae28ac3a4d24a3cc6e1afe92601d932e",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-b7a77e0/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3812340,
+      "sha256": "9a932f9f92a56e45b58a84c737c63c2bcc7a99ab2ca9c125bbda7701a9c456ab",
+      "sourceCommit": "b7a77e07f31f1c0e8ed2025b958ae9a291d9e932",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-b7a77e0/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4621789,
+      "sha256": "55c144c336975bcd51ef6a3a8bf93f0b16dcfe39ff515d45eb8bd79a2732ce20",
+      "sourceCommit": "b7a77e07f31f1c0e8ed2025b958ae9a291d9e932",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-f15922e/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3806596,
+      "sha256": "893b3aa8c745067c207a96b550b6b1eeea471daf62fdf085e64ed6c0778af289",
+      "sourceCommit": "f15922e98cee05a0474f1c62b72bf9e32f60ddf4",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-redesign-candidate-f15922e/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4616109,
+      "sha256": "a3668163cd79d2771cb8c3a9f4575689434a3413ab600f208862d221a965fe8a",
+      "sourceCommit": "f15922e98cee05a0474f1c62b72bf9e32f60ddf4",
+      "status": "earlier-withdrawn-design",
+      "files": 39,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-2f08f39/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4688927,
+      "sha256": "c94cfff59bb2d306f78bfe3b66dafd5e1bae6366736cc1a003c87c854b310a7f",
+      "sourceCommit": "2f08f390b65feb95a5cbe56dc6dcc89e8ab69e1e",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-35c3376/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4691980,
+      "sha256": "3f13138e22de0157c6c0d8bc0c3625449788fbf0ea1f8380edf46d39f7ad5a9a",
+      "sourceCommit": "35c3376581121b56bf561e83c9e09c41d7fd13cf",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-5da5616/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4692595,
+      "sha256": "b98dbe788e6907fb23da6e8bf76a576364d9d8a3df7348301825bfe8ee5353df",
+      "sourceCommit": "5da56161e216a398b8ff2cd140177a47fecc2eea",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-684b914/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4698825,
+      "sha256": "79cd846525e7b82ce6e0a2ddf5b033fb43d46105e69e72ad7279e7b9ab4926d6",
+      "sourceCommit": "684b914edbf56ad746db3dba34b04681bca089b8",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-6b89431/x64/nomozip-ui-reference-prototype-x64.zip",
+      "bytes": 492880,
+      "sha256": "55ba0c1fae04e0b3b3dad1444889f484e12179b8402aa787d16c09b2c6febb90",
+      "sourceCommit": "6b894316d540b4416bfe29e8b218aa4ed3b071a0",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 8,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-7e76439/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3886158,
+      "sha256": "e06cc63d8830c5719ee9b5e87dddf76720b444bf4ec77a8da6072caff7729e0c",
+      "sourceCommit": "7e76439f58a980a443c890dc0a58bb6782221cd9",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-967175a/x64/nomozip-ui-reference-prototype-x64.zip",
+      "bytes": 454896,
+      "sha256": "0470963370b7e5b94ec0138cee8a8648da71cc7a128bed42fb1c14b0bdaccfe4",
+      "sourceCommit": "967175a4274835fbfefeb75a6b30718051dfa41c",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 8,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-9c52303/x64/nomozip-ui-reference-prototype-x64.zip",
+      "bytes": 448107,
+      "sha256": "398ad13c6001b6a5b581ee5752094a968177665567d0a64920db3658427c7d7b",
+      "sourceCommit": "9c523038dfee16f532f3c2ce7f125546659336f8",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 8,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-c631d22/x64/nomozip-ui-reference-prototype-x64.zip",
+      "bytes": 446609,
+      "sha256": "9e45d605ecb4be58bfc7909ff3de0ba53faeee97f063b116dd38e40733eec689",
+      "sourceCommit": "c631d2202bbd18b60611005716b7745da48f5c73",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 8,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-c78515f/x64/nomozip-ui-reference-prototype-x64.zip",
+      "bytes": 446825,
+      "sha256": "cb3555c259be96b362428756d235aac8227e9b1ffaa77a9c2a3e748945447609",
+      "sourceCommit": "c78515fc71d4e651b3d28de70822a8f8b7798ce3",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 8,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-ddb0e07/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4699130,
+      "sha256": "abede02e40b654bcb81253d8aad74dee19ebbe35ba150235b0b0573c833cf8cf",
+      "sourceCommit": "ddb0e071eb5bc7e68e6b4b0b54beb6f95ac538e6",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-reference-candidate-fec274b/x64/nomozip-ui-reference-prototype-x64.zip",
+      "bytes": 493274,
+      "sha256": "3b9a2a940408b867ee474bc4e0023c810829c3dd0402e577c5492040fac9be10",
+      "sourceCommit": "fec274bd781be2f9ffaffbd57750ba684eeded5e",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 8,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-form-fit-candidate-0803363/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3896887,
+      "sha256": "40d5c491a3226ec15e1f511a88ad2fce905f81d578742afcd5afe81b771cd144",
+      "sourceCommit": "08033631af53e7e9212edf862383398b5c078a96",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-form-fit-candidate-0803363/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4709884,
+      "sha256": "e3c2092692b56221c72d522cb0001bca468ab56d5112b79de89d96b7c87dee87",
+      "sourceCommit": "08033631af53e7e9212edf862383398b5c078a96",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "ui-form-width-candidate-b5871c0/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4709424,
+      "sha256": "550b1b49abf46410398f1544bd7b62fe1ebcc70c5b6c53796e498670a18474ba",
+      "sourceCommit": "b5871c0360c895aae91825c77cadd31ff09a97b5",
+      "status": "superseded-product-or-prototype-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "regression-candidate-3a4a6cc/arm64/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3900296,
+      "sha256": "7a96834a6361b4a8fe45ec85302feb7d0c5bbd045ce8448dbd5f559c61cd107b",
+      "sourceCommit": "3a4a6cc361d9812a31743b59c985984ea2a53d01",
+      "status": "current-tested-product-candidate",
+      "files": 40,
+      "crcPassed": true
+    },
+    {
+      "path": "regression-candidate-3a4a6cc/x64/nomozip-ui-redesign-x64.zip",
+      "bytes": 4713303,
+      "sha256": "670a53ce16ea57b138e845167618960b3b1f19a1b464193ec2e93a21cb5f9663",
+      "sourceCommit": "3a4a6cc361d9812a31743b59c985984ea2a53d01",
+      "status": "current-tested-product-candidate",
+      "files": 40,
+      "crcPassed": true
+    }
+  ]
+}

@@ -42,6 +42,7 @@
 - [使用文档与功能索引](docs/README.md)
 - [0.3.0 发行说明](docs/RELEASE_0.3.0.md)
 - [从源码构建](docs/DEVELOPMENT.md)
+- [UI 样式修改与历史候选](docs/UI_STYLE_GUIDE.md)
 - [支持范围与验收记录](docs/ACCEPTANCE.md)
 - [第三方组件及许可](THIRD_PARTY.md)
 

@@ -1,0 +1,1315 @@
+{
+  "productBaselineCommit": "3a4a6cc361d9812a31743b59c985984ea2a53d01",
+  "units": "WPF DIP; font size is WPF FontSize, not points",
+  "precedence": "Current runtime resources and matching current screenshot; then newest MASTER supplement; historical prototype parameters are not overrides.",
+  "sourceHashes": {
+    "src/Desktop/App.xaml": "bdef9331d39a30cdd825ce4c6a4354d53ac3555213992446ed99d7eae7aff189",
+    "src/Desktop/ThemeResources.cs": "02bb2de3e7e055e5b9a79acf7bef794f1f2cd5b1af6f9daf4fdaf5ae1595d6b4",
+    "src/Desktop/WindowChromeResources.xaml": "20147016a06a023888dce81167f2b77926c94c1da1be2fd3eb88daa6c78432b0",
+    "src/Desktop/ActionMenuResources.xaml": "f4ec10ba53352e7efff9422d07d991b2d400a9843c3df43c1ff4dff3573e3868",
+    "src/Desktop/TaskProgressView.xaml.cs": "72f52028d5c139d12959ee48060d2f6d762fd2bfc05cb9dff5be04e41d9b77fe",
+    "assets/fluent/Icons.xaml": "90e220d9807397e8d8de1e0aaa6c3ee27ff5d654d678b43d7f44d9dfd3fc533c"
+  },
+  "dictionaries": {
+    "src/Desktop/App.xaml": {
+      "namedValues": {
+        "CanvasBrush": "#F3F4F6",
+        "SurfaceBrush": "#FFFFFF",
+        "TextBrush": "#111722",
+        "SecondaryBrush": "#515D6C",
+        "AccentBrush": "#006CD9",
+        "OnAccentBrush": "#FFFFFF",
+        "SuccessBrush": "#008F56",
+        "ButtonBorderBrush": "#BAC3CF",
+        "BorderBrush": "#8491A3",
+        "DividerBrush": "#E3E7ED",
+        "NavigationSelectionBrush": "#D9E8F9",
+        "SelectionBrush": "#E2EFFD",
+        "HoverBrush": "#EAF2FA",
+        "SelectionTextBrush": "#111722",
+        "FocusBrush": "#006CD9",
+        "ErrorBrush": "#B52C2C",
+        "WarningSurfaceBrush": "#FFF4CE",
+        "WarningTextBrush": "#795600",
+        "UiFontFamily": "Microsoft YaHei UI, Segoe UI, Microsoft YaHei, Global User Interface",
+        "NavigationTextBrush": "#006CD9",
+        "HeaderHoverBrush": "#E8EDF3",
+        "HeaderPressedBrush": "#DBE3ED",
+        "PressedBrush": "#D4E6FA",
+        "AccentHoverBrush": "#005BBC",
+        "FolderIconBrush": "#AD6C00",
+        "PdfIconBrush": "#D74842",
+        "SheetIconBrush": "#16845C",
+        "IconOnFillBrush": "#FFFFFF"
+      },
+      "styles": {
+        "BodyControl": {
+          "targetType": "Control",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "FontFamily",
+              "Value": "{StaticResource UiFontFamily}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "15"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            }
+          ]
+        },
+        "BodyText": {
+          "targetType": "TextBlock",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "FontFamily",
+              "Value": "{StaticResource UiFontFamily}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "15"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "22"
+            }
+          ]
+        },
+        "implicit:local:FluentIcon": {
+          "targetType": "local:FluentIcon",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Width",
+              "Value": "20"
+            },
+            {
+              "Property": "Height",
+              "Value": "20"
+            },
+            {
+              "Property": "Focusable",
+              "Value": "False"
+            },
+            {
+              "Property": "IsHitTestVisible",
+              "Value": "False"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{Binding Foreground,RelativeSource={RelativeSource AncestorType=Control}}"
+            }
+          ]
+        },
+        "WorkspacePageTitle": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "26"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Bold"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "38"
+            }
+          ]
+        },
+        "EmptyTitle": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "25"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "SemiBold"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "34"
+            }
+          ]
+        },
+        "WorkspaceSectionTitle": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "18"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "SemiBold"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "26"
+            }
+          ]
+        },
+        "PageTitle": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "22"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "SemiBold"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "32"
+            }
+          ]
+        },
+        "SectionTitle": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "16"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "SemiBold"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "22"
+            }
+          ]
+        },
+        "Caption": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "13"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "20"
+            }
+          ]
+        },
+        "implicit:ListBox": {
+          "targetType": "ListBox",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": []
+        },
+        "AppWindow": {
+          "targetType": "Window",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "local:WindowChromeBehavior.Enabled",
+              "Value": "True"
+            },
+            {
+              "Property": "Template",
+              "Value": "{StaticResource IntegratedWindowTemplate}"
+            },
+            {
+              "Property": "Icon",
+              "Value": "/ArchivePassword;component/Assets/nomozip.ico"
+            },
+            {
+              "Property": "local:WindowPlacement.AutoFit",
+              "Value": "True"
+            },
+            {
+              "Property": "UseLayoutRounding",
+              "Value": "True"
+            },
+            {
+              "Property": "SnapsToDevicePixels",
+              "Value": "True"
+            },
+            {
+              "Property": "FontFamily",
+              "Value": "{StaticResource UiFontFamily}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "15"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource CanvasBrush}"
+            }
+          ]
+        },
+        "Secondary": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource SecondaryBrush}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "13"
+            },
+            {
+              "Property": "TextWrapping",
+              "Value": "Wrap"
+            },
+            {
+              "Property": "LineHeight",
+              "Value": "20"
+            }
+          ]
+        },
+        "Heading": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource SectionTitle}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "16"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "SemiBold"
+            },
+            {
+              "Property": "Margin",
+              "Value": "0,0,0,16"
+            }
+          ]
+        },
+        "FocusStyle": {
+          "targetType": "Control",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Control.Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"Control.Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate>\n              <ns0:Border BorderBrush=\"{DynamicResource FocusBrush}\" BorderThickness=\"2\" CornerRadius=\"4\" Margin=\"2\" SnapsToDevicePixels=\"True\" IsHitTestVisible=\"False\" />\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "CapsuleFocusStyle": {
+          "targetType": "Control",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Control.Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"Control.Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate>\n              <ns0:Border BorderBrush=\"{DynamicResource FocusBrush}\" BorderThickness=\"2\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Margin=\"2\" SnapsToDevicePixels=\"True\" IsHitTestVisible=\"False\" />\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "SecretRevealToggle": {
+          "targetType": "ToggleButton",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Width",
+              "Value": "30"
+            },
+            {
+              "Property": "Height",
+              "Value": "30"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource SecondaryBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{StaticResource FocusStyle}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:ns2=\"clr-namespace:ArchivePassword.Desktop\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"ToggleButton\">\n              <ns0:Border ns1:Name=\"RevealSurface\" Background=\"{TemplateBinding Background}\" CornerRadius=\"4\">\n                <ns0:Grid>\n                  <ns2:FluentIcon ns1:Name=\"RevealEye\" Kind=\"Eye\" Foreground=\"{TemplateBinding Foreground}\" Width=\"20\" Height=\"20\" />\n                </ns0:Grid>\n              </ns0:Border>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsChecked\" Value=\"True\">\n                  <ns0:Setter TargetName=\"RevealEye\" Property=\"local:FluentIcon.Kind\" Value=\"EyeOff\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                  <ns0:Setter TargetName=\"RevealSurface\" Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "GridSecondary": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource Secondary}",
+          "setters": []
+        },
+        "GridCaption": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource Caption}",
+          "setters": [
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource SecondaryBrush}"
+            }
+          ]
+        },
+        "TableText": {
+          "targetType": "TextBlock",
+          "basedOn": "{StaticResource BodyText}",
+          "setters": [
+            {
+              "Property": "VerticalAlignment",
+              "Value": "Center"
+            },
+            {
+              "Property": "Margin",
+              "Value": "12,0"
+            },
+            {
+              "Property": "TextTrimming",
+              "Value": "CharacterEllipsis"
+            },
+            {
+              "Property": "ToolTip",
+              "Value": "{Binding Text, RelativeSource={RelativeSource Self}}"
+            }
+          ]
+        },
+        "implicit:DataGridColumnHeader": {
+          "targetType": "DataGridColumnHeader",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource ChromeBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource SecondaryBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource DividerBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "0,0,0,1"
+            },
+            {
+              "Property": "Padding",
+              "Value": "12,6"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "32"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            },
+            {
+              "Property": "VerticalContentAlignment",
+              "Value": "Center"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "13"
+            }
+          ]
+        },
+        "implicit:Button": {
+          "targetType": "Button",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "VerticalAlignment",
+              "Value": "Center"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "36"
+            },
+            {
+              "Property": "Padding",
+              "Value": "15,0"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource ButtonBorderBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "1"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{StaticResource CapsuleFocusStyle}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"Button\">\n              <ns0:Grid>\n                <ns0:Border Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Padding=\"{TemplateBinding Padding}\">\n                  <ns0:ContentPresenter HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\" RecognizesAccessKey=\"True\" />\n                </ns0:Border>\n                <ns0:Border ns1:Name=\"Overlay\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Background=\"{DynamicResource HoverBrush}\" Opacity=\"0\" IsHitTestVisible=\"False\" />\n              </ns0:Grid>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                  <ns0:Setter TargetName=\"Overlay\" Property=\"Opacity\" Value=\"1\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsPressed\" Value=\"True\"><ns0:Setter TargetName=\"Overlay\" Property=\"Background\" Value=\"{DynamicResource PressedBrush}\" />\n                  <ns0:Setter TargetName=\"Overlay\" Property=\"Opacity\" Value=\"1\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.45\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "PrimaryButton": {
+          "targetType": "Button",
+          "basedOn": "{StaticResource {x:Type Button}}",
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource AccentBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource OnAccentBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource AccentBrush}"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\"><ns0:Setter.Value><ns0:ControlTemplate TargetType=\"Button\"><ns0:Border ns1:Name=\"PrimarySurface\" Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Padding=\"{TemplateBinding Padding}\"><ns0:ContentPresenter HorizontalAlignment=\"{TemplateBinding HorizontalContentAlignment}\" VerticalAlignment=\"Center\" RecognizesAccessKey=\"True\" /></ns0:Border><ns0:ControlTemplate.Triggers><ns0:Trigger Property=\"IsMouseOver\" Value=\"True\"><ns0:Setter TargetName=\"PrimarySurface\" Property=\"Background\" Value=\"{DynamicResource AccentHoverBrush}\" /></ns0:Trigger><ns0:Trigger Property=\"IsPressed\" Value=\"True\"><ns0:Setter TargetName=\"PrimarySurface\" Property=\"Background\" Value=\"{DynamicResource AccentHoverBrush}\" /></ns0:Trigger><ns0:Trigger Property=\"IsEnabled\" Value=\"False\"><ns0:Setter Property=\"Opacity\" Value=\"0.45\" /></ns0:Trigger></ns0:ControlTemplate.Triggers></ns0:ControlTemplate></ns0:Setter.Value></ns0:Setter>\n      "
+            }
+          ]
+        },
+        "SubtleButton": {
+          "targetType": "Button",
+          "basedOn": "{StaticResource {x:Type Button}}",
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource AccentBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "0"
+            },
+            {
+              "Property": "Padding",
+              "Value": "8,8"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"Button\">\n              <ns0:Border ns1:Name=\"SubtleSurface\" Background=\"{TemplateBinding Background}\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Padding=\"{TemplateBinding Padding}\">\n                <ns0:ContentPresenter HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\" RecognizesAccessKey=\"True\" />\n              </ns0:Border>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                  <ns0:Setter TargetName=\"SubtleSurface\" Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" />\n                  <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource TextBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsPressed\" Value=\"True\">\n                  <ns0:Setter TargetName=\"SubtleSurface\" Property=\"Background\" Value=\"{DynamicResource SelectionBrush}\" />\n                  <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SelectionTextBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:TextBox": {
+          "targetType": "TextBox",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "FontSize",
+              "Value": "14"
+            },
+            {
+              "Property": "CaretBrush",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "SelectionBrush",
+              "Value": "{DynamicResource AccentBrush}"
+            },
+            {
+              "Property": "SelectionTextBrush",
+              "Value": "{DynamicResource OnAccentBrush}"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "36"
+            },
+            {
+              "Property": "Padding",
+              "Value": "8,6"
+            },
+            {
+              "Property": "VerticalContentAlignment",
+              "Value": "Center"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource BorderBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "1"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"TextBox\">\n              <ns0:Grid>\n                <ns0:Border ns1:Name=\"FieldSurface\" Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" CornerRadius=\"4\">\n                  <ns0:ScrollViewer ns1:Name=\"PART_ContentHost\" Margin=\"0\" Padding=\"{TemplateBinding Padding}\" VerticalAlignment=\"Stretch\" Focusable=\"False\" HorizontalScrollBarVisibility=\"{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}\" VerticalScrollBarVisibility=\"{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}\" />\n                </ns0:Border>\n                <ns0:Border ns1:Name=\"FieldFocus\" BorderBrush=\"{DynamicResource FocusBrush}\" BorderThickness=\"2\" CornerRadius=\"4\" Visibility=\"Collapsed\" IsHitTestVisible=\"False\" />\n              </ns0:Grid>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsKeyboardFocusWithin\" Value=\"True\">\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"Validation.HasError\" Value=\"True\">\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"BorderBrush\" Value=\"{DynamicResource ErrorBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"loc:FieldState.HasError\" Value=\"True\">\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"BorderBrush\" Value=\"{DynamicResource ErrorBrush}\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:PasswordBox": {
+          "targetType": "PasswordBox",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "CaretBrush",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "SelectionBrush",
+              "Value": "{DynamicResource AccentBrush}"
+            },
+            {
+              "Property": "SelectionTextBrush",
+              "Value": "{DynamicResource OnAccentBrush}"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "36"
+            },
+            {
+              "Property": "Padding",
+              "Value": "8,6"
+            },
+            {
+              "Property": "VerticalContentAlignment",
+              "Value": "Center"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource BorderBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "1"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"PasswordBox\">\n              <ns0:Grid>\n                <ns0:Border ns1:Name=\"FieldSurface\" Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" CornerRadius=\"4\">\n                  <ns0:ScrollViewer ns1:Name=\"PART_ContentHost\" Margin=\"0\" Padding=\"{TemplateBinding Padding}\" VerticalAlignment=\"Stretch\" Focusable=\"False\" HorizontalScrollBarVisibility=\"{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}\" VerticalScrollBarVisibility=\"{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}\" />\n                </ns0:Border>\n                <ns0:Border ns1:Name=\"FieldFocus\" BorderBrush=\"{DynamicResource FocusBrush}\" BorderThickness=\"2\" CornerRadius=\"4\" Visibility=\"Collapsed\" IsHitTestVisible=\"False\" />\n              </ns0:Grid>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsKeyboardFocusWithin\" Value=\"True\">\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"Validation.HasError\" Value=\"True\">\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"BorderBrush\" Value=\"{DynamicResource ErrorBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"loc:FieldState.HasError\" Value=\"True\">\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                  <ns0:Setter TargetName=\"FieldFocus\" Property=\"BorderBrush\" Value=\"{DynamicResource ErrorBrush}\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:Expander": {
+          "targetType": "Expander",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:ns2=\"clr-namespace:ArchivePassword.Desktop\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"Expander\">\n              <ns0:DockPanel>\n                <ns0:ToggleButton ns1:Name=\"HeaderSite\" DockPanel.Dock=\"Top\" MinHeight=\"28\" Background=\"Transparent\" Foreground=\"{TemplateBinding Foreground}\" FocusVisualStyle=\"{StaticResource FocusStyle}\" IsChecked=\"{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}\" Content=\"{TemplateBinding Header}\" ContentTemplate=\"{TemplateBinding HeaderTemplate}\" ContentStringFormat=\"{TemplateBinding HeaderStringFormat}\" HorizontalContentAlignment=\"Stretch\">\n                  <ns0:ToggleButton.Template>\n                    <ns0:ControlTemplate TargetType=\"ToggleButton\">\n                      <ns0:Border ns1:Name=\"ExpanderHover\" Background=\"{TemplateBinding Background}\" CornerRadius=\"4\" Padding=\"0,4\">\n                        <ns0:Grid>\n                          <ns0:Grid.ColumnDefinitions>\n                            <ns0:ColumnDefinition Width=\"24\" />\n                            <ns0:ColumnDefinition Width=\"*\" />\n                          </ns0:Grid.ColumnDefinitions>\n                          <ns2:FluentIcon ns1:Name=\"Chevron\" Kind=\"ChevronRight\" Foreground=\"{TemplateBinding Foreground}\" Width=\"12\" Height=\"12\" HorizontalAlignment=\"Left\" VerticalAlignment=\"Center\" Margin=\"2,0,0,0\" />\n                          <ns0:ContentPresenter Grid.Column=\"1\" Content=\"{TemplateBinding Content}\" ContentTemplate=\"{TemplateBinding ContentTemplate}\" ContentStringFormat=\"{TemplateBinding ContentStringFormat}\" RecognizesAccessKey=\"True\" VerticalAlignment=\"Center\" TextElement.Foreground=\"{TemplateBinding Foreground}\" />\n                        </ns0:Grid>\n                      </ns0:Border>\n                      <ns0:ControlTemplate.Triggers>\n                        <ns0:Trigger Property=\"IsChecked\" Value=\"True\">\n                          <ns0:Setter TargetName=\"Chevron\" Property=\"loc:FluentIcon.Kind\" Value=\"ChevronDown\" />\n                          <ns0:Setter TargetName=\"Chevron\" Property=\"Width\" Value=\"12\" />\n                          <ns0:Setter TargetName=\"Chevron\" Property=\"Height\" Value=\"12\" />\n                        </ns0:Trigger>\n                        <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                          <ns0:Setter TargetName=\"ExpanderHover\" Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" />\n                        </ns0:Trigger>\n                      </ns0:ControlTemplate.Triggers>\n                    </ns0:ControlTemplate>\n                  </ns0:ToggleButton.Template>\n                </ns0:ToggleButton>\n                <ns0:ContentPresenter ns1:Name=\"ExpandSite\" ContentSource=\"Content\" Visibility=\"Collapsed\" />\n              </ns0:DockPanel>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsExpanded\" Value=\"True\">\n                  <ns0:Setter TargetName=\"ExpandSite\" Property=\"Visibility\" Value=\"Visible\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:ComboBox": {
+          "targetType": "ComboBox",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "MinHeight",
+              "Value": "36"
+            },
+            {
+              "Property": "Padding",
+              "Value": "8,6"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource BorderBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "1"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{StaticResource FocusStyle}"
+            },
+            {
+              "Property": "ScrollViewer.HorizontalScrollBarVisibility",
+              "Value": "Disabled"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:ns2=\"clr-namespace:ArchivePassword.Desktop\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"ComboBox\">\n              <ns0:Grid>\n                <ns0:ToggleButton ns1:Name=\"DropDownToggle\" Focusable=\"False\" ClickMode=\"Press\" IsChecked=\"{Binding IsDropDownOpen,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}\" Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\">\n                  <ns0:ToggleButton.Template>\n                    <ns0:ControlTemplate TargetType=\"ToggleButton\">\n                      <ns0:Border Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" CornerRadius=\"4\">\n                        <ns2:FluentIcon Kind=\"ChevronDown\" Foreground=\"{DynamicResource TextBrush}\" Width=\"12\" Height=\"12\" HorizontalAlignment=\"Right\" VerticalAlignment=\"Center\" Margin=\"0,0,12,0\" />\n                      </ns0:Border>\n                    </ns0:ControlTemplate>\n                  </ns0:ToggleButton.Template>\n                </ns0:ToggleButton>\n                <ns0:ContentPresenter ns1:Name=\"SelectionContent\" Content=\"{TemplateBinding SelectionBoxItem}\" ContentTemplate=\"{TemplateBinding SelectionBoxItemTemplate}\" ContentTemplateSelector=\"{TemplateBinding ItemTemplateSelector}\" ContentStringFormat=\"{TemplateBinding SelectionBoxItemStringFormat}\" IsHitTestVisible=\"False\" Margin=\"8,6,32,6\" VerticalAlignment=\"Center\" TextElement.Foreground=\"{TemplateBinding Foreground}\" />\n                <ns0:TextBox ns1:Name=\"PART_EditableTextBox\" Visibility=\"Hidden\" Style=\"{x:Null}\" Background=\"{TemplateBinding Background}\" Foreground=\"{TemplateBinding Foreground}\" CaretBrush=\"{DynamicResource TextBrush}\" BorderThickness=\"0\" Margin=\"8,6,32,6\" VerticalContentAlignment=\"Center\" IsReadOnly=\"{TemplateBinding IsReadOnly}\" FocusVisualStyle=\"{StaticResource FocusStyle}\" />\n                <ns0:Popup ns1:Name=\"PART_Popup\" Placement=\"Bottom\" IsOpen=\"{TemplateBinding IsDropDownOpen}\" AllowsTransparency=\"True\" Focusable=\"False\" PopupAnimation=\"None\">\n                  <ns0:Border Background=\"{DynamicResource SurfaceBrush}\" BorderBrush=\"{DynamicResource BorderBrush}\" BorderThickness=\"1\" CornerRadius=\"6\" MinWidth=\"{Binding ActualWidth,RelativeSource={RelativeSource TemplatedParent}}\" MaxHeight=\"{TemplateBinding MaxDropDownHeight}\" Padding=\"2\">\n                    <ns0:ScrollViewer CanContentScroll=\"True\" HorizontalScrollBarVisibility=\"Disabled\">\n                      <ns0:ItemsPresenter KeyboardNavigation.DirectionalNavigation=\"Contained\" />\n                    </ns0:ScrollViewer>\n                  </ns0:Border>\n                </ns0:Popup>\n              </ns0:Grid>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsEditable\" Value=\"True\">\n                  <ns0:Setter TargetName=\"SelectionContent\" Property=\"Visibility\" Value=\"Hidden\" />\n                  <ns0:Setter TargetName=\"PART_EditableTextBox\" Property=\"Visibility\" Value=\"Visible\" />\n                  <ns0:Setter Property=\"IsTabStop\" Value=\"False\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsKeyboardFocusWithin\" Value=\"True\">\n                  <ns0:Setter TargetName=\"DropDownToggle\" Property=\"BorderBrush\" Value=\"{DynamicResource FocusBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                  <ns0:Setter TargetName=\"DropDownToggle\" Property=\"BorderBrush\" Value=\"{DynamicResource FocusBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "CompactOptionField": {
+          "targetType": "ComboBox",
+          "basedOn": "{StaticResource {x:Type ComboBox}}",
+          "setters": [
+            {
+              "Property": "Width",
+              "Value": "Auto"
+            },
+            {
+              "Property": "MinWidth",
+              "Value": "80"
+            },
+            {
+              "Property": "HorizontalAlignment",
+              "Value": "Left"
+            }
+          ]
+        },
+        "implicit:ComboBoxItem": {
+          "targetType": "ComboBoxItem",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Padding",
+              "Value": "8,6"
+            },
+            {
+              "Property": "HorizontalContentAlignment",
+              "Value": "Stretch"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"ComboBoxItem\">\n              <ns0:Border ns1:Name=\"Item\" Background=\"{TemplateBinding Background}\" Padding=\"{TemplateBinding Padding}\">\n                <ns0:ContentPresenter />\n              </ns0:Border>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsHighlighted\" Value=\"True\">\n                  <ns0:Setter TargetName=\"Item\" Property=\"Background\" Value=\"{DynamicResource SelectionBrush}\" />\n                  <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SelectionTextBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsSelected\" Value=\"True\">\n                  <ns0:Setter TargetName=\"Item\" Property=\"Background\" Value=\"{DynamicResource AccentBrush}\" />\n                  <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource OnAccentBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:CheckBox": {
+          "targetType": "CheckBox",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "ContentTemplate",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"ContentTemplate\">\n          <ns0:Setter.Value>\n            <ns0:DataTemplate>\n              <ns0:AccessText Text=\"{Binding}\" TextWrapping=\"Wrap\" />\n            </ns0:DataTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n        "
+            },
+            {
+              "Property": "Margin",
+              "Value": "0,8,0,8"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "28"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{StaticResource FocusStyle}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"CheckBox\">\n              <ns0:Grid Background=\"Transparent\">\n                <ns0:Grid.ColumnDefinitions>\n                  <ns0:ColumnDefinition Width=\"18\" />\n                  <ns0:ColumnDefinition Width=\"*\" />\n                </ns0:Grid.ColumnDefinitions>\n                <ns0:Border ns1:Name=\"Box\" Width=\"18\" Height=\"18\" Background=\"{DynamicResource SurfaceBrush}\" BorderBrush=\"{DynamicResource BorderBrush}\" BorderThickness=\"1\" CornerRadius=\"3\" VerticalAlignment=\"Center\">\n                  <ns0:Grid>\n                    <ns0:Path ns1:Name=\"Tick\" Visibility=\"Collapsed\" Data=\"M2,7 L6,11 L13,3\" Stroke=\"{DynamicResource OnAccentBrush}\" StrokeThickness=\"2\" />\n                    <ns0:Rectangle ns1:Name=\"Mixed\" Visibility=\"Collapsed\" Height=\"2\" Margin=\"3,0\" Fill=\"{DynamicResource OnAccentBrush}\" VerticalAlignment=\"Center\" />\n                  </ns0:Grid>\n                </ns0:Border>\n                <ns0:ContentPresenter ns1:Name=\"CheckContent\" Grid.Column=\"1\" Margin=\"8,0,0,0\" VerticalAlignment=\"Center\" RecognizesAccessKey=\"True\" />\n              </ns0:Grid>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"HasContent\" Value=\"False\"><ns0:Setter TargetName=\"CheckContent\" Property=\"Visibility\" Value=\"Collapsed\" /></ns0:Trigger>\n                <ns0:Trigger Property=\"IsChecked\" Value=\"True\">\n                  <ns0:Setter TargetName=\"Box\" Property=\"Background\" Value=\"{DynamicResource AccentBrush}\" />\n                  <ns0:Setter TargetName=\"Box\" Property=\"BorderBrush\" Value=\"{DynamicResource AccentBrush}\" />\n                  <ns0:Setter TargetName=\"Tick\" Property=\"Visibility\" Value=\"Visible\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsChecked\" Value=\"{x:Null}\">\n                  <ns0:Setter TargetName=\"Box\" Property=\"Background\" Value=\"{DynamicResource AccentBrush}\" />\n                  <ns0:Setter TargetName=\"Mixed\" Property=\"Visibility\" Value=\"Visible\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                  <ns0:Setter TargetName=\"Box\" Property=\"BorderBrush\" Value=\"{DynamicResource FocusBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n                  <ns0:Setter Property=\"Opacity\" Value=\"0.6\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:Label": {
+          "targetType": "Label",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            }
+          ]
+        },
+        "implicit:ToolTip": {
+          "targetType": "ToolTip",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource BorderBrush}"
+            }
+          ]
+        },
+        "implicit:ScrollBar": {
+          "targetType": "ScrollBar",
+          "basedOn": null,
+          "setters": []
+        },
+        "Card": {
+          "targetType": "Border",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "CornerRadius",
+              "Value": "0"
+            },
+            {
+              "Property": "Padding",
+              "Value": "16"
+            }
+          ]
+        },
+        "WorkspaceCard": {
+          "targetType": "Border",
+          "basedOn": "{StaticResource Card}",
+          "setters": [
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource DividerBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "0"
+            }
+          ]
+        },
+        "implicit:DataGridRow": {
+          "targetType": "DataGridRow",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{x:Null}"
+            },
+            {
+              "Property": "SnapsToDevicePixels",
+              "Value": "True"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"DataGridRow\">\n              <ns0:Border ns1:Name=\"RowSurface\" Background=\"{TemplateBinding Background}\" SnapsToDevicePixels=\"True\" CornerRadius=\"0\">\n                <ns0:Grid>\n                  <ns0:DataGridCellsPresenter ItemsPanel=\"{TemplateBinding ItemsPanel}\" SnapsToDevicePixels=\"{TemplateBinding SnapsToDevicePixels}\" />\n                  <ns0:Border Height=\"1\" VerticalAlignment=\"Bottom\" Background=\"{DynamicResource DividerBrush}\" IsHitTestVisible=\"False\" />\n                  <ns0:Border ns1:Name=\"SelectionBar\" Width=\"3\" HorizontalAlignment=\"Left\" Margin=\"0,8\" CornerRadius=\"0,2,2,0\" Background=\"{DynamicResource AccentBrush}\" Visibility=\"Collapsed\" IsHitTestVisible=\"False\" />\n                  <ns0:Border ns1:Name=\"RowFocus\" BorderBrush=\"{DynamicResource FocusBrush}\" BorderThickness=\"2\" CornerRadius=\"4\" Margin=\"2\" Visibility=\"Collapsed\" IsHitTestVisible=\"False\" />\n                </ns0:Grid>\n              </ns0:Border>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                  <ns0:Setter TargetName=\"RowSurface\" Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsSelected\" Value=\"True\">\n                  <ns0:Setter TargetName=\"RowSurface\" Property=\"Background\" Value=\"{DynamicResource SelectionBrush}\" />\n\n                  <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SelectionTextBrush}\" />\n                </ns0:Trigger>\n                <ns0:Trigger Property=\"IsKeyboardFocusWithin\" Value=\"True\">\n                  <ns0:Setter TargetName=\"RowFocus\" Property=\"Visibility\" Value=\"Visible\" />\n                  <ns0:Setter TargetName=\"SelectionBar\" Property=\"Visibility\" Value=\"Collapsed\" />\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:DataGridCell": {
+          "targetType": "DataGridCell",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "0"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{x:Null}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"DataGridCell\">\n              <ns0:Border Background=\"{TemplateBinding Background}\" SnapsToDevicePixels=\"True\">\n                <ns0:ContentPresenter SnapsToDevicePixels=\"{TemplateBinding SnapsToDevicePixels}\" />\n              </ns0:Border>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:DataGrid": {
+          "targetType": "DataGrid",
+          "basedOn": "{StaticResource BodyControl}",
+          "setters": [
+            {
+              "Property": "AutoGenerateColumns",
+              "Value": "False"
+            },
+            {
+              "Property": "CanUserAddRows",
+              "Value": "False"
+            },
+            {
+              "Property": "IsReadOnly",
+              "Value": "True"
+            },
+            {
+              "Property": "RowHeight",
+              "Value": "64"
+            },
+            {
+              "Property": "HeadersVisibility",
+              "Value": "Column"
+            },
+            {
+              "Property": "GridLinesVisibility",
+              "Value": "None"
+            },
+            {
+              "Property": "HorizontalGridLinesBrush",
+              "Value": "{DynamicResource DividerBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "0"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "EnableRowVirtualization",
+              "Value": "True"
+            },
+            {
+              "Property": "SelectionMode",
+              "Value": "Single"
+            }
+          ]
+        },
+        "BreadcrumbButton": {
+          "targetType": "Button",
+          "basedOn": "{StaticResource SubtleButton}",
+          "setters": [
+            {
+              "Property": "MinWidth",
+              "Value": "24"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "28"
+            },
+            {
+              "Property": "Padding",
+              "Value": "4,2"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{StaticResource FocusStyle}"
+            }
+          ]
+        },
+        "PillTabs": {
+          "targetType": "ListBox",
+          "basedOn": "{StaticResource {x:Type ListBox}}",
+          "setters": [
+            {
+              "Property": "BorderThickness",
+              "Value": "0"
+            },
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "ScrollViewer.HorizontalScrollBarVisibility",
+              "Value": "Disabled"
+            },
+            {
+              "Property": "ScrollViewer.VerticalScrollBarVisibility",
+              "Value": "Disabled"
+            },
+            {
+              "Property": "ItemsPanel",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"ItemsPanel\">\n          <ns0:Setter.Value>\n            <ns0:ItemsPanelTemplate>\n              <ns0:StackPanel Orientation=\"Horizontal\" />\n            </ns0:ItemsPanelTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n        "
+            },
+            {
+              "Property": "ItemContainerStyle",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"ItemContainerStyle\">\n          <ns0:Setter.Value>\n            <ns0:Style TargetType=\"ListBoxItem\">\n              <ns0:Setter Property=\"Padding\" Value=\"14,8\" />\n              <ns0:Setter Property=\"Margin\" Value=\"0,0,6,0\" />\n              <ns0:Setter Property=\"FocusVisualStyle\" Value=\"{StaticResource CapsuleFocusStyle}\" />\n              <ns0:Setter Property=\"Background\" Value=\"{DynamicResource SurfaceBrush}\" />\n              <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource TextBrush}\" />\n              <ns0:Setter Property=\"Template\">\n                <ns0:Setter.Value>\n                  <ns0:ControlTemplate TargetType=\"ListBoxItem\">\n                    <ns0:Border Background=\"{TemplateBinding Background}\" BorderBrush=\"{DynamicResource ButtonBorderBrush}\" BorderThickness=\"1\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Padding=\"{TemplateBinding Padding}\">\n                      <ns0:ContentPresenter />\n                    </ns0:Border>\n                    <ns0:ControlTemplate.Triggers>\n                      <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                        <ns0:Setter Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" />\n                      </ns0:Trigger>\n                      <ns0:Trigger Property=\"IsSelected\" Value=\"True\">\n                        <ns0:Setter Property=\"Background\" Value=\"{DynamicResource AccentBrush}\" />\n                        <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource OnAccentBrush}\" />\n                      </ns0:Trigger>\n                    </ns0:ControlTemplate.Triggers>\n                  </ns0:ControlTemplate>\n                </ns0:Setter.Value>\n              </ns0:Setter>\n            </ns0:Style>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n        "
+            },
+            {
+              "Property": "ItemTemplate",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"ItemTemplate\">\n          <ns0:Setter.Value>\n            <ns0:DataTemplate>\n              <ns0:StackPanel Orientation=\"Horizontal\">\n                <ns0:TextBlock Text=\"{Binding Label}\" VerticalAlignment=\"Center\" />\n                <ns0:Border Background=\"{DynamicResource HoverBrush}\" CornerRadius=\"10\" Padding=\"6,2\" Margin=\"6,0,0,0\">\n                  <ns0:TextBlock Text=\"{Binding Count}\" Foreground=\"{DynamicResource TextBrush}\" FontSize=\"12\" />\n                </ns0:Border>\n              </ns0:StackPanel>\n            </ns0:DataTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        },
+        "implicit:ListBoxItem": {
+          "targetType": "ListBoxItem",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Padding",
+              "Value": "14,8"
+            },
+            {
+              "Property": "Margin",
+              "Value": "0,0,6,0"
+            },
+            {
+              "Property": "FocusVisualStyle",
+              "Value": "{StaticResource CapsuleFocusStyle}"
+            },
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"Template\">\n                <ns0:Setter.Value>\n                  <ns0:ControlTemplate TargetType=\"ListBoxItem\">\n                    <ns0:Border Background=\"{TemplateBinding Background}\" BorderBrush=\"{DynamicResource ButtonBorderBrush}\" BorderThickness=\"1\" CornerRadius=\"{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}\" Padding=\"{TemplateBinding Padding}\">\n                      <ns0:ContentPresenter />\n                    </ns0:Border>\n                    <ns0:ControlTemplate.Triggers>\n                      <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\">\n                        <ns0:Setter Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" />\n                      </ns0:Trigger>\n                      <ns0:Trigger Property=\"IsSelected\" Value=\"True\">\n                        <ns0:Setter Property=\"Background\" Value=\"{DynamicResource AccentBrush}\" />\n                        <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource OnAccentBrush}\" />\n                      </ns0:Trigger>\n                    </ns0:ControlTemplate.Triggers>\n                  </ns0:ControlTemplate>\n                </ns0:Setter.Value>\n              </ns0:Setter>\n            "
+            }
+          ]
+        },
+        "implicit:ProgressBar": {
+          "targetType": "ProgressBar",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource HoverBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource AccentBrush}"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n          <ns0:Setter.Value>\n            <ns0:ControlTemplate TargetType=\"ProgressBar\">\n              <ns0:Grid ns1:Name=\"PART_Track\" ClipToBounds=\"True\">\n                <ns0:Border Background=\"{TemplateBinding Background}\" CornerRadius=\"3\" />\n                <ns0:Border ns1:Name=\"PART_Indicator\" Background=\"{TemplateBinding Foreground}\" CornerRadius=\"3\" HorizontalAlignment=\"Left\" />\n              </ns0:Grid>\n              <ns0:ControlTemplate.Triggers>\n                <ns0:Trigger Property=\"IsIndeterminate\" Value=\"True\">\n                  <ns0:Trigger.EnterActions>\n                    <ns0:BeginStoryboard>\n                      <ns0:Storyboard>\n                        <ns0:DoubleAnimation Storyboard.TargetName=\"PART_Indicator\" Storyboard.TargetProperty=\"Opacity\" From=\"0.4\" To=\"1\" Duration=\"0:0:0.8\" AutoReverse=\"True\" RepeatBehavior=\"Forever\" />\n                      </ns0:Storyboard>\n                    </ns0:BeginStoryboard>\n                  </ns0:Trigger.EnterActions>\n                </ns0:Trigger>\n              </ns0:ControlTemplate.Triggers>\n            </ns0:ControlTemplate>\n          </ns0:Setter.Value>\n        </ns0:Setter>\n      "
+            }
+          ]
+        }
+      }
+    },
+    "src/Desktop/WindowChromeResources.xaml": {
+      "namedValues": {},
+      "styles": {
+        "CaptionButton": {
+          "targetType": "Button",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "FontFamily",
+              "Value": "{DynamicResource UiFontFamily}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "15"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            },
+            {
+              "Property": "Width",
+              "Value": "50"
+            },
+            {
+              "Property": "Height",
+              "Value": "34"
+            },
+            {
+              "Property": "MinHeight",
+              "Value": "0"
+            },
+            {
+              "Property": "Padding",
+              "Value": "0"
+            },
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Focusable",
+              "Value": "False"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n      <ns0:Setter.Value><ns0:ControlTemplate TargetType=\"Button\">\n        <ns0:Border ns1:Name=\"CaptionSurface\" Background=\"{TemplateBinding Background}\"><ns0:ContentPresenter HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\" /></ns0:Border>\n        <ns0:ControlTemplate.Triggers>\n          <ns0:Trigger Property=\"IsMouseOver\" Value=\"True\"><ns0:Setter TargetName=\"CaptionSurface\" Property=\"Background\" Value=\"{DynamicResource HoverBrush}\" /></ns0:Trigger>\n          <ns0:MultiTrigger><ns0:MultiTrigger.Conditions><ns0:Condition Property=\"IsMouseOver\" Value=\"True\" /><ns0:Condition Property=\"Tag\" Value=\"Close\" /></ns0:MultiTrigger.Conditions><ns0:Setter TargetName=\"CaptionSurface\" Property=\"Background\" Value=\"{DynamicResource ErrorBrush}\" /><ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource OnAccentBrush}\" /></ns0:MultiTrigger>\n        </ns0:ControlTemplate.Triggers>\n      </ns0:ControlTemplate></ns0:Setter.Value>\n    </ns0:Setter>\n  "
+            }
+          ]
+        }
+      }
+    },
+    "src/Desktop/ActionMenuResources.xaml": {
+      "namedValues": {},
+      "styles": {
+        "ActionMenuItem": {
+          "targetType": "MenuItem",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "MinHeight",
+              "Value": "36"
+            },
+            {
+              "Property": "FontFamily",
+              "Value": "{DynamicResource UiFontFamily}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "14"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n      <ns0:Setter.Value>\n        <ns0:ControlTemplate TargetType=\"MenuItem\">\n          <ns0:Grid>\n            <ns0:Border ns1:Name=\"ItemSurface\" Background=\"{TemplateBinding Background}\" CornerRadius=\"4\" Padding=\"12,8\">\n              <ns0:Grid>\n                <ns0:Grid.ColumnDefinitions>\n                  <ns0:ColumnDefinition Width=\"Auto\" />\n                  <ns0:ColumnDefinition Width=\"*\" />\n                  <ns0:ColumnDefinition Width=\"Auto\" />\n                </ns0:Grid.ColumnDefinitions>\n                <ns0:ContentPresenter ns1:Name=\"MenuIcon\" ContentSource=\"Icon\" Width=\"20\" Height=\"20\" Margin=\"0,0,12,0\" VerticalAlignment=\"Center\" />\n                <ns0:ContentPresenter Grid.Column=\"1\" ContentSource=\"Header\" RecognizesAccessKey=\"True\" VerticalAlignment=\"Center\" />\n                <ns0:TextBlock Grid.Column=\"2\" Text=\"{TemplateBinding InputGestureText}\" Margin=\"24,0,0,0\" FontSize=\"12\" VerticalAlignment=\"Center\" Foreground=\"{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}\" />\n              </ns0:Grid>\n            </ns0:Border>\n            <ns0:Border ns1:Name=\"ItemFocus\" BorderBrush=\"Transparent\" BorderThickness=\"2\" CornerRadius=\"3\" Margin=\"2\" IsHitTestVisible=\"False\" />\n          </ns0:Grid>\n          <ns0:ControlTemplate.Triggers>\n            <ns0:Trigger Property=\"Icon\" Value=\"{x:Null}\">\n              <ns0:Setter TargetName=\"MenuIcon\" Property=\"Visibility\" Value=\"Collapsed\" />\n            </ns0:Trigger>\n            <ns0:Trigger Property=\"IsHighlighted\" Value=\"True\">\n              <ns0:Setter TargetName=\"ItemSurface\" Property=\"Background\" Value=\"{DynamicResource SelectionBrush}\" />\n              <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SelectionTextBrush}\" />\n            </ns0:Trigger>\n            <ns0:Trigger Property=\"IsKeyboardFocused\" Value=\"True\">\n              <ns0:Setter TargetName=\"ItemFocus\" Property=\"BorderBrush\" Value=\"{DynamicResource FocusBrush}\" />\n            </ns0:Trigger>\n            <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n              <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SecondaryBrush}\" />\n              <ns0:Setter TargetName=\"ItemSurface\" Property=\"Background\" Value=\"Transparent\" />\n            </ns0:Trigger>\n          </ns0:ControlTemplate.Triggers>\n        </ns0:ControlTemplate>\n      </ns0:Setter.Value>\n    </ns0:Setter>\n  "
+            }
+          ]
+        },
+        "ContextActionItem": {
+          "targetType": "MenuItem",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "MinHeight",
+              "Value": "36"
+            },
+            {
+              "Property": "FontFamily",
+              "Value": "{DynamicResource UiFontFamily}"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "14"
+            },
+            {
+              "Property": "FontWeight",
+              "Value": "Normal"
+            },
+            {
+              "Property": "MinWidth",
+              "Value": "200"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "Background",
+              "Value": "Transparent"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ns1=\"http://schemas.microsoft.com/winfx/2006/xaml\" Property=\"Template\">\n      <ns0:Setter.Value>\n        <ns0:ControlTemplate TargetType=\"MenuItem\">\n          <ns0:Grid>\n            <ns0:Border ns1:Name=\"ItemSurface\" Background=\"{TemplateBinding Background}\" CornerRadius=\"6\" Padding=\"12,7\">\n              <ns0:Grid>\n                <ns0:Grid.ColumnDefinitions>\n                  <ns0:ColumnDefinition Width=\"Auto\" />\n                  <ns0:ColumnDefinition Width=\"*\" />\n                  <ns0:ColumnDefinition Width=\"Auto\" />\n                </ns0:Grid.ColumnDefinitions>\n                <ns0:ContentPresenter ns1:Name=\"MenuIcon\" ContentSource=\"Icon\" Width=\"20\" Height=\"20\" Margin=\"0,0,12,0\" VerticalAlignment=\"Center\" />\n                <ns0:ContentPresenter Grid.Column=\"1\" ContentSource=\"Header\" RecognizesAccessKey=\"True\" VerticalAlignment=\"Center\" />\n                <ns0:TextBlock Grid.Column=\"2\" Text=\"{TemplateBinding InputGestureText}\" Margin=\"24,0,0,0\" FontSize=\"12\" VerticalAlignment=\"Center\" Foreground=\"{Binding Foreground,RelativeSource={RelativeSource TemplatedParent}}\" />\n              </ns0:Grid>\n            </ns0:Border>\n            <ns0:Border ns1:Name=\"ItemFocus\" BorderBrush=\"Transparent\" BorderThickness=\"2\" CornerRadius=\"5\" Margin=\"2\" IsHitTestVisible=\"False\" />\n          </ns0:Grid>\n          <ns0:ControlTemplate.Triggers>\n            <ns0:Trigger Property=\"Icon\" Value=\"{x:Null}\">\n              <ns0:Setter TargetName=\"MenuIcon\" Property=\"Visibility\" Value=\"Collapsed\" />\n            </ns0:Trigger>\n            <ns0:Trigger Property=\"IsHighlighted\" Value=\"True\">\n              <ns0:Setter TargetName=\"ItemSurface\" Property=\"Background\" Value=\"{DynamicResource SelectionBrush}\" />\n              <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SelectionTextBrush}\" />\n            </ns0:Trigger>\n            <ns0:Trigger Property=\"IsKeyboardFocused\" Value=\"True\">\n              <ns0:Setter TargetName=\"ItemFocus\" Property=\"BorderBrush\" Value=\"{DynamicResource FocusBrush}\" />\n            </ns0:Trigger>\n            <ns0:Trigger Property=\"IsEnabled\" Value=\"False\">\n              <ns0:Setter Property=\"Foreground\" Value=\"{DynamicResource SecondaryBrush}\" />\n              <ns0:Setter TargetName=\"ItemSurface\" Property=\"Background\" Value=\"Transparent\" />\n            </ns0:Trigger>\n          </ns0:ControlTemplate.Triggers>\n        </ns0:ControlTemplate>\n      </ns0:Setter.Value>\n    </ns0:Setter>\n  "
+            }
+          ]
+        },
+        "ContextPrimaryItem": {
+          "targetType": "MenuItem",
+          "basedOn": "{StaticResource ContextActionItem}",
+          "setters": [
+            {
+              "Property": "FontWeight",
+              "Value": "SemiBold"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource AccentBrush}"
+            }
+          ]
+        },
+        "ContextDangerItem": {
+          "targetType": "MenuItem",
+          "basedOn": "{StaticResource ContextActionItem}",
+          "setters": [
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource ErrorBrush}"
+            }
+          ]
+        },
+        "ActionMenu": {
+          "targetType": "ContextMenu",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Background",
+              "Value": "{DynamicResource SurfaceBrush}"
+            },
+            {
+              "Property": "Foreground",
+              "Value": "{DynamicResource TextBrush}"
+            },
+            {
+              "Property": "BorderBrush",
+              "Value": "{DynamicResource BorderBrush}"
+            },
+            {
+              "Property": "BorderThickness",
+              "Value": "1"
+            },
+            {
+              "Property": "Padding",
+              "Value": "4"
+            },
+            {
+              "Property": "FontFamily",
+              "Value": "Segoe UI, Microsoft YaHei"
+            },
+            {
+              "Property": "FontSize",
+              "Value": "14"
+            },
+            {
+              "Property": "UseLayoutRounding",
+              "Value": "True"
+            },
+            {
+              "Property": "HasDropShadow",
+              "Value": "False"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"Template\">\n      <ns0:Setter.Value>\n        <ns0:ControlTemplate TargetType=\"ContextMenu\">\n          <ns0:Border Background=\"{TemplateBinding Background}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" Padding=\"{TemplateBinding Padding}\" CornerRadius=\"6\">\n            <ns0:ScrollViewer CanContentScroll=\"True\" VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\">\n              <ns0:ItemsPresenter KeyboardNavigation.DirectionalNavigation=\"Cycle\" />\n            </ns0:ScrollViewer>\n          </ns0:Border>\n        </ns0:ControlTemplate>\n      </ns0:Setter.Value>\n    </ns0:Setter>\n  "
+            }
+          ]
+        },
+        "ActionMenuSeparator": {
+          "targetType": "Separator",
+          "basedOn": null,
+          "setters": [
+            {
+              "Property": "Height",
+              "Value": "9"
+            },
+            {
+              "Property": "Margin",
+              "Value": "8,2"
+            },
+            {
+              "Property": "Template",
+              "content": "<ns0:Setter xmlns:ns0=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Property=\"Template\">\n      <ns0:Setter.Value>\n        <ns0:ControlTemplate TargetType=\"Separator\">\n          <ns0:Border Background=\"{DynamicResource DividerBrush}\" Height=\"1\" VerticalAlignment=\"Center\" />\n        </ns0:ControlTemplate>\n      </ns0:Setter.Value>\n    </ns0:Setter>\n  "
+            }
+          ]
+        }
+      }
+    }
+  },
+  "themePalettes": {
+    "dark": {
+      "CanvasBrush": "#202020",
+      "SurfaceBrush": "#242424",
+      "TextBrush": "#F5F5F5",
+      "SecondaryBrush": "#BDBDBD",
+      "BorderBrush": "#737B85",
+      "DividerBrush": "#3C3C3C",
+      "AccentBrush": "#75B6E7",
+      "OnAccentBrush": "#102435",
+      "SelectionBrush": "#263E50",
+      "SelectionTextBrush": "#F2F7FC",
+      "FocusBrush": "#75B6E7",
+      "ErrorBrush": "#F1B5AF",
+      "HoverBrush": "#30363C",
+      "SuccessBrush": "#8BD5A8",
+      "ButtonBorderBrush": "#737B85",
+      "FolderIconBrush": "#E2B251",
+      "PdfIconBrush": "#D74842",
+      "SheetIconBrush": "#16845C",
+      "IconOnFillBrush": "#FFFFFF",
+      "WarningSurfaceBrush": "#3B3423",
+      "WarningTextBrush": "#E8C878"
+    },
+    "soft": {
+      "CanvasBrush": "#25282B",
+      "SurfaceBrush": "#2C3034",
+      "TextBrush": "#E5E2DA",
+      "SecondaryBrush": "#C8C5BD",
+      "BorderBrush": "#8F969A",
+      "DividerBrush": "#454C50",
+      "AccentBrush": "#9BBCD0",
+      "OnAccentBrush": "#25282B",
+      "SelectionBrush": "#304858",
+      "SelectionTextBrush": "#E5E2DA",
+      "FocusBrush": "#C5B98B",
+      "ErrorBrush": "#E3AAA3",
+      "HoverBrush": "#333B40",
+      "SuccessBrush": "#93BAA3",
+      "ButtonBorderBrush": "#78858C",
+      "FolderIconBrush": "#C7AB65",
+      "PdfIconBrush": "#BC827D",
+      "SheetIconBrush": "#729B84",
+      "IconOnFillBrush": "#25282B",
+      "WarningSurfaceBrush": "#39372D",
+      "WarningTextBrush": "#CAB77C"
+    }
+  },
+  "highContrast": "ThemeResources.Apply uses Windows system Window/WindowText/Highlight/HighlightText semantic pairs."
+}

@@ -1,0 +1,73 @@
+name: Package approved release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - architecture: x64
+            os: windows-latest
+          - architecture: arm64
+            os: windows-11-arm
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      PYTHONUTF8: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - uses: msys2/setup-msys2@v2
+        if: matrix.architecture == 'x64'
+        id: msys2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc
+      - name: Set native tools path
+        env:
+          TASK_MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+        run: |
+          if ('${{ matrix.architecture }}' -eq 'x64') {
+            (Join-Path $env:TASK_MSYS2_LOCATION 'ucrt64/bin') | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          }
+          'C:\Program Files\7-Zip' | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+      - name: Build approved native shared-runtime payload
+        run: |
+          ./scripts/bootstrap.ps1 -Architecture '${{ matrix.architecture }}'
+          ./scripts/build-worker.ps1 -Architecture '${{ matrix.architecture }}'
+          ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker
+      - name: Validate actual primary flows and prepare synthetic upgrade data
+        run: ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}' -Flags validate -SkipLanguages
+      - name: Validate actual 0.2.1 upgrade and uninstall with the release payload
+        run: |
+          Copy-Item -LiteralPath artifacts/app -Destination artifacts/light-app -Recurse
+          ./scripts/bootstrap-installer.ps1 -Architecture '${{ matrix.architecture }}'
+          ./scripts/test-stable-upgrade.ps1 -Architecture '${{ matrix.architecture }}'
+      - name: Package and review native release and canonical sources
+        run: |
+          git restore --worktree -- engines
+          ./scripts/build-release.ps1 -Architecture '${{ matrix.architecture }}' -ApplicationDirectory artifacts/light-app -OutputDirectory 'artifacts/release-0.3.0-${{ matrix.architecture }}' -Python python
+      - uses: actions/upload-artifact@v7
+        with:
+          name: approved-0.3.0-${{ matrix.architecture }}-release
+          path: artifacts/release-0.3.0-${{ matrix.architecture }}/*
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: approved-0.3.0-${{ matrix.architecture }}-reports
+          path: artifacts/*validation.json
+          if-no-files-found: ignore
