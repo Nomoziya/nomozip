@@ -63,6 +63,7 @@ jobs:
           if ((Get-FileHash artifacts/previous-x64-light.zip).Hash.ToLowerInvariant() -ne $taskOldAsset.digest.Substring(7)) { throw 'Old lightweight fixture download changed.' }
           Expand-Archive -LiteralPath artifacts/previous-x64-light.zip -DestinationPath artifacts/previous-x64-light
           ./scripts/test-installer.ps1 -Architecture arm64 -PreviousArchitecture x64 -PreviousApplicationDirectory "$PWD/artifacts/previous-x64-light"
+          ./scripts/test-stable-upgrade.ps1 -Architecture arm64
       - name: Restore canonical source metadata and package native local candidate
         run: |
           git restore --worktree -- engines

@@ -12,6 +12,10 @@ on:
         type: choice
         default: x64
         options: [x64, arm64]
+      legacy_visual:
+        description: 'Also validate row input and visual regressions against current layout'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -120,6 +124,9 @@ jobs:
             if ($taskReport.error) { Write-Warning ($taskReport.error | ConvertTo-Json -Depth 5 -Compress) }
           }
           if ($taskProductFailed) { throw 'One or more product language validations failed.' }
+      - name: Target row input and current visual regression checks
+        if: inputs.legacy_visual
+        run: ./scripts/test-visual-refresh.ps1
       - name: Package the exact tested shared-runtime candidate
         run: |
           Compress-Archive -Path artifacts/app/* -DestinationPath 'artifacts/nomozip-ui-redesign-${{ matrix.architecture }}.zip'
@@ -134,5 +141,6 @@ jobs:
           name: ui-${{ matrix.architecture }}-validation-reports
           path: |
             artifacts/ui-redesign/**/*
+            artifacts/visual-refresh/**/*
             artifacts/arm64-ui-native-workspace/artifacts/*validation.json
           if-no-files-found: error

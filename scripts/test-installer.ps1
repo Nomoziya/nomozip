@@ -1,4 +1,4 @@
-param([string]$ValidationRoot, [switch]$FrameworkDependent = $true, [ValidateSet('x64','arm64')][string]$Architecture = 'x64', [string]$PreviousApplicationDirectory, [ValidateSet('x64','arm64')][string]$PreviousArchitecture = 'x64')
+param([string]$ValidationRoot, [switch]$FrameworkDependent = $true, [ValidateSet('x64','arm64')][string]$Architecture = 'x64', [string]$PreviousApplicationDirectory, [ValidateSet('x64','arm64')][string]$PreviousArchitecture = 'x64', [switch]$PreviousFrameworkDependent, [switch]$UsePayloadVersions)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskParent = [IO.Path]::GetFullPath((Join-Path $taskRoot 'artifacts/installer-validation')).TrimEnd('\') + '\'
@@ -22,8 +22,12 @@ if (-not $PreviousApplicationDirectory) {
     $PreviousApplicationDirectory = Join-Path $taskRoot $(if ($Architecture -eq 'arm64') { 'artifacts/light-app' } else { 'artifacts/self-contained-app' })
     $PreviousArchitecture = $Architecture
 }
-if (-not (Test-Path $taskFirst)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskFirst -Version '0.1.0.1' -ValidationRoot $taskValidation -FrameworkDependent:($Architecture -eq 'arm64') -ApplicationDirectory $PreviousApplicationDirectory -Architecture $PreviousArchitecture }
-if (-not (Test-Path $taskUpgrade)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskUpgrade -Version '0.1.0.2' -ValidationRoot $taskValidation -FrameworkDependent:$FrameworkDependent -Architecture $Architecture }
+$taskPreviousFileVersion = if ($UsePayloadVersions) { (Get-Item (Join-Path $PreviousApplicationDirectory 'ArchivePassword.exe')).VersionInfo.FileVersion } else { '0.1.0.1' }
+$taskUpgradeFileVersion = if ($UsePayloadVersions) { (Get-Item (Join-Path $taskRoot 'artifacts/light-app/ArchivePassword.exe')).VersionInfo.FileVersion } else { '0.1.0.2' }
+$taskPreviousDisplayVersion = if ($UsePayloadVersions) { (Get-Item (Join-Path $PreviousApplicationDirectory 'ArchivePassword.exe')).VersionInfo.ProductVersion.Split('+')[0] } else { $taskPreviousFileVersion }
+$taskUpgradeDisplayVersion = if ($UsePayloadVersions) { (Get-Item (Join-Path $taskRoot 'artifacts/light-app/ArchivePassword.exe')).VersionInfo.ProductVersion.Split('+')[0] } else { $taskUpgradeFileVersion }
+if (-not (Test-Path $taskFirst)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskFirst -Version $taskPreviousFileVersion -DisplayVersion $taskPreviousDisplayVersion -ValidationRoot $taskValidation -FrameworkDependent:($PreviousFrameworkDependent -or $Architecture -eq 'arm64') -ApplicationDirectory $PreviousApplicationDirectory -Architecture $PreviousArchitecture }
+if (-not (Test-Path $taskUpgrade)) { & (Join-Path $PSScriptRoot 'build-installer.ps1') -OutputFile $taskUpgrade -Version $taskUpgradeFileVersion -DisplayVersion $taskUpgradeDisplayVersion -ValidationRoot $taskValidation -FrameworkDependent:$FrameworkDependent -Architecture $Architecture }
 try {
     $taskRegistry = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\nomozip-validation'
     New-Item -Path $taskRegistry -Force | Out-Null
@@ -31,7 +35,7 @@ try {
     Invoke-Installer $taskFirst @('/S')
     $taskChecks.firstInstall = (Test-Path (Join-Path $taskApplication 'ArchivePassword.exe')) -and (Test-Path (Join-Path $taskValidation 'shortcuts/nomozip.lnk'))
     $taskRegistry = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\nomozip-validation'
-    $taskChecks.oldVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.1'
+    $taskChecks.oldVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq $taskPreviousDisplayVersion
     $taskChecks.chineseInstallerLanguagePersisted = (Get-ItemProperty -LiteralPath $taskRegistry).InstallerLanguage -eq '2052'
     New-Item -ItemType Directory -Force $taskData | Out-Null
     $taskDocument = @{version=1;passwords=@(@{id=[Guid]::NewGuid().ToString();name='synthetic previous install';secret='测试密碼 '' $ & 空格';notes='';autoTry=$true;createdAt=[DateTimeOffset]::UtcNow.ToString('o')});associations=@{}}
@@ -94,12 +98,12 @@ try {
         if(-not(Test-Path -LiteralPath $taskReady)){throw 'Update lock process did not start.'}
         $taskBlockedProcess=Start-Process -FilePath $taskUpgrade -ArgumentList @('/S','/UPDATE',('/D='+$taskApplication)) -WindowStyle Hidden -PassThru
         if(-not $taskBlockedProcess.WaitForExit(35000)){$taskBlockedProcess.Kill();throw 'Blocked update did not time out.'}
-        $taskChecks.automaticUpdateTimeoutLeavesRegisteredInstallation=$taskBlockedProcess.ExitCode -eq 2 -and (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.1' -and (Get-FileHash $taskVault).Hash -eq $taskVaultHash
+        $taskChecks.automaticUpdateTimeoutLeavesRegisteredInstallation=$taskBlockedProcess.ExitCode -eq 2 -and (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq $taskPreviousDisplayVersion -and (Get-FileHash $taskVault).Hash -eq $taskVaultHash
         $taskSetupLock=[IO.File]::Open($taskUpgrade,'Open','Read','Read')
         try {$taskUpdateProcess=Start-Process -FilePath $taskUpgrade -ArgumentList @('/S','/UPDATE',('/D='+$taskApplication)) -WindowStyle Hidden -PassThru}
         finally {$taskSetupLock.Dispose()}
         Start-Sleep -Milliseconds 500
-        $taskChecks.automaticUpdateWaitsForApplicationExit=-not $taskUpdateProcess.HasExited -and (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.1'
+        $taskChecks.automaticUpdateWaitsForApplicationExit=-not $taskUpdateProcess.HasExited -and (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq $taskPreviousDisplayVersion
         [IO.File]::WriteAllText($taskRelease,'release')
         if(-not $taskUpdateProcess.WaitForExit(60000) -or $taskUpdateProcess.ExitCode -ne 0){throw 'Automatic installer handoff failed.'}
         $taskChecks.automaticUpdateCompletesAfterExit=(Get-Content -LiteralPath (Join-Path $taskValidation 'update-completed.txt') -Raw) -eq $taskApplication
@@ -117,7 +121,7 @@ try {
         $taskValue = Get-ItemProperty -LiteralPath (Join-Path $taskAssociationRoot $_) -ErrorAction SilentlyContinue
         $taskValue.NomozipOwner -ne (Join-Path $taskApplication 'ArchivePassword.exe') -or $taskValue.SyntheticPayload -ne 'keep-this-registration'
     }).Count -eq 0
-    $taskChecks.newVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq '0.1.0.2'
+    $taskChecks.newVersionRegistered = (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq $taskUpgradeDisplayVersion
     $taskPayload = if ($FrameworkDependent) { 'artifacts/light-app' } else { 'artifacts/self-contained-app' }
     $taskChecks.upgradeReplacedOwnedPayload = (Get-FileHash (Join-Path $taskApplication '使用说明.txt')).Hash -eq (Get-FileHash (Join-Path $taskRoot "$taskPayload/使用说明.txt")).Hash
     $taskChecks.upgradePreservedFileEntry = (Get-Item -LiteralPath $taskAssociationCommand).GetValue('') -eq $taskOriginalCommand

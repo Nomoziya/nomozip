@@ -47,7 +47,7 @@ internal static class DesktopVisualRefreshValidation
                 theme.SetMode(mode == "contrast" ? "light" : mode); theme.Apply(mode == "contrast");
                 foreach (var width in new[] { 800, 1120, 1600 })
                 {
-                    window.Width = width; window.Height = 760; model.Page = 2; await Layout();
+                    window.Width = width; window.Height = 760; model.Page = 2; model.SettingsSection = 2; await Layout();
                     ((Border)((FrameworkElement)window.VaultIdleChoice.Parent).Parent).BringIntoView(); await Layout();
                     Check($"{mode}/{width} idle field has readable bounded width", window.VaultIdleChoice.ActualWidth >= 220 && window.VaultIdleChoice.ActualWidth <= 280 && Bounds(window.VaultIdleChoice).Right < window.ActualWidth);
                     Check($"{mode}/{width} settings card measure stays bounded", window.PreferencesCards.ActualWidth <= 920 && window.PreferencesScroll.ExtentWidth <= window.PreferencesScroll.ViewportWidth + 1);
@@ -55,9 +55,11 @@ internal static class DesktopVisualRefreshValidation
                     var noteBounds = Bounds(note); var sidebarBounds = Bounds(window.SidebarContent);
                     var formatted = new FormattedText(note.Text, System.Globalization.CultureInfo.CurrentUICulture, note.FlowDirection,
                         new Typeface(note.FontFamily, note.FontStyle, note.FontWeight, note.FontStretch), note.FontSize, note.Foreground, VisualTreeHelper.GetDpi(note).PixelsPerDip) { MaxTextWidth = Math.Max(1, note.ActualWidth) };
-                    Check($"{mode}/{width} sidebar privacy note fits complete wrapped text", note.ActualWidth > 0 && noteBounds.Right <= sidebarBounds.Right + 1
-                        && noteBounds.Bottom <= window.ActualHeight && note.ActualHeight >= formatted.Height - 1);
+                    Check($"{mode}/{width} privacy information fits sidebar or accessible vault settings", note.IsVisible
+                        ? note.ActualWidth > 0 && noteBounds.Right <= sidebarBounds.Right + 1 && noteBounds.Bottom <= window.ActualHeight && note.ActualHeight >= formatted.Height - 1
+                        : window.ReferenceCompactMenu.IsVisible && window.VaultProtectionCard.IsVisible && window.VaultProtectionCard.ActualWidth > 0);
                     Capture($"{mode}-{width}-vault-settings", width == 800 ? 2 : 1);
+                    model.SettingsSection = 3; await Layout();
                     ((Border)((FrameworkElement)((FrameworkElement)window.RegisterAssociationsAction.Parent).Parent).Parent).BringIntoView(); await Layout();
                     var buttons = new[] { window.RegisterAssociationsAction, window.RemoveAssociationsAction, window.DefaultAppsAction };
                     var rects = buttons.Select(Bounds).ToArray();
@@ -97,9 +99,18 @@ internal static class DesktopVisualRefreshValidation
                         && Stroke(bounds.Right - 0.5, bounds.Top + bounds.Height / 2) && Stroke(bounds.Left + bounds.Width / 2, bounds.Top + 0.5) && Stroke(bounds.Left + bounds.Width / 2, bounds.Bottom - 0.5));
                     Capture($"{mode}-row-focus-{scale * 100:0}", scale);
                 }
-                var rules = window.ExtractionRulesAction;
-                Check(mode + " extraction rules uses a quiet keyboard reachable action", rules.BorderThickness == new Thickness(0) && rules.ActualHeight >= 36
-                    && rules.FocusVisualStyle is not null && new ButtonAutomationPeer(rules).IsKeyboardFocusable() && new ButtonAutomationPeer(rules).GetName() == UiText.Get("T_571579b0c6a1"));
+                window.PrepareExtractionOptionsForValidation = dialog =>
+                {
+                    dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.ShowActivated=false;dialog.Opacity=0;
+                    dialog.Loaded += (_,_) => dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(() =>
+                    {
+                        dialog.UpdateLayout();var rules=window.ExtractionRulesAction;
+                        Check(mode + " extraction rules is reachable in its actual confirmation dialog",rules.IsVisible && rules.ActualHeight >= 36
+                            && rules.FocusVisualStyle is not null && new ButtonAutomationPeer(rules).IsKeyboardFocusable() && new ButtonAutomationPeer(rules).GetName()==UiText.Get("T_571579b0c6a1"));
+                        dialog.Close();
+                    }));
+                };
+                window.ConfirmExtractionOptions();window.PrepareExtractionOptionsForValidation=null;
                 await Preview(window.TaskContextMenu, window.ArchiveTasks, mode + "-row-menu");
                 Check(mode + " task context menu filters by the current command state", window.TaskContextMenu.Items.OfType<MenuItem>().All(item =>
                     (item.Visibility == Visibility.Visible) == (item.Command?.CanExecute(item.CommandParameter) ?? item.IsEnabled)));
@@ -110,7 +121,7 @@ internal static class DesktopVisualRefreshValidation
                 window.QueueActionsAction.RaiseEvent(new RoutedEventArgs(Button.ClickEvent)); await Layout(); menu.UpdateLayout();
                 var header = Descendants(window.QueueMoveUpAction).OfType<ContentPresenter>().First();
                 var inset = header.TranslatePoint(new Point(), menu).X;
-                Check(mode + " menu has no reserved icon gutter", inset >= 12 && inset <= 24);
+                Check(mode + " menu uses bounded unified icon space", inset >= 12 && inset <= 64 && (window.QueueMoveUpAction.Icon is not FluentIcon menuIcon || menuIcon.Width == 20));
                 Check(mode + " enabled menu retains accessible command name", new MenuItemAutomationPeer(window.QueueMoveUpAction).GetName() == (string)window.QueueMoveUpAction.Header && window.QueueMoveUpAction.IsEnabled);
                 menu.Opacity = 1; Render(menu, Path.Combine(samples, mode + "-task-menu.png")); menu.Opacity = 0;
                 var selected = model.SelectedTask;
@@ -151,7 +162,7 @@ internal static class DesktopVisualRefreshValidation
             await CheckRowInput(window, model, Check, Layout);
         }
         catch (Exception error) { checks["exception " + error] = false; }
-        finally { theme.Apply(SystemParameters.HighContrast); }
+        finally { window.PrepareExtractionOptionsForValidation=null; theme.Apply(SystemParameters.HighContrast); }
         var passed = checks.Count == 124 && checks.Values.All(value => value);
         await File.WriteAllTextAsync(Path.Combine(samples, "report.json"), JsonSerializer.Serialize(new { passed, checks, limitations = "Hidden WPF rendering and UIA do not replace audible Narrator or physical display acceptance." }, new JsonSerializerOptions { WriteIndented = true }));
         return passed;

@@ -137,6 +137,7 @@ jobs:
           ./scripts/build.ps1 -Configuration Release -SkipWorker -SelfContained -OutputDirectory artifacts/self-contained-app
           ./scripts/build.ps1 -Configuration Release -SkipWorker -OutputDirectory artifacts/light-app
           ./scripts/test-installer.ps1
+          ./scripts/test-stable-upgrade.ps1 -Architecture x64
           python tests/release_maintenance_validation.py --app-directory artifacts/light-app
           if ($LASTEXITCODE -ne 0) { throw 'Lightweight release maintenance validation failed.' }
           python tests/engine_release_validation.py
