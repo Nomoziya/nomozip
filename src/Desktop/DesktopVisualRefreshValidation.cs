@@ -148,9 +148,13 @@ internal static class DesktopVisualRefreshValidation
                     }
                     if (page == 3)
                     {
-                        var label = Descendants(window.CompressionPage.SfxBox).OfType<AccessText>().Single();
+                        var label = Descendants(window.CompressionPage.SfxBox).OfType<TextBlock>().Single(block => block.Text == UiText.Get("T_b0b03f8b05a5"));
                         var level = Descendants(window.CompressionPage.LevelLabel).OfType<AccessText>().Single();
-                        Check(mode + " compression option and level label remain complete", UiText.LanguageCode != "en" || (label.ActualHeight >= 28 && level.ActualHeight >= 28 && Math.Abs(window.CompressionPage.FormatBox.TranslatePoint(new Point(), window).Y - window.CompressionPage.LevelBox.TranslatePoint(new Point(), window).Y) < 1));
+                        var text = new FormattedText(label.Text, System.Globalization.CultureInfo.CurrentUICulture, label.FlowDirection,
+                            new Typeface(label.FontFamily,label.FontStyle,label.FontWeight,label.FontStretch),label.FontSize,label.Foreground,VisualTreeHelper.GetDpi(label).PixelsPerDip) { MaxTextWidth=Math.Max(1,label.ActualWidth) };
+                        Check(mode + " compression option and level label remain complete", label.ActualWidth > 0 && label.ActualHeight + 1 >= text.Height
+                            && level.ActualWidth + 1 >= level.DesiredSize.Width && level.ActualHeight + 1 >= level.DesiredSize.Height
+                            && window.CompressionPage.LevelBox.TranslatePoint(new Point(),window).Y >= window.CompressionPage.FormatBox.TranslatePoint(new Point(0,window.CompressionPage.FormatBox.ActualHeight),window).Y);
                     }
                 }
             }

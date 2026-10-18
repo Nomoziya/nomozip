@@ -51,6 +51,10 @@ public partial class CompressionView : UserControl
     internal void ArrangePanels(bool isNarrow)
     {
         narrow = isNarrow;
+        var advancedLabelWidth = UiText.LanguageCode == "en" ? 112 : 72;
+        VolumeLabelColumn.Width = SfxLabelColumn.Width = ParametersLabelColumn.Width = new GridLength(advancedLabelWidth);
+        AdvancedAvailability.Margin = new Thickness(advancedLabelWidth, 4, 0, 0);
+        EncryptBox.Margin = new Thickness(advancedLabelWidth, 12, 0, 0);
         CompressionLayout.Height = narrow ? double.NaN : Math.Max(280, CompressionViewport.ActualHeight);
         CompressionViewport.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
         SettingsScroll.VerticalScrollBarVisibility = narrow ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;

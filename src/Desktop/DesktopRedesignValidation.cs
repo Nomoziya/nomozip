@@ -173,6 +173,7 @@ internal static class DesktopRedesignValidation
             var capsule=VisualDescendants(extractAll).OfType<Border>().First();
             Check("capsule radius equals half of actual height",Math.Abs(capsule.CornerRadius.TopLeft-capsule.ActualHeight/2)<.1 && capsule.ActualWidth>capsule.ActualHeight*2);
             var entryTable=VisualDescendants(browser).OfType<DataGrid>().Single(value=>value.Name=="EntryTable");
+            Check("archive header and row checkboxes retain all four edges",VisualDescendants(entryTable).OfType<CheckBox>().Where(value=>value.IsVisible).All(UnclippedSelectionBox));
             var entryIcons=VisualDescendants(entryTable).OfType<FileKindIcon>().ToArray();
             Check("file icons reflect actual folders and image entries",entryIcons.Any(icon=>icon.DataContext is ArchiveContentRow {Entry.Directory:true} && icon.IconKind=="folder") && entryIcons.Any(icon=>icon.DataContext is ArchiveContentRow {Path:"cover.png"} && icon.IconKind=="image"));
             Check("folder and image glyphs are actually visible",entryIcons.Where(icon=>icon.IconKind is "folder" or "image").All(icon=>((FrameworkElement)icon.Template.FindName(icon.IconKind=="folder"?"Folder":"Picture",icon)).Visibility==Visibility.Visible && ((FrameworkElement)icon.Template.FindName("Document",icon)).Visibility==Visibility.Collapsed));
@@ -365,9 +366,13 @@ internal static class DesktopRedesignValidation
             window.CompressionPage.SourceSelectAll.IsChecked=false;await Layout();
             ((System.Windows.Automation.Provider.IToggleProvider)allSourcesPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Toggle)).Toggle();await Layout();
             Check("source select-all includes every displayed source",window.CompressionPage.CompressionSourceTable.SelectedItems.Count==2);
+            Check("source header and selected row checkboxes retain all four edges",VisualDescendants(window.CompressionPage.CompressionSourceTable).OfType<CheckBox>().Where(value=>value.IsVisible).All(UnclippedSelectionBox));
             Capture("actual-compression-multiselection");
             var laterSource=Path.Combine(data,"later-source.txt");await File.WriteAllTextAsync(laterSource,"later addition");model.AddCompressionSources([laterSource]);await Layout();
             Check("adding a source after select-all marks the partial selection",window.CompressionPage.SourceSelectAll.IsChecked is null && window.CompressionPage.CompressionSourceTable.SelectedItems.Count==2 && model.CompressionSources.Count==3);
+            var selectionWidth=window.Width;window.Width=800;await Layout();
+            Check("compact source header and partial selection remain unclipped",VisualDescendants(window.CompressionPage.CompressionSourceTable).OfType<CheckBox>().Where(value=>value.IsVisible).All(UnclippedSelectionBox));
+            Capture("actual-compression-compact-partial-selection");window.Width=selectionWidth;await Layout();
             window.CompressionPage.SourceSelectAll.IsChecked=true;await Layout();
             ((System.Windows.Automation.Provider.IInvokeProvider)new System.Windows.Automation.Peers.ButtonAutomationPeer(window.CompressionPage.CompressionRemoveButton).GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Layout();
             Check("remove selected removes the full source selection",model.CompressionSources.Count==0);model.AddCompressionSources([source]);await Layout();
@@ -455,6 +460,16 @@ internal static class DesktopRedesignValidation
         var passed=error is null && checks.Count>100 && checks.Values.All(value=>value);
         await File.WriteAllTextAsync(Path.Combine(folder,"report.json"),JsonSerializer.Serialize(new {passed,checks,error,viewports,scope="isolated CI; synthetic data; rendered WPF; contrast resource simulation; requested window widths can be clamped by the runner display, actual client sizes are recorded; no physical-display or Narrator audio acceptance"},new JsonSerializerOptions{WriteIndented=true}));
         return passed;
+    }
+    private static bool UnclippedSelectionBox(CheckBox choice)
+    {
+        choice.ApplyTemplate();
+        if(choice.Template.FindName("Box",choice) is not Border box || Math.Abs(box.ActualWidth-18)>.1 || Math.Abs(box.ActualHeight-18)>.1)return false;
+        FrameworkElement? container=choice;
+        for(var ancestor=VisualTreeHelper.GetParent(choice);ancestor is not null;ancestor=VisualTreeHelper.GetParent(ancestor))
+            if(ancestor is DataGridCell or System.Windows.Controls.Primitives.DataGridColumnHeader){container=(FrameworkElement)ancestor;break;}
+        var bounds=box.TransformToAncestor(container).TransformBounds(new Rect(box.RenderSize));
+        return bounds.Left>=-.1 && bounds.Top>=-.1 && bounds.Right<=container.ActualWidth+.1 && bounds.Bottom<=container.ActualHeight+.1;
     }
     private static IEnumerable<DependencyObject> VisualDescendants(DependencyObject parent)
     {

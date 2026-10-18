@@ -472,9 +472,10 @@
                     <Rectangle x:Name="Mixed" Visibility="Collapsed" Height="2" Margin="3,0" Fill="{DynamicResource OnAccentBrush}" VerticalAlignment="Center"/>
                   </Grid>
                 </Border>
-                <ContentPresenter Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                <ContentPresenter x:Name="CheckContent" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True"/>
               </Grid>
               <ControlTemplate.Triggers>
+                <Trigger Property="HasContent" Value="False"><Setter TargetName="CheckContent" Property="Visibility" Value="Collapsed"/></Trigger>
                 <Trigger Property="IsChecked" Value="True">
                   <Setter TargetName="Box" Property="Background" Value="{DynamicResource AccentBrush}"/>
                   <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>

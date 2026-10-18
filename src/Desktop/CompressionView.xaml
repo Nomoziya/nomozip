@@ -72,12 +72,13 @@
               </DataGrid.RowStyle>
               <DataGrid.Columns>
                 <DataGridTemplateColumn Width="40" CanUserSort="False">
+                  <DataGridTemplateColumn.HeaderStyle><Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="Padding" Value="0"/><Setter Property="HorizontalContentAlignment" Value="Center"/></Style></DataGridTemplateColumn.HeaderStyle>
                   <DataGridTemplateColumn.Header>
-                    <CheckBox x:Name="SourceSelectAll" IsThreeState="True" Checked="OnSourceSelectAll" Unchecked="OnSourceSelectAll" Margin="0" AutomationProperties.Name="{loc:Text Compression.SelectAllSources}"/>
+                    <CheckBox x:Name="SourceSelectAll" Width="18" IsThreeState="True" Checked="OnSourceSelectAll" Unchecked="OnSourceSelectAll" Margin="0" AutomationProperties.Name="{loc:Text Compression.SelectAllSources}"/>
                   </DataGridTemplateColumn.Header>
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <CheckBox IsChecked="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=DataGridRow},Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" AutomationProperties.Name="{loc:Text Compression.SelectSource}" ToolTip="{loc:Text Compression.SelectionHint}"/>
+                      <CheckBox Width="18" IsChecked="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=DataGridRow},Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" AutomationProperties.Name="{loc:Text Compression.SelectSource}" ToolTip="{loc:Text Compression.SelectionHint}"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -197,7 +198,7 @@
                   <StackPanel>
                     <Grid Margin="0,0,0,8">
                       <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition x:Name="VolumeLabelColumn" Width="72"/>
                         <ColumnDefinition Width="*"/>
                       </Grid.ColumnDefinitions>
                       <Label Margin="0,0,8,0" Content="{loc:Text Compression.VolumeSize}" Target="{Binding ElementName=VolumeOptionBox}" Padding="0" VerticalAlignment="Center"/>
@@ -246,8 +247,20 @@
                         </Style>
                       </TextBlock.Style>
                     </TextBlock>
-                    <Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Label Content="{loc:Text Compression.SelfExtract}" Padding="0" VerticalAlignment="Center"/><CheckBox Grid.Column="1" x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}" ToolTip="{Binding CompressionSfxHint}" ToolTipService.ShowOnDisabled="True"/></Grid>
-                    <TextBlock Text="{loc:Text Compression.AdvancedAvailability}" Style="{StaticResource Secondary}" Margin="72,4,0,0"/><Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Label Content="{loc:Text Compression.Parameters}" Padding="0" VerticalAlignment="Center"/><TextBox Grid.Column="1" Text="{loc:Text Compression.GeneratedParameters}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center"/></Grid><CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}" Margin="72,12,0,0" VerticalAlignment="Center"/>
+                    <Grid Margin="0,12,0,0">
+                      <Grid.ColumnDefinitions><ColumnDefinition x:Name="SfxLabelColumn" Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                      <Label Content="{loc:Text Compression.SelfExtract}" Padding="0" VerticalAlignment="Center"/>
+                      <CheckBox Grid.Column="1" x:Name="SfxBox" Content="{loc:Text T_b0b03f8b05a5}" IsChecked="{Binding CompressionSfx}" IsEnabled="{Binding CanUseSfx}" AutomationProperties.Name="{loc:Text T_872f46af0698}" ToolTip="{Binding CompressionSfxHint}" ToolTipService.ShowOnDisabled="True">
+                        <CheckBox.ContentTemplate><DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap"/></DataTemplate></CheckBox.ContentTemplate>
+                      </CheckBox>
+                    </Grid>
+                    <TextBlock x:Name="AdvancedAvailability" Text="{loc:Text Compression.AdvancedAvailability}" Style="{StaticResource Secondary}" Margin="72,4,0,0"/>
+                    <Grid Margin="0,12,0,0">
+                      <Grid.ColumnDefinitions><ColumnDefinition x:Name="ParametersLabelColumn" Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                      <Label Content="{loc:Text Compression.Parameters}" Padding="0" VerticalAlignment="Center"/>
+                      <TextBox Grid.Column="1" Text="{loc:Text Compression.GeneratedParameters}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}" Margin="72,12,0,0" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Expander>
               </Border>

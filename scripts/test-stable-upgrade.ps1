@@ -9,6 +9,6 @@ $taskZip = "$taskPrevious.zip"
 Invoke-WebRequest "https://github.com/Nomoziya/nomozip/releases/download/v0.2.1/nomozip-0.2.1-light-win-$Architecture.zip" -OutFile $taskZip
 if ((Get-FileHash $taskZip -Algorithm SHA256).Hash.ToLowerInvariant() -ne $taskExpected) { throw 'Published 0.2.1 fixture checksum changed.' }
 Expand-Archive -LiteralPath $taskZip -DestinationPath $taskPrevious
-if (Test-Path "$taskRoot/artifacts/installer-validation.json") { Copy-Item "$taskRoot/artifacts/installer-validation.json" "$taskRoot/artifacts/installer-legacy-validation.json" }
+if (Test-Path "$taskRoot/artifacts/light-installer-validation.json") { Copy-Item "$taskRoot/artifacts/light-installer-validation.json" "$taskRoot/artifacts/installer-legacy-validation.json" }
 & "$taskRoot/scripts/test-installer.ps1" -Architecture $Architecture -PreviousArchitecture $Architecture -PreviousApplicationDirectory $taskPrevious -PreviousFrameworkDependent -UsePayloadVersions
-Copy-Item "$taskRoot/artifacts/installer-validation.json" "$taskRoot/artifacts/installer-0.2.1-upgrade-validation.json"
+Copy-Item "$taskRoot/artifacts/light-installer-validation.json" "$taskRoot/artifacts/installer-0.2.1-upgrade-validation.json"
