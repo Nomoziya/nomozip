@@ -71,6 +71,7 @@ internal static class DesktopDpiValidation
                     var closeBounds=caption.TransformToAncestor(dialog).TransformBounds(new Rect(caption.RenderSize));
                     var controlBounds=control.TransformToAncestor(dialog).TransformBounds(new Rect(control.RenderSize));
                     Check(name+" tiny header controls do not overlap the actual close-button hit area",!closeBounds.IntersectsWith(controlBounds));
+                    Check(name+" tiny header controls accept client input inside the caption",System.Windows.Shell.WindowChrome.GetIsHitTestVisibleInChrome(control));
                 }
                 SetWindowPos(childHandle,0,-32000,-32000,0,0,0x0015);dialog.Opacity=1;await Layout(dialog);
                 if(dialog is FileHashDialog hash)
