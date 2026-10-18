@@ -16,7 +16,7 @@ public partial class FileHashDialog : Window
             var compact = HashLayout.ActualWidth < 720 || HashLayout.ActualHeight < 500;
             HashHeading.Margin = EmbeddedClose is not null ? new Thickness(34,45,24,14) : new Thickness(compact ? 16 : 24,compact ? 16 : 24,compact ? 16 : 24,16);
             var shortArea=compact && EmbeddedClose is null && HashLayout.ActualHeight<400;
-            if(shortArea)HashHeading.Margin=new Thickness(12,8,12,4);
+            if(shortArea)HashHeading.Margin=new Thickness(12,8,64,4);
             HashSummary.Margin=shortArea?new Thickness(12,4,12,4):new Thickness(20,12,20,12);
             HashHeading.Height = EmbeddedClose is not null ? 71 : double.NaN;
             HashPageTitle.Style = (Style)FindResource(EmbeddedClose is not null ? "WorkspacePageTitle" : "PageTitle");

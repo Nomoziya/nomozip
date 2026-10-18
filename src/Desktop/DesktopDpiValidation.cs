@@ -64,6 +64,14 @@ internal static class DesktopDpiValidation
                 WindowPlacement.SetAutoFit(dialog,false);dialog.MinWidth=0;dialog.MinHeight=0;dialog.SizeToContent=SizeToContent.Manual;dialog.Width=512;dialog.Height=360;await Layout(dialog);
                 Check(name+" 512x360 simulated work-area controls reachable",Reachable(dialog,name+" simulated",failures));
                 if(name is "hashes" or "contents" or "encoding" or "vault-import") {var table=Descendants(dialog).OfType<DataGrid>().First();table.ScrollIntoView(table.Items[0]);await Layout(dialog);var row=table.ItemContainerGenerator.ContainerFromIndex(0) as DataGridRow;row?.BringIntoView();await Layout(dialog);var visible=row is not null && FullyVisible(row,dialog);Check(name+" compact table shows one complete row",visible);if(!visible) failures.Add(new {name,tableHeight=table.ActualHeight,row=row?.RenderSize.ToString()});}
+                if(dialog is FileHashDialog or ArchiveContentsDialog)
+                {
+                    var caption=(Button)dialog.Template.FindName("CaptionClose",dialog);
+                    FrameworkElement control=dialog is FileHashDialog hashWindow?hashWindow.HashCloseButton:((ArchiveContentsDialog)dialog).ReferenceArchiveSearch;
+                    var closeBounds=caption.TransformToAncestor(dialog).TransformBounds(new Rect(caption.RenderSize));
+                    var controlBounds=control.TransformToAncestor(dialog).TransformBounds(new Rect(control.RenderSize));
+                    Check(name+" tiny header controls do not overlap the actual close-button hit area",!closeBounds.IntersectsWith(controlBounds));
+                }
                 SetWindowPos(childHandle,0,-32000,-32000,0,0,0x0015);dialog.Opacity=1;await Layout(dialog);
                 if(dialog is FileHashDialog hash)
                 {

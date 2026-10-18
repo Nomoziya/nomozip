@@ -36,6 +36,7 @@ public partial class ArchiveContentsDialog : Window
             EditContentsButton.Visibility = Visibility.Visible;
             var shortArea=EmbeddedClose is null && BrowserRoot.ActualHeight<480;
             BrowserHeader.Height=shortArea?90:130;
+            BrowserTitleRow.Margin=new Thickness(34,0,shortArea?64:18,0);
             var heading=(Grid)BrowserHeader.Child;
             heading.RowDefinitions[0].Height=new GridLength(shortArea?8:35);
             heading.RowDefinitions[1].Height=new GridLength(shortArea?48:54);
