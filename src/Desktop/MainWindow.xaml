@@ -440,7 +440,7 @@
                       <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
                     </WrapPanel><DockPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0"><StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
             <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
-            <ComboBox x:Name="QueueConcurrencyChoice" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" Width="144" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
+            <ComboBox x:Name="QueueConcurrencyChoice" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
               <ComboBoxItem Content="{loc:Text T_df0142916f7f}"/>
               <ComboBoxItem Content="{loc:Text T_d722534ab0db}"/>
             </ComboBox>
@@ -852,7 +852,7 @@
                     </TextBlock.Style>
                   </TextBlock>
                 </StackPanel>
-                <ComboBox x:Name="AppearanceChoice" ItemsSource="{Binding AppearanceOptions}" SelectedItem="{Binding SelectedAppearance}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1" Margin="0,0,80,0"/>
+                <ComboBox x:Name="AppearanceChoice" Style="{StaticResource CompactOptionField}" ItemsSource="{Binding AppearanceOptions}" SelectedItem="{Binding SelectedAppearance}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Appearance.Label}" Grid.Column="1" Margin="0,0,80,0"/>
                 <Button x:Name="SaveAppearanceAction" Content="{loc:Text Settings.Save}" AutomationProperties.Name="{loc:Text Appearance.Save}" Command="{Binding SaveAppearanceCommand}" HorizontalAlignment="Right" Margin="6,0,0,0" Grid.Column="1" Grid.Row="0" Style="{StaticResource SubtleButton}" MaxWidth="80" Padding="6,6"/>
               </Grid>
             </Border>
@@ -880,7 +880,7 @@
                 <StackPanel Grid.Row="1" Margin="0,6,0,0" Grid.ColumnSpan="2">
                   <TextBlock x:Name="LanguageStatus" Text="{Binding LanguageMessage}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"/>
                 </StackPanel>
-                <ComboBox x:Name="LanguageChoice" ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Language.Label}" MinWidth="0" HorizontalAlignment="Stretch" Grid.Column="1" Margin="0,0,80,0"/>
+                <ComboBox x:Name="LanguageChoice" Style="{StaticResource CompactOptionField}" ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Label" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Language.Label}" Grid.Column="1" Margin="0,0,80,0"/>
                 <Button x:Name="SaveLanguageAction" Content="{loc:Text Settings.Save}" AutomationProperties.Name="{loc:Text Language.Save}" Command="{Binding SaveLanguageCommand}" HorizontalAlignment="Right" Margin="6,0,0,0" Grid.Column="1" Grid.Row="0" Style="{StaticResource SubtleButton}" MaxWidth="80" Padding="6,6"/>
               </Grid>
             </Border>
@@ -1075,7 +1075,7 @@
                       <Button x:Name="ImportEngineUpdateButton" Content="{loc:Text T_e1189ffd0bcd}" Command="{Binding ImportUpdateCommand}" Margin="0,0,0,8"/>
                     </WrapPanel>
                     <Label Content="{loc:Text T_5dcf192a65bc}" Target="{Binding ElementName=EngineChoice}" Padding="0"/>
-                    <ComboBox x:Name="EngineChoice" Style="{StaticResource CompactOptionField}" Width="200" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
+                    <ComboBox x:Name="EngineChoice" Style="{StaticResource CompactOptionField}" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
                     <WrapPanel Margin="0,12,0,16">
                       <Button Content="{loc:Text T_58be85ec225f}" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/>
                       <Button Content="{loc:Text T_49c8ef416bd3}" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/>
@@ -1108,7 +1108,7 @@
                   <Button x:Name="DisableMasterAction" Content="{loc:Text T_aa72684414b8}" Command="{Binding DisableMasterCommand}" Margin="0,0,0,8"/>
                 </WrapPanel>
                 <Label Content="{loc:Text T_f987b614b7f1}" Target="{Binding ElementName=VaultIdleChoice}" Padding="0"/>
-                <ComboBox x:Name="VaultIdleChoice" Style="{StaticResource CompactOptionField}" Width="200" SelectedIndex="{Binding VaultIdleIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_ce50d85b6e27}" Margin="0,8,0,0">
+                <ComboBox x:Name="VaultIdleChoice" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding VaultIdleIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_ce50d85b6e27}" Margin="0,8,0,0">
                   <ComboBoxItem Content="{loc:Text T_c58d5c7dc924}"/>
                   <ComboBoxItem Content="{loc:Text T_49a64a97cdbb}"/>
                   <ComboBoxItem Content="{loc:Text T_9d9a5e5793d1}"/>

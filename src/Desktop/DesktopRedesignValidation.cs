@@ -96,7 +96,7 @@ internal static class DesktopRedesignValidation
                             var form=window.CompressionPage.SettingsForm;
                             Check($"{mode}/{width} compression form uses available space without excessive stretching",form.ActualWidth>300 && form.ActualWidth<=640.5 && Bounds(form).Right<=Bounds(window.CompressionPage.SettingsScroll).Right+1);
                             var formatBounds=Bounds(window.CompressionPage.FormatBox);var levelBounds=Bounds(window.CompressionPage.LevelBox);
-                            Check($"{mode}/{width} short compression choices fit on one readable row",Math.Abs(formatBounds.Top-levelBounds.Top)<1 && formatBounds.Width>=140 && levelBounds.Width>=150 && levelBounds.Width<=200.5 && levelBounds.Left-formatBounds.Right>=15 && levelBounds.Right<=Bounds(form).Right+1);
+                            Check($"{mode}/{width} short compression choices fit on one readable row",Math.Abs(formatBounds.Top-levelBounds.Top)<1 && formatBounds.Width>=80 && formatBounds.Width<=110 && levelBounds.Width>=80 && levelBounds.Width<=180 && levelBounds.Left-formatBounds.Right>=19 && levelBounds.Right<=Bounds(form).Right+1);
                         }
                         Capture($"{mode}-{width}-page-{page}");
                         if(width==1152 && page==0 && mode is "light" or "dark" or "soft")
@@ -136,6 +136,18 @@ internal static class DesktopRedesignValidation
             await Layout();window.CompressionPage.ArchiveNameBox.Focus();window.CompressionPage.ArchiveNameBox.CaretIndex=window.CompressionPage.ArchiveNameBox.Text.Length;await Layout();
             Check("compact compression long fields preserve complete editable values",window.CompressionPage.ArchiveOutputBox.Text==model.CompressionOutputDirectory && window.CompressionPage.ArchiveNameBox.Text==model.CompressionOutputName && Bounds(window.CompressionPage.ArchiveNameBox).Right<=Bounds(window.CompressionPage.SettingsScroll).Right+1);
             Capture("compression-form-compact-long-fields");model.CompressionOutput=originalCompressionOutput;
+            var originalLevel=model.CompressionLevel;
+            foreach(var level in Enumerable.Range(0,window.CompressionPage.LevelBox.Items.Count))
+            {
+                model.CompressionLevel=level;await Layout();
+                var box=window.CompressionPage.LevelBox;var label=((ComboBoxItem)box.SelectedItem).Content.ToString()!;
+                var text=new FormattedText(label,System.Globalization.CultureInfo.CurrentUICulture,FlowDirection.LeftToRight,new Typeface(box.FontFamily,box.FontStyle,box.FontWeight,box.FontStretch),box.FontSize,Brushes.Black,VisualTreeHelper.GetDpi(box).PixelsPerDip);
+                Check("compression level text fits without excessive blank space "+level,box.ActualWidth>=text.WidthIncludingTrailingWhitespace+39 && box.ActualWidth<=Math.Max(80,text.WidthIncludingTrailingWhitespace+42)+8);
+            }
+            model.CompressionLevel=originalLevel;model.CompressionVolumeOption=4;model.CompressionVolumeCustom="512";await Layout();
+            window.CompressionPage.VolumeSizeBox.BringIntoView();await Layout();
+            Check("custom volume reserves more editing space than its short unit selector",window.CompressionPage.VolumeSizeBox.ActualWidth>window.CompressionPage.VolumeUnitBox.ActualWidth);
+            Capture("compression-form-custom-volume");model.CompressionVolumeOption=0;window.CompressionPage.CompressionViewport.ScrollToTop();
             window.MinWidth=1152;window.Width=1152;window.Height=768;
             model.Page=2;model.SettingsSection=4;await Layout();
             Check("update cards keep checks visible and secondary actions folded",window.CheckApplicationUpdatesButton.IsVisible && window.CheckEngineUpdatesButton.IsVisible && !window.ApplicationUpdateActions.IsExpanded && !window.EngineUpdateManagement.IsExpanded);

@@ -67,7 +67,6 @@ public partial class MainWindow : Window
             ExtractionLayout.Height = shortWorkArea?double.NaN:Math.Max(0, ExtractionViewport.ActualHeight);
             DefaultOutputPanel.Width = Math.Min(360, Math.Max(160, PreferencesScroll.ActualWidth-200));
             DefaultConflictColumn.Width = new GridLength(DefaultOutputPanel.Width);
-            DefaultConflictChoice.Width = Math.Min(220, DefaultOutputPanel.Width);
             ExtractionViewport.VerticalScrollBarVisibility = shortWorkArea?ScrollBarVisibility.Auto:ScrollBarVisibility.Disabled;
             SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             ListRow.Height = new GridLength(1, GridUnitType.Star);

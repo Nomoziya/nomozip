@@ -136,39 +136,20 @@
                 <Label Content="{loc:Text Redesign.ArchiveName}" Target="{Binding ElementName=ArchiveNameBox}" Padding="0" VerticalAlignment="Center"/>
                 <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionOutputName}" IsEnabled="{Binding IsIdle}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
               </Grid>
-              <Grid x:Name="CompressionChoices" Margin="0,2,0,12" Width="{Binding ActualWidth,ElementName=SettingsForm}" MaxWidth="364" HorizontalAlignment="Left">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="148"/>
-                  <ColumnDefinition Width="16"/>
-                  <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Label Content="{loc:Text T_0e8b1c78c5f3}" Target="{Binding ElementName=FormatBox}" Padding="0" Margin="0,0,0,6"/>
-                <Label x:Name="LevelLabel" Grid.Column="2" Content="{loc:Text T_e7e4273dd4c8}" Target="{Binding ElementName=LevelBox}" Padding="0" Margin="0,0,0,6">
-                  <Label.ContentTemplate>
-                    <DataTemplate>
-                      <AccessText Text="{Binding}" TextWrapping="Wrap"/>
-                    </DataTemplate>
-                  </Label.ContentTemplate>
-                </Label>
-                <ComboBox Grid.Row="1" x:Name="FormatBox" SelectedIndex="{Binding CompressionFormat}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_5e30948d6a8b}" Margin="0" ToolTip="{Binding CompressionHint}">
-                  <ComboBoxItem Content="7z"/>
-                  <ComboBoxItem Content="ZIP"/>
-                  <ComboBoxItem Content="TAR"/>
-                  <ComboBoxItem Content="GZIP"/>
-                  <ComboBoxItem Content="XZ"/>
-                </ComboBox>
-                <ComboBox Grid.Row="1" Grid.Column="2" x:Name="LevelBox" SelectedIndex="{Binding CompressionLevel}" IsEnabled="{Binding CanSetCompressionLevel}" AutomationProperties.Name="{loc:Text T_e7e4273dd4c8}" Margin="0">
-                  <ComboBoxItem Content="{loc:Text T_bfa903605147}"/>
-                  <ComboBoxItem Content="{loc:Text T_db945cfe9f9f}"/>
-                  <ComboBoxItem Content="{loc:Text T_6bea77acefb3}"/>
-                  <ComboBoxItem Content="{loc:Text T_dfbad24e7f4a}"/>
-                  <ComboBoxItem Content="{loc:Text T_8672864e9041}"/>
-                </ComboBox>
-              </Grid>
+              <WrapPanel x:Name="CompressionChoices" Margin="0,2,0,12">
+                <StackPanel Margin="0,0,20,0">
+                  <Label Content="{loc:Text T_0e8b1c78c5f3}" Target="{Binding ElementName=FormatBox}" Padding="0" Margin="0,0,0,6"/>
+                  <ComboBox x:Name="FormatBox" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding CompressionFormat}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_5e30948d6a8b}" Margin="0" ToolTip="{Binding CompressionHint}">
+                    <ComboBoxItem Content="7z"/><ComboBoxItem Content="ZIP"/><ComboBoxItem Content="TAR"/><ComboBoxItem Content="GZIP"/><ComboBoxItem Content="XZ"/>
+                  </ComboBox>
+                </StackPanel>
+                <StackPanel>
+                  <Label x:Name="LevelLabel" Content="{loc:Text T_e7e4273dd4c8}" Target="{Binding ElementName=LevelBox}" Padding="0" Margin="0,0,0,6"/>
+                  <ComboBox x:Name="LevelBox" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding CompressionLevel}" IsEnabled="{Binding CanSetCompressionLevel}" AutomationProperties.Name="{loc:Text T_e7e4273dd4c8}" Margin="0">
+                    <ComboBoxItem Content="{loc:Text T_bfa903605147}"/><ComboBoxItem Content="{loc:Text T_db945cfe9f9f}"/><ComboBoxItem Content="{loc:Text T_6bea77acefb3}"/><ComboBoxItem Content="{loc:Text T_dfbad24e7f4a}"/><ComboBoxItem Content="{loc:Text T_8672864e9041}"/>
+                  </ComboBox>
+                </StackPanel>
+              </WrapPanel>
               <Grid Margin="0,4,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
