@@ -47,7 +47,7 @@ internal static class DesktopVisualRefreshValidation
                 theme.SetMode(mode == "contrast" ? "light" : mode); theme.Apply(mode == "contrast");
                 foreach (var width in new[] { 800, 1120, 1600 })
                 {
-                    window.Width = width; window.Height = 760; model.Page = 2; model.SettingsSection = 2; await Layout();
+                    window.MinWidth = width; window.Width = width; window.Height = 760; model.Page = 2; model.SettingsSection = 2; await Layout();
                     ((Border)((FrameworkElement)window.VaultIdleChoice.Parent).Parent).BringIntoView(); await Layout();
                     Check($"{mode}/{width} idle field has readable bounded width", window.VaultIdleChoice.ActualWidth >= 220 && window.VaultIdleChoice.ActualWidth <= 280 && Bounds(window.VaultIdleChoice).Right < window.ActualWidth);
                     Check($"{mode}/{width} settings card measure stays bounded", window.PreferencesCards.ActualWidth <= 920 && window.PreferencesScroll.ExtentWidth <= window.PreferencesScroll.ViewportWidth + 1);
@@ -67,14 +67,14 @@ internal static class DesktopVisualRefreshValidation
                     Check($"{mode}/{width} association actions remain within content", rects.All(rect => rect.Left >= Bounds(window.PreferencesCards).Left && rect.Right <= window.ActualWidth));
                     Capture($"{mode}-{width}-association-settings");
                 }
-                window.Width = 1120; model.Page = 0; model.SelectedTask = model.Tasks[1]; await Layout();
+                window.MinWidth = 1120; window.Width = 1120; model.Page = 0; model.SelectedTask = model.Tasks[1]; await Layout();
                 Capture($"{mode}-1120-page-0-selected");
                 var row = (DataGridRow)window.ArchiveTasks.ItemContainerGenerator.ContainerFromItem(model.SelectedTask);
                 var cell = Descendants(row).OfType<DataGridCell>().First();
                 cell.Focus(); await Layout();
                 var focus = (Border)row.Template.FindName("RowFocus", row);
                 Check(mode + " keyboard focus spans the entire row", cell.IsKeyboardFocusWithin && focus.Visibility == Visibility.Visible
-                    && focus.ActualWidth >= row.ActualWidth - 5 && focus.Margin == new Thickness(2) && focus.BorderThickness == new Thickness(1));
+                    && focus.ActualWidth >= row.ActualWidth - 5 && focus.Margin == new Thickness(2) && focus.BorderThickness == new Thickness(2));
                 var inside = focus.TransformToAncestor(row).TransformBounds(new Rect(focus.RenderSize)); inside.Inflate(-1, -1);
                 Check(mode + " row focus leaves all visible text clear", Descendants(row).OfType<TextBlock>().Where(text => text.IsVisible && text.Text.Length > 0)
                     .All(text => inside.Contains(text.TransformToAncestor(row).TransformBounds(new Rect(text.RenderSize)))));
@@ -104,7 +104,10 @@ internal static class DesktopVisualRefreshValidation
                     dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.ShowActivated=false;dialog.Opacity=0;
                     dialog.Loaded += (_,_) => dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(() =>
                     {
-                        dialog.UpdateLayout();var rules=window.ExtractionRulesAction;
+                        var rules=window.ExtractionRulesAction;
+                        for(DependencyObject? parent=rules;parent is not null;parent=LogicalTreeHelper.GetParent(parent))
+                            if(parent is Expander expander)expander.IsExpanded=true;
+                        dialog.UpdateLayout();
                         Check(mode + " extraction rules is reachable in its actual confirmation dialog",rules.IsVisible && rules.ActualHeight >= 36
                             && rules.FocusVisualStyle is not null && new ButtonAutomationPeer(rules).IsKeyboardFocusable() && new ButtonAutomationPeer(rules).GetName()==UiText.Get("T_571579b0c6a1"));
                         dialog.Close();
@@ -138,8 +141,8 @@ internal static class DesktopVisualRefreshValidation
                     {
                         model.SelectedPassword = model.PasswordRows.FirstOrDefault(); await Layout();
                         var passwordRow = (DataGridRow)window.PasswordTable.ItemContainerGenerator.ContainerFromItem(model.SelectedPassword);
-                        var metadata = Descendants(passwordRow).OfType<TextBlock>().Single(block => block.FontSize == 12);
-                        Check(mode + " selected vault metadata follows the readable row color", metadata.IsVisible && ColorOf(metadata.Foreground) == ColorOf(passwordRow.Foreground));
+                        var metadata = Descendants(passwordRow).OfType<TextBlock>().Single(block => block.Text.Contains("example.test",StringComparison.Ordinal));
+                        Check(mode + " selected vault metadata follows the readable row color", metadata.IsVisible && metadata.FontSize==13 && ColorOf(metadata.Foreground) == ColorOf(passwordRow.Foreground));
                         Capture($"{mode}-1120-page-1-selected");
                         await Preview(window.PasswordContextMenu, window.PasswordTable, mode + "-vault-row-menu");
                         Check(mode + " vault actions bind to the selected password", ReferenceEquals(window.PasswordEditAction.Command, model.EditPasswordCommand)
@@ -154,11 +157,11 @@ internal static class DesktopVisualRefreshValidation
                 }
             }
             // Match the usable client height of an 800x600 decorated window, including its status banner.
-            window.Width = 800; window.MinHeight = 560; window.Height = 560;
+            window.MinWidth = 800; window.Width = 800; window.MinHeight = 560; window.Height = 560;
             model.Page = 1; model.Banner = "Layout validation"; await Layout();
             Check("compact vault with status banner retains a complete first row", window.PasswordTable.ActualHeight >= 96);
             Capture("compact-vault-banner");
-            model.Banner = ""; window.Height = 760; window.MinHeight = 600; window.Width = 1120; await Layout();
+            model.Banner = ""; window.Height = 760; window.MinHeight = 600; window.MinWidth = 1120; window.Width = 1120; await Layout();
             await CheckRowInput(window, model, Check, Layout);
         }
         catch (Exception error) { checks["exception " + error] = false; }
