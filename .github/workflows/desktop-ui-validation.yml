@@ -16,6 +16,10 @@ on:
         description: 'Also validate row input and visual regressions against current layout'
         type: boolean
         default: false
+      release_followup:
+        description: 'Affected functional flows, actual 0.2.1 upgrade and final release packaging'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -127,6 +131,44 @@ jobs:
       - name: Target row input and current visual regression checks
         if: inputs.legacy_visual
         run: ./scripts/test-visual-refresh.ps1
+      - name: Follow up affected desktop functional flows with synthetic data
+        if: inputs.release_followup
+        run: ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}'
+      - uses: actions/upload-artifact@v7
+        if: always() && inputs.release_followup
+        with:
+          name: release-followup-${{ matrix.architecture }}-reports
+          path: |
+            artifacts/*validation.json
+            artifacts/accessibility-preview/*.png
+            artifacts/localization-preview/*.png
+            artifacts/theme-preview/*.png
+            artifacts/pause-preview/*.png
+            artifacts/master-vault-preview/*.png
+          if-no-files-found: ignore
+      - name: Upgrade the published 0.2.1 lightweight installation and package release
+        if: inputs.release_followup
+        run: |
+          ./scripts/bootstrap-installer.ps1 -Architecture '${{ matrix.architecture }}'
+          ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker -OutputDirectory artifacts/light-app
+          ./scripts/test-stable-upgrade.ps1 -Architecture '${{ matrix.architecture }}'
+          git restore --worktree -- engines
+          ./scripts/build-release.ps1 -Architecture '${{ matrix.architecture }}' -ApplicationDirectory artifacts/light-app -OutputDirectory 'artifacts/release-0.3.0-${{ matrix.architecture }}' -Python python
+      - uses: actions/upload-artifact@v7
+        if: inputs.release_followup
+        with:
+          name: release-followup-${{ matrix.architecture }}-package
+          path: artifacts/release-0.3.0-${{ matrix.architecture }}/*
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        if: always() && inputs.release_followup
+        with:
+          name: release-followup-${{ matrix.architecture }}-package-review
+          path: |
+            artifacts/installer-0.2.1-upgrade-validation.json
+            artifacts/light-installer-validation.json
+            artifacts/release-0.3.0-${{ matrix.architecture }}-validation.json
+          if-no-files-found: ignore
       - name: Package the exact tested shared-runtime candidate
         run: |
           Compress-Archive -Path artifacts/app/* -DestinationPath 'artifacts/nomozip-ui-redesign-${{ matrix.architecture }}.zip'

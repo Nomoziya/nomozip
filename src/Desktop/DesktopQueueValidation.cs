@@ -18,6 +18,7 @@ internal static class DesktopQueueValidation
 {
     internal static async Task<bool> RunAsync(MainWindow window,ThemeResources theme,string root,string baseDirectory)
     {
+        using var confirmation=DesktopExtractionConfirmationValidation.Accept(window);
         var data=Path.GetFullPath(Path.Combine(root,"artifacts/queue-ui",Guid.NewGuid().ToString("N")));Directory.CreateDirectory(data);
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);
         var preview=Path.Combine(root,"artifacts/queue-preview");Directory.CreateDirectory(preview);
