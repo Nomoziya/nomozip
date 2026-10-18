@@ -109,6 +109,7 @@ jobs:
       - name: Prepare official engines and native SDK
         run: ./scripts/bootstrap.ps1 -Architecture '${{ matrix.architecture }}'
       - name: Build native worker and lightweight application
+        id: desktop_build
         run: |
           ./scripts/build-worker.ps1 -Architecture '${{ matrix.architecture }}'
           ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker
@@ -131,9 +132,22 @@ jobs:
       - name: Target row input and current visual regression checks
         if: inputs.legacy_visual
         run: ./scripts/test-visual-refresh.ps1
-      - name: Follow up affected desktop functional flows with synthetic data
+      - name: Follow up primary desktop commands with synthetic data
         if: inputs.release_followup
-        run: ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}'
+        run: ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}' -Flags validate -SkipLanguages
+      - uses: actions/upload-artifact@v7
+        if: always() && inputs.release_followup
+        with:
+          name: release-followup-${{ matrix.architecture }}-primary-reports
+          path: |
+            artifacts/*validation.json
+            artifacts/accessibility-preview/*.png
+            artifacts/ui-redesign/*/report.json
+            artifacts/ui-redesign/*/actual-compression-compact-partial-selection.png
+          if-no-files-found: ignore
+      - name: Follow up remaining affected flows and language settings
+        if: ${{ !cancelled() && inputs.release_followup && steps.desktop_build.outcome == 'success' }}
+        run: ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}' -SkipPrepare -Flags validate-shell-ui,validate-application-updates,validate-extraction-tools,validate-queue,validate-pause,validate-checkpoints,validate-master-vault
       - uses: actions/upload-artifact@v7
         if: always() && inputs.release_followup
         with:

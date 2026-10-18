@@ -1,10 +1,13 @@
-param([ValidateSet('x64','arm64')][string]$Architecture = 'x64')
+param([ValidateSet('x64','arm64')][string]$Architecture = 'x64',
+    [string[]]$Flags=@('validate','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-queue','validate-pause','validate-checkpoints','validate-master-vault'),
+    [switch]$SkipPrepare,[switch]$SkipLanguages)
 $ErrorActionPreference='Stop'
 if($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted'){throw 'Release follow-up requires disposable CI.'}
 $taskRoot=Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME=Join-Path $taskRoot '.tools/dotnet-home'
 $taskDotnet=Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
-foreach($taskProject in @('tests/EngineSmoke/EngineSmoke.csproj','tests/CompressionValidation/CompressionValidation.csproj','tools/UpdatePackager/UpdatePackager.csproj')){
+if(-not $SkipPrepare){
+foreach($taskProject in @('tests/EngineSmoke/EngineSmoke.csproj','tests/CompressionValidation/CompressionValidation.csproj','tests/CheckpointValidation/CheckpointValidation.csproj','tools/UpdatePackager/UpdatePackager.csproj')){
     & $taskDotnet build (Join-Path $taskRoot $taskProject) --nologo -m:1 -nr:false
     if($LASTEXITCODE -ne 0){throw "Follow-up fixture build failed: $taskProject"}
 }
@@ -27,8 +30,10 @@ New-Item -ItemType Directory -Force $taskApp | Out-Null
 Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
 & "$taskRoot/scripts/prepare-pause-ui-fixture.ps1"
+}
+$taskApp=Join-Path $taskRoot 'artifacts/test-app'
 $taskFailures=[Collections.Generic.List[string]]::new()
-foreach($taskFlag in @('validate','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-queue','validate-pause','validate-checkpoints','validate-master-vault')){
+foreach($taskFlag in $Flags){
     foreach($taskLanguage in $(if($taskFlag -eq 'validate-application-updates'){@('zh-CN','en')}else{@('zh-CN')})){
         Write-Output "Follow-up starting: $taskFlag $taskLanguage"
         $taskProcess=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot,$taskLanguage) -WindowStyle Hidden -PassThru
@@ -36,6 +41,8 @@ foreach($taskFlag in @('validate','validate-shell-ui','validate-application-upda
         if($taskProcess.ExitCode -ne 0){$taskFailures.Add("$taskFlag $taskLanguage");Write-Warning "Follow-up failed: $taskFlag $taskLanguage"}else{Write-Output "Follow-up passed: $taskFlag $taskLanguage"}
     }
 }
-try{& "$taskRoot/scripts/test-localization-ui.ps1" -ApplicationDirectory $taskApp}catch{$taskFailures.Add("localization: $_")}
-try{& "$taskRoot/scripts/test-theme-ui.ps1" -ApplicationDirectory $taskApp}catch{$taskFailures.Add("theme: $_")}
+if(-not $SkipLanguages){
+    try{& "$taskRoot/scripts/test-localization-ui.ps1" -ApplicationDirectory $taskApp}catch{$taskFailures.Add("localization: $_")}
+    try{& "$taskRoot/scripts/test-theme-ui.ps1" -ApplicationDirectory $taskApp}catch{$taskFailures.Add("theme: $_")}
+}
 if($taskFailures.Count){throw "Release follow-up failures: $($taskFailures -join '; ')"}

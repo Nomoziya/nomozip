@@ -60,14 +60,13 @@ internal static class DesktopExtractionToolsValidation
                 window.PrepareExtractionOptionsForValidation=confirmation=>
                 {
                     confirmation.WindowStartupLocation=WindowStartupLocation.Manual;confirmation.Left=confirmation.Top=-32000;confirmation.ShowActivated=false;confirmation.Opacity=0;
-                    confirmation.Loaded+=(_,_)=>confirmation.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(()=>
+                    confirmation.Loaded+=(_,_)=>confirmation.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(async()=>
                     {
                         var button=window.ExtractionRulesAction;
                         for(DependencyObject? parent=button;parent is not null;parent=LogicalTreeHelper.GetParent(parent))if(parent is Expander expander)expander.IsExpanded=true;
                         button.BringIntoView();confirmation.UpdateLayout();
                         Check($"rules command reachable {width} {contrast}",button.IsVisible && button.IsEnabled && UIElementAutomationPeer.CreatePeerForElement(button)!.IsKeyboardFocusable());
-                        // Raise the real button synchronously so the nested rules dialog closes before its owner.
-                        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));confirmation.Close();
+                        Invoke(button);await Layout();await model.WaitForIdleAsync();confirmation.Close();
                     }));
                 };
                 window.ConfirmExtractionOptions();window.PrepareExtractionOptionsForValidation=null;await Layout();await model.WaitForIdleAsync();await Layout();
