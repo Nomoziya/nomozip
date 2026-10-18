@@ -93,6 +93,10 @@ internal static class DesktopRedesignValidation
                             Check($"{mode}/{width} compression source headers remain inside the table",VisualDescendants(sourceTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Where(header=>header.Column is not null).All(header=>Bounds(header).Right<=Bounds(sourceTable).Right+1));
                             Check($"{mode}/{width} compression footer stays reachable",Bounds(window.CompressionPage.CreateButton).Bottom<=((FrameworkElement)window.Content).ActualHeight+1 && window.CompressionPage.CreateButton.ActualWidth>60);
                             Check($"{mode}/{width} compression supports enabled 7z level and encryption",window.CompressionPage.LevelBox.IsEnabled && window.CompressionPage.EncryptBox.IsEnabled);
+                            var form=window.CompressionPage.SettingsForm;
+                            Check($"{mode}/{width} compression form uses available space without excessive stretching",form.ActualWidth>300 && form.ActualWidth<=640.5 && Bounds(form).Right<=Bounds(window.CompressionPage.SettingsScroll).Right+1);
+                            var formatBounds=Bounds(window.CompressionPage.FormatBox);var levelBounds=Bounds(window.CompressionPage.LevelBox);
+                            Check($"{mode}/{width} short compression choices fit on one readable row",Math.Abs(formatBounds.Top-levelBounds.Top)<1 && formatBounds.Width>=140 && levelBounds.Width>=150 && levelBounds.Width<=200.5 && levelBounds.Left-formatBounds.Right>=15 && levelBounds.Right<=Bounds(form).Right+1);
                         }
                         Capture($"{mode}-{width}-page-{page}");
                         if(width==1152 && page==0 && mode is "light" or "dark" or "soft")
@@ -126,7 +130,13 @@ internal static class DesktopRedesignValidation
                     Capture("soft-task-keyboard-focus");
                 }
             }
-            theme.SetMode("light");theme.Apply(false);window.MinWidth=1152;window.Width=1152;window.Height=768;
+            theme.SetMode("light");theme.Apply(false);window.MinWidth=800;window.Width=800;window.Height=768;model.Page=3;
+            var originalCompressionOutput=model.CompressionOutput;
+            model.CompressionOutput=@"D:\Documents\项目资料\2026 年季度归档与交付文件\设计素材与完整原始附件\需要保留完整名称的项目资料备份与交付记录.7z";
+            await Layout();window.CompressionPage.ArchiveNameBox.Focus();window.CompressionPage.ArchiveNameBox.CaretIndex=window.CompressionPage.ArchiveNameBox.Text.Length;await Layout();
+            Check("compact compression long fields preserve complete editable values",window.CompressionPage.ArchiveOutputBox.Text==model.CompressionOutputDirectory && window.CompressionPage.ArchiveNameBox.Text==model.CompressionOutputName && Bounds(window.CompressionPage.ArchiveNameBox).Right<=Bounds(window.CompressionPage.SettingsScroll).Right+1);
+            Capture("compression-form-compact-long-fields");model.CompressionOutput=originalCompressionOutput;
+            window.MinWidth=1152;window.Width=1152;window.Height=768;
             model.Page=2;model.SettingsSection=4;await Layout();
             Check("update cards keep checks visible and secondary actions folded",window.CheckApplicationUpdatesButton.IsVisible && window.CheckEngineUpdatesButton.IsVisible && !window.ApplicationUpdateActions.IsExpanded && !window.EngineUpdateManagement.IsExpanded);
             window.ApplicationUpdateActions.IsExpanded=true;await Layout();
@@ -471,7 +481,7 @@ internal static class DesktopRedesignValidation
         var bounds=box.TransformToAncestor(container).TransformBounds(new Rect(box.RenderSize));
         return bounds.Left>=-.1 && bounds.Top>=-.1 && bounds.Right<=container.ActualWidth+.1 && bounds.Bottom<=container.ActualHeight+.1;
     }
-    private static IEnumerable<DependencyObject> VisualDescendants(DependencyObject parent)
+    internal static IEnumerable<DependencyObject> VisualDescendants(DependencyObject parent)
     {
         for(var index=0;index<VisualTreeHelper.GetChildrenCount(parent);index++)
         {var child=VisualTreeHelper.GetChild(parent,index);yield return child;foreach(var nested in VisualDescendants(child))yield return nested;}

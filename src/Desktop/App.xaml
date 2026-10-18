@@ -418,6 +418,10 @@
           </Setter.Value>
         </Setter>
       </Style>
+      <Style x:Key="CompactOptionField" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="Width" Value="220"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+      </Style>
       <Style TargetType="ComboBoxItem" BasedOn="{StaticResource BodyControl}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>

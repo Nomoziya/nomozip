@@ -113,7 +113,7 @@
         </Border>
         <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Padding="24,12,24,16" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0">
           <ScrollViewer x:Name="SettingsScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel Grid.IsSharedSizeScope="True">
+            <StackPanel x:Name="SettingsForm" Grid.IsSharedSizeScope="True" Width="{Binding ViewportWidth,ElementName=SettingsScroll}" MaxWidth="640" HorizontalAlignment="Left">
               <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}" FontSize="16"/>
               <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
@@ -136,34 +136,32 @@
                 <Label Content="{loc:Text Redesign.ArchiveName}" Target="{Binding ElementName=ArchiveNameBox}" Padding="0" VerticalAlignment="Center"/>
                 <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionOutputName}" IsEnabled="{Binding IsIdle}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
               </Grid>
-              <Grid Margin="0,0,0,8">
+              <Grid x:Name="CompressionChoices" Margin="0,2,0,12" Width="{Binding ActualWidth,ElementName=SettingsForm}" MaxWidth="364" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
-                  <ColumnDefinition Width="8"/>
+                  <ColumnDefinition Width="148"/>
+                  <ColumnDefinition Width="16"/>
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Content="{loc:Text T_0e8b1c78c5f3}" Target="{Binding ElementName=FormatBox}" Padding="0" VerticalAlignment="Center"/>
-                <Label x:Name="LevelLabel" Grid.Column="0" Content="{loc:Text T_e7e4273dd4c8}" Target="{Binding ElementName=LevelBox}" Padding="0" Grid.Row="1" VerticalAlignment="Center">
+                <Label Content="{loc:Text T_0e8b1c78c5f3}" Target="{Binding ElementName=FormatBox}" Padding="0" Margin="0,0,0,6"/>
+                <Label x:Name="LevelLabel" Grid.Column="2" Content="{loc:Text T_e7e4273dd4c8}" Target="{Binding ElementName=LevelBox}" Padding="0" Margin="0,0,0,6">
                   <Label.ContentTemplate>
                     <DataTemplate>
                       <AccessText Text="{Binding}" TextWrapping="Wrap"/>
                     </DataTemplate>
                   </Label.ContentTemplate>
                 </Label>
-                <ComboBox Grid.Row="0" x:Name="FormatBox" SelectedIndex="{Binding CompressionFormat}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_5e30948d6a8b}" Margin="0,0,0,12" Grid.Column="2" ToolTip="{Binding CompressionHint}">
+                <ComboBox Grid.Row="1" x:Name="FormatBox" SelectedIndex="{Binding CompressionFormat}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_5e30948d6a8b}" Margin="0" ToolTip="{Binding CompressionHint}">
                   <ComboBoxItem Content="7z"/>
                   <ComboBoxItem Content="ZIP"/>
                   <ComboBoxItem Content="TAR"/>
                   <ComboBoxItem Content="GZIP"/>
                   <ComboBoxItem Content="XZ"/>
                 </ComboBox>
-                <ComboBox Grid.Row="1" Grid.Column="2" x:Name="LevelBox" SelectedIndex="{Binding CompressionLevel}" IsEnabled="{Binding CanSetCompressionLevel}" AutomationProperties.Name="{loc:Text T_e7e4273dd4c8}" Margin="0,0,0,12">
+                <ComboBox Grid.Row="1" Grid.Column="2" x:Name="LevelBox" SelectedIndex="{Binding CompressionLevel}" IsEnabled="{Binding CanSetCompressionLevel}" AutomationProperties.Name="{loc:Text T_e7e4273dd4c8}" Margin="0">
                   <ComboBoxItem Content="{loc:Text T_bfa903605147}"/>
                   <ComboBoxItem Content="{loc:Text T_db945cfe9f9f}"/>
                   <ComboBoxItem Content="{loc:Text T_6bea77acefb3}"/>
@@ -174,7 +172,7 @@
               <Grid Margin="0,4,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="{loc:Text Compression.EncryptionLabel}" Padding="0" VerticalAlignment="Center" MinWidth="64" Margin="0,0,8,0"/>
@@ -202,7 +200,7 @@
                         <ColumnDefinition Width="*"/>
                       </Grid.ColumnDefinitions>
                       <Label Margin="0,0,8,0" Content="{loc:Text Compression.VolumeSize}" Target="{Binding ElementName=VolumeOptionBox}" Padding="0" VerticalAlignment="Center"/>
-                      <ComboBox Grid.Column="1" x:Name="VolumeOptionBox" SelectedIndex="{Binding CompressionVolumeOption}" IsEnabled="{Binding CanSplitCompression}" AutomationProperties.Name="{loc:Text T_a49163724694}" ToolTip="{loc:Text T_b3b8e461c196}">
+                      <ComboBox Grid.Column="1" x:Name="VolumeOptionBox" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding CompressionVolumeOption}" IsEnabled="{Binding CanSplitCompression}" AutomationProperties.Name="{loc:Text T_a49163724694}" ToolTip="{loc:Text T_b3b8e461c196}">
                         <ComboBoxItem Content="{loc:Text T_13fa566b385e}"/>
                         <ComboBoxItem Content="100 MiB"/>
                         <ComboBoxItem Content="1 GiB"/>
@@ -222,7 +220,7 @@
                         </Style>
                       </StackPanel.Style>
                       <Label Content="{loc:Text T_861a9645de18}" Target="{Binding ElementName=VolumeSizeBox}" Padding="0" Margin="0,8,0,8"/>
-                      <Grid>
+                      <Grid Width="220" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="*"/>
                           <ColumnDefinition Width="8"/>

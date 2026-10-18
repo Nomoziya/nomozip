@@ -26,6 +26,13 @@ internal static class DesktopDesignDialogValidation
                 try
                 {
                     foreach(var mode in new[]{"light","dark"}){theme.SetMode(mode);Capture(dialog,name+"-"+mode);}
+                    var compactOptions=DesktopRedesignValidation.VisualDescendants(dialog).OfType<ComboBox>().Where(value=>ReferenceEquals(value.Style,Application.Current.FindResource("CompactOptionField"))).ToArray();
+                    if(compactOptions.Length>0)
+                    {
+                        var originalWidth=dialog.Width;dialog.Width=dialog.MinWidth;dialog.UpdateLayout();
+                        check(name+" compact choices remain inside the minimum-width dialog",compactOptions.All(value=>value.ActualWidth>=160 && value.TransformToAncestor(dialog).TransformBounds(new Rect(value.RenderSize)).Right<=dialog.ActualWidth-8));
+                        theme.SetMode("light");Capture(dialog,name+"-compact");dialog.Width=originalWidth;dialog.UpdateLayout();
+                    }
                     theme.SetMode("light");exercise?.Invoke();
                 }
                 catch(Exception error){failure=error;}

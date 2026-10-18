@@ -514,7 +514,7 @@
                       <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Label Content="{loc:Text T_5b249813df54}" Target="{Binding ElementName=ConflictBox}" Padding="0" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                    <ComboBox x:Name="ConflictBox" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text T_88bab2e8302f}" Grid.Row="1">
+                    <ComboBox x:Name="ConflictBox" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding CanConfigureExtraction}" AutomationProperties.Name="{loc:Text T_88bab2e8302f}" Grid.Row="1">
                       <ComboBoxItem Content="{loc:Text T_f00ef1be4493}"/>
                       <ComboBoxItem Content="{loc:Text T_37ef7113fe3c}"/>
                       <ComboBoxItem Content="{loc:Text T_9c6a9194d6f5}"/>
@@ -921,7 +921,7 @@
                     <ColumnDefinition Width="280"/>
                   </Grid.ColumnDefinitions>
                   <TextBlock Text="{loc:Text Settings.DefaultConflict}" VerticalAlignment="Center"/>
-                  <ComboBox Grid.Column="1" x:Name="DefaultConflictChoice" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultConflict}">
+                  <ComboBox Grid.Column="1" x:Name="DefaultConflictChoice" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultConflict}">
                     <ComboBoxItem Content="{loc:Text Settings.ConflictAsk}"/>
                     <ComboBoxItem Content="{loc:Text Settings.ConflictSkip}"/>
                     <ComboBoxItem Content="{loc:Text Settings.ConflictReplace}"/>
@@ -1075,7 +1075,7 @@
                       <Button x:Name="ImportEngineUpdateButton" Content="{loc:Text T_e1189ffd0bcd}" Command="{Binding ImportUpdateCommand}" Margin="0,0,0,8"/>
                     </WrapPanel>
                     <Label Content="{loc:Text T_5dcf192a65bc}" Target="{Binding ElementName=EngineChoice}" Padding="0"/>
-                    <ComboBox x:Name="EngineChoice" Width="260" HorizontalAlignment="Left" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
+                    <ComboBox x:Name="EngineChoice" Style="{StaticResource CompactOptionField}" Width="200" ItemsSource="{Binding EngineVersions}" SelectedItem="{Binding SelectedEngineVersion}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_57212d030f7e}" Margin="0,8,0,0"/>
                     <WrapPanel Margin="0,12,0,16">
                       <Button Content="{loc:Text T_58be85ec225f}" Command="{Binding ApplyEngineCommand}" Margin="0,0,12,8"/>
                       <Button Content="{loc:Text T_49c8ef416bd3}" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/>
@@ -1108,7 +1108,7 @@
                   <Button x:Name="DisableMasterAction" Content="{loc:Text T_aa72684414b8}" Command="{Binding DisableMasterCommand}" Margin="0,0,0,8"/>
                 </WrapPanel>
                 <Label Content="{loc:Text T_f987b614b7f1}" Target="{Binding ElementName=VaultIdleChoice}" Padding="0"/>
-                <ComboBox x:Name="VaultIdleChoice" Width="260" HorizontalAlignment="Left" SelectedIndex="{Binding VaultIdleIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_ce50d85b6e27}" Margin="0,8,0,0">
+                <ComboBox x:Name="VaultIdleChoice" Style="{StaticResource CompactOptionField}" Width="200" SelectedIndex="{Binding VaultIdleIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_ce50d85b6e27}" Margin="0,8,0,0">
                   <ComboBoxItem Content="{loc:Text T_c58d5c7dc924}"/>
                   <ComboBoxItem Content="{loc:Text T_49a64a97cdbb}"/>
                   <ComboBoxItem Content="{loc:Text T_9d9a5e5793d1}"/>
