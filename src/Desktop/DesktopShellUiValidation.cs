@@ -22,7 +22,7 @@ internal static class DesktopShellUiValidation
         try
         {
             var model = new MainViewModel(baseDirectory, data, new DpapiPasswordVault(Path.Combine(data,"passwords.apv")), new WindowDialogs(window), scope);
-            window.DataContext = model; await model.InitializeAsync(); model.Page = 2;
+            window.DataContext = model; await model.InitializeAsync(); model.Page = 2; model.SettingsSection = 3;
             foreach (var contrast in new[] { false, true })
             {
                 theme.Apply(contrast);

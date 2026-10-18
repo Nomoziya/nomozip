@@ -47,7 +47,7 @@ internal static class DesktopMasterVaultValidation
                 }),confirmVaultRecovery:_=>recoveryApproved);
             model=new MainViewModel(baseDirectory,folder,vault,dialogs);window.DataContext=model;await model.InitializeAsync();
             async Task Execute(string button,int page=2)
-            {model.Page=page;await Layout(window);var element=(Button)window.FindName(button);element.BringIntoView();await Layout(window);Invoke(element);await Layout(window);await model.WaitForIdleAsync();await Layout(window);}
+            {model.Page=page;if(page==2)model.SettingsSection=2;await Layout(window);var element=(Button)window.FindName(button);element.BringIntoView();await Layout(window);Invoke(element);await Layout(window);await model.WaitForIdleAsync();await Layout(window);}
             Check("legacy startup does not require master",!model.VaultMasterEnabled && model.PasswordRows.Count==1 && model.EnableMasterCommand.CanExecute(null));
             cancel=true;await Execute("EnableMasterAction");Check("cancel enable preserves APV1",!model.VaultMasterEnabled && File.ReadAllBytes(vaultPath).AsSpan(0,4).SequenceEqual("APV1"u8));cancel=false;
             await Execute("EnableMasterAction");Check("actual settings enable protects vault",model.VaultMasterEnabled && !model.VaultLocked && model.PasswordRows.Count==1 && File.ReadAllBytes(vaultPath).AsSpan(0,4).SequenceEqual("APV2"u8));
@@ -86,7 +86,7 @@ internal static class DesktopMasterVaultValidation
                     Check($"vault first complete row {size.Item1} contrast {contrast}",window.PasswordTable.ActualHeight>=96);
                     Check($"vault lock focus reachable {size.Item1} contrast {contrast}",window.VaultLockAction.IsEnabled && UIElementAutomationPeer.CreatePeerForElement(window.VaultLockAction)!.IsKeyboardFocusable());
                     await Capture(window,Path.Combine(screenshots,$"vault-{size.Item1}-{contrast}.png"),1);
-                    model.Page=2;window.VaultProtectionCard.BringIntoView();await Layout(window);
+                    model.Page=2;model.SettingsSection=2;window.VaultProtectionCard.BringIntoView();await Layout(window);
                     Check($"settings protection controls reachable {size.Item1} contrast {contrast}",window.VaultIdleChoice.IsVisible && window.ChangeMasterAction.IsEnabled);
                     await Capture(window,Path.Combine(screenshots,$"settings-{size.Item1}-{contrast}.png"),1);
                 }

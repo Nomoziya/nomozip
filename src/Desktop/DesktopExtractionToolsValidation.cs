@@ -55,10 +55,22 @@ internal static class DesktopExtractionToolsValidation
             foreach(var contrast in new[] {false,true})
             foreach(var width in new[] {1120,800})
             {
-                theme.Apply(contrast);window.Width=width;window.Height=width==800?600:760;await Layout();
-                var button=(Button)window.FindName("ExtractionRulesAction");button.BringIntoView();await Layout();
-                Check($"rules command reachable {width} {contrast}",button.IsVisible && button.IsEnabled && UIElementAutomationPeer.CreatePeerForElement(button)!.IsKeyboardFocusable());
-                ruleClose=contrast;var before=model.DirectoryRules;Invoke(button);await Layout();await model.WaitForIdleAsync();await Layout();
+                theme.Apply(contrast);window.MinWidth=width;window.Width=width;window.Height=width==800?600:760;await Layout();
+                ruleClose=contrast;var before=model.DirectoryRules;
+                window.PrepareExtractionOptionsForValidation=confirmation=>
+                {
+                    confirmation.WindowStartupLocation=WindowStartupLocation.Manual;confirmation.Left=confirmation.Top=-32000;confirmation.ShowActivated=false;confirmation.Opacity=0;
+                    confirmation.Loaded+=(_,_)=>confirmation.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(()=>
+                    {
+                        var button=window.ExtractionRulesAction;
+                        for(DependencyObject? parent=button;parent is not null;parent=LogicalTreeHelper.GetParent(parent))if(parent is Expander expander)expander.IsExpanded=true;
+                        button.BringIntoView();confirmation.UpdateLayout();
+                        Check($"rules command reachable {width} {contrast}",button.IsVisible && button.IsEnabled && UIElementAutomationPeer.CreatePeerForElement(button)!.IsKeyboardFocusable());
+                        // Raise the real button synchronously so the nested rules dialog closes before its owner.
+                        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));confirmation.Close();
+                    }));
+                };
+                window.ConfirmExtractionOptions();window.PrepareExtractionOptionsForValidation=null;await Layout();await model.WaitForIdleAsync();await Layout();
                 Check($"rules command binding {width} {contrast}",contrast?before==model.DirectoryRules:model.DirectoryRules.Layout==ExtractionLayout.Smart && model.DirectoryRules.OpenAfterSuccess);
                 DesktopAccessibilityValidation.Render(window,Path.Combine(root,$"artifacts/extraction-tools-{width}-{contrast}.png"),1.0);
             }

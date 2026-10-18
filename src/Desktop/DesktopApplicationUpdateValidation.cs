@@ -49,7 +49,7 @@ internal static class DesktopApplicationUpdateValidation
                 return new HttpResponseMessage(HttpStatusCode.OK) { Content=new StringContent(JsonSerializer.Serialize(new[] { new { tag_name="v"+version,draft=false,prerelease=false,assets=new[] { new { name,size=payload.Length,digest=mode=="no-digest"?null:"sha256:"+sha,browser_download_url=$"https://github.com/Nomoziya/nomozip/releases/download/v{version}/{name}" } } } })) };
             })),uri=>opened=uri);
             model.ConfigureApplicationInstallValidation(true,start=>{if(launchFailure)throw new System.ComponentModel.Win32Exception();installed=start;},()=>exits++);
-            window.DataContext=model; await model.InitializeAsync(); model.Page=2; await Layout();
+            window.DataContext=model; await model.InitializeAsync(); model.Page=2; model.SettingsSection=4; await Layout();
             model.UpdateRepository="other/engine-test";
             var before = model.UpdateMessage; var engine=model.EngineSummary;
             var expectedVersion=System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(App).Assembly.Location).ProductVersion!.Split('+')[0];

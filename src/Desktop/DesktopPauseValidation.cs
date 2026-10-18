@@ -17,6 +17,7 @@ internal static class DesktopPauseValidation
 {
     internal static async Task<bool> RunAsync(MainWindow window,ThemeResources theme,string root,string baseDirectory)
     {
+        using var confirmation=DesktopExtractionConfirmationValidation.Accept(window);
         var data=Path.Combine(root,"artifacts/pause-ui",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(data);var preview=Path.Combine(root,"artifacts/pause-preview");Directory.CreateDirectory(preview);
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);MainViewModel? model=null;
         var worker=Path.Combine(baseDirectory,"ArchiveEngineWorker.exe");

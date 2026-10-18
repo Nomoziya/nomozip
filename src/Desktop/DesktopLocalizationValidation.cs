@@ -18,6 +18,7 @@ internal static class DesktopLocalizationValidation
 {
     internal static async Task<bool> RunAsync(MainWindow window,ThemeResources theme,string root,string baseDirectory,string profile,string reportPrefix="localization")
     {
+        using var confirmation=DesktopExtractionConfirmationValidation.Accept(window);
         var language=UiText.LanguageCode;var english=language=="en";
         var checks=new Dictionary<string,bool>();void Check(string name,bool value)=>checks.Add(name,value);
         var clipped=new List<string>();var samples=0;
@@ -43,7 +44,7 @@ internal static class DesktopLocalizationValidation
         {
             Directory.CreateDirectory(profile);
             Check("startup reads saved culture before XAML",LanguagePreferenceStore.Read(profile).Language==language && window.Language.IetfLanguageTag.Equals(CultureInfo.CurrentCulture.IetfLanguageTag,StringComparison.OrdinalIgnoreCase));
-            Check("navigation is translated",window.Navigation.Items.Cast<ListBoxItem>().Select(v=>v.Content?.ToString()).SequenceEqual(english?new[]{"Extract","Compress","Vault","Settings"}:new[]{"解压","压缩","密码库","设置"}));
+            Check("navigation is translated",window.Navigation.Items.Cast<ListBoxItem>().Select(v=>v.Content?.ToString()).SequenceEqual(new[]{UiText.Get("Redesign.Files"),UiText.Get("Redesign.Tasks"),UiText.Get("T_9b54fb7636af"),UiText.Get("Redesign.Tools")}));
             var vaultPath=Path.Combine(profile,"passwords.apv");var vault=new DpapiPasswordVault(vaultPath);
             var record=new SavedPassword(Guid.NewGuid(),"解压","用户 secret ' $ & 密码","原始备注",true,DateTimeOffset.UtcNow);
             await vault.SaveAsync(record);
@@ -130,7 +131,7 @@ internal static class DesktopLocalizationValidation
             window.LanguageChoice.SelectedIndex=english?0:1;await Layout(window);Invoke(window.SaveLanguageAction);await Layout(window);
             var deadline=DateTime.UtcNow.AddSeconds(5);while(model.LanguageMessage!=UiText.Get("Language.Saved") && DateTime.UtcNow<deadline)await Task.Delay(10);
             Check("actual WPF selection and UIA save persist next language",LanguagePreferenceStore.Read(profile).Language==(english?"zh-CN":"en") && model.LanguageMessage==UiText.Get("Language.Saved"));
-            Check("saving language waits for restart",UiText.LanguageCode==language && ((ListBoxItem)window.Navigation.Items[0]).Content?.ToString()==(english?"Extract":"解压"));
+            Check("saving language waits for restart",UiText.LanguageCode==language && ((ListBoxItem)window.Navigation.Items[0]).Content?.ToString()==UiText.Get("Redesign.Files"));
             Check("saving language preserves settings and vault bytes",Hash(settings)==settingsHash && Hash(vaultPath)==vaultHash);
             var preferencePath=Path.Combine(profile,LanguagePreferenceStore.FileName);var savedPreference=await File.ReadAllBytesAsync(preferencePath);
             try
