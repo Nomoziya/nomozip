@@ -121,7 +121,7 @@ internal static class DesktopAccessibilityValidation
                     await Layout();
                     if (page == 0 && width == 800)
                     {
-                        var viewport = (ScrollViewer)window.FindName("ExtractionViewport");
+                        var viewport = Descendants(window.ArchiveTasks).OfType<ScrollViewer>().First();
                         var bar = Descendants(viewport).OfType<System.Windows.Controls.Primitives.ScrollBar>()
                             .First(value => value.Orientation == Orientation.Vertical && ReferenceEquals(value.TemplatedParent, viewport));
                         var track = (System.Windows.Controls.Primitives.Track)bar.Template.FindName("PART_Track", bar);
@@ -140,7 +140,7 @@ internal static class DesktopAccessibilityValidation
             theme.Apply(true); model.Page = 3; model.Banner = "高对比度资源预览：选中导航与提示须清晰可见。";
             await Layout();
             var navigation = (ListBox)window.FindName("Navigation");
-            var selected = (ListBoxItem)navigation.ItemContainerGenerator.ContainerFromIndex(1);
+            var selected = (ListBoxItem)navigation.SelectedItem;
             var resources = Application.Current.Resources;
             Check("high contrast selected navigation uses system pair", ColorOf(selected.Foreground) == SystemColors.HighlightTextColor
                 && ColorOf(selected.Background) == SystemColors.HighlightColor);

@@ -490,9 +490,9 @@ public partial class App : Application
                     archiveBrowserPassed = browser, extractionFailureDetailsPassed = failureDetails, multiplePasswordsPassed = multiplePasswords, accessibilityPassed = accessibility, displayLayoutAndNativeDpiPassed = displays, engines = model.EngineVersions.ToArray() }));
                 Shutdown(passed ? 0 : 1);
             }
-            catch
+            catch (Exception validationError)
             {
-                await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), "{\"passed\":false,\"error\":\"desktop_validation_failed\"}");
+                await File.WriteAllTextAsync(Path.Combine(validationRoot, "artifacts/desktop-validation.json"), JsonSerializer.Serialize(new {passed=false,error=validationError.ToString()}));
                 Shutdown(1);
             }
             return;

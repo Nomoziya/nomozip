@@ -370,9 +370,9 @@ internal static class DesktopRedesignValidation
             Capture("actual-compression-multiselection");
             var laterSource=Path.Combine(data,"later-source.txt");await File.WriteAllTextAsync(laterSource,"later addition");model.AddCompressionSources([laterSource]);await Layout();
             Check("adding a source after select-all marks the partial selection",window.CompressionPage.SourceSelectAll.IsChecked is null && window.CompressionPage.CompressionSourceTable.SelectedItems.Count==2 && model.CompressionSources.Count==3);
-            var selectionWidth=window.Width;window.Width=800;await Layout();
-            Check("compact source header and partial selection remain unclipped",VisualDescendants(window.CompressionPage.CompressionSourceTable).OfType<CheckBox>().Where(value=>value.IsVisible).All(UnclippedSelectionBox));
-            Capture("actual-compression-compact-partial-selection");window.Width=selectionWidth;await Layout();
+            var selectionWidth=window.Width;var selectionMinimum=window.MinWidth;window.MinWidth=800;window.Width=800;await Layout();
+            Check("compact source header and partial selection remain unclipped",Math.Abs(window.ActualWidth-800)<1 && VisualDescendants(window.CompressionPage.CompressionSourceTable).OfType<CheckBox>().Where(value=>value.IsVisible).All(UnclippedSelectionBox));
+            Capture("actual-compression-compact-partial-selection");window.MinWidth=selectionMinimum;window.Width=selectionWidth;await Layout();
             window.CompressionPage.SourceSelectAll.IsChecked=true;await Layout();
             ((System.Windows.Automation.Provider.IInvokeProvider)new System.Windows.Automation.Peers.ButtonAutomationPeer(window.CompressionPage.CompressionRemoveButton).GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)).Invoke();await Layout();
             Check("remove selected removes the full source selection",model.CompressionSources.Count==0);model.AddCompressionSources([source]);await Layout();
