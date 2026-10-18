@@ -32,7 +32,11 @@ jobs:
         run: ./scripts/build.ps1 -Architecture arm64 -Configuration Release -SkipWorker
       - name: Native visual and row input regressions before the full suite
         run: ./scripts/test-visual-refresh.ps1
+      - name: Current product UI and actual flows in both languages
+        if: always() && steps.native_build.outcome == 'success'
+        run: ./scripts/test-redesign-ui.ps1
       - name: Native data desktop updates and x64 vault migration
+        if: always() && steps.native_build.outcome == 'success'
         run: ./scripts/test-arm64.ps1
       - name: Native traditional Shell selection and Explorer menu
         if: always() && steps.native_build.outcome == 'success'
@@ -62,11 +66,11 @@ jobs:
       - name: Restore canonical source metadata and package native local candidate
         run: |
           git restore --worktree -- engines
-          ./scripts/build-release.ps1 -Architecture arm64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.2.1-arm64 -Python python
+          ./scripts/build-release.ps1 -Architecture arm64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.3.0-arm64 -Python python
       - uses: actions/upload-artifact@v7
         with:
           name: native-arm64-lightweight-candidate
-          path: artifacts/release-0.2.1-arm64/*
+          path: artifacts/release-0.3.0-arm64/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         if: always()
@@ -81,5 +85,6 @@ jobs:
             artifacts/er-*/s/artifacts/c/logs/*.log
             artifacts/er-*/s/artifacts/c/workspace/artifacts/*validation.json
             artifacts/visual-refresh/**/*
+            artifacts/ui-redesign/**/*
             artifacts/*-preview/*.png
           if-no-files-found: ignore

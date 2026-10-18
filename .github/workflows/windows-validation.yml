@@ -10,6 +10,10 @@ on:
         description: 'Optional prototype audit on the disposable VM; outside product acceptance'
         type: boolean
         default: false
+      follow_upstream_engine:
+        description: 'Explicitly include an upstream engine update in this manual run'
+        type: boolean
+        default: false
   schedule:
     - cron: '17 3 * * *'
 
@@ -91,33 +95,42 @@ jobs:
           python tests/engine_validation.py
           if ($LASTEXITCODE -ne 0) { throw 'Baseline engine validation failed.' }
       - name: Validate a new official stable engine when available
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.follow_upstream_engine)
         run: ./scripts/follow-official-engine.ps1 -Update
       - name: Build desktop preview
+        id: desktop_build
         run: ./scripts/build.ps1 -Configuration Release -SkipWorker
+      - name: Validate current product UI and actual flows in both languages
+        run: ./scripts/test-redesign-ui.ps1
       - name: Check visual and row input regressions before the full suite
         run: ./scripts/test-visual-refresh.ps1
       - name: Validate vault, updates and desktop command flows
+        if: always() && steps.desktop_build.outcome == 'success'
         run: |
           ./scripts/test.ps1 -SkipEngineValidation
           & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
       - name: Validate origin preservation on an isolated exFAT virtual disk
+        if: always() && steps.desktop_build.outcome == 'success'
         run: ./scripts/test-origin-fat.ps1
       - name: Verify actual Windows Shell menu enumeration and invocation
+        if: always() && steps.desktop_build.outcome == 'success'
         run: ./scripts/test-shell-live.ps1
       - name: Validate signed sparse identity on the disposable runner
         if: github.event_name == 'workflow_dispatch' && inputs.validate_shell_identity
         # Test certificate trust is never installed on a developer/user machine.
         run: powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File ./scripts/test-shell-identity.ps1
       - name: Obtain synthetic backup from independent Windows machine
+        if: always() && steps.desktop_build.outcome == 'success'
         uses: actions/download-artifact@v8
         with:
           name: vault-cross-machine-fixtures
           path: artifacts/vault-cross-machine
       - name: Verify portable backup migration as an independent Windows user
+        if: always() && steps.desktop_build.outcome == 'success'
         run: ./scripts/test-vault-independent-user.ps1
       - name: Validate lightweight installer and legacy bundled-runtime upgrade
+        if: always() && steps.desktop_build.outcome == 'success'
         run: |
           ./scripts/bootstrap-installer.ps1
           # Bundled runtime is an isolated old-install fixture, never a release.
@@ -128,6 +141,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Lightweight release maintenance validation failed.' }
           python tests/engine_release_validation.py
           if ($LASTEXITCODE -ne 0) { throw 'Isolated engine release maintenance validation failed.' }
+      - name: Package tested 0.3.0 x64 release candidate
+        run: ./scripts/build-release.ps1 -Architecture x64 -ApplicationDirectory artifacts/light-app -OutputDirectory artifacts/release-0.3.0-x64 -Python python
+      - uses: actions/upload-artifact@v7
+        with:
+          name: tested-0.3.0-x64-release-candidate
+          path: artifacts/release-0.3.0-x64/*
+          if-no-files-found: error
       - name: Keep validation evidence
         if: always()
         uses: actions/upload-artifact@v7
@@ -150,6 +170,7 @@ jobs:
             artifacts/drag-preview/*.png
             artifacts/checkpoint-preview/*.png
             artifacts/visual-refresh/**/*
+            artifacts/ui-redesign/**/*
             artifacts/conversion-preview/*.png
             artifacts/volume-preview/*.png
             artifacts/sfx-preview/*.png

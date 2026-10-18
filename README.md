@@ -4,16 +4,16 @@
 
 使用官方 7-Zip 引擎的 Windows 压缩工具。保存你提供的解压密码，下次解压时自动尝试。
 
-[下载正式版](https://github.com/Nomoziya/nomozip/releases/tag/v0.2.1) · [使用文档](docs/README.md) · [更新记录](https://github.com/Nomoziya/nomozip/releases) · [反馈问题](https://github.com/Nomoziya/nomozip/issues)
+[下载正式版](https://github.com/Nomoziya/nomozip/releases/tag/v0.3.0) · [使用文档](docs/README.md) · [更新记录](https://github.com/Nomoziya/nomozip/releases) · [反馈问题](https://github.com/Nomoziya/nomozip/issues)
 
 ## 下载与安装
 
-当前正式版为 **0.2.1，Windows x64 / ARM64**。仅提供共享运行库轻量版：
+当前正式版为 **0.3.0，Windows x64 / ARM64**。仅提供共享运行库轻量版：
 
 | 架构 | 安装版 | 便携版 |
 | --- | --- | --- |
-| x64（多数 Intel / AMD 电脑） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.2.1/nomozip-0.2.1-light-setup-win-x64.exe) | [ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.2.1/nomozip-0.2.1-light-win-x64.zip) |
-| ARM64（Windows on Arm） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.2.1/nomozip-0.2.1-light-setup-win-arm64.exe) | [ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.2.1/nomozip-0.2.1-light-win-arm64.zip) |
+| x64（多数 Intel / AMD 电脑） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.3.0/nomozip-0.3.0-light-setup-win-x64.exe) | [ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.3.0/nomozip-0.3.0-light-win-x64.zip) |
+| ARM64（Windows on Arm） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.3.0/nomozip-0.3.0-light-setup-win-arm64.exe) | [ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.3.0/nomozip-0.3.0-light-win-arm64.zip) |
 
 需要对应架构的 [.NET 10 Windows Desktop Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)（10.0.12 或更新的 10.0 补丁版），无需安装 SDK。安装包约 2–3 MB，程序目录约 8–12 MB，不包含系统共享运行库。
 
@@ -30,8 +30,8 @@
 ## 开始使用
 
 1. 在“密码库”添加常用解压密码，也可以在需要时手动输入。
-2. 在“解压”页添加压缩包、选择输出目录，然后开始解压。
-3. 需要创建压缩包时，切换到“压缩”页，添加文件并选择格式。
+2. 在“文件”页打开压缩包，或在“任务”页添加多个压缩包后开始解压。
+3. 需要创建压缩包时，从“文件”页选择新建压缩包，添加文件并选择格式。
 
 只有完整解压成功后，才保存本次勾选保存的新密码。升级和默认卸载保留本机数据，详见[安装说明](docs/INSTALLATION.md)。
 
@@ -40,7 +40,7 @@
 ## 文档与开发
 
 - [使用文档与功能索引](docs/README.md)
-- [0.2.1 发行说明](docs/RELEASE_0.2.1.md)
+- [0.3.0 发行说明](docs/RELEASE_0.3.0.md)
 - [从源码构建](docs/DEVELOPMENT.md)
 - [支持范围与验收记录](docs/ACCEPTANCE.md)
 - [第三方组件及许可](THIRD_PARTY.md)
