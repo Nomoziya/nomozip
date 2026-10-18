@@ -82,9 +82,9 @@ internal static class DesktopPasswordOrganizationValidation
             model.SelectedPassword = model.PasswordRows.Single(value => value.Id == item.Id); await Layout(window);
             Check("duplicate summary and merge button available", model.DuplicateSummary.Contains("1") && ((Button)window.FindName("MergePasswordsButton")).IsEnabled);
             before = await File.ReadAllBytesAsync(vaultPath);
-            Invoke((Button)window.FindName("MergePasswordsButton")); await Layout(window);
+            await DesktopMenuValidation.InvokeAsync(window,window.VaultMoreAction,model.MergePasswordsCommand); await Layout(window);
             Check("declined actual merge leaves vault unchanged", confirmation == "merge:1" && Enumerable.SequenceEqual(before, await File.ReadAllBytesAsync(vaultPath)));
-            allowMerge = true; await Layout(window); Invoke((Button)window.FindName("MergePasswordsButton")); await Layout(window); await model.WaitForIdleAsync(); await Layout(window);
+            allowMerge = true; await Layout(window); await DesktopMenuValidation.InvokeAsync(window,window.VaultMoreAction,model.MergePasswordsCommand); await Layout(window); await model.WaitForIdleAsync(); await Layout(window);
             Check("actual merge button removes duplicate and retains association", (await vault.ReadAsync()).Count == 2 && await vault.GetAssociatedPasswordAsync(Path.Combine(data, "association.zip")) == item.Id);
             Check("merge refreshes list and disables action with no duplicates", model.PasswordRows.Count == 2 && model.DuplicateSummary == "" && !model.MergePasswordsCommand.CanExecute(null));
             for (var index = 0; index < 16; index++) await vault.SaveAsync(other with { Id = Guid.NewGuid(), Name = "合成列表记录 " + index, Secret = "synthetic " + index });
@@ -97,8 +97,10 @@ internal static class DesktopPasswordOrganizationValidation
                 {
                     window.Width = width; window.Height = width == 800 ? 600 : 760; await Layout(window);
                     var table = (DataGrid)window.FindName("PasswordTable");
-                    Check($"search group and merge fit width {width} contrast {contrast}", new[] { "PasswordSearch", "PasswordGroupBox", "MergePasswordsButton" }.All(name => Fits(window, (FrameworkElement)window.FindName(name))));
-                    Check($"populated table remains compact width {width} contrast {contrast}", table.ActualHeight >= 90 && ((DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0)).ActualHeight == 48);
+                    Check($"search group and merge fit width {width} contrast {contrast}", new[] { "PasswordSearch", "PasswordGroupBox", "VaultMoreAction" }.All(name => Fits(window, (FrameworkElement)window.FindName(name))));
+                    Check($"populated table remains compact width {width} contrast {contrast}", table.ActualHeight >= 90 && ((DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0)).ActualHeight == 44);
+                    var menu=await DesktopMenuValidation.OpenAsync(window,window.VaultMoreAction);
+                    Check($"merge menu remains discoverable width {width} contrast {contrast}",DesktopMenuValidation.Reachable(menu.Items.OfType<MenuItem>().Single(item=>ReferenceEquals(item.Command,model.MergePasswordsCommand))));menu.IsOpen=false;
                     var summary = (TextBlock)window.FindName("DuplicateSummaryText");
                     Check($"summary does not overlay table width {width} contrast {contrast}", summary.TranslatePoint(new Point(), window).Y >= table.TranslatePoint(new Point(), window).Y + table.ActualHeight);
                     DesktopAccessibilityValidation.Render(window, Path.Combine(screenshots, $"vault-{width}-{contrast}.png"), 1.0);

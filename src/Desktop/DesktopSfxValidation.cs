@@ -49,27 +49,27 @@ internal static class DesktopSfxValidation
                     Check($"{version} SFX and primary action fit {dimensions.Item1} {contrast}",Fits(view,create) && Fits(view,sfx) && sfx.ActualWidth>=180);
                     await Capture(view,Path.Combine(screenshots,$"{version}-{dimensions.Item1}-{contrast}.png"));
                 }
-                theme.Apply(false);window.Width=1120;window.Height=740;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
+                theme.Apply(false);window.Width=1120;window.Height=740;await Layout(window);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
                 var exe=model.CompressionOutput;var before=File.ReadAllBytes(exe);var records=await vault.ReadAsync();
                 Check(version+" actual create button produces verified encrypted EXE",model.CompressionMessage.Contains("已创建并校验自解压") && records.Count==1 && await vault.GetAssociatedPasswordAsync(exe)==records.Single().Id && model.OpenCreatedArchiveFolderCommand.CanExecute(null));
                 Check(version+" created password cleared from model",model.CompressionPasswordStatus.Contains("尚未设置"));
                 var modulePath=Path.Combine(baseDirectory,"engines",version,"7z.sfx");var officialModule=File.ReadAllBytes(modulePath);var vaultSnapshot=File.ReadAllBytes(vaultPath);
                 try
                 {
-                    var corrupt=officialModule.ToArray();corrupt[100]^=1;File.WriteAllBytes(modulePath,corrupt);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
+                    var corrupt=officialModule.ToArray();corrupt[100]^=1;File.WriteAllBytes(modulePath,corrupt);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
                     Check(version+" actual damaged module blocks creation without vault change",model.IsIdle && model.CompressionMessage.Contains("无法通过校验") && before.SequenceEqual(File.ReadAllBytes(exe)) && vaultSnapshot.SequenceEqual(File.ReadAllBytes(vaultPath)));
                 }
                 finally {File.WriteAllBytes(modulePath,officialModule);}
-                var vaultBefore=File.ReadAllBytes(vaultPath);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
+                var vaultBefore=File.ReadAllBytes(vaultPath);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
                 Check(version+" replacement declined preserves original EXE and vault",before.SequenceEqual(File.ReadAllBytes(exe)) && vaultBefore.SequenceEqual(File.ReadAllBytes(vaultPath)) && model.CompressionMessage.Contains("已保留"));
-                await Layout(window);replace=true;Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);Check(version+" explicit replacement succeeds",model.CompressionMessage.Contains("已创建并校验自解压"));
+                await Layout(window);replace=true;model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);Check(version+" explicit replacement succeeds",model.CompressionMessage.Contains("已创建并校验自解压"));
                 var client=new ArchiveEngineClient(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(baseDirectory,"engines",version,"7z.dll"));var listed=await client.ListAsync(exe,"SFX 密码");
                 var browser=new ArchiveContentsViewModel(exe,listed.Items,format:listed.Format,edit:(_,_,_,_)=>Task.FromResult<ArchiveEditOutcome?>(null));
                 Check(version+" SFX content listing remains read only",listed.IsSuccess && listed.Items.Single().Path=="样本.txt" && !browser.EditingAvailable);
                 var edit=await client.UpdateAsync(exe,exe+"-edit",new(listed.Items,[],[],false),"SFX 密码");Check(version+" actual SFX prefix refuses editing",edit.Code=="archive_edit_container_read_only" && !File.Exists(exe+"-edit"));
                 model.Page=0;model.Tasks.Clear();model.OutputPath=Path.Combine(data,"ex-"+version);model.AddFiles([exe]);model.ExtractCommand.Execute(null);await model.WaitForIdleAsync();
                 Check(version+" EXE automatically extracts via saved password without running it",model.Tasks.Single().Completed && File.ReadAllText(Path.Combine(model.OutputPath,"样本.txt"))=="SFX 中文内容" && prompts==2);
-                model.Page=3;await Layout(window);Toggle(sfx);model.CompressionEncrypt=false;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();Check(version+" returning to ordinary compression works",model.CompressionOutput.EndsWith(".7z") && File.Exists(model.CompressionOutput));
+                model.Page=3;await Layout(window);Toggle(sfx);model.CompressionEncrypt=false;await Layout(window);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();Check(version+" returning to ordinary compression works",model.CompressionOutput.EndsWith(".7z") && File.Exists(model.CompressionOutput));
             }
         }
         catch(Exception error) {checks["exception "+error]=false;}

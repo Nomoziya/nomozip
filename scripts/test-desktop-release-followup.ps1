@@ -7,7 +7,7 @@ $taskRoot=Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME=Join-Path $taskRoot '.tools/dotnet-home'
 $taskDotnet=Join-Path $taskRoot '.tools/dotnet/dotnet.exe'
 if(-not $SkipPrepare){
-foreach($taskProject in @('tests/EngineSmoke/EngineSmoke.csproj','tests/CompressionValidation/CompressionValidation.csproj','tests/CheckpointValidation/CheckpointValidation.csproj','tools/UpdatePackager/UpdatePackager.csproj')){
+foreach($taskProject in @('tests/EngineSmoke/EngineSmoke.csproj','tests/CompressionValidation/CompressionValidation.csproj','tests/CheckpointValidation/CheckpointValidation.csproj','tests/EncodingValidation/EncodingValidation.csproj','tools/UpdatePackager/UpdatePackager.csproj')){
     & $taskDotnet build (Join-Path $taskRoot $taskProject) --nologo -m:1 -nr:false
     if($LASTEXITCODE -ne 0){throw "Follow-up fixture build failed: $taskProject"}
 }
@@ -16,6 +16,8 @@ python "$taskRoot/tests/engine_validation.py"
 if($LASTEXITCODE -ne 0){throw 'Follow-up real-engine fixtures failed.'}
 & $taskDotnet "$taskRoot/tests/CompressionValidation/bin/Debug/net10.0-windows/CompressionValidation.dll" $taskRoot
 if($LASTEXITCODE -ne 0){throw 'Follow-up compression evidence failed.'}
+& $taskDotnet "$taskRoot/tests/EncodingValidation/bin/Debug/net10.0-windows/EncodingValidation.dll" $taskRoot
+if($LASTEXITCODE -ne 0){throw 'Follow-up filename encoding fixtures failed.'}
 $taskAssets=Join-Path $taskRoot 'artifacts/update-test-assets'
 New-Item -ItemType Directory -Force $taskAssets | Out-Null
 $taskPackager=Join-Path $taskRoot 'tools/UpdatePackager/bin/Debug/net10.0-windows/UpdatePackager.dll'

@@ -36,7 +36,7 @@
       </Grid.RowDefinitions>
       <Border Padding="16,10" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,1">
         <WrapPanel>
-          <Button x:Name="HashAddButton" Command="{Binding AddFilesCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4" Padding="12,7">
+          <Button x:Name="HashAddButton" AutomationProperties.Name="{loc:Text T_ad9daebe00dc}" Command="{Binding AddFilesCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4" Padding="12,7">
             <StackPanel Orientation="Horizontal">
               <loc:FluentIcon Kind="Add" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,8,0"/>
               <TextBlock Text="{loc:Text T_ad9daebe00dc}" VerticalAlignment="Center"/>
@@ -141,7 +141,7 @@
           </TextBlock.Style>
         </TextBlock>
       </Grid>
-      <StackPanel Grid.Row="2" Margin="20,12">
+      <StackPanel x:Name="HashSummary" Grid.Row="2" Margin="20,12">
         <ProgressBar x:Name="HashProgress" Minimum="0" Maximum="100" Value="{Binding Progress,Mode=OneWay}" Height="6" AutomationProperties.Name="{loc:Text T_46482d9011f6}">
           <ProgressBar.Style>
             <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
@@ -223,7 +223,7 @@
             </TextBlock.Style>
           </TextBlock>
           <WrapPanel x:Name="HashActions" HorizontalAlignment="Left" Margin="0,24,0,0">
-            <Button x:Name="HashCalculateButton" Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4" Padding="12,7">
+            <Button x:Name="HashCalculateButton" AutomationProperties.Name="{loc:Text T_446518e7ac65}" Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,4" Padding="12,7">
               <StackPanel Orientation="Horizontal">
                 <loc:FluentIcon Kind="Play" Width="20" Height="20" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Margin="0,0,8,0"/>
                 <TextBlock Text="{loc:Text T_446518e7ac65}" VerticalAlignment="Center"/>

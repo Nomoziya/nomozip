@@ -113,8 +113,8 @@ internal static class DesktopFileHashValidation
                 {
                     dialog.Width = dimensions.Item1; dialog.Height = dimensions.Item2; await Layout(dialog);
                     Check($"all primary actions fit {dimensions} contrast {contrast}", new[] { "HashAddButton", "HashExpectedBox", "HashCalculateButton", "HashExportButton", "HashCloseButton" }.All(name => Fits(dialog, (FrameworkElement)dialog.FindName(name))));
-                    var table = (DataGrid)dialog.FindName("HashTable"); var row = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
-                    Check($"first full row remains visible {dimensions} contrast {contrast}", table.ActualHeight >= 84 && row.ActualHeight == 48 && row.TranslatePoint(new Point(0, row.ActualHeight), table).Y <= table.ActualHeight);
+                    var table = (DataGrid)dialog.FindName("HashTable"); table.ScrollIntoView(table.Items[0]); await Layout(dialog); var row = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
+                    Check($"first full row remains visible {dimensions} contrast {contrast}", table.ActualHeight >= 84 && row.ActualHeight == 40 && row.TranslatePoint(new Point(0, row.ActualHeight), table).Y <= table.ActualHeight);
                     DesktopAccessibilityValidation.Render(dialog, Path.Combine(screenshots, $"hash-{dimensions.Item1}-{contrast}.png"), 1.0);
                 }
             }
@@ -126,7 +126,7 @@ internal static class DesktopFileHashValidation
             Invoke((Button)dialog.FindName("HashCloseButton")); await model.WaitForIdleAsync(); await Layout(dialog);
             Check("closing busy window cancels and awaits operation", !dialog.IsVisible && model.IsIdle && model.Rows[0].Digest == "");
         }
-        catch (Exception error) { Check("validation exception " + error.GetType().Name, false); }
+        catch (Exception error) { Check("validation exception " + error.ToString(), false); }
         finally { if (dialog is { IsVisible: true }) { dialog.Model.Cancel(); await dialog.Model.WaitForIdleAsync(); dialog.Close(); } theme.Apply(false); }
         await File.WriteAllTextAsync(Path.Combine(root, "artifacts/file-hash-ui-validation.json"), JsonSerializer.Serialize(new { passed = checks.Count > 0 && checks.Values.All(value => value), total = checks.Count, checks, syntheticFiles = true, clipboardStub = true }, new JsonSerializerOptions { WriteIndented = true }));
         return checks.Count > 0 && checks.Values.All(value => value);

@@ -38,7 +38,7 @@ internal static class DesktopOriginValidation
                     try
                     {
                         var view=(ArchiveContentsViewModel)dialog.DataContext;
-                        if(mode==0) {Check("actual readonly browser lists without output",view.Rows.Count==2 && !Directory.Exists(((MainViewModel)window.DataContext).OutputPath));dialog.Close();return;}
+                        if(mode==0) {Check("actual readonly browser lists without output",view.Rows.Count(row=>!row.Entry.Directory)==2 && !Directory.Exists(((MainViewModel)window.DataContext).OutputPath));dialog.Close();return;}
                         view.Rows.Single(row=>row.Path=="b.txt").Selected=true;await Layout(dialog);Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout(dialog);await view.WaitForIdleAsync();await Layout(dialog);
                         Check("actual browser selected extraction completes",view.OutputPath.Length>0 && view.OperationMessage.Contains("已解压"));
                         Check("actual selected file preserves exact origin",File.ReadAllBytes(Path.Combine(view.OutputPath,"b.txt")+":Zone.Identifier").SequenceEqual(mark));

@@ -38,7 +38,7 @@ internal static class DesktopNotificationValidation
                 model.ConfigureResultDirectoryValidation(paths => opens.Add(paths));
                 model.SelectedEngineVersion = version; model.ApplyEngineCommand.Execute(null); await model.WaitForIdleAsync();
                 Check(version + " old settings without notification field default off and remain intact", !model.NotifyExtractionSuccess && File.ReadAllText(Path.Combine(folder, "settings.json")) == oldSettings);
-                model.Page = 2; await Layout(window);
+                model.Page = 2; model.SettingsSection=1; await Layout(window);
                 var checkboxPeer = new CheckBoxAutomationPeer(window.NotifyExtractionChoice);
                 Check(version + " accessible checkbox name", checkboxPeer.GetName() == "整批解压成功后发送系统通知");
                 ((IToggleProvider)checkboxPeer.GetPattern(PatternInterface.Toggle)!).Toggle();
@@ -81,7 +81,7 @@ internal static class DesktopNotificationValidation
                 model.Tasks.Clear(); var unavailable = Path.Combine(folder, "unavailable.zip"); File.Copy(source, unavailable); model.AddFiles([unavailable]);
                 model.ExtractCommand.Execute(null); await model.WaitForIdleAsync(); await Layout(window);
                 Check(version + " unavailable Shell preserves successful result", model.Tasks[0].Completed && model.IsIdle && model.NotificationMessage.Contains("系统未接受通知"));
-                model.Page = 2; await Layout(window);
+                model.Page = 2; model.SettingsSection=1; await Layout(window);
                 foreach (var contrast in new[] { false, true })
                 foreach (var width in new[] { 1120.0, 800.0 })
                 {

@@ -72,7 +72,7 @@ internal static class DesktopDpiValidation
                 }
                 var screenshots=Path.Combine(root,"artifacts/dpi-preview");Directory.CreateDirectory(screenshots);DesktopAccessibilityValidation.Render(dialog,Path.Combine(screenshots,name+"-512x360.png"),1);
                 dialog.Width=1000;dialog.Height=800;await Layout(dialog);
-                if(dialog is FileHashDialog restoredHash) Check("hash details restore after enlarging window",restoredHash.HashDetailsPanel.Parent==restoredHash.HashLayout && restoredHash.CompactHashDetails.Visibility==Visibility.Collapsed && restoredHash.HashExpectedBox.Text==new string('a',64) && Reachable(dialog,"restored hash",failures));
+                if(dialog is FileHashDialog restoredHash) Check("hash details restore after enlarging window",ReferenceEquals(restoredHash.HashDetailsScroll.Content,restoredHash.HashDetailsPanel) && restoredHash.CompactHashDetails.Visibility==Visibility.Collapsed && restoredHash.HashExpectedBox.Text==new string('a',64) && Reachable(dialog,"restored hash",failures));
                 if(dialog is ArchiveContentsDialog restoredContents) Check("contents summary restores after enlarging window",restoredContents.ContentsArchiveName.IsVisible && restoredContents.ContentsSummary.IsVisible);
                 if(dialog is FilenameEncodingDialog restoredEncoding) Check("encoding help restores after enlarging window",restoredEncoding.EncodingArchiveName.IsVisible && restoredEncoding.EncodingHelp.Text.Length>40);
                 dialog.Close();

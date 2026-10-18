@@ -20,7 +20,7 @@ internal static class DesktopEncodingValidation
         try
         {
             var main=new MainViewModel(baseDirectory,data,new DpapiPasswordVault(Path.Combine(data,"passwords.apv")),new WindowDialogs(owner,
-                prepareContents:dialog=>{dialog.ShowActivated=false;dialog.ShowInTaskbar=false;dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>{Check("actual browser uses applied encoding",((ArchiveContentsViewModel)dialog.DataContext).Rows.Single().Path.Replace('\\','/')==expected);dialog.Close();});},
+                prepareContents:dialog=>{dialog.ShowActivated=false;dialog.ShowInTaskbar=false;dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>{Check("actual browser uses applied encoding",((ArchiveContentsViewModel)dialog.DataContext) .Rows.Single(row=>!row.Entry.Directory).Path.Replace('\\','/')==expected);dialog.Close();});},
                 prepareEncoding:dialog=>
                 {
                     modal=dialog;dialog.ShowActivated=false;dialog.ShowInTaskbar=false;dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;

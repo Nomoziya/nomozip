@@ -60,7 +60,7 @@ internal static class DesktopVolumeValidation
                 foreach(var format in new[]{0,1})
                 {
                     model.CompressionFormat=format;model.CompressionOutput=Path.Combine(data,$"{version}-{format}."+(format==0?"7z":"zip"));model.CompressionEncrypt=true;option.SelectedIndex=4;size.Text="1";unit.SelectedIndex=0;await Layout(window);
-                    Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
+                    model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
                     var first=model.CompressionOutput+".001";var records=await vault.ReadAsync();
                     Check($"{version} {format} actual compression button completes two parts",File.Exists(first) && File.Exists(model.CompressionOutput+".002") && !File.Exists(model.CompressionOutput) && model.CompressionMessage.Contains("2 个分卷") && model.IsIdle);
                     Check($"{version} {format} successful password associated with first part",records.Count==1 && await vault.GetAssociatedPasswordAsync(first)==records.Single().Id && await vault.GetAssociatedPasswordAsync(model.CompressionOutput)==null);
@@ -69,13 +69,13 @@ internal static class DesktopVolumeValidation
                     var browser=new ArchiveContentsViewModel(first,listed.Items,format:listed.Format,edit:(_,_,_,_)=>Task.FromResult<ArchiveEditOutcome?>(null));
                     Check($"{version} {format} actual volume contents disable editing",listed.Items.Count==1 && !browser.EditingAvailable && !browser.AddFilesCommand.CanExecute(null));
                     var before=Directory.GetFiles(data,Path.GetFileName(model.CompressionOutput)+".*").ToDictionary(path=>path,path=>File.ReadAllBytes(path));var vaultBefore=File.ReadAllBytes(Path.Combine(data,version+".apv"));
-                    Invoke(create);await Layout(window);await model.WaitForIdleAsync();
+                    model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
                     Check($"{version} {format} existing parts retained without password prompt",prompts==format+1 && before.All(pair=>pair.Value.SequenceEqual(File.ReadAllBytes(pair.Key))) && model.CompressionMessage.Contains("已保留") && vaultBefore.SequenceEqual(File.ReadAllBytes(Path.Combine(data,version+".apv"))));
                     model.Page=0;model.Tasks.Clear();model.OutputPath=Path.Combine(data,$"ex-{version}-{format}");model.AddFiles([first]);model.ExtractCommand.Execute(null);await model.WaitForIdleAsync();
                     Check($"{version} {format} saved password automatically extracts exact original",model.Tasks.Single().Completed && bytes.SequenceEqual(File.ReadAllBytes(Path.Combine(model.OutputPath,"样本.bin"))) && prompts==format+1);
                     model.Page=3;
                 }
-                model.CompressionEncrypt=false;option.SelectedIndex=0;model.CompressionOutput=Path.Combine(data,version+"-ordinary.7z");model.CompressionFormat=0;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
+                model.CompressionEncrypt=false;option.SelectedIndex=0;model.CompressionOutput=Path.Combine(data,version+"-ordinary.7z");model.CompressionFormat=0;await Layout(window);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
                 Check(version+" returning to no split creates ordinary archive",File.Exists(model.CompressionOutput) && !File.Exists(model.CompressionOutput+".001") && !size.IsVisible);
             }
             foreach(var preset in new[]{(0,0UL),(1,104857600UL),(2,1073741824UL),(3,4294967296UL)}) Check("preset bytes "+preset.Item1,VolumeSizeOptions.TryGetBytes(preset.Item1,"ignored",0,out var result) && result==preset.Item2);

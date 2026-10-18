@@ -17,7 +17,7 @@ internal static class WindowChromeBehavior
     private static void OnEnabled(DependencyObject value,DependencyPropertyChangedEventArgs args)
     {
         if(value is not Window window || args.NewValue is not true)return;
-        window.Language=XmlLanguage.GetLanguage(UiText.LanguageCode);
+        window.Language=XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag);
         SetShowSystemButtons(window,window is MainWindow);
         WindowChrome.SetWindowChrome(window,new WindowChrome {CaptionHeight=28,ResizeBorderThickness=SystemParameters.WindowResizeBorderThickness,GlassFrameThickness=new Thickness(0),CornerRadius=new CornerRadius(8),UseAeroCaptionButtons=false});
         window.CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand,(_,_)=>SystemCommands.MinimizeWindow(window)));

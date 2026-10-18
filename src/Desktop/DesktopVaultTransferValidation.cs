@@ -71,7 +71,7 @@ internal static class DesktopVaultTransferValidation
             async Task Execute(string button)
             {
                 await Layout(window);
-                Invoke((Button)window.FindName(button));
+                await DesktopMenuValidation.InvokeAsync(window,window.VaultMoreAction,button=="ImportVaultButton"?model.ImportVaultCommand:model.ExportVaultCommand);
                 await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
                 await model.WaitForIdleAsync(); await Layout(window);
             }
@@ -106,8 +106,9 @@ internal static class DesktopVaultTransferValidation
                 {
                     model.Page = 1; window.Width = width; window.Height = width == 800 ? 500 : 760;
                     await Layout(window);
-                    var first = (Button)window.FindName("ImportVaultButton"); var last = (Button)window.FindName("ExportVaultButton");
-                    Check($"vault actions visible width {width} contrast {highContrast}", Fits(window, first) && Fits(window, last));
+                    var menu=await DesktopMenuValidation.OpenAsync(window,window.VaultMoreAction);
+                    Check($"vault actions visible width {width} contrast {highContrast}", Fits(window,window.VaultMoreAction) && menu.Items.OfType<MenuItem>().Where(item=>ReferenceEquals(item.Command,model.ImportVaultCommand) || ReferenceEquals(item.Command,model.ExportVaultCommand)).Count(item=>DesktopMenuValidation.Reachable(item))==2);
+                    menu.IsOpen=false;
                     Screenshot(window, Path.Combine(screenshots, $"vault-{width}-{highContrast}.png"));
                 }
                 var small = new VaultImportDialog([item], [item]) { Owner = window, ShowActivated = false, ShowInTaskbar = false };

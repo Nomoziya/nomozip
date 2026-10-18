@@ -638,7 +638,7 @@
               <ComboBox x:Name="PasswordGroupBox" ItemsSource="{Binding PasswordGroups}" SelectedItem="{Binding SelectedPasswordGroup}" DisplayMemberPath="Label" AutomationProperties.Name="{loc:Text T_d6a38b364511}"/>
             </StackPanel>
             <Button Grid.Column="2" Command="{Binding AddPasswordCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_36b2403fa140}"><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Add" Foreground="{DynamicResource OnAccentBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{loc:Text T_36b2403fa140}"/></StackPanel></Button>
-            <Button Grid.Column="3" Content="{loc:Text Redesign.More}" ContentTemplate="{StaticResource MoreActionContent}" Click="OnQueueActions" Margin="12,0,0,0" VerticalAlignment="Bottom">
+            <Button x:Name="VaultMoreAction" Grid.Column="3" Content="{loc:Text Redesign.More}" ContentTemplate="{StaticResource MoreActionContent}" Click="OnQueueActions" Margin="12,0,0,0" VerticalAlignment="Bottom">
               <Button.ContextMenu>
                 <ContextMenu Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}">
                   <MenuItem Header="{loc:Text T_ec217804074a}" Command="{Binding ImportVaultCommand}"/>

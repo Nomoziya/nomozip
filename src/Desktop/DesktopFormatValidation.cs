@@ -52,7 +52,7 @@ internal static class DesktopFormatValidation
                     Check(version+" "+options.Name+" multiple source constraint shown",options.SingleFile?!create.IsEnabled && error.IsVisible && error.Text.Contains("一个文件"):create.IsEnabled && error.Visibility==Visibility.Collapsed);
                     model.CompressionSources.Clear();model.AddCompressionSources([sourceFolder]);await Layout(window);
                     Check(version+" "+options.Name+" folder constraint shown",options.SingleFile?!create.IsEnabled && error.IsVisible:create.IsEnabled);
-                    model.CompressionSources.Clear();model.AddCompressionSources([source]);await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
+                    model.CompressionSources.Clear();model.AddCompressionSources([source]);await Layout(window);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
                     var client=new ArchiveEngineClient(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(baseDirectory,"engines",version,"7z.dll"));
                     var archive=model.CompressionOutput;var listed=await client.ListAsync(archive);
                     Check(version+" "+options.Name+" actual button creates tested readable archive",model.IsIdle && model.CompressionMessage.Contains("已创建并校验") && listed.IsSuccess && listed.Items.Count==1 && !listed.Items[0].Encrypted);
@@ -60,7 +60,7 @@ internal static class DesktopFormatValidation
                     Check(version+" "+options.Name+" exact displayed extraction path",listed.IsSuccess && listed.Items.Single().Path==(options.Name=="tar"?"内容.txt":Path.GetFileNameWithoutExtension(archive)));
                     model.Page=0;model.Tasks.Clear();model.OutputPath=Path.Combine(data,version+"-"+options.Name+"-extract");model.AddFiles([archive]);model.ExtractCommand.Execute(null);await model.WaitForIdleAsync();await Layout(window);
                     Check(version+" "+options.Name+" existing extraction page exact bytes",model.Tasks.Single().Completed && File.ReadAllText(Directory.GetFiles(model.OutputPath,"*",SearchOption.AllDirectories).Single())=="Formats 中文 exact bytes");
-                    model.Page=3;await Layout(window);var before=File.ReadAllBytes(archive);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
+                    model.Page=3;await Layout(window);var before=File.ReadAllBytes(archive);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();
                     Check(version+" "+options.Name+" declined replacement preserves archive",before.SequenceEqual(File.ReadAllBytes(archive)) && model.CompressionMessage.Contains("已保留"));
                 }
                 await Select(format,3);model.AddCompressionSources([second]);await Layout(window);
@@ -74,7 +74,7 @@ internal static class DesktopFormatValidation
                 theme.Apply(false);window.Width=1120;window.Height=740;model.CompressionSources.Clear();model.AddCompressionSources([source]);
                 foreach(var index in new[]{0,1})
                 {
-                    await Select(format,index);model.CompressionEncrypt=true;model.CompressionOutput=Path.Combine(data,version+"-return"+CompressionFormats.All[index].Extension);await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
+                    await Select(format,index);model.CompressionEncrypt=true;model.CompressionOutput=Path.Combine(data,version+"-return"+CompressionFormats.All[index].Extension);await Layout(window);model.Page=3;await Layout(window);Invoke(create);await Layout(window);await model.WaitForIdleAsync();await Layout(window);
                     var client=new ArchiveEngineClient(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),Path.Combine(baseDirectory,"engines",version,"7z.dll"));
                     Check(version+" return to "+CompressionFormats.All[index].Label+" encryption still works",encryption.IsEnabled && volume.IsEnabled && level.IsEnabled && (await client.TestAsync(model.CompressionOutput,"Synthetic-password")).IsSuccess && (await client.TestAsync(model.CompressionOutput)).NeedsPassword);
                 }

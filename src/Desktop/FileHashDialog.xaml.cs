@@ -15,6 +15,9 @@ public partial class FileHashDialog : Window
         {
             var compact = HashLayout.ActualWidth < 720 || HashLayout.ActualHeight < 500;
             HashHeading.Margin = EmbeddedClose is not null ? new Thickness(34,45,24,14) : new Thickness(compact ? 16 : 24,compact ? 16 : 24,compact ? 16 : 24,16);
+            var shortArea=compact && EmbeddedClose is null && HashLayout.ActualHeight<400;
+            if(shortArea)HashHeading.Margin=new Thickness(12,8,12,4);
+            HashSummary.Margin=shortArea?new Thickness(12,4,12,4):new Thickness(20,12,20,12);
             HashHeading.Height = EmbeddedClose is not null ? 71 : double.NaN;
             HashPageTitle.Style = (Style)FindResource(EmbeddedClose is not null ? "WorkspacePageTitle" : "PageTitle");
             HashPageIcon.Margin = new Thickness(0,0,EmbeddedClose is not null ? 31 : 24,0);
@@ -27,7 +30,7 @@ public partial class FileHashDialog : Window
             if(compact && HashActions.Parent is System.Windows.Controls.StackPanel actionsParent) {actionsParent.Children.Remove(HashActions);HashLayout.Children.Add(HashActions);System.Windows.Controls.Grid.SetRow(HashActions,3);}
             else if(!compact && HashActions.Parent is System.Windows.Controls.Grid) {HashLayout.Children.Remove(HashActions);HashDetailsPanel.Children.Add(HashActions);}
             System.Windows.Controls.Grid.SetColumn(HashActions,0);System.Windows.Controls.Grid.SetColumnSpan(HashActions,2);
-            HashActions.Margin=compact?new Thickness(16,8,16,12):new Thickness(0,24,0,0);
+            HashActions.Margin=shortArea?new Thickness(12,4,12,6):compact?new Thickness(16,8,16,12):new Thickness(0,24,0,0);
         }
         HashLayout.SizeChanged += (_, _) => Arrange();SizeChanged += (_, _) => Arrange();
         if (initial is not null) Model.AddFiles([initial]);

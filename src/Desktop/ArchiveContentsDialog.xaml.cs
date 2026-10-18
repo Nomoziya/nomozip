@@ -33,7 +33,13 @@ public partial class ArchiveContentsDialog : Window
                 EntryTable.Columns[1].Width = Math.Max(130, EntryTable.ActualWidth - fixedWidth - scrollGutter);
             }
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
-            EditContentsButton.Visibility = compactPreview ? Visibility.Collapsed : Visibility.Visible;
+            EditContentsButton.Visibility = Visibility.Visible;
+            var shortArea=EmbeddedClose is null && BrowserRoot.ActualHeight<480;
+            BrowserHeader.Height=shortArea?90:130;
+            var heading=(Grid)BrowserHeader.Child;
+            heading.RowDefinitions[0].Height=new GridLength(shortArea?8:35);
+            heading.RowDefinitions[1].Height=new GridLength(shortArea?48:54);
+            heading.RowDefinitions[2].Height=new GridLength(shortArea?33:40);
             ContentsArchiveName.MaxWidth = double.PositiveInfinity;
         }
         EntryTable.AddHandler(ScrollViewer.ScrollChangedEvent,new ScrollChangedEventHandler((_,args)=>{if(args.ExtentHeightChange!=0 || args.ViewportHeightChange!=0)Arrange();}));
