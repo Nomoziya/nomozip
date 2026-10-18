@@ -51,13 +51,11 @@ internal static class DesktopVisualRefreshValidation
                     ((Border)((FrameworkElement)window.VaultIdleChoice.Parent).Parent).BringIntoView(); await Layout();
                     Check($"{mode}/{width} idle field has readable bounded width", window.VaultIdleChoice.ActualWidth >= 220 && window.VaultIdleChoice.ActualWidth <= 280 && Bounds(window.VaultIdleChoice).Right < window.ActualWidth);
                     Check($"{mode}/{width} settings card measure stays bounded", window.PreferencesCards.ActualWidth <= 920 && window.PreferencesScroll.ExtentWidth <= window.PreferencesScroll.ViewportWidth + 1);
-                    var note = window.SidebarPrivacyNote;
-                    var noteBounds = Bounds(note); var sidebarBounds = Bounds(window.SidebarContent);
-                    var formatted = new FormattedText(note.Text, System.Globalization.CultureInfo.CurrentUICulture, note.FlowDirection,
-                        new Typeface(note.FontFamily, note.FontStyle, note.FontWeight, note.FontStretch), note.FontSize, note.Foreground, VisualTreeHelper.GetDpi(note).PixelsPerDip) { MaxTextWidth = Math.Max(1, note.ActualWidth) };
-                    Check($"{mode}/{width} privacy information fits sidebar or accessible vault settings", note.IsVisible
-                        ? note.ActualWidth > 0 && noteBounds.Right <= sidebarBounds.Right + 1 && noteBounds.Bottom <= window.ActualHeight && note.ActualHeight >= formatted.Height - 1
-                        : window.ReferenceCompactMenu.IsVisible && window.VaultProtectionCard.IsVisible && window.VaultProtectionCard.ActualWidth > 0);
+                    var note = Descendants(window.VaultProtectionCard).OfType<TextBlock>().Single(block=>block.Text==model.VaultProtectionMessage);
+                    var noteBounds=Bounds(note);var cardBounds=Bounds(window.VaultProtectionCard);
+                    var formatted=new FormattedText(note.Text,System.Globalization.CultureInfo.CurrentUICulture,note.FlowDirection,
+                        new Typeface(note.FontFamily,note.FontStyle,note.FontWeight,note.FontStretch),note.FontSize,note.Foreground,VisualTreeHelper.GetDpi(note).PixelsPerDip){MaxTextWidth=Math.Max(1,note.ActualWidth)};
+                    Check($"{mode}/{width} privacy information fits actual vault settings",note.IsVisible && note.ActualWidth>0 && noteBounds.Right<=cardBounds.Right+1 && noteBounds.Bottom<=cardBounds.Bottom+1 && note.ActualHeight>=formatted.Height-1);
                     Capture($"{mode}-{width}-vault-settings", width == 800 ? 2 : 1);
                     model.SettingsSection = 3; await Layout();
                     ((Border)((FrameworkElement)((FrameworkElement)window.RegisterAssociationsAction.Parent).Parent).Parent).BringIntoView(); await Layout();

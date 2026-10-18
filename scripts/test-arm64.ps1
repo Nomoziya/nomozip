@@ -43,12 +43,19 @@ Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
 $taskUiFixture=Get-ChildItem "$taskRoot/artifacts/pause-data" -Recurse -File -Filter 'longer-26.04.7z' | Select-Object -First 1
 if (-not $taskUiFixture) { throw 'Native in-flight UI fixture was not prepared.' }
 Copy-Item $taskUiFixture.FullName "$taskRoot/tests/fixtures/generated/large-ui.7z"
-foreach ($taskFlag in @('validate','validate-vault-transfer','validate-password-organization','validate-file-hashes','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-selection','validate-encoding','validate-origin','validate-dpi','validate-queue','validate-concurrency','validate-pause','validate-notifications','validate-sfx','validate-formats','validate-volumes','validate-archive-editing','validate-conversion','validate-content-preview','validate-drag-out','validate-checkpoints','validate-master-vault')) {
-    $taskGui=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot) -WindowStyle Hidden -Wait -PassThru
-    if ($taskGui.ExitCode -ne 0) { $taskFailures.Add("desktop: $taskFlag") }
+function Invoke-DesktopAcceptance([string]$TaskFlag,[string]$TaskLanguage) {
+    Write-Output "Native desktop starting: $TaskFlag $TaskLanguage"
+    $taskArguments=@("--$TaskFlag",$taskRoot)
+    if($TaskLanguage){$taskArguments+=$TaskLanguage}
+    $taskGui=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList $taskArguments -WindowStyle Hidden -PassThru
+    if(-not $taskGui.WaitForExit(300000)) {
+        $taskGui.Kill($true);$taskGui.WaitForExit();$taskFailures.Add("desktop: $TaskFlag $TaskLanguage timed out");Write-Warning "Desktop timeout: $TaskFlag $TaskLanguage";return
+    }
+    if($taskGui.ExitCode -ne 0){$taskFailures.Add("desktop: $TaskFlag $TaskLanguage");Write-Warning "Desktop failed: $TaskFlag $TaskLanguage"}
+    else{Write-Output "Native desktop passed: $TaskFlag $TaskLanguage"}
 }
-$taskEnglishUpdate=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @('--validate-application-updates',$taskRoot,'en') -WindowStyle Hidden -Wait -PassThru
-if ($taskEnglishUpdate.ExitCode -ne 0) { $taskFailures.Add('desktop: English application updates') }
+foreach ($taskFlag in @('validate','validate-vault-transfer','validate-password-organization','validate-file-hashes','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-selection','validate-encoding','validate-origin','validate-dpi','validate-queue','validate-concurrency','validate-pause','validate-notifications','validate-sfx','validate-formats','validate-volumes','validate-archive-editing','validate-conversion','validate-content-preview','validate-drag-out','validate-checkpoints','validate-master-vault')) { Invoke-DesktopAcceptance $taskFlag '' }
+Invoke-DesktopAcceptance 'validate-application-updates' 'en'
 try { & "$taskRoot/scripts/test-visual-refresh.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: visual refresh: $_") }
 try { & "$taskRoot/scripts/test-localization-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: localization: $_") }
 try { & "$taskRoot/scripts/test-theme-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: theme: $_") }

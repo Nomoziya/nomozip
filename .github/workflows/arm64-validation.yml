@@ -35,6 +35,12 @@ jobs:
       - name: Current product UI and actual flows in both languages
         if: always() && steps.native_build.outcome == 'success'
         run: ./scripts/test-redesign-ui.ps1
+      - uses: actions/upload-artifact@v7
+        if: always() && steps.native_build.outcome == 'success'
+        with:
+          name: preflight-visual-arm64
+          path: artifacts/visual-refresh/**/*
+          if-no-files-found: ignore
       - name: Native data desktop updates and x64 vault migration
         if: always() && steps.native_build.outcome == 'success'
         run: ./scripts/test-arm64.ps1

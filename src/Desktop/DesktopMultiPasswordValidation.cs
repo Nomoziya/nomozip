@@ -15,6 +15,7 @@ internal static class DesktopMultiPasswordValidation
     internal static async Task<bool> RunAsync(MainWindow window, string baseDirectory, string dataDirectory, string root)
     {
         var checks = new Dictionary<string, bool>(); var original = window.DataContext;
+        using var confirmation=DesktopExtractionConfirmationValidation.Accept(window);
         try
         {
             foreach (var savedCount in new[] { 2, 1, 0 })
@@ -41,7 +42,11 @@ internal static class DesktopMultiPasswordValidation
                 await window.Dispatcher.InvokeAsync(() => window.UpdateLayout(), DispatcherPriority.ApplicationIdle);
                 var button = (Button)window.FindName("ExtractAction");
                 ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
-                await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle); await model.WaitForIdleAsync();
+                await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
+                var deadline=DateTime.UtcNow.AddSeconds(30);
+                while(!model.IsBusy && !model.Tasks.Single().Completed)
+                {if(DateTime.UtcNow>deadline)throw new TimeoutException("Extraction did not start after confirmation.");await Task.Delay(25);}
+                await model.WaitForIdleAsync();
                 checks[savedCount + " actual extraction command completes with expected prompts"] = model.IsIdle && model.Tasks.Single().Completed && prompts == 2 - savedCount;
                 checks[savedCount + " actual output matches original bytes"] = new[] { "第一文件.txt", "第二文件.txt" }.All(name => File.ReadAllBytes(Path.Combine(model.OutputPath, name)).SequenceEqual(File.ReadAllBytes(Path.Combine(root, "tests/fixtures/generated", name))));
                 var records = await vault.ReadAsync();

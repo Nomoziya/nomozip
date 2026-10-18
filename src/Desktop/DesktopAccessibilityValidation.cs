@@ -35,7 +35,7 @@ internal static class DesktopAccessibilityValidation
             window.WindowStyle = WindowStyle.None; window.ResizeMode = ResizeMode.NoResize;
             foreach (var width in new[] { 1120, 800 })
             {
-                window.Width = width; window.Height = width == 800 ? 600 : 760;
+                window.MinWidth = width; window.Width = width; window.Height = width == 800 ? 600 : 760;
                 if (width == 800)
                 {
                     WindowPlacement.FitWorkArea(window, new Rect(0, 0, 800, 500));
@@ -48,8 +48,8 @@ internal static class DesktopAccessibilityValidation
                     if (page == 0 && width == 1120)
                     {
                         var selectedRow = Descendants(window).OfType<DataGridRow>().First(row => row.IsSelected && ReferenceEquals(row.Item, model.SelectedTask));
-                        var size = Descendants(selectedRow).OfType<TextBlock>().First(block => block.Text == model.SelectedTask.SizeText);
-                        Check("selected archive metadata uses row foreground", ColorOf(size.Foreground) == ColorOf(selectedRow.Foreground));
+                        var size = Descendants(selectedRow).OfType<TextBlock>().First(block => block.Text == model.SelectedTask.Name);
+                        Check("selected archive name uses readable row foreground", ColorOf(size.Foreground) == ColorOf(selectedRow.Foreground));
                     }
                     if (page == 0)
                     {
@@ -57,10 +57,20 @@ internal static class DesktopAccessibilityValidation
                         var settings = (ScrollViewer)window.FindName("SettingsScroll");
                         Check($"extraction width {width} fixed primary action", action.IsVisible && action.IsEnabled
                             && !Ancestors(action).Any(parent => parent is ScrollViewer));
-                        Check($"extraction width {width} one form scroll region", width == 1120
-                            ? ((ScrollViewer)window.FindName("ExtractionViewport")).VerticalScrollBarVisibility == ScrollBarVisibility.Disabled
-                              && settings.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
-                            : settings.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled);
+                        window.PrepareExtractionOptionsForValidation=dialog=>
+                        {
+                            dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.ShowActivated=false;dialog.Opacity=0;
+                            WindowPlacement.FitWorkArea(dialog,new Rect(0,0,width,window.Height));
+                            dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,new Action(()=>
+                            {
+                                dialog.UpdateLayout();var start=LogicalDescendants((DependencyObject)dialog.Content).OfType<Button>().Single(button=>button.IsDefault);
+                                var bounds=start.TransformToAncestor(dialog).TransformBounds(new Rect(start.RenderSize));
+                                Check($"extraction width {width} one form scroll region",settings.ActualHeight>0 && settings.VerticalScrollBarVisibility==ScrollBarVisibility.Auto
+                                    && start.IsVisible && start.IsEnabled && !Ancestors(start).Any(parent=>parent is ScrollViewer) && bounds.Bottom<=dialog.ActualHeight+1);
+                                dialog.Close();
+                            }));
+                        };
+                        window.ConfirmExtractionOptions();window.PrepareExtractionOptionsForValidation=null;
                     }
                     if (page == 3)
                     {
@@ -194,6 +204,11 @@ internal static class DesktopAccessibilityValidation
         return checks.Count == 45 && checks.Values.All(value => value);
     }
 
+    private static IEnumerable<DependencyObject> LogicalDescendants(DependencyObject parent)
+    {
+        foreach(var child in LogicalTreeHelper.GetChildren(parent).OfType<DependencyObject>())
+        {yield return child;foreach(var nested in LogicalDescendants(child))yield return nested;}
+    }
     private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
     {
         for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)

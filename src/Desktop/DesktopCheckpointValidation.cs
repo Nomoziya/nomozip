@@ -26,6 +26,7 @@ internal static class DesktopCheckpointValidation
             {
                 UiText.Configure(language);
                 var window=new MainWindow {WindowStartupLocation=WindowStartupLocation.Manual,Left=-32000,Top=-32000,Opacity=0,ShowActivated=false,ShowInTaskbar=false,SuppressExitConfirmationForValidation=true};window.Show();
+                using var confirmation=DesktopExtractionConfirmationValidation.Accept(window);
                 try
                 {
                     var profile=Path.Combine(data,language);Directory.CreateDirectory(profile);var archive=Path.Combine(profile,"input.zip");

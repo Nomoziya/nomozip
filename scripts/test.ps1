@@ -153,64 +153,49 @@ $taskApplication = Join-Path $taskTestApp 'ArchivePassword.exe'
 & $taskDotnet (Join-Path $taskRoot 'tests/CliValidation/bin/Debug/net10.0-windows/CliValidation.dll') $taskRoot $taskTestApp
 if ($LASTEXITCODE -ne 0) { throw 'Console and batch entry validation failed.' }
 & (Join-Path $PSScriptRoot 'prepare-pause-ui-fixture.ps1')
-$taskGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskGui.ExitCode -ne 0) { throw 'Desktop command validation failed.' }
-Write-Output 'Desktop command validation passed.'
-$taskVaultGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-vault-transfer', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskVaultGui.ExitCode -ne 0) { throw 'Desktop vault transfer command validation failed.' }
-$taskOrganizationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-password-organization', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskOrganizationGui.ExitCode -ne 0) { throw 'Desktop password organization validation failed.' }
-$taskHashGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-file-hashes', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskHashGui.ExitCode -ne 0) { throw 'Desktop SHA-256 validation failed.' }
-$taskShellGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-shell-ui', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskShellGui.ExitCode -ne 0) { throw 'Desktop Shell settings and compression validation failed.' }
-$taskApplicationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-application-updates', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskApplicationGui.ExitCode -ne 0) { throw 'Desktop application update validation failed.' }
-$taskApplicationEnglishGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-application-updates', $taskRoot, 'en') -WindowStyle Hidden -Wait -PassThru
-if ($taskApplicationEnglishGui.ExitCode -ne 0) { throw 'English desktop application update validation failed.' }
-$taskExtractionToolsGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-extraction-tools', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskExtractionToolsGui.ExitCode -ne 0) { throw 'Desktop extraction tools validation failed.' }
-$taskSelectionGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-selection', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskSelectionGui.ExitCode -ne 0) { throw 'Desktop selected extraction validation failed.' }
+$taskDesktopFailures=[Collections.Generic.List[string]]::new()
+function Invoke-DesktopAcceptance([string[]]$TaskArguments,[string]$TaskDescription) {
+    Write-Output "Desktop starting: $TaskDescription"
+    $taskGui=Start-Process -FilePath $taskApplication -ArgumentList $TaskArguments -WindowStyle Hidden -PassThru
+    if(-not $taskGui.WaitForExit(300000)) {
+        $taskGui.Kill($true);$taskGui.WaitForExit();$taskDesktopFailures.Add("$TaskDescription timed out");Write-Warning "$TaskDescription timed out";return
+    }
+    if($taskGui.ExitCode -ne 0){$taskDesktopFailures.Add($TaskDescription);Write-Warning "Desktop failed: $TaskDescription"}
+    else{Write-Output "Desktop passed: $TaskDescription"}
+}
+Invoke-DesktopAcceptance -TaskArguments @('--validate', $taskRoot) -TaskDescription 'Desktop command validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-vault-transfer', $taskRoot) -TaskDescription 'Desktop vault transfer command validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-password-organization', $taskRoot) -TaskDescription 'Desktop password organization validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-file-hashes', $taskRoot) -TaskDescription 'Desktop SHA-256 validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-shell-ui', $taskRoot) -TaskDescription 'Desktop Shell settings and compression validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-application-updates', $taskRoot) -TaskDescription 'Desktop application update validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-application-updates', $taskRoot, 'en') -TaskDescription 'English desktop application update validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-extraction-tools', $taskRoot) -TaskDescription 'Desktop extraction tools validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-selection', $taskRoot) -TaskDescription 'Desktop selected extraction validation'
 
-$taskEncodingGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-encoding', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskEncodingGui.ExitCode -ne 0) { throw 'Desktop ZIP encoding validation failed.' }
+Invoke-DesktopAcceptance -TaskArguments @('--validate-encoding', $taskRoot) -TaskDescription 'Desktop ZIP encoding validation'
 
-$taskOriginGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-origin', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskOriginGui.ExitCode -ne 0) { throw 'Desktop origin metadata validation failed.' }
+Invoke-DesktopAcceptance -TaskArguments @('--validate-origin', $taskRoot) -TaskDescription 'Desktop origin metadata validation'
 
-$taskDpiGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-dpi', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskDpiGui.ExitCode -ne 0) { throw 'Desktop per-monitor DPI validation failed.' }
+Invoke-DesktopAcceptance -TaskArguments @('--validate-dpi', $taskRoot) -TaskDescription 'Desktop per-monitor DPI validation'
 
-$taskQueueGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-queue', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskQueueGui.ExitCode -ne 0) { throw 'Desktop task queue validation failed.' }
-$taskConcurrencyGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-concurrency', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskConcurrencyGui.ExitCode -ne 0) { throw 'Desktop controlled concurrency validation failed.' }
-$taskPauseGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-pause', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskPauseGui.ExitCode -ne 0) { throw 'Desktop pause and resume validation failed.' }
-$taskNotificationGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-notifications', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskNotificationGui.ExitCode -ne 0) { throw 'Desktop result notification validation failed.' }
+Invoke-DesktopAcceptance -TaskArguments @('--validate-queue', $taskRoot) -TaskDescription 'Desktop task queue validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-concurrency', $taskRoot) -TaskDescription 'Desktop controlled concurrency validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-pause', $taskRoot) -TaskDescription 'Desktop pause and resume validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-notifications', $taskRoot) -TaskDescription 'Desktop result notification validation'
 
-$taskSfxGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-sfx', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskSfxGui.ExitCode -ne 0) { throw 'SFX desktop validation failed.' }
-$taskFormatsGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-formats', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskFormatsGui.ExitCode -ne 0) { throw 'Additional creation format desktop validation failed.' }
-$taskVolumeGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-volumes', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskVolumeGui.ExitCode -ne 0) { throw 'Split volume desktop validation failed.' }
-$taskCheckpointGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-checkpoints', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskCheckpointGui.ExitCode -ne 0) { throw 'Extraction checkpoint desktop validation failed.' }
-& (Join-Path $PSScriptRoot 'test-visual-refresh.ps1') -ApplicationDirectory (Split-Path $taskApplication -Parent)
-$taskDragGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-drag-out', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskDragGui.ExitCode -ne 0) { throw 'Archive drag desktop validation failed.' }
-$taskPreviewGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-content-preview', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskPreviewGui.ExitCode -ne 0) { throw 'Archive preview desktop validation failed.' }
-$taskConversionGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-conversion', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskConversionGui.ExitCode -ne 0) { throw 'Archive conversion desktop validation failed.' }
-$taskEditingGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-archive-editing', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskEditingGui.ExitCode -ne 0) { throw 'Archive editing desktop validation failed.' }
-$taskMasterGui = Start-Process -FilePath $taskApplication -ArgumentList @('--validate-master-vault', $taskRoot) -WindowStyle Hidden -Wait -PassThru
-if ($taskMasterGui.ExitCode -ne 0) { throw 'Master password desktop validation failed.' }
+Invoke-DesktopAcceptance -TaskArguments @('--validate-sfx', $taskRoot) -TaskDescription 'SFX desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-formats', $taskRoot) -TaskDescription 'Additional creation format desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-volumes', $taskRoot) -TaskDescription 'Split volume desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-checkpoints', $taskRoot) -TaskDescription 'Extraction checkpoint desktop validation'
+try { & (Join-Path $PSScriptRoot 'test-visual-refresh.ps1') -ApplicationDirectory (Split-Path $taskApplication -Parent) } catch { $taskDesktopFailures.Add($_.ToString()) }
+Invoke-DesktopAcceptance -TaskArguments @('--validate-drag-out', $taskRoot) -TaskDescription 'Archive drag desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-content-preview', $taskRoot) -TaskDescription 'Archive preview desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-conversion', $taskRoot) -TaskDescription 'Archive conversion desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-archive-editing', $taskRoot) -TaskDescription 'Archive editing desktop validation'
+Invoke-DesktopAcceptance -TaskArguments @('--validate-master-vault', $taskRoot) -TaskDescription 'Master password desktop validation'
 
-& (Join-Path $taskRoot "scripts/test-localization-ui.ps1") -ApplicationDirectory (Split-Path $taskApplication -Parent)
+try { & (Join-Path $taskRoot "scripts/test-localization-ui.ps1") -ApplicationDirectory (Split-Path $taskApplication -Parent) } catch { $taskDesktopFailures.Add($_.ToString()) }
 
-& (Join-Path $taskRoot "scripts/test-theme-ui.ps1") -ApplicationDirectory (Split-Path $taskApplication -Parent)
+try { & (Join-Path $taskRoot "scripts/test-theme-ui.ps1") -ApplicationDirectory (Split-Path $taskApplication -Parent) } catch { $taskDesktopFailures.Add($_.ToString()) }
+if ($taskDesktopFailures.Count) { throw "Desktop acceptance failures: $($taskDesktopFailures -join '; ')" }

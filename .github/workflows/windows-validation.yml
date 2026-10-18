@@ -104,6 +104,12 @@ jobs:
         run: ./scripts/test-redesign-ui.ps1
       - name: Check visual and row input regressions before the full suite
         run: ./scripts/test-visual-refresh.ps1
+      - uses: actions/upload-artifact@v7
+        if: always() && steps.desktop_build.outcome == 'success'
+        with:
+          name: preflight-visual-x64
+          path: artifacts/visual-refresh/**/*
+          if-no-files-found: ignore
       - name: Validate vault, updates and desktop command flows
         if: always() && steps.desktop_build.outcome == 'success'
         run: |
