@@ -918,7 +918,7 @@
                 <Grid Margin="0,0,0,12">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition x:Name="DefaultConflictColumn" Width="360"/>
                   </Grid.ColumnDefinitions>
                   <TextBlock Text="{loc:Text Settings.DefaultConflict}" VerticalAlignment="Center"/>
                   <ComboBox Grid.Column="1" x:Name="DefaultConflictChoice" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding ConflictPolicy}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text Settings.DefaultConflict}">
