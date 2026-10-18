@@ -1,0 +1,146 @@
+{
+  "passed": 33,
+  "total": 33,
+  "cases": [
+    {
+      "name": "actual native OS and managed process",
+      "passed": true
+    },
+    {
+      "name": "worker native PE",
+      "passed": true
+    },
+    {
+      "name": "profile directories preserve x64 layout and isolate ARM64",
+      "passed": true
+    },
+    {
+      "name": "26.04 official DLL and CLI native PE",
+      "passed": true
+    },
+    {
+      "name": "26.04 foreign image rejected by explicit target",
+      "passed": true
+    },
+    {
+      "name": "26.04 actual signed native package accepted",
+      "passed": true
+    },
+    {
+      "name": "26.04 signed foreign manifest rejected",
+      "passed": true
+    },
+    {
+      "name": "26.04 native signed manifest with foreign PE rejected",
+      "passed": true
+    },
+    {
+      "name": "26.04 foreign official URL rejected",
+      "passed": true
+    },
+    {
+      "name": "26.04 correct builtin catalog recognized",
+      "passed": true
+    },
+    {
+      "name": "26.04 foreign catalog architecture ignored",
+      "passed": true
+    },
+    {
+      "name": "26.04 incorrect PE despite matching manifest hash ignored",
+      "passed": true
+    },
+    {
+      "name": "26.04 native signed PE with missing exports fails real worker probe",
+      "passed": true
+    },
+    {
+      "name": "26.03 official DLL and CLI native PE",
+      "passed": true
+    },
+    {
+      "name": "26.03 foreign image rejected by explicit target",
+      "passed": true
+    },
+    {
+      "name": "26.03 actual signed native package accepted",
+      "passed": true
+    },
+    {
+      "name": "26.03 signed foreign manifest rejected",
+      "passed": true
+    },
+    {
+      "name": "26.03 native signed manifest with foreign PE rejected",
+      "passed": true
+    },
+    {
+      "name": "26.03 foreign official URL rejected",
+      "passed": true
+    },
+    {
+      "name": "26.03 correct builtin catalog recognized",
+      "passed": true
+    },
+    {
+      "name": "26.03 foreign catalog architecture ignored",
+      "passed": true
+    },
+    {
+      "name": "26.03 incorrect PE despite matching manifest hash ignored",
+      "passed": true
+    },
+    {
+      "name": "26.03 native signed PE with missing exports fails real worker probe",
+      "passed": true
+    },
+    {
+      "name": "temporary preparation DLL lock preserves validation failure",
+      "passed": true
+    },
+    {
+      "name": "failed preparation releases gate and cleans directory before next install",
+      "passed": true
+    },
+    {
+      "name": "real native installation activation and previous version",
+      "passed": true
+    },
+    {
+      "name": "native engine rollback preserves previous version",
+      "passed": true
+    },
+    {
+      "name": "foreign install refused before state change",
+      "passed": true
+    },
+    {
+      "name": "foreign install preserves state and clears preparation",
+      "passed": true
+    },
+    {
+      "name": "channel selects only native asset in mixed release",
+      "passed": true
+    },
+    {
+      "name": "foreign-only engine release is not offered",
+      "passed": true
+    },
+    {
+      "name": "ARM64 release behind full x64 history page is discovered",
+      "passed": true
+    },
+    {
+      "name": "software channel offers matching lightweight architecture",
+      "passed": true
+    }
+  ],
+  "architecture": "arm64",
+  "osArchitecture": "Arm64",
+  "nativeProcess": true,
+  "syntheticOnly": true,
+  "engineHashes": {
+    "26.04": "eb84a6eb184c378d84742f372e7501d9a99c34a718ea81d4c71cd62b5a207dee",
+    "26.03": "a1f2e41eaf7ad40f5b1aa66a73e7fe327e64e0b7d65638a863c1e3a6fe64e667"
+  }
+}

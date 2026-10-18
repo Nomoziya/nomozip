@@ -20,7 +20,7 @@ internal static class DesktopButtonStateValidation
         string folder, Action<string, bool> check)
     {
         if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") throw new InvalidOperationException("Isolated CI only.");
-        // ARM hosted runners have no interactive desktop. This explicitly selected
+        // Hosted ARM runners may prevent window activation. This explicitly selected
         // mode verifies native WPF trigger rendering, never OS mouse injection.
         var renderOnly=Environment.GetEnvironmentVariable("NOMOZIP_BUTTON_INPUT")=="wpf-render-states";
         void State(Button button,Type owner,string field,bool value)

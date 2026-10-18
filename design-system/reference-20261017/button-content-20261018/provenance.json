@@ -1,0 +1,456 @@
+{
+  "runtimeFixCommit": "07632d7",
+  "x64ValidationCommit": "2fb5a2c",
+  "oldTemplateExpectedFailures": 24,
+  "viewport": "800x600 WPF DIP rendered at 96 DPI; identical preview content between old/fixed",
+  "x64": {
+    "run": 39133475155,
+    "checksPerLanguage": 180,
+    "actualMouseInput": true
+  },
+  "arm64": {
+    "status": "passed",
+    "sourceCommit": "f755a75",
+    "run": 39134130320,
+    "checksPerLanguage": 180,
+    "actualMouseInput": false,
+    "inputScope": "explicit native WPF hover/pressed states plus actual rendering/focus/disabled checks; OS mouse input not verified",
+    "observedEnvironment": "SessionId=2; UserInteractive=true; test window IsActive=false. No claim that UserInteractive itself was false.",
+    "relatedEnvironmentIssues": [
+      "https://github.com/actions/runner-images/issues/14049",
+      "https://github.com/actions/runner-images/issues/14069"
+    ]
+  },
+  "reviewed": "Old/fixed Chinese light import and directory rules; fixed Chinese dark import, soft pressed rules, contrast resource more action; ARM64 English dark pressed rules. Representative review only, not all raw states.",
+  "files": [
+    {
+      "file": "before/button-state-light-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-light-hash-import-hover.png",
+      "sha256": "b07738e38f18c61b62a76326ee15dd16d389459ce2d28a23e9a351b72f337edc",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-light-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-light-hash-import-hover.png",
+      "sha256": "9cc0279e8d743c9863c61d936493d77ce2bbfe599a2b6811a94d8c94e295828d",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-light-directory-rules-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-light-directory-rules-hover.png",
+      "sha256": "4118da7e0b143f8fdcc761fd1c4356bc57958d3edd4d1cf621f0859c0f6bfd04",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-light-directory-rules-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-light-directory-rules-hover.png",
+      "sha256": "0c8bf60782cf826dac22a7dca3494d429b019a10edc293e5ab57e93b523c5dba",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-light-vault-more-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-light-vault-more-pressed.png",
+      "sha256": "0ca2b7940f03c5dd11083907c41b83680207f34be99ac3cc46dfd16c65cf0173",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-light-vault-more-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-light-vault-more-pressed.png",
+      "sha256": "2a8e9ed1cb9098d12210eadada037ac322037b8c331d176de5c8c57a8e705b94",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-dark-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-dark-hash-import-hover.png",
+      "sha256": "343b915423843069263501a0910a9b2cd5647c78d3e33ddb9865211372934758",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-dark-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-dark-hash-import-hover.png",
+      "sha256": "f53866c7e1a69b64541d47fe3ed289d7660ad36476ff827a8c6355fe64e4af37",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-soft-directory-rules-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-soft-directory-rules-pressed.png",
+      "sha256": "4a3fc9b78148d077d92b9b66d374c4be1082b848f8279a8365ec5ee621b0d0e2",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-soft-directory-rules-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-soft-directory-rules-pressed.png",
+      "sha256": "ff676df36caf87e7ef97b05b07726cc7122b3acc97bd3165bfa9a6f1ff982255",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-contrast-vault-more-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-contrast-vault-more-hover.png",
+      "sha256": "97fca3006085864e957d966d782a5b7df9ad15b88204a6c72f05187daf79e13a",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-contrast-vault-more-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-contrast-vault-more-hover.png",
+      "sha256": "5329aee05d62d7cb79b670090f02707b13242fa1ab988f1e514a7ce540b6b5ae",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-light-hash-add-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-light-hash-add-hover.png",
+      "sha256": "9103515f2a3773791c4a3c7e4bee40c509154e7ff01ffe3ae2e077f521912d4f",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-light-hash-add-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-light-hash-add-hover.png",
+      "sha256": "9103515f2a3773791c4a3c7e4bee40c509154e7ff01ffe3ae2e077f521912d4f",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-light-hash-import-focus.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-light-hash-import-focus.png",
+      "sha256": "bfd9224acdb091acd23d1125d0271787c08307a079c46a9706b398da84c487b8",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-light-hash-import-focus.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-light-hash-import-focus.png",
+      "sha256": "bfd9224acdb091acd23d1125d0271787c08307a079c46a9706b398da84c487b8",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "before/button-state-light-hash-import-disabled.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-light-hash-import-disabled.png",
+      "sha256": "816b7a73019cdf4e537b1bcf52cb990b93bdd2f9cbb4476509422e97d4b6eea4",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; old shared template"
+    },
+    {
+      "file": "x64/zh-CN/button-state-light-hash-import-disabled.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-light-hash-import-disabled.png",
+      "sha256": "816b7a73019cdf4e537b1bcf52cb990b93bdd2f9cbb4476509422e97d4b6eea4",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse; fixed shared template"
+    },
+    {
+      "file": "x64/zh-CN/report.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\report.json",
+      "sha256": "24e7158fb3269184e65fb11626658d26667ff46c2dc6b5cd685261e168b04347",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "180 passed state checks"
+    },
+    {
+      "file": "x64/zh-CN/button-state-audit.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\zh-CN\\button-state-audit.json",
+      "sha256": "e8508d6d00107f3fcb8abc7962d3d9f4d84397bae07872948a6fc25a9a84de60",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "180 passed state checks"
+    },
+    {
+      "file": "x64/en/report.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\en\\report.json",
+      "sha256": "24e7158fb3269184e65fb11626658d26667ff46c2dc6b5cd685261e168b04347",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "180 passed state checks"
+    },
+    {
+      "file": "x64/en/button-state-audit.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\en\\button-state-audit.json",
+      "sha256": "d9e741c94c1c54f2bc170358b2b034e422b028e5dd5d1b8f90bafd2ebc2fdb5a",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "180 passed state checks"
+    },
+    {
+      "file": "before/report.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\report.json",
+      "sha256": "bdbb6ba761ae60195804beb96c9e89d17f2669b7a6d843257e15f6cb34baaafd",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "expected negative result: 24 occluded states; real hover and normal visibility verified"
+    },
+    {
+      "file": "before/button-state-audit.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-before-2fb5a2c\\zh-CN\\button-state-audit.json",
+      "sha256": "80c59417fa4dd1bcce5f98b788314d8ab5c06340c55e6f50127a3b75402509d8",
+      "sourceCommit": "v0.3.0 App.xaml + 2fb5a2c fixture",
+      "run": 39133475155,
+      "scope": "expected negative result: 24 occluded states; real hover and normal visibility verified"
+    },
+    {
+      "file": "x64/en/button-state-light-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\en\\button-state-light-hash-import-hover.png",
+      "sha256": "883c110d4d0cb783cbcad598eae9ec80d3ed8723418bb941a00c656e5b9aa233",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse, English"
+    },
+    {
+      "file": "x64/en/button-state-dark-directory-rules-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-2fb5a2c-x64\\en\\button-state-dark-directory-rules-pressed.png",
+      "sha256": "b832eb1ed4b731d611812a46e144b2ae695681546650050ef914c6a2786de071",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "actual x64 mouse, English"
+    },
+    {
+      "file": "arm64/zh-CN/report.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\zh-CN\\report.json",
+      "sha256": "c8d7df0cc1bb3acc7186aeb642daf37a02339c7c65713e25bc8fb9c409904183",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/zh-CN/button-state-audit.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\zh-CN\\button-state-audit.json",
+      "sha256": "e89ae208d10a337de73424b3e9b335fe14a86f645ae2b9dc44ee80554b6b38fd",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/zh-CN/button-state-light-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\zh-CN\\button-state-light-hash-import-hover.png",
+      "sha256": "9cc0279e8d743c9863c61d936493d77ce2bbfe599a2b6811a94d8c94e295828d",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/zh-CN/button-state-dark-directory-rules-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\zh-CN\\button-state-dark-directory-rules-pressed.png",
+      "sha256": "98613249f604ec3dd80c09ce69836584270436e894f46913c2d9a876de52d636",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/en/report.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\en\\report.json",
+      "sha256": "c8d7df0cc1bb3acc7186aeb642daf37a02339c7c65713e25bc8fb9c409904183",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/en/button-state-audit.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\en\\button-state-audit.json",
+      "sha256": "a0926932f252f070d9e5987a3366c593f3c97f70475e4d41c580ffc3f61b2dc4",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/en/button-state-light-hash-import-hover.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\en\\button-state-light-hash-import-hover.png",
+      "sha256": "883c110d4d0cb783cbcad598eae9ec80d3ed8723418bb941a00c656e5b9aa233",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "arm64/en/button-state-dark-directory-rules-pressed.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-states-f755a75-arm64\\en\\button-state-dark-directory-rules-pressed.png",
+      "sha256": "b832eb1ed4b731d611812a46e144b2ae695681546650050ef914c6a2786de071",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native ARM64 explicit WPF state rendering; not actual mouse input"
+    },
+    {
+      "file": "x64/product-reports/ui-redesign-zh-CN.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-2fb5a2c-x64\\ui-redesign\\zh-CN\\report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "476 passed ui-redesign checks"
+    },
+    {
+      "file": "x64/product-reports/ui-redesign-en.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-2fb5a2c-x64\\ui-redesign\\en\\report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "476 passed ui-redesign checks"
+    },
+    {
+      "file": "x64/product-reports/visual-refresh-zh-CN.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-2fb5a2c-x64\\visual-refresh\\zh-CN\\report.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "124 passed visual-refresh checks"
+    },
+    {
+      "file": "x64/product-reports/visual-refresh-en.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-2fb5a2c-x64\\visual-refresh\\en\\report.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31",
+      "sourceCommit": "2fb5a2c",
+      "run": 39133475155,
+      "scope": "124 passed visual-refresh checks"
+    },
+    {
+      "file": "arm64/product-reports/ui-redesign-zh-CN.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\ui-redesign\\zh-CN\\report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "476 passed ui-redesign checks"
+    },
+    {
+      "file": "arm64/product-reports/ui-redesign-en.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\ui-redesign\\en\\report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "476 passed ui-redesign checks"
+    },
+    {
+      "file": "arm64/product-reports/visual-refresh-zh-CN.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\visual-refresh\\zh-CN\\report.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "124 passed visual-refresh checks"
+    },
+    {
+      "file": "arm64/product-reports/visual-refresh-en.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\visual-refresh\\en\\report.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "124 passed visual-refresh checks"
+    },
+    {
+      "file": "arm64/native-reports/architecture-validation.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\arm64-ui-native-workspace\\artifacts\\architecture-validation.json",
+      "sha256": "e6277a1292b490ae08132932d800a183945f5ea81bc9b9c8c1825f4edf3ab961",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native/cross-architecture synthetic acceptance"
+    },
+    {
+      "file": "arm64/native-reports/export-vault-x64-validation.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\arm64-ui-native-workspace\\artifacts\\export-vault-x64-validation.json",
+      "sha256": "49f28bd46b460ec29024bc68f065dba9d5ef34ef7b8705aa5c08a854ec2147dc",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native/cross-architecture synthetic acceptance"
+    },
+    {
+      "file": "arm64/native-reports/import-vault-arm64-validation.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\arm64-ui-native-workspace\\artifacts\\import-vault-arm64-validation.json",
+      "sha256": "4c3e92593829d0fc652e77b0d3a7fb7dd12f33b8f88f2ac5c7726e65c365fdd9",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native/cross-architecture synthetic acceptance"
+    },
+    {
+      "file": "arm64/native-reports/verify-vault-x64-validation.json",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\button-product-f755a75-arm64\\arm64-ui-native-workspace\\artifacts\\verify-vault-x64-validation.json",
+      "sha256": "a442d2215475951bfb4e754950394a87af64bf3932f2f821af693e00fc2d84ab",
+      "sourceCommit": "f755a75",
+      "run": 39134130320,
+      "scope": "native/cross-architecture synthetic acceptance"
+    }
+  ],
+  "normalLayoutComparison": {
+    "source": "3a4a6cc published runtime baseline",
+    "current": "2fb5a2c x64",
+    "result": "light/dark 1152 page 0,3,4: all six PNG SHA256 hashes identical"
+  },
+  "candidates": {
+    "x64": {
+      "path": "D:\\Codex\\7zip-password\\artifacts\\button-fix-candidate-2fb5a2c\\x64\\nomozip-ui-redesign-x64.zip",
+      "sourceCommit": "2fb5a2c",
+      "sha256": "1f939c602a4f578bacaab54eb174f6d2577e566019aea5173d2ab9fe110e3748",
+      "files": 40,
+      "crcAndNativeArchitecturePassed": true
+    },
+    "arm64": {
+      "path": "D:\\Codex\\7zip-password\\artifacts\\button-fix-candidate-f755a75\\arm64\\nomozip-ui-redesign-arm64.zip",
+      "sourceCommit": "f755a75",
+      "sha256": "8108471ff79573bdaa40b104e2a2103c4fb9d03a320631b1aac90dfa64bdc695",
+      "files": 40,
+      "crcAndNativeArchitecturePassed": true
+    }
+  },
+  "productRegression": {
+    "x64": {
+      "commit": "2fb5a2c",
+      "run": 39133475155,
+      "productChecksPerLanguage": 476,
+      "legacyChecksPerLanguage": 124
+    },
+    "arm64": {
+      "commit": "f755a75",
+      "run": 39134130320,
+      "productChecksPerLanguage": 476,
+      "legacyChecksPerLanguage": 124
+    }
+  },
+  "crossArchitectureNormalScreens": [
+    {
+      "file": "light-1152-page-0.png",
+      "identical": true
+    },
+    {
+      "file": "light-1152-page-3.png",
+      "identical": true
+    },
+    {
+      "file": "light-1152-page-4.png",
+      "identical": true
+    },
+    {
+      "file": "dark-1152-page-0.png",
+      "identical": true
+    },
+    {
+      "file": "dark-1152-page-3.png",
+      "identical": true
+    },
+    {
+      "file": "dark-1152-page-4.png",
+      "identical": true
+    }
+  ]
+}

@@ -1,13 +1,16 @@
 # nomozip 当前状态与新会话交接
 
-## 0.3.0按钮内容遮挡修复（2026-10-18，进行中）
+## 按钮内容遮挡已修复，独立候选等待体验确认（2026-10-18）
 
-- 用户反馈多处按钮悬停后只剩底色，要求一并修复。根因已定位：App.xaml普通Button模板在ContentPresenter之后绘制不透明Overlay，IsMouseOver/IsPressed使其遮住文字/图标。共享模板改为在内容背后的ButtonSurface切换背景，保留既有配色、边框、字号、圆角与布局，覆盖所有沿用普通模板的操作。
-- 独立修复分支 **codex/fix-button-content-20261018**，源码目录仍 `D:\Codex\7zip-password\.tools\ui-reference-20261017`。已发布0.3.0标签/资产、原采用分支和历史候选保护；当前只授权修复和候选验收，不自动发布新版本或覆盖0.3.0。
-- 沿用gpt-6.1-sol / high，宿主本回合turn_context `01a14f30-4f81-7120-b0c5-8dffc663a2f8`核对匹配，无委派。B1修正共享模板并审计同类遮挡；B2在隔离CI用真实鼠标重现0.3.0旧模板失败，再验证x64/原生ARM64中英四主题的实际按钮文字/图标像素、悬停/按下/禁用/聚焦及现有产品流程；B3保存原图对照与候选，交付用户确认。
-- 新增验证使用实际导入/添加/关闭、密码库更多和默认目录规则操作，真实按下后移出再释放，不打开系统文件选择或执行命令；只允许CI运行，不在本机启动/自动化桌面、不读取真实密码库。此前检查漏掉真实hover遮挡，本次新增渲染前景像素断言，不能只凭属性或静态截图记通过。
-- 前次发布附带的全套x64 CI39121001810现已完成成功（源码832f674）；该证据不覆盖本次新增按钮状态修复。
-
+- 用户反馈多处按钮悬停后只剩底色。根因是App.xaml普通Button模板在ContentPresenter上方绘制不透明Overlay，悬停/按下时覆盖文字和图标。**共享模板改为切换内容背后的ButtonSurface背景**，覆盖所有沿用普通模板的按钮，保留配色、字体、尺寸、圆角与正常布局。1152×768浅/深色任务、新建、文件页共6张正常态图，与已发布运行源码3a4a6cc逐字节一致。
+- 产品修复07632d7；x64候选/验证 **2fb5a2c**、ARM64候选/验证 **f755a75**，两者差异仅隔离状态验证与工作流，不含产品交互/样式差异。源码仍在 `D:\Codex\7zip-password\.tools\ui-reference-20261017`，独立分支 **codex/fix-button-content-20261018**。已发布0.3.0/main/原采用分支、所有历史包保持，不覆盖发行资产、不自动发布新版本。
+- B1共享模板修复、B2自动检查、B3原图对照与候选核对已完成。x64 [CI39133475155](https://github.com/Nomoziya/nomozip/actions/runs/39133475155)、原生ARM64 [CI39134130320](https://github.com/Nomoziya/nomozip/actions/runs/39134130320)均成功；产品中英各476、传统视觉各124通过，ARM64原生/跨架构合成库检查通过。与此修复无关的业务/安装证据继续复用；本轮没有重跑完整安装/注册表套件。
+- x64用真实鼠标进入/按下，并核对**最终整窗PNG内的文字/图标前景像素**；中英各180/180状态检查通过，覆盖导入、添加、关闭、密码库更多与默认解压规则，浅/深/柔和/系统对比资源下的普通、悬停、按下、聚焦、禁用。原0.3.0共享模板在同一800×600、相同预览内容下重现**24个遮挡状态**，正常文字及真实hover进入先通过；旧模板失败是预期负例，不当作产品通过报告。
+- ARM64同样中英各180/180检查通过，但**hover/pressed是显式WPF依赖属性状态渲染，非真实鼠标输入通过**。该runner实际SessionId=2、UserInteractive=true，测试窗口IsActive=false，原鼠标检查40项/语言未能进入；不能简单写成UserInteractive=false。相关环境记录为runner-images#14049/#14069。状态报告明确actualMouseInput=false/explicitWpfRenderStates=true；真实ARM64鼠标及物理DPI/设备体验保留未验证，不把合成状态冒充物理交互。
+- [对照页](../design-system/reference-20261017/index.html#button-content)保存同尺寸、同内容、同状态的改前/改后原图。`button-content-20261018/provenance.json`记录源码/CI/逐文件SHA、负例与两种输入范围；已查看中文浅色导入/规则、深色导入、柔和按下、高对比更多及ARM英语深色规则等代表图，不声称人工逐张审完全部状态。规范补充于UI_STYLE_GUIDE及MASTER，强调背景必须在内容下方。
+- x64候选：主目录 `artifacts/button-fix-candidate-2fb5a2c/x64/nomozip-ui-redesign-x64.zip`，SHA256 **1f939c602a4f578bacaab54eb174f6d2577e566019aea5173d2ab9fe110e3748**。ARM64候选：`artifacts/button-fix-candidate-f755a75/arm64/nomozip-ui-redesign-arm64.zip`，SHA256 **8108471ff79573bdaa40b104e2a2103c4fb9d03a320631b1aac90dfa64bdc695**。各40个CI原文件，CRC、主程序/CLI/worker/两引擎原生PE及共享.NET轻量版核对通过。各目录的启动脚本使用独立candidate-profile；preview为原ZIP字节，代理未启动/安装。
+- 原始状态证据在 `artifacts/button-states-2fb5a2c-x64`、`artifacts/button-states-f755a75-arm64`；旧模板负例在 `artifacts/button-before-2fb5a2c`；产品/传统视觉与架构证据在 `artifacts/button-product-2fb5a2c-x64`、`artifacts/button-product-f755a75-arm64`。首次07632d7/b432b64轮次的局部取图偏移/输入失败，以及2fb5a2c ARM64真实鼠标40项失败均保留，未批量改断言记通过；后续采用新进程/整窗取图和明确ARM渲染范围。
+- 当前仅等待用户体验确认/具体反馈；没有恢复自动任务、改变更新渠道、读取真实库/生产私钥或在本机运行桌面自动化。主会话/执行者gpt-6.1-sol / high，本回合turn_context `01a14f30-4f81-7120-b0c5-8dffc663a2f8`核对匹配，无委派。前次发布附带全套x64 CI39121001810已成功，该轮不覆盖本次新状态检查。
 
 ## 0.3.0 已正式发布，UI规范与历史候选已归档（2026-10-18）
 

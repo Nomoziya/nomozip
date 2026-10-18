@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "total": 7,
+  "checks": {
+    "actual target process on ARM64 Windows": true,
+    "dpapi reads previous architecture secret and metadata": true,
+    "dpapi reading preserves encrypted file": true,
+    "dpapi x64 rereads ARM64 edit": true,
+    "master reads previous architecture secret and metadata": true,
+    "master reading preserves encrypted file": true,
+    "master x64 rereads ARM64 edit": true
+  },
+  "architecture": "x64",
+  "osArchitecture": "Arm64",
+  "syntheticOnly": true
+}

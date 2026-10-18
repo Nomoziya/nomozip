@@ -157,10 +157,10 @@ jobs:
           name: released-0.3.0-button-state-reproduction
           path: artifacts/button-before-0.3.0/**/*
           if-no-files-found: error
-      - name: Validate real button states in fresh bilingual application processes
+      - name: Validate button rendering with explicit input provenance
         run: |
-          # windows-11-arm is headless (runner-images#14049); keep native WPF
-          # rendering distinct from x64's actual interactive mouse evidence.
+          # ARM window activation/input can be unavailable (runner-images#14049/#14069).
+          # Keep native WPF rendering distinct from actual x64 mouse evidence.
           if ('${{ matrix.architecture }}' -eq 'arm64') { $env:NOMOZIP_BUTTON_INPUT='wpf-render-states' }
           New-Item -ItemType Directory -Force artifacts/button-states | Out-Null
           $taskFailed = $false
