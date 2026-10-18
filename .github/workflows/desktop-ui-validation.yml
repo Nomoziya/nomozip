@@ -28,6 +28,10 @@ on:
         description: 'Include actual localization and theme restart checks'
         type: boolean
         default: true
+      reproduce_button_hover:
+        description: 'Prove the old 0.3.0 hover occlusion with real input before validating the fix'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -124,6 +128,32 @@ jobs:
       - name: Validate native ARM64 architecture and cross-architecture synthetic vaults
         if: matrix.architecture == 'arm64'
         run: ./scripts/test-ui-arm64-architecture.ps1
+      - name: Reproduce the released hover occlusion on the isolated desktop
+        if: inputs.reproduce_button_hover && matrix.architecture == 'x64'
+        run: |
+          Copy-Item src/Desktop/App.xaml artifacts/button-fixed.xaml
+          try {
+            git fetch --no-tags origin tag v0.3.0
+            if ($LASTEXITCODE -ne 0) { throw 'Released style baseline fetch failed.' }
+            $taskOriginal = git show v0.3.0:src/Desktop/App.xaml
+            if ($LASTEXITCODE -ne 0) { throw 'Released style baseline read failed.' }
+            [IO.File]::WriteAllText((Join-Path $PWD 'src/Desktop/App.xaml'), ($taskOriginal -join "`n"), [Text.UTF8Encoding]::new($false))
+            ./scripts/build.ps1 -Architecture x64 -Configuration Release -SkipWorker -OutputDirectory artifacts/button-before-app
+            $taskProcess = Start-Process ./artifacts/button-before-app/ArchivePassword.exe -ArgumentList @('--validate-redesign',$PWD.Path,'zh-CN','--button-states-only') -WindowStyle Hidden -Wait -PassThru
+            $taskReport = Get-Content artifacts/ui-redesign/zh-CN/report.json -Raw | ConvertFrom-Json
+            if ($taskProcess.ExitCode -eq 0 -or $taskReport.passed -or $taskReport.error -or
+                -not $taskReport.checks.'light/hash-import actual mouse hover reached action' -or
+                $taskReport.checks.'light/hash-import/hover rendered foreground glyphs remain visible' -ne $false) {
+              throw 'The original hover occlusion was not reproduced by real mouse input and rendered glyph checks.'
+            }
+            Copy-Item -LiteralPath artifacts/ui-redesign -Destination artifacts/button-before-0.3.0 -Recurse
+          } finally { Copy-Item artifacts/button-fixed.xaml src/Desktop/App.xaml -Force }
+      - uses: actions/upload-artifact@v7
+        if: always() && inputs.reproduce_button_hover && matrix.architecture == 'x64'
+        with:
+          name: released-0.3.0-button-state-reproduction
+          path: artifacts/button-before-0.3.0/**/*
+          if-no-files-found: error
       - name: Validate redesigned pages and actual archive operations in both languages
         run: |
           $taskProductFailed = $false

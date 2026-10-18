@@ -928,7 +928,7 @@
                   </ComboBox>
                 </Grid>
                 <TextBlock Text="{Binding ExtractionSubtitle}" Style="{StaticResource Secondary}"/>
-                <Button Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                <Button x:Name="DefaultExtractionRulesAction" Content="{loc:Text T_571579b0c6a1}" Command="{Binding EditExtractionRulesCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
                 <WrapPanel HorizontalAlignment="Right" Margin="0,8,0,0">
                   <Button x:Name="SaveFileDefaultsAction" Content="{loc:Text Settings.SaveDefaults}" Command="{Binding SaveFileDefaultsCommand}" Style="{StaticResource SubtleButton}"/>
                   <TextBlock Text="{Binding FileDefaultsMessage}" VerticalAlignment="Center" Margin="12,0,0,0" AutomationProperties.LiveSetting="Polite">

@@ -177,18 +177,14 @@
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="Button">
-              <Grid>
-                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
-                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
-                </Border>
-                <Border x:Name="Overlay" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Background="{DynamicResource HoverBrush}" Opacity="0" IsHitTestVisible="False"/>
-              </Grid>
+              <Border x:Name="ButtonSurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+              </Border>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                  <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
+                  <Setter TargetName="ButtonSurface" Property="Background" Value="{DynamicResource HoverBrush}"/>
                 </Trigger>
-                <Trigger Property="IsPressed" Value="True"><Setter TargetName="Overlay" Property="Background" Value="{DynamicResource PressedBrush}"/>
-                  <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
+                <Trigger Property="IsPressed" Value="True"><Setter TargetName="ButtonSurface" Property="Background" Value="{DynamicResource PressedBrush}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                   <Setter Property="Opacity" Value="0.45"/>

@@ -200,6 +200,14 @@ public partial class App : Application
             var root=Path.GetFullPath(e.Args[redesignIndex+1]);var reports=Path.Combine(root,"artifacts/ui-redesign",UiText.LanguageCode);Directory.CreateDirectory(reports);
             DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(Path.Combine(reports,"report.json"),JsonSerializer.Serialize(new{passed=false,error=failure.Exception.ToString()}));File.WriteAllText(Path.Combine(reports,"dispatcher-error.json"),JsonSerializer.Serialize(new{error=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
             window.SuppressExitConfirmationForValidation=true;window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            if(e.Args.Contains("--button-states-only"))
+            {
+                var checks=new Dictionary<string,bool>();string? error=null;
+                try {model.LoadPreview();await DesktopButtonStateValidation.RunAsync(window,model,theme,reports,(name,ok)=>checks.Add(name,ok));}
+                catch(Exception failure) {error=failure.ToString();}
+                var success=error is null && checks.Count>0 && checks.Values.All(ok=>ok);
+                File.WriteAllText(Path.Combine(reports,"report.json"),JsonSerializer.Serialize(new {passed=success,checks,error}));Shutdown(success?0:1);return;
+            }
             var passed=await DesktopRedesignValidation.RunAsync(window,model,theme,root);Shutdown(passed?0:1);return;
         }
         var formatsIndex=Array.IndexOf(e.Args,"--validate-formats");
