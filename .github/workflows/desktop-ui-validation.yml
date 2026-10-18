@@ -142,6 +142,7 @@ jobs:
             $taskProcess = Start-Process ./artifacts/button-before-app/ArchivePassword.exe -ArgumentList @('--validate-redesign',$PWD.Path,'zh-CN','--button-states-only') -WindowStyle Hidden -Wait -PassThru
             $taskReport = Get-Content artifacts/ui-redesign/zh-CN/report.json -Raw | ConvertFrom-Json
             if ($taskProcess.ExitCode -eq 0 -or $taskReport.passed -or $taskReport.error -or
+                -not $taskReport.checks.'light/hash-import/normal rendered foreground glyphs remain visible' -or
                 -not $taskReport.checks.'light/hash-import actual mouse hover reached action' -or
                 $taskReport.checks.'light/hash-import/hover rendered foreground glyphs remain visible' -ne $false) {
               throw 'The original hover occlusion was not reproduced by real mouse input and rendered glyph checks.'

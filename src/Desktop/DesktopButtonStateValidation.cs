@@ -18,7 +18,7 @@ internal static class DesktopButtonStateValidation
         string folder, Action<string, bool> check)
     {
         if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") throw new InvalidOperationException("Isolated CI only.");
-        var left=window.Left;var top=window.Top;var opacity=window.Opacity;var page=model.Page;var section=model.SettingsSection;var mode=theme.Mode;
+        var left=window.Left;var top=window.Top;var opacity=window.Opacity;var topmost=window.Topmost;var page=model.Page;var section=model.SettingsSection;var mode=theme.Mode;var contrast=theme.IsHighContrast;
         var evidence=new List<object>();
         async Task Layout() { await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);await Task.Delay(70); }
         async Task Move(Button button)
@@ -32,7 +32,9 @@ internal static class DesktopButtonStateValidation
             var presenter=DesktopRedesignValidation.VisualDescendants(button).OfType<ContentPresenter>().First();
             var area=presenter.TransformToAncestor(button).TransformBounds(new Rect(presenter.RenderSize));
             var bitmap=new RenderTargetBitmap((int)Math.Ceiling(button.ActualWidth),(int)Math.Ceiling(button.ActualHeight),96,96,PixelFormats.Pbgra32);
-            bitmap.Render(button);var pixels=new byte[bitmap.PixelWidth*bitmap.PixelHeight*4];bitmap.CopyPixels(pixels,bitmap.PixelWidth*4,0);
+            var drawing=new DrawingVisual();
+            using(var context=drawing.RenderOpen())context.DrawRectangle(new VisualBrush(button) {ViewboxUnits=BrushMappingMode.Absolute,Viewbox=new Rect(button.RenderSize),Stretch=Stretch.Fill},null,new Rect(button.RenderSize));
+            bitmap.Render(drawing);var pixels=new byte[bitmap.PixelWidth*bitmap.PixelHeight*4];bitmap.CopyPixels(pixels,bitmap.PixelWidth*4,0);
             var foreground=((SolidColorBrush)button.Foreground).Color;var ink=0;
             for(var y=Math.Max(0,(int)Math.Ceiling(area.Top));y<Math.Min(bitmap.PixelHeight,(int)Math.Floor(area.Bottom));y++)
                 for(var x=Math.Max(0,(int)Math.Ceiling(area.Left));x<Math.Min(bitmap.PixelWidth,(int)Math.Floor(area.Right));x++)
@@ -42,7 +44,8 @@ internal static class DesktopButtonStateValidation
                     if(distance<45)ink++;
                 }
             check(name+" rendered foreground glyphs remain visible",ink>=8);
-            evidence.Add(new {name,foregroundPixels=ink,button.IsMouseOver,button.IsPressed,button.IsKeyboardFocused,button.IsEnabled});
+            evidence.Add(new {name,foregroundPixels=ink,button.IsMouseOver,button.IsPressed,button.IsKeyboardFocused,button.IsEnabled,area,
+                window.Left,window.Top,window.Width,window.Height,window.Opacity,window.IsActive,screenPoint=button.PointToScreen(new Point(button.ActualWidth/2,button.ActualHeight/2))});
             DesktopAccessibilityValidation.Render(window,Path.Combine(folder,"button-state-"+name.Replace('/','-')+".png"),1,clientOnly:true);
         }
         async Task Exercise(Button button,string name)
@@ -72,7 +75,8 @@ internal static class DesktopButtonStateValidation
         }
         try
         {
-            window.Left=32;window.Top=32;window.Opacity=1;window.Activate();SetForegroundWindow(new WindowInteropHelper(window).Handle);
+            window.Left=32;window.Top=32;window.Opacity=1;window.Topmost=true;
+            var handle=new WindowInteropHelper(window).Handle;ShowWindow(handle,9);window.Activate();SetForegroundWindow(handle);await Layout();
             foreach(var appearance in new[]{"light","dark","soft","contrast"})
             {
                 theme.SetMode(appearance=="contrast"?"system":appearance);theme.Apply(appearance=="contrast");
@@ -87,12 +91,13 @@ internal static class DesktopButtonStateValidation
         }
         finally
         {
-            mouse_event(4,0,0,0,0);SetCursorPos(0,0);theme.SetMode(mode);theme.Apply(false);model.Page=page;model.SettingsSection=section;
-            window.Left=left;window.Top=top;window.Opacity=opacity;
+            mouse_event(4,0,0,0,0);SetCursorPos(0,0);theme.SetMode(mode);theme.Apply(contrast);model.Page=page;model.SettingsSection=section;
+            window.Topmost=topmost;window.Left=left;window.Top=top;window.Opacity=opacity;
             File.WriteAllText(Path.Combine(folder,"button-state-audit.json"),JsonSerializer.Serialize(new {actualMouseInput=true,fieldValuesRecorded=false,states=evidence}));
         }
     }
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x,int y);
     [DllImport("user32.dll")] private static extern bool SetForegroundWindow(nint window);
+    [DllImport("user32.dll")] private static extern bool ShowWindow(nint window,int command);
     [DllImport("user32.dll")] private static extern void mouse_event(uint flags,uint dx,uint dy,uint data,nuint extraInfo);
 }
