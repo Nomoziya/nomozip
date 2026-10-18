@@ -1,0 +1,637 @@
+{
+  "sourceCommit": "0803363",
+  "status": "awaiting_user_visual_confirmation",
+  "scope": "Current bilingual UI and synthetic product checks; previous full-desktop failures remain unresolved. No release.",
+  "ci": {
+    "x64": 39115944598,
+    "arm64": 39115950134
+  },
+  "files": [
+    {
+      "path": "x64/zh-CN/light-1152-page-3.png",
+      "sha256": "c759d85652f98a5bdb7145e2faac63f5428e6cbfb4957e55a037b2db0edaff0a",
+      "bytes": 72572,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/dark-1152-page-3.png",
+      "sha256": "14b5582cca107fdc163eeec5301cf68325e5f640002ef57783b7d039aa407de5",
+      "bytes": 73016,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/light-800-page-3.png",
+      "sha256": "447cc4d3441f15d03615665d5e99e17f601b7682922fae2c1f23297d88078e87",
+      "bytes": 38432,
+      "pixelSize": [
+        800,
+        600
+      ]
+    },
+    {
+      "path": "x64/zh-CN/compression-form-compact-long-fields.png",
+      "sha256": "b7e94d4841b7a9e34e65233cef349dadfea90e54d961bb0eb911715d9b307cf6",
+      "bytes": 54175,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/compression-form-custom-volume.png",
+      "sha256": "b7cd6686d53d5b430f8f87e22d601f8137a8b57e07d161d2a06322658a01c97f",
+      "bytes": 40756,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/light-1152-settings-0.png",
+      "sha256": "d96aac85a09c3e6a2ef72f58a055b1cb3cd6e392ed4831f0a446061439c11546",
+      "bytes": 54500,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/light-1152-settings-1.png",
+      "sha256": "b4ae06d311dbd76511ef14fbc68bda733402711b2f5476c03c06eaa9518ac51c",
+      "bytes": 59526,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/light-1152-settings-2.png",
+      "sha256": "d4b0c0784eafcc51ef1efdd884efa26ab2bb427d739111bd9a1b70cc78b801e6",
+      "bytes": 56829,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/actual-engine-update-management.png",
+      "sha256": "a6a0b4b5602152370261fae70da1bec991cab41b9b065c1e6ec19868b62a84bf",
+      "bytes": 61391,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/zh-CN/extraction-rules-compact.png",
+      "sha256": "c28471a75c92e5eca7ea281a0a006f29a20ee4cd75bf38161b4e4d8d403642ba",
+      "bytes": 31876,
+      "pixelSize": [
+        400,
+        630
+      ]
+    },
+    {
+      "path": "x64/zh-CN/filename-encoding-compact.png",
+      "sha256": "4428acd517fbe279879e1956724eff2f255d62a6a3ffc0f492b988eb93f53d55",
+      "bytes": 29575,
+      "pixelSize": [
+        540,
+        580
+      ]
+    },
+    {
+      "path": "x64/zh-CN/archive-conversion-light.png",
+      "sha256": "b40ae86d96fa36348b5781af78f6f40a8df871b1b05e310b3798208a8fae7f65",
+      "bytes": 46352,
+      "pixelSize": [
+        700,
+        660
+      ]
+    },
+    {
+      "path": "x64/zh-CN/report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "bytes": 41563
+    },
+    {
+      "path": "x64/en/light-1152-page-3.png",
+      "sha256": "cabf3dedc495b5cdf34c09f589265f3217cf2c1c7e36ea390bf73bb614b2a0a8",
+      "bytes": 73014,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/dark-1152-page-3.png",
+      "sha256": "78a66933247ff9e7155adaa35ef3ee5550cf39cb2e0c5e7f21b45dd6e559c08e",
+      "bytes": 73164,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/light-800-page-3.png",
+      "sha256": "160ae172dba37aaab77ed3f3440c716a097637a43949370284423e2bd204fc35",
+      "bytes": 37774,
+      "pixelSize": [
+        800,
+        600
+      ]
+    },
+    {
+      "path": "x64/en/compression-form-compact-long-fields.png",
+      "sha256": "1cb9b2cacdaf0015fbd682fa08a0673a91adecec3b6a1e2fde54ddbad5289a66",
+      "bytes": 53604,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/compression-form-custom-volume.png",
+      "sha256": "67374ea42645e657fb550073888e595764fd2c48002cb2b9e9e179eeca9e9387",
+      "bytes": 40628,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/light-1152-settings-0.png",
+      "sha256": "d6a330d36fb0d18a3a20d4b67cc4e820ef59f7947ef4aff592ebbbb2f72d2f74",
+      "bytes": 57295,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/light-1152-settings-1.png",
+      "sha256": "0baa3f0c33278d5946d54c0a2ae542811e0e26f5c5e24cdbe138212c06be8d55",
+      "bytes": 60864,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/light-1152-settings-2.png",
+      "sha256": "cced9676c6c4ddd9b23d6bd81e5236ca988f773615ddf37de18bf9b107dcaaf9",
+      "bytes": 65083,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/actual-engine-update-management.png",
+      "sha256": "1f05671c1eb4f04c5cba96e7a43d4ba2a37607f8cdaf544097d548fc6bb7d043",
+      "bytes": 66021,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "x64/en/extraction-rules-compact.png",
+      "sha256": "418e8e8932282aefe62d49ef47231a111dbc08d11bfeec4f990c66b60a877359",
+      "bytes": 33956,
+      "pixelSize": [
+        400,
+        630
+      ]
+    },
+    {
+      "path": "x64/en/filename-encoding-compact.png",
+      "sha256": "48946fa9108627013efce0d2ed20ebbfab405ae59a352af8e347cc215d841a8c",
+      "bytes": 29876,
+      "pixelSize": [
+        540,
+        580
+      ]
+    },
+    {
+      "path": "x64/en/archive-conversion-light.png",
+      "sha256": "5dfb4e2b626c65d6a861229fb7f3d000c0baaf77c334ec5490ad5676c66536eb",
+      "bytes": 46246,
+      "pixelSize": [
+        700,
+        660
+      ]
+    },
+    {
+      "path": "x64/en/report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "bytes": 41563
+    },
+    {
+      "path": "arm64/zh-CN/light-1152-page-3.png",
+      "sha256": "c759d85652f98a5bdb7145e2faac63f5428e6cbfb4957e55a037b2db0edaff0a",
+      "bytes": 72572,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/dark-1152-page-3.png",
+      "sha256": "14b5582cca107fdc163eeec5301cf68325e5f640002ef57783b7d039aa407de5",
+      "bytes": 73016,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/light-800-page-3.png",
+      "sha256": "447cc4d3441f15d03615665d5e99e17f601b7682922fae2c1f23297d88078e87",
+      "bytes": 38432,
+      "pixelSize": [
+        800,
+        600
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/compression-form-compact-long-fields.png",
+      "sha256": "b7e94d4841b7a9e34e65233cef349dadfea90e54d961bb0eb911715d9b307cf6",
+      "bytes": 54175,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/compression-form-custom-volume.png",
+      "sha256": "b7cd6686d53d5b430f8f87e22d601f8137a8b57e07d161d2a06322658a01c97f",
+      "bytes": 40756,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/light-1152-settings-0.png",
+      "sha256": "d96aac85a09c3e6a2ef72f58a055b1cb3cd6e392ed4831f0a446061439c11546",
+      "bytes": 54500,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/light-1152-settings-1.png",
+      "sha256": "b4ae06d311dbd76511ef14fbc68bda733402711b2f5476c03c06eaa9518ac51c",
+      "bytes": 59526,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/light-1152-settings-2.png",
+      "sha256": "d4b0c0784eafcc51ef1efdd884efa26ab2bb427d739111bd9a1b70cc78b801e6",
+      "bytes": 56829,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/actual-engine-update-management.png",
+      "sha256": "a6a0b4b5602152370261fae70da1bec991cab41b9b065c1e6ec19868b62a84bf",
+      "bytes": 61391,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/extraction-rules-compact.png",
+      "sha256": "a62dd690c772d072024b1171ac35d070ddba3400ab5e221ea81db91b4770045c",
+      "bytes": 31930,
+      "pixelSize": [
+        400,
+        630
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/filename-encoding-compact.png",
+      "sha256": "4428acd517fbe279879e1956724eff2f255d62a6a3ffc0f492b988eb93f53d55",
+      "bytes": 29575,
+      "pixelSize": [
+        540,
+        580
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/archive-conversion-light.png",
+      "sha256": "f897394d526081432b6f033b5aa5a1e909eaf7cad338614c139008c82061fc2a",
+      "bytes": 46461,
+      "pixelSize": [
+        700,
+        660
+      ]
+    },
+    {
+      "path": "arm64/zh-CN/report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "bytes": 41563
+    },
+    {
+      "path": "arm64/en/light-1152-page-3.png",
+      "sha256": "cabf3dedc495b5cdf34c09f589265f3217cf2c1c7e36ea390bf73bb614b2a0a8",
+      "bytes": 73014,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/dark-1152-page-3.png",
+      "sha256": "78a66933247ff9e7155adaa35ef3ee5550cf39cb2e0c5e7f21b45dd6e559c08e",
+      "bytes": 73164,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/light-800-page-3.png",
+      "sha256": "160ae172dba37aaab77ed3f3440c716a097637a43949370284423e2bd204fc35",
+      "bytes": 37774,
+      "pixelSize": [
+        800,
+        600
+      ]
+    },
+    {
+      "path": "arm64/en/compression-form-compact-long-fields.png",
+      "sha256": "1cb9b2cacdaf0015fbd682fa08a0673a91adecec3b6a1e2fde54ddbad5289a66",
+      "bytes": 53604,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/compression-form-custom-volume.png",
+      "sha256": "67374ea42645e657fb550073888e595764fd2c48002cb2b9e9e179eeca9e9387",
+      "bytes": 40628,
+      "pixelSize": [
+        800,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/light-1152-settings-0.png",
+      "sha256": "d6a330d36fb0d18a3a20d4b67cc4e820ef59f7947ef4aff592ebbbb2f72d2f74",
+      "bytes": 57295,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/light-1152-settings-1.png",
+      "sha256": "0baa3f0c33278d5946d54c0a2ae542811e0e26f5c5e24cdbe138212c06be8d55",
+      "bytes": 60864,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/light-1152-settings-2.png",
+      "sha256": "cced9676c6c4ddd9b23d6bd81e5236ca988f773615ddf37de18bf9b107dcaaf9",
+      "bytes": 65083,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/actual-engine-update-management.png",
+      "sha256": "1f05671c1eb4f04c5cba96e7a43d4ba2a37607f8cdaf544097d548fc6bb7d043",
+      "bytes": 66021,
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/en/extraction-rules-compact.png",
+      "sha256": "d69c6aa53bc4749d95f860286c9ff65b6ab8852dd8a28dfcbbf430fa3f811893",
+      "bytes": 34014,
+      "pixelSize": [
+        400,
+        630
+      ]
+    },
+    {
+      "path": "arm64/en/filename-encoding-compact.png",
+      "sha256": "48946fa9108627013efce0d2ed20ebbfab405ae59a352af8e347cc215d841a8c",
+      "bytes": 29876,
+      "pixelSize": [
+        540,
+        580
+      ]
+    },
+    {
+      "path": "arm64/en/archive-conversion-light.png",
+      "sha256": "394fca9a69bd6c972a5667a26f288d0e7b4907371edf5be084e692fa97c42e8a",
+      "bytes": 46166,
+      "pixelSize": [
+        700,
+        660
+      ]
+    },
+    {
+      "path": "arm64/en/report.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "bytes": 41563
+    },
+    {
+      "path": "before/en/light-1152-page-3.png",
+      "sha256": "c91bad198b368f106004a6ead37fb2039b32b92044c3c1abe12b73fb9cc83f45",
+      "bytes": 71860,
+      "sourceRun": 39097218749,
+      "sourceCommit": "3a32be8",
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "before/en/light-1152-settings-1.png",
+      "sha256": "dc774f2015ad51d5dcc00dd42ab82e270ecb83b813cc55c42d9a777274edee5b",
+      "bytes": 60863,
+      "sourceRun": 39097218749,
+      "sourceCommit": "3a32be8",
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "before/zh-CN/light-1152-page-3.png",
+      "sha256": "7361360364652dd15c856ebbfb34b7c8e14e3288256b090a8fbdd9d81d8e2877",
+      "bytes": 72449,
+      "sourceRun": 39097218749,
+      "sourceCommit": "3a32be8",
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "before/zh-CN/light-1152-settings-1.png",
+      "sha256": "7d81b118be5fc82be67909ced76276620035f9921d2faa6bab38437dde96fde4",
+      "bytes": 59531,
+      "sourceRun": 39097218749,
+      "sourceCommit": "3a32be8",
+      "pixelSize": [
+        1152,
+        768
+      ]
+    },
+    {
+      "path": "arm64/native/architecture-validation.json",
+      "sha256": "e6277a1292b490ae08132932d800a183945f5ea81bc9b9c8c1825f4edf3ab961",
+      "bytes": 3767
+    },
+    {
+      "path": "arm64/native/export-vault-x64-validation.json",
+      "sha256": "49f28bd46b460ec29024bc68f065dba9d5ef34ef7b8705aa5c08a854ec2147dc",
+      "bytes": 295
+    },
+    {
+      "path": "arm64/native/import-vault-arm64-validation.json",
+      "sha256": "4c3e92593829d0fc652e77b0d3a7fb7dd12f33b8f88f2ac5c7726e65c365fdd9",
+      "bytes": 529
+    },
+    {
+      "path": "arm64/native/verify-vault-x64-validation.json",
+      "sha256": "a442d2215475951bfb4e754950394a87af64bf3932f2f821af693e00fc2d84ab",
+      "bytes": 523
+    }
+  ],
+  "packages": {
+    "x64": {
+      "path": "D:\\Codex\\7zip-password\\artifacts\\ui-form-fit-candidate-0803363\\x64\\nomozip-ui-redesign-x64.zip",
+      "sha256": "e3c2092692b56221c72d522cb0001bca468ab56d5112b79de89d96b7c87dee87",
+      "bytes": 4709884,
+      "files": 40,
+      "crcPassed": true,
+      "runtimeOptions": [
+        {
+          "tfm": "net10.0",
+          "frameworks": [
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "10.0.0"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "10.0.0"
+            }
+          ],
+          "configProperties": {
+            "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+            "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+            "CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS": false
+          }
+        },
+        {
+          "tfm": "net10.0",
+          "framework": {
+            "name": "Microsoft.NETCore.App",
+            "version": "10.0.0"
+          },
+          "configProperties": {
+            "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+            "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+            "CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS": false
+          }
+        }
+      ],
+      "peMachines": {
+        "engines/26.03/7z.dll": "0x8664",
+        "engines/26.03/7z.exe": "0x8664",
+        "engines/26.04/7z.dll": "0x8664",
+        "engines/26.04/7z.exe": "0x8664",
+        "ArchiveEngineWorker.exe": "0x8664",
+        "ArchivePassword.exe": "0x8664",
+        "nomozip-cli.exe": "0x8664"
+      }
+    },
+    "arm64": {
+      "path": "D:\\Codex\\7zip-password\\artifacts\\ui-form-fit-candidate-0803363\\arm64\\nomozip-ui-redesign-arm64.zip",
+      "sha256": "40d5c491a3226ec15e1f511a88ad2fce905f81d578742afcd5afe81b771cd144",
+      "bytes": 3896887,
+      "files": 40,
+      "crcPassed": true,
+      "runtimeOptions": [
+        {
+          "tfm": "net10.0",
+          "frameworks": [
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "10.0.0"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "10.0.0"
+            }
+          ],
+          "configProperties": {
+            "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+            "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+            "CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS": false
+          }
+        },
+        {
+          "tfm": "net10.0",
+          "framework": {
+            "name": "Microsoft.NETCore.App",
+            "version": "10.0.0"
+          },
+          "configProperties": {
+            "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+            "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+            "CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS": false
+          }
+        }
+      ],
+      "peMachines": {
+        "engines/26.03/7z.dll": "0xaa64",
+        "engines/26.03/7z.exe": "0xaa64",
+        "engines/26.04/7z.dll": "0xaa64",
+        "engines/26.04/7z.exe": "0xaa64",
+        "ArchiveEngineWorker.exe": "0xaa64",
+        "ArchivePassword.exe": "0xaa64",
+        "nomozip-cli.exe": "0xaa64"
+      }
+    }
+  },
+  "visualReview": [
+    "ARM64 Chinese/English light archive form, Chinese compact custom volume, English compact encoding",
+    "x64 Chinese settings file operations, English settings general, English dark archive form, Chinese compact long paths"
+  ],
+  "identicalAcrossArchitectures": {
+    "zh-CN/light-1152-page-3.png": true,
+    "zh-CN/dark-1152-page-3.png": true,
+    "zh-CN/compression-form-compact-long-fields.png": true,
+    "en/light-1152-page-3.png": true,
+    "en/dark-1152-page-3.png": true,
+    "en/compression-form-compact-long-fields.png": true
+  }
+}

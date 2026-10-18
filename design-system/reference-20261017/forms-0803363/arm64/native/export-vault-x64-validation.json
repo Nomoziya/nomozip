@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "total": 3,
+  "checks": {
+    "actual target process on ARM64 Windows": true,
+    "dpapi exported by actual x64 process": true,
+    "master exported by actual x64 process": true
+  },
+  "architecture": "x64",
+  "osArchitecture": "Arm64",
+  "syntheticOnly": true
+}
