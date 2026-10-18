@@ -56,7 +56,7 @@ internal static class DesktopUiRegressionValidation
             var controls = new Dictionary<string, Control>
             {
                 ["navigation"] = (ListBoxItem)nav.ItemContainerGenerator.ContainerFromIndex(0),
-                ["browse-output"] = Descendants(window).OfType<Button>().Single(button => Equals(button.Content, "浏览目录"))
+                ["extract-action"] = window.ExtractAction
             };
             foreach (var (name, control) in controls)
             {

@@ -25,7 +25,8 @@ internal static class DesktopCompressionValidation
         var outputPeer = UIElementAutomationPeer.CreatePeerForElement(output)!;
         var buttonPeer = UIElementAutomationPeer.CreatePeerForElement(button)!;
         var shortcut = window.InputBindings.OfType<KeyBinding>().Any(value => value.Key == Key.C && value.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift) && ReferenceEquals(value.Command, model.CreateArchiveCommand));
-        var accessibility = formatPeer.GetName() == "压缩格式" && outputPeer.GetName() == "新压缩包完整路径"
+        var accessibility = formatPeer.GetName() == "压缩格式" && outputPeer.GetName() == UiText.Get("Redesign.SaveLocation")
+            && new TextBoxAutomationPeer(view.ArchiveNameBox).GetName() == UiText.Get("Redesign.ArchiveName")
             && formatPeer.IsKeyboardFocusable() && outputPeer.IsKeyboardFocusable() && buttonPeer.IsKeyboardFocusable()
             && buttonPeer.GetPattern(PatternInterface.Invoke) is IInvokeProvider && shortcut && !model.ExtractCommand.CanExecute(null);
         if (buttonPeer.GetPattern(PatternInterface.Invoke) is not IInvokeProvider invoke) return (false, accessibility);
