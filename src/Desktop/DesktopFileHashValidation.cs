@@ -112,7 +112,14 @@ internal static class DesktopFileHashValidation
                 foreach (var dimensions in new[] { (820, 680), (600, 500) })
                 {
                     dialog.Width = dimensions.Item1; dialog.Height = dimensions.Item2; await Layout(dialog);
-                    Check($"all primary actions fit {dimensions} contrast {contrast}", new[] { "HashAddButton", "HashExpectedBox", "HashCalculateButton", "HashExportButton", "HashCloseButton" }.All(name => Fits(dialog, (FrameworkElement)dialog.FindName(name))));
+                    var actionsReachable=true;
+                    foreach(var name in new[] { "HashAddButton", "HashExpectedBox", "HashCalculateButton", "HashExportButton", "HashCloseButton" })
+                    {
+                        if(name=="HashExpectedBox" && dialog.CompactHashDetails.IsVisible) {dialog.CompactHashDetails.IsExpanded=true;await Layout(dialog);}
+                        var action=(FrameworkElement)dialog.FindName(name);action.BringIntoView();await Layout(dialog);actionsReachable &= Fits(dialog,action);
+                    }
+                    Check($"all primary actions fit {dimensions} contrast {contrast}",actionsReachable);
+                    dialog.CompactHashDetails.IsExpanded=false;await Layout(dialog);
                     var table = (DataGrid)dialog.FindName("HashTable"); table.ScrollIntoView(table.Items[0]); await Layout(dialog); var row = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
                     Check($"first full row remains visible {dimensions} contrast {contrast}", table.ActualHeight >= 84 && row.ActualHeight == 40 && row.TranslatePoint(new Point(0, row.ActualHeight), table).Y <= table.ActualHeight);
                     DesktopAccessibilityValidation.Render(dialog, Path.Combine(screenshots, $"hash-{dimensions.Item1}-{contrast}.png"), 1.0);
@@ -145,6 +152,7 @@ internal static class DesktopFileHashValidation
     private static async Task Layout(Window window) => await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.ApplicationIdle);
     private static bool Fits(Window window, FrameworkElement element)
     {
+        if(!element.IsVisible || element.ActualWidth<=0 || element.ActualHeight<=0)return false;
         var content = (FrameworkElement)window.Content; var bounds = element.TransformToAncestor(content).TransformBounds(new Rect(element.RenderSize));
         return element.IsVisible && bounds.Top >= 0 && bounds.Left >= 0 && bounds.Bottom <= content.ActualHeight + 1 && bounds.Right <= content.ActualWidth + 1;
     }

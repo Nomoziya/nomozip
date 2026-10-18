@@ -54,18 +54,18 @@ internal static class DesktopEncodingValidation
                 }));
             owner.DataContext=main;await main.InitializeAsync();main.AddFiles([zip]);main.SelectedTask=main.Tasks.Single();await Layout(owner);
             var task=main.SelectedTask;task.Completed=true;task.VerificationResult=new EngineResult {Status="success"};Check("default task retains engine encoding",task.FilenameCodePage==0);
-            var entry=(Button)owner.FindName("FilenameEncodingAction");Check("actual ZIP encoding entry available",entry.IsEnabled);
-            await Entry(main,entry);Check("apply modifies only selected task",task.FilenameCodePage==936 && main.IsIdle && !task.Completed && task.VerificationResult is null);
+            Check("actual ZIP encoding entry available",main.FilenameEncodingCommand.CanExecute(null));
+            await Entry(main,owner);Check("apply modifies only selected task",task.FilenameCodePage==936 && main.IsIdle && !task.Completed && task.VerificationResult is null);
             var another=Path.Combine(data,"another.zip");File.Copy(zip,another);main.AddFiles([another]);Check("other ZIP task retains default",main.Tasks.Last().FilenameCodePage==0);
-            main.SelectedTask=task;await Layout(owner);mode="cancel";await Entry(main,entry);Check("cancel preserves applied codepage",task.FilenameCodePage==936);
-            mode="parent-cancel";await Entry(main,entry);Check("parent cancellation closes modal and retains encoding",main.IsIdle && task.FilenameCodePage==936);
+            main.SelectedTask=task;await Layout(owner);mode="cancel";await Entry(main,owner);Check("cancel preserves applied codepage",task.FilenameCodePage==936);
+            mode="parent-cancel";await Entry(main,owner);Check("parent cancellation closes modal and retains encoding",main.IsIdle && task.FilenameCodePage==936);
             main.Tasks.Remove(main.Tasks.Last());main.BrowseArchiveCommand.Execute(null);await main.WaitForIdleAsync();
             main.TestArchiveCommand.Execute(null);await main.WaitForIdleAsync();Check("actual standalone test succeeds with applied encoding",task.VerificationResult?.IsSuccess==true);
             main.OutputPath=Path.Combine(data,"output");main.AutoTry=false;main.ExtractCommand.Execute(null);await main.WaitForIdleAsync();
             Check("actual main extraction names and bytes agree with preview",task.Completed && File.ReadAllText(Path.Combine(main.OutputPath,expected))=="actual content");
             var reopened=new MainViewModel(baseDirectory,data,new DpapiPasswordVault(Path.Combine(data,"passwords.apv")),new WindowDialogs(owner));await reopened.InitializeAsync();reopened.AddFiles([zip]);
             Check("new queue does not inherit previous archive encoding",reopened.Tasks.Single().FilenameCodePage==0);
-            var nonzip=Path.Combine(data,"sample.7z");File.WriteAllText(nonzip,"synthetic");main.AddFiles([nonzip]);main.SelectedTask=main.Tasks.Last();await Layout(owner);Check("non ZIP entry disabled",!entry.IsEnabled);
+            var nonzip=Path.Combine(data,"sample.7z");File.WriteAllText(nonzip,"synthetic");main.AddFiles([nonzip]);main.SelectedTask=main.Tasks.Last();await Layout(owner);Check("non ZIP entry disabled",!main.FilenameEncodingCommand.CanExecute(null));
             var failure=new FilenameEncodingViewModel(zip,0,(_,_)=>Task.FromResult(new EngineResult {Code="filename_encoding_unsupported"}));failure.PreviewCommand.Execute(null);await failure.WaitForIdleAsync();
             Check("unsupported engine explicit error and apply unavailable",!failure.CanApply && failure.Status.Contains("不支持"));
             var gate=new TaskCompletionSource<EngineResult>();var receivedCancellation=false;
@@ -77,11 +77,21 @@ internal static class DesktopEncodingValidation
         finally {if(modal is {IsVisible:true}) {modal.Model.Cancel();await modal.Model.WaitForIdleAsync();modal.Close();}theme.Apply(false);}
         await File.WriteAllTextAsync(Path.Combine(root,"artifacts/encoding-ui-validation.json"),JsonSerializer.Serialize(new {passed=checks.Count>0 && checks.Values.All(value=>value),total=checks.Count,checks,syntheticFiles=true},new JsonSerializerOptions {WriteIndented=true}));return checks.Count>0 && checks.Values.All(value=>value);
     }
-    private static async Task Entry(MainViewModel main,Button entry)
+    private static async Task Entry(MainViewModel main,MainWindow window)
     {
         var done=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         System.ComponentModel.PropertyChangedEventHandler changed=(_,args)=>{if(args.PropertyName==nameof(MainViewModel.IsIdle) && main.IsIdle) done.TrySetResult();};
-        main.PropertyChanged+=changed;try {System.Windows.Input.CommandManager.InvalidateRequerySuggested();await Layout(Window.GetWindow(entry));Invoke(entry);await done.Task.WaitAsync(TimeSpan.FromSeconds(30));}finally {main.PropertyChanged-=changed;}
+        main.PropertyChanged+=changed;
+        try
+        {
+            System.Windows.Input.CommandManager.InvalidateRequerySuggested();await Layout(window);
+            window.TaskContextMenu.PlacementTarget=window.ArchiveTasks;window.TaskContextMenu.IsOpen=true;await Layout(window);
+            var entry=window.TaskEncodingAction;
+            if(!DesktopMenuValidation.Reachable(entry) || !entry.IsEnabled)throw new InvalidOperationException("Actual filename encoding menu entry is unavailable.");
+            ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(entry)!.GetPattern(PatternInterface.Invoke)).Invoke();
+            await done.Task.WaitAsync(TimeSpan.FromSeconds(30));
+        }
+        finally {window.TaskContextMenu.IsOpen=false;main.PropertyChanged-=changed;}
     }
     private static void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
     private static async Task Layout(Window window)=>await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);

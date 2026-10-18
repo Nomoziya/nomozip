@@ -19,7 +19,7 @@
     <Border Grid.ColumnSpan="2" Background="{DynamicResource ChromeBrush}">
       <StackPanel x:Name="HashHeading" Margin="24,36,24,20">
         <DockPanel>
-          <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" IsEnabled="{Binding IsIdle}" Style="{StaticResource SubtleButton}"/>
+          <Button x:Name="HashCloseButton" DockPanel.Dock="Right" Content="{loc:Text T_3fd47edce45b}" Click="OnClose" Style="{StaticResource SubtleButton}"/>
           <StackPanel Orientation="Horizontal">
             <loc:FluentIcon x:Name="HashPageIcon" Kind="Wrench" Width="34" Height="34" Foreground="{DynamicResource AccentBrush}" Margin="0,0,24,0"/>
             <TextBlock x:Name="HashPageTitle" Text="{loc:Text T_b3d70cc43d2a}" VerticalAlignment="Center" Style="{StaticResource PageTitle}"/>
