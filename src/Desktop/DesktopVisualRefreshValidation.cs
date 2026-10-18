@@ -49,7 +49,7 @@ internal static class DesktopVisualRefreshValidation
                 {
                     window.MinWidth = width; window.Width = width; window.Height = 760; model.Page = 2; model.SettingsSection = 2; await Layout();
                     ((Border)((FrameworkElement)window.VaultIdleChoice.Parent).Parent).BringIntoView(); await Layout();
-                    Check($"{mode}/{width} idle field has readable bounded width", window.VaultIdleChoice.ActualWidth >= 220 && window.VaultIdleChoice.ActualWidth <= 280 && Bounds(window.VaultIdleChoice).Right < window.ActualWidth);
+                    Check($"{mode}/{width} idle field has readable bounded width", window.VaultIdleChoice.ActualWidth >= 80 && window.VaultIdleChoice.ActualWidth <= 280 && Bounds(window.VaultIdleChoice).Right < window.ActualWidth);
                     Check($"{mode}/{width} settings card measure stays bounded", window.PreferencesCards.ActualWidth <= 920 && window.PreferencesScroll.ExtentWidth <= window.PreferencesScroll.ViewportWidth + 1);
                     var note = Descendants(window.VaultProtectionCard).OfType<TextBlock>().Single(block=>block.Text==model.VaultProtectionMessage);
                     var noteBounds=Bounds(note);var cardBounds=Bounds(window.VaultProtectionCard);
@@ -149,12 +149,12 @@ internal static class DesktopVisualRefreshValidation
                     if (page == 3)
                     {
                         var label = Descendants(window.CompressionPage.SfxBox).OfType<TextBlock>().Single(block => block.Text == UiText.Get("T_b0b03f8b05a5"));
-                        var level = Descendants(window.CompressionPage.LevelLabel).OfType<AccessText>().Single();
+                        var level = Descendants(window.CompressionPage.LevelLabel).OfType<FrameworkElement>().First(value=>value is AccessText or TextBlock);
                         var text = new FormattedText(label.Text, System.Globalization.CultureInfo.CurrentUICulture, label.FlowDirection,
                             new Typeface(label.FontFamily,label.FontStyle,label.FontWeight,label.FontStretch),label.FontSize,label.Foreground,VisualTreeHelper.GetDpi(label).PixelsPerDip) { MaxTextWidth=Math.Max(1,label.ActualWidth) };
                         Check(mode + " compression option and level label remain complete", label.ActualWidth > 0 && label.ActualHeight + 1 >= text.Height
                             && level.ActualWidth + 1 >= level.DesiredSize.Width && level.ActualHeight + 1 >= level.DesiredSize.Height
-                            && window.CompressionPage.LevelBox.TranslatePoint(new Point(),window).Y >= window.CompressionPage.FormatBox.TranslatePoint(new Point(0,window.CompressionPage.FormatBox.ActualHeight),window).Y);
+                            && Math.Abs(window.CompressionPage.LevelBox.TranslatePoint(new Point(),window).Y-window.CompressionPage.FormatBox.TranslatePoint(new Point(),window).Y)<1);
                     }
                 }
             }

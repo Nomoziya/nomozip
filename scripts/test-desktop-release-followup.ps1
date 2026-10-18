@@ -33,6 +33,7 @@ Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
 & "$taskRoot/scripts/build-shell-test-client.ps1" -Architecture $Architecture -Library -Source "$taskRoot/tests/ArchitectureValidation/notification.cpp" -Output "$taskApp/NativeNotificationProbe.dll"
 & "$taskRoot/scripts/prepare-pause-ui-fixture.ps1"
+if($env:GITHUB_OUTPUT){'prepared=true' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8}
 }
 $taskApp=Join-Path $taskRoot 'artifacts/test-app'
 $taskFailures=[Collections.Generic.List[string]]::new()
