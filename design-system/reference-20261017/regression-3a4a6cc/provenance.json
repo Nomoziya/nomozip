@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "file": "x64-before-hashes-512x360.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\regression-5dad789-x64-cases\\dpi-preview\\hashes-512x360.png",
+      "sourceCommit": "5dad789",
+      "run": "39118026172",
+      "sha256": "2bbc50407da7357abab54669ec09920662052d39e766271755d1045ee7692f0f"
+    },
+    {
+      "file": "x64-before-contents-512x360.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\regression-5dad789-x64-cases\\dpi-preview\\contents-512x360.png",
+      "sourceCommit": "5dad789",
+      "run": "39118026172",
+      "sha256": "a50629b1271939ef015448b55b64a7222c3e3a0d3db6669147d616e95a53eed2"
+    },
+    {
+      "file": "x64-after-hashes-512x360.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\regression-3a4a6cc-x64\\desktop\\dpi-preview\\hashes-512x360.png",
+      "sourceCommit": "3a4a6cc",
+      "run": "39119519251",
+      "sha256": "afd4be5571747222f2b87610083f0d40ca95de8e7c4a87674ef28be878f4775a"
+    },
+    {
+      "file": "x64-after-contents-512x360.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\regression-3a4a6cc-x64\\desktop\\dpi-preview\\contents-512x360.png",
+      "sourceCommit": "3a4a6cc",
+      "run": "39119519251",
+      "sha256": "06e8705b56d9c36b39e807e8552ce4b55b7a5d078e362b04969a8294559d96be"
+    },
+    {
+      "file": "arm64-after-hashes-512x360.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\regression-3a4a6cc-arm64\\desktop\\dpi-preview\\hashes-512x360.png",
+      "sourceCommit": "3a4a6cc",
+      "run": "39119519425",
+      "sha256": "afd4be5571747222f2b87610083f0d40ca95de8e7c4a87674ef28be878f4775a"
+    },
+    {
+      "file": "arm64-after-contents-512x360.png",
+      "source": "D:\\Codex\\7zip-password\\artifacts\\regression-3a4a6cc-arm64\\desktop\\dpi-preview\\contents-512x360.png",
+      "sourceCommit": "3a4a6cc",
+      "run": "39119519425",
+      "sha256": "06e8705b56d9c36b39e807e8552ce4b55b7a5d078e362b04969a8294559d96be"
+    }
+  ],
+  "reviewed": "Final x64 and ARM64 tiny hash/browser screenshots viewed; unchanged normal-size design reused.",
+  "automatedSummary": "D:\\Codex\\7zip-password\\artifacts\\release-0.3.0-regression-review-3a4a6cc.json",
+  "published": false
+}
