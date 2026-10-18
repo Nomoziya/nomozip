@@ -1,12 +1,12 @@
-# nomozip 0.3.0 UI 修改入口
+# nomozip 0.3.1 UI 修改入口
 
-本次界面已获用户授权随0.3.0正式发布。以后在既有样式内扩展时，从本页开始；历史候选和早期概念仅供比较，不能覆盖当前基准。
+0.3.0采用的界面延续至0.3.1，新增共享按钮内容遮挡修复，已获用户授权发布。以后在既有样式内扩展时，从本页开始；历史候选和早期概念仅供比较，不能覆盖当前基准。
 
 ## 基准与优先级
 
 1. 当前运行资源：`src/Desktop/App.xaml`、`ThemeResources.cs`、`WindowChromeResources.xaml`、`ActionMenuResources.xaml`和各页面XAML。
-2. [采用稿、补充参数和验收历史](../design-system/reference-20261017/MASTER.md)，按最新阶段覆盖旧阶段；[实际截图对照](../design-system/reference-20261017/index.html)。产品源码基准3a4a6cc，发行冻结版本见v0.3.0标签。
-3. [从当前源码提取的资源快照](../design-system/reference-20261017/release-0.3.0/resources.json)，记录命名样式、原始Setter、颜色和来源文件SHA；它是检索快照，修改应回到WPF资源。
+2. [采用稿、补充参数和验收历史](../design-system/reference-20261017/MASTER.md)，按最新阶段覆盖旧阶段；[实际截图对照](../design-system/reference-20261017/index.html)。整体布局基准3a4a6cc，按钮修复07632d7；0.3.1冻结源码见v0.3.1标签。
+3. [从当前源码提取的资源快照](../design-system/reference-20261017/release-0.3.0/resources.json)，记录命名样式、原始Setter、颜色和来源文件SHA；它保留0.3.0原始检索快照；0.3.1按钮模板按本页和button-content-20261018实际原图补充，修改应回到WPF资源。
 
 参数冲突时先查看该控件当前实现与对应实际截图。原型布局不能强制覆盖后续已经确认的密码库、表单和极小窗口修正。改变已确认方向，先提交具体设计供用户确认。
 

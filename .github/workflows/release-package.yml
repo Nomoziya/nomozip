@@ -51,23 +51,23 @@ jobs:
           ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker
       - name: Validate actual primary flows and prepare synthetic upgrade data
         run: ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}' -Flags validate -SkipLanguages
-      - name: Validate actual 0.2.1 upgrade and uninstall with the release payload
+      - name: Validate actual 0.3.0 upgrade and uninstall with the release payload
         run: |
           Copy-Item -LiteralPath artifacts/app -Destination artifacts/light-app -Recurse
           ./scripts/bootstrap-installer.ps1 -Architecture '${{ matrix.architecture }}'
-          ./scripts/test-stable-upgrade.ps1 -Architecture '${{ matrix.architecture }}'
+          ./scripts/test-stable-upgrade.ps1 -PreviousVersion '0.3.0' -Architecture '${{ matrix.architecture }}'
       - name: Package and review native release and canonical sources
         run: |
           git restore --worktree -- engines
-          ./scripts/build-release.ps1 -Architecture '${{ matrix.architecture }}' -ApplicationDirectory artifacts/light-app -OutputDirectory 'artifacts/release-0.3.0-${{ matrix.architecture }}' -Python python
+          ./scripts/build-release.ps1 -Architecture '${{ matrix.architecture }}' -ApplicationDirectory artifacts/light-app -OutputDirectory 'artifacts/release-0.3.1-${{ matrix.architecture }}' -Python python
       - uses: actions/upload-artifact@v7
         with:
-          name: approved-0.3.0-${{ matrix.architecture }}-release
-          path: artifacts/release-0.3.0-${{ matrix.architecture }}/*
+          name: approved-0.3.1-${{ matrix.architecture }}-release
+          path: artifacts/release-0.3.1-${{ matrix.architecture }}/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: approved-0.3.0-${{ matrix.architecture }}-reports
+          name: approved-0.3.1-${{ matrix.architecture }}-reports
           path: artifacts/*validation.json
           if-no-files-found: ignore
