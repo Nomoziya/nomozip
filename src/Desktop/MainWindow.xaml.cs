@@ -63,7 +63,8 @@ public partial class MainWindow : Window
             CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
-            ExtractionLayout.Height = Math.Max(200, ExtractionViewport.ActualHeight);
+            ExtractionLayout.Height = Math.Max(0, ExtractionViewport.ActualHeight);
+            DefaultOutputPanel.Width = Math.Min(360, Math.Max(160, PreferencesScroll.ActualWidth-200));
             ExtractionViewport.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
             SettingsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             ListRow.Height = new GridLength(1, GridUnitType.Star);
@@ -73,6 +74,7 @@ public partial class MainWindow : Window
         }
         SizeChanged += (_, _) => ArrangePanels();
         ExtractionViewport.SizeChanged += (_, _) => ArrangePanels();
+        PreferencesScroll.SizeChanged += (_, _) => ArrangePanels();
         Loaded += (_, _) => ArrangePanels();
     }
     private async void OnDrop(object sender, DragEventArgs e)

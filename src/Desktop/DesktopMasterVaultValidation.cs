@@ -25,7 +25,7 @@ internal static class DesktopMasterVaultValidation
         try
         {
             await vault.SaveAsync(record);await EncryptedVaultBackup.ExportAsync(portable,[record],"synthetic portable password 2026");
-            var dialogs=new WindowDialogs(window,prepareDialog:dialog=>Prepare(dialog,async()=>{dialog.SecretBox.Password=record.Secret;await Layout(dialog);Invoke(dialog.ContinueButton);}),
+            var dialogs=new WindowDialogs(window,prepareDialog:dialog=>Prepare(dialog,async()=>{dialog.SecretBox.Password=record.Secret;dialog.ConfirmationBox.Password=record.Secret;await Layout(dialog);Invoke(dialog.ContinueButton);}),
                 selectVaultBackup:_=>portable,prepareVaultBackup:dialog=>Prepare(dialog,async()=>{dialog.SecretBox.Password=wrongBackup?"wrong":"synthetic portable password 2026";await Layout(dialog);Invoke(dialog.ContinueButton);}),
                 prepareVaultImport:dialog=>Prepare(dialog,async()=>{await Layout(dialog);Check("recovery preview excludes secret",dialog.PreviewTable.Columns.All(column=>!column.Header.ToString()!.Contains("密码")));Invoke(dialog.ImportButton);}),
                 prepareMaster:dialog=>Prepare(dialog,async()=>
@@ -100,13 +100,13 @@ internal static class DesktopMasterVaultValidation
     }
     private static async Task Capture(Window window,string path,double scale)
     {
-        var content=(Panel)window.Content;var hadBackground=content.Background is not null;if(!hadBackground)content.SetResourceReference(Panel.BackgroundProperty,"SurfaceBrush");
+        var content=(FrameworkElement)window.Content;var panel=content as Panel;var hadBackground=panel?.Background is not null;if(panel is not null && !hadBackground)panel.SetResourceReference(Panel.BackgroundProperty,"SurfaceBrush");
         await Layout(window);var width=content.ActualWidth+content.Margin.Left+content.Margin.Right;var height=content.ActualHeight+content.Margin.Top+content.Margin.Bottom;
         var raw=new RenderTargetBitmap((int)Math.Ceiling(width*scale),(int)Math.Ceiling(height*scale),96*scale,96*scale,PixelFormats.Pbgra32);raw.Render(content);
         var visual=new DrawingVisual();using(var drawing=visual.RenderOpen())
         {drawing.DrawRectangle(window.Background ?? (Brush)window.FindResource("SurfaceBrush"),null,new Rect(0,0,width,height));drawing.DrawImage(raw,new Rect(0,0,width,height));}
         var bitmap=new RenderTargetBitmap(raw.PixelWidth,raw.PixelHeight,96*scale,96*scale,PixelFormats.Pbgra32);bitmap.Render(visual);
-        var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));using var output=File.Create(path);encoder.Save(output);if(!hadBackground)content.ClearValue(Panel.BackgroundProperty);
+        var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));using var output=File.Create(path);encoder.Save(output);if(panel is not null && !hadBackground)panel.ClearValue(Panel.BackgroundProperty);
     }
     private static void Prepare(Window dialog,Func<Task> action){dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.ShowActivated=false;dialog.ShowInTaskbar=false;dialog.Opacity=0;dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(async()=>await action());}
     private static void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();

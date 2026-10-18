@@ -29,7 +29,7 @@ internal static class DesktopFormatValidation
                 var dialogs=new WindowDialogs(window,confirmEngineUpdate:(_,_)=>false,prepareDialog:dialog=>
                 {
                     dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;dialog.ShowInTaskbar=false;
-                    dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>{prompts++;dialog.SecretBox.Password="Synthetic-password";dialog.SavePassword.IsChecked=true;Invoke(dialog.ContinueButton);});
+                    dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>{prompts++;dialog.SecretBox.Password="Synthetic-password";dialog.ConfirmationBox.Password=dialog.SecretBox.Password;dialog.SavePassword.IsChecked=true;Invoke(dialog.ContinueButton);});
                 });
                 var model=new MainViewModel(baseDirectory,Path.Combine(data,"state-"+version),vault,dialogs);window.DataContext=model;
                 await model.InitializeAsync();model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();

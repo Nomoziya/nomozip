@@ -28,7 +28,7 @@ internal static class DesktopSfxValidation
                     dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=-32000;dialog.Top=-32000;dialog.Opacity=0;dialog.ShowActivated=false;dialog.ShowInTaskbar=false;
                     dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
                     {
-                        prompts++;if(prompts>1) dialog.SavedBox.SelectedIndex=0;else {dialog.SecretBox.Password="SFX 密码";dialog.SavePassword.IsChecked=true;dialog.NameBox.Text="SFX fixture";}
+                        prompts++;if(prompts>1) dialog.SavedBox.SelectedIndex=0;else {dialog.SecretBox.Password="SFX 密码";dialog.ConfirmationBox.Password=dialog.SecretBox.Password;dialog.SavePassword.IsChecked=true;dialog.NameBox.Text="SFX fixture";}
                         Invoke(dialog.ContinueButton);
                     });
                 });

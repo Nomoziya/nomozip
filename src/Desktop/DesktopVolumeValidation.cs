@@ -30,7 +30,7 @@ internal static class DesktopVolumeValidation
                     dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
                     {
                         prompts++;if(prompts>1) dialog.SavedBox.SelectedIndex=0;
-                        else {dialog.SecretBox.Password="volume-password";dialog.SavePassword.IsChecked=true;dialog.NameBox.Text="volume fixture";}
+                        else {dialog.SecretBox.Password="volume-password";dialog.ConfirmationBox.Password=dialog.SecretBox.Password;dialog.SavePassword.IsChecked=true;dialog.NameBox.Text="volume fixture";}
                         Invoke(dialog.ContinueButton);
                     });
                 });

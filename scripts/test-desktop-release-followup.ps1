@@ -1,5 +1,5 @@
 param([ValidateSet('x64','arm64')][string]$Architecture = 'x64',
-    [string[]]$Flags=@('validate','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-queue','validate-pause','validate-checkpoints','validate-master-vault'),
+    [string[]]$Flags=@('validate','validate-vault-transfer','validate-password-organization','validate-file-hashes','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-selection','validate-encoding','validate-origin','validate-dpi','validate-queue','validate-concurrency','validate-pause','validate-notifications','validate-sfx','validate-formats','validate-volumes','validate-checkpoints','validate-drag-out','validate-content-preview','validate-conversion','validate-archive-editing','validate-master-vault'),
     [switch]$SkipPrepare,[switch]$SkipLanguages)
 $ErrorActionPreference='Stop'
 if($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted'){throw 'Release follow-up requires disposable CI.'}
@@ -29,6 +29,7 @@ $taskApp=Join-Path $taskRoot 'artifacts/test-app'
 New-Item -ItemType Directory -Force $taskApp | Out-Null
 Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
+& "$taskRoot/scripts/build-shell-test-client.ps1" -Architecture $Architecture -Library -Source "$taskRoot/tests/ArchitectureValidation/notification.cpp" -Output "$taskApp/NativeNotificationProbe.dll"
 & "$taskRoot/scripts/prepare-pause-ui-fixture.ps1"
 }
 $taskApp=Join-Path $taskRoot 'artifacts/test-app'

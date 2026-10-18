@@ -28,6 +28,7 @@ internal static class DesktopAccessibilityValidation
         {
             model.Tasks.Clear(); model.CompressionSources.Clear(); model.EngineVersions.Clear();
             model.LoadPreview(); model.SelectedPassword = model.PasswordRows.First(); model.SelectedTask = model.Tasks.First();
+            var previewPasswordCount=model.PasswordRows.Count;
             // Exercise a populated vault without reading or persisting user data.
             for (var index = 0; index < 16; index++)
                 model.PasswordRows.Add(new ArchivePassword.Core.SavedPassword(Guid.NewGuid(), index % 2 == 0 ? "未命名密码" : "资料备份 " + index,
@@ -56,7 +57,7 @@ internal static class DesktopAccessibilityValidation
                         var action = (Button)window.FindName("ExtractAction");
                         var settings = (ScrollViewer)window.FindName("SettingsScroll");
                         Check($"extraction width {width} fixed primary action", action.IsVisible && action.IsEnabled
-                            && !Ancestors(action).Any(parent => parent is ScrollViewer));
+                            && !Ancestors(action).OfType<ScrollViewer>().Any(scroll=>scroll.VerticalScrollBarVisibility!=ScrollBarVisibility.Disabled));
                         window.PrepareExtractionOptionsForValidation=dialog=>
                         {
                             dialog.WindowStartupLocation=WindowStartupLocation.Manual;dialog.Left=dialog.Top=-32000;dialog.ShowActivated=false;dialog.Opacity=0;
@@ -91,8 +92,9 @@ internal static class DesktopAccessibilityValidation
                         var table = (DataGrid)window.FindName("PasswordTable");
                         var row = (DataGridRow)table.ItemContainerGenerator.ContainerFromIndex(0);
                         var name = Descendants(row).OfType<TextBlock>().First(block => block.Text == model.PasswordRows[0].Name);
-                        var bounds = name.TransformToAncestor(row).TransformBounds(new Rect(name.RenderSize));
-                        Check($"vault width {width} compact centered populated rows", model.PasswordRows.Count == 17 && row.ActualHeight <= 50
+                        var textGroup=(FrameworkElement)name.Parent;
+                        var bounds = textGroup.TransformToAncestor(row).TransformBounds(new Rect(textGroup.RenderSize));
+                        Check($"vault width {width} compact centered populated rows", model.PasswordRows.Count == previewPasswordCount+16 && row.ActualHeight <= 50
                             && Math.Abs(bounds.Top + bounds.Height / 2 - row.ActualHeight / 2) <= 2);
                         var scroll = Descendants(table).OfType<ScrollViewer>().First();
                         Check($"vault width {width} columns fit without horizontal scroll", scroll.ExtentWidth <= scroll.ViewportWidth + 1);
@@ -106,8 +108,11 @@ internal static class DesktopAccessibilityValidation
                     {
                         var peer = UIElementAutomationPeer.CreatePeerForElement(control);
                         var name = peer?.GetName() ?? "";
-                        named &= !string.IsNullOrWhiteSpace(name) && peer!.IsKeyboardFocusable() && KeyboardNavigation.GetIsTabStop(control);
-                        labels.Add(name);
+                        var keyboardControl=control is ComboBox {IsEditable:true} combo && combo.Template.FindName("PART_EditableTextBox",combo) is TextBox edit?edit:control;
+                        var keyboardPeer=UIElementAutomationPeer.CreatePeerForElement(keyboardControl);
+                        var keyboardReachable=keyboardPeer?.IsKeyboardFocusable()==true && KeyboardNavigation.GetIsTabStop(keyboardControl);
+                        named &= !string.IsNullOrWhiteSpace(name) && keyboardReachable;
+                        labels.Add($"{name} ({control.GetType().Name}; keyboard={keyboardReachable})");
                         control.BringIntoView(); await Layout();
                         var bounds = control.TransformToAncestor(window).TransformBounds(new Rect(control.RenderSize));
                         reachable &= bounds.Width > 0 && bounds.Height > 0 && bounds.Left >= -1 && bounds.Top >= -1

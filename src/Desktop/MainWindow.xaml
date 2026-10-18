@@ -905,8 +905,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                   </Grid.ColumnDefinitions>
-                  <TextBlock Text="{loc:Text Settings.DefaultOutput}" VerticalAlignment="Center"/>
-                  <Grid Grid.Column="1" Width="360">
+                  <TextBlock Text="{loc:Text Settings.DefaultOutput}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,12,0"/>
+                  <Grid x:Name="DefaultOutputPanel" Grid.Column="1" Width="360">
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="*"/>
                       <ColumnDefinition Width="Auto"/>

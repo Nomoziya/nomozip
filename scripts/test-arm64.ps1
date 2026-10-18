@@ -1,3 +1,4 @@
+param([switch]$SkipDesktop)
 # Native product acceptance only on disposable GitHub ARM64 Windows machines.
 $ErrorActionPreference = 'Stop'
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ARCH -ne 'ARM64' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'ARM64 integration acceptance requires the disposable native runner.' }
@@ -36,6 +37,7 @@ foreach ($taskProject in @('CoreValidation','UpdateValidation')) {
 }
 & $taskDotnet "$taskRoot/tests/CliValidation/bin/Debug/net10.0-windows/CliValidation.dll" $taskRoot "$taskRoot/artifacts/app"
 if ($LASTEXITCODE -ne 0) { $taskFailures.Add('console entry') }
+if(-not $SkipDesktop){
 $taskApp=Join-Path $taskRoot 'artifacts/test-app';New-Item -ItemType Directory -Force $taskApp | Out-Null
 Copy-Item "$taskRoot/artifacts/app/*" $taskApp -Recurse -Force
 Copy-Item "$taskAssets/public.pem" "$taskApp/update-public-key.pem" -Force
@@ -59,6 +61,7 @@ Invoke-DesktopAcceptance 'validate-application-updates' 'en'
 try { & "$taskRoot/scripts/test-visual-refresh.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: visual refresh: $_") }
 try { & "$taskRoot/scripts/test-localization-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: localization: $_") }
 try { & "$taskRoot/scripts/test-theme-ui.ps1" -ApplicationDirectory $taskApp } catch { $taskFailures.Add("desktop: theme: $_") }
+}
 # ARM64 SDK builds AnyCPU fixture code; the separately verified x64 runtime actually writes old vaults.
 $taskMetadata=Invoke-RestMethod 'https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json'
 $taskRuntime=($taskMetadata.releases | Where-Object { $_.runtime.version -eq '10.0.12' } | Select-Object -First 1).runtime.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name -eq 'dotnet-runtime-win-x64.zip' } | Select-Object -First 1

@@ -41,7 +41,7 @@
                     <TextBlock Text="{loc:Text T_ad9daebe00dc}" VerticalAlignment="Center"/>
                   </StackPanel>
                 </Button>
-                <Button Command="{Binding AddCompressionFolderCommand}" Margin="0,0,8,4" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
+                <Button Command="{Binding AddCompressionFolderCommand}" AutomationProperties.Name="{loc:Text T_45da2d9c85d1}" Margin="0,0,8,4" Background="{DynamicResource SelectionBrush}" Foreground="{DynamicResource SelectionTextBrush}">
                   <StackPanel Orientation="Horizontal">
                     <loc:FluentIcon Kind="FolderAdd" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" Width="20" Height="20" Margin="0,0,10,0"/>
                     <TextBlock Text="{loc:Text T_45da2d9c85d1}" VerticalAlignment="Center"/>
@@ -258,7 +258,7 @@
                     <Grid Margin="0,12,0,0">
                       <Grid.ColumnDefinitions><ColumnDefinition x:Name="ParametersLabelColumn" Width="72"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                       <Label Content="{loc:Text Compression.Parameters}" Padding="0" VerticalAlignment="Center"/>
-                      <TextBox Grid.Column="1" Text="{loc:Text Compression.GeneratedParameters}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center"/>
+                      <TextBox Grid.Column="1" Text="{loc:Text Compression.GeneratedParameters}" AutomationProperties.Name="{loc:Text Compression.Parameters}" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center"/>
                     </Grid>
                     <CheckBox x:Name="EncryptBox" Content="{loc:Text T_b4de1e4ddf02}" IsChecked="{Binding CompressionEncrypt}" IsEnabled="{Binding CanEncryptCompression}" Margin="72,12,0,0" VerticalAlignment="Center"/>
                   </StackPanel>

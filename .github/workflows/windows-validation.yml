@@ -14,6 +14,10 @@ on:
         description: 'Explicitly include an upstream engine update in this manual run'
         type: boolean
         default: false
+      data_only:
+        description: 'Validate data, CLI and system integration; desktop command suite runs separately'
+        type: boolean
+        default: false
   schedule:
     - cron: '17 3 * * *'
 
@@ -113,7 +117,8 @@ jobs:
       - name: Validate vault, updates and desktop command flows
         if: always() && steps.desktop_build.outcome == 'success'
         run: |
-          ./scripts/test.ps1 -SkipEngineValidation
+          $taskDataOnly='${{ inputs.data_only }}' -eq 'true'
+          ./scripts/test.ps1 -SkipEngineValidation -SkipDesktop:$taskDataOnly
           & ./.tools/dotnet/dotnet.exe tests/AssociationValidation/bin/Debug/net10.0-windows/AssociationValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'File association validation failed.' }
       - name: Validate origin preservation on an isolated exFAT virtual disk

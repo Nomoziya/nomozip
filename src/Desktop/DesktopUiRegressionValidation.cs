@@ -20,7 +20,7 @@ internal static class DesktopUiRegressionValidation
         var output = Path.Combine(root, "artifacts/accessibility-preview");
         Directory.CreateDirectory(output);
         async Task Layout() => await window.Dispatcher.InvokeAsync(() => window.UpdateLayout(), DispatcherPriority.ApplicationIdle);
-        model.Page = 0; window.Width = 1120; window.Height = 760;
+        model.Page = 0; model.Banner=""; window.MinWidth=1120; window.Width = 1120; window.Height = 760;
         await Layout();
         var table = (DataGrid)window.FindName("ArchiveTasks");
         var tablePeer = (DataGridAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(table)!;
@@ -32,9 +32,9 @@ internal static class DesktopUiRegressionValidation
             checks[$"UIA row announces {Path.GetExtension(task.Name)} filename size status"] = peer.GetName().Contains(task.Name)
                 && peer.GetName().Contains(task.SizeText) && peer.GetName().Contains(task.Status);
             var cells = peer.GetChildren().OfType<DataGridCellItemAutomationPeer>().ToArray();
-            checks[$"UIA cells announce {Path.GetExtension(task.Name)} filename and column"] = cells.Length == 2
+            checks[$"UIA cells announce {Path.GetExtension(task.Name)} filename and column"] = cells.Length == table.Columns.Count(column=>column.Visibility==Visibility.Visible)
                 && cells.All(cell => cell.GetName().Contains(task.Name))
-                && cells.Any(cell => cell.GetName().Contains("文件")) && cells.Any(cell => cell.GetName().Contains("状态"));
+                && cells.Any(cell => cell.GetName().Contains(UiText.Get("T_d44e9b3d3b31"))) && cells.Any(cell => cell.GetName().Contains(UiText.Get("Task.ProgressState")));
         }
         var selected = model.Tasks.First(); var previousStatus = selected.Status;
         selected.Status = "已取消"; await Layout();

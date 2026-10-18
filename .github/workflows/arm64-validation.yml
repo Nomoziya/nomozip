@@ -1,6 +1,11 @@
 name: Native Windows ARM64 validation
 on:
   workflow_dispatch:
+    inputs:
+      data_only:
+        description: 'Validate native data, CLI and system integration; desktop commands run separately'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -43,7 +48,9 @@ jobs:
           if-no-files-found: ignore
       - name: Native data desktop updates and x64 vault migration
         if: always() && steps.native_build.outcome == 'success'
-        run: ./scripts/test-arm64.ps1
+        run: |
+          $taskDataOnly='${{ inputs.data_only }}' -eq 'true'
+          ./scripts/test-arm64.ps1 -SkipDesktop:$taskDataOnly
       - name: Native traditional Shell selection and Explorer menu
         if: always() && steps.native_build.outcome == 'success'
         run: |

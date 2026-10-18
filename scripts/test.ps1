@@ -1,4 +1,4 @@
-param([switch]$SkipEngineValidation)
+param([switch]$SkipEngineValidation,[switch]$SkipDesktop)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $env:DOTNET_CLI_HOME = Join-Path $taskRoot '.tools/dotnet-home'
@@ -152,6 +152,7 @@ Copy-Item $taskTestPublic (Join-Path $taskTestApp 'update-public-key.pem') -Forc
 $taskApplication = Join-Path $taskTestApp 'ArchivePassword.exe'
 & $taskDotnet (Join-Path $taskRoot 'tests/CliValidation/bin/Debug/net10.0-windows/CliValidation.dll') $taskRoot $taskTestApp
 if ($LASTEXITCODE -ne 0) { throw 'Console and batch entry validation failed.' }
+if(-not $SkipDesktop){
 & (Join-Path $PSScriptRoot 'prepare-pause-ui-fixture.ps1')
 $taskDesktopFailures=[Collections.Generic.List[string]]::new()
 function Invoke-DesktopAcceptance([string[]]$TaskArguments,[string]$TaskDescription) {
@@ -199,3 +200,4 @@ try { & (Join-Path $taskRoot "scripts/test-localization-ui.ps1") -ApplicationDir
 
 try { & (Join-Path $taskRoot "scripts/test-theme-ui.ps1") -ApplicationDirectory (Split-Path $taskApplication -Parent) } catch { $taskDesktopFailures.Add($_.ToString()) }
 if ($taskDesktopFailures.Count) { throw "Desktop acceptance failures: $($taskDesktopFailures -join '; ')" }
+}

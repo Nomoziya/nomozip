@@ -54,7 +54,7 @@ internal static class DesktopLocalizationValidation
                 Hide(dialog);dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
                 {
                     prompts++;Check("password dialog translated "+prompts,dialog.Title==(english?"Set archive password":"设置压缩密码"));
-                    dialog.SecretBox.Password="本次 Unicode ' $ & 密码";dialog.SavePassword.IsChecked=true;dialog.NameBox.Text="压缩密码";Invoke(dialog.ContinueButton);
+                    dialog.SecretBox.Password="本次 Unicode ' $ & 密码";dialog.ConfirmationBox.Password=dialog.SecretBox.Password;dialog.SavePassword.IsChecked=true;dialog.NameBox.Text="压缩密码";Invoke(dialog.ContinueButton);
                 });
             });
             var model=new MainViewModel(baseDirectory,profile,vault,dialogs);window.DataContext=model;await model.InitializeAsync();

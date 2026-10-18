@@ -99,7 +99,7 @@ internal static class DesktopArchiveEditingValidation
     private static bool Fits(FrameworkElement parent,FrameworkElement item) {var bounds=item.TransformToAncestor(parent).TransformBounds(new Rect(item.RenderSize));return bounds.Top>=0 && bounds.Bottom<=parent.ActualHeight+1 && bounds.Left>=0 && bounds.Right<=parent.ActualWidth+1;}
     private static async Task Capture(Window window,string path)
     {
-        var content=(Panel)window.Content;content.SetResourceReference(Panel.BackgroundProperty,"SurfaceBrush");await Layout(window);
+        var content=(FrameworkElement)window.Content;if(content is Panel panel)panel.SetResourceReference(Panel.BackgroundProperty,"SurfaceBrush");await Layout(window);
         var width=content.ActualWidth+content.Margin.Left+content.Margin.Right;var height=content.ActualHeight+content.Margin.Top+content.Margin.Bottom;
         var raw=new RenderTargetBitmap((int)Math.Ceiling(width),(int)Math.Ceiling(height),96,96,PixelFormats.Pbgra32);raw.Render(content);
         var visual=new DrawingVisual();using(var drawing=visual.RenderOpen()) {drawing.DrawRectangle(window.Background,null,new Rect(0,0,width,height));drawing.DrawImage(raw,new Rect(0,0,width,height));}
