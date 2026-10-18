@@ -46,3 +46,10 @@
 - [候选清单](../design-system/UI_CANDIDATES.json)逐项记录原始ZIP、源码提交、SHA256与状态。标注被替代/未采用的包仅供历史复现，不宣称通过当前完整验收。
 
 [0.3.0发行附件](https://github.com/Nomoziya/nomozip/releases/tag/v0.3.0)同时保存设计资料ZIP、原始历史候选ZIP合集、可恢复Git源码历史bundle及回归证据。SHA256SUMS覆盖这些附件。Git bundle可用`git clone <文件> nomozip-history`在新目录还原，再切到清单对应提交；候选使用独立测试配置，不能覆盖正式安装或真实库。
+
+
+## 隐私清理后的历史源码查找
+
+2026-10-19经用户授权，公开历史中的两个脚本改为USERPROFILE相对查找，不再保存本机用户名路径。原始CI提交、截图来源和候选文件名保持不变；[HISTORY_COMMIT_MAP.json](../design-system/HISTORY_COMMIT_MAP.json)给出336项新旧提交映射。候选清单的sourceCommit保留原值，cleanSourceCommit可直接检出脱敏后的等价源码；原始43个ZIP的SHA不变。
+
+0.3.1原CI构建为d26e6f4，清理后的发行标签指向537237e，两者源文件树完全一致；程序的信息版本后缀保留原CI身份。0.3.0历史bundle已替换为脱敏版本，下载时同时保留发行附件中的nomozip-history-commit-map-20261019.json。原始未脱敏备份仅本地保存，禁止从旧工作区重新推送旧refs。

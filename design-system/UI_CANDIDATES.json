@@ -16,7 +16,8 @@
       "sourceCommit": "f76d5f9a9fb140c844acf4fed69ef179fdbe2d3f",
       "status": "alternative-not-adopted",
       "files": 7,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "54f06b38fcd990b878680effb58d130b897763a9"
     },
     {
       "path": "ui-option2-candidate-7a050a7/x64/nomozip-ui-option2-prototype-x64.zip",
@@ -25,7 +26,8 @@
       "sourceCommit": "7a050a735a1a40d8a483ac29efe115e3c33db608",
       "status": "alternative-not-adopted",
       "files": 7,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "5da300e1855ca8fd294dde484d4e11839bbd9c55"
     },
     {
       "path": "ui-redesign-candidate-0a09be9/arm64/nomozip-ui-redesign-arm64.zip",
@@ -34,7 +36,8 @@
       "sourceCommit": "0a09be93c26e5aba3c09da24dfb00a45012e8819",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "a642cda67c7d9b2f930bc49d816614a83f95c962"
     },
     {
       "path": "ui-redesign-candidate-0a09be9/x64/nomozip-ui-redesign-x64.zip",
@@ -43,7 +46,8 @@
       "sourceCommit": "0a09be93c26e5aba3c09da24dfb00a45012e8819",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "a642cda67c7d9b2f930bc49d816614a83f95c962"
     },
     {
       "path": "ui-redesign-candidate-3667c99/arm64/nomozip-ui-redesign-arm64.zip",
@@ -52,7 +56,8 @@
       "sourceCommit": "3667c997b1353bc245a9d5b68a767874a43575f9",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "12b6004dd020b4aa8965250d4bd15bd33a7fbe9d"
     },
     {
       "path": "ui-redesign-candidate-3667c99/x64/nomozip-ui-redesign-x64.zip",
@@ -61,7 +66,8 @@
       "sourceCommit": "3667c997b1353bc245a9d5b68a767874a43575f9",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "12b6004dd020b4aa8965250d4bd15bd33a7fbe9d"
     },
     {
       "path": "ui-redesign-candidate-592263b/arm64/nomozip-ui-redesign-arm64.zip",
@@ -70,7 +76,8 @@
       "sourceCommit": "592263ba724a6d34d269eec1301ab4820026e7f8",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "9551c504086cf6f92b6cbcbf159e9fec080be5df"
     },
     {
       "path": "ui-redesign-candidate-592263b/x64/nomozip-ui-redesign-x64.zip",
@@ -79,7 +86,8 @@
       "sourceCommit": "592263ba724a6d34d269eec1301ab4820026e7f8",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "9551c504086cf6f92b6cbcbf159e9fec080be5df"
     },
     {
       "path": "ui-redesign-candidate-7012c92/arm64/nomozip-ui-redesign-arm64.zip",
@@ -88,7 +96,8 @@
       "sourceCommit": "7012c9244f2e53d00e977bb1214bcb4af1e21f93",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "f86b77f2580e9bc0e84536eab41702185efe6b38"
     },
     {
       "path": "ui-redesign-candidate-7012c92/x64/nomozip-ui-redesign-x64.zip",
@@ -97,7 +106,8 @@
       "sourceCommit": "7012c9244f2e53d00e977bb1214bcb4af1e21f93",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "f86b77f2580e9bc0e84536eab41702185efe6b38"
     },
     {
       "path": "ui-redesign-candidate-84e99f1/arm64/nomozip-ui-redesign-arm64.zip",
@@ -106,7 +116,8 @@
       "sourceCommit": "84e99f17903c1b059bf3fa7fe32c017630caa7a3",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "0d6e3f4670a8af70b3d79cb78dea4e3af5039abe"
     },
     {
       "path": "ui-redesign-candidate-84e99f1/x64/nomozip-ui-redesign-x64.zip",
@@ -115,7 +126,8 @@
       "sourceCommit": "84e99f17903c1b059bf3fa7fe32c017630caa7a3",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "0d6e3f4670a8af70b3d79cb78dea4e3af5039abe"
     },
     {
       "path": "ui-redesign-candidate-888994f/arm64/nomozip-ui-redesign-arm64.zip",
@@ -124,7 +136,8 @@
       "sourceCommit": "888994f7c6a97a5af0e1ff5d5354324a23050b3d",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "ad376d6a4b5e8b77c8f50ce2e0cfa90c1981d8d1"
     },
     {
       "path": "ui-redesign-candidate-888994f/x64/nomozip-ui-redesign-x64.zip",
@@ -133,7 +146,8 @@
       "sourceCommit": "888994f7c6a97a5af0e1ff5d5354324a23050b3d",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "ad376d6a4b5e8b77c8f50ce2e0cfa90c1981d8d1"
     },
     {
       "path": "ui-redesign-candidate-9598fe2/arm64/nomozip-ui-redesign-arm64.zip",
@@ -142,7 +156,8 @@
       "sourceCommit": "9598fe231396b9df1a05b1da82d2818bf84efb01",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "549481634fd95fd090344a44f1b4e2dae9ddcce3"
     },
     {
       "path": "ui-redesign-candidate-9598fe2/x64/nomozip-ui-redesign-x64.zip",
@@ -151,7 +166,8 @@
       "sourceCommit": "9598fe231396b9df1a05b1da82d2818bf84efb01",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "549481634fd95fd090344a44f1b4e2dae9ddcce3"
     },
     {
       "path": "ui-redesign-candidate-9b2e521/arm64/nomozip-ui-redesign-arm64.zip",
@@ -160,7 +176,8 @@
       "sourceCommit": "9b2e5212135de02e55f0411eddf316e491d47b01",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "bb0e4d8f469fdfa512a99f44b18a830c535d36b7"
     },
     {
       "path": "ui-redesign-candidate-9b2e521/x64/nomozip-ui-redesign-x64.zip",
@@ -169,7 +186,8 @@
       "sourceCommit": "9b2e5212135de02e55f0411eddf316e491d47b01",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "bb0e4d8f469fdfa512a99f44b18a830c535d36b7"
     },
     {
       "path": "ui-redesign-candidate-a223bc0/arm64/nomozip-ui-redesign-arm64.zip",
@@ -178,7 +196,8 @@
       "sourceCommit": "a223bc0d5a63f67e64bb07f7f896ff11f6acf616",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "3884d7cc2a33e28a76376ccdf6738835d4f169a1"
     },
     {
       "path": "ui-redesign-candidate-a223bc0/x64/nomozip-ui-redesign-x64.zip",
@@ -187,7 +206,8 @@
       "sourceCommit": "a223bc0d5a63f67e64bb07f7f896ff11f6acf616",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "3884d7cc2a33e28a76376ccdf6738835d4f169a1"
     },
     {
       "path": "ui-redesign-candidate-ad9f2ea/arm64/nomozip-ui-redesign-arm64.zip",
@@ -196,7 +216,8 @@
       "sourceCommit": "ad9f2ea9ae28ac3a4d24a3cc6e1afe92601d932e",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "88b1bd47d866c29e622a8504b16a59f867618d4a"
     },
     {
       "path": "ui-redesign-candidate-ad9f2ea/x64/nomozip-ui-redesign-x64.zip",
@@ -205,7 +226,8 @@
       "sourceCommit": "ad9f2ea9ae28ac3a4d24a3cc6e1afe92601d932e",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "88b1bd47d866c29e622a8504b16a59f867618d4a"
     },
     {
       "path": "ui-redesign-candidate-b7a77e0/arm64/nomozip-ui-redesign-arm64.zip",
@@ -214,7 +236,8 @@
       "sourceCommit": "b7a77e07f31f1c0e8ed2025b958ae9a291d9e932",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "403d8a7d23877cb176b5f8025b6f62c23a3afbf9"
     },
     {
       "path": "ui-redesign-candidate-b7a77e0/x64/nomozip-ui-redesign-x64.zip",
@@ -223,7 +246,8 @@
       "sourceCommit": "b7a77e07f31f1c0e8ed2025b958ae9a291d9e932",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "403d8a7d23877cb176b5f8025b6f62c23a3afbf9"
     },
     {
       "path": "ui-redesign-candidate-f15922e/arm64/nomozip-ui-redesign-arm64.zip",
@@ -232,7 +256,8 @@
       "sourceCommit": "f15922e98cee05a0474f1c62b72bf9e32f60ddf4",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "01bb0ab74e6b174a0810522a8eaf28c5a5a55f9c"
     },
     {
       "path": "ui-redesign-candidate-f15922e/x64/nomozip-ui-redesign-x64.zip",
@@ -241,7 +266,8 @@
       "sourceCommit": "f15922e98cee05a0474f1c62b72bf9e32f60ddf4",
       "status": "earlier-withdrawn-design",
       "files": 39,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "01bb0ab74e6b174a0810522a8eaf28c5a5a55f9c"
     },
     {
       "path": "ui-reference-candidate-2f08f39/x64/nomozip-ui-redesign-x64.zip",
@@ -250,7 +276,8 @@
       "sourceCommit": "2f08f390b65feb95a5cbe56dc6dcc89e8ab69e1e",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "3a1deb58de19d61f9828268520c0845a49f0f467"
     },
     {
       "path": "ui-reference-candidate-35c3376/x64/nomozip-ui-redesign-x64.zip",
@@ -259,7 +286,8 @@
       "sourceCommit": "35c3376581121b56bf561e83c9e09c41d7fd13cf",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "547e04f5799fd018c501d13e331514ca8e8891ea"
     },
     {
       "path": "ui-reference-candidate-5da5616/x64/nomozip-ui-redesign-x64.zip",
@@ -268,7 +296,8 @@
       "sourceCommit": "5da56161e216a398b8ff2cd140177a47fecc2eea",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "b44f0f18fa9020ec76febeb3f36a72732e7a5ca3"
     },
     {
       "path": "ui-reference-candidate-684b914/x64/nomozip-ui-redesign-x64.zip",
@@ -277,7 +306,8 @@
       "sourceCommit": "684b914edbf56ad746db3dba34b04681bca089b8",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "4b921365f98fb7100f8294bcbcaf9a0d8fc50826"
     },
     {
       "path": "ui-reference-candidate-6b89431/x64/nomozip-ui-reference-prototype-x64.zip",
@@ -286,7 +316,8 @@
       "sourceCommit": "6b894316d540b4416bfe29e8b218aa4ed3b071a0",
       "status": "superseded-product-or-prototype-candidate",
       "files": 8,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "01783bec08bde6913eb9455d5192fb6dc6ab8ba3"
     },
     {
       "path": "ui-reference-candidate-7e76439/arm64/nomozip-ui-redesign-arm64.zip",
@@ -295,7 +326,8 @@
       "sourceCommit": "7e76439f58a980a443c890dc0a58bb6782221cd9",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "4ff014d9d01d18a18b1b05358f584873663a9c0c"
     },
     {
       "path": "ui-reference-candidate-967175a/x64/nomozip-ui-reference-prototype-x64.zip",
@@ -304,7 +336,8 @@
       "sourceCommit": "967175a4274835fbfefeb75a6b30718051dfa41c",
       "status": "superseded-product-or-prototype-candidate",
       "files": 8,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "383fbdd87fb4e673c7b7c7a80921d0e5dd2e323a"
     },
     {
       "path": "ui-reference-candidate-9c52303/x64/nomozip-ui-reference-prototype-x64.zip",
@@ -313,7 +346,8 @@
       "sourceCommit": "9c523038dfee16f532f3c2ce7f125546659336f8",
       "status": "superseded-product-or-prototype-candidate",
       "files": 8,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "512110624c8106029738916b7101dc7b732bec03"
     },
     {
       "path": "ui-reference-candidate-c631d22/x64/nomozip-ui-reference-prototype-x64.zip",
@@ -322,7 +356,8 @@
       "sourceCommit": "c631d2202bbd18b60611005716b7745da48f5c73",
       "status": "superseded-product-or-prototype-candidate",
       "files": 8,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "23f1622aa841c0c2969f1f2a2d0f5268dfed158b"
     },
     {
       "path": "ui-reference-candidate-c78515f/x64/nomozip-ui-reference-prototype-x64.zip",
@@ -331,7 +366,8 @@
       "sourceCommit": "c78515fc71d4e651b3d28de70822a8f8b7798ce3",
       "status": "superseded-product-or-prototype-candidate",
       "files": 8,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "345f99ac40e7243fa4ba38ff05162ba8cf852092"
     },
     {
       "path": "ui-reference-candidate-ddb0e07/x64/nomozip-ui-redesign-x64.zip",
@@ -340,7 +376,8 @@
       "sourceCommit": "ddb0e071eb5bc7e68e6b4b0b54beb6f95ac538e6",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "fba760bca891020720b3354f38d97365d1ca5b17"
     },
     {
       "path": "ui-reference-candidate-fec274b/x64/nomozip-ui-reference-prototype-x64.zip",
@@ -349,7 +386,8 @@
       "sourceCommit": "fec274bd781be2f9ffaffbd57750ba684eeded5e",
       "status": "superseded-product-or-prototype-candidate",
       "files": 8,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "847c130e9a40f09d43fde427d17688d4f411939d"
     },
     {
       "path": "ui-form-fit-candidate-0803363/arm64/nomozip-ui-redesign-arm64.zip",
@@ -358,7 +396,8 @@
       "sourceCommit": "08033631af53e7e9212edf862383398b5c078a96",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "fd56c25a79f7a4f89869ee39c8bb764f0b193176"
     },
     {
       "path": "ui-form-fit-candidate-0803363/x64/nomozip-ui-redesign-x64.zip",
@@ -367,7 +406,8 @@
       "sourceCommit": "08033631af53e7e9212edf862383398b5c078a96",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "fd56c25a79f7a4f89869ee39c8bb764f0b193176"
     },
     {
       "path": "ui-form-width-candidate-b5871c0/x64/nomozip-ui-redesign-x64.zip",
@@ -376,7 +416,8 @@
       "sourceCommit": "b5871c0360c895aae91825c77cadd31ff09a97b5",
       "status": "superseded-product-or-prototype-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "c903a453450d4a6e3c5695e6b98e20e7bfd14574"
     },
     {
       "path": "regression-candidate-3a4a6cc/arm64/nomozip-ui-redesign-arm64.zip",
@@ -385,7 +426,8 @@
       "sourceCommit": "3a4a6cc361d9812a31743b59c985984ea2a53d01",
       "status": "current-tested-product-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "dc631b392fc1feff8567f5e6df0bbb10dfbb26e6"
     },
     {
       "path": "regression-candidate-3a4a6cc/x64/nomozip-ui-redesign-x64.zip",
@@ -394,7 +436,11 @@
       "sourceCommit": "3a4a6cc361d9812a31743b59c985984ea2a53d01",
       "status": "current-tested-product-candidate",
       "files": 40,
-      "crcPassed": true
+      "crcPassed": true,
+      "cleanSourceCommit": "dc631b392fc1feff8567f5e6df0bbb10dfbb26e6"
     }
-  ]
+  ],
+  "historyRewriteMap": "HISTORY_COMMIT_MAP.json",
+  "cleanProductBaselineCommit": "dc631b392fc1feff8567f5e6df0bbb10dfbb26e6",
+  "historyRewriteNote": "Original sourceCommit and CI evidence remain unchanged. Use cleanSourceCommit or HISTORY_COMMIT_MAP.json after the authorized 2026-10-19 history redaction."
 }
