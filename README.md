@@ -10,14 +10,14 @@
 
 当前正式版为 **0.3.2，Windows x64 / ARM64**。仅提供共享运行库轻量版：
 
-| 架构 | 安装版 | 便携版 |
-| --- | --- | --- |
-| x64（多数 Intel / AMD 电脑） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.3.2/nomozip-0.3.2-light-setup-win-x64.exe) | [ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.3.2/nomozip-0.3.2-light-win-x64.zip) |
-| ARM64（Windows on Arm） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.3.2/nomozip-0.3.2-light-setup-win-arm64.exe) | [ZIP](https://github.com/Nomoziya/nomozip/releases/download/v0.3.2/nomozip-0.3.2-light-win-arm64.zip) |
+| 架构 | 安装包 |
+| --- | --- |
+| x64（多数 Intel / AMD 电脑） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.3.2/nomozip-0.3.2-light-setup-win-x64.exe) |
+| ARM64（Windows on Arm） | [EXE](https://github.com/Nomoziya/nomozip/releases/download/v0.3.2/nomozip-0.3.2-light-setup-win-arm64.exe) |
 
-需要对应架构的 [.NET 10 Windows Desktop Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)（10.0.12 或更新的 10.0 补丁版），无需安装 SDK。安装包与程序 ZIP 均不包含系统共享运行库。
+需要对应架构的 [.NET 10 Windows Desktop Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)（10.0.12 或更新的 10.0 补丁版），无需安装 SDK。安装包不包含系统共享运行库。
 
-安装版用于安装或升级，保留密码库与设置；便携版解压到新目录，运行 `ArchivePassword.exe`。`engine-*` 发行仅供程序更新引擎，请下载带 `nomozip` 名称的软件包。
+安装包用于安装或升级，保留密码库与设置。正式发行默认仅附x64/ARM64安装包及SHA256校验清单；源码、样式规范与历史候选保留在仓库和历史发行中。`engine-*` 发行仅供程序更新引擎，请下载带 `nomozip` 名称的软件包。
 
 ## 正式版功能
 
