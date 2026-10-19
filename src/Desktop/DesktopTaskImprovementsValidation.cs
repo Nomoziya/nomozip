@@ -104,10 +104,15 @@ internal static class DesktopTaskImprovementsValidation
             model.AddFiles(inputs);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++)rows[index].ShellOutputPath=Path.Combine(data,"output-"+index);
             await Layout();Invoke(window.ExtractAction);await Until(()=>rows.Take(2).All(row=>row.Running && row.Percent>0));
             model.SelectedTask=rows[0];await Menu(window.TaskPauseAction);await Until(()=>rows[0].Paused);
+            await Layout();
+            var pausedActions=Descendants(window.ArchiveTasks).OfType<Button>().Where(button=>Equals(button.Tag,"TaskPrimary") && ReferenceEquals(button.DataContext,rows[0])).Append(window.SelectedTaskPrimary).ToArray();
+            Check("paused row and detail actions use Fluent play icon",pausedActions.Length==2 && pausedActions.All(button=>Descendants(button).OfType<FluentIcon>().Single().Kind=="Play"));
             var pausedPercent=rows[0].Percent;await Until(()=>rows[1].Completed);
             Check("single pause leaves sibling progressing",rows[0].Running && !rows[0].Completed && rows[0].Percent==pausedPercent && rows[1].Completed);
             model.ToggleQueuePauseCommand.Execute(null);Check("global pause disables local resume",!model.ToggleSelectedTaskPauseCommand.CanExecute(null));
+            await Layout();Check("paused queue action uses Fluent play icon",Descendants(window.QueuePauseAction).OfType<FluentIcon>().Single().Kind=="Play");
             model.ToggleQueuePauseCommand.Execute(null);Check("global resume retains local pause",rows[0].PauseRequested);
+            await Layout();Check("running queue action restores pause icon",Descendants(window.QueuePauseAction).OfType<FluentIcon>().Single().Kind=="Pause");
             await Layout();Capture("single-task-paused");await Menu(window.TaskCancelAction);await model.WaitForIdleAsync().WaitAsync(TimeSpan.FromSeconds(90));
             Check("single cancel keeps other tasks and queued task successful",!rows[0].Completed && rows[0].Failure?.Status=="cancelled" && rows.Skip(1).All(row=>row.Completed));
             Check("single cancellation clears running and pause state",rows.All(row=>!row.Running && !row.PauseRequested));
@@ -140,5 +145,10 @@ internal static class DesktopTaskImprovementsValidation
         var report=new {passed=error is null && checks.Values.All(value=>value),language,architecture=EngineArchitecture.Current,checks,viewports,error};
         await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/task-improvements-ui-{language}-validation.json"),JsonSerializer.Serialize(report,new JsonSerializerOptions {WriteIndented=true}));
         return report.passed;
+    }
+    private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
+    {
+        for(var index=0;index<VisualTreeHelper.GetChildrenCount(parent);index++)
+        {var child=VisualTreeHelper.GetChild(parent,index);yield return child;foreach(var descendant in Descendants(child))yield return descendant;}
     }
 }

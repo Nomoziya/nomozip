@@ -656,6 +656,7 @@
         <Setter Property="SelectionMode" Value="Single"/>
       </Style>
       <DataTemplate x:Key="PauseActionContent"><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Pause" Foreground="{DynamicResource AccentBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{Binding}" VerticalAlignment="Center"/></StackPanel></DataTemplate>
+      <DataTemplate x:Key="ResumeActionContent"><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="Play" Foreground="{DynamicResource AccentBrush}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"/><TextBlock Text="{Binding}" VerticalAlignment="Center"/></StackPanel></DataTemplate>
       <Style x:Key="BreadcrumbButton" TargetType="Button" BasedOn="{StaticResource SubtleButton}">
         <Setter Property="MinWidth" Value="24"/><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="4,2"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/>

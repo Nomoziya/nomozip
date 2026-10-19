@@ -211,14 +211,16 @@
             <TextBlock Text="{Binding WorkspaceTaskSummary}" Style="{StaticResource Secondary}" Visibility="Collapsed"/>
           </StackPanel>
         </DockPanel>
-        <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,10" Margin="0" Background="Transparent"><DockPanel><WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right"><Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" ContentTemplate="{StaticResource PauseActionContent}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
+        <Border Grid.Row="1" Style="{StaticResource WorkspaceCard}" Padding="24,0,24,10" Margin="0" Background="Transparent"><DockPanel><WrapPanel DockPanel.Dock="Right" HorizontalAlignment="Right"><Button x:Name="QueuePauseAction" Content="{Binding QueuePauseCaption}" Command="{Binding ToggleQueuePauseCommand}" Margin="0,0,8,4" ToolTip="{loc:Text T_a7e0c50c814f}">
               <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                   <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsQueuePaused}" Value="True"><Setter Property="ContentTemplate" Value="{StaticResource ResumeActionContent}"/></DataTrigger>
                     <DataTrigger Binding="{Binding CanPauseQueue}" Value="True">
                       <Setter Property="Visibility" Value="Visible"/>
                     </DataTrigger>
                   </Style.Triggers>
+                  <Setter Property="ContentTemplate" Value="{StaticResource PauseActionContent}"/>
                   <Setter Property="Visibility" Value="Visible"/>
                 </Style>
               </Button.Style>
@@ -360,6 +362,7 @@
                                       <Setter Property="IsEnabled" Value="{Binding DataContext.CanToggleTaskPause,RelativeSource={RelativeSource AncestorType=Window}}"/>
                                       <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/><Setter Property="ContentTemplate" Value="{StaticResource PauseActionContent}"/><Setter Property="ToolTip" Value="{loc:Text TaskControl.ScopeHint}"/>
                                     </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding PauseRequested}" Value="True"><Setter Property="ContentTemplate" Value="{StaticResource ResumeActionContent}"/></DataTrigger>
                                     <MultiDataTrigger>
                                       <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Running}" Value="True"/>
@@ -435,6 +438,7 @@
                                 <Setter Property="IsEnabled" Value="{Binding DataContext.CanToggleTaskPause,RelativeSource={RelativeSource AncestorType=Window}}"/>
                                 <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/><Setter Property="ContentTemplate" Value="{StaticResource PauseActionContent}"/><Setter Property="ToolTip" Value="{loc:Text TaskControl.ScopeHint}"/>
                               </MultiDataTrigger>
+                              <DataTrigger Binding="{Binding PauseRequested}" Value="True"><Setter Property="ContentTemplate" Value="{StaticResource ResumeActionContent}"/></DataTrigger>
                               <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                   <Condition Binding="{Binding Running}" Value="True"/>
