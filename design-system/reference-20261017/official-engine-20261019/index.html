@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nomozip · 官方引擎源候选验收</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#202b3b;font:15px/1.65 "Segoe UI","Microsoft YaHei UI",sans-serif}main{max-width:1600px;margin:auto;padding:28px}h1{font-size:26px;margin:0 0 12px}h2{font-size:18px;margin:24px 0 12px}p{margin:8px 0}a{color:#0069c8}section{background:white;border:1px solid #dbe1e8;border-radius:8px;padding:20px;margin:20px 0}label{display:inline-block;margin:0 18px 12px 0}select{font:inherit;padding:6px 10px;display:block;min-width:120px}figure{margin:0;min-width:0}figcaption{margin:0 0 8px;color:#526175}.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px}img{display:block;width:100%;height:auto;border:1px solid #dbe1e8}summary{cursor:pointer}.overlay{position:relative}.overlay img+img{position:absolute;inset:0;opacity:.5}input[type=range]{width:260px;vertical-align:middle}code{font-size:13px;overflow-wrap:anywhere}.note{color:#526175}table{border-collapse:collapse;width:100%;text-align:left}td,th{border-bottom:1px solid #e1e5ea;padding:8px}@media(max-width:1000px){.pair{grid-template-columns:1fr}main{padding:16px}}
+</style>
+<main>
+<h1>nomozip · 官方引擎源候选</h1>
+<p>现有签名源保留为默认，可选择 7-Zip 官方源。核验官方 SHA-256、原生架构、版本与加密压缩/解压后启用；保留回退，自动清理临时安装包。</p>
+<p><a href="https://github.com/Nomoziya/nomozip/actions/runs/39246197040">x64 CI与候选</a> · <a href="https://github.com/Nomoziya/nomozip/actions/runs/39247100549">ARM64 CI与候选</a> · <a href="provenance.json">原图、报告与候选来源清单</a> · <a href="../../../docs/UI_STYLE_GUIDE.md">统一 UI 参数</a> · <a href="../index.html">设计历史</a></p>
+<section>
+<h2>实际软件截图</h2>
+<label>架构<select id="arch"><option>x64</option><option>arm64</option></select></label>
+<label>语言<select id="lang"><option value="zh-CN">简体中文</option><option value="en">English</option></select></label>
+<label>窗口尺寸<select id="size"><option value="1152">1152 × 768</option><option value="800">800 × 600</option></select></label>
+<label>主题<select id="theme"><option value="light">浅色</option><option value="dark">深色</option></select></label>
+<div class="pair">
+<figure><figcaption>nomozip 已验证源</figcaption><a id="verifiedLink" target="_blank"><img id="verified" alt="已验证源实际界面"></a></figure>
+<figure><figcaption>7-Zip 官方源 · 已更新至最新</figcaption><a id="officialLink" target="_blank"><img id="official" alt="官方源实际界面"></a></figure>
+</div>
+<p id="dimensions" class="note"></p>
+<details><summary>叠加检查（两种来源状态）</summary><p>透明度 <input id="opacity" type="range" min="0" max="100" value="50"></p><div class="overlay"><img id="overlayBase" alt="签名源底图"><img id="overlayTop" alt="官方源叠加图"></div></details>
+</section>
+<section><h2>与上一候选比较</h2><p class="note">上一候选 08bce29；同语言、主题、窗口尺寸和标准预览内容，默认签名源。新增控件导致卡片高度变化；原图用于核对字体、间距、配色与布局。</p><div class="pair"><figure><figcaption>修改前</figcaption><img id="baseline" alt="上一候选的更新设置原图"></figure><figure><figcaption>本次默认来源</figcaption><img id="product" alt="本次更新设置的标准预览原图"></figure></div></section>
+<section><h2>失败状态</h2><p>下载内容被改动时保留当前引擎，移除临时包并允许重试。下图保留测试时实际窗口尺寸，详见原始报告。</p><img id="failure" alt="官方包校验失败的实际界面"></section>
+<section><h2>阶段验收与剩余范围</h2><p id="acceptance">x64 CI39246197040 与原生 ARM64 CI39247100549 均成功，源码 f2ec68a。每架构：官方源39、签名源29、新流程中英各47、产品中英各476、自解压38、软件更新中英各82、资源37。保存56份原图、24份原报告；用户验收待定，尚未发布。</p><ul><li>真实公共网络下载由 OfficialEngineValidation 检查；UI 使用官方原包和隔离 HTTP 响应，检查实际按钮、绑定及安装流程。</li><li>检查取消、篡改、确认拒绝、安装与回退、重启记忆、密码库字节保持及临时文件清理。UIA 调用不冒充物理鼠标。</li><li>官方源仍通过 GitHub 下载；本机保护的校验记录不等同 nomozip 的发布签名，也不保证跨 Windows 用户迁移。</li><li>正式发布、用户体验、物理混合 DPI 和交互式读屏由对应验收决定；本任务不修改正式发行和自动任务。</li></ul></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function render(){const arch=$('arch').value,lang=$('lang').value,size=$('size').value,theme=$('theme').value,base=`${arch}/${lang}/`;const verified=base+`verified-${theme}-${size}.png`,official=base+`official-current-${theme}-${size}.png`;
+for(const id of ['verified','overlayBase'])$(id).src=verified;for(const id of ['official','overlayTop'])$(id).src=official;$('verifiedLink').href=verified;$('officialLink').href=official;$('baseline').src=`../task-improvements-20261019/${arch}/${lang}/product/${theme}-${size}-settings-4.png`;$('product').src=`${arch}/product/${lang}/${theme}-${size}-settings-4.png`;$('failure').src=base+'official-failure.png';}
+for(const id of ['arch','lang','size','theme'])$(id).addEventListener('change',render);
+$('official').addEventListener('load',()=>{$('dimensions').textContent=`原图 ${$('official').naturalWidth} × ${$('official').naturalHeight} 像素；窗口含 1 DIP 集成边框，精确尺寸与环境保存在原报告。点击图片可查看原尺寸。`;});$('opacity').addEventListener('input',()=>{$('overlayTop').style.opacity=$('opacity').value/100;});render();
+</script>
+</html>

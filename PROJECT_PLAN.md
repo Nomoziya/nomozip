@@ -12,6 +12,8 @@
 
 依据：7-Zip官网 https://www.7-zip.org/download.html 指向官方GitHub且提供x64/ARM64；GitHub资产API https://docs.github.com/en/rest/releases/assets 提供digest。2026-10-19当前26.04两架构均有SHA256。官方源不承诺绕过GitHub；其校验来自官方HTTPS发布元数据，离线持久校验记录由当前Windows用户DPAPI保护，不冒充nomozip发布签名。
 
+O1/O2完成：生产实现db672a5（含官方通用x86 SFX及ZIP ASCII密码自检修正），来源持久化、清除旧检查、真实提取/兼容性检查与回退已接入。最终候选来源f2ec68a；310eeb9仅补同尺寸同状态截图，f2ec68a仅为CI元数据查询增加临时只读令牌，产品请求不增加凭据要求。x64 CI39246197040已成功：官方源39、原签名源29、新UI中英各47、产品中英各476、SFX38、软件更新中英各82、资源37。原生ARM64 CI39247100549同源码也已成功，另有原生架构33和合成库3+7+7。O3自动检查、代表图复核与候选核对完成；[统一验收页](design-system/reference-20261017/official-engine-20261019/index.html)保留56张原图、24份原报告及剩余范围，用户体验验收待定，不自动发布。
+
 ## 2026-10-19：0.3.1 后续功能（候选完成，等待用户验收）
 
 用户授权上一轮优先建议三项，并追加更新安装包手动清理。工作目录 `.tools/privacy-clean-worktree-20261019`，独立分支 `codex/task-controls-backup-20261019`，起点9023926，正式标签与原候选保留。与v0.3.1的既有差异仅发行记录及历史映射。

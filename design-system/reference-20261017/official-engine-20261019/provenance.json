@@ -1,0 +1,814 @@
+{
+  "createdUtc": "2026-10-19T12:00:29.876940+00:00",
+  "branch": "codex/official-engine-source-20261019",
+  "sourceCommit": "f2ec68ab7584d0b1618bc2b59cd1c58b3fd7c10b",
+  "productImplementation": "db672a5",
+  "uiCaptureImplementation": "310eeb9",
+  "status": "candidate-ready-awaiting-user-acceptance",
+  "released": false,
+  "runs": [
+    {
+      "id": 39246197040,
+      "sourceCommit": "f2ec68ab7584d0b1618bc2b59cd1c58b3fd7c10b",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39246197040"
+    },
+    {
+      "id": 39247100549,
+      "sourceCommit": "f2ec68ab7584d0b1618bc2b59cd1c58b3fd7c10b",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39247100549"
+    }
+  ],
+  "stages": {
+    "O1 official metadata, download and verification": "passed",
+    "O2 activation, source selection, persistence and rollback": "passed",
+    "O3 affected isolated validation and representative visual review": "passed; user acceptance pending"
+  },
+  "candidates": [
+    {
+      "architecture": "x64",
+      "package": "artifacts/ci-f2ec68a-x64/candidate/nomozip-ui-redesign-x64.zip",
+      "bytes": 4769913,
+      "sha256": "a4296c8e727736a759f7a30f5bd344f9a6c0a5d5c576106e389200ac25a2aa03",
+      "files": 40,
+      "checks": {
+        "reports\\application-update-en-ui-validation.json": {
+          "passed": true,
+          "total": 82
+        },
+        "reports\\application-update-ui-validation.json": {
+          "passed": true,
+          "total": 82
+        },
+        "reports\\localization-validation.json": {
+          "passed": true,
+          "total": 37
+        },
+        "reports\\official-engine-ui-en-validation.json": {
+          "passed": true,
+          "total": 47
+        },
+        "reports\\official-engine-ui-zh-CN-validation.json": {
+          "passed": true,
+          "total": 47
+        },
+        "reports\\official-engine-validation.json": {
+          "passed": true,
+          "total": 39
+        },
+        "reports\\sfx-ui-validation.json": {
+          "passed": true,
+          "total": 38
+        },
+        "reports\\update-validation.json": {
+          "passed": 29,
+          "total": 29
+        },
+        "product\\zh-CN\\report.json": {
+          "passed": true,
+          "total": 476
+        },
+        "product\\en\\report.json": {
+          "passed": true,
+          "total": 476
+        }
+      }
+    },
+    {
+      "architecture": "arm64",
+      "package": "artifacts/ci-f2ec68a-arm64/candidate/nomozip-ui-redesign-arm64.zip",
+      "bytes": 3956936,
+      "sha256": "1042aa4d0d27acbbf571130c1496bfa1735340e45b838a1780189dc5083f2d20",
+      "files": 40,
+      "checks": {
+        "reports\\application-update-en-ui-validation.json": {
+          "passed": true,
+          "total": 82
+        },
+        "reports\\application-update-ui-validation.json": {
+          "passed": true,
+          "total": 82
+        },
+        "reports\\localization-validation.json": {
+          "passed": true,
+          "total": 37
+        },
+        "reports\\official-engine-ui-en-validation.json": {
+          "passed": true,
+          "total": 47
+        },
+        "reports\\official-engine-ui-zh-CN-validation.json": {
+          "passed": true,
+          "total": 47
+        },
+        "reports\\official-engine-validation.json": {
+          "passed": true,
+          "total": 39
+        },
+        "reports\\sfx-ui-validation.json": {
+          "passed": true,
+          "total": 38
+        },
+        "reports\\update-validation.json": {
+          "passed": 29,
+          "total": 29
+        },
+        "product\\zh-CN\\report.json": {
+          "passed": true,
+          "total": 476
+        },
+        "product\\en\\report.json": {
+          "passed": true,
+          "total": 476
+        }
+      }
+    }
+  ],
+  "screenshotCount": 56,
+  "reportCount": 24,
+  "visualReview": {
+    "directlyViewed": [
+      "x64/product/zh-CN/light-1152-settings-4.png",
+      "x64/product/en/light-800-settings-4.png",
+      "arm64/zh-CN/official-current-light-800.png",
+      "arm64/en/official-current-dark-1152.png"
+    ],
+    "identicalToPreviouslyViewed310eeb9": [
+      "x64/zh-CN/official-current-light-1152.png",
+      "x64/en/official-current-dark-800.png"
+    ],
+    "scope": "Representative manual review; every PNG has not been manually inspected. Expected extra card height/scrollbar from the source controls."
+  },
+  "validationScope": {
+    "realNetwork": "OfficialEngineValidation --integration: read-only CI token for metadata only, anonymous installer download, real native engine probes",
+    "desktop": "Real WPF/UIA commands with official installer bytes and fixture HTTP; no physical mouse claim",
+    "unrepeated": "Full installer/registry suite unchanged; existing release evidence retained",
+    "unverified": "Physical mixed DPI, multiple displays, actual OS high-contrast switching and interactive screen-reader acceptance",
+    "local": "No desktop automation, actual installed app/vault, or production signing private key accessed"
+  },
+  "failuresRetained": [
+    {
+      "runId": 39243172293,
+      "source": "abec673",
+      "conclusion": "cancelled",
+      "reason": "replaced after verifying official common x86 SFX rule"
+    },
+    {
+      "runId": 39243545486,
+      "source": "a594250",
+      "conclusion": "failure",
+      "reason": "ZIP unicode-password self-test and ungenerated item peer; fixed in db672a5"
+    },
+    {
+      "runId": 39245061573,
+      "source": "310eeb9",
+      "conclusion": "failure",
+      "reason": "shared runner anonymous API rate limit; fixed CI-only metadata auth in f2ec68a"
+    }
+  ],
+  "files": [
+    {
+      "path": "arm64/en/official-current-dark-1152.png",
+      "bytes": 69462,
+      "sha256": "9231cd9424f91c4217029fdc8e264bfd682cc7cd78da9c9b6ab3a6ff821a5ffd",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-dark-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/official-current-dark-800.png",
+      "bytes": 46808,
+      "sha256": "df391507989d17c8b4fe1e68d66e0dc090a20b2d237ea188226d14034845b4d9",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-dark-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/official-current-light-1152.png",
+      "bytes": 70024,
+      "sha256": "694b1f87094f96cb01d7922ecbf1b315ba9a383a9d3afbdfd8d93812335adbc5",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-light-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/official-current-light-800.png",
+      "bytes": 47505,
+      "sha256": "bc4b37e36e89e11550f8ce0fe452db392ea808fc0d215857b1d7377ff96f0bf9",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-light-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/official-failure.png",
+      "bytes": 64819,
+      "sha256": "a6e086fb3a8aeb66be6b6a196032e9cb07fe0621a70238640c7152da0be6c5ac",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/official-failure.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/official-installed.png",
+      "bytes": 63280,
+      "sha256": "02760c9f04f47cf2302043be56f2fef35b66ebc311bb79fc8889f6fd58445167",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/official-installed.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/verified-dark-1152.png",
+      "bytes": 66703,
+      "sha256": "7a6bd1b6a4e47a8ad217565e27ee951a14c97a2b6d82f5be4200e53278150091",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/verified-dark-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/verified-dark-800.png",
+      "bytes": 43679,
+      "sha256": "a21512e435cb60036d3a44b2156e2511b55a47af3202b59d4c9c1784b37c97d1",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/verified-dark-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/verified-light-1152.png",
+      "bytes": 67510,
+      "sha256": "4d236d62c49aa0b459f3d190349d657dc6d8350218516b146d216ff1df506d2a",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/verified-light-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/en/verified-light-800.png",
+      "bytes": 44249,
+      "sha256": "856fc4e3f460250f272965221181e6a5750b9c3a3a645979f95b4335b6402242",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/en/verified-light-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/en/dark-1152-settings-4.png",
+      "bytes": 68332,
+      "sha256": "2bb627e7201806700d78883ee3095ee222d77a89bea7e9ab7141c647b4f166a1",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/en/dark-1152-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/en/dark-800-settings-4.png",
+      "bytes": 42354,
+      "sha256": "034eb4d27cff856156f6c9a344b9e20431ae8bfd3e29f6a6c2751fec00dfbebf",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/en/dark-800-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/en/light-1152-settings-4.png",
+      "bytes": 68749,
+      "sha256": "7bbfd0551250e3afc00a7414e9a257938a94ba97876813e97a9f59c14d352c96",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/en/light-1152-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/en/light-800-settings-4.png",
+      "bytes": 43158,
+      "sha256": "2050046872ae3f592ed3bdb9fb9525de6115d9fd89b7d91c6460cfd08970bcd3",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/en/light-800-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/en/report.json",
+      "bytes": 41563,
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/en/report.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/zh-CN/dark-1152-settings-4.png",
+      "bytes": 69038,
+      "sha256": "c4750df5e6e52c797ba1ca974dd081dd0df3413b74baf9ca517d8ff914293cba",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/dark-1152-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/zh-CN/dark-800-settings-4.png",
+      "bytes": 46672,
+      "sha256": "2b3d246e429ed54230115e06eb98a9e74ba58f12485a69042015758cc55a7ca2",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/dark-800-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/zh-CN/light-1152-settings-4.png",
+      "bytes": 69312,
+      "sha256": "6ecc8be32c2675b0a50d6210bc89705fb902df4e0a02c0014995148664ea3568",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/light-1152-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/zh-CN/light-800-settings-4.png",
+      "bytes": 47082,
+      "sha256": "414d8d0758b3c02bbc73b43226a1d73fb438f42066cb07533ceb9917691d546b",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/light-800-settings-4.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/product/zh-CN/report.json",
+      "bytes": 41563,
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/report.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/application-update-en-ui-validation.json",
+      "bytes": 4861,
+      "sha256": "0c299436b572198ed91a2064967e3add1540792b9f325ba491347e39487bbc58",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "application-update-en-ui-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/application-update-ui-validation.json",
+      "bytes": 4864,
+      "sha256": "81dc4c917a1c4e949aab58b3a0a75b233e35c9148f73ea4f2c8a692cdc53a612",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "application-update-ui-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/localization-validation.json",
+      "bytes": 2828,
+      "sha256": "0064e330eeb1a3f20b2aa7ab1f8fa2e20d7efd0d836f3c8c7e8ac768f297cef4",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "localization-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/native/architecture-validation.json",
+      "bytes": 3767,
+      "sha256": "e6277a1292b490ae08132932d800a183945f5ea81bc9b9c8c1825f4edf3ab961",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "arm64-ui-native-workspace/artifacts/architecture-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/native/export-vault-x64-validation.json",
+      "bytes": 295,
+      "sha256": "49f28bd46b460ec29024bc68f065dba9d5ef34ef7b8705aa5c08a854ec2147dc",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "arm64-ui-native-workspace/artifacts/export-vault-x64-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/native/import-vault-arm64-validation.json",
+      "bytes": 529,
+      "sha256": "4c3e92593829d0fc652e77b0d3a7fb7dd12f33b8f88f2ac5c7726e65c365fdd9",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "arm64-ui-native-workspace/artifacts/import-vault-arm64-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/native/verify-vault-x64-validation.json",
+      "bytes": 523,
+      "sha256": "a442d2215475951bfb4e754950394a87af64bf3932f2f821af693e00fc2d84ab",
+      "artifact": "ui-arm64-validation-reports",
+      "artifactPath": "arm64-ui-native-workspace/artifacts/verify-vault-x64-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/official-engine-ui-en-validation.json",
+      "bytes": 4417,
+      "sha256": "97d0e80a2e6be0ec6aa5a720fc8696230fe52d9a0141605a01e398e0f14f095b",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-ui-en-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/official-engine-ui-zh-CN-validation.json",
+      "bytes": 4420,
+      "sha256": "b54916f9ce8f26d9bd98c659c4de800ba3ceeb03de3c9c494171a30e1ead12ee",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-ui-zh-CN-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/official-engine-validation.json",
+      "bytes": 1795,
+      "sha256": "fba62fdcefde0c2c08ad6ea6d13f0634c36df9397aa0f6a94d58a2d66f21d56a",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/sfx-ui-validation.json",
+      "bytes": 2444,
+      "sha256": "c77ec7ce494870c0b30a3b7cee5684896700be37649a123d7eeefa0b4dd0644e",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "sfx-ui-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/reports/update-validation.json",
+      "bytes": 2956,
+      "sha256": "50fd0b9cf02fbeb68c838cc07c2902b8c5d64c968fbf943fc3cea9b92fabb449",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "update-validation.json",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/official-current-dark-1152.png",
+      "bytes": 70266,
+      "sha256": "0a3cb1bb973e3d69a1b4c9e3139ba69729af20dbc09b2642cab44f2af50606db",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-dark-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/official-current-dark-800.png",
+      "bytes": 49569,
+      "sha256": "16fe8b988b34a42fc232036bb03f3d9a147460a2a8872ffad39d63737661635b",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-dark-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/official-current-light-1152.png",
+      "bytes": 70909,
+      "sha256": "215ee9606c50a3c891140133a298f849a38f2980b9b6cafab2880d736e2c40e3",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-light-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/official-current-light-800.png",
+      "bytes": 50464,
+      "sha256": "3916258e7db57fd0be2b2b654556cabfe2c83b46cc1dd1afaaba978b1e69c040",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-light-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/official-failure.png",
+      "bytes": 63318,
+      "sha256": "011f1862be1ebecc156001c98739aeb2c9361358c7fbe5e98a53f630293c0dbd",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-failure.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/official-installed.png",
+      "bytes": 62896,
+      "sha256": "bf01fa08afd9b2430d0891dd124ee400ca2c0d36837ee141b07380bc12e921e6",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-installed.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/verified-dark-1152.png",
+      "bytes": 68181,
+      "sha256": "d8579a8fcad51efb46a77d1ff18cabedd1a80a361007c9dbc16d603fc8d15721",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-dark-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/verified-dark-800.png",
+      "bytes": 47553,
+      "sha256": "ea951875d22e415584acbcb56725f0f5738d15573db7e5e7b59d2220258ac37c",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-dark-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/verified-light-1152.png",
+      "bytes": 68739,
+      "sha256": "47c605b673c752fe8cb4bd1609e615ca02340f0284439206f4f9c7ab0ee94cdc",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-light-1152.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "arm64/zh-CN/verified-light-800.png",
+      "bytes": 48156,
+      "sha256": "089fe461986bbd5ef372f0b23d0a71d6ce3be572c82559182f7a8bbd34998178",
+      "artifact": "release-followup-arm64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-light-800.png",
+      "runId": 39247100549
+    },
+    {
+      "path": "x64/en/official-current-dark-1152.png",
+      "bytes": 69320,
+      "sha256": "0d36b3ec1d4717cb84aeaf2b67e8a9831e1ba2f19ef9680e21b41196708ab86c",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-dark-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/official-current-dark-800.png",
+      "bytes": 46808,
+      "sha256": "df391507989d17c8b4fe1e68d66e0dc090a20b2d237ea188226d14034845b4d9",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-dark-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/official-current-light-1152.png",
+      "bytes": 69888,
+      "sha256": "45ffa6b5ecd6b9d50b6d28488aa969ecc0214b780f7dca246fc921502ef575c4",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-light-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/official-current-light-800.png",
+      "bytes": 47505,
+      "sha256": "bc4b37e36e89e11550f8ce0fe452db392ea808fc0d215857b1d7377ff96f0bf9",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/official-current-light-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/official-failure.png",
+      "bytes": 64664,
+      "sha256": "c6f5d9edde6314a6c19563030cb3803bbab3a414d79035b9d5e470fbe49be950",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/official-failure.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/official-installed.png",
+      "bytes": 63126,
+      "sha256": "53de99c46f3f164542b6e4afecbf8a36fd267404666c67f1c1c05d707e1bd800",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/official-installed.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/verified-dark-1152.png",
+      "bytes": 66578,
+      "sha256": "45216618fc61e7c499f5b2628b6c4ecda0281d9db1bb42dec518c199492becc4",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/verified-dark-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/verified-dark-800.png",
+      "bytes": 43679,
+      "sha256": "a21512e435cb60036d3a44b2156e2511b55a47af3202b59d4c9c1784b37c97d1",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/verified-dark-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/verified-light-1152.png",
+      "bytes": 67367,
+      "sha256": "629128dd0a661c29ad2be465ce93c4a251ebcb7d50c66773c177f49eac4612b8",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/verified-light-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/en/verified-light-800.png",
+      "bytes": 44249,
+      "sha256": "856fc4e3f460250f272965221181e6a5750b9c3a3a645979f95b4335b6402242",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/en/verified-light-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/en/dark-1152-settings-4.png",
+      "bytes": 68193,
+      "sha256": "6889c6f99c84d3f344ff96626dfdc116b19215c96efd35768285b1af6e032411",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/en/dark-1152-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/en/dark-800-settings-4.png",
+      "bytes": 42242,
+      "sha256": "1111b833f1696e198c2340d83628607c7dbca77aa2c000302b3cf706017289a5",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/en/dark-800-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/en/light-1152-settings-4.png",
+      "bytes": 68615,
+      "sha256": "54066ff4721960b43cc6186c45bf70a2fffbd362b58793118a2fd96bc812fe49",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/en/light-1152-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/en/light-800-settings-4.png",
+      "bytes": 42979,
+      "sha256": "ddc659e9f1b61a5d203a9a6fe25c7ef10d3bfedc185554c0089f9bc1a419c08c",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/en/light-800-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/en/report.json",
+      "bytes": 41563,
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/en/report.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/zh-CN/dark-1152-settings-4.png",
+      "bytes": 68912,
+      "sha256": "6032defd2a6b088787471f4f48da8a317508c247adbe746152bfc34446df108c",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/dark-1152-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/zh-CN/dark-800-settings-4.png",
+      "bytes": 46497,
+      "sha256": "09b65c17c9f266dfaa8d72b7c68ddaf62fc77f7df8e8904d9c0f9423ed513684",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/dark-800-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/zh-CN/light-1152-settings-4.png",
+      "bytes": 69164,
+      "sha256": "c61ed320c15fa04e86ea9d05b9c616fcadd1c796862a0a8d7db835f376811155",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/light-1152-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/zh-CN/light-800-settings-4.png",
+      "bytes": 46889,
+      "sha256": "52550a3ca0e68bf16c5423920faad18c871f2aa97aa1d4a16bf0c973e5f4d4c5",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/light-800-settings-4.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/product/zh-CN/report.json",
+      "bytes": 41563,
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f",
+      "artifact": "ui-x64-validation-reports",
+      "artifactPath": "ui-redesign/zh-CN/report.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/application-update-en-ui-validation.json",
+      "bytes": 4861,
+      "sha256": "0c299436b572198ed91a2064967e3add1540792b9f325ba491347e39487bbc58",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "application-update-en-ui-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/application-update-ui-validation.json",
+      "bytes": 4864,
+      "sha256": "81dc4c917a1c4e949aab58b3a0a75b233e35c9148f73ea4f2c8a692cdc53a612",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "application-update-ui-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/localization-validation.json",
+      "bytes": 2828,
+      "sha256": "0064e330eeb1a3f20b2aa7ab1f8fa2e20d7efd0d836f3c8c7e8ac768f297cef4",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "localization-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/official-engine-ui-en-validation.json",
+      "bytes": 4415,
+      "sha256": "a96b7ab0bb5fbfef1a17f944689fcd5ad59eb9fde96fc1ed4fb138d6fb7a4e89",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-ui-en-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/official-engine-ui-zh-CN-validation.json",
+      "bytes": 4418,
+      "sha256": "a013bb98b1532e60648e3db22abdd13c2f10f6e7d85a8c2a3beccaf43cd7ab32",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-ui-zh-CN-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/official-engine-validation.json",
+      "bytes": 1793,
+      "sha256": "6711876a27614ba86e672bdadb53c9418215c993afd339184cd0bbc7a381e3b9",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/sfx-ui-validation.json",
+      "bytes": 2444,
+      "sha256": "c77ec7ce494870c0b30a3b7cee5684896700be37649a123d7eeefa0b4dd0644e",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "sfx-ui-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/reports/update-validation.json",
+      "bytes": 2956,
+      "sha256": "50fd0b9cf02fbeb68c838cc07c2902b8c5d64c968fbf943fc3cea9b92fabb449",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "update-validation.json",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/official-current-dark-1152.png",
+      "bytes": 70111,
+      "sha256": "bb822099042287bd228ea3135415f36e321b9c6142905fc410a1b86843fed70c",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-dark-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/official-current-dark-800.png",
+      "bytes": 49569,
+      "sha256": "16fe8b988b34a42fc232036bb03f3d9a147460a2a8872ffad39d63737661635b",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-dark-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/official-current-light-1152.png",
+      "bytes": 70766,
+      "sha256": "6327316ae58ed09a302acb956fc14502de917d24acef7400451b105d6e851fc4",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-light-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/official-current-light-800.png",
+      "bytes": 50464,
+      "sha256": "3916258e7db57fd0be2b2b654556cabfe2c83b46cc1dd1afaaba978b1e69c040",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-current-light-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/official-failure.png",
+      "bytes": 63154,
+      "sha256": "d9365aeea727a3e6e29def9384628b4f5584717c0b8b383bb5b2ce6a1e7c202b",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-failure.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/official-installed.png",
+      "bytes": 62732,
+      "sha256": "f594605036b6c75acc3e86c8301e19414f262892307b58cf1b2107ddae8d7201",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/official-installed.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/verified-dark-1152.png",
+      "bytes": 68024,
+      "sha256": "20b9037de023919fa16cb97e6abaa000343c380fd4427453d966080a8c57aa41",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-dark-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/verified-dark-800.png",
+      "bytes": 47553,
+      "sha256": "ea951875d22e415584acbcb56725f0f5738d15573db7e5e7b59d2220258ac37c",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-dark-800.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/verified-light-1152.png",
+      "bytes": 68597,
+      "sha256": "d274194f33b668a3308e7fb08636155d00bdbec9aff80b0e40089a119df31dfa",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-light-1152.png",
+      "runId": 39246197040
+    },
+    {
+      "path": "x64/zh-CN/verified-light-800.png",
+      "bytes": 48156,
+      "sha256": "089fe461986bbd5ef372f0b23d0a71d6ce3be572c82559182f7a8bbd34998178",
+      "artifact": "release-followup-x64-reports",
+      "artifactPath": "official-engine-preview/zh-CN/verified-light-800.png",
+      "runId": 39246197040
+    }
+  ]
+}
