@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "total": 24,
+  "checks": {
+    "backup password remains masked and keyboard reachable": true,
+    "short export password shows accessible inline error": true,
+    "password confirmation mismatch stops export": true,
+    "actual export button creates encrypted backup without vault change": true,
+    "export cannot overwrite local vault": true,
+    "cancel password dialog keeps original bytes": true,
+    "wrong password command reports no import": true,
+    "import preview omits secret column": true,
+    "preview defaults to keeping local duplicates": true,
+    "preview row accessibility names the record and action": true,
+    "preview cells expose record names instead of generic cell labels": true,
+    "cancel import preview keeps original bytes": true,
+    "actual import button keeps both and refreshes list": true,
+    "empty vault enables import and disables export": true,
+    "import into empty vault survives reopen": true,
+    "desktop extraction automatically uses imported password": true,
+    "vault actions visible width 1120 contrast False": true,
+    "vault actions visible width 800 contrast False": true,
+    "small import preview keeps actions visible contrast False": true,
+    "small preview keeps record rows reachable contrast False": true,
+    "vault actions visible width 1120 contrast True": true,
+    "vault actions visible width 800 contrast True": true,
+    "small import preview keeps actions visible contrast True": true,
+    "small preview keeps record rows reachable contrast True": true
+  }
+}

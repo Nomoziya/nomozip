@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nomozip 后续功能 · 待用户验收</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#111722;font:15px/1.65 "Microsoft YaHei UI","Segoe UI",sans-serif}main{max-width:1600px;margin:auto;padding:28px}h1{font-size:26px;line-height:1.4}h2{font-size:20px;margin-top:32px}p{max-width:1000px}a{color:#006cd9}label{display:inline-flex;align-items:center;gap:8px;margin:0 18px 12px 0}select{font:inherit;padding:6px 10px;border:1px solid #b8c1ce;border-radius:4px;background:#fff;color:inherit}figure{margin:0;min-width:0}figcaption{padding:8px 0;color:#526071}img{display:block;max-width:100%;height:auto;background:#fff;border:1px solid #dce1e8}.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}.note{color:#526071}.overlay{display:none;position:relative;width:max-content;max-width:100%}.overlay img+img{position:absolute;inset:0;opacity:.5}.overlay img{width:100%}.states{max-width:1152px}input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #006cd9;outline-offset:3px}table{border-collapse:collapse;background:#fff}th,td{padding:10px 16px;border:1px solid #dce1e8;text-align:left}@media(max-width:900px){main{padding:16px}.pair{grid-template-columns:1fr}}
+</style>
+<main>
+<h1>nomozip 后续功能 · 待用户验收</h1>
+<p>单任务暂停、继续与取消；失败任务和更换密码重试；密码库备份状态；更新安装包清理。沿用 0.3.1 字体、图标、主题与组件。此页保留隔离 Windows CI 的原始截图，候选尚未发布。</p>
+<p><a href="../../../docs/UI_STYLE_GUIDE.md">统一样式规范</a> · <a href="../../../docs/CURRENT_STATE.md">阶段结果与限制</a> · <a href="provenance.json">源码、CI、报告及文件校验值</a> · <a href="../index.html">历次采用稿与候选</a></p>
+<h2>与 0.3.1 对照</h2>
+<p class="note">基准为 x64 0.3.1。两侧使用相同的合成记录、页面、主题与窗口尺寸，96 DPI 显式 WPF 集成窗口渲染（含 1 DIP 边框；内部内容分别为 1150×766 / 798×598）；最近成功时间、版本构建信息等运行时字段随运行日期变化。叠加用于检查位置，不将动态文本的像素差异当作布局退步。</p>
+<div><label>架构 <select id="arch"><option>x64</option><option>arm64</option></select></label><label>语言 <select id="lang"><option value="zh-CN">简体中文</option><option value="en">English</option></select></label><label>页面 <select id="scene"><option value="vault">密码库</option><option value="settings-4">更新设置</option></select></label><label>主题 <select id="theme"><option value="light">浅色</option><option value="dark">深色</option></select></label><label>客户区 <select id="width"><option value="1152">1152×768</option><option value="800">800×600</option></select></label><label><input id="overlayToggle" type="checkbox">叠加对照</label><label>新图透明度 <input id="opacity" type="range" min="0" max="100" value="50"></label></div>
+<div class="pair" id="pair"><figure><figcaption>0.3.1 · 既有基准</figcaption><a id="oldLink"><img id="old" alt="0.3.1 实际软件界面"></a></figure><figure><figcaption>新候选 · 原始截图</figcaption><a id="newLink"><img id="new" alt="候选实际软件界面"></a></figure></div>
+<div class="overlay" id="overlay"><img id="overlayOld" alt="基准底图"><img id="overlayNew" alt="候选叠加图"></div>
+<h2>实际流程与关键状态</h2>
+<label>场景 <select id="state"><option value="single-task-paused">单任务暂停，其它任务继续</option><option value="retry-completed">更换密码重试完成</option><option value="vault-light-1152">新增密码后的备份提醒</option><option value="vault-light-800">窄窗备份提醒</option><option value="vault-dark-1152">深色备份提醒</option><option value="vault-dark-800">深色窄窗备份提醒</option><option value="updates-cleaned">清理历史安装包后的结果</option><option value="updates-light-800">窄窗更新设置</option><option value="updates-dark-800">深色窄窗更新设置</option></select></label>
+<figure class="states"><figcaption id="stateCaption"></figcaption><a id="stateLink"><img id="stateImage" alt="功能流程实际截图"></a></figure>
+<h2>验收边界</h2>
+<p class="note">剩余轻微差异：英文新增数量提示目前统一使用复数（例如 1 passwords），单数文案可在验收后润色；原始截图如实保留。</p>
+<table><tr><th>功能</th><th>行为</th></tr><tr><td>任务控制</td><td>行按钮只控制此解压任务；工具栏控制全队列。全局继续保留单任务暂停状态。</td></tr><tr><td>备份提醒</td><td>只有成功导出登记时间；失败或取消不登记，成功使用密码不算内容修改。导出文件之后是否被移动或删除无法由本机记录证明。</td></tr><tr><td>清理安装包</td><td>删除历次更新遗留的程序缓存安装包；当前尚待安装的准备包和被占用文件暂时保留。重启后不再被本会话准备状态保护的旧包可以清理。</td></tr><tr><td>仍需用户确认</td><td>最终视觉与实际体验；本机未运行桌面自动化或替换真实安装。物理混合 DPI、真实系统高对比切换和交互式读屏不冒充自动检查完成。</td></tr></table>
+</main>
+<script>
+const el=id=>document.getElementById(id);
+function update(){const language=el('lang').value,architecture=el('arch').value;const file=el('scene').value==='vault'?'vault-unlocked-'+el('theme').value+'-'+el('width').value+'.png':el('theme').value+'-'+el('width').value+'-settings-4.png';const before='baseline/'+language+'/'+file,after=architecture+'/'+language+'/product/'+file;el('old').src=el('overlayOld').src=el('oldLink').href=before;el('new').src=el('overlayNew').src=el('newLink').href=after;const state=el('state').value,path=architecture+'/'+language+'/flows/'+state+'.png';el('stateImage').src=el('stateLink').href=path;el('stateCaption').textContent=el('state').selectedOptions[0].textContent+' · '+architecture+' · '+language;}
+for(const id of ['arch','lang','scene','theme','width','state'])el(id).addEventListener('change',update);
+el('overlayToggle').addEventListener('change',()=>{el('pair').style.display=el('overlayToggle').checked?'none':'';el('overlay').style.display=el('overlayToggle').checked?'block':'none';});el('opacity').addEventListener('input',()=>el('overlayNew').style.opacity=el('opacity').value/100);update();
+</script></html>

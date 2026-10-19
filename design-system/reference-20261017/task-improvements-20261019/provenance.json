@@ -1,0 +1,1279 @@
+{
+  "status": "awaiting-user-acceptance",
+  "productSourceCommit": "08bce299b376c73710e4e614c00b26ff0437ab1f",
+  "dataAndControlSourceCommit": "3a5ddefc0d86043cc9b6f369e99c2b5b0112a595",
+  "finalValidationSourceCommit": "08bce299b376c73710e4e614c00b26ff0437ab1f",
+  "branch": "codex/task-controls-backup-20261019",
+  "baseline": {
+    "version": "0.3.1",
+    "runtimeFixCommit": "07632d7",
+    "validationCommit": "2fb5a2c",
+    "run": 39133475155,
+    "architecture": "x64"
+  },
+  "evidence": {
+    "x64": {
+      "run": 39215707801,
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39215707801",
+      "headSha": "08bce299b376c73710e4e614c00b26ff0437ab1f",
+      "reports": [
+        {
+          "file": "x64/reports/product-zh-CN.json",
+          "checks": 476,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/task-improvements-ui-zh-CN-validation.json",
+          "checks": 44,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/product-en.json",
+          "checks": 476,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/task-improvements-ui-en-validation.json",
+          "checks": 44,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/task-improvements-core-validation.json",
+          "checks": 27,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/application-update-ui-validation.json",
+          "checks": 82,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/application-update-en-ui-validation.json",
+          "checks": 82,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/pause-ui-validation.json",
+          "checks": 52,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/password-organization-validation.json",
+          "checks": 30,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/vault-transfer-local-validation.json",
+          "checks": 34,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/master-vault-validation.json",
+          "checks": 36,
+          "passed": true
+        },
+        {
+          "file": "x64/reports/localization-validation.json",
+          "checks": 37,
+          "passed": true
+        }
+      ],
+      "reusedReports": [
+        {
+          "file": "x64/reports/broad/concurrency-ui-validation.json",
+          "checks": 60,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "x64/reports/broad/queue-ui-validation.json",
+          "checks": 58,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "x64/reports/broad/checkpoint-ui-validation.json",
+          "checks": 62,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "x64/reports/broad/master-vault-ui-validation.json",
+          "checks": 45,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "x64/reports/broad/desktop-vault-transfer-validation.json",
+          "checks": 24,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "x64/reports/broad/desktop-password-organization-validation.json",
+          "checks": 34,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "x64/reports/broad/visual-zh-CN.json",
+          "checks": 124,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef",
+          "scope": "unchanged normal layout; resume icon validated by final task flows"
+        },
+        {
+          "file": "x64/reports/broad/visual-en.json",
+          "checks": 124,
+          "passed": true,
+          "run": 39212366818,
+          "sourceCommit": "3a5ddef",
+          "scope": "unchanged normal layout; resume icon validated by final task flows"
+        }
+      ],
+      "candidate": {
+        "file": "artifacts/ci-08bce29-x64/candidate/nomozip-ui-redesign-x64.zip",
+        "sha256": "bcb8693bfa900dcc7be1bc91bcf48fcbcd5e8abebbd02e1364aa41949b6c9793",
+        "bytes": 4748556,
+        "entries": 40,
+        "crcValid": true,
+        "nativeMachines": {
+          "engines/26.03/7z.dll": "0x8664",
+          "engines/26.03/7z.exe": "0x8664",
+          "engines/26.04/7z.dll": "0x8664",
+          "engines/26.04/7z.exe": "0x8664",
+          "ArchiveEngineWorker.exe": "0x8664",
+          "ArchivePassword.exe": "0x8664",
+          "nomozip-cli.exe": "0x8664"
+        },
+        "sharedNet10": true
+      }
+    },
+    "arm64": {
+      "run": 39215714782,
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39215714782",
+      "headSha": "08bce299b376c73710e4e614c00b26ff0437ab1f",
+      "reports": [
+        {
+          "file": "arm64/reports/product-zh-CN.json",
+          "checks": 476,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/task-improvements-ui-zh-CN-validation.json",
+          "checks": 44,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/product-en.json",
+          "checks": 476,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/task-improvements-ui-en-validation.json",
+          "checks": 44,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/task-improvements-core-validation.json",
+          "checks": 27,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/application-update-ui-validation.json",
+          "checks": 82,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/application-update-en-ui-validation.json",
+          "checks": 82,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/pause-ui-validation.json",
+          "checks": 52,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/password-organization-validation.json",
+          "checks": 30,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/vault-transfer-local-validation.json",
+          "checks": 34,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/master-vault-validation.json",
+          "checks": 36,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/localization-validation.json",
+          "checks": 37,
+          "passed": true
+        }
+      ],
+      "reusedReports": [
+        {
+          "file": "arm64/reports/broad/concurrency-ui-validation.json",
+          "checks": 60,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "arm64/reports/broad/queue-ui-validation.json",
+          "checks": 58,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "arm64/reports/broad/checkpoint-ui-validation.json",
+          "checks": 62,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "arm64/reports/broad/master-vault-ui-validation.json",
+          "checks": 45,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "arm64/reports/broad/desktop-vault-transfer-validation.json",
+          "checks": 24,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "arm64/reports/broad/desktop-password-organization-validation.json",
+          "checks": 34,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef"
+        },
+        {
+          "file": "arm64/reports/broad/visual-zh-CN.json",
+          "checks": 124,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef",
+          "scope": "unchanged normal layout; resume icon validated by final task flows"
+        },
+        {
+          "file": "arm64/reports/broad/visual-en.json",
+          "checks": 124,
+          "passed": true,
+          "run": 39213035494,
+          "sourceCommit": "3a5ddef",
+          "scope": "unchanged normal layout; resume icon validated by final task flows"
+        }
+      ],
+      "nativeReports": [
+        {
+          "file": "arm64/reports/native/architecture-validation.json",
+          "checks": 33,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/native/export-vault-x64-validation.json",
+          "checks": 3,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/native/import-vault-arm64-validation.json",
+          "checks": 7,
+          "passed": true
+        },
+        {
+          "file": "arm64/reports/native/verify-vault-x64-validation.json",
+          "checks": 7,
+          "passed": true
+        }
+      ],
+      "candidate": {
+        "file": "artifacts/ci-08bce29-arm64/candidate/nomozip-ui-redesign-arm64.zip",
+        "sha256": "bc4f1c6fb7000972f04ac45260801a28f8a5f3fee0cea2974c4617448346b00d",
+        "bytes": 3935494,
+        "entries": 40,
+        "crcValid": true,
+        "nativeMachines": {
+          "engines/26.03/7z.dll": "0xaa64",
+          "engines/26.03/7z.exe": "0xaa64",
+          "engines/26.04/7z.dll": "0xaa64",
+          "engines/26.04/7z.exe": "0xaa64",
+          "ArchiveEngineWorker.exe": "0xaa64",
+          "ArchivePassword.exe": "0xaa64",
+          "nomozip-cli.exe": "0xaa64"
+        },
+        "sharedNet10": true
+      }
+    }
+  },
+  "files": [
+    {
+      "file": "baseline/zh-CN/vault-unlocked-light-1152.png",
+      "sha256": "f01b8d132c78549d8275e2e7df7a5de1d95eab4d418fb02a60e0d53c0f169b41",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/light-1152-settings-4.png",
+      "sha256": "093fd2ab5f6d0aac83d59583d920fda6187d4712e75ff3619da9169b9b244f55",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/vault-unlocked-light-800.png",
+      "sha256": "a88b5eec2c42180c211326656fd82fed1e528850bc108abeec1cd7c9d474314d",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/light-800-settings-4.png",
+      "sha256": "6cfe10c617851a03e9bf8bd141687e9824a0517e528f0cbcea16f97a574e8d23",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/vault-unlocked-dark-1152.png",
+      "sha256": "0b375d0529b365392ed68610d33fde58adbb17daab7f488e76a01d5a53aee816",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/dark-1152-settings-4.png",
+      "sha256": "20cf568f8b6b19399f788f154505e6a98e052e5a59cc249a477645788943075a",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/vault-unlocked-dark-800.png",
+      "sha256": "ddb9de9ae76e87fcc12ddc18e57d5f468e9221c6a1171c40074f111e752bb993",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/zh-CN/dark-800-settings-4.png",
+      "sha256": "b0a7d842b015ce58e815addee2605ca8f7e48a122b212f9828c0d0d77bfd8498",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/en/vault-unlocked-light-1152.png",
+      "sha256": "5ba98f10da300db6a743601cf2cf743f7d0a92054de84ed3a4cedcef5acbc8b7",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/en/light-1152-settings-4.png",
+      "sha256": "7d59ea409a42294940eecf6153fbd153599798b17cf9c14a7dd32bdcb24e10d4",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/en/vault-unlocked-light-800.png",
+      "sha256": "8e3daa25d9614627ae1f1b3c152322023735dc171e4c25c39d6bd2929572665a",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/en/light-800-settings-4.png",
+      "sha256": "371de09447e0b60a95dd660f4ea478393a9713daa7d8e501b14ceec159dd76ca",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/en/vault-unlocked-dark-1152.png",
+      "sha256": "6111508907233f9566d1417130cf272dab329f4d2581da4bf572be319b55142c",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/en/dark-1152-settings-4.png",
+      "sha256": "65b682b5d6f9f7e3c43e7cc5b166d2acccd60c431d502ae0d79ec8a6e859e231",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "baseline/en/vault-unlocked-dark-800.png",
+      "sha256": "ed339cb12738a05fe00e79a6cf7a2caec9729dfc5c03b672b9ddaa92c1434d77",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "baseline/en/dark-800-settings-4.png",
+      "sha256": "dc8e9f833fdbc14823d8101eea48726f6e14ac6a57b09297c925b57f857e45d7",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/vault-unlocked-light-1152.png",
+      "sha256": "05ac17b533af6bb8646cdfe2e2b3cb319b00f7920e754a505805e00efcc1d17b",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/light-1152-settings-4.png",
+      "sha256": "5cd68414ab63fe1f19956a9219eaab0aab7f6e8ce8757b3783284d10ae5f8c65",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/vault-unlocked-light-800.png",
+      "sha256": "d5048ac581692e7299d17f3ce3a330eefe0ec7ca485e3cb3dc0d18b4eb148ea7",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/light-800-settings-4.png",
+      "sha256": "a8a22841e8938116f58a1a97e3d34518d1544334ab58da6d7e1ef22e31a1fb4f",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/vault-unlocked-dark-1152.png",
+      "sha256": "51ca4a2c274d5b21d83c7f4002bbf3d56cd4e45daeced2bc9d073da73355ab9e",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/dark-1152-settings-4.png",
+      "sha256": "243d18374fdf17a1d1203c2a016267f59979fd3310a394353b1c4227e79352cf",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/vault-unlocked-dark-800.png",
+      "sha256": "3d4477370c64f93ac806470636c61864908845f3bd01b8cd97beffb18ffd3daf",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/product/dark-800-settings-4.png",
+      "sha256": "5946a01a685d1c678f75b4d61a8953cbeed25a7de6ba7821c2ff4580e7b1b5c6",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/retry-completed.png",
+      "sha256": "6ca68078fff52c5abc68ade20c7604e8f50727130ee729acab704195ff2e3b55",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/single-task-paused.png",
+      "sha256": "37968a8f62eee9194c9ac0da0854b62afbb79cc4c8200fe31ffee12ee6e9d6f7",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/updates-cleaned.png",
+      "sha256": "cf7d3a24ef41af96dc59e15b738fc5a81ce2240837252d309f6b5433ba6cbf3b",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/updates-dark-1152.png",
+      "sha256": "8d12ad49b8226adfb9caa17ad732df4aad406d4d6b60a1d3666f15b8328c330b",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/updates-dark-800.png",
+      "sha256": "75e6319bd6b75785274d02a0b69566045b7f97491fa098a48c03566622d29c43",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/updates-light-1152.png",
+      "sha256": "52ce5dfd21cb2ed7adf5500975f827722a218aae3bd624f3fd6e0801e95a71d8",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/updates-light-800.png",
+      "sha256": "7a0f71b831184f42341e5129fad341fae19f0134eddee2fd63e70acbd0e3a08b",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/vault-dark-1152.png",
+      "sha256": "9f489956e7c0121891d8fa37482d5e5c6e93c95904847285c241a9142eda59a5",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/vault-dark-800.png",
+      "sha256": "4061ec6ad55058e4b20e8e19997ed5dfd7ec879f54763f18fee55679bbc46dcc",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/vault-light-1152.png",
+      "sha256": "47592b23421e471ca7b3309146747111d40c30f991ba179d7280ffe548c75fb0",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/zh-CN/flows/vault-light-800.png",
+      "sha256": "e76210b9a816458e19de226fa490b9196f8d078db74b2cc4c5e81d8c65a1806f",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/reports/product-zh-CN.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f"
+    },
+    {
+      "file": "x64/reports/task-improvements-ui-zh-CN-validation.json",
+      "sha256": "deb3157693b6fca68188a487696b3bb8e495094ba03c54f82634da0809f350b6"
+    },
+    {
+      "file": "x64/en/product/vault-unlocked-light-1152.png",
+      "sha256": "cd75115a534cebfc2ec683838db112c0d9f8f87b5aa953795b896a1bb6af4837",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/product/light-1152-settings-4.png",
+      "sha256": "14409a9220389269c1c7a2c6839f5fbbd35bc8aa6c9beee725e03594669eabaf",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/product/vault-unlocked-light-800.png",
+      "sha256": "89785cdd9337e54d7d6901647a3d912b3fd7e5c154831250ed62ac0816ee1262",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/product/light-800-settings-4.png",
+      "sha256": "6151285fdfb2129a46778d2c67217b9a062514614fa8456090fda0fbc4c9e0d3",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/product/vault-unlocked-dark-1152.png",
+      "sha256": "853308b7c6bf1d9986499209920c53fa3640c3eead9a71d9ad709af481dd00c7",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/product/dark-1152-settings-4.png",
+      "sha256": "2b8fada6ccffa994facc4798c03f1dbc6ab38bf9f57a3b1ebda09b3b58705c7e",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/product/vault-unlocked-dark-800.png",
+      "sha256": "6be99e6c983f9392c8dc110f73bf3b4dd618789d36e4667826f13abd4b95baf5",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/product/dark-800-settings-4.png",
+      "sha256": "7f27ed7eea81a5ff2e65e679a8f4a616055d78cd907c6d800c9597039932909e",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/flows/retry-completed.png",
+      "sha256": "f90947ef3466c7f560edbb20fc45525c9fdf67064e5667f45d6c6d3e15b379fd",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/single-task-paused.png",
+      "sha256": "536d7e78d535068ec8ee21753f723b4825b8b0cc73dd3852168aea58881e795e",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/updates-cleaned.png",
+      "sha256": "18a63f734524f1b604ec0b52d569567ca96b8cd3e325d259281ee3e706ceb147",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/updates-dark-1152.png",
+      "sha256": "06cdffee9f79021f67237a03f0ebbdd0adc9d39790106fb5f0f4319babdc2bc0",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/updates-dark-800.png",
+      "sha256": "e2d070243af39864a1b62eda9d5cff644915147eda5d990f5680188716cd0ba3",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/flows/updates-light-1152.png",
+      "sha256": "2d807b25c6ed01f7802ab7e27c7288a772b232c41867ca1bb68513343b3667be",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/updates-light-800.png",
+      "sha256": "b8414b5909b20dd603dd74efb5cdee94cff9715528aa824d2b8f66a39afbfd89",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/flows/vault-dark-1152.png",
+      "sha256": "4bed7c35b9ba6320070e9dd3a414c026e19eff21c3b67dd5a37734480c0e25c4",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/vault-dark-800.png",
+      "sha256": "3d443523ce48eeba6b1beb59e05fd53f06a7f06008701a1e802806bc3c5426b2",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/en/flows/vault-light-1152.png",
+      "sha256": "a95a68a15f1e890f0ecda8874f5f1e6d65846f4a09800ec992f79d31dbc7687f",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "x64/en/flows/vault-light-800.png",
+      "sha256": "7df0d798bd5c673f7c9a8a665908c9492c35c920a377b564b33202ff0e97b368",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "x64/reports/product-en.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f"
+    },
+    {
+      "file": "x64/reports/task-improvements-ui-en-validation.json",
+      "sha256": "8f40e6b3282cb17bb60704a7a7fd08f824cf1d8f965ffd152f2f441b42f26826"
+    },
+    {
+      "file": "x64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c"
+    },
+    {
+      "file": "x64/reports/application-update-ui-validation.json",
+      "sha256": "81dc4c917a1c4e949aab58b3a0a75b233e35c9148f73ea4f2c8a692cdc53a612"
+    },
+    {
+      "file": "x64/reports/application-update-en-ui-validation.json",
+      "sha256": "0c299436b572198ed91a2064967e3add1540792b9f325ba491347e39487bbc58"
+    },
+    {
+      "file": "x64/reports/pause-ui-validation.json",
+      "sha256": "07da395dd42213d8da79f939822460f26597512ddf3b36bf7abafb6cca8849b1"
+    },
+    {
+      "file": "x64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e"
+    },
+    {
+      "file": "x64/reports/vault-transfer-local-validation.json",
+      "sha256": "18557b17a73027c62aced38a5aa34977d83d5f9a879781ab760798f934a660fa"
+    },
+    {
+      "file": "x64/reports/master-vault-validation.json",
+      "sha256": "09504afa5735d3cc62847ee17048a1b4dc0267ef725a17d2c5e6071fcbbad9a0"
+    },
+    {
+      "file": "x64/reports/localization-validation.json",
+      "sha256": "c0ae0dd65e87dc41ef69d2600f953a335594a6803e177066de2c11dc3bf30844"
+    },
+    {
+      "file": "x64/reports/broad/concurrency-ui-validation.json",
+      "sha256": "8f00567abacf1787cdea1253557e9a13ee9182f84f20699131de40500dc2c684"
+    },
+    {
+      "file": "x64/reports/broad/queue-ui-validation.json",
+      "sha256": "b44ffa3d932576b35b7ff10a45a2f1cc6d2bf7ed3bab30ba198a629399e8b61e"
+    },
+    {
+      "file": "x64/reports/broad/checkpoint-ui-validation.json",
+      "sha256": "6df30d9d107231c9347a36a5364fa3dda7448653cf0d656e33248bb384e198c6"
+    },
+    {
+      "file": "x64/reports/broad/master-vault-ui-validation.json",
+      "sha256": "f50631faea82b3e5b7642dffa0009ea0d20b069f19f46ddd76f74fe3985defeb"
+    },
+    {
+      "file": "x64/reports/broad/desktop-vault-transfer-validation.json",
+      "sha256": "2c2c6eefa5b71d180b8baa74bb34f500453fdb3053bb55d3d5921c11cfd3c2b4"
+    },
+    {
+      "file": "x64/reports/broad/desktop-password-organization-validation.json",
+      "sha256": "99ad7c36f2972ce5a8f45d830ddb1439e46599c4a9ee0dd5c83125999dc8ca09"
+    },
+    {
+      "file": "x64/reports/broad/visual-zh-CN.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31"
+    },
+    {
+      "file": "x64/reports/broad/visual-en.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31"
+    },
+    {
+      "file": "arm64/zh-CN/product/vault-unlocked-light-1152.png",
+      "sha256": "52d09d0ed5656f959bb1cb807265d01586078112131193d8a9e52d1cbff98c01",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/light-1152-settings-4.png",
+      "sha256": "69953482d5d68e273ced03d1c06980fd2faa6e886e55d72353683f1409569e33",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/vault-unlocked-light-800.png",
+      "sha256": "9709783bafcf19fe6da151ee489352c386b20b489eab231fab5d6d8d614e7eb3",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/light-800-settings-4.png",
+      "sha256": "ff4628f6ca535bf9a23b3d9b82382c37cae5d1e8361b3480f1aaeb3fcc84b91f",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/vault-unlocked-dark-1152.png",
+      "sha256": "b1e790f81792fb0d08e32b231dd972c3d07d444b157223990bdc11594a0a2395",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/dark-1152-settings-4.png",
+      "sha256": "b63739582f099555d79de6bd759e6d36e2eae011038a3dd83c66914c76798dea",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/vault-unlocked-dark-800.png",
+      "sha256": "0242af3c63adb513af68bb49d143eb33dd31e835800562f3e1f0099b3d6f2c4a",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/product/dark-800-settings-4.png",
+      "sha256": "d6c03f9f7f7828264b4dffc8c5fc0c3fbbc98755758f25c216ec1395da983903",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/retry-completed.png",
+      "sha256": "61cb0cf54ab8e6b95fe2c002aa11d9dc1fd8a4205534aca91c449b9e1b7313ec",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/single-task-paused.png",
+      "sha256": "572edd16f790e99f333dfd3aa5a088019dd30b17d58469da132b19208d4e715b",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/updates-cleaned.png",
+      "sha256": "ee9208c855a68dc5ee155aa0e7451b9f3a44825a362e240668bc68824c78b649",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/updates-dark-1152.png",
+      "sha256": "c7e26d25a1c134706071b7391bcc6ee767f245feb2092cd752282727110e63c5",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/updates-dark-800.png",
+      "sha256": "835981d745bd7e68ea5274ae5ca19302dad2b351d36bb2dfa5f23530de41ada8",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/updates-light-1152.png",
+      "sha256": "edd76f069c2703c8975074bb31f31a34ab686afe54d750af071cc94df4ac4d73",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/updates-light-800.png",
+      "sha256": "d2774dfe071530cb47407564494c01ac9dc112ad3a96b166cda937d386a59919",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/vault-dark-1152.png",
+      "sha256": "ab1572d96904834af196e2887018f04d6e0d46b5b138026b0a97fa946a8c7001",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/vault-dark-800.png",
+      "sha256": "53edcf54482db494dda32f7473e330926233ff63d824265eb7bc80b9f236ca57",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/vault-light-1152.png",
+      "sha256": "bd6a41b2d3b73443c6fcf0966750ea53539e82d0d9bd807f9ce1593ce07bc9c8",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/zh-CN/flows/vault-light-800.png",
+      "sha256": "c84fad6281f7e769e791a2205b933bb3092be2d3d2e72e79562d3a83d44af3bf",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/reports/product-zh-CN.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f"
+    },
+    {
+      "file": "arm64/reports/task-improvements-ui-zh-CN-validation.json",
+      "sha256": "61799547b189d6e15eb96c6c39dc6fd630443a3e7a0e294e1317479cce8aa9fa"
+    },
+    {
+      "file": "arm64/en/product/vault-unlocked-light-1152.png",
+      "sha256": "9df458a6f629b1f5abe0544034213cb434940af83019b133a33700fe26c2b385",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/product/light-1152-settings-4.png",
+      "sha256": "178d38055c84ffae54597a3d54e3edd3ddb3cd251352903670945a5d89a3a14f",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/product/vault-unlocked-light-800.png",
+      "sha256": "48b2edb0517d4f8a67cd482155f5b6f9abb9f10bd1c14d553d0ceda2b5e89b10",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/product/light-800-settings-4.png",
+      "sha256": "c18780f7d16deee92b77ccd77255c059964813035dca9e72b1e6c79e87331373",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/product/vault-unlocked-dark-1152.png",
+      "sha256": "e0b6e8085e762629d9cd6c815428dc7c99526af4055b0378747d40e1b0dc74d8",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/product/dark-1152-settings-4.png",
+      "sha256": "91c5a12e2b5705c2213981bccfbbb36b82ff0bb087c7f7452d13c61a2b75fcc1",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/product/vault-unlocked-dark-800.png",
+      "sha256": "47bc0569b7db3841e219a95231ec591c9bb02a0ec78986595d4fb830b7aaab29",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/product/dark-800-settings-4.png",
+      "sha256": "40ddb62bd7069a6d38658029ce222abc61d9047f2e31fb2c736c0f7497b079ed",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/flows/retry-completed.png",
+      "sha256": "cb77c95273fdcccc5fb0d089ff9c5e50d43953670a2ecdba733063f1b1b2547e",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/single-task-paused.png",
+      "sha256": "42b1baf144b7f208511183ba17a5378449be9b28c6679d94c34c72c87f53eb81",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/updates-cleaned.png",
+      "sha256": "c0e360dffa02b15e8dfa1aa6c3e2c478c3cc119c81a602aa599dc07f17baa3f0",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/updates-dark-1152.png",
+      "sha256": "1a973fa5f18a86c5bde232421259971768265bcb10bf0443dd442ec06b1a2c1e",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/updates-dark-800.png",
+      "sha256": "bfe3451d6be7e0914a151fcbf0e49fda25fa7e6be95287e57825f73b01e96932",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/flows/updates-light-1152.png",
+      "sha256": "68d87a954bf12a4e3a6c53810ab6f655a82f62ba060dbaaa84dcbcf58de5cee4",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/updates-light-800.png",
+      "sha256": "0f94da3c0f0ba614bb88160955e8169572312f0d6abf87913eb621a528076d43",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/flows/vault-dark-1152.png",
+      "sha256": "5e25beea2a1127939e6a280f6d556a3829e334f89964a71aeb8387c0a48fbe34",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/vault-dark-800.png",
+      "sha256": "1a607c5d2677a09a803a51f1129ef6c3dabecfc467512d11cee979d43ba99c32",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/en/flows/vault-light-1152.png",
+      "sha256": "4fb540a8fb192c208fe5b1c59c13626e88c7dbf4a3bc918965c88831071e3bab",
+      "pixels": [
+        1152,
+        768
+      ]
+    },
+    {
+      "file": "arm64/en/flows/vault-light-800.png",
+      "sha256": "f9e837439f418dc07f6daa466505364c36364bb44f386782a39ffcb362261fac",
+      "pixels": [
+        800,
+        600
+      ]
+    },
+    {
+      "file": "arm64/reports/product-en.json",
+      "sha256": "1d7646af27e66d29586943f6c8751fd9c9dd56f75c742831d5113b76a91d146f"
+    },
+    {
+      "file": "arm64/reports/task-improvements-ui-en-validation.json",
+      "sha256": "cf43646c3a79afbec4c543b0cbae2b6f5ee73e71a1f58c0d03d35247bc5b504a"
+    },
+    {
+      "file": "arm64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c"
+    },
+    {
+      "file": "arm64/reports/application-update-ui-validation.json",
+      "sha256": "81dc4c917a1c4e949aab58b3a0a75b233e35c9148f73ea4f2c8a692cdc53a612"
+    },
+    {
+      "file": "arm64/reports/application-update-en-ui-validation.json",
+      "sha256": "0c299436b572198ed91a2064967e3add1540792b9f325ba491347e39487bbc58"
+    },
+    {
+      "file": "arm64/reports/pause-ui-validation.json",
+      "sha256": "07da395dd42213d8da79f939822460f26597512ddf3b36bf7abafb6cca8849b1"
+    },
+    {
+      "file": "arm64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e"
+    },
+    {
+      "file": "arm64/reports/vault-transfer-local-validation.json",
+      "sha256": "18557b17a73027c62aced38a5aa34977d83d5f9a879781ab760798f934a660fa"
+    },
+    {
+      "file": "arm64/reports/master-vault-validation.json",
+      "sha256": "bbb93c43427c2fba23211cb6990a6150018004c960d3505115090fb35fe734c1"
+    },
+    {
+      "file": "arm64/reports/localization-validation.json",
+      "sha256": "c0ae0dd65e87dc41ef69d2600f953a335594a6803e177066de2c11dc3bf30844"
+    },
+    {
+      "file": "arm64/reports/broad/concurrency-ui-validation.json",
+      "sha256": "8f00567abacf1787cdea1253557e9a13ee9182f84f20699131de40500dc2c684"
+    },
+    {
+      "file": "arm64/reports/broad/queue-ui-validation.json",
+      "sha256": "b44ffa3d932576b35b7ff10a45a2f1cc6d2bf7ed3bab30ba198a629399e8b61e"
+    },
+    {
+      "file": "arm64/reports/broad/checkpoint-ui-validation.json",
+      "sha256": "6df30d9d107231c9347a36a5364fa3dda7448653cf0d656e33248bb384e198c6"
+    },
+    {
+      "file": "arm64/reports/broad/master-vault-ui-validation.json",
+      "sha256": "f50631faea82b3e5b7642dffa0009ea0d20b069f19f46ddd76f74fe3985defeb"
+    },
+    {
+      "file": "arm64/reports/broad/desktop-vault-transfer-validation.json",
+      "sha256": "2c2c6eefa5b71d180b8baa74bb34f500453fdb3053bb55d3d5921c11cfd3c2b4"
+    },
+    {
+      "file": "arm64/reports/broad/desktop-password-organization-validation.json",
+      "sha256": "99ad7c36f2972ce5a8f45d830ddb1439e46599c4a9ee0dd5c83125999dc8ca09"
+    },
+    {
+      "file": "arm64/reports/broad/visual-zh-CN.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31"
+    },
+    {
+      "file": "arm64/reports/broad/visual-en.json",
+      "sha256": "05286ca34a69e6843a700c46b8ddb4efbdb63fc1a3a1f3df15ad94a7bf346e31"
+    },
+    {
+      "file": "arm64/reports/native/architecture-validation.json",
+      "sha256": "e6277a1292b490ae08132932d800a183945f5ea81bc9b9c8c1825f4edf3ab961"
+    },
+    {
+      "file": "arm64/reports/native/export-vault-x64-validation.json",
+      "sha256": "49f28bd46b460ec29024bc68f065dba9d5ef34ef7b8705aa5c08a854ec2147dc"
+    },
+    {
+      "file": "arm64/reports/native/import-vault-arm64-validation.json",
+      "sha256": "4c3e92593829d0fc652e77b0d3a7fb7dd12f33b8f88f2ac5c7726e65c365fdd9"
+    },
+    {
+      "file": "arm64/reports/native/verify-vault-x64-validation.json",
+      "sha256": "a442d2215475951bfb4e754950394a87af64bf3932f2f821af693e00fc2d84ab"
+    }
+  ],
+  "limitations": [
+    "Explicit WPF rendering is not physical mixed-DPI or actual system high-contrast switching acceptance.",
+    "New task-control flows invoke real WPF command/menu entries using UI Automation; this is not a claim of physical mouse input.",
+    "Dynamic last-use timestamps and build metadata differ between runs.",
+    "No local desktop automation, actual password vault access, installation replacement or release publication."
+  ],
+  "retainedEarlierEvidence": {
+    "failedLayoutRun": 39211235816,
+    "x64BroadRegressionRun": 39212366818,
+    "arm64BroadRegressionRun": 39213035494,
+    "earlierFlowViewport": "1044x768; excluded from final 1152x768 screenshot acceptance",
+    "frameAssertionFailedRuns": [
+      39213606213,
+      39213610868
+    ],
+    "preIconCorrectionRuns": [
+      39214603170,
+      39214608124
+    ],
+    "renderedFrame": "1152x768 or 800x600 including 1 DIP integrated border; inner content 1150x766 or 798x598"
+  },
+  "agentVisualReview": {
+    "scope": "Representative raw screenshots, not every image",
+    "viewed": [
+      "x64 Chinese light vault at normal and small widths",
+      "x64 Chinese task pause with Fluent Play resume icon",
+      "x64 Chinese completed installer cleanup",
+      "English dark small vault",
+      "ARM64 English dark small vault and Chinese dark small updates"
+    ],
+    "findings": [
+      "Backup status stays below the password list without reducing the right detail height",
+      "Short cleanup action and cache summary follow existing typography and spacing",
+      "Task progress is gray while locally paused, and resume uses the Fluent Play icon",
+      "English small-window backup text wraps with export action visible"
+    ],
+    "knownMinorDifference": "English count currently uses plural wording even for one record (1 passwords).",
+    "userAccepted": false
+  }
+}
