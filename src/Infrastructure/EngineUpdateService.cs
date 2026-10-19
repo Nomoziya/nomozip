@@ -18,27 +18,37 @@ public sealed class EngineUpdateService(string installedDirectory, string select
         try
         {
             progress?.Report(UiText.Get("EngineSource.Verifying"));
+            Directory.CreateDirectory(staging);
+            // Prefer the 7z payload handler over the outer PE handler, without running the installer.
+            var archivePath=Path.Combine(staging,".installer.7z");
             await using (var file = File.OpenRead(installerPath))
+            {
                 if (file.Length != update.Size || !Convert.ToHexString(await SHA256.HashDataAsync(file, token)).Equals(update.Sha256, StringComparison.OrdinalIgnoreCase))
                     throw new UpdateException("hash_mismatch");
+                file.Position=0;
+                await using var copy=new FileStream(archivePath,FileMode.CreateNew,FileAccess.Write,FileShare.None,81920,true);
+                await file.CopyToAsync(copy,token);
+            }
             await catalog.ReadVerifiedVersionsAsync();
             var extractor = new ArchiveEngineClient(workerPath, catalog.DllPath(extractionVersion));
-            var inventory = await extractor.ListAsync(installerPath, cancellationToken: token); token.ThrowIfCancellationRequested();
+            var inventory = await extractor.ListAsync(archivePath, cancellationToken: token); token.ThrowIfCancellationRequested();
             var selected = inventory.Items.Where(item => OfficialEngineReceipt.PayloadNames.Contains(item.Path, StringComparer.Ordinal)).ToArray();
             if (!inventory.IsSuccess || selected.Length != OfficialEngineReceipt.PayloadNames.Length
                 || OfficialEngineReceipt.PayloadNames.Any(name => selected.Count(item => item.Path == name) != 1)
                 || selected.Any(item => item.Directory || item.Encrypted || item.Size is 0 or > 16 * 1024 * 1024)) throw new UpdateException("invalid_official_update");
-            Directory.CreateDirectory(staging);
-            var extracted = await extractor.ExtractSelectionAsync(installerPath, staging, selected, null, new Dictionary<uint,string>(), token: token);
+            var extracted = await extractor.ExtractSelectionAsync(archivePath, staging, selected, null, new Dictionary<uint,string>(), token: token);
             token.ThrowIfCancellationRequested();
             if (!extracted.IsSuccess) throw new UpdateException("engine_validation_failed");
+            File.Delete(archivePath);
             var hashes = new Dictionary<string,string>();
             foreach (var name in OfficialEngineReceipt.PayloadNames)
             {
                 var bytes = await File.ReadAllBytesAsync(Path.Combine(staging,name),token);
-                if (name != "License.txt" && !EngineArchitecture.IsNativeImage(bytes)) throw new UpdateException("incompatible_update");
+                if (name is "7z.dll" or "7z.exe" && !EngineArchitecture.IsNativeImage(bytes)) throw new UpdateException("incompatible_update");
                 hashes[name] = Convert.ToHexString(SHA256.HashData(bytes));
             }
+            // The official SFX is an x86 executable in both native installers; use the established SFX contract.
+            if(!new SfxModule(update.Version,hashes["7z.sfx"],await File.ReadAllBytesAsync(Path.Combine(staging,"7z.sfx"),token)).IsValid())throw new UpdateException("sfx_module_invalid");
             var actualVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(Path.Combine(staging,"7z.dll")).FileVersion;
             var expected = Version.Parse(update.Version);
             if (!Version.TryParse(actualVersion, out var actual) || actual.Major != expected.Major || actual.Minor != expected.Minor) throw new UpdateException("incompatible_update");

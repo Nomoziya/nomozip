@@ -28,8 +28,10 @@ public sealed record OfficialEngineReceipt(OfficialEngineUpdate Update, Dictiona
                 if (file.Length > EngineUpdatePackage.MaximumPackageBytes || !Convert.ToHexString(await SHA256.HashDataAsync(file, token)).Equals(receipt.Files[name], StringComparison.OrdinalIgnoreCase))
                     throw new UpdateException("hash_mismatch");
             }
-            foreach (var name in new[] { "7z.dll", "7z.exe", "7z.sfx" })
+            foreach (var name in new[] { "7z.dll", "7z.exe" })
                 if (!EngineArchitecture.IsNativeImage(await File.ReadAllBytesAsync(Path.Combine(directory, name), token))) throw new UpdateException("incompatible_update");
+            var sfx=new SfxModule(receipt.Update.Version,receipt.Files["7z.sfx"],await File.ReadAllBytesAsync(Path.Combine(directory,"7z.sfx"),token));
+            if(!sfx.IsValid())throw new UpdateException("sfx_module_invalid");
             return receipt;
         }
         catch (Exception error) when (error is CryptographicException or JsonException or ArgumentException or NullReferenceException)
