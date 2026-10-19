@@ -72,6 +72,7 @@ internal static class DesktopOfficialEngineValidation
             mode="normal";window.EngineUpdateManagement.IsExpanded=true;await Layout();await Click(window.InstallEngineUpdateButton,model);
             Check("official engine activated through install button",model.EngineSummary.Contains("26.04") && model.PreviousEngineSummary.Contains("26.03") && model.UpdateMessage==UiText.Get("EngineSource.Installed"));
             Check("successful update removes temporary installer",!Directory.GetFiles(Path.Combine(data,"downloads")).Any());
+            window.EngineUpdateManagement.IsExpanded=false;await Layout();window.EngineUpdateStatus.BringIntoView();await Layout();Capture("official-installed");
             Check("official receipt exists without nomozip signature",File.Exists(Path.Combine(data,EngineArchitecture.InstalledDirectoryName+"-official","26.04",OfficialEngineReceipt.FileName)));
             var afterUpdate=await File.ReadAllBytesAsync(Path.Combine(data,"passwords.apv"));Check("updating preserves synthetic vault bytes",vaultBytes.SequenceEqual(afterUpdate));
             model.OutputPath=Path.Combine(data,"output");model.Page=0;model.AddFiles([Path.Combine(root,"tests/fixtures/generated/encrypted-header.7z")]);
@@ -81,10 +82,10 @@ internal static class DesktopOfficialEngineValidation
             foreach(var themeName in new[]{"light","dark"})foreach(var width in new[]{1152d,800d})
             {
                 theme.SetMode(themeName);theme.Apply(false);window.MinWidth=width;window.Width=width;window.Height=width==800?600:768;await Layout();
-                window.EngineSourceChoice.BringIntoView();await Layout();
+                await Click(window.CheckEngineUpdatesButton,model);window.EngineUpdateStatus.BringIntoView();await Layout();
                 Check($"source and status fit {themeName} {width}",Fits(window.EngineSourceChoice) && Fits(window.EngineSourceHint) && Fits(window.EngineUpdateStatus));
                 Check($"compact source width {themeName} {width}",window.EngineSourceChoice.ActualWidth<280 && window.EngineSourceChoice.ActualHeight>=32);
-                Capture($"official-success-{themeName}-{width}");
+                Capture($"official-current-{themeName}-{width}");
                 await Source(0);Check($"source switch invalidates cached offer {themeName} {width}",!model.InstallUpdateCommand.CanExecute(null));
                 window.EngineSourceChoice.BringIntoView();await Layout();Capture($"verified-{themeName}-{width}");await Source(1);
             }
