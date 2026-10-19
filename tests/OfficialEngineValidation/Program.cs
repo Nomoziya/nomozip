@@ -55,7 +55,12 @@ using(var cancelled=new CancellationTokenSource())
 if(integration)
 {
     using var client=new HttpClient {Timeout=TimeSpan.FromMinutes(2)};
-    var channel=new OfficialEngineChannel(client);var found=await channel.CheckAsync();Check("real official release has native SHA256",found is not null);
+    // GitHub-hosted runners share anonymous API limits. The disposable CI token is used for metadata only.
+    var apiToken=Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+    if(!string.IsNullOrEmpty(apiToken))client.DefaultRequestHeaders.Authorization=new("Bearer",apiToken);
+    var channel=new OfficialEngineChannel(client);var found=await channel.CheckAsync();
+    client.DefaultRequestHeaders.Authorization=null;apiToken=null;
+    Check("real official release has native SHA256",found is not null);
     var installer=Path.Combine(folder,"official.exe");await channel.DownloadAsync(found!,installer);
     Check("real upstream installer downloaded",File.Exists(installer));
     var installed=Path.Combine(folder,"engines");var state=Path.Combine(folder,"selection.json");

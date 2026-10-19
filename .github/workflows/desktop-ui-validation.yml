@@ -218,6 +218,8 @@ jobs:
           if-no-files-found: ignore
       - name: Validate upstream official downloads and existing signed engine packages
         if: ${{ !cancelled() && inputs.release_followup && contains(inputs.followup_flags, 'validate-official-engine') && steps.followup_prepare.outputs.prepared == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           foreach ($taskCase in @('OfficialEngineValidation','UpdateValidation')) {
             & ./.tools/dotnet/dotnet.exe build "tests/$taskCase" -c Release --nologo -m:1 -nr:false
