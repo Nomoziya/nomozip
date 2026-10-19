@@ -25,6 +25,7 @@ public sealed partial class MainViewModel
                 var records = await vault.ReadAsync(cancellation.Token);
                 await Task.Run(() => EncryptedVaultBackup.ExportAsync(path, records, passphrase, cancellation.Token));
                 Banner = UiText.Format("T_229445d7c9f8", records.Count);
+                await RememberVaultBackupAsync(records);
             }
             else
             {

@@ -16,7 +16,8 @@ ZIP 或未登记的副本不能自动覆盖其它安装，继续使用下载页�
 - 使用 [GitHub Releases 列表接口](https://docs.github.com/en/rest/releases/releases#list-releases)，处理分页，不使用通常指向引擎的 `/releases/latest`。软件仓库固定为 `Nomoziya/nomozip`，设置中的引擎仓库不能改变软件来源。
 - 自动下载要求有效的 `sha256:` digest、正数大小，且不超过 64 MiB。没有可用校验信息或超过限制时仍提供发行页面，不自动下载。
 - [GitHub 发布资产 digest](https://github.blog/changelog/2025-06-03-releases-now-expose-digests-for-release-assets/) 是通过 GitHub HTTPS 元数据取得的下载完整性依据，**不是独立发行者签名**。Windows 商业代码签名已由用户移出范围；现有引擎 RSA 签名校验继续保留。
-- 不完整下载删除本次 `.partial`。成功文件在当前用户资料的 `application-updates` 缓存内；重新检查会删除本会话准备的文件。实际安装交接后的安装包保留供故障修复，不在安装器运行时强行删除，可在不用时删除该缓存目录。
+- 不完整下载删除本次 `.partial`。成功文件在 `%LOCALAPPDATA%\ArchivePassword\application-updates`（自定义数据目录则在其下同名目录）；重新检查会删除本会话准备的文件。实际安装交接后的安装包不会自动删除。
+- 开发分支新增“清理安装包”：在设置→更新的软件更新区域，删除历次更新遗留的安装包，显示缓存数量、大小及实际释放空间。只处理此缓存内程序生成的32位十六进制文件名 `.exe` / `.exe.partial`，不递归子目录，不跟随链接，不删除用户另存的其它文件。当前刚下载、尚未交接的准备包及被占用文件保留；旧安装完成后遗留的包属于清理目标。下载/安装交接等忙碌状态禁用清理，清理失败可重试。尚未发布，验证状态见CURRENT_STATE。
 - 下载全程上限 10 分钟，包括收到响应头后的内容流；按 [Microsoft HttpCompletionOption 文档](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpcompletionoption?view=net-10.0) 单独使用关联取消计时，不依赖仅覆盖响应头的客户端超时。超时与用户取消分别反馈。
 
 ## 安装交接与失败边界

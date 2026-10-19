@@ -46,7 +46,10 @@ public sealed class ArchiveTaskRow(string path, string? previewSize = null) : Ob
     public string? SelectedOutputPath {get=>selectedOutputPath;set {if(Set(ref selectedOutputPath,value)) Changed(nameof(DisplayOutputPath));}}
     public string? LatestOutputPath=>SelectedOutputPath ?? ResultOutputPath;
     public string DisplayOutputPath=>LatestOutputPath ?? ShellOutputPath ?? UiText.Get("Redesign.OutputPending");
-    public string PrimaryActionCaption=>UiText.Get(Running?IsCompression?"Conflict.Cancel":"Redesign.PauseAll":Failure is not null?"Redesign.ViewDetails":Completed?"Redesign.OpenFolder":IsCompression?"Redesign.ViewDetails":"Contents.CompactExtract");
+    private bool pauseRequested, paused;
+    public bool PauseRequested {get=>pauseRequested;set {if(Set(ref pauseRequested,value))Changed(nameof(PrimaryActionCaption));}}
+    public bool Paused {get=>paused;set=>Set(ref paused,value);}
+    public string PrimaryActionCaption=>UiText.Get(Running?IsCompression?"Conflict.Cancel":PauseRequested?"TaskControl.ResumeCompact":"TaskControl.PauseCompact":Failure is not null?"Redesign.ViewDetails":Completed?"Redesign.OpenFolder":IsCompression?"Redesign.ViewDetails":"Contents.CompactExtract");
     public string StateKind=>Failure is not null?(Failure.Status=="cancelled"?"cancelled":"error"):Completed?"success":Running?"running":"pending";
     private EngineResult? verificationResult;
     public string? ResultOutputPath { get=>resultOutputPath;set {if(Set(ref resultOutputPath,value)) Changed(nameof(DisplayOutputPath));} }

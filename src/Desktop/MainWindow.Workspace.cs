@@ -105,7 +105,7 @@ public partial class MainWindow
     {
         if (sender is not Button { DataContext: ArchiveTaskRow row } || DataContext is not MainViewModel vm) return;
         vm.SelectedTask = row;
-        if(row.Running){var command=row.IsCompression?vm.CancelCommand:vm.ToggleQueuePauseCommand;if(command.CanExecute(null))command.Execute(null);return;}
+        if(row.Running){var command=row.IsCompression?vm.CancelCommand:vm.ToggleSelectedTaskPauseCommand;if(command.CanExecute(null))command.Execute(null);return;}
         if(!vm.IsIdle)return;
         if(row.Failure is not null){if(row.IsCompression)vm.ShowCompressionTaskResult(row);else if(vm.ShowFailureCommand.CanExecute(null))vm.ShowFailureCommand.Execute(null);return;}
         if (row.Completed)

@@ -1,5 +1,14 @@
 # nomozip 当前状态与新会话交接
 
+## 后续四项功能实施中；仅本地检查通过，等待隔离CI（2026-10-19）
+
+- 用户授权优先建议的单任务控制、密码库备份提醒、失败重试，并追加“清理安装包”；清理明确针对历次更新后遗留的安装包。正式0.3.1及历史候选保留，尚未合并或发布新版本。
+- 源码仍在 `.tools/privacy-clean-worktree-20261019`，新分支 **codex/task-controls-backup-20261019**，起点9023926。阶段、代表任务和验收见PROJECT_PLAN文首；使用project-stage-planner、ui-design-engineering、ui-ux-pro-max，沿用0.3.1规范内扩展。
+- 已实现解压单任务暂停/继续/取消、全局与局部暂停叠加、失败任务/更换密码重试、密码库成功导出时间及变更提醒（DPAPI记录）、更新缓存统计及手动清理。清理仅处理本程序生成的直接缓存文件，保留当前尚未安装的准备包和被占用文件；不会保留所有历史安装包。未读真实库或替换实际安装。
+- 本地WPF构建0警告0错误；TaskImprovementsValidation **21项**、QueueValidation **37项**通过（合成目录）。LocalizationValidation的完整本地运行因干净工作区没有引擎载荷，在真实引擎探测处engine_not_available终止，**不得记为通过**；双语资源静态检查和隔离CI继续补。实际界面操作、截图对照、ARM64和候选包仍未完成，不能以编译/数据检查当作验收。
+- GitHub凭据已由用户迁移至1Password；不再使用旧DPAPI helper。有效入口为 **D:/Codex/2026-10-19/w/outputs/github-1password/github-1password.ps1**（官方CLI2.41.0、账户和条目引用均由该入口配置）。当前沙箱直连桌面命名管道Access is denied；用户普通PowerShell及受支持的require_escalated调用均已验证Nomoziya。当前任务通过一次op run启动持久终端，仅在内存中复用GitHub凭据，结束关闭；不将令牌、账户引用配置或1Password资料写入公开仓库。
+- 当前回合设置元数据gpt-6.1-sol/high已核对，无委派。旧自动任务已取消，不自动恢复；新功能须完成CI及实际截图检查，再交用户最终验收，不自动发布。下节0.3.1正式发布及隐私缓存未结项仍有效。
+
 ## 0.3.1正式发布；公开历史与附件已脱敏，平台缓存待清理（2026-10-19）
 
 - 用户明确授权推送0.3.1，随后要求隐私审计并选择“清理公开历史和旧附件，保留本地备份”。[nomozip 0.3.1](https://github.com/Nomoziya/nomozip/releases/tag/v0.3.1)已于北京时间 **2026-10-19 00:20:24** 正式发布，draft=false、prerelease=false，8个附件。后续文档同步不改发行标签或包。

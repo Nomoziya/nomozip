@@ -137,7 +137,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string VaultSummary => VaultLocked ? UiText.Get("T_b4caab65183a") : vaultAvailable ? UiText.Format("T_357176e2a16d", allPasswords.Count(value => value.AutoTry)) : UiText.Get("T_98b23dcfbd8c");
     public string TaskSummary => UiText.Format("T_3292893c1e67", Tasks.Count(value => !value.Completed), Tasks.Count(value => value.Completed));
     public string ExtractButtonText => UiText.Format("T_ab3ecbe376c2", Tasks.Count(value => !value.Completed));
-    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(CanChangeExtractionLayout));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
+    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(CanChangeExtractionLayout));Changed(nameof(SelectedTaskPauseCaption));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
     public SavedPassword? SelectedPassword { get => selectedPassword; set { if (Set(ref selectedPassword, value)) { Changed(nameof(DuplicateSummary)); CommandManager.InvalidateRequerySuggested(); } } }
 
     public async Task InitializeAsync()
@@ -179,9 +179,10 @@ public sealed partial class MainViewModel : ObservableObject
     private async Task RefreshVaultAsync()
     {
         await RefreshVaultProtectionAsync();
-        if (VaultLocked) { ClearVaultReferences(); CommandManager.InvalidateRequerySuggested(); return; }
+        if (VaultLocked) { ClearVaultReferences(); NotifyBackupReminder(); CommandManager.InvalidateRequerySuggested(); return; }
         try { allPasswords = (await vault.ReadAsync()).ToList(); vaultAvailable = true; }
         catch (VaultException exception) { allPasswords = []; vaultAvailable = false; Banner = exception.BackupAvailable ? UiText.Get("T_33838fbc8ea5") : UiText.Get("T_33e9a9f2b109"); }
+        await RefreshBackupReminderAsync();
         RefreshPasswordGroups(); FilterPasswords(); Changed(nameof(VaultSummary)); CommandManager.InvalidateRequerySuggested();
     }
     private void FilterPasswords()
@@ -192,28 +193,39 @@ public sealed partial class MainViewModel : ObservableObject
         Changed(nameof(PasswordListSummary)); Changed(nameof(DuplicateSummary));
     }
     private Task ExtractAsync()=>ExtractTasksAsync(Tasks.Where(value=>!value.Completed).ToArray());
-    private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch)
+    private async Task ExtractTasksAsync(IReadOnlyList<ArchiveTaskRow> batch,bool forceManualPassword=false)
     {
         if (batch.Any(task=>task.Checkpoint is null) && directoryRules.Location==ExtractionLocation.Custom && string.IsNullOrWhiteSpace(OutputPath)) { Banner = UiText.Get("T_36711b07451f"); return; }
-        IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(IsQueuePaused));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
+        IsBusy=true;idle=new TaskCompletionSource();Banner="";cancellation=new CancellationTokenSource();queuePause=new();Changed(nameof(CanPauseQueue));Changed(nameof(CanToggleTaskPause));Changed(nameof(IsQueuePaused));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));
         using var prompts=new SemaphoreSlim(1,1);
         var openResults=new List<string>();
         string Destination(ArchiveTaskRow task)=>task.Checkpoint?.Destination ?? task.ShellOutputPath ?? ExtractionDirectoryPlanner.BaseDirectory(task.Path,OutputPath,directoryRules.Location);
-        async Task<T> PromptAsync<T>(Func<Task<T>> show,CancellationToken token)
+        async Task<T> PromptAsync<T>(Func<Task<T>> show,CancellationToken token,ExtractionPause taskPause)
         {
-            await prompts.WaitAsync(token);
-            try {token.ThrowIfCancellationRequested();await queuePause.WaitAsync(token);return await show();}
+            while(true)
+            {
+                await taskPause.WaitAsync(token);
+                await prompts.WaitAsync(token);
+                if(!taskPause.IsRequested)break;
+                prompts.Release();
+            }
+            try {token.ThrowIfCancellationRequested();return await show();}
             finally {prompts.Release();}
         }
         async Task RunTaskAsync(ArchiveTaskRow task,CancellationToken token)
         {
+            using var taskCancel=CancellationTokenSource.CreateLinkedTokenSource(token);
+            using var taskPause=new ExtractionPause(queuePause);
+            taskControls.Add(task,(taskCancel,taskPause));token=taskCancel.Token;
+            task.PauseRequested=false;task.Paused=false;task.Percent=0;
             using var skip=new CancellationTokenSource();queueAttempts.Add(task,(skip,false));
             task.Running=true;task.IsIndeterminate=true;task.Failure=null;
             if(queueAttempts.Count==1) SelectedTask=task;
             var attempts=0;
             var progress=new Progress<TaskUpdate>(value=>
             {
-                if(!task.Running) return;
+                if(!task.Running || !taskControls.TryGetValue(task,out var currentControl) || currentControl.Cancel!=taskCancel) return;
+                if(value.Progress?.PausedState is {} pauseState)task.Paused=pauseState;
                 task.Status=value.Progress?.PausedState==true?UiText.Get("T_eb0c326b60ae"):value.Message;Footer=UiText.Format("Common.TaskMessage", task.Name, task.Status);
                 queueAttempts[task]=(skip,value.State=="password");RefreshQueuePasswordAction();
                 if(value.Progress is {PausedState:null} details) {task.IsIndeterminate=details.Total==0;task.Percent=details.Total==0?0:Math.Min(100,details.Completed*100.0/details.Total);}
@@ -224,15 +236,15 @@ public sealed partial class MainViewModel : ObservableObject
                 var destination=Destination(task);
                 Func<IReadOnlyList<ArchiveEntry>,string>? resolveDestination=task.Checkpoint is null && task.ShellOutputPath is null && directoryRules.Layout!=ExtractionLayout.Direct
                     ? items=>ExtractionDirectoryPlanner.Resolve(task.Path,destination,directoryRules,items,DateOnly.FromDateTime(DateTime.Today)) : null;
-                var (client,checkpoint)=ExtractionClient(task,queuePause);
-                var service=new ExtractionService(client,vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin(),queuePause);
-                var outcome=await service.ExtractAsync(task.Path,destination,AutoTry,
-                    failure=>PromptAsync(()=>dialogs.AskPasswordAsync(task.Name,attempts++>0,allPasswords,vaultAvailable,token,previousFailure:failure),token),
+                var (client,checkpoint)=ExtractionClient(task,taskPause);
+                var service=new ExtractionService(client,vault,new PasswordCandidateProvider(vault),new WindowsExtractionOrigin(),taskPause);
+                var outcome=await service.ExtractAsync(task.Path,destination,AutoTry && !forceManualPassword,
+                    failure=>PromptAsync(()=>dialogs.AskPasswordAsync(task.Name,attempts++>0,allPasswords,vaultAvailable,token,previousFailure:failure),token,taskPause),
                     path=>ConflictPolicy==1?Task.FromResult(ExistingFilePolicy.Skip):ConflictPolicy==2?Task.FromResult(ExistingFilePolicy.Replace)
-                        :PromptAsync(()=>Task.FromResult(dialogs.ResolveConflict(path)),token),
+                        :PromptAsync(()=>Task.FromResult(dialogs.ResolveConflict(path)),token,taskPause),
                     progress,token,skip.Token,resolveDestination,checkpoint:checkpoint,
                     resolveFileConflict:conflict=>ConflictPolicy==1?Task.FromResult(new ExistingFileDecision(ExistingFilePolicy.Skip)):ConflictPolicy==2?Task.FromResult(new ExistingFileDecision(ExistingFilePolicy.Replace))
-                        :PromptAsync(()=>Task.FromResult(dialogs.ResolveFileConflict(conflict)),token));
+                        :PromptAsync(()=>Task.FromResult(dialogs.ResolveFileConflict(conflict)),token,taskPause));
                 task.Completed=outcome.Engine.IsSuccess;
                 task.ResultOutputPath=task.Completed?outcome.OutputPath:null;task.SelectedOutputPath=null;
                 if(task.Completed) openResults.Add(outcome.OutputPath);
@@ -241,13 +253,13 @@ public sealed partial class MainViewModel : ObservableObject
                 if(task.Failure?.Failures.Count>0) task.Status+=UiText.Format("T_e3848c27e720", task.Failure.Failures.Count);
                 if(outcome.Warning is not null) Banner+=(Banner.Length>0?"\n":"")+(batch.Count>1?task.Name+UiText.Get("Common.Colon"):"")+outcome.Warning;
                 Footer=UiText.Format("Common.TaskMessage", task.Name, task.Status);
-                if(outcome.Engine.Status=="cancelled") cancellation.Cancel();
+                if(outcome.Engine.Status=="cancelled" && !taskCancel.IsCancellationRequested) cancellation.Cancel();
             }
             catch(CheckpointException error) {task.Failure=new EngineResult {Code=error.Code};task.Status=UiText.Get("Checkpoint.Error."+error.Code);Banner=task.Status;}
-            catch(OperationCanceledException) {task.Status=UiText.Get("T_a37778f17c5f");Footer=UiText.Format("T_39f2e118230d", task.Name);}
+            catch(OperationCanceledException) {task.Failure=new EngineResult {Status="cancelled",Code="cancelled"};task.Status=UiText.Get("T_a37778f17c5f");Footer=UiText.Format("T_39f2e118230d", task.Name);}
             catch(Exception error) when(error is IOException or UnauthorizedAccessException or ArgumentException)
             {task.Failure=new EngineResult {Code="output_write_failed"};task.Status=UiText.Get("T_9719b364c066");Banner+=(Banner.Length>0?"\n":"")+task.Name+UiText.Get("T_51bf39e5552c");}
-            finally {task.Running=false;queueAttempts.Remove(task);RefreshQueuePasswordAction();Changed(nameof(TaskSummary));Changed(nameof(ExtractButtonText));}
+            finally {task.Running=false;task.PauseRequested=false;task.Paused=false;taskControls.Remove(task);queueAttempts.Remove(task);Changed(nameof(SelectedTaskPauseCaption));RefreshQueuePasswordAction();Changed(nameof(TaskSummary));Changed(nameof(ExtractButtonText));}
         }
         try
         {
@@ -264,7 +276,7 @@ public sealed partial class MainViewModel : ObservableObject
             var shouldOpen=directoryRules.OpenAfterSuccess && batchSucceeded;
             try {RefreshCheckpointRows();}
             catch(Exception error) when(error is IOException or UnauthorizedAccessException) {Banner=UiText.Get("Checkpoint.ScanFailed");}
-            CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(IsQueuePaused));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
+            CanSkipPasswords=false;queuePause.Resume();queuePause=null;Changed(nameof(CanPauseQueue));Changed(nameof(CanToggleTaskPause));Changed(nameof(IsQueuePaused));Changed(nameof(QueuePauseCaption));Changed(nameof(CancelActionCaption));cancellation.Dispose();cancellation=null;IsBusy=false;
             try {if(batchSucceeded) NotifyCompletedBatch(batch.Count);if(shouldOpen) OpenResultDirectories(openResults.Distinct(StringComparer.OrdinalIgnoreCase).ToArray());}
             finally {idle.TrySetResult();}
         }

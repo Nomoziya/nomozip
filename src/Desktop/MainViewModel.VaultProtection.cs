@@ -41,11 +41,13 @@ public sealed partial class MainViewModel
     {
         vaultProtection=vault is IPasswordVaultProtection protection?await protection.GetProtectionStateAsync():VaultProtectionState.Disabled;
         foreach(var name in new[]{nameof(VaultLocked),nameof(VaultMasterEnabled),nameof(VaultProtectionMessage),nameof(VaultProtectionStatusLabel),nameof(VaultSummary),nameof(PasswordEmptyMessage)})Changed(name);
+        NotifyBackupReminder();
     }
     private void ClearVaultReferences()
     {
         allPasswords=[];PasswordRows.Clear();SelectedPassword=null;compressionPassword=null;Changed(nameof(CompressionPasswordStatus));vaultAvailable=false;
         RefreshPasswordGroups();Changed(nameof(PasswordListSummary));Changed(nameof(DuplicateSummary));Changed(nameof(VaultSummary));
+        NotifyBackupReminder();
     }
     private async Task VaultOperationAsync(Func<Task> operation)
     {

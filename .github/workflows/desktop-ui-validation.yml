@@ -125,6 +125,12 @@ jobs:
         run: |
           ./scripts/build-worker.ps1 -Architecture '${{ matrix.architecture }}'
           ./scripts/build.ps1 -Architecture '${{ matrix.architecture }}' -Configuration Release -SkipWorker
+      - name: Validate task controls, encrypted backup history and safe cache cleanup
+        run: |
+          & ./.tools/dotnet/dotnet.exe build tests/TaskImprovementsValidation -c Release --nologo -m:1 -nr:false
+          if ($LASTEXITCODE -ne 0) { throw 'Task improvements validation build failed.' }
+          & ./.tools/dotnet/dotnet.exe tests/TaskImprovementsValidation/bin/Release/net10.0-windows/TaskImprovementsValidation.dll $PWD.Path
+          if ($LASTEXITCODE -ne 0) { throw 'Task improvements core validation failed.' }
       - name: Validate native ARM64 architecture and cross-architecture synthetic vaults
         if: matrix.architecture == 'arm64'
         run: ./scripts/test-ui-arm64-architecture.ps1

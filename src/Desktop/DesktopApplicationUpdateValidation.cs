@@ -112,6 +112,12 @@ internal static class DesktopApplicationUpdateValidation
             async Task Download(){model.DownloadApplicationUpdateCommand.Execute(null);await model.WaitForIdleAsync();await Layout();}
             await Download();
             Check("download ready exact progress and install binding",model.ApplicationDownloadProgress==100 && model.InstallApplicationUpdateCommand.CanExecute(null) && !model.DownloadApplicationUpdateCommand.CanExecute(null));
+            var cache=Path.Combine(data,"application-updates");
+            var activeReady=Directory.GetFiles(cache,"*.exe").Single();
+            var previousInstaller=Path.Combine(cache,new string('e',32)+".exe");await File.WriteAllBytesAsync(previousInstaller,[1,2,3]);
+            var cleanup=(Button)window.FindName("CleanApplicationInstallersButton");cleanup.BringIntoView();await Layout();
+            ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(cleanup)!.GetPattern(PatternInterface.Invoke)).Invoke();await model.WaitForIdleAsync();await Layout();
+            Check("manual cleanup deletes historical installer while ready update remains installable",!File.Exists(previousInstaller) && File.Exists(activeReady) && model.InstallApplicationUpdateCommand.CanExecute(null));
             var installButton=(Button)window.FindName("InstallApplicationUpdateButton");installButton.BringIntoView();await Layout();
             var installPeer=UIElementAutomationPeer.CreatePeerForElement(installButton)!;
             Check("install button named and keyboard focusable",installPeer.GetName()==UiText.Get("SoftwareUpdate.Install") && installPeer.IsKeyboardFocusable());

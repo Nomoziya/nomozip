@@ -3266,4 +3266,32 @@ A password is required to validate the archive data.</value>
   <data name="Vault.UsedYesterday" xml:space="preserve"><value>Yesterday</value></data>
   <data name="Vault.Lock" xml:space="preserve"><value>Lock</value></data>
   <data name="Vault.Unlock" xml:space="preserve"><value>Unlock</value></data>
+  <data name="TaskControl.Pause" xml:space="preserve"><value>Pause task</value></data>
+  <data name="TaskControl.Resume" xml:space="preserve"><value>Resume task</value></data>
+  <data name="TaskControl.Cancel" xml:space="preserve"><value>Cancel task</value></data>
+  <data name="TaskControl.PauseRequested" xml:space="preserve"><value>Pausing this task…</value></data>
+  <data name="TaskControl.Cancelling" xml:space="preserve"><value>Cancelling this task…</value></data>
+  <data name="TaskControl.Retry" xml:space="preserve"><value>Retry task</value></data>
+  <data name="TaskControl.RetryPassword" xml:space="preserve"><value>Retry with another password</value></data>
+  <data name="TaskControl.RetryFailed" xml:space="preserve"><value>Retry failed tasks</value></data>
+  <data name="TaskControl.SourceFolder" xml:space="preserve"><value>Open archive folder</value></data>
+  <data name="BackupReminder.Export" xml:space="preserve"><value>Export backup</value></data>
+  <data name="BackupReminder.Unlock" xml:space="preserve"><value>Unlock the vault to view backup status.</value></data>
+  <data name="BackupReminder.Empty" xml:space="preserve"><value>Add passwords to create an independent encrypted backup.</value></data>
+  <data name="BackupReminder.Unavailable" xml:space="preserve"><value>Backup history is unavailable. Export a new backup.</value></data>
+  <data name="BackupReminder.Never" xml:space="preserve"><value>No independent backup recorded. Export an encrypted backup.</value></data>
+  <data name="BackupReminder.Added" xml:space="preserve"><value>Last backup {0} · {1} passwords added since</value></data>
+  <data name="BackupReminder.Changed" xml:space="preserve"><value>Last backup {0} · Vault changed; export a new backup</value></data>
+  <data name="BackupReminder.Current" xml:space="preserve"><value>Last backup {0} · Backup includes current passwords</value></data>
+  <data name="BackupReminder.SaveFailed" xml:space="preserve"><value>Backup exported, but its reminder record could not be saved.</value></data>
+  <data name="SoftwareUpdate.CleanCache" xml:space="preserve"><value>Clean installer cache</value></data>
+  <data name="SoftwareUpdate.CacheSummary" xml:space="preserve"><value>Installer cache: {0} files · {1:0.##} MB</value></data>
+  <data name="SoftwareUpdate.CacheUnavailable" xml:space="preserve"><value>Installer cache is unavailable</value></data>
+  <data name="SoftwareUpdate.CacheHint" xml:space="preserve"><value>Clean only the software update cache. Prepared and in-use files are kept.</value></data>
+  <data name="SoftwareUpdate.CacheCleaned" xml:space="preserve"><value>Removed {0} files, freed {1:0.##} MB; kept or could not remove {2} files.</value></data>
+  <data name="SoftwareUpdate.CacheCleanFailed" xml:space="preserve"><value>Could not finish cleanup. Check cache folder permissions and try again.</value></data>
+  <data name="SoftwareUpdate.CacheCleaning" xml:space="preserve"><value>Cleaning old installers…</value></data>
+  <data name="TaskControl.PauseCompact" xml:space="preserve"><value>Pause</value></data>
+  <data name="TaskControl.ResumeCompact" xml:space="preserve"><value>Resume</value></data>
+  <data name="TaskControl.ScopeHint" xml:space="preserve"><value>Applies only to this task. Queue controls are in the task toolbar.</value></data>
 </root>

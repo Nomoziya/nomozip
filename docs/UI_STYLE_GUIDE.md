@@ -39,6 +39,8 @@
 
 ## 历史资料与下载
 
+开发分支规范内扩展（2026-10-19，尚未验收/发布）：任务行“暂停/继续”保持172/196 DIP操作列及36 DIP按钮，完整作用范围放在同一Fluent菜单和提示；全局按钮仍写“队列”。暂不适用的新菜单项隐藏，避免一律扩长菜单。密码库搜索工具栏下新增12 DIP间距的可换行备份状态行，13 DIP辅助文字，需提醒时使用现有AccentBrush；右侧36 DIP导出按钮随文本自然宽度。软件更新状态之前新增缓存清理按钮、数量/大小辅助文字，窄窗WrapPanel换行；清理中禁用重复操作，结果以真实数量与释放字节格式化显示。所有背景沿用内容下方共享模板，暂停动画取任务实际确认及队列状态。更改入口：MainWindow.xaml、MainViewModel.Queue/BackupReminder/ApplicationUpdates、TaskProgressView，颜色与字型继续从原资源取值。实际截图对照及阶段验收未取得前不得标作通过。
+
 - 待选1：`design-system/next-20261017/`，可运行源码`prototypes/UiNext/`，分支`codex/ui-next-20261017`。
 - 待选2：`design-system/option2-20261017/`，可运行源码`prototypes/UiOption2/`，分支`codex/ui-option2-20261017`。此版未采用。
 - 最终采用：`design-system/reference-20261017/`，原型`prototypes/UiReference/`，产品分支`codex/ui-reference-20261017`。原型候选不是完整软件。
