@@ -20,7 +20,7 @@ internal static class DesktopTaskImprovementsValidation
         var language=UiText.LanguageCode;
         var folder=Path.Combine(root,"artifacts/task-improvements-preview",language);Directory.CreateDirectory(folder);
         var data=Path.Combine(root,"artifacts/task-improvements-ui",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(data);
-        var checks=new Dictionary<string,bool>(); string? error=null; MainViewModel? model=null;
+        var checks=new Dictionary<string,bool>();var viewports=new List<object>(); string? error=null; MainViewModel? model=null;
         void Check(string name,bool passed) {checks.Add(name,passed);if(!passed)throw new InvalidOperationException(name);}
         Task Layout()=>window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle).Task;
         async Task Until(Func<bool> predicate)
@@ -36,8 +36,10 @@ internal static class DesktopTaskImprovementsValidation
         void Capture(string name)
         {
             window.UpdateLayout();var client=(FrameworkElement)window.Content;
-            Check(name+" exact client viewport",Math.Abs(client.ActualWidth-window.Width)<1 && Math.Abs(client.ActualHeight-window.Height)<1);
+            viewports.Add(new {name,requestedWidth=window.Width,requestedHeight=window.Height,renderWidth=window.ActualWidth,renderHeight=window.ActualHeight,contentWidth=client.ActualWidth,contentHeight=client.ActualHeight});
             window.Opacity=1;DesktopAccessibilityValidation.Render(window,Path.Combine(folder,name+".png"),1,clientOnly:true);window.Opacity=0;
+            Check(name+" exact rendered viewport",Math.Abs(window.ActualWidth-window.Width)<1 && Math.Abs(window.ActualHeight-window.Height)<1 &&
+                Math.Abs(client.ActualWidth+2-window.ActualWidth)<1 && Math.Abs(client.ActualHeight+2-window.ActualHeight)<1);
         }
         void Size(double width,double height) { window.MinWidth=width;window.Width=width;window.Height=height; }
         bool Fits(FrameworkElement element)
@@ -135,7 +137,7 @@ internal static class DesktopTaskImprovementsValidation
         {
             if(model?.IsBusy==true){model.CancelCommand.Execute(null);try{await model.WaitForIdleAsync().WaitAsync(TimeSpan.FromSeconds(20));}catch(TimeoutException){}}
         }
-        var report=new {passed=error is null && checks.Values.All(value=>value),language,architecture=EngineArchitecture.Current,checks,error};
+        var report=new {passed=error is null && checks.Values.All(value=>value),language,architecture=EngineArchitecture.Current,checks,viewports,error};
         await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/task-improvements-ui-{language}-validation.json"),JsonSerializer.Serialize(report,new JsonSerializerOptions {WriteIndented=true}));
         return report.passed;
     }
