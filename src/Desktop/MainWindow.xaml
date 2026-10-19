@@ -1083,7 +1083,12 @@
                   </StackPanel>
                 </StackPanel>
                 </DockPanel>
-                <TextBlock Text="{Binding UpdateMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
+                <WrapPanel Margin="0,4,0,0">
+                  <Label Content="{loc:Text EngineSource.Label}" Target="{Binding ElementName=EngineSourceChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,12,8"/>
+                  <ComboBox x:Name="EngineSourceChoice" Style="{StaticResource CompactOptionField}" ItemsSource="{Binding EngineSourceChoices}" SelectedIndex="{Binding EngineSourceIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text EngineSource.Label}" Margin="0,0,0,8"/>
+                </WrapPanel>
+                <TextBlock x:Name="EngineSourceHint" Text="{Binding EngineSourceDescription}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
+                <TextBlock x:Name="EngineUpdateStatus" Text="{Binding UpdateMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
                 <Button Content="{loc:Text T_a56b08874f91}" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="0,12,0,0">
                   <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -1113,7 +1118,7 @@
                       <Button Content="{loc:Text T_49c8ef416bd3}" Command="{Binding RollbackEngineCommand}" Margin="0,0,0,8"/>
                     </WrapPanel>
                     <Label Content="{loc:Text T_a3067144f50a}" Target="{Binding ElementName=UpdateRepositoryBox}" Padding="0"/>
-                    <TextBox x:Name="UpdateRepositoryBox" Text="{Binding UpdateRepository, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_b1f473ca70e6}" Margin="0,8,0,0"/>
+                    <TextBox x:Name="UpdateRepositoryBox" Text="{Binding UpdateRepository, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEditEngineRepository}" AutomationProperties.Name="{loc:Text T_b1f473ca70e6}" Margin="0,8,0,0"/>
                     <TextBlock Text="{Binding UpdateChannelDescription}" Style="{StaticResource Secondary}" Margin="0,8,0,0"/>
                   </StackPanel>
                 </Expander>

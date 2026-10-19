@@ -1,5 +1,17 @@
 当前状态入口：[docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)。历史计划按需查询，当前开发见下节。
 
+## 2026-10-19：可选的 7-Zip 官方引擎源
+
+用户授权按建议增加官方源。源码仍在 `.tools/privacy-clean-worktree-20261019`，新分支 `codex/official-engine-source-20261019` 从311da9e开始，保护上一候选。默认nomozip签名源不变；不发布、不合并、不恢复自动任务。共用主会话/执行者gpt-6.1-sol/high，无委派；本聊天当前turn_context元数据已核对（2026-10-19T10:54:49），复用本项目WPF实施证据。沿用project-stage-planner、ui-design-engineering、ui-ux-pro-max及当前UI规范；技能WPF查询支持既有高对比资源和即时绑定。
+
+| 阶段 | 范围、交付物与验收 |
+| --- | --- |
+| O1 下载与信任 | 官方ip7z/7zip稳定版API、精确架构/URL及官方asset SHA256；提取所需文件、本机保护校验记录，与nomozip RSA签名包分开验证。缺摘要、错架构、篡改、取消均不切换引擎。 |
+| O2 安装与UI | 现有更新卡增加按文字自适应的来源选项、来源说明；下载/验证/兼容检查后确认并切换，保留旧版和自解压能力，删除临时包；设置持久化，切换来源清除旧检查结果。 |
+| O3 验证与候选 | x64先、原生ARM64后；隔离CI真实官方包、签名源回归、失败/取消/重启/回退与压缩解压；中英、浅深及800/1152截图对照。用户最终验收，已有候选验收不由本任务代批。 |
+
+依据：7-Zip官网 https://www.7-zip.org/download.html 指向官方GitHub且提供x64/ARM64；GitHub资产API https://docs.github.com/en/rest/releases/assets 提供digest。2026-10-19当前26.04两架构均有SHA256。官方源不承诺绕过GitHub；其校验来自官方HTTPS发布元数据，离线持久校验记录由当前Windows用户DPAPI保护，不冒充nomozip发布签名。
+
 ## 2026-10-19：0.3.1 后续功能（候选完成，等待用户验收）
 
 用户授权上一轮优先建议三项，并追加更新安装包手动清理。工作目录 `.tools/privacy-clean-worktree-20261019`，独立分支 `codex/task-controls-backup-20261019`，起点9023926，正式标签与原候选保留。与v0.3.1的既有差异仅发行记录及历史映射。

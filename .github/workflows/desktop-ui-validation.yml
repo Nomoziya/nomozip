@@ -216,6 +216,17 @@ jobs:
             artifacts/ui-redesign/*/report.json
             artifacts/ui-redesign/*/actual-compression-compact-partial-selection.png
           if-no-files-found: ignore
+      - name: Validate upstream official downloads and existing signed engine packages
+        if: ${{ !cancelled() && inputs.release_followup && contains(inputs.followup_flags, 'validate-official-engine') && steps.followup_prepare.outputs.prepared == 'true' }}
+        run: |
+          foreach ($taskCase in @('OfficialEngineValidation','UpdateValidation')) {
+            & ./.tools/dotnet/dotnet.exe build "tests/$taskCase" -c Release --nologo -m:1 -nr:false
+            if ($LASTEXITCODE -ne 0) { throw "$taskCase build failed." }
+            $taskArguments = @("tests/$taskCase/bin/Release/net10.0-windows/$taskCase.dll", $PWD.Path)
+            if ($taskCase -eq 'OfficialEngineValidation') { $taskArguments += '--integration' }
+            & ./.tools/dotnet/dotnet.exe @taskArguments
+            if ($LASTEXITCODE -ne 0) { throw "$taskCase failed." }
+          }
       - name: Follow up remaining affected flows and language settings
         if: ${{ !cancelled() && inputs.release_followup && steps.followup_prepare.outputs.prepared == 'true' }}
         env:
@@ -241,6 +252,7 @@ jobs:
             artifacts/*validation.json
             artifacts/*-preview/*.png
             artifacts/task-improvements-preview/**/*.png
+            artifacts/official-engine-preview/**/*.png
           if-no-files-found: ignore
       - name: Upgrade the published 0.2.1 lightweight installation and package release
         if: inputs.release_followup && inputs.followup_flags == ''

@@ -40,6 +40,7 @@ public partial class App : Application
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-theme-restart");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-application-updates");
         if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-task-improvements");
+        if (localeIndex < 0) localeIndex = Array.IndexOf(arguments, "--validate-official-engine");
         var isolated = arguments.Any(value => value.StartsWith("--validate", StringComparison.Ordinal) || value == "--preview");
         var directoryIndex = Array.IndexOf(arguments, "--data-dir");
         var directory = directoryIndex >= 0 && directoryIndex + 1 < arguments.Length ? Path.GetFullPath(arguments[directoryIndex + 1])
@@ -299,6 +300,14 @@ public partial class App : Application
             DispatcherUnhandledException+=(_,failure)=>{File.WriteAllText(report,JsonSerializer.Serialize(new {passed=false,exception=failure.Exception.ToString()}));failure.Handled=true;Shutdown(1);};
             window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
             var passed=await DesktopNotificationValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[notificationIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
+        }
+        var officialEngineIndex=Array.IndexOf(e.Args,"--validate-official-engine");
+        if(officialEngineIndex>=0)
+        {
+            if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true")throw new InvalidOperationException("Requires isolated CI.");
+            window.SuppressExitConfirmationForValidation=true;
+            window.WindowStartupLocation=WindowStartupLocation.Manual;window.Left=-32000;window.Top=-32000;window.Opacity=0;window.ShowActivated=false;window.ShowInTaskbar=false;window.Show();
+            var passed=await DesktopOfficialEngineValidation.RunAsync(window,theme!,Path.GetFullPath(e.Args[officialEngineIndex+1]),baseDirectory);Shutdown(passed?0:1);return;
         }
         var improvementsIndex=Array.IndexOf(e.Args,"--validate-task-improvements");
         if(improvementsIndex>=0)

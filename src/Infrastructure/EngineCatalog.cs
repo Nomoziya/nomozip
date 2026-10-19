@@ -7,6 +7,7 @@ namespace ArchivePassword.Infrastructure;
 public sealed class EngineCatalog(string directory, string? installedDirectory = null, string? publicKey = null)
 {
     private readonly Dictionary<string, string> paths = new(StringComparer.Ordinal);
+    public string? OfficialDirectory => installedDirectory is null ? null : installedDirectory + "-official";
     public async Task<IReadOnlyList<string>> ReadVerifiedVersionsAsync()
     {
         paths.Clear();
@@ -28,6 +29,16 @@ public sealed class EngineCatalog(string directory, string? installedDirectory =
             }
             catch (Exception exception) when (exception is JsonException or IOException or KeyNotFoundException or UnauthorizedAccessException or InvalidOperationException) { }
         }
+        if (OfficialDirectory is { } official && Directory.Exists(official))
+            foreach (var folder in Directory.EnumerateDirectories(official))
+            {
+                try
+                {
+                    var receipt = await OfficialEngineReceipt.VerifyInstalledAsync(folder);
+                    if (receipt.Update.Version == Path.GetFileName(folder)) paths[receipt.Update.Version] = Path.Combine(folder, "7z.dll");
+                }
+                catch (Exception exception) when (exception is UpdateException or IOException or UnauthorizedAccessException) { }
+            }
         if (installedDirectory is not null && publicKey is not null && Directory.Exists(installedDirectory))
             foreach (var folder in Directory.EnumerateDirectories(installedDirectory))
             {
@@ -44,6 +55,12 @@ public sealed class EngineCatalog(string directory, string? installedDirectory =
     public async Task<SfxModule> ReadSfxModuleAsync(string version,CancellationToken token=default)
     {
         var selectedDll=Path.GetFullPath(DllPath(version));var selectedFolder=Path.GetDirectoryName(selectedDll)!;
+        if (OfficialDirectory is { } official && selectedDll.StartsWith(Path.GetFullPath(official).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))
+        {
+            var receipt=await OfficialEngineReceipt.VerifyInstalledAsync(selectedFolder,token);
+            var module=new SfxModule(version,receipt.Files["7z.sfx"],await File.ReadAllBytesAsync(Path.Combine(selectedFolder,"7z.sfx"),token));
+            if(receipt.Update.Version!=version || !module.IsValid())throw new UpdateException("sfx_module_invalid");return module;
+        }
         if(installedDirectory is not null && publicKey is not null && selectedDll.StartsWith(Path.GetFullPath(installedDirectory).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))
         {
             var manifest=await EngineUpdatePackage.VerifyInstalledAsync(selectedFolder,publicKey,token);

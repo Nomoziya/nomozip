@@ -3294,4 +3294,20 @@ A password is required to validate the archive data.</value>
   <data name="TaskControl.PauseCompact" xml:space="preserve"><value>Pause</value></data>
   <data name="TaskControl.ResumeCompact" xml:space="preserve"><value>Resume</value></data>
   <data name="TaskControl.ScopeHint" xml:space="preserve"><value>Applies only to this task. Queue controls are in the task toolbar.</value></data>
+  <data name="EngineSource.Label" xml:space="preserve"><value>Engine update source</value></data>
+  <data name="EngineSource.Verified" xml:space="preserve"><value>nomozip verified</value></data>
+  <data name="EngineSource.Official" xml:space="preserve"><value>7-Zip official</value></data>
+  <data name="EngineSource.VerifiedHint" xml:space="preserve"><value>Download engine packages signed and compatibility-checked by nomozip.</value></data>
+  <data name="EngineSource.OfficialHint" xml:space="preserve"><value>Official GitHub releases linked from 7-zip.org. Integrity and compatibility checks run before activation; rollback is available.</value></data>
+  <data name="EngineSource.Recheck" xml:space="preserve"><value>Source changed. Check for updates again.</value></data>
+  <data name="EngineSource.NoAsset" xml:space="preserve"><value>No stable official engine is available for this architecture.</value></data>
+  <data name="EngineSource.Current" xml:space="preserve"><value>The latest official version is {0}. Your engine is up to date.</value></data>
+  <data name="EngineSource.Available" xml:space="preserve"><value>Official engine {0} is available. Install it under Manage engine versions.</value></data>
+  <data name="EngineSource.Downloading" xml:space="preserve"><value>Downloading official engine: {0} / {1} KB…</value></data>
+  <data name="EngineSource.Verifying" xml:space="preserve"><value>Verifying the official installer and extracting the engine…</value></data>
+  <data name="EngineSource.Testing" xml:space="preserve"><value>Checking encrypted compression and extraction compatibility…</value></data>
+  <data name="EngineSource.Installed" xml:space="preserve"><value>Official engine checked and activated. Temporary installer removed. You can roll back to the previous version.</value></data>
+  <data name="EngineSource.NoDigest" xml:space="preserve"><value>The official installer has no SHA-256 digest. It cannot be verified. Use the nomozip verified source.</value></data>
+  <data name="EngineSource.Invalid" xml:space="preserve"><value>The official engine source or files are invalid. Your active engine was preserved.</value></data>
+  <data name="EngineSource.VersionConflict" xml:space="preserve"><value>This version differs from an existing engine. The existing engine was preserved. Use the nomozip verified source.</value></data>
 </root>

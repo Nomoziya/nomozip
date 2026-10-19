@@ -3294,4 +3294,20 @@
   <data name="TaskControl.PauseCompact" xml:space="preserve"><value>暂停</value></data>
   <data name="TaskControl.ResumeCompact" xml:space="preserve"><value>继续</value></data>
   <data name="TaskControl.ScopeHint" xml:space="preserve"><value>仅作用于此任务；全队列操作位于任务工具栏。</value></data>
+  <data name="EngineSource.Label" xml:space="preserve"><value>引擎更新来源</value></data>
+  <data name="EngineSource.Verified" xml:space="preserve"><value>nomozip 已验证源</value></data>
+  <data name="EngineSource.Official" xml:space="preserve"><value>7-Zip 官方源</value></data>
+  <data name="EngineSource.VerifiedHint" xml:space="preserve"><value>下载经 nomozip 签名及兼容性验证的引擎包。</value></data>
+  <data name="EngineSource.OfficialHint" xml:space="preserve"><value>来自 7-zip.org 指向的官方 GitHub 发布；校验后测试兼容性，支持回退。</value></data>
+  <data name="EngineSource.Recheck" xml:space="preserve"><value>来源已切换，请重新检查更新。</value></data>
+  <data name="EngineSource.NoAsset" xml:space="preserve"><value>官方当前没有适用于本机架构的稳定版引擎。</value></data>
+  <data name="EngineSource.Current" xml:space="preserve"><value>官方最新版本为 {0}，当前引擎无需更新。</value></data>
+  <data name="EngineSource.Available" xml:space="preserve"><value>发现官方引擎 {0}，可在“管理引擎版本”中安装。</value></data>
+  <data name="EngineSource.Downloading" xml:space="preserve"><value>正在下载官方引擎：{0} / {1} KB…</value></data>
+  <data name="EngineSource.Verifying" xml:space="preserve"><value>正在校验官方安装包并提取引擎…</value></data>
+  <data name="EngineSource.Testing" xml:space="preserve"><value>正在检查官方引擎的加密压缩与解压兼容性…</value></data>
+  <data name="EngineSource.Installed" xml:space="preserve"><value>官方引擎已通过检查并启用，临时安装包已清理。可回退至上一版本。</value></data>
+  <data name="EngineSource.NoDigest" xml:space="preserve"><value>官方尚未提供此安装包的 SHA-256，无法验证。请使用 nomozip 已验证源。</value></data>
+  <data name="EngineSource.Invalid" xml:space="preserve"><value>官方引擎的来源或文件不符合要求，未切换当前引擎。</value></data>
+  <data name="EngineSource.VersionConflict" xml:space="preserve"><value>此版本与已有引擎内容不同，已保留现有引擎。请使用 nomozip 已验证源。</value></data>
 </root>

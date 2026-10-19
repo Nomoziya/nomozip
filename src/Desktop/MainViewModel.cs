@@ -17,6 +17,9 @@ public sealed partial class MainViewModel : ObservableObject
     private readonly EngineCatalog engines;
     private readonly EngineUpdateService? updater;
     private AvailableEngineUpdate? availableUpdate;
+    private OfficialEngineUpdate? availableOfficialUpdate;
+    private int engineSourceIndex;
+    internal Func<System.Net.Http.HttpClient>? EngineUpdateClientFactory { get; set; }
     private string activeEngine = "", previousEngine = "", updateRepository = "Nomoziya/nomozip";
     private CancellationTokenSource? cancellation, skipPasswords;
     private TaskCompletionSource idle = CompletedSource();
@@ -73,7 +76,7 @@ public sealed partial class MainViewModel : ObservableObject
         ImportVaultCommand = new AsyncCommand(() => TransferVaultAsync(false), () => IsIdle && vaultAvailable);
         CheckUpdatesCommand = new AsyncCommand(CheckUpdatesAsync, () => IsIdle);
         ImportUpdateCommand = new AsyncCommand(ImportUpdateAsync, () => IsIdle && updater is not null);
-        InstallUpdateCommand = new AsyncCommand(InstallOnlineUpdateAsync, () => IsIdle && updater is not null && availableUpdate is not null);
+        InstallUpdateCommand = new AsyncCommand(InstallOnlineUpdateAsync, () => IsIdle && updater is not null && (EngineSourceIndex == 1 ? availableOfficialUpdate is not null : availableUpdate is not null));
         ApplyEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.ActivateAsync(SelectedEngineVersion, token); await RefreshEngineSelectionAsync(); UpdateMessage = UiText.Get("T_918e0ce2177e"); }), () => IsIdle && updater is not null && SelectedEngineVersion != activeEngine && EngineVersions.Contains(SelectedEngineVersion));
         RollbackEngineCommand = new AsyncCommand(() => RunUpdateOperationAsync(async token => { await updater!.RollbackAsync(token); await RefreshEngineSelectionAsync(); UpdateMessage = UiText.Get("T_17c4979ce5bf"); }), () => IsIdle && updater is not null && EngineVersions.Contains(previousEngine));
         OpenLicensesCommand = new RelayCommand(() => OpenFolder(Path.Combine(baseDirectory, "licenses")));
@@ -119,7 +122,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ICommand OpenLicensesCommand { get; }
     public int Page { get => page; set { if (Set(ref page, value)) { Changed(nameof(NavigationIndex)); CommandManager.InvalidateRequerySuggested(); } } }
     public int NavigationIndex { get => Page switch { 0 => 1, 1 => 2, 5 => 3, 2 => -1, _ => 0 }; set { if (value >= 0) Page = value switch { 1 => 0, 2 => 1, 3 => 5, _ => 4 }; } }
-    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanChangeExtractionLayout));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
+    public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) {Changed(nameof(IsIdle));Changed(nameof(CanEditEngineRepository));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanChangeExtractionLayout));Changed(nameof(CanUseSfx));CompressionCapabilitiesChanged();} } }
     public bool IsIdle => !IsBusy && !initializing;
     public bool IsNarrow { get => narrow; set => Set(ref narrow, value); }
     public bool CanSkipPasswords { get => canSkipPasswords; private set => Set(ref canSkipPasswords, value); }
@@ -130,6 +133,21 @@ public sealed partial class MainViewModel : ObservableObject
     public string Footer { get => footer; set => Set(ref footer, value); }
     public string UpdateMessage { get => updateMessage; set => Set(ref updateMessage, value); }
     public string UpdateRepository { get => updateRepository; set { if (Set(ref updateRepository, value)) { availableUpdate = null; CommandManager.InvalidateRequerySuggested(); } } }
+    public IReadOnlyList<string> EngineSourceChoices { get; } = [UiText.Get("EngineSource.Verified"), UiText.Get("EngineSource.Official")];
+    public int EngineSourceIndex
+    {
+        get => engineSourceIndex;
+        set
+        {
+            if (!Set(ref engineSourceIndex, Math.Clamp(value,0,1))) return;
+            availableUpdate=null;availableOfficialUpdate=null;
+            UpdateMessage=UiText.Get("EngineSource.Recheck");
+            Changed(nameof(EngineSourceDescription));Changed(nameof(CanEditEngineRepository));
+            CommandManager.InvalidateRequerySuggested();
+        }
+    }
+    public bool CanEditEngineRepository => IsIdle && EngineSourceIndex==0;
+    public string EngineSourceDescription => UiText.Get(EngineSourceIndex==1?"EngineSource.OfficialHint":"EngineSource.VerifiedHint");
     public string Search { get => search; set { if (Set(ref search, value)) FilterPasswords(); } }
     public string SelectedEngineVersion { get => selectedEngine; set { if (value is not null && Set(ref selectedEngine, value)) Changed(nameof(EngineSummary)); } }
     public string EngineSummary => string.IsNullOrWhiteSpace(activeEngine) ? UiText.Get("T_b2a1d05496f2") : UiText.Format("T_9a4813174fe6", activeEngine);
@@ -166,7 +184,7 @@ public sealed partial class MainViewModel : ObservableObject
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
         { Banner = UiText.Get("T_b83678cb1bcf"); }
-        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanUseSfx)); CompressionCapabilitiesChanged(); CommandManager.InvalidateRequerySuggested(); }
+        finally { initializing = false; Changed(nameof(IsIdle));Changed(nameof(CanEditEngineRepository));Changed(nameof(CanConfigureExtraction));Changed(nameof(CanUseSfx)); CompressionCapabilitiesChanged(); CommandManager.InvalidateRequerySuggested(); }
     }
     public void AddFiles(IEnumerable<string> paths)
     {
@@ -315,9 +333,18 @@ public sealed partial class MainViewModel : ObservableObject
     });
     private async Task CheckUpdatesAsync() => await RunUpdateOperationAsync(async token =>
     {
-        UpdateMessage = UiText.Get("T_91834aebecab"); availableUpdate = null;
-        UpdateRepository = GitHubEngineChannel.NormalizeRepository(UpdateRepository); await SaveSettingsAsync();
-        using var client = CreateUpdateClient();
+        UpdateMessage = UiText.Get("T_91834aebecab"); availableUpdate = null; availableOfficialUpdate=null;
+        if (EngineSourceIndex==0) UpdateRepository = GitHubEngineChannel.NormalizeRepository(UpdateRepository);
+        await SaveSettingsAsync();
+        using var client = EngineUpdateClientFactory?.Invoke() ?? CreateUpdateClient();
+        if (EngineSourceIndex==1)
+        {
+            var official=await new OfficialEngineChannel(client).CheckAsync(token);
+            if(official is not null && (!Version.TryParse(activeEngine,out var active) || Version.Parse(official.Version)>active)) availableOfficialUpdate=official;
+            UpdateMessage=official is null?UiText.Get("EngineSource.NoAsset"):
+                UiText.Format(availableOfficialUpdate is null?"EngineSource.Current":"EngineSource.Available",official.Version);
+            CommandManager.InvalidateRequerySuggested();return;
+        }
         var officialMessage = UiText.Get("T_56d81aa40608");
         try
         {
@@ -344,6 +371,26 @@ public sealed partial class MainViewModel : ObservableObject
     }
     private async Task InstallOnlineUpdateAsync()
     {
+        if (EngineSourceIndex==1)
+        {
+            if(availableOfficialUpdate is not {} official)return;
+            await RunUpdateOperationAsync(async token =>
+            {
+                if(!dialogs.ConfirmEngineUpdate(official.Version,activeEngine)){UpdateMessage=UiText.Get("T_ff2a17217e7c");return;}
+                var directory=Path.Combine(dataDirectory,"downloads");Directory.CreateDirectory(directory);
+                var path=Path.Combine(directory,Guid.NewGuid().ToString("N")+".exe");
+                try
+                {
+                    using var client=EngineUpdateClientFactory?.Invoke() ?? CreateUpdateClient();
+                    await new OfficialEngineChannel(client).DownloadAsync(official,path,new Progress<string>(value=>UpdateMessage=value),token);
+                    var installed=await updater!.InstallOfficialAsync(official,path,activeEngine,new Progress<string>(value=>UpdateMessage=value),token);
+                    await updater.ActivateAsync(installed,token);await RefreshEngineSelectionAsync();
+                    availableOfficialUpdate=null;UpdateMessage=UiText.Get("EngineSource.Installed");
+                }
+                finally {if(File.Exists(path))File.Delete(path);}
+            });
+            return;
+        }
         if (availableUpdate is not { } candidate) return;
         await RunUpdateOperationAsync(async token =>
         {
@@ -351,7 +398,7 @@ public sealed partial class MainViewModel : ObservableObject
             var path = Path.Combine(downloadDirectory, Guid.NewGuid().ToString("N") + ".zip");
             try
             {
-                using var client = CreateUpdateClient();
+                using var client = EngineUpdateClientFactory?.Invoke() ?? CreateUpdateClient();
                 await new GitHubEngineChannel(client).DownloadAsync(candidate, path, new Progress<string>(value => UpdateMessage = value), token);
                 await InstallPackageAsync(path, candidate.Version, token);
             }
@@ -391,10 +438,13 @@ public sealed partial class MainViewModel : ObservableObject
         catch (UpdateException exception) { UpdateMessage = UpdateErrorText(exception.Code); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or System.Net.Http.HttpRequestException or JsonException or KeyNotFoundException or InvalidOperationException or ArgumentException)
         { UpdateMessage = UiText.Get("T_fc4b460196dc"); }
-        finally { cancellation.Dispose(); cancellation = null; IsBusy = false; idle.TrySetResult(); }
+        finally { cancellation.Dispose(); cancellation = null; IsBusy = false; Changed(nameof(CanEditEngineRepository)); idle.TrySetResult(); }
     }
     private static string UpdateErrorText(string code) => code switch
     {
+        "official_digest_unavailable" => UiText.Get("EngineSource.NoDigest"),
+        "invalid_official_update" => UiText.Get("EngineSource.Invalid"),
+        "version_conflict" => UiText.Get("EngineSource.VersionConflict"),
         "invalid_signature" or "invalid_manifest" or "hash_mismatch" => UiText.Get("T_cf3032ad5651"),
         "incompatible_update" => UiText.Get("T_42893dea38ad"),
         "engine_validation_failed" => UiText.Get("T_7ab82fcea02a"),
@@ -412,6 +462,7 @@ public sealed partial class MainViewModel : ObservableObject
         OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;VaultIdleIndex=settings.VaultIdleIndex;RetainExtractionProgress=settings.RetainExtractionProgress;
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
+        EngineSourceIndex=settings.EngineSourceIndex;
         directoryRules=settings.DirectoryRules ?? new();
         if(!Enum.IsDefined(directoryRules.Location) || !Enum.IsDefined(directoryRules.Layout) || !Enum.IsDefined(directoryRules.Collision) || !Enum.IsDefined(directoryRules.Naming))
         { directoryRules=new();settingsWritable=false;Banner=UiText.Get("T_9874c8d6f32d"); }
@@ -423,7 +474,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
         RememberCustomDirectory();
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress)));
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress,EngineSourceIndex)));
     }
     private static void OpenFolder(string path)
     {
@@ -440,7 +491,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => UiText.Get("T_21777c1adb09"), "output_write_failed" or "write_failed" => UiText.Get("T_736922310835"),
         "worker_connection_failed" or "engine_load_failed" => UiText.Get("T_ffcd45757108"), _ => UiText.Get("T_54d74bc17776"),
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false,int EngineSourceIndex=0);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", UiText.Get("T_7c7802d8adae")));

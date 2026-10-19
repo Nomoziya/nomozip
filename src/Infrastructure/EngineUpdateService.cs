@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Security.Cryptography;
 using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
@@ -7,6 +8,88 @@ public sealed class EngineUpdateService(string installedDirectory, string select
     string workerPath, string probePath, EngineCatalog catalog) : IUpdateService
 {
     private readonly SemaphoreSlim gate = new(1, 1);
+    public async Task<string> InstallOfficialAsync(OfficialEngineUpdate update, string installerPath, string extractionVersion,
+        IProgress<string>? progress = null, CancellationToken token = default)
+    {
+        OfficialEngineChannel.Validate(update);
+        var root = catalog.OfficialDirectory ?? throw new UpdateException("engine_not_available");
+        await gate.WaitAsync(token);
+        var staging = Path.Combine(root, ".prepare-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            progress?.Report(UiText.Get("EngineSource.Verifying"));
+            await using (var file = File.OpenRead(installerPath))
+                if (file.Length != update.Size || !Convert.ToHexString(await SHA256.HashDataAsync(file, token)).Equals(update.Sha256, StringComparison.OrdinalIgnoreCase))
+                    throw new UpdateException("hash_mismatch");
+            await catalog.ReadVerifiedVersionsAsync();
+            var extractor = new ArchiveEngineClient(workerPath, catalog.DllPath(extractionVersion));
+            var inventory = await extractor.ListAsync(installerPath, cancellationToken: token); token.ThrowIfCancellationRequested();
+            var selected = inventory.Items.Where(item => OfficialEngineReceipt.PayloadNames.Contains(item.Path, StringComparer.Ordinal)).ToArray();
+            if (!inventory.IsSuccess || selected.Length != OfficialEngineReceipt.PayloadNames.Length
+                || OfficialEngineReceipt.PayloadNames.Any(name => selected.Count(item => item.Path == name) != 1)
+                || selected.Any(item => item.Directory || item.Encrypted || item.Size is 0 or > 16 * 1024 * 1024)) throw new UpdateException("invalid_official_update");
+            Directory.CreateDirectory(staging);
+            var extracted = await extractor.ExtractSelectionAsync(installerPath, staging, selected, null, new Dictionary<uint,string>(), token: token);
+            token.ThrowIfCancellationRequested();
+            if (!extracted.IsSuccess) throw new UpdateException("engine_validation_failed");
+            var hashes = new Dictionary<string,string>();
+            foreach (var name in OfficialEngineReceipt.PayloadNames)
+            {
+                var bytes = await File.ReadAllBytesAsync(Path.Combine(staging,name),token);
+                if (name != "License.txt" && !EngineArchitecture.IsNativeImage(bytes)) throw new UpdateException("incompatible_update");
+                hashes[name] = Convert.ToHexString(SHA256.HashData(bytes));
+            }
+            var actualVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(Path.Combine(staging,"7z.dll")).FileVersion;
+            var expected = Version.Parse(update.Version);
+            if (!Version.TryParse(actualVersion, out var actual) || actual.Major != expected.Major || actual.Minor != expected.Minor) throw new UpdateException("incompatible_update");
+            var knownVersions = await catalog.ReadVerifiedVersionsAsync();
+            if (knownVersions.Contains(update.Version))
+            {
+                var known = Convert.ToHexString(SHA256.HashData(await File.ReadAllBytesAsync(catalog.DllPath(update.Version),token)));
+                if (!known.Equals(hashes["7z.dll"],StringComparison.OrdinalIgnoreCase)) throw new UpdateException("version_conflict");
+            }
+            progress?.Report(UiText.Get("EngineSource.Testing"));
+            await ProbeAsync(Path.Combine(staging,"7z.dll"), token);
+            await ProbeOfficialCreationAsync(staging, token);
+            await new OfficialEngineReceipt(update,hashes).SaveAsync(staging,token);
+            await OfficialEngineReceipt.VerifyInstalledAsync(staging,token);
+            var target = Path.Combine(root,update.Version);
+            if (Directory.Exists(target))
+            {
+                var previous = await OfficialEngineReceipt.VerifyInstalledAsync(target,token);
+                if (hashes.Any(pair => !previous.Files[pair.Key].Equals(pair.Value,StringComparison.OrdinalIgnoreCase))) throw new UpdateException("version_conflict");
+            }
+            else { token.ThrowIfCancellationRequested(); Directory.Move(staging,target); }
+            await catalog.ReadVerifiedVersionsAsync();
+            return update.Version;
+        }
+        finally { try { await DeletePreparationAsync(staging); } finally { gate.Release(); } }
+    }
+
+    private async Task ProbeOfficialCreationAsync(string staging, CancellationToken token)
+    {
+        var folder=Path.Combine(staging,".probe");Directory.CreateDirectory(folder);
+        try
+        {
+            var source=Path.Combine(folder,"中文.txt");var bytes="nomozip official engine compatibility\n中文内容"u8.ToArray();
+            await File.WriteAllBytesAsync(source,bytes,token);
+            var engine=new ArchiveEngineClient(workerPath,Path.Combine(staging,"7z.dll"));
+            foreach(var format in new[]{"7z","zip"})
+            {
+                var archive=Path.Combine(folder,"probe."+format);var output=Path.Combine(folder,format);
+                var request=new CompressionRequest([new(source,"中文.txt",false)],format,5,format=="7z");
+                const string password="测试密碼 ' $ & 空格";
+                var created=await engine.CreateAsync(request,archive,password,cancellationToken:token);token.ThrowIfCancellationRequested();
+                if(!created.IsSuccess)throw new UpdateException("engine_validation_failed");
+                var wrongPassword=await engine.TestAsync(archive,"incorrect synthetic password",cancellationToken:token);token.ThrowIfCancellationRequested();
+                if(wrongPassword.IsSuccess)throw new UpdateException("engine_validation_failed");
+                var extracted=await engine.ExtractAsync(archive,output,password,cancellationToken:token);token.ThrowIfCancellationRequested();
+                var restored=await File.ReadAllBytesAsync(Path.Combine(output,"中文.txt"),token);
+                if(!extracted.IsSuccess || !bytes.SequenceEqual(restored))throw new UpdateException("engine_validation_failed");
+            }
+        }
+        finally {await DeletePreparationAsync(folder);}
+    }
     public async Task<EngineUpdateManifest> InspectAsync(string packagePath, CancellationToken cancellationToken = default) =>
         (await EngineUpdatePackage.ReadAsync(packagePath, publicKey, cancellationToken)).Manifest;
     public async Task<EngineSelection?> ReadSelectionAsync(CancellationToken token = default)
