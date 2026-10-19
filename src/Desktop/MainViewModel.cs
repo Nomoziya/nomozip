@@ -180,7 +180,11 @@ public sealed partial class MainViewModel : ObservableObject
     {
         await RefreshVaultProtectionAsync();
         if (VaultLocked) { ClearVaultReferences(); NotifyBackupReminder(); CommandManager.InvalidateRequerySuggested(); return; }
-        try { allPasswords = (await vault.ReadAsync()).ToList(); vaultAvailable = true; }
+        try
+        {
+            var state = vault is IPasswordVaultBackupState source ? await source.ReadBackupStateAsync() : new VaultBackupState(await vault.ReadAsync(), "untracked");
+            allPasswords = state.Passwords.ToList(); vaultContentStamp = state.ContentStamp; vaultAvailable = true;
+        }
         catch (VaultException exception) { allPasswords = []; vaultAvailable = false; Banner = exception.BackupAvailable ? UiText.Get("T_33838fbc8ea5") : UiText.Get("T_33e9a9f2b109"); }
         await RefreshBackupReminderAsync();
         RefreshPasswordGroups(); FilterPasswords(); Changed(nameof(VaultSummary)); CommandManager.InvalidateRequerySuggested();

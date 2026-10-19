@@ -4,7 +4,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IPasswordOrganizationVault, IPasswordVaultProtection
+public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IPasswordOrganizationVault, IPasswordVaultProtection, IPasswordVaultBackupState
 {
     private static readonly byte[] Magic = "APV1"u8.ToArray();
     private static readonly JsonSerializerOptions Options = new(JsonSerializerDefaults.Web);
@@ -12,6 +12,8 @@ public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IP
     private string BackupPath => path + ".bak";
 
     public Task<IReadOnlyList<SavedPassword>> ReadAsync(CancellationToken cancellationToken = default) => WithDocumentAsync<IReadOnlyList<SavedPassword>>(document => document.Passwords.ToArray(), false, cancellationToken);
+    public Task<VaultBackupState> ReadBackupStateAsync(CancellationToken cancellationToken = default) =>
+        WithDocumentAsync(document => new VaultBackupState(document.Passwords.ToArray(), document.ContentStamp), false, cancellationToken);
     public Task<Guid?> GetAssociatedPasswordAsync(string archivePath, CancellationToken cancellationToken = default) => WithDocumentAsync<Guid?>(document => document.Associations.TryGetValue(Path.GetFullPath(archivePath).ToUpperInvariant(), out var id) ? id : null, false, cancellationToken);
 
     public async Task<PasswordImportPlan> ImportAsync(IReadOnlyList<SavedPassword> passwords, PasswordImportMode mode, CancellationToken cancellationToken = default)
@@ -25,6 +27,7 @@ public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IP
             if (plan.Added > 0)
             {
                 document.Passwords.AddRange(plan.Additions);
+                document.ContentStamp = Guid.NewGuid().ToString("N");
                 await SaveDocumentAsync(document, cancellationToken);
             }
             return plan;
@@ -37,6 +40,8 @@ public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IP
         if (string.IsNullOrEmpty(password.Secret)) throw new ArgumentException("Password cannot be empty.", nameof(password));
         if (!PasswordOrganization.ValidMetadata(password)) throw new ArgumentException("Invalid password metadata.", nameof(password));
         var existing = document.Passwords.FindIndex(value => value.Id == password.Id);
+        if (existing < 0 || (document.Passwords[existing] with { LastSuccessAt = null }) != (password with { LastSuccessAt = null }))
+            document.ContentStamp = Guid.NewGuid().ToString("N");
         if (existing < 0) document.Passwords.Add(password);
         else document.Passwords[existing] = password;
         return null;
@@ -59,6 +64,7 @@ public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IP
                 throw new VaultException("password_records_changed");
             document.Passwords[keepIndex] = PasswordOrganization.Merge(keep, others);
             document.Passwords.RemoveAll(value => ids.Contains(value.Id));
+            document.ContentStamp = Guid.NewGuid().ToString("N");
             foreach (var key in document.Associations.Where(pair => ids.Contains(pair.Value)).Select(pair => pair.Key).ToArray())
                 document.Associations[key] = keepId;
             await SaveDocumentAsync(document, token);
@@ -69,7 +75,7 @@ public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IP
 
     public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => WithDocumentAsync<object?>(document =>
     {
-        document.Passwords.RemoveAll(value => value.Id == id);
+        if (document.Passwords.RemoveAll(value => value.Id == id) > 0) document.ContentStamp = Guid.NewGuid().ToString("N");
         foreach (var key in document.Associations.Where(pair => pair.Value == id).Select(pair => pair.Key).ToArray()) document.Associations.Remove(key);
         return null;
     }, true, cancellationToken);
@@ -169,6 +175,9 @@ public sealed partial class DpapiPasswordVault(string path) : IPasswordVault, IP
 
     private sealed class VaultDocument
     {
+        // Random edit identity inside existing vault encryption; contains no password verifier.
+        // Old documents omit it and remain read-only until an actual content change.
+        public string ContentStamp { get; set; } = "legacy";
         public int Version { get; init; }
         public List<SavedPassword> Passwords { get; init; } = [];
         public Dictionary<string, Guid> Associations { get; init; } = [];

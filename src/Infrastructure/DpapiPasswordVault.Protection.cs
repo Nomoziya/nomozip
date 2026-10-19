@@ -143,7 +143,7 @@ public sealed partial class DpapiPasswordVault
             // Preserve encrypted originals; this operation never decrypts the forgotten-password file.
             var preserved = Path.GetFullPath(path) + ".before-recovery-" + Guid.NewGuid().ToString("N");
             File.Copy(path, preserved); if (File.Exists(BackupPath)) File.Copy(BackupPath, preserved + ".bak");
-            await ReplaceProtectionAsync(null, newMasterPassword, true, token, new VaultDocument { Version = 1, Passwords = records.ToList() }, gateHeld: true);
+            await ReplaceProtectionAsync(null, newMasterPassword, true, token, new VaultDocument { Version = 1, Passwords = records.ToList(), ContentStamp = Guid.NewGuid().ToString("N") }, gateHeld: true);
             return preserved;
         }
         finally { gate.Release(); }

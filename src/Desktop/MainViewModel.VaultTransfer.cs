@@ -22,10 +22,11 @@ public sealed partial class MainViewModel
             if (exporting)
             {
                 Footer = UiText.Get("T_77176f743984");
-                var records = await vault.ReadAsync(cancellation.Token);
+                var state = vault is IPasswordVaultBackupState source ? await source.ReadBackupStateAsync(cancellation.Token) : new VaultBackupState(await vault.ReadAsync(cancellation.Token), "untracked");
+                var records = state.Passwords;
                 await Task.Run(() => EncryptedVaultBackup.ExportAsync(path, records, passphrase, cancellation.Token));
                 Banner = UiText.Format("T_229445d7c9f8", records.Count);
-                await RememberVaultBackupAsync(records);
+                await RememberVaultBackupAsync(records, state.ContentStamp);
             }
             else
             {

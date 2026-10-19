@@ -224,6 +224,15 @@ jobs:
           $taskFlags=@('validate-vault-transfer','validate-password-organization','validate-file-hashes','validate-shell-ui','validate-application-updates','validate-extraction-tools','validate-selection','validate-encoding','validate-origin','validate-dpi','validate-queue','validate-concurrency','validate-pause','validate-notifications','validate-sfx','validate-formats','validate-volumes','validate-checkpoints','validate-drag-out','validate-content-preview','validate-conversion','validate-archive-editing','validate-master-vault')
           if($env:TASK_FOLLOWUP_FLAGS){$taskFlags=$env:TASK_FOLLOWUP_FLAGS.Split(',',[StringSplitOptions]::RemoveEmptyEntries)}
           ./scripts/test-desktop-release-followup.ps1 -Architecture '${{ matrix.architecture }}' -SkipPrepare -Flags $taskFlags -SkipLanguages:('${{ inputs.followup_languages }}' -ne 'true')
+      - name: Validate vault compatibility, protection and localized resources
+        if: ${{ !cancelled() && inputs.release_followup && steps.followup_prepare.outputs.prepared == 'true' }}
+        run: |
+          foreach ($taskCase in @('PasswordOrganizationValidation','VaultTransferValidation','MasterVaultValidation','LocalizationValidation')) {
+            & ./.tools/dotnet/dotnet.exe build "tests/$taskCase" -c Release --nologo -m:1 -nr:false
+            if ($LASTEXITCODE -ne 0) { throw "$taskCase build failed." }
+            & ./.tools/dotnet/dotnet.exe "tests/$taskCase/bin/Release/net10.0-windows/$taskCase.dll" $PWD.Path
+            if ($LASTEXITCODE -ne 0) { throw "$taskCase failed." }
+          }
       - uses: actions/upload-artifact@v7
         if: always() && inputs.release_followup
         with:
@@ -231,6 +240,7 @@ jobs:
           path: |
             artifacts/*validation.json
             artifacts/*-preview/*.png
+            artifacts/task-improvements-preview/**/*.png
           if-no-files-found: ignore
       - name: Upgrade the published 0.2.1 lightweight installation and package release
         if: inputs.release_followup && inputs.followup_flags == ''

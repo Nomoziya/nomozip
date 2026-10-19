@@ -10,24 +10,26 @@ public sealed partial class MainViewModel
 {
     private VaultBackupSnapshot? vaultBackupSnapshot;
     private bool vaultBackupHistoryUnavailable;
+    private string vaultContentStamp = "untracked";
     private string VaultBackupHistoryPath => Path.Combine(dataDirectory, "vault-backup-history.apb");
     public string VaultBackupSummary
     {
         get
         {
-            if (VaultLocked || !vaultAvailable) return UiText.Get("BackupReminder.Unlock");
+            if (VaultLocked) return UiText.Get("BackupReminder.Unlock");
+            if (!vaultAvailable) return UiText.Get("T_98b23dcfbd8c");
             if (allPasswords.Count == 0) return UiText.Get("BackupReminder.Empty");
             if (vaultBackupHistoryUnavailable) return UiText.Get("BackupReminder.Unavailable");
             if (vaultBackupSnapshot is null) return UiText.Get("BackupReminder.Never");
             var time = vaultBackupSnapshot.ExportedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
             var added = vaultBackupSnapshot.AddedSince(allPasswords);
             return added > 0 ? UiText.Format("BackupReminder.Added", time, added) :
-                vaultBackupSnapshot.HasChanges(allPasswords) ? UiText.Format("BackupReminder.Changed", time) :
+                vaultBackupSnapshot.HasChanges(allPasswords, vaultContentStamp) ? UiText.Format("BackupReminder.Changed", time) :
                 UiText.Format("BackupReminder.Current", time);
         }
     }
     public bool VaultBackupReminderNeeded => !VaultLocked && vaultAvailable && allPasswords.Count > 0 &&
-        (vaultBackupSnapshot is null || vaultBackupHistoryUnavailable || vaultBackupSnapshot.HasChanges(allPasswords) ||
+        (vaultBackupSnapshot is null || vaultBackupHistoryUnavailable || vaultBackupSnapshot.HasChanges(allPasswords, vaultContentStamp) ||
         DateTimeOffset.UtcNow - vaultBackupSnapshot.ExportedAt >= TimeSpan.FromDays(30));
     private void NotifyBackupReminder()
     { Changed(nameof(VaultBackupSummary)); Changed(nameof(VaultBackupReminderNeeded)); }
@@ -38,9 +40,9 @@ public sealed partial class MainViewModel
         { vaultBackupSnapshot = null; vaultBackupHistoryUnavailable = true; }
         NotifyBackupReminder();
     }
-    private async Task RememberVaultBackupAsync(IReadOnlyList<SavedPassword> records)
+    private async Task RememberVaultBackupAsync(IReadOnlyList<SavedPassword> records, string contentStamp)
     {
-        var snapshot = VaultBackupSnapshot.Capture(records, DateTimeOffset.UtcNow);
+        var snapshot = VaultBackupSnapshot.Capture(records, DateTimeOffset.UtcNow, contentStamp);
         try
         {
             await VaultBackupHistory.SaveAsync(VaultBackupHistoryPath, snapshot);

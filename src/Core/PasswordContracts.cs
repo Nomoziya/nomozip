@@ -3,6 +3,11 @@ namespace ArchivePassword.Core;
 public sealed record SavedPassword(Guid Id, string Name, string Secret, string Notes, bool AutoTry, DateTimeOffset CreatedAt, DateTimeOffset? LastSuccessAt = null,
     string Group = "", string Source = "", string MatchText = "");
 public sealed record PasswordCandidate(Guid? SavedId, string Secret);
+public sealed record VaultBackupState(IReadOnlyList<SavedPassword> Passwords, string ContentStamp);
+public interface IPasswordVaultBackupState
+{
+    Task<VaultBackupState> ReadBackupStateAsync(CancellationToken cancellationToken = default);
+}
 public interface IPasswordVault
 {
     Task<IReadOnlyList<SavedPassword>> ReadAsync(CancellationToken cancellationToken = default);

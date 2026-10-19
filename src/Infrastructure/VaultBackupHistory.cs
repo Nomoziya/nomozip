@@ -4,21 +4,14 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Infrastructure;
 
-public sealed record VaultBackupSnapshot(DateTimeOffset ExportedAt, Guid[] RecordIds, string ContentDigest)
+public sealed record VaultBackupSnapshot(DateTimeOffset ExportedAt, Guid[] RecordIds, string ContentStamp)
 {
-    public static VaultBackupSnapshot Capture(IReadOnlyList<SavedPassword> records, DateTimeOffset now) =>
-        new(now, records.Select(value => value.Id).ToArray(), Digest(records));
+    public static VaultBackupSnapshot Capture(IReadOnlyList<SavedPassword> records, DateTimeOffset now, string contentStamp) =>
+        new(now, records.Select(value => value.Id).ToArray(), contentStamp);
     public int AddedSince(IReadOnlyList<SavedPassword> records)
     { var included = RecordIds.ToHashSet(); return records.Count(value => !included.Contains(value.Id)); }
-    public bool HasChanges(IReadOnlyList<SavedPassword> records) => ContentDigest != Digest(records);
-    private static string Digest(IReadOnlyList<SavedPassword> records)
-    {
-        // A successful use is not an edit. Never persist this password-derived digest without DPAPI.
-        var bytes = JsonSerializer.SerializeToUtf8Bytes(records.OrderBy(value => value.Id)
-            .Select(value => value with { LastSuccessAt = null }));
-        try { return Convert.ToHexString(SHA256.HashData(bytes)); }
-        finally { CryptographicOperations.ZeroMemory(bytes); }
-    }
+    public bool HasChanges(IReadOnlyList<SavedPassword> records, string contentStamp) =>
+        ContentStamp != contentStamp || !RecordIds.ToHashSet().SetEquals(records.Select(value => value.Id));
 }
 
 public static class VaultBackupHistory
@@ -30,7 +23,7 @@ public static class VaultBackupHistory
         try
         {
             var value = JsonSerializer.Deserialize<VaultBackupSnapshot>(decrypted);
-            if (value is null || value.RecordIds is null || value.ContentDigest is null || value.ContentDigest.Length != 64)
+            if (value is null || value.RecordIds is null || string.IsNullOrEmpty(value.ContentStamp))
                 throw new InvalidDataException("Invalid backup history.");
             return value;
         }
