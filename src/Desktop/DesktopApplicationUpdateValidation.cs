@@ -116,7 +116,7 @@ internal static class DesktopApplicationUpdateValidation
             var activeReady=Directory.GetFiles(cache,"*.exe").Single();
             var previousInstaller=Path.Combine(cache,new string('e',32)+".exe");await File.WriteAllBytesAsync(previousInstaller,[1,2,3]);
             var cleanup=(Button)window.FindName("CleanApplicationInstallersButton");cleanup.BringIntoView();await Layout();
-            ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(cleanup)!.GetPattern(PatternInterface.Invoke)).Invoke();await model.WaitForIdleAsync();await Layout();
+            ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(cleanup)!.GetPattern(PatternInterface.Invoke)).Invoke();await Layout();await model.WaitForIdleAsync();await Layout();
             Check("manual cleanup deletes historical installer while ready update remains installable",!File.Exists(previousInstaller) && File.Exists(activeReady) && model.InstallApplicationUpdateCommand.CanExecute(null));
             var installButton=(Button)window.FindName("InstallApplicationUpdateButton");installButton.BringIntoView();await Layout();
             var installPeer=UIElementAutomationPeer.CreatePeerForElement(installButton)!;

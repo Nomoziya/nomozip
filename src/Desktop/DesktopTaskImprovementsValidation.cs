@@ -34,12 +34,17 @@ internal static class DesktopTaskImprovementsValidation
             finally {window.TaskContextMenu.IsOpen=false;}
         }
         void Capture(string name)
-        {window.UpdateLayout();window.Opacity=1;DesktopAccessibilityValidation.Render(window,Path.Combine(folder,name+".png"),1,clientOnly:true);window.Opacity=0;}
+        {
+            window.UpdateLayout();var client=(FrameworkElement)window.Content;
+            Check(name+" exact client viewport",Math.Abs(client.ActualWidth-window.Width)<1 && Math.Abs(client.ActualHeight-window.Height)<1);
+            window.Opacity=1;DesktopAccessibilityValidation.Render(window,Path.Combine(folder,name+".png"),1,clientOnly:true);window.Opacity=0;
+        }
+        void Size(double width,double height) { window.MinWidth=width;window.Width=width;window.Height=height; }
         bool Fits(FrameworkElement element)
         {var rect=element.TransformToAncestor(window).TransformBounds(new Rect(element.RenderSize));return element.IsVisible && rect.Left>=0 && rect.Top>=0 && rect.Right<=window.ActualWidth+1 && rect.Bottom<=window.ActualHeight+1;}
         var vault=new DpapiPasswordVault(Path.Combine(data,"passwords.apv"));
-        var original=new SavedPassword(Guid.NewGuid(),"Synthetic backup record","synthetic-backup-only","",true,DateTimeOffset.UtcNow);
-        var cancelExport=false; var passwordPrompts=0;
+        var original=new SavedPassword(Guid.NewGuid(),language=="en"?"Archive passwords":"常用归档密码","synthetic-backup-only","",true,DateTimeOffset.UtcNow);
+        var cancelExport=false; var failExport=false; var passwordPrompts=0;
         var backup=Path.Combine(data,"export.nvault");
         try
         {
@@ -52,7 +57,7 @@ internal static class DesktopTaskImprovementsValidation
                     ((CheckBox)dialog.FindName("SavePassword")).IsChecked=false;
                     Invoke((Button)dialog.FindName("ContinueButton"));
                 });
-            },selectVaultBackup:_=>backup,prepareVaultBackup:dialog=>
+            },selectVaultBackup:_=>failExport?data:backup,prepareVaultBackup:dialog=>
             {
                 dialog.Loaded+=(_,_)=>dialog.Dispatcher.BeginInvoke(()=>
                 {
@@ -66,22 +71,26 @@ internal static class DesktopTaskImprovementsValidation
             Check("existing vault without history receives reminder",model.VaultBackupReminderNeeded);
             model.Page=1;await Layout();Invoke(window.VaultBackupReminderAction);await Layout();await model.WaitForIdleAsync();
             Check("successful export records protected backup status",File.Exists(backup) && !model.VaultBackupReminderNeeded && File.Exists(Path.Combine(data,"vault-backup-history.apb")));
-            await vault.SaveAsync(original with {Id=Guid.NewGuid(),Name="New synthetic record"});await model.InitializeAsync();
+            await vault.SaveAsync(original with {Id=Guid.NewGuid(),Name=language=="en"?"Project backup passwords":"项目备份密码"});await model.InitializeAsync();
             Check("new record triggers reminder",model.VaultBackupReminderNeeded && model.VaultBackupSummary.Contains("1"));
             var history=await File.ReadAllBytesAsync(Path.Combine(data,"vault-backup-history.apb"));cancelExport=true;
             Invoke(window.VaultBackupReminderAction);await Layout();await model.WaitForIdleAsync();
             var afterCancelledExport=await File.ReadAllBytesAsync(Path.Combine(data,"vault-backup-history.apb"));
             Check("cancelled export preserves backup history",history.SequenceEqual(afterCancelledExport) && model.VaultBackupReminderNeeded);
+            cancelExport=false;failExport=true;Invoke(window.VaultBackupReminderAction);await Layout();await model.WaitForIdleAsync();
+            var afterFailedExport=await File.ReadAllBytesAsync(Path.Combine(data,"vault-backup-history.apb"));
+            Check("failed export preserves backup history",history.SequenceEqual(afterFailedExport) && model.VaultBackupReminderNeeded);failExport=false;
+            model.Banner="";model.SelectedPassword=model.PasswordRows.First();
             foreach(var mode in new[]{"light","dark"})foreach(var size in new[]{(1152d,768d),(800d,600d)})
             {
-                theme.SetMode(mode);theme.Apply(false);window.Width=size.Item1;window.Height=size.Item2;await Layout();
+                theme.SetMode(mode);theme.Apply(false);Size(size.Item1,size.Item2);await Layout();
                 Check($"backup reminder fits {mode} {size.Item1}",Fits(window.VaultBackupStatus) && Fits(window.VaultBackupReminderAction));
                 Capture($"vault-{mode}-{size.Item1}");
                 model.Page=2;model.SettingsSection=4;await Layout();window.CleanApplicationInstallersButton.BringIntoView();await Layout();
                 Check($"cache cleanup fits {mode} {size.Item1}",Fits(window.CleanApplicationInstallersButton) && window.CleanApplicationInstallersButton.IsEnabled);
                 Capture($"updates-{mode}-{size.Item1}");model.Page=1;
             }
-            window.Width=1152;window.Height=768;theme.SetMode("light");theme.Apply(false);
+            Size(1152,768);theme.SetMode("light");theme.Apply(false);
             var cache=Path.Combine(data,"application-updates");Directory.CreateDirectory(cache);
             var stale=Path.Combine(cache,new string('a',32)+".exe");await File.WriteAllBytesAsync(stale,new byte[100]);
             model.Page=2;model.SettingsSection=4;await Layout();Invoke(window.CleanApplicationInstallersButton);await Layout();await model.WaitForIdleAsync();
