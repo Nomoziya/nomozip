@@ -11,8 +11,12 @@ public sealed record OfficialEngineReceipt(OfficialEngineUpdate Update, Dictiona
     public static readonly string[] PayloadNames = ["7z.dll", "7z.exe", "7z.sfx", "License.txt"];
     public async Task SaveAsync(string directory, CancellationToken token)
     {
-        var bytes = JsonSerializer.SerializeToUtf8Bytes(this, EngineUpdatePackage.JsonOptions);
-        await File.WriteAllBytesAsync(Path.Combine(directory, FileName), ProtectedData.Protect(bytes, null, DataProtectionScope.CurrentUser), token);
+        try
+        {
+            var bytes = JsonSerializer.SerializeToUtf8Bytes(this, EngineUpdatePackage.JsonOptions);
+            await File.WriteAllBytesAsync(Path.Combine(directory, FileName), ProtectedData.Protect(bytes, null, DataProtectionScope.CurrentUser), token);
+        }
+        catch(CryptographicException error) {throw new UpdateException("official_receipt_failed",error);}
     }
     public static async Task<OfficialEngineReceipt> VerifyInstalledAsync(string directory, CancellationToken token = default)
     {

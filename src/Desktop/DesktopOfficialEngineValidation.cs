@@ -29,9 +29,11 @@ internal static class DesktopOfficialEngineValidation
         {button.BringIntoView();await Layout();Check("enabled "+button.Name+" "+checks.Count,button.IsEnabled && button.IsVisible);Invoke(button);await Layout();await model.WaitForIdleAsync();await Layout();}
         async Task Source(int index)
         {
-            var combo=window.EngineSourceChoice;combo.BringIntoView();await Layout();combo.IsDropDownOpen=true;await Layout();
-            var item=(ComboBoxItem)combo.ItemContainerGenerator.ContainerFromIndex(index);
-            ((ISelectionItemProvider)UIElementAutomationPeer.CreatePeerForElement(item)!.GetPattern(PatternInterface.SelectionItem)).Select();combo.IsDropDownOpen=false;await Layout();
+            var combo=window.EngineSourceChoice;combo.BringIntoView();await Layout();
+            var peer=(ComboBoxAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(combo)!;
+            ((IExpandCollapseProvider)peer.GetPattern(PatternInterface.ExpandCollapse)).Expand();await Layout();
+            var item=new ListBoxItemAutomationPeer(combo.Items[index],peer);
+            ((ISelectionItemProvider)item.GetPattern(PatternInterface.SelectionItem)!).Select();combo.IsDropDownOpen=false;await Layout();
         }
         bool Fits(FrameworkElement element)
         {var bounds=element.TransformToAncestor(window).TransformBounds(new Rect(element.RenderSize));return element.IsVisible && bounds.Left>=0 && bounds.Top>=0 && bounds.Right<=window.ActualWidth+1 && bounds.Bottom<=window.ActualHeight+1;}
@@ -92,7 +94,7 @@ internal static class DesktopOfficialEngineValidation
             reopened.RollbackEngineCommand.Execute(null);await reopened.WaitForIdleAsync();Check("rollback remains available after reopen",reopened.EngineSummary.Contains("26.03"));
             Check("no plaintext credentials in official receipt",!Encoding.UTF8.GetString(await File.ReadAllBytesAsync(Path.Combine(data,EngineArchitecture.InstalledDirectoryName+"-official","26.04",OfficialEngineReceipt.FileName))).Contains("测试密碼"));
         }
-        catch(Exception exception){error=exception.GetType().Name+": "+exception.Message;checks["completed without exception"]=false;}
+        catch(Exception exception){error=exception.GetType().Name+": "+exception.Message+"\n"+exception.StackTrace;checks["completed without exception"]=false;}
         var passed=checks.Count>=30 && checks.Values.All(value=>value);
         await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/official-engine-ui-{language}-validation.json"),JsonSerializer.Serialize(new{passed,language,architecture=EngineArchitecture.Current,uiAutomationProviders=true,actualMouseInput=false,officialPayloadWithFixtureHttp=true,realNetworkCoveredBy="OfficialEngineValidation --integration",checks,sizes,error},new JsonSerializerOptions{WriteIndented=true}));
         return passed;

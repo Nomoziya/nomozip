@@ -88,7 +88,7 @@ public sealed class EngineUpdateService(string installedDirectory, string select
             {
                 var archive=Path.Combine(folder,"probe."+format);var output=Path.Combine(folder,format);
                 var request=new CompressionRequest([new(source,"中文.txt",false)],format,5,format=="7z");
-                const string password="测试密碼 ' $ & 空格";
+                var password=format=="7z"?"测试密碼 ' $ & 空格":"Synthetic ZIP ' $ & password";
                 var created=await engine.CreateAsync(request,archive,password,cancellationToken:token);token.ThrowIfCancellationRequested();
                 if(!created.IsSuccess)throw new UpdateException("engine_validation_failed");
                 var wrongPassword=await engine.TestAsync(archive,"incorrect synthetic password",cancellationToken:token);token.ThrowIfCancellationRequested();
