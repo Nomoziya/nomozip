@@ -52,6 +52,7 @@ Var OriginalOpenCommand
 Var PreserveShellMenu
 Var UpdateMode
 Var UpdateAttempts
+Var PreviousVersion
 !include "shell-menu.nsh"
 !define MUI_LANGDLL_REGISTRY_ROOT HKCU
 !define MUI_LANGDLL_REGISTRY_KEY "${REG_KEY}"
@@ -186,10 +187,12 @@ FunctionEnd
 
 Section "$(InstallSection)"
   !insertmacro CheckNotRunning "install"
+  StrCpy $PreviousVersion ""
   ; Run only a registered installation's own cleanup list. This removes old bundled runtime
   ; files during a full-to-light upgrade without deleting unrelated files or user data.
   ReadRegStr $0 HKCU "${REG_KEY}" "InstallLocation"
   StrCmp $0 $INSTDIR 0 cleanupdone
+  ReadRegStr $PreviousVersion HKCU "${REG_KEY}" "DisplayVersion"
   IfFileExists "$INSTDIR\Uninstall.exe" 0 cleanupdone
   StrCpy $PreserveAssociations 0
   ReadRegStr $OriginalOpenCommand HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" ""
@@ -234,6 +237,11 @@ cleanupdone:
 SectionEnd
 
 Function .onInstSuccess
+  ${If} $PreviousVersion != ""
+    FileOpen $0 "$INSTDIR\completed-update.txt" w
+    FileWrite $0 "$PreviousVersion$\r$\n${DISPLAY_VERSION}$\r$\n"
+    FileClose $0
+  ${EndIf}
   ${If} $UpdateMode == 1
     !ifdef VALIDATION_ROOT
       ; Exercise real restart with the existing isolated installed-app validation.
@@ -269,6 +277,7 @@ FunctionEnd
 
 Section "Uninstall"
   !insertmacro CheckNotRunning "uninstall"
+  Delete "$INSTDIR\completed-update.txt"
   ReadRegStr $0 HKCU "${ASSOCIATION_ROOT}\nomozip.Archive\shell\open\command" ""
   StrCmp $0 '"$INSTDIR\ArchivePassword.exe" "%1"' 0 associationsdone
   DeleteRegValue HKCU "${ASSOCIATION_ROOT}\.7z\OpenWithProgids" "nomozip.Archive"

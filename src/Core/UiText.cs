@@ -20,5 +20,20 @@ public static class UiText
     }
     public static string Get(string key) => (Resources.GetString(key, resourceCulture)
         ?? throw new MissingManifestResourceException("Missing application text: " + key)).Replace("\r\n", "\n");
-    public static string Format(string key, params object?[] values) => string.Format(CultureInfo.CurrentCulture, Get(key), values);
+    public static string Format(string key, params object?[] values) => string.Format(new CountFormatter(CultureInfo.CurrentCulture), Get(key), values);
+
+    // Resources opt into count grammar: {0:count:password:passwords}.
+    private sealed class CountFormatter(CultureInfo culture) : IFormatProvider, ICustomFormatter
+    {
+        public object? GetFormat(Type? type) => type == typeof(ICustomFormatter) ? this : culture.GetFormat(type!);
+        public string Format(string? format, object? value, IFormatProvider? provider)
+        {
+            if (format?.StartsWith("count:", StringComparison.Ordinal) == true)
+            {
+                var words = format.Split(':');
+                return string.Format(culture, "{0} {1}", value, Convert.ToDecimal(value, culture) == 1 ? words[1] : words[2]);
+            }
+            return value is IFormattable item ? item.ToString(format, culture) : value?.ToString() ?? "";
+        }
+    }
 }

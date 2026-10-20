@@ -195,7 +195,7 @@ This check produces no extracted files and does not save or update vault passwor
     <comment>src\Desktop\FileHashViewModel.cs:131</comment>
   </data>
   <data xml:space="preserve" name="T_0e5e1daffc91">
-    <value>Extracted {0} selected items, preserving the archive's folder structure.</value>
+    <value>Extracted {0:count:selected item:selected items}, preserving the archive's folder structure.</value>
     <comment>src\Desktop\MainViewModel.Selection.cs:24</comment>
   </data>
   <data xml:space="preserve" name="T_0e8b1c78c5f3">
@@ -267,7 +267,7 @@ This check produces no extracted files and does not save or update vault passwor
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_16ad9673c5f8">
-    <value>Processed {0} archives. Click to return to the task list for results and notices.</value>
+    <value>Processed {0:count:archive:archives}. Click to return to the task list for results and notices.</value>
     <comment>src\Desktop\CompletionNotification.cs:35</comment>
   </data>
   <data xml:space="preserve" name="T_16fa87f9fdef">
@@ -295,7 +295,7 @@ This check produces no extracted files and does not save or update vault passwor
     <comment>src\Desktop\WindowDialogs.cs:61</comment>
   </data>
   <data xml:space="preserve" name="T_18a17ee1b961">
-    <value>Delete or replace {0} items and write {1} items (folders include descendants).
+    <value>Delete or replace {0:count:item:items} and write {1:count:item:items} (folders include descendants).
 
 The original is replaced only after full validation. A .bak copy is kept beside it, including deleted and replaced content.
 
@@ -360,7 +360,7 @@ Added or replaced files use the password verified for this operation. Archives w
     <comment>src\Desktop\FileHashViewModel.cs:84</comment>
   </data>
   <data xml:space="preserve" name="T_1c7107214dba">
-    <value>Added {0} items from the context menu. Confirm the format, destination, and password before creating.</value>
+    <value>Added {0:count:item:items} from the context menu. Confirm the format, destination, and password before creating.</value>
     <comment>src\Desktop\ShellSelectionViewModel.cs:29</comment>
   </data>
   <data xml:space="preserve" name="T_1cc5ae49da18">
@@ -384,7 +384,7 @@ Added or replaced files use the password verified for this operation. Archives w
     <comment>src\Desktop\CompressionViewModel.cs:187</comment>
   </data>
   <data xml:space="preserve" name="T_1e50592d591a">
-    <value>Removed {0} completed tasks; output files were kept.</value>
+    <value>Removed {0:count:completed task:completed tasks}; output files were kept.</value>
     <comment>src\Desktop\MainViewModel.Queue.cs:51</comment>
   </data>
   <data xml:space="preserve" name="T_1e906c12d00b">
@@ -420,7 +420,7 @@ Added or replaced files use the password verified for this operation. Archives w
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_21bc9141d482">
-    <value>Restored {0} passwords from an independent backup. The original locked vault is at: {1}</value>
+    <value>Restored {0:count:password:passwords} from an independent backup. The original locked vault is at: {1}</value>
     <comment>src\Desktop\MainViewModel.VaultProtection.cs:89</comment>
   </data>
   <data xml:space="preserve" name="T_21c7bcd0de0a">
@@ -440,7 +440,7 @@ Added or replaced files use the password verified for this operation. Archives w
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_229445d7c9f8">
-    <value>Exported an encrypted backup of {0} passwords. The backup password is required to import it.</value>
+    <value>Exported an encrypted backup of {0:count:password:passwords}. The backup password is required to import it.</value>
     <comment>src\Desktop\MainViewModel.VaultTransfer.cs:27</comment>
   </data>
   <data xml:space="preserve" name="T_22c2a744aea2">
@@ -626,7 +626,7 @@ Current engine: {1}. Your vault is unchanged; you can restore the previous engin
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_33624dd36711">
-    <value>Skipped {0} existing files.</value>
+    <value>Skipped {0:count:existing file:existing files}.</value>
     <comment>src\Core\ExtractionService.cs:102</comment>
   </data>
   <data xml:space="preserve" name="T_33838fbc8ea5">
@@ -654,7 +654,7 @@ Current engine: {1}. Your vault is unchanged; you can restore the previous engin
     <comment>src/Desktop/CompressionView.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_357176e2a16d">
-    <value>{0} available passwords in the vault</value>
+    <value>{0:count:available password:available passwords} in the vault</value>
     <comment>src\Desktop\MainViewModel.cs:133</comment>
   </data>
   <data xml:space="preserve" name="T_357e9c21398d">
@@ -710,7 +710,7 @@ Current engine: {1}. Your vault is unchanged; you can restore the previous engin
     <comment>src\Desktop\PasswordDialog.xaml.cs:48; src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_397dc2bf2897">
-    <value>Showing {0} / {1} records</value>
+    <value>Showing {0} / {1:count:record:records}</value>
     <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:20</comment>
   </data>
   <data xml:space="preserve" name="T_39932f24fe11">
@@ -903,7 +903,7 @@ The previous password could not be fully verified. It may be incorrect, or the a
     <comment>src/Desktop/VaultImportDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_4ac1c3d04751">
-    <value>Create a new vault with {0} passwords from the verified backup?
+    <value>Create a new vault with {0:count:password:passwords} from the verified backup?
 
 The current locked vault will be kept as an encrypted copy. Records added after the backup will not be restored. Next, choose a new master password.</value>
     <comment>src\Desktop\WindowDialogs.cs:32</comment>
@@ -1009,7 +1009,7 @@ The current locked vault will be kept as an encrypted copy. Records added after 
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_55f9d9c65be9">
-    <value>Showing {0} / {1} items · {2} files · {3} folders</value>
+    <value>Showing {0} / {1:count:item:items} · {2:count:file:files} · {3:count:folder:folders}</value>
     <comment>src\Desktop\ArchiveContentsViewModel.cs:87</comment>
   </data>
   <data xml:space="preserve" name="T_5679ccc535d2">
@@ -1058,7 +1058,7 @@ Browsing only. To save a new password, save it after successful extraction.</val
     <comment>src\Desktop\PasswordDialog.xaml.cs:51</comment>
   </data>
   <data xml:space="preserve" name="T_58db5ae70926">
-    <value>{0}: Read {1} items</value>
+    <value>{0}: Read {1:count:item:items}</value>
     <comment>src\Desktop\ArchiveBrowsingViewModel.cs:25</comment>
   </data>
   <data xml:space="preserve" name="T_5905071d43b5">
@@ -1505,7 +1505,7 @@ This archive encrypts filenames. A password is required to browse its contents.<
     <comment>src\Desktop\AssociationViewModel.cs:45</comment>
   </data>
   <data xml:space="preserve" name="T_825e66873fc3">
-    <value>{0} items passed · {1} failed</value>
+    <value>{0:count:item:items} passed · {1} failed</value>
     <comment>src\Desktop\ExtractionFailureDialog.xaml.cs:14</comment>
   </data>
   <data xml:space="preserve" name="T_827f88b30e62">
@@ -1861,7 +1861,7 @@ Verified passwords apply to the corresponding files. Enter another password for 
     <comment>src\Desktop\MainViewModel.ExtractionTools.cs:24; src/Desktop/ExtractionRulesDialog.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_a2cd3d94cd10">
-    <value>{0} other records have the same password as the selected entry and can be merged.</value>
+    <value>{0:count:other record has:other records have} the same password as the selected entry and can be merged.</value>
     <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:22</comment>
   </data>
   <data xml:space="preserve" name="T_a2e6438fa7e0">
@@ -2241,7 +2241,7 @@ Verified passwords apply to the corresponding files. Enter another password for 
     <comment>src\Core\ArchiveEditingService.cs:86</comment>
   </data>
   <data xml:space="preserve" name="T_c2e0ceeca350">
-    <value>Last check: {0} items passed, {1} failed. No files have been extracted.</value>
+    <value>Last check: {0:count:item:items} passed, {1} failed. No files have been extracted.</value>
     <comment>src\Desktop\PasswordDialog.xaml.cs:28</comment>
   </data>
   <data xml:space="preserve" name="T_c35c7ca6d32f">
@@ -2342,7 +2342,7 @@ Enter a password or choose a saved one.</value>
     <comment>src/Desktop/MainWindow.xaml</comment>
   </data>
   <data xml:space="preserve" name="T_cebf5ff2ca42">
-    <value>{0} files. Select Calculate to start reading.</value>
+    <value>{0:count:file:files}. Select Calculate to start reading.</value>
     <comment>src\Desktop\FileHashViewModel.cs:95</comment>
   </data>
   <data xml:space="preserve" name="T_cf3032ad5651">
@@ -2482,7 +2482,7 @@ Enter a password or choose a saved one.</value>
     <comment>src\Desktop\Presentation.cs:66</comment>
   </data>
   <data xml:space="preserve" name="T_daed8faf2fc1">
-    <value>Previewed {0} items. Apply after confirming the names are correct.</value>
+    <value>Previewed {0:count:item:items}. Apply after confirming the names are correct.</value>
     <comment>src\Desktop\FilenameEncodingViewModel.cs:46</comment>
   </data>
   <data xml:space="preserve" name="T_daede9881787">
@@ -2607,7 +2607,7 @@ The password may be incorrect, or the archive may be damaged.</value>
     <comment>src\Infrastructure\WindowsExtractionOrigin.cs:36</comment>
   </data>
   <data xml:space="preserve" name="T_e3848c27e720">
-    <value> · {0} items failed</value>
+    <value> · {0:count:item:items} failed</value>
     <comment>src\Desktop\MainViewModel.cs:233</comment>
   </data>
   <data xml:space="preserve" name="T_e4d1595c61be">
@@ -2635,7 +2635,7 @@ The password may be incorrect, or the archive may be damaged.</value>
     <comment>src\Desktop\FilenameEncodingViewModel.cs:43</comment>
   </data>
   <data xml:space="preserve" name="T_e6e9a47ae51b">
-    <value>Exported {0} calculated hashes. Unfinished files were excluded.</value>
+    <value>Exported {0:count:calculated hash:calculated hashes}. Unfinished files were excluded.</value>
     <comment>src\Desktop\FileHashViewModel.cs:165</comment>
   </data>
   <data xml:space="preserve" name="T_e72f93a83aa9">
@@ -2684,7 +2684,7 @@ This update package is older than the current version.</value>
     <comment>src\Desktop\MainViewModel.Queue.cs:9</comment>
   </data>
   <data xml:space="preserve" name="T_e98b7cc07066">
-    <value>Keep “{0}” and merge {1} other records with the same password?
+    <value>Keep “{0}” and merge {1:count:other record:other records} with the same password?
 
 The selected record's name, notes, group, source, matching rule, and auto-try setting are kept; those fields from the other records are removed. The earliest creation and latest success times are kept, and all archive associations move to the selected record.</value>
     <comment>src\Desktop\WindowDialogs.cs:141</comment>
@@ -2802,7 +2802,7 @@ The selected record's name, notes, group, source, matching rule, and auto-try se
     <comment>src\Desktop\FileHashViewModel.cs:130</comment>
   </data>
   <data xml:space="preserve" name="T_f321085e8ea2">
-    <value>{0} existing records contain the same password. Save this record anyway?
+    <value>{0:count:existing record contains:existing records contain} the same password. Save this record anyway?
 
 You can cancel and edit an existing record, or merge duplicates in the vault after saving.</value>
     <comment>src\Desktop\WindowDialogs.cs:139</comment>
@@ -2844,7 +2844,7 @@ You can cancel and edit an existing record, or merge duplicates in the vault aft
     <comment>src\Desktop\MainViewModel.VaultTransfer.cs:48</comment>
   </data>
   <data xml:space="preserve" name="T_f6b557598ac8">
-    <value>Merged {0} duplicate records. Archive associations were preserved.</value>
+    <value>Merged {0:count:duplicate record:duplicate records}. Archive associations were preserved.</value>
     <comment>src\Desktop\MainViewModel.PasswordOrganization.cs:44</comment>
   </data>
   <data xml:space="preserve" name="T_f710925bd393">
@@ -2900,7 +2900,7 @@ You can cancel and edit an existing record, or merge duplicates in the vault aft
     <comment>src\Desktop\MainViewModel.Queue.cs:14</comment>
   </data>
   <data xml:space="preserve" name="T_fb4d81fcdb9e">
-    <value>Backup: {0} records · {1} to add · {2} to skip.</value>
+    <value>Backup: {0:count:record:records} · {1} to add · {2} to skip.</value>
     <comment>src\Desktop\VaultImportDialog.xaml.cs:25</comment>
   </data>
   <data xml:space="preserve" name="T_fbac9a59ad82">
@@ -3094,7 +3094,7 @@ A password is required to validate the archive data.</value>
   <data name="Drag.Actions" xml:space="preserve"><value>Content actions</value></data>
   <data name="Drag.CompactActions" xml:space="preserve"><value>Actions</value></data>
   <data name="Drag.ActionsHint" xml:space="preserve"><value>Prepare selected items for dragging, or edit a 7z/ZIP archive.</value></data>
-  <data name="Checkpoint.Saved" xml:space="preserve"><value>Progress saved: {0} / {1} items</value></data>
+  <data name="Checkpoint.Saved" xml:space="preserve"><value>Progress saved: {0} / {1:count:item:items}</value></data>
   <data name="Checkpoint.Committing" xml:space="preserve"><value>Delivering verified files</value></data>
   <data name="Checkpoint.Cleanup" xml:space="preserve"><value>Extraction completed, but temporary files could not all be removed. Retry discard in Task actions: {0}</value></data>
   <data name="Checkpoint.Error.checkpoint_binding_changed" xml:space="preserve"><value>The required engine, architecture, or filename encoding does not match. Restore the original components and settings, or discard progress and extract again.</value></data>
@@ -3115,7 +3115,7 @@ A password is required to validate the archive data.</value>
   <data name="Checkpoint.DiscardFailed" xml:space="preserve"><value>Some temporary files could not be removed. The progress record was kept. Close applications using those files and retry discard.</value></data>
   <data name="Checkpoint.ReadFailed" xml:space="preserve"><value>A progress record could not be read. Its files were kept: {0}</value></data>
   <data name="Checkpoint.ScanFailed" xml:space="preserve"><value>Saved extraction progress could not be read. Check access to the data directory and retry.</value></data>
-  <data name="Checkpoint.Available" xml:space="preserve"><value>Ready to resume · {0} / {1} items saved</value></data>
+  <data name="Checkpoint.Available" xml:space="preserve"><value>Ready to resume · {0} / {1:count:item:items} saved</value></data>
   <data name="Checkpoint.CleanupPending" xml:space="preserve"><value>Extracted · progress cleanup pending</value></data>
   <data name="Checkpoint.Found" xml:space="preserve"><value>Tasks with saved progress: {0}. Resume or discard it in Task actions.</value></data>
   <data name="Checkpoint.Checking" xml:space="preserve"><value>Checking source files and saved progress…</value></data>
@@ -3173,7 +3173,7 @@ A password is required to validate the archive data.</value>
 <data name="Compression.PasswordShort" xml:space="preserve"><value>Set password</value></data>
 <data name="Password.ConfirmationMismatch" xml:space="preserve"><value>The passwords do not match.</value></data>
 <data name="Extraction.BatchTitle" xml:space="preserve"><value>Batch extraction</value></data>
-<data name="Extraction.BatchCount" xml:space="preserve"><value>{0} pending archives</value></data>
+<data name="Extraction.BatchCount" xml:space="preserve"><value>{0:count:pending archive:pending archives}</value></data>
 <data name="Extraction.CreateFolder" xml:space="preserve"><value>Create matching folder</value></data>
 <data name="Extraction.LayoutHint" xml:space="preserve"><value>Checked: archive folder; unchecked: direct extraction; mixed: smart layout.</value></data>
 <data name="TextEdit.CleanupWarning" xml:space="preserve"><value>The temporary edit copy could not be removed. Delete this folder manually: {0}</value></data>
@@ -3197,7 +3197,7 @@ A password is required to validate the archive data.</value>
   <data name="FileType.Pdf" xml:space="preserve"><value>PDF document</value></data>
   <data name="FileType.Sheet" xml:space="preserve"><value>{0} sheet</value></data>
   <data name="FileType.Archive" xml:space="preserve"><value>{0} archive</value></data>
-  <data name="Compression.SourceCount" xml:space="preserve"><value>{0} items · {1} selected</value></data>
+  <data name="Compression.SourceCount" xml:space="preserve"><value>{0:count:item:items} · {1} selected</value></data>
   <data name="Vault.StatusLocked" xml:space="preserve"><value>Locked</value></data>
   <data name="Vault.StatusUnlocked" xml:space="preserve"><value>Unlocked</value></data>
   <data name="Vault.StatusLocal" xml:space="preserve"><value>Windows protection</value></data>
@@ -3218,17 +3218,17 @@ A password is required to validate the archive data.</value>
   <data name="Compression.SelectAllSources" xml:space="preserve"><value>Select all source items</value></data>
   <data name="Compression.SelectSource" xml:space="preserve"><value>Select source item</value></data>
   <data name="Compression.SelectionHint" xml:space="preserve"><value>Select items to remove. Creating an archive includes every item in the list.</value></data>
-  <data name="Browser.CompactCount" xml:space="preserve"><value>{0} items</value></data>
+  <data name="Browser.CompactCount" xml:space="preserve"><value>{0:count:item:items}</value></data>
   <data name="Browser.CompactSelection" xml:space="preserve"><value>{0} selected</value></data>
   <data name="Extraction.SelectedTitle" xml:space="preserve"><value>Extract selected items</value></data>
-  <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0} items · {1}</value></data>
+  <data name="Extraction.SelectedCount" xml:space="preserve"><value>{0:count:item:items} · {1}</value></data>
   <data name="Compression.HeadersHint" xml:space="preserve"><value>Available for 7z archives to hide file names.</value></data>
   <data name="Compression.AdvancedAvailability" xml:space="preserve"><value>Available options depend on the format and engine.</value></data>
   <data name="Browser.SearchPlaceholder" xml:space="preserve"><value>Search archive contents</value></data>
   <data name="Compression.AdvancedTitle" xml:space="preserve"><value>Advanced options</value></data>
   <data name="Updates.SoftwareActions" xml:space="preserve"><value>Download and install</value></data>
-  <data name="Browser.RunningTasks" xml:space="preserve"><value>{0} tasks running</value></data>
-  <data name="Browser.PendingTasks" xml:space="preserve"><value>{0} tasks pending</value></data>
+  <data name="Browser.RunningTasks" xml:space="preserve"><value>{0:count:task:tasks} running</value></data>
+  <data name="Browser.PendingTasks" xml:space="preserve"><value>{0:count:task:tasks} pending</value></data>
   <data name="Preview.Loaded" xml:space="preserve"><value>Read-only preview loaded</value></data>
   <data name="Window.Minimize" xml:space="preserve"><value>Minimize</value></data>
   <data name="Window.Maximize" xml:space="preserve"><value>Maximize</value></data>
@@ -3280,15 +3280,15 @@ A password is required to validate the archive data.</value>
   <data name="BackupReminder.Empty" xml:space="preserve"><value>Add passwords to create an independent encrypted backup.</value></data>
   <data name="BackupReminder.Unavailable" xml:space="preserve"><value>Backup history is unavailable. Export a new backup.</value></data>
   <data name="BackupReminder.Never" xml:space="preserve"><value>No independent backup recorded. Export an encrypted backup.</value></data>
-  <data name="BackupReminder.Added" xml:space="preserve"><value>Last backup {0} · {1} passwords added since</value></data>
+  <data name="BackupReminder.Added" xml:space="preserve"><value>Last backup {0} · {1:count:password:passwords} added since</value></data>
   <data name="BackupReminder.Changed" xml:space="preserve"><value>Last backup {0} · Vault changed; export a new backup</value></data>
   <data name="BackupReminder.Current" xml:space="preserve"><value>Last backup {0} · Backup includes current passwords</value></data>
   <data name="BackupReminder.SaveFailed" xml:space="preserve"><value>Backup exported, but its reminder record could not be saved.</value></data>
   <data name="SoftwareUpdate.CleanCache" xml:space="preserve"><value>Clean installer cache</value></data>
-  <data name="SoftwareUpdate.CacheSummary" xml:space="preserve"><value>Installer cache: {0} files · {1:0.##} MB</value></data>
+  <data name="SoftwareUpdate.CacheSummary" xml:space="preserve"><value>Installer cache: {0:count:file:files} · {1:0.##} MB</value></data>
   <data name="SoftwareUpdate.CacheUnavailable" xml:space="preserve"><value>Installer cache is unavailable</value></data>
   <data name="SoftwareUpdate.CacheHint" xml:space="preserve"><value>Clean only the software update cache. Prepared and in-use files are kept.</value></data>
-  <data name="SoftwareUpdate.CacheCleaned" xml:space="preserve"><value>Removed {0} files, freed {1:0.##} MB; kept or could not remove {2} files.</value></data>
+  <data name="SoftwareUpdate.CacheCleaned" xml:space="preserve"><value>Removed {0:count:file:files}, freed {1:0.##} MB; kept or could not remove {2:count:file:files}.</value></data>
   <data name="SoftwareUpdate.CacheCleanFailed" xml:space="preserve"><value>Could not finish cleanup. Check cache folder permissions and try again.</value></data>
   <data name="SoftwareUpdate.CacheCleaning" xml:space="preserve"><value>Cleaning old installers…</value></data>
   <data name="TaskControl.PauseCompact" xml:space="preserve"><value>Pause</value></data>
@@ -3310,4 +3310,31 @@ A password is required to validate the archive data.</value>
   <data name="EngineSource.NoDigest" xml:space="preserve"><value>The official installer has no SHA-256 digest. It cannot be verified. Use the nomozip verified source.</value></data>
   <data name="EngineSource.Invalid" xml:space="preserve"><value>The official engine source or files are invalid. Your active engine was preserved.</value></data>
   <data name="EngineSource.VersionConflict" xml:space="preserve"><value>This version differs from an existing engine. The existing engine was preserved. Use the nomozip verified source.</value></data>
+
+  <data name="SoftwareUpdate.AutoClean" xml:space="preserve"><value>Automatically remove old installers after a successful update</value></data>
+  <data name="Download.Progress" xml:space="preserve"><value>Downloaded {0:0.##} / {1:0.##} MB · {2:0.#} KB/s</value></data>
+  <data name="Download.Stalled" xml:space="preserve"><value>Downloaded {0:0.##} / {1:0.##} MB · {2:0.#} KB/s
+Waiting for data. You can wait or cancel and retry.</value></data>
+  <data name="Download.NetworkFailed" xml:space="preserve"><value>The connection failed or the server refused the download. Check your connection and download again.</value></data>
+  <data name="Download.ReadWriteFailed" xml:space="preserve"><value>Could not read the download or save the file. Check your connection, free disk space, and folder permissions, then retry.</value></data>
+  <data name="Download.AccessDenied" xml:space="preserve"><value>Cannot write to the update cache. Check folder permissions and retry.</value></data>
+
+  <data name="Password.DirectoryRule" xml:space="preserve"><value>Prefer source folder</value></data>
+  <data name="Password.DirectoryHint" xml:space="preserve"><value>Enter an absolute folder path, including its subfolders. A match on either the filename or folder gives priority; other passwords are still tried.</value></data>
+  <data name="Password.DirectoryInvalid" xml:space="preserve"><value>Enter an absolute source folder path, or leave it empty.</value></data>
+  <data name="Password.DirectoryPrefix" xml:space="preserve"><value>Folder: </value></data>
+  <data name="Browser.Filters" xml:space="preserve"><value>Advanced filters</value></data>
+  <data name="Browser.FilterType" xml:space="preserve"><value>File types</value></data>
+  <data name="Browser.FilterTypeHint" xml:space="preserve"><value>For example txt; jpg; tar.gz, separated by semicolons.</value></data>
+  <data name="Browser.MinimumSize" xml:space="preserve"><value>Min size (MiB)</value></data>
+  <data name="Browser.MaximumSize" xml:space="preserve"><value>Max size (MiB)</value></data>
+  <data name="Browser.FilterKind" xml:space="preserve"><value>Entry kind</value></data>
+  <data name="Browser.AllKinds" xml:space="preserve"><value>All</value></data>
+  <data name="Browser.FilesOnly" xml:space="preserve"><value>Files only</value></data>
+  <data name="Browser.FoldersOnly" xml:space="preserve"><value>Folders only</value></data>
+  <data name="Browser.ClearFilters" xml:space="preserve"><value>Clear filters</value></data>
+  <data name="Browser.FilterError" xml:space="preserve"><value>Use valid file extensions and nonnegative sizes. The minimum must not exceed the maximum.</value></data>
+  <data name="Browser.FilterHint" xml:space="preserve"><value>Filters show matches across folders. Hidden checked items remain included when extracting the selection.</value></data>
+
+  <data name="SoftwareUpdate.SettingsSaved" xml:space="preserve"><value>Update settings saved.</value></data>
 </root>

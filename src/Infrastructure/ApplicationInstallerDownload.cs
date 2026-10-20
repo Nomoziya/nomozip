@@ -8,7 +8,7 @@ public sealed class ApplicationInstallerDownload(HttpClient client, TimeSpan? ti
 {
     public const long MaximumBytes = 64 * 1024 * 1024;
     public async Task<string> DownloadAsync(AvailableApplicationRelease release, string architecture, string cache,
-        IProgress<int>? progress = null, CancellationToken token = default)
+        IProgress<int>? progress = null, CancellationToken token = default, IProgress<DownloadProgress>? details = null)
     {
         // ResponseHeadersRead does not apply HttpClient.Timeout to body reads.
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
@@ -30,19 +30,11 @@ public sealed class ApplicationInstallerDownload(HttpClient client, TimeSpan? ti
                 throw new InvalidDataException("Installer length differs from release metadata.");
             await using (var input = await response.Content.ReadAsStreamAsync(token))
             await using (var output = new FileStream(partial, FileMode.CreateNew, FileAccess.Write, FileShare.None, 65536, true))
-            using (var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256))
             {
-                var buffer = new byte[65536]; long total = 0; int previous = -1;
-                for (int count; (count = await input.ReadAsync(buffer, token)) != 0;)
-                {
-                    total += count;
-                    if (total > release.InstallerSize || total > MaximumBytes) throw new InvalidDataException("Installer exceeds declared size.");
-                    hash.AppendData(buffer, 0, count);
-                    await output.WriteAsync(buffer.AsMemory(0, count), token);
-                    var percent = (int)(total * 100 / release.InstallerSize);
-                    if (percent != previous) { progress?.Report(percent); previous = percent; }
-                }
-                if (total != release.InstallerSize || !Convert.ToHexString(hash.GetHashAndReset()).Equals(release.InstallerSha256, StringComparison.OrdinalIgnoreCase))
+                var forward = new ArchivePassword.Core.ForwardProgress<DownloadProgress>(value =>
+                { progress?.Report(value.Percent); details?.Report(value); });
+                var digest = await DownloadTransfer.CopyAsync(input, output, release.InstallerSize, MaximumBytes, forward, token);
+                if (!digest.Equals(release.InstallerSha256, StringComparison.OrdinalIgnoreCase))
                     throw new InvalidDataException("Installer checksum differs from release metadata.");
             }
             token.ThrowIfCancellationRequested();

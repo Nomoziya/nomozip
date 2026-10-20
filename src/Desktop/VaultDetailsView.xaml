@@ -93,6 +93,9 @@
                   </Label.ContentTemplate>
                 </Label>
                 <TextBox x:Name="MatchBox" MaxLength="256"/>
+                <Label Content="{loc:Text Password.DirectoryRule}" Target="{Binding ElementName=DirectoryMatchBox}"/>
+                <TextBox x:Name="DirectoryMatchBox" MaxLength="1024" ToolTip="{loc:Text Password.DirectoryHint}"/>
+                <TextBlock Text="{loc:Text Password.DirectoryHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,8,0,0"/>
               </StackPanel>
             </Expander>
           </Border>

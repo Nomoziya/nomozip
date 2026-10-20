@@ -1042,6 +1042,12 @@
                   <Button x:Name="CleanApplicationInstallersButton" Content="{loc:Text SoftwareUpdate.CleanCache}" Command="{Binding CleanApplicationInstallersCommand}" Margin="0,0,12,8" ToolTip="{loc:Text SoftwareUpdate.CacheHint}"/>
                   <TextBlock x:Name="ApplicationCacheSizeText" Text="{Binding ApplicationCacheSummary}" Style="{StaticResource Secondary}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                 </WrapPanel>
+                <WrapPanel>
+                  <CheckBox x:Name="AutoCleanApplicationInstallersBox" IsChecked="{Binding AutoCleanApplicationInstallers}" IsEnabled="{Binding IsIdle}" Margin="0,4,12,8" VerticalAlignment="Center" AutomationProperties.Name="{loc:Text SoftwareUpdate.AutoClean}">
+                    <TextBlock Text="{loc:Text SoftwareUpdate.AutoClean}" TextWrapping="Wrap" MaxWidth="470"/>
+                  </CheckBox>
+                  <Button x:Name="SaveApplicationUpdateSettingsButton" Content="{loc:Text Settings.Save}" Command="{Binding SaveApplicationUpdateSettingsCommand}" Style="{StaticResource SubtleButton}" Margin="0,0,0,8"/>
+                </WrapPanel>
                 <TextBlock x:Name="ApplicationUpdateStatus" Text="{Binding ApplicationUpdateMessage}" Style="{StaticResource Secondary}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite"/>
                 <Button Content="{loc:Text T_ba5967311206}" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="0,12,0,0">
                   <Button.Style>

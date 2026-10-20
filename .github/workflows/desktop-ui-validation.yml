@@ -131,6 +131,16 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Task improvements validation build failed.' }
           & ./.tools/dotnet/dotnet.exe tests/TaskImprovementsValidation/bin/Release/net10.0-windows/TaskImprovementsValidation.dll $PWD.Path
           if ($LASTEXITCODE -ne 0) { throw 'Task improvements core validation failed.' }
+      - name: Validate update feedback, source rules and large collection performance
+        run: |
+          foreach ($taskCase in @('PostReleaseValidation','BrowserPerformanceValidation','ApplicationUpdateValidation')) {
+            & ./.tools/dotnet/dotnet.exe build "tests/$taskCase" -c Release --nologo -m:1 -nr:false
+            if ($LASTEXITCODE -ne 0) { throw "$taskCase build failed." }
+            $taskArguments = @("tests/$taskCase/bin/Release/net10.0-windows/$taskCase.dll", $PWD.Path)
+            if ($taskCase -eq 'BrowserPerformanceValidation') { $taskArguments[1] = (Join-Path $PWD 'artifacts/post032-performance.json') }
+            & ./.tools/dotnet/dotnet.exe @taskArguments
+            if ($LASTEXITCODE -ne 0) { throw "$taskCase failed." }
+          }
       - name: Validate native ARM64 architecture and cross-architecture synthetic vaults
         if: matrix.architecture == 'arm64'
         run: ./scripts/test-ui-arm64-architecture.ps1
@@ -255,7 +265,15 @@ jobs:
             artifacts/*-preview/*.png
             artifacts/task-improvements-preview/**/*.png
             artifacts/official-engine-preview/**/*.png
+            artifacts/post032-preview/**/*.png
+            artifacts/post032-performance.json
           if-no-files-found: ignore
+      - name: Validate installer success receipt and first-start cache cleanup
+        if: ${{ !cancelled() && inputs.release_followup && contains(inputs.followup_flags, 'validate-post032') && steps.followup_prepare.outputs.prepared == 'true' }}
+        run: |
+          ./scripts/bootstrap-installer.ps1 -Architecture '${{ matrix.architecture }}'
+          Copy-Item artifacts/app artifacts/light-app -Recurse
+          ./scripts/test-installer.ps1 -Architecture '${{ matrix.architecture }}' -PreviousArchitecture '${{ matrix.architecture }}' -PreviousApplicationDirectory (Join-Path $PWD 'artifacts/app') -PreviousFrameworkDependent
       - name: Upgrade the published 0.2.1 lightweight installation and package release
         if: inputs.release_followup && inputs.followup_flags == ''
         run: |

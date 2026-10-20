@@ -41,12 +41,13 @@
       <Grid><Grid.RowDefinitions><RowDefinition Height="35"/><RowDefinition Height="54"/><RowDefinition Height="40"/></Grid.RowDefinitions>
         <Grid x:Name="BrowserTitleRow" Grid.Row="1" Margin="34,0,18,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
           <Grid VerticalAlignment="Center" Margin="0,0,16,0"><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="31"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><loc:FluentIcon Kind="Archive" Foreground="{DynamicResource AccentBrush}" Width="34" Height="34"/><TextBlock x:Name="ContentsArchiveName" Grid.Column="2" Text="{Binding ArchiveName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ArchivePath}" VerticalAlignment="Center" Style="{StaticResource WorkspacePageTitle}"/></Grid>
-          <Grid x:Name="ReferenceArchiveSearch" Grid.Column="1" Width="286" VerticalAlignment="Center"><TextBox x:Name="EntrySearch" BorderBrush="{DynamicResource ButtonBorderBrush}" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Height="34" MinHeight="34" Padding="42,5,10,5" AutomationProperties.Name="{loc:Text T_88a399b911e0}" ToolTip="{loc:Text T_88a399b911e0}"/><loc:FluentIcon Kind="Search" Width="20" Height="20" Foreground="{DynamicResource SecondaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"/><TextBlock Text="{loc:Text Browser.SearchPlaceholder}" FontSize="14" Margin="44,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryBrush}" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Search}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
+          <Grid x:Name="ReferenceArchiveSearch" Grid.Column="1" Width="286" VerticalAlignment="Center"><TextBox x:Name="EntrySearch" BorderBrush="{DynamicResource ButtonBorderBrush}" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged,Delay=200}" Height="34" MinHeight="34" Padding="42,5,10,5" AutomationProperties.Name="{loc:Text T_88a399b911e0}" ToolTip="{loc:Text T_88a399b911e0}"/><loc:FluentIcon Kind="Search" Width="20" Height="20" Foreground="{DynamicResource SecondaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"/><TextBlock Text="{loc:Text Browser.SearchPlaceholder}" FontSize="14" Margin="44,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryBrush}" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Search}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
         </Grid>
         <Border Grid.Row="2" Margin="18,0" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" ToolTip="{Binding ArchivePath}"><DockPanel LastChildFill="True" VerticalAlignment="Center"><loc:FluentIcon DockPanel.Dock="Left" Kind="FolderOpen" Foreground="{DynamicResource SecondaryBrush}" Width="16" Height="16" Margin="0,0,12,0"/><TextBlock DockPanel.Dock="Left" Text="{Binding ArchiveLocation}" VerticalAlignment="Center" MaxWidth="160" TextTrimming="CharacterEllipsis"/><ItemsControl ItemsSource="{Binding Breadcrumbs}" VerticalAlignment="Center"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><StackPanel Orientation="Horizontal"><loc:FluentIcon Kind="ChevronDown" RenderTransformOrigin="0.5,0.5" Foreground="{DynamicResource SecondaryBrush}" Width="12" Height="12" Margin="12,0" VerticalAlignment="Center"><loc:FluentIcon.RenderTransform><RotateTransform Angle="-90"/></loc:FluentIcon.RenderTransform></loc:FluentIcon><Button Content="{Binding Label}" Command="{Binding NavigateCommand}" Style="{StaticResource BreadcrumbButton}" Foreground="{DynamicResource TextBrush}" FontWeight="Normal" MaxWidth="240" ToolTip="{Binding Label}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></DockPanel></Border>
       </Grid>
     </Border>
     <Border Grid.Row="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="11,7" MinHeight="52">
+      <StackPanel>
       <WrapPanel x:Name="ContentsActions">
         <Button x:Name="ExtractAllButton" Command="{Binding ExtractAllCommand}" Margin="0,0,8,0">
           <StackPanel Orientation="Horizontal">
@@ -148,6 +149,24 @@
           </Button.Style>
         </Button>
       </WrapPanel>
+      <Expander x:Name="AdvancedFilters" Header="{loc:Text Browser.Filters}" Margin="8,8,8,0" IsEnabled="{Binding CanSelect}">
+        <StackPanel Margin="0,8,0,0">
+          <WrapPanel>
+            <StackPanel Margin="0,0,16,8"><Label Content="{loc:Text Browser.FilterType}" Target="{Binding ElementName=FilterExtensionsBox}" Padding="0,0,0,4"/>
+              <TextBox x:Name="FilterExtensionsBox" AutomationProperties.Name="{loc:Text Browser.FilterType}" Width="180" MaxLength="256" Text="{Binding FilterExtensions,UpdateSourceTrigger=PropertyChanged,Delay=200}" ToolTip="{loc:Text Browser.FilterTypeHint}"/></StackPanel>
+            <StackPanel Margin="0,0,16,8"><Label Content="{loc:Text Browser.MinimumSize}" Target="{Binding ElementName=FilterMinimumBox}" Padding="0,0,0,4"/>
+              <TextBox x:Name="FilterMinimumBox" AutomationProperties.Name="{loc:Text Browser.MinimumSize}" Width="140" MaxLength="24" Text="{Binding FilterMinimum,UpdateSourceTrigger=PropertyChanged,Delay=200}"/></StackPanel>
+            <StackPanel Margin="0,0,16,8"><Label Content="{loc:Text Browser.MaximumSize}" Target="{Binding ElementName=FilterMaximumBox}" Padding="0,0,0,4"/>
+              <TextBox x:Name="FilterMaximumBox" AutomationProperties.Name="{loc:Text Browser.MaximumSize}" Width="140" MaxLength="24" Text="{Binding FilterMaximum,UpdateSourceTrigger=PropertyChanged,Delay=200}"/></StackPanel>
+            <StackPanel Margin="0,0,16,8"><Label Content="{loc:Text Browser.FilterKind}" Target="{Binding ElementName=FilterKindBox}" Padding="0,0,0,4"/>
+              <ComboBox x:Name="FilterKindBox" AutomationProperties.Name="{loc:Text Browser.FilterKind}" ItemsSource="{Binding FilterKindChoices}" SelectedIndex="{Binding FilterKindIndex}" Style="{StaticResource CompactOptionField}"/></StackPanel>
+            <Button x:Name="ClearFiltersButton" Content="{loc:Text Browser.ClearFilters}" Command="{Binding ClearFiltersCommand}" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
+          </WrapPanel>
+          <TextBlock Text="{Binding FilterError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+          <TextBlock Text="{loc:Text Browser.FilterHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+        </StackPanel>
+      </Expander>
+      </StackPanel>
     </Border>
     <Grid Grid.Row="2">
       <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow,Mode=TwoWay}" IsSynchronizedWithCurrentItem="False" CanUserSortColumns="True" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="36" ColumnHeaderStyle="{StaticResource FileHeader}" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="OnOpenEntry">

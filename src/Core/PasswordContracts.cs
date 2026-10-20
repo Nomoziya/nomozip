@@ -1,7 +1,7 @@
 namespace ArchivePassword.Core;
 
 public sealed record SavedPassword(Guid Id, string Name, string Secret, string Notes, bool AutoTry, DateTimeOffset CreatedAt, DateTimeOffset? LastSuccessAt = null,
-    string Group = "", string Source = "", string MatchText = "");
+    string Group = "", string Source = "", string MatchText = "", string MatchDirectory = "");
 public sealed record PasswordCandidate(Guid? SavedId, string Secret);
 public sealed record VaultBackupState(IReadOnlyList<SavedPassword> Passwords, string ContentStamp);
 public interface IPasswordVaultBackupState

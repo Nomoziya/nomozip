@@ -75,6 +75,12 @@ try {
     Set-ItemProperty -LiteralPath $taskRegistry -Name InstallerLanguage -Value '1033'
     # Test the same silent /UPDATE handoff used by the app, with an owned process
     # holding both GUI and CLI files until explicitly released. No real profile is used.
+    $taskRestartCache = Join-Path $taskValidation 'data-update-restart/application-updates'
+    New-Item -ItemType Directory -Force $taskRestartCache | Out-Null
+    $taskOldCachedInstaller = Join-Path $taskRestartCache 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.exe'
+    [IO.File]::WriteAllText($taskOldCachedInstaller,'synthetic old installer')
+    $taskUnrelatedDownload = Join-Path $taskRestartCache 'user-download.exe'
+    [IO.File]::WriteAllText($taskUnrelatedDownload,'preserve')
     $taskReady = Join-Path $taskValidation 'update-lock-ready'
     $taskRelease = Join-Path $taskValidation 'update-lock-release'
     $taskLockScript = @'
@@ -99,6 +105,7 @@ try {
         $taskBlockedProcess=Start-Process -FilePath $taskUpgrade -ArgumentList @('/S','/UPDATE',('/D='+$taskApplication)) -WindowStyle Hidden -PassThru
         if(-not $taskBlockedProcess.WaitForExit(35000)){$taskBlockedProcess.Kill();throw 'Blocked update did not time out.'}
         $taskChecks.automaticUpdateTimeoutLeavesRegisteredInstallation=$taskBlockedProcess.ExitCode -eq 2 -and (Get-ItemProperty -LiteralPath $taskRegistry).DisplayVersion -eq $taskPreviousDisplayVersion -and (Get-FileHash $taskVault).Hash -eq $taskVaultHash
+        $taskChecks.blockedUpdateKeepsOldInstaller = Test-Path -LiteralPath $taskOldCachedInstaller
         $taskSetupLock=[IO.File]::Open($taskUpgrade,'Open','Read','Read')
         try {$taskUpdateProcess=Start-Process -FilePath $taskUpgrade -ArgumentList @('/S','/UPDATE',('/D='+$taskApplication)) -WindowStyle Hidden -PassThru}
         finally {$taskSetupLock.Dispose()}
@@ -108,6 +115,7 @@ try {
         if(-not $taskUpdateProcess.WaitForExit(60000) -or $taskUpdateProcess.ExitCode -ne 0){throw 'Automatic installer handoff failed.'}
         $taskChecks.automaticUpdateCompletesAfterExit=(Get-Content -LiteralPath (Join-Path $taskValidation 'update-completed.txt') -Raw) -eq $taskApplication
         $taskChecks.automaticUpdateRestartsIsolatedApplication=Test-Path -LiteralPath (Join-Path $taskValidation 'data-update-restart/passwords.apv')
+        $taskChecks.successfulRestartCleansOwnedCache = -not(Test-Path -LiteralPath $taskOldCachedInstaller) -and (Test-Path -LiteralPath $taskUnrelatedDownload) -and -not(Test-Path -LiteralPath (Join-Path $taskApplication 'completed-update.txt'))
     } finally {
         [IO.File]::WriteAllText($taskRelease,'release')
         if(-not $taskLock.WaitForExit(5000)){$taskLock.Kill()}
@@ -172,7 +180,7 @@ try {
     if ((Get-Item -LiteralPath $taskAssociationRoot).Name -ne 'HKEY_CURRENT_USER\Software\nomozip-validation\InstallerAssociations') { throw 'Unexpected registry cleanup target.' }
     Remove-Item -LiteralPath $taskAssociationRoot -Recurse -Force
 } finally {
-    $taskExpectedChecks = if ($FrameworkDependent) { 35 } else { 34 }
+    $taskExpectedChecks = if ($FrameworkDependent) { 37 } else { 36 }
     $taskPassed = $taskChecks.Count -eq $taskExpectedChecks -and @($taskChecks.Values | Where-Object { -not $_ }).Count -eq 0
     $taskReportName = if ($FrameworkDependent) { 'light-installer-validation.json' } else { 'installer-validation.json' }
     [ordered]@{passed=$taskPassed;total=$taskChecks.Count;syntheticData=$true;sharedRuntime=$FrameworkDependent.IsPresent;previousArchitecture=$PreviousArchitecture;architecture=$Architecture;installedBytes=$taskInstalledBytes;validationRoot=$taskValidation;checks=$taskChecks} | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $taskRoot "artifacts/$taskReportName") -Encoding utf8

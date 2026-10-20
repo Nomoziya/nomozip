@@ -72,13 +72,14 @@ public sealed partial class GitHubEngineChannel(HttpClient client)
         if (response.RequestMessage?.RequestUri?.Scheme != "https" || response.Content.Headers.ContentLength > EngineUpdatePackage.MaximumPackageBytes) throw new UpdateException("invalid_download");
         await using var input = await response.Content.ReadAsStreamAsync(token);
         await using var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, 81920, true);
-        var buffer = new byte[81920]; long total = 0; int count;
-        while ((count = await input.ReadAsync(buffer, token)) != 0)
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+        deadline.CancelAfter(TimeSpan.FromMinutes(10));
+        try
         {
-            total += count; if (total > EngineUpdatePackage.MaximumPackageBytes) throw new UpdateException("invalid_download");
-            await output.WriteAsync(buffer.AsMemory(0, count), token);
-            progress?.Report(UiText.Format("T_5a2d65d7ef82", total / 1024));
+            await DownloadTransfer.CopyAsync(input, output, update.Size, EngineUpdatePackage.MaximumPackageBytes,
+                new ArchivePassword.Core.ForwardProgress<DownloadProgress>(value => progress?.Report(value.Description)), deadline.Token);
         }
-        if (total != update.Size) throw new UpdateException("invalid_download");
+        catch (OperationCanceledException) when (!token.IsCancellationRequested) { throw new TimeoutException("Engine download timed out."); }
+        catch (InvalidDataException) { throw new UpdateException("invalid_download"); }
     }
 }

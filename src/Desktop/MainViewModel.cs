@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
@@ -181,6 +182,7 @@ public sealed partial class MainViewModel : ObservableObject
             await RefreshVaultAsync();
             RefreshCheckpointRows();
             if (EngineVersions.Count == 0) Banner = UiText.Get("T_e274b7537023");
+            else await CompleteApplicationUpdateAsync();
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
         { Banner = UiText.Get("T_b83678cb1bcf"); }
@@ -435,6 +437,9 @@ public sealed partial class MainViewModel : ObservableObject
         try { await operation(cancellation.Token); }
         catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { UpdateMessage = UiText.Get("T_596d7d8dbed2"); }
         catch (OperationCanceledException) { UpdateMessage = UiText.Get("T_c85f7e6675d5"); }
+        catch (TimeoutException) { UpdateMessage = UiText.Get("SoftwareUpdate.DownloadTimeout"); }
+        catch (HttpRequestException) { UpdateMessage = UiText.Get("Download.NetworkFailed"); }
+        catch (InvalidDataException) { UpdateMessage = UiText.Get("SoftwareUpdate.InvalidDownload"); }
         catch (UpdateException exception) { UpdateMessage = UpdateErrorText(exception.Code); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or System.Net.Http.HttpRequestException or JsonException or KeyNotFoundException or InvalidOperationException or ArgumentException)
         { UpdateMessage = UiText.Get("T_fc4b460196dc"); }
@@ -462,7 +467,7 @@ public sealed partial class MainViewModel : ObservableObject
         OutputPath = settings.OutputPath; AutoTry = settings.AutoTry; ConflictPolicy = Math.Clamp(settings.ConflictPolicy, 0, 2);QueueConcurrency=settings.QueueConcurrency;NotifyExtractionSuccess=settings.NotifyExtractionSuccess;VaultIdleIndex=settings.VaultIdleIndex;RetainExtractionProgress=settings.RetainExtractionProgress;
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
-        EngineSourceIndex=settings.EngineSourceIndex;
+        EngineSourceIndex=settings.EngineSourceIndex;AutoCleanApplicationInstallers=settings.AutoCleanApplicationInstallers;
         directoryRules=settings.DirectoryRules ?? new();
         if(!Enum.IsDefined(directoryRules.Location) || !Enum.IsDefined(directoryRules.Layout) || !Enum.IsDefined(directoryRules.Collision) || !Enum.IsDefined(directoryRules.Naming))
         { directoryRules=new();settingsWritable=false;Banner=UiText.Get("T_9874c8d6f32d"); }
@@ -474,7 +479,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
         RememberCustomDirectory();
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress,EngineSourceIndex)));
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress,EngineSourceIndex,AutoCleanApplicationInstallers)));
     }
     private static void OpenFolder(string path)
     {
@@ -491,7 +496,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => UiText.Get("T_21777c1adb09"), "output_write_failed" or "write_failed" => UiText.Get("T_736922310835"),
         "worker_connection_failed" or "engine_load_failed" => UiText.Get("T_ffcd45757108"), _ => UiText.Get("T_54d74bc17776"),
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false,int EngineSourceIndex=0);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false,int EngineSourceIndex=0,bool AutoCleanApplicationInstallers=true);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", UiText.Get("T_7c7802d8adae")));

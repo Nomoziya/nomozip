@@ -3310,4 +3310,31 @@
   <data name="EngineSource.NoDigest" xml:space="preserve"><value>官方尚未提供此安装包的 SHA-256，无法验证。请使用 nomozip 已验证源。</value></data>
   <data name="EngineSource.Invalid" xml:space="preserve"><value>官方引擎的来源或文件不符合要求，未切换当前引擎。</value></data>
   <data name="EngineSource.VersionConflict" xml:space="preserve"><value>此版本与已有引擎内容不同，已保留现有引擎。请使用 nomozip 已验证源。</value></data>
+
+  <data name="SoftwareUpdate.AutoClean" xml:space="preserve"><value>更新成功后自动清理旧安装包</value></data>
+  <data name="Download.Progress" xml:space="preserve"><value>已下载 {0:0.##} / {1:0.##} MB · {2:0.#} KB/s</value></data>
+  <data name="Download.Stalled" xml:space="preserve"><value>已下载 {0:0.##} / {1:0.##} MB · {2:0.#} KB/s
+暂未收到新数据，可继续等待或取消后重试。</value></data>
+  <data name="Download.NetworkFailed" xml:space="preserve"><value>网络连接中断或服务器拒绝下载。请检查网络后再次下载。</value></data>
+  <data name="Download.ReadWriteFailed" xml:space="preserve"><value>读取下载内容或保存文件失败。请检查网络、磁盘空间及目录权限后重试。</value></data>
+  <data name="Download.AccessDenied" xml:space="preserve"><value>无法写入更新缓存目录。请检查目录权限后重试。</value></data>
+
+  <data name="Password.DirectoryRule" xml:space="preserve"><value>来源目录优先</value></data>
+  <data name="Password.DirectoryHint" xml:space="preserve"><value>填写完整目录路径（含子目录）。文件名或目录任一规则匹配时优先尝试；其他密码仍会尝试。</value></data>
+  <data name="Password.DirectoryInvalid" xml:space="preserve"><value>请填写完整的来源目录路径，或留空。</value></data>
+  <data name="Password.DirectoryPrefix" xml:space="preserve"><value>目录：</value></data>
+  <data name="Browser.Filters" xml:space="preserve"><value>高级筛选</value></data>
+  <data name="Browser.FilterType" xml:space="preserve"><value>文件类型</value></data>
+  <data name="Browser.FilterTypeHint" xml:space="preserve"><value>例如 txt; jpg; tar.gz，多个类型用分号分隔。</value></data>
+  <data name="Browser.MinimumSize" xml:space="preserve"><value>最小大小 (MiB)</value></data>
+  <data name="Browser.MaximumSize" xml:space="preserve"><value>最大大小 (MiB)</value></data>
+  <data name="Browser.FilterKind" xml:space="preserve"><value>条目类型</value></data>
+  <data name="Browser.AllKinds" xml:space="preserve"><value>全部</value></data>
+  <data name="Browser.FilesOnly" xml:space="preserve"><value>仅文件</value></data>
+  <data name="Browser.FoldersOnly" xml:space="preserve"><value>仅目录</value></data>
+  <data name="Browser.ClearFilters" xml:space="preserve"><value>清除筛选</value></data>
+  <data name="Browser.FilterError" xml:space="preserve"><value>请使用有效的文件扩展名和非负大小；最小值不能大于最大值。</value></data>
+  <data name="Browser.FilterHint" xml:space="preserve"><value>筛选跨目录显示匹配条目；隐藏的已选内容仍会包含在所选解压中。</value></data>
+
+  <data name="SoftwareUpdate.SettingsSaved" xml:space="preserve"><value>更新设置已保存。</value></data>
 </root>

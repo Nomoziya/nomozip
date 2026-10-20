@@ -38,7 +38,21 @@ public sealed partial class MainViewModel
     public ICommand DownloadApplicationUpdateCommand { get; private set; } = null!;
     public ICommand InstallApplicationUpdateCommand { get; private set; } = null!;
     public ICommand CleanApplicationInstallersCommand { get; private set; } = null!;
+    public ICommand SaveApplicationUpdateSettingsCommand { get; private set; } = null!;
+    private bool autoCleanApplicationInstallers = true;
+    public bool AutoCleanApplicationInstallers { get => autoCleanApplicationInstallers; set => Set(ref autoCleanApplicationInstallers, value); }
     private InstallerCacheSummary? applicationCache;
+    private async Task CompleteApplicationUpdateAsync()
+    {
+        try
+        {
+            var result = await Task.Run(() => ApplicationUpdateReceipt.CompleteAsync(ApplicationCacheDirectory, ApplicationVersion, baseDirectory, AutoCleanApplicationInstallers));
+            if (result is not null) ApplicationUpdateMessage = UiText.Format("SoftwareUpdate.CacheCleaned", result.Deleted, result.Bytes / 1048576.0, result.Skipped);
+        }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or JsonException or ArgumentException)
+        { ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.CacheCleanFailed"); }
+        finally { RefreshApplicationCache(); }
+    }
     public string ApplicationCacheSummary => applicationCache is null ? UiText.Get("SoftwareUpdate.CacheUnavailable") :
         UiText.Format("SoftwareUpdate.CacheSummary", applicationCache.Files, applicationCache.Bytes / 1048576.0);
     private string ApplicationCacheDirectory => Path.Combine(dataDirectory, "application-updates");
@@ -64,6 +78,13 @@ public sealed partial class MainViewModel
 
     private void InitializeApplicationUpdateCommands()
     {
+        SaveApplicationUpdateSettingsCommand = new AsyncCommand(async () =>
+        {
+            IsBusy = true; idle = new TaskCompletionSource();
+            try { await SaveSettingsAsync(); ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.SettingsSaved"); }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException) { ApplicationUpdateMessage = UiText.Get("Download.AccessDenied"); }
+            finally { IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
+        }, () => IsIdle && settingsWritable);
         CleanApplicationInstallersCommand = new AsyncCommand(CleanApplicationInstallersAsync, () => IsIdle);
         RefreshApplicationCache();
         try { registeredApplicationInstallation = ApplicationInstallation.IsRegistered(Path.Combine(baseDirectory, "ArchivePassword.exe")); }
@@ -124,7 +145,7 @@ public sealed partial class MainViewModel
     private void DiscardApplicationInstaller()
     {
         var path = preparedApplicationInstaller; preparedApplicationInstaller = null;
-        if (path is not null) try { File.Delete(path); } catch (Exception error) when (error is IOException or UnauthorizedAccessException) { /* A running installer retains its own file. */ }
+        if (path is not null) try { File.Delete(path); ApplicationUpdateReceipt.Discard(ApplicationCacheDirectory); } catch (Exception error) when (error is IOException or UnauthorizedAccessException) { /* A running installer retains its own file. */ }
         RefreshApplicationCache();
     }
 
@@ -138,14 +159,17 @@ public sealed partial class MainViewModel
         {
             using var client = applicationUpdateClient(); client.Timeout = TimeSpan.FromMinutes(10);
             var progress = new Progress<int>(value => ApplicationDownloadProgress = value);
+            var details = new Progress<DownloadProgress>(value =>
+            { if (IsDownloadingApplicationUpdate) ApplicationUpdateMessage = value.Description; });
             preparedApplicationInstaller = await new ApplicationInstallerDownload(client).DownloadAsync(release,
-                RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant(), Path.Combine(dataDirectory, "application-updates"), progress, cancellation.Token);
+                RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant(), Path.Combine(dataDirectory, "application-updates"), progress, cancellation.Token, details);
             ApplicationDownloadProgress = 100; ApplicationUpdateMessage = UiText.Format("SoftwareUpdate.Ready", release.Version);
         }
         catch (OperationCanceledException) { ApplicationUpdateMessage = UiText.Get(cancellation.IsCancellationRequested ? "SoftwareUpdate.Cancelled" : "SoftwareUpdate.DownloadTimeout"); }
         catch (InvalidDataException) { ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.InvalidDownload"); }
-        catch (Exception error) when (error is HttpRequestException or IOException or UnauthorizedAccessException)
-        { ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.DownloadFailed"); }
+        catch (HttpRequestException) { ApplicationUpdateMessage = UiText.Get("Download.NetworkFailed"); }
+        catch (IOException) { ApplicationUpdateMessage = UiText.Get("Download.ReadWriteFailed"); }
+        catch (UnauthorizedAccessException) { ApplicationUpdateMessage = UiText.Get("Download.AccessDenied"); }
         finally { cancellation.Dispose(); cancellation = null; IsBusy = false; IsCheckingApplicationUpdate = false; IsDownloadingApplicationUpdate = false; RefreshApplicationCache(); idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
     }
 
@@ -156,11 +180,15 @@ public sealed partial class MainViewModel
         try
         {
             using var locked = await Task.Run(() => ApplicationInstallerDownload.OpenVerified(preparedApplicationInstaller!, applicationRelease));
+            await new ApplicationUpdateReceipt(ApplicationVersion, applicationRelease.Version, baseDirectory).SaveAsync(ApplicationCacheDirectory);
             startApplicationInstaller(ApplicationInstallation.CreateStart(preparedApplicationInstaller!, baseDirectory));
             started = true; ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.Started");
         }
         catch (Exception error) when (error is InvalidDataException or IOException or UnauthorizedAccessException or Win32Exception or InvalidOperationException or ArgumentException)
-        { DiscardApplicationInstaller(); ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.InstallFailed"); }
+        {
+            try { ApplicationUpdateReceipt.Discard(ApplicationCacheDirectory); } catch (Exception cleanup) when (cleanup is IOException or UnauthorizedAccessException) { }
+            DiscardApplicationInstaller(); ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.InstallFailed");
+        }
         finally { IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
         if (started) exitForApplicationUpdate();
     }

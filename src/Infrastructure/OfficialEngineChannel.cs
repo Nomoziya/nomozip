@@ -68,20 +68,19 @@ public sealed class OfficialEngineChannel(HttpClient client)
                 || response.Content.Headers.ContentLength is { } length && length != update.Size) throw new UpdateException("invalid_download");
             await using (var input = await response.Content.ReadAsStreamAsync(token))
             await using (var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, 81920, true))
-            using (var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256))
             {
                 created=true;
-                var buffer = new byte[81920]; long total = 0; int count;
-                while ((count = await input.ReadAsync(buffer, token)) != 0)
+                using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+                deadline.CancelAfter(TimeSpan.FromMinutes(10));
+                string digest;
+                try
                 {
-                    total += count;
-                    if (total > update.Size) throw new UpdateException("invalid_download");
-                    hash.AppendData(buffer, 0, count);
-                    await output.WriteAsync(buffer.AsMemory(0, count), token);
-                    progress?.Report(UiText.Format("EngineSource.Downloading", total / 1024, update.Size / 1024));
+                    digest = await DownloadTransfer.CopyAsync(input, output, update.Size, update.Size,
+                        new ArchivePassword.Core.ForwardProgress<DownloadProgress>(value => progress?.Report(value.Description)), deadline.Token);
                 }
-                if (total != update.Size || !Convert.ToHexString(hash.GetHashAndReset()).Equals(update.Sha256, StringComparison.OrdinalIgnoreCase))
-                    throw new UpdateException("hash_mismatch");
+                catch (OperationCanceledException) when (!token.IsCancellationRequested) { throw new TimeoutException("Engine download timed out."); }
+                catch (InvalidDataException) { throw new UpdateException("invalid_download"); }
+                if (!digest.Equals(update.Sha256, StringComparison.OrdinalIgnoreCase)) throw new UpdateException("hash_mismatch");
             }
         }
         catch { if (created && File.Exists(path)) File.Delete(path); throw; }

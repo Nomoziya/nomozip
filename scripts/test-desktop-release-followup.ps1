@@ -38,7 +38,7 @@ if($env:GITHUB_OUTPUT){'prepared=true' | Out-File -FilePath $env:GITHUB_OUTPUT -
 $taskApp=Join-Path $taskRoot 'artifacts/test-app'
 $taskFailures=[Collections.Generic.List[string]]::new()
 foreach($taskFlag in $Flags){
-    foreach($taskLanguage in $(if($taskFlag -in @('validate-application-updates','validate-task-improvements','validate-official-engine')){@('zh-CN','en')}else{@('zh-CN')})){
+    foreach($taskLanguage in $(if($taskFlag -in @('validate-application-updates','validate-task-improvements','validate-official-engine','validate-post032')){@('zh-CN','en')}else{@('zh-CN')})){
         Write-Output "Follow-up starting: $taskFlag $taskLanguage"
         $taskProcess=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot,$taskLanguage) -WindowStyle Hidden -PassThru
         if(-not $taskProcess.WaitForExit(300000)){$taskProcess.Kill($true);$taskProcess.WaitForExit();$taskFailures.Add("$taskFlag $taskLanguage timeout");continue}
