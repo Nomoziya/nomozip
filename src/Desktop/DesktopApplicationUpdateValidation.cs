@@ -24,6 +24,7 @@ internal static class DesktopApplicationUpdateValidation
         void Check(string name,bool passed) => checks[name]=passed;
         async Task Layout() => await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
         var mode = "new"; Uri? opened=null; var requests=0; var payload=Enumerable.Range(0,100000).Select(v=>(byte)(v%251)).ToArray();
+        var transferResume=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var sha=Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();var confirm=true;var exits=0;ProcessStartInfo? installed=null;var launchFailure=false;
         try
         {
@@ -36,6 +37,7 @@ internal static class DesktopApplicationUpdateValidation
                     if(mode=="download-cancel") await Task.Delay(Timeout.Infinite,token);
                     if(mode=="download-offline") throw new HttpRequestException();
                     if(mode=="download-timeout") throw new TaskCanceledException();
+                    if(mode=="download-stall")return new HttpResponseMessage(HttpStatusCode.OK){Content=new StreamContent(new PausingStream(payload,transferResume.Task))};
                     return new HttpResponseMessage(HttpStatusCode.OK){Content=new ByteArrayContent(mode=="bad-download"?[1,2,3]:payload)};
                 }
                 Check("software repository fixed independently of engine setting",request.RequestUri!.AbsoluteUri.StartsWith("https://api.github.com/repos/Nomoziya/nomozip/releases?",StringComparison.Ordinal));
@@ -93,6 +95,22 @@ internal static class DesktopApplicationUpdateValidation
             model.ConfigureApplicationInstallValidation(true,start=>{if(launchFailure)throw new System.ComponentModel.Win32Exception();installed=start;},()=>exits++);
             mode="no-digest";model.CheckApplicationUpdatesCommand.Execute(null);await model.WaitForIdleAsync();
             Check("missing digest leaves page fallback and clear message",model.OpenApplicationDownloadCommand.CanExecute(null) && !model.DownloadApplicationUpdateCommand.CanExecute(null) && model.ApplicationUpdateMessage.Contains(UiText.Get("SoftwareUpdate.NoDigest")));
+            mode="new";model.CheckApplicationUpdatesCommand.Execute(null);await model.WaitForIdleAsync();
+            mode="download-stall";model.DownloadApplicationUpdateCommand.Execute(null);
+            var stalled=new DownloadProgress(32768,payload.Length,0,true).Description;
+            var limit=DateTime.UtcNow.AddSeconds(12);
+            while(model.IsDownloadingApplicationUpdate && model.ApplicationUpdateMessage!=stalled && DateTime.UtcNow<limit)await Task.Delay(20);
+            await Layout();
+            Check("body stall shows real bytes speed and waiting feedback",model.ApplicationUpdateMessage==stalled && window.ApplicationUpdateStatus.Text==stalled && model.ApplicationDownloadProgress>0 && model.ApplicationDownloadProgress<100);
+            window.ApplicationUpdateStatus.BringIntoView();await Layout();
+            var feedback=Path.Combine(root,"artifacts/post032-preview",language);Directory.CreateDirectory(feedback);
+            DesktopAccessibilityValidation.Render(window,Path.Combine(feedback,"download-stalled.png"),1,clientOnly:true);
+            Check("stalled transfer keeps cancel available",model.CancelCommand.CanExecute(null));
+            model.CancelCommand.Execute(null);await model.WaitForIdleAsync();await Layout();
+            Check("cancelled stalled body restores retry",model.ApplicationUpdateMessage==UiText.Get("SoftwareUpdate.Cancelled") && model.DownloadApplicationUpdateCommand.CanExecute(null));
+            transferResume=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            model.DownloadApplicationUpdateCommand.Execute(null);await Task.Delay(600);transferResume.TrySetResult();await model.WaitForIdleAsync();await Layout();
+            Check("retry recovers completed download and clears stalled state",model.ApplicationDownloadProgress==100 && model.InstallApplicationUpdateCommand.CanExecute(null) && model.ApplicationUpdateMessage==UiText.Format("SoftwareUpdate.Ready","99.0.0"));
             mode="new";model.CheckApplicationUpdatesCommand.Execute(null);await model.WaitForIdleAsync();
             foreach(var failure in new[]{"bad-download","download-offline","download-timeout","download-cancel"})
             {
@@ -152,6 +170,14 @@ internal static class DesktopApplicationUpdateValidation
         finally { theme.SetMode(originalMode);theme.Apply(SystemParameters.HighContrast); }
         await File.WriteAllTextAsync(Path.Combine(root,language=="en"?"artifacts/application-update-en-ui-validation.json":"artifacts/application-update-ui-validation.json"),JsonSerializer.Serialize(new { passed=checks.Values.All(value=>value),total=checks.Count,checks,language,syntheticData=true,actualInstallationChanged=false,actualVisibleNarratorTested=false }));
         return checks.Values.All(value=>value);
+    }
+    private sealed class PausingStream(byte[] bytes,Task resume):MemoryStream(bytes)
+    {
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer,CancellationToken token=default)
+        {
+            if(Position>0)await resume.WaitAsync(token);
+            return await base.ReadAsync(buffer[..Math.Min(buffer.Length,32768)],token);
+        }
     }
     private sealed class Handler(Func<HttpRequestMessage,CancellationToken,Task<HttpResponseMessage>> action):HttpMessageHandler
     { protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)=>action(request,token); }

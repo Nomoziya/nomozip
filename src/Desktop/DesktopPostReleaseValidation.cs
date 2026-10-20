@@ -57,6 +57,7 @@ internal static class DesktopPostReleaseValidation
             {
                 theme.SetMode(mode);theme.Apply(false);window.MinWidth=width;window.Width=width;window.Height=width==800?600:768;await Layout(window);
                 window.AutoCleanApplicationInstallersBox.BringIntoView();await Layout(window);
+                Check($"auto cleanup renders its label {mode} {width}",Descendants(window.AutoCleanApplicationInstallersBox).OfType<AccessText>().Any(text=>text.Text==UiText.Get("SoftwareUpdate.AutoClean")));
                 Check($"auto cleanup control fits {mode} {width}",Fits(window.AutoCleanApplicationInstallersBox,window) && Fits(window.SaveApplicationUpdateSettingsButton,window));
                 Check($"auto cleanup has keyboard and accessible name {mode} {width}",window.AutoCleanApplicationInstallersBox.Focusable && UIElementAutomationPeer.CreatePeerForElement(window.AutoCleanApplicationInstallersBox)!.GetName()==UiText.Get("SoftwareUpdate.AutoClean"));
                 Capture(window,$"updates-{mode}-{width}");
