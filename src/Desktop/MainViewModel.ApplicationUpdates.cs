@@ -82,7 +82,7 @@ public sealed partial class MainViewModel
         {
             IsBusy = true; idle = new TaskCompletionSource();
             try { await SaveSettingsAsync(); ApplicationUpdateMessage = UiText.Get("SoftwareUpdate.SettingsSaved"); }
-            catch (Exception error) when (error is IOException or UnauthorizedAccessException) { ApplicationUpdateMessage = UiText.Get("Download.AccessDenied"); }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException) { ApplicationUpdateMessage = UiText.Get("T_b93945612611"); }
             finally { IsBusy = false; idle.TrySetResult(); CommandManager.InvalidateRequerySuggested(); }
         }, () => IsIdle && settingsWritable);
         CleanApplicationInstallersCommand = new AsyncCommand(CleanApplicationInstallersAsync, () => IsIdle);

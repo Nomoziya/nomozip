@@ -87,7 +87,7 @@ internal static class DesktopPostReleaseValidation
             browser=new ArchiveContentsDialog(view){Owner=window,ShowActivated=false,ShowInTaskbar=false,Left=-32000,Top=-32000,Opacity=0};browser.Show();
             browser.AdvancedFilters.IsExpanded=true;await Layout(browser);
             view.Search="b.jpg";view.Rows.Single().Selected=true;
-            browser.FilterExtensionsBox.Text="txt";browser.FilterExtensionsBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();view.Search="";
+            browser.FilterExtensionsBox.Text="txt";browser.FilterExtensionsBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();view.Search="";await Layout(browser);
             Check("filter textbox uses real binding",view.FilterExtensions=="txt" && view.VisibleRows.Count==2);
             Check("hidden checked entry retained with accurate count",view.SelectedEntries.Single().Path.Replace('\\','/')=="folder/b.jpg" && view.CompactSelectionSummary.Contains("1"));
             Invoke(browser.ExtractSelectedButton);await view.WaitForIdleAsync();await Layout(browser);
