@@ -271,7 +271,7 @@ jobs:
             artifacts/post032-performance.json
           if-no-files-found: ignore
       - name: Validate installer success receipt and first-start cache cleanup
-        if: ${{ !cancelled() && inputs.release_followup && contains(inputs.followup_flags, 'validate-post032') && steps.followup_prepare.outputs.prepared == 'true' }}
+        if: ${{ !cancelled() && inputs.scope != 'followup' && inputs.release_followup && contains(inputs.followup_flags, 'validate-post032') && steps.followup_prepare.outputs.prepared == 'true' }}
         run: |
           ./scripts/bootstrap-installer.ps1 -Architecture '${{ matrix.architecture }}'
           Copy-Item artifacts/app artifacts/light-app -Recurse
