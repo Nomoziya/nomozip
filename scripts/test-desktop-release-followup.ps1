@@ -42,7 +42,17 @@ foreach($taskFlag in $Flags){
         Write-Output "Follow-up starting: $taskFlag $taskLanguage"
         $taskProcess=Start-Process "$taskApp/ArchivePassword.exe" -ArgumentList @("--$taskFlag",$taskRoot,$taskLanguage) -WindowStyle Hidden -PassThru
         if(-not $taskProcess.WaitForExit(300000)){$taskProcess.Kill($true);$taskProcess.WaitForExit();$taskFailures.Add("$taskFlag $taskLanguage timeout");continue}
-        if($taskProcess.ExitCode -ne 0){$taskFailures.Add("$taskFlag $taskLanguage");Write-Warning "Follow-up failed: $taskFlag $taskLanguage"}else{Write-Output "Follow-up passed: $taskFlag $taskLanguage"}
+        if($taskProcess.ExitCode -ne 0){
+            $taskFailures.Add("$taskFlag $taskLanguage");Write-Warning "Follow-up failed: $taskFlag $taskLanguage"
+            if($taskFlag -eq 'validate-post032') {
+                $taskDetail=Join-Path $taskRoot "artifacts/post032-ui-$taskLanguage-validation.json"
+                if(Test-Path -LiteralPath $taskDetail) {
+                    $taskReport=Get-Content -LiteralPath $taskDetail -Raw | ConvertFrom-Json
+                    if($taskReport.error){Write-Warning $taskReport.error}
+                    $taskReport.checks.PSObject.Properties | Where-Object {-not $_.Value} | ForEach-Object {Write-Warning $_.Name}
+                }
+            }
+        }else{Write-Output "Follow-up passed: $taskFlag $taskLanguage"}
     }
 }
 if(-not $SkipLanguages){
