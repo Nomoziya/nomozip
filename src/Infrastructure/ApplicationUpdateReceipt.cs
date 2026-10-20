@@ -26,7 +26,7 @@ public sealed record ApplicationUpdateReceipt(string FromVersion, string ToVersi
             if (lines.Length == 2) receipt = new(lines[0], lines[1], installationDirectory);
         }
         if (receipt is null && File.Exists(path)) receipt = JsonSerializer.Deserialize<ApplicationUpdateReceipt>(await File.ReadAllTextAsync(path));
-        if (receipt is null || !Version.TryParse(receipt.FromVersion.Split('-')[0], out var from) || !Version.TryParse(receipt.ToVersion, out var target)
+        if (receipt is null || receipt.FromVersion is null || !Version.TryParse(receipt.FromVersion.Split('-')[0], out var from) || !Version.TryParse(receipt.ToVersion, out var target)
             || !Version.TryParse(currentVersion, out var current) || Normalize(current) < Normalize(target)
             || (Normalize(current) <= Normalize(from) && !(receipt.FromVersion.Contains('-') && Normalize(current) == Normalize(target)))
             || !string.Equals(Path.GetFullPath(receipt.InstallationDirectory), Path.GetFullPath(installationDirectory), StringComparison.OrdinalIgnoreCase)) return null;
