@@ -1,12 +1,22 @@
 当前状态入口：[docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)。历史计划按需查询，当前开发见下节。
 
-## 2026-10-20：六项优化实施中
+## 2026-10-20：六项优化实现与CI完成，等待用户体验确认
 
-用户已启动交接任务。源码目录仍为`.tools/privacy-clean-worktree-20261019`，独立分支`codex/post-0.3.2-improvements-20261020`，起点eb4eb07；保留两份未提交交接修改及所有发行/候选。共用主会话与执行者gpt-6.1-sol/high、无委派；本回合宿主turn_context 01a15811-ea20-72d3-8734-c520137faf41（2026-10-20T06:48:51Z）记录model/effort与建议一致，复用项目相同WPF任务的已有组合证据。
+本批独立分支`codex/post-0.3.2-improvements-20261020`，实际源码`.tools/privacy-clean-worktree-20261019`，最终产品/候选589e24b，后续仅文档和原图归档。正式版0.3.2及既有分支/候选保留，未合并或发布。共用主会话/执行者gpt-6.1-sol/high、无委派；本回合turn_context 01a15811-ea20-72d3-8734-c520137faf41（2026-10-20T06:48:51Z）model/effort已核对，压缩恢复复用同回合有效证据。
 
-实施顺序N1/N2/N6→N3基线与针对性优化→N4/N5；交付及验收沿用下表。UI以0.3.2运行资源为准，代表任务包括升级后启动清理、下载停滞/失败重试、筛选后提取隐藏选中项、来源目录优先但保留其它候选。公开独立分支/隔离CI用于此次验收，不合并或发布。完整桌面验证仅CI，x64先、原生ARM64随后。
+| 任务 | 已实现与验收 |
+| --- | --- |
+| N1 自动清理 | 设置可保存关闭，首次成功初始化才消费应用/安装器升级记录；仅专用GUID缓存，保留忙文件/无关下载。x64已有安装37项复用，最终原生ARM64安装/重启清理37项通过。 |
+| N2 下载反馈 | 共享软件/引擎字节、速度、停滞反馈与独立正文期限；取消、截断、篡改、超时、重试验证，完整摘要后才启用；不加入断点续传。软件更新UI两语言各86、官方39/签名29及其UI各47通过。 |
+| N3 性能 | 一万/十万条目前后同本地ViewModel样本；批量集合通知、排序复用与200ms防抖，CI实际WPF采样和列表容器虚拟化通过。搜索/导航改善，预排序增加打开成本；数据和限制见当前摘要/验收页。 |
+| N4 高级筛选 | 扩展名、含小数MiB上下限、文件/目录组合及清除；隐藏选择仍参与提取，导航清筛选。实际引擎提取及中英/主题/800窄窗通过。 |
+| N5 来源目录 | 目录含子目录优先、文件名或目录匹配均可，关联优先、其它候选保留；旧库/加密备份和真实详情保存通过。 |
+| N6 文案/UI | 各计数独立英语单复数，沿用现有系统动画/视觉方向；实际标签、布局、可访问名称、键盘焦点及窄窗检查通过。 |
 
-依据（2026-10-20）：微软HttpCompletionOption文档说明ResponseHeadersRead的HttpClient超时不覆盖正文，沿用独立正文期限；WPF控件性能文档建议虚拟化与容器复用，性能改变先取一万/十万条目基线。PeaZip官方筛选说明仅作为类型/大小组合筛选的交互参考。UI技能查询确认进度反馈和WPF ObservableCollection/虚拟化建议，舍弃移动端触觉反馈等无关结果。来源：https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpcompletionoption 、https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/optimizing-performance-controls 、https://peazip.github.io/how-to-extract-selected-files-from-archive.html 。
+最终成功CI：x64新流程39389922372、原生ARM64产品39391092871、x64引擎补测39391099970，均589e24b。新流程两架构中英各47、核心45、资源37通过；x64未改的产品/按钮/编辑等及安装步骤复用749a6b0/39387237742成功部分，该轮整体失败的新验证已由最终轮次替代。三次失败原记录保留，修正真实WPF异步命令等待，没有降低断言。[当前状态](docs/CURRENT_STATE.md)记录完整有效范围、候选路径、SHA、剩余限制及模型证据，[实际原图验收](design-system/reference-20261017/post032-20261020/index.html)保存68原图/55原报告，UI参数继续以[UI_STYLE_GUIDE](docs/UI_STYLE_GUIDE.md)为唯一入口。代码实现/CI通过不等于用户已接受，下一步仅用户体验反馈；本机没有桌面自动化或安装。
+
+依据沿用本次事前审计（2026-10-20）：微软HttpCompletionOption说明ResponseHeadersRead的HttpClient超时不覆盖正文；WPF性能文档支持虚拟化/容器复用；PeaZip仅作组合筛选交互参考。来源：[HttpCompletionOption](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpcompletionoption)、[WPF controls](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/optimizing-performance-controls)、[PeaZip](https://peazip.github.io/how-to-extract-selected-files-from-archive.html)。UI技能检索结果按WPF场景裁剪，未引入无关移动交互或依赖。
+
 
 ## 下一会话接手：0.3.2 后续六项优化（2026-10-19，尚未实施）
 
@@ -234,7 +244,7 @@ APV2 不由旧正式版读取，降级前需在支持版本中授权关闭主密
 
 2026-10-14 B4 轻量发行维护与 B 阶段当前实施范围收尾完成：`scripts/build-release.ps1` 从项目与实际 EXE 读取版本，默认在独立目录构建，生成轻量安装 EXE/ZIP、源码及 SHA-256 四项资产；`scripts/review_release.py` 可复用精确文件集、CRC、SHA-256、载荷/源码和上传 checkout 一致性检查。版本不一致、随包运行库、私密材料或已有目录会拒绝；源码目标已占用时不会先留下新软件 ZIP。公开安装器默认不再沿用旧固定版本，隔离升级夹具的显式版本仍保留。
 
-源码 `f5bc87495c3a62220463014e980fffecc5defeab` 的 [Windows CI 38509356682](https://github.com/Nomoziya/nomozip/actions/runs/38509356682) 两个作业成功；52 份报告按此前 51 份加维护一份逐项全部通过，新增本地/CI 26 项包含真实 NSIS 编译、复用载荷/默认构建两种命令入口、PE 版本、旧包保留、异常输入和篡改拒绝，以及原启动入口/worker/固定公钥不变。现有轻量安装升级 21 项、独立用户迁移、引擎、桌面、队列/暂停/通知、来源、DPI 与传统菜单报告保持通过；Windows 签名身份原型不参与普通验收。
+源码 `f5bc87495c3a62220463014e980fffecc5defeab` 的 [Windows CI 38509356682](https://github.com/Nomoziya/nomozip/actions/runs/38509356682) 两个作业成功；52 份报告按此前 55 份加维护一份逐项全部通过，新增本地/CI 26 项包含真实 NSIS 编译、复用载荷/默认构建两种命令入口、PE 版本、旧包保留、异常输入和篡改拒绝，以及原启动入口/worker/固定公钥不变。现有轻量安装升级 21 项、独立用户迁移、引擎、桌面、队列/暂停/通知、来源、DPI 与传统菜单报告保持通过；Windows 签名身份原型不参与普通验收。
 
 产品源码、版本与既有第十四候选的四项资产未修改；原资产 SHA-256 与 `artifacts/notification-package-validation.json` 逐项一致。复用载荷仍为 9745096 字节 / 43 文件，无新增用户运行组件；本轮维护演练资产另放 `artifacts/release-maintenance-final/`，包与当前源码及上传 checkout 一致性见 `artifacts/release-maintenance-final-validation.json`，完整 CI 集合见 `artifacts/release-maintenance-ci-review.json`。未发布新正式版或替换用户安装。
 
@@ -242,7 +252,7 @@ APV2 不由旧正式版读取，降级前需在支持版本中授权关闭主密
 
 2026-10-14 B4 / F21 解压成功通知完成：默认关闭，在设置中明确保存；整批全部成功提醒一次，多任务仅显示数量，单项重试成功也可提醒，失败/取消/部分失败不误报。点击返回任务列表，不自动运行包内文件，既有打开结果目录动作独立保留。Windows 自带接口，不增加运行组件或签名依赖。窗口关闭后 WPF 句柄会归零的问题已复现并修复，保留创建时 HWND 完成清理，加入实际关闭回归；不重放 Explorer 重启前的旧提醒。
 
-源码 `21fdca0fbe64767bcc60c58d56b6862efb5aae1b` 的 [Windows CI 38505385610](https://github.com/Nomoziya/nomozip/actions/runs/38505385610) 两个作业成功，51 份报告按既有 50 份加通知一份逐项核对全部通过。新增本地 63 / CI 65 项，包含真实 26.03/26.04 解压、并发汇总、单项重试、失败/取消、旧设置/重启/未来设置保留、真实 WPF/UIA 入口、两种尺寸/高对比度、HWND 点击/键盘/过期/关闭与 Explorer 重建消息处理；CI 另有隔离 Windows Shell 图标登记、清理再登记。可见通知实际投递未测试，不把登记和合成回调当作人工体验。既有队列、暂停、来源、DPI、编码、密码备份/独立用户、压缩、更新、传统菜单、轻量安装和升级报告保持通过；Windows 签名身份原型按用户范围未运行。
+源码 `21fdca0fbe64767bcc60c58d56b6862efb5aae1b` 的 [Windows CI 38505385610](https://github.com/Nomoziya/nomozip/actions/runs/38505385610) 两个作业成功，55 份报告按既有 50 份加通知一份逐项核对全部通过。新增本地 63 / CI 65 项，包含真实 26.03/26.04 解压、并发汇总、单项重试、失败/取消、旧设置/重启/未来设置保留、真实 WPF/UIA 入口、两种尺寸/高对比度、HWND 点击/键盘/过期/关闭与 Explorer 重建消息处理；CI 另有隔离 Windows Shell 图标登记、清理再登记。可见通知实际投递未测试，不把登记和合成回调当作人工体验。既有队列、暂停、来源、DPI、编码、密码备份/独立用户、压缩、更新、传统菜单、轻量安装和升级报告保持通过；Windows 签名身份原型按用户范围未运行。
 
 本地轻量候选 `0.2.0-preview.14` 载荷 9745096 字节 / 43 文件，比上一候选增加 35330 字节；安装器 2277654 字节。官方 26.03/26.04 DLL、worker、公钥和渠道配置逐字节未变，无新增运行组件。四项资产位于 `artifacts/release-0.2.0-preview.14/`，载荷、CI 集合及 CRC/SHA-256/源码一致性和私密材料排除分别见 `artifacts/notification-payload-validation.json`、`artifacts/notification-ci-review.json`、`artifacts/notification-package-validation.json`。源码已上传，未发布新正式版或替换实际安装。
 

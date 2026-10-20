@@ -1,0 +1,122 @@
+{
+  "passed": 29,
+  "total": 29,
+  "checks": [
+    {
+      "name": "initial engine recorded",
+      "passed": true
+    },
+    {
+      "name": "valid package signature and payload",
+      "passed": true
+    },
+    {
+      "name": "new engine installed separately and activated",
+      "passed": true
+    },
+    {
+      "name": "signed module is available without any bundled engine fallback",
+      "passed": true
+    },
+    {
+      "name": "installed signed engine module actually creates valid EXE",
+      "passed": true
+    },
+    {
+      "name": "active selection survives reopen",
+      "passed": true
+    },
+    {
+      "name": "installed engine actually extracts matching data",
+      "passed": true
+    },
+    {
+      "name": "rollback validates and restores previous engine",
+      "passed": true
+    },
+    {
+      "name": "password vault bytes unchanged by upgrade and rollback",
+      "passed": true
+    },
+    {
+      "name": "idempotent verified installation",
+      "passed": true
+    },
+    {
+      "name": "signed invalid SFX hash cannot provide a module",
+      "passed": true
+    },
+    {
+      "name": "signed invalid SFX version cannot provide a module",
+      "passed": true
+    },
+    {
+      "name": "signed invalid SFX encoding cannot provide a module",
+      "passed": true
+    },
+    {
+      "name": "legacy signed package reuses only matching bundled module",
+      "passed": true
+    },
+    {
+      "name": "legacy engine without matching module stays usable but SFX unavailable",
+      "passed": true
+    },
+    {
+      "name": "manifest tampering rejected without switch",
+      "passed": true
+    },
+    {
+      "name": "DLL tampering rejected without switch",
+      "passed": true
+    },
+    {
+      "name": "untrusted signing identity rejected",
+      "passed": true
+    },
+    {
+      "name": "unexpected and traversal entries rejected",
+      "passed": true
+    },
+    {
+      "name": "incompatible signed protocol rejected",
+      "passed": true
+    },
+    {
+      "name": "signed non-PE engine rejected before worker load",
+      "passed": true
+    },
+    {
+      "name": "failed preparations cleaned",
+      "passed": true
+    },
+    {
+      "name": "cancel update preserves active engine",
+      "passed": true
+    },
+    {
+      "name": "tampered installed engine excluded, bundled engine remains usable",
+      "passed": true
+    },
+    {
+      "name": "unknown selection schema preserved",
+      "passed": true
+    },
+    {
+      "name": "repository URL normalized",
+      "passed": true
+    },
+    {
+      "name": "GitHub release selects named stable engine asset",
+      "passed": true
+    },
+    {
+      "name": "GitHub download reaches same signature verification",
+      "passed": true
+    },
+    {
+      "name": "channel without a release has no update",
+      "passed": true
+    }
+  ]
+}

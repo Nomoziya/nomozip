@@ -1,0 +1,131 @@
+{
+  "passed": true,
+  "language": "en",
+  "architecture": "x64",
+  "uiAutomationProviders": true,
+  "actualMouseInput": false,
+  "officialPayloadWithFixtureHttp": true,
+  "realNetworkCoveredBy": "OfficialEngineValidation --integration",
+  "checks": {
+    "default remains nomozip verified source": true,
+    "old engine active before update": true,
+    "source selection uses binding and disables custom repository": true,
+    "enabled CheckEngineUpdatesButton 3": true,
+    "official update offered with version and source": true,
+    "enabled InstallEngineUpdateButton 5": true,
+    "declining confirmation performs no download": true,
+    "enabled InstallEngineUpdateButton 7": true,
+    "invalid download preserves engine and allows retry": true,
+    "failed download leaves no installer": true,
+    "official-failure requested dimensions": true,
+    "enabled InstallEngineUpdateButton 11": true,
+    "official engine activated through install button": true,
+    "successful update removes temporary installer": true,
+    "official-installed requested dimensions": true,
+    "official receipt exists without nomozip signature": true,
+    "updating preserves synthetic vault bytes": true,
+    "updated official engine extracts using saved password": true,
+    "enabled CheckEngineUpdatesButton 18": true,
+    "source and status fit light 1152": true,
+    "compact source width light 1152": true,
+    "official-current-light-1152 requested dimensions": true,
+    "source switch invalidates cached offer light 1152": true,
+    "verified-light-1152 requested dimensions": true,
+    "enabled CheckEngineUpdatesButton 24": true,
+    "source and status fit light 800": true,
+    "compact source width light 800": true,
+    "official-current-light-800 requested dimensions": true,
+    "source switch invalidates cached offer light 800": true,
+    "verified-light-800 requested dimensions": true,
+    "enabled CheckEngineUpdatesButton 30": true,
+    "source and status fit dark 1152": true,
+    "compact source width dark 1152": true,
+    "official-current-dark-1152 requested dimensions": true,
+    "source switch invalidates cached offer dark 1152": true,
+    "verified-dark-1152 requested dimensions": true,
+    "enabled CheckEngineUpdatesButton 36": true,
+    "source and status fit dark 800": true,
+    "compact source width dark 800": true,
+    "official-current-dark-800 requested dimensions": true,
+    "source switch invalidates cached offer dark 800": true,
+    "verified-dark-800 requested dimensions": true,
+    "enabled CheckEngineUpdatesButton 42": true,
+    "current official engine not offered again": true,
+    "official source and active engine persist": true,
+    "rollback remains available after reopen": true,
+    "no plaintext credentials in official receipt": true
+  },
+  "sizes": [
+    {
+      "name": "official-failure",
+      "width": 1044,
+      "height": 768,
+      "clientWidth": 1042,
+      "clientHeight": 766
+    },
+    {
+      "name": "official-installed",
+      "width": 1044,
+      "height": 768,
+      "clientWidth": 1042,
+      "clientHeight": 766
+    },
+    {
+      "name": "official-current-light-1152",
+      "width": 1152,
+      "height": 768,
+      "clientWidth": 1150,
+      "clientHeight": 766
+    },
+    {
+      "name": "verified-light-1152",
+      "width": 1152,
+      "height": 768,
+      "clientWidth": 1150,
+      "clientHeight": 766
+    },
+    {
+      "name": "official-current-light-800",
+      "width": 800,
+      "height": 600,
+      "clientWidth": 798,
+      "clientHeight": 598
+    },
+    {
+      "name": "verified-light-800",
+      "width": 800,
+      "height": 600,
+      "clientWidth": 798,
+      "clientHeight": 598
+    },
+    {
+      "name": "official-current-dark-1152",
+      "width": 1152,
+      "height": 768,
+      "clientWidth": 1150,
+      "clientHeight": 766
+    },
+    {
+      "name": "verified-dark-1152",
+      "width": 1152,
+      "height": 768,
+      "clientWidth": 1150,
+      "clientHeight": 766
+    },
+    {
+      "name": "official-current-dark-800",
+      "width": 800,
+      "height": 600,
+      "clientWidth": 798,
+      "clientHeight": 598
+    },
+    {
+      "name": "verified-dark-800",
+      "width": 800,
+      "height": 600,
+      "clientWidth": 798,
+      "clientHeight": 598
+    }
+  ],
+  "error": null
+}

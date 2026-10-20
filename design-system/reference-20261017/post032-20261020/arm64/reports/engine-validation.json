@@ -1,0 +1,2133 @@
+{
+  "passed": 101,
+  "total": 101,
+  "engineHashes": {
+    "26.04": "eb84a6eb184c378d84742f372e7501d9a99c34a718ea81d4c71cd62b5a207dee",
+    "26.03": "a1f2e41eaf7ad40f5b1aa66a73e7fe327e64e0b7d65638a863c1e3a6fe64e667"
+  },
+  "cases": [
+    {
+      "name": "26.04 capabilities",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "26.04 lists plain.7z",
+      "passed": true,
+      "details": {
+        "format": "7z",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.7z"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 tests plain.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 extracts plain.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 lists plain.zip",
+      "passed": true,
+      "details": {
+        "format": "zip",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.zip"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 tests plain.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 extracts plain.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 lists encrypted.7z",
+      "passed": true,
+      "details": {
+        "format": "7z",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 rejects wrong encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "password_or_corrupt",
+        "failures": [
+          {
+            "code": "password_or_corrupt",
+            "index": 0,
+            "path": "中文示例.txt"
+          }
+        ],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 requests password encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "failures": [],
+        "format": "7z",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 tests encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 lists encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "format": "7z",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-header.7z"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 rejects wrong encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "password_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 requests password encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 tests encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-header.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-header.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 lists encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "format": "zip",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 rejects wrong encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 0,
+            "path": "中文示例.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 requests password encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "failures": [],
+        "format": "zip",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 tests encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 lists encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "format": "zip",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 rejects wrong encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 0,
+            "path": "中文示例.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 requests password encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "failures": [],
+        "format": "zip",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 tests encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts real RAR",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar",
+        "hresult": 0,
+        "itemCount": 5,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar.rar"
+        ],
+        "status": "success",
+        "successfulItems": 5,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 lists real RAR",
+      "passed": true,
+      "details": {
+        "format": "Rar",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 0,
+            "modifiedUtcFileTime": 129535988260000000,
+            "path": "test.txt",
+            "size": 20
+          },
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 1,
+            "modifiedUtcFileTime": 129534071140000000,
+            "path": "testlink",
+            "size": 8
+          },
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 2,
+            "modifiedUtcFileTime": 129535991470000000,
+            "path": "testdir\\test.txt",
+            "size": 20
+          },
+          {
+            "directory": true,
+            "encrypted": false,
+            "index": 3,
+            "modifiedUtcFileTime": 129535991470000000,
+            "path": "testdir",
+            "size": 0
+          },
+          {
+            "directory": true,
+            "encrypted": false,
+            "index": 4,
+            "modifiedUtcFileTime": 129531905390000000,
+            "path": "testemptydir",
+            "size": 0
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar.rar"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 extracts encrypted RAR5",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted_filenames.rar"
+        ],
+        "status": "success",
+        "successfulItems": 4,
+        "verifiedEncryptedItems": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "name": "26.04 lists encrypted RAR5",
+      "passed": true,
+      "details": {
+        "format": "Rar5",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 133556039491789180,
+            "path": "a.txt",
+            "size": 18
+          },
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 1,
+            "modifiedUtcFileTime": 133556039543448946,
+            "path": "b.txt",
+            "size": 18
+          },
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 2,
+            "modifiedUtcFileTime": 133556039682967614,
+            "path": "c.txt",
+            "size": 18
+          },
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 3,
+            "modifiedUtcFileTime": 133556096679396731,
+            "path": "d.txt",
+            "size": 18
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted_filenames.rar"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.04 listing requests header password",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 listing rejects wrong header password",
+      "passed": true,
+      "details": {
+        "code": "password_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 reports mixed-password partial failure",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 3,
+            "path": "d.txt"
+          }
+        ],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "error",
+        "successfulItems": 3,
+        "verifiedEncryptedItems": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.04 partial failures identify actual archive paths",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 3,
+            "path": "d.txt"
+          }
+        ],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "error",
+        "successfulItems": 3,
+        "verifiedEncryptedItems": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.04 combines mixed-password RAR5",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "success",
+        "successfulItems": 4,
+        "verifiedEncryptedItems": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts exact mixed-password RAR5",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "success",
+        "successfulItems": 4,
+        "verifiedEncryptedItems": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "name": "26.04 identifies verified encrypted traditional ZIP item",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 rejects incomplete mixed-password traditional ZIP",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 combines mixed-password traditional ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts exact mixed-password traditional ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.04 identifies verified encrypted AES ZIP item",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 rejects incomplete mixed-password AES ZIP",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.04 combines mixed-password AES ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.04 extracts exact mixed-password AES ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.04 blocks archive traversal",
+      "passed": true,
+      "details": {
+        "code": "unsafe_path",
+        "failures": [],
+        "format": "zip",
+        "hresult": 2147500037,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\traversal.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.04 rejects corrupt archive without success",
+      "passed": true,
+      "details": {
+        "code": "unsupported_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 rejects corrupt listing",
+      "passed": true,
+      "details": {
+        "code": "unsupported_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 reports missing volume",
+      "passed": true,
+      "details": {
+        "code": "missing_volume",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 capabilities",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "26.03 lists plain.7z",
+      "passed": true,
+      "details": {
+        "format": "7z",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.7z"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 tests plain.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 extracts plain.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 lists plain.zip",
+      "passed": true,
+      "details": {
+        "format": "zip",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.zip"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 tests plain.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 extracts plain.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\plain.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 lists encrypted.7z",
+      "passed": true,
+      "details": {
+        "format": "7z",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 rejects wrong encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "password_or_corrupt",
+        "failures": [
+          {
+            "code": "password_or_corrupt",
+            "index": 0,
+            "path": "中文示例.txt"
+          }
+        ],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 requests password encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "failures": [],
+        "format": "7z",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 tests encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts encrypted.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 lists encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "format": "7z",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-header.7z"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 rejects wrong encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "password_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 requests password encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 tests encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-header.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts encrypted-header.7z",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "7z",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-header.7z"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 lists encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "format": "zip",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 rejects wrong encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 0,
+            "path": "中文示例.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 requests password encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "failures": [],
+        "format": "zip",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 tests encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts encrypted-legacy.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-legacy.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 lists encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "format": "zip",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 134369575384162966,
+            "path": "中文示例.txt",
+            "size": 2560
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 rejects wrong encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 0,
+            "path": "中文示例.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 requests password encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "failures": [],
+        "format": "zip",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 tests encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts encrypted-aes-ascii.zip",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\encrypted-aes-ascii.zip"
+        ],
+        "status": "success",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts real RAR",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar",
+        "hresult": 0,
+        "itemCount": 5,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar.rar"
+        ],
+        "status": "success",
+        "successfulItems": 5,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 lists real RAR",
+      "passed": true,
+      "details": {
+        "format": "Rar",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 0,
+            "modifiedUtcFileTime": 129535988260000000,
+            "path": "test.txt",
+            "size": 20
+          },
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 1,
+            "modifiedUtcFileTime": 129534071140000000,
+            "path": "testlink",
+            "size": 8
+          },
+          {
+            "directory": false,
+            "encrypted": false,
+            "index": 2,
+            "modifiedUtcFileTime": 129535991470000000,
+            "path": "testdir\\test.txt",
+            "size": 20
+          },
+          {
+            "directory": true,
+            "encrypted": false,
+            "index": 3,
+            "modifiedUtcFileTime": 129535991470000000,
+            "path": "testdir",
+            "size": 0
+          },
+          {
+            "directory": true,
+            "encrypted": false,
+            "index": 4,
+            "modifiedUtcFileTime": 129531905390000000,
+            "path": "testemptydir",
+            "size": 0
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar.rar"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 extracts encrypted RAR5",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted_filenames.rar"
+        ],
+        "status": "success",
+        "successfulItems": 4,
+        "verifiedEncryptedItems": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "name": "26.03 lists encrypted RAR5",
+      "passed": true,
+      "details": {
+        "format": "Rar5",
+        "items": [
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 0,
+            "modifiedUtcFileTime": 133556039491789180,
+            "path": "a.txt",
+            "size": 18
+          },
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 1,
+            "modifiedUtcFileTime": 133556039543448946,
+            "path": "b.txt",
+            "size": 18
+          },
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 2,
+            "modifiedUtcFileTime": 133556039682967614,
+            "path": "c.txt",
+            "size": 18
+          },
+          {
+            "directory": false,
+            "encrypted": true,
+            "index": 3,
+            "modifiedUtcFileTime": 133556096679396731,
+            "path": "d.txt",
+            "size": 18
+          }
+        ],
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted_filenames.rar"
+        ],
+        "status": "success"
+      }
+    },
+    {
+      "name": "26.03 listing requests header password",
+      "passed": true,
+      "details": {
+        "code": "password_required",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 listing rejects wrong header password",
+      "passed": true,
+      "details": {
+        "code": "password_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 reports mixed-password partial failure",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 3,
+            "path": "d.txt"
+          }
+        ],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "error",
+        "successfulItems": 3,
+        "verifiedEncryptedItems": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.03 partial failures identify actual archive paths",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 3,
+            "path": "d.txt"
+          }
+        ],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "error",
+        "successfulItems": 3,
+        "verifiedEncryptedItems": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.03 combines mixed-password RAR5",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "success",
+        "successfulItems": 4,
+        "verifiedEncryptedItems": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts exact mixed-password RAR5",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "Rar5",
+        "hresult": 0,
+        "itemCount": 4,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\test_read_format_rar5_encrypted.rar"
+        ],
+        "status": "success",
+        "successfulItems": 4,
+        "verifiedEncryptedItems": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "name": "26.03 identifies verified encrypted traditional ZIP item",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 rejects incomplete mixed-password traditional ZIP",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 combines mixed-password traditional ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts exact mixed-password traditional ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-traditional.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.03 identifies verified encrypted AES ZIP item",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 rejects incomplete mixed-password AES ZIP",
+      "passed": true,
+      "details": {
+        "code": "wrong_password",
+        "failures": [
+          {
+            "code": "wrong_password",
+            "index": 1,
+            "path": "第二文件.txt"
+          }
+        ],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "error",
+        "successfulItems": 1,
+        "verifiedEncryptedItems": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "26.03 combines mixed-password AES ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.03 extracts exact mixed-password AES ZIP",
+      "passed": true,
+      "details": {
+        "code": "ok",
+        "failures": [],
+        "format": "zip",
+        "hresult": 0,
+        "itemCount": 2,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\mixed-aes.zip"
+        ],
+        "status": "success",
+        "successfulItems": 2,
+        "verifiedEncryptedItems": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "26.03 blocks archive traversal",
+      "passed": true,
+      "details": {
+        "code": "unsafe_path",
+        "failures": [],
+        "format": "zip",
+        "hresult": 2147500037,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\traversal.zip"
+        ],
+        "status": "error",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "26.03 rejects corrupt archive without success",
+      "passed": true,
+      "details": {
+        "code": "unsupported_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 rejects corrupt listing",
+      "passed": true,
+      "details": {
+        "code": "unsupported_or_corrupt",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.03 reports missing volume",
+      "passed": true,
+      "details": {
+        "code": "missing_volume",
+        "kind": "result",
+        "protocol": 1,
+        "status": "error"
+      }
+    },
+    {
+      "name": "26.04 cooperative cancellation",
+      "passed": true,
+      "details": {
+        "code": "cancelled",
+        "failures": [],
+        "format": "7z",
+        "hresult": 2147500036,
+        "itemCount": 1,
+        "kind": "result",
+        "protocol": 1,
+        "sourcePaths": [
+          "C:\\a\\nomozip\\nomozip\\tests\\fixtures\\generated\\large.7z"
+        ],
+        "status": "cancelled",
+        "successfulItems": 0,
+        "verifiedEncryptedItems": []
+      }
+    },
+    {
+      "name": "C# client pipe round trip",
+      "passed": true,
+      "details": "{\"capabilities\":60,\"tested\":{\"VolumeCount\":0,\"Protocol\":1,\"Kind\":\"result\",\"Status\":\"success\",\"Code\":\"ok\",\"Format\":\"7z\",\"ItemCount\":1,\"SuccessfulItems\":1,\"Items\":[],\"SourcePaths\":[\"C:\\\\a\\\\nomozip\\\\nomozip\\\\tests\\\\fixtures\\\\generated\\\\encrypted-header.7z\"],\"Failures\":[],\"VerifiedEncryptedItems\":[0],\"Formats\":[],\"IsSuccess\":true,\"NeedsPassword\":false},\"extracted\":{\"VolumeCount\":0,\"Protocol\":1,\"Kind\":\"result\",\"Status\":\"success\",\"Code\":\"ok\",\"Format\":\"7z\",\"ItemCount\":1,\"SuccessfulItems\":1,\"Items\":[],\"SourcePaths\":[\"C:\\\\a\\\\nomozip\\\\nomozip\\\\tests\\\\fixtures\\\\generated\\\\encrypted-header.7z\"],\"Failures\":[],\"VerifiedEncryptedItems\":[0],\"Formats\":[],\"IsSuccess\":true,\"NeedsPassword\":false}}\n"
+    },
+    {
+      "name": "C# client cooperative cancellation",
+      "passed": true,
+      "details": "{\"VolumeCount\":0,\"Protocol\":1,\"Kind\":\"result\",\"Status\":\"cancelled\",\"Code\":\"cancelled\",\"Format\":\"\",\"ItemCount\":0,\"SuccessfulItems\":0,\"Items\":[],\"SourcePaths\":[],\"Failures\":[],\"VerifiedEncryptedItems\":[],\"Formats\":[],\"IsSuccess\":false,\"NeedsPassword\":false}\n"
+    }
+  ]
+}

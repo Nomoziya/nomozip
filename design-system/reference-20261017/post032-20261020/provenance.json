@@ -1,0 +1,854 @@
+{
+  "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a",
+  "branch": "codex/post-0.3.2-improvements-20261020",
+  "date": "2026-10-20",
+  "status": "isolated CI passed; user acceptance pending; not merged or released",
+  "files": [
+    {
+      "path": "x64/reports/post032-preview/en/directory-dark-1152.png",
+      "sha256": "e5603e1503b1df6ee6bc1a6fe1c96fec93a708c472c20fc30f542971e907944f",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/directory-dark-800.png",
+      "sha256": "721937c803c0666ad5e23d5e517d27742df31969b942c648f40cf0f04b59fa50",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/directory-light-1152.png",
+      "sha256": "68fdd8c9a9f855fe21a6fd89662b67d762eefd0c1a0635645f6a966428753111",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/directory-light-800.png",
+      "sha256": "4d849850a46f76e36f115e29136c1560a35fe6b67cbd46b40344c9b13d391468",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/download-stalled.png",
+      "sha256": "23da3f018db09aed9b78ffca0012638c2ab3a9a83a10ecfaba53bfa1a59d1758",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/filters-contrast-1152.png",
+      "sha256": "b1a05818b3b054aa311dc918d0d91bfa84c09318da053bae66d6232977efb0cf",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/filters-contrast-800.png",
+      "sha256": "a5168e89f8fec01dd8ec2e367e4a426187c33a07cbc63be3c416b77279ff8e59",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/filters-dark-1152.png",
+      "sha256": "642a4347175f2ef2047a133f606084993e94dfbc79cd2517ddb6db5c0cc460f6",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/filters-dark-800.png",
+      "sha256": "9aa46bc42c4b74a556785374c16f6071b8fa9c1378e64288bee274b14a50305b",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/filters-light-1152.png",
+      "sha256": "b2bce628acf0b7e9269d59dbff214383a87dec7771dc1f6003cc79690a3e1219",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/filters-light-800.png",
+      "sha256": "090b6b7766feed79848e4b9fcb18c3f38f917c360d1376f68f6b1cf5c1cede55",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/large-list-10000.png",
+      "sha256": "ea2b19b16da4c498233050ea53553933b99adf4fed46c8cfd39fac66251eb73e",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/large-list-100000.png",
+      "sha256": "57a4528f12136acc07bcad6604f7220e4275c5c84361c6d9df22a8582e5756c2",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/updates-dark-1152.png",
+      "sha256": "9d3a75dba2f03d0f2d3316137b5b660a1db030825ad0ce06740a3eb29797ef76",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/updates-dark-800.png",
+      "sha256": "dd743f6c2768b6eba7f2c1bc1dc15be548826d4afc6816cad2adbbf109862478",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/updates-light-1152.png",
+      "sha256": "d3fd59088085c3c6fe5db3665a1d78497b1f34d0f267ba46a21aac48c96232b3",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/en/updates-light-800.png",
+      "sha256": "f4a591c695d4af5e8d7a4a56bf16a38b37758ee7fcfdb40c517a946b9d9c9895",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/directory-dark-1152.png",
+      "sha256": "9f3f598b620fed0b2132e7adb6a91214e806d171aad7d309232966ec4051f2af",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/directory-dark-800.png",
+      "sha256": "81dd22ae825fe7c9bd3df1ea0bb482e509d6ba8dc855a62f278ddf935e98ba6e",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/directory-light-1152.png",
+      "sha256": "e863639b352c379ba3c5f7b9e472ae66e9312d23ff431252a2b495d8ce443b1e",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/directory-light-800.png",
+      "sha256": "e4b1745b7b789388f5c7ea1710e32a5d0650c336a4c39cc99627e68859db5d10",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/download-stalled.png",
+      "sha256": "1eb585b767934cc5c1724e99ad2e4b0c5698121c1b69d8015196cdd30bc64a19",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/filters-contrast-1152.png",
+      "sha256": "091d06d3249def8ccbe2a75914affdaade2679bd2a08a62a0f433e372a4cfd54",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/filters-contrast-800.png",
+      "sha256": "7221cf077921175da744573817c602009421744a205cc4d16012683f4cec9ae3",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/filters-dark-1152.png",
+      "sha256": "80e5bef5d491460411055d1817abb0332b6e9fdae1e4f15a676d0c47a3406b6a",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/filters-dark-800.png",
+      "sha256": "cc95459ec21846c6df247e92826e160227c7123538ca606c4dce7e7a76cce135",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/filters-light-1152.png",
+      "sha256": "dbb7b932f20f6d1951ff28b9405cfa09a2a3292e6ca58265e518c6b08bdde2bb",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/filters-light-800.png",
+      "sha256": "ac894620c31f95e94dc6f2388eda99fcfe4a92a865ab63345e7401ba30429138",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/large-list-10000.png",
+      "sha256": "a1816688fcae6accde59ce12477fd9f96cd6c1fc0026b3f4bc5e213ef4d096cd",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/large-list-100000.png",
+      "sha256": "8bb14b05cf9c19bb0c7ed4a4c85fa8fc0fb42ab5a9efc0e53e53470b04e3262e",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/updates-dark-1152.png",
+      "sha256": "cdf7c5536f6dcea592bd8e59c877d60eb4a78e942da9086df47eef2108f5f967",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/updates-dark-800.png",
+      "sha256": "9c4a6eb6da82877741a96cf5b892d16e8b667f3f3e427364d0aefc0c9820b246",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/updates-light-1152.png",
+      "sha256": "2e5916de28bde239f07eb2616bc39456853fd5b8457457566ad08c854713b86b",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-preview/zh-CN/updates-light-800.png",
+      "sha256": "ded528f12b9a752b32d29ab739ec9ca5f6bce7bd0a7339f8c5702f26106d24f4",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/application-update-en-ui-validation.json",
+      "sha256": "488427e95f5aca55a4a1e1e10bcc321a665543e240d0c74c48757508445ba03f",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/application-update-ui-validation.json",
+      "sha256": "158a0af24370422196e7a46d1a5a940502b149b11c77039679c19acd6a755902",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/compression-validation.json",
+      "sha256": "5ef0788a61963eac6007d4cc9783b433c727be56476cb53ce0a1ed1afe89e61e",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/engine-validation.json",
+      "sha256": "d4e83c8c8c7810c137e4ab3b4724c8d4caa27169d34c3e234ed243c87a7207ca",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/localization-validation.json",
+      "sha256": "9acd76ac8123d879692f3b5768ae4d9de404886bfd67fd71a223f47f486bac94",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/master-vault-validation.json",
+      "sha256": "107a5878aa883967432188670916bb8c08cc7589bca479a7fbefd49ee5f1a512",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-core-validation.json",
+      "sha256": "45176ab41e084f595f76f0b11cb2f7bb237efba4e5b618c81ca0393c08da1a6b",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-ui-en-validation.json",
+      "sha256": "efe5c622d1bf948b3b1a28f499d6dd257f6fddfec0c0ec3c57ad7836262edc39",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "d277ca4ab46f4c8abd4689bddf21ac0b8e6acbcba3ced20918712e5f7b42d211",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64/reports/post032-performance.json",
+      "sha256": "ae07eee92008b2bf968322f05de0518233155bf9171e2b6da2a8013e10c4f868",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/directory-dark-1152.png",
+      "sha256": "b810241f2f7ac1789fd8b86c0bced7d74537f513fa1723325f0c2fd35f8bfff2",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/directory-dark-800.png",
+      "sha256": "73346cf7ee8ccd6cd7182203283c967df2c97acf6599921f56a7bce4d7e0eeca",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/directory-light-1152.png",
+      "sha256": "0e11aceeab065abacbd9018f3af61415b212c8d3803aaebc86b63ae8c2181678",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/directory-light-800.png",
+      "sha256": "c99f9752f485271e2d3229dc35ebc061169e8997e269dda525b7bbde52dccc07",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/download-stalled.png",
+      "sha256": "23da3f018db09aed9b78ffca0012638c2ab3a9a83a10ecfaba53bfa1a59d1758",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/filters-contrast-1152.png",
+      "sha256": "a2ce37aa25f5ff12bd39a2c69b439835f4eba0a4fa3c59c97803e5a800390867",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/filters-contrast-800.png",
+      "sha256": "2fc4dfe16267a1729d3e63a79aba226a8dcc529affee35736da535fda3210fa9",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/filters-dark-1152.png",
+      "sha256": "d06b09df52df24278f63649d80976a69e1d7d043fafbacc6d4328f1eba474355",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/filters-dark-800.png",
+      "sha256": "b5ca0ac4703080f274296dd17fa5449cc46b2a4503792fcc0ad759da31a28444",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/filters-light-1152.png",
+      "sha256": "8e550f4f6e0e63b74af94c1d7547221d9d7899955f99114c54d49d448855016b",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/filters-light-800.png",
+      "sha256": "7db580707e654457fcaa8b3e693653ec92dc1d137578c950e4ac5609fdfeaad1",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/large-list-10000.png",
+      "sha256": "a47784d40b88e4bb83e954367568f2d5bc8f185e8590e9bdb95c50086fbbeb07",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/large-list-100000.png",
+      "sha256": "29dcf1ef9586eadafa97ce85edc2d9fe9c7882a07c6113bc88ab74f00018cdbe",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/updates-dark-1152.png",
+      "sha256": "dc0d0b136d2782e72cc98dbc3dc06bbf217a7039bc838f91cf2673f47e1d8f09",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/updates-dark-800.png",
+      "sha256": "87736bca54273a527522ad722e51ca9f178f621838167eaf49f127713fef432c",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/updates-light-1152.png",
+      "sha256": "3b70289ccedfa2be3e6968262186e8712d14874b2be0a07212cbbd3e9251bc54",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/en/updates-light-800.png",
+      "sha256": "bc3681d641155964241b56aca4411e61ec03c69cae6077156db53de253e3b79b",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/directory-dark-1152.png",
+      "sha256": "f92018beb57cd7b9790811f2a3b8d75faef19a40ade02ee4a325eb06b80d97f8",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/directory-dark-800.png",
+      "sha256": "ddcf81cb97d7db067611310bc6095d6bfcbbb80af43583b2c174b10108b49b6e",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/directory-light-1152.png",
+      "sha256": "bf2f3b738262491661e1b09a93b6d7232733857b7d56a492a7243686433c43b7",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/directory-light-800.png",
+      "sha256": "9cb58d78d1cf7852c13fc5aa40e8616529b61eb8c99e3e029bf73067357923e9",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/download-stalled.png",
+      "sha256": "9d0f9c0ce4df6ac7a7ba774696379c64832252078c29c4ff5a099ae7eac0243a",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/filters-contrast-1152.png",
+      "sha256": "ef61685851017e2a33d321cb6f51ac4731c5ac30d3ca9023c9eedd5ae1867505",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/filters-contrast-800.png",
+      "sha256": "33474383b3b09e4b8bf27f7c942606b41895ddecf3c41f462b9809eb384eb0ad",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/filters-dark-1152.png",
+      "sha256": "f2d8d0b9c4328c60d14530f5841ed354ea944e12b6e7868d433f8a05ec37cc92",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/filters-dark-800.png",
+      "sha256": "3e3cc2e62852af333b4dab5c531c8829a603df658da22adb91b0949214dfe644",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/filters-light-1152.png",
+      "sha256": "2dfb22b8b650c2b69d4a5c1be131fdbec84df0c7ab3e96a51a74f502777e1b8e",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/filters-light-800.png",
+      "sha256": "e1931a17c2e5739098e4a2e5a870e5b767badfba2e14021c6095c1a76025b1a8",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/large-list-10000.png",
+      "sha256": "c3617263627db5821e09e8e8ebe303b39cc37dee4a446793108c4963069aea0b",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/large-list-100000.png",
+      "sha256": "e843e23bbc4794aeade3511c06c91b41529d04e116220e1626ea2bffb9b02e4d",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/updates-dark-1152.png",
+      "sha256": "9ebee4fb091193285e5cfd2d5346509de97a0668d0632dc8ec5ad6c3ac05982c",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/updates-dark-800.png",
+      "sha256": "cc3f4bdd435f8448be441ae4aabc2bf27ab2b91d39c5eb79fd53257d4582868c",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/updates-light-1152.png",
+      "sha256": "f5ac306b532389503c21974e9230c12fd845900f6e89e8068d574bf8cd0258d7",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-preview/zh-CN/updates-light-800.png",
+      "sha256": "d6f513ab7849d97a11d7f3959a47750c5d2b5aeec03a92a9d739deedb8a2e4fc",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/application-update-en-ui-validation.json",
+      "sha256": "488427e95f5aca55a4a1e1e10bcc321a665543e240d0c74c48757508445ba03f",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/application-update-ui-validation.json",
+      "sha256": "158a0af24370422196e7a46d1a5a940502b149b11c77039679c19acd6a755902",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/compression-validation.json",
+      "sha256": "18b3727552cdec01f94465bb30227352bc8138e3464ce79bd73f34a8d7e6d783",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/desktop-password-organization-validation.json",
+      "sha256": "99ad7c36f2972ce5a8f45d830ddb1439e46599c4a9ee0dd5c83125999dc8ca09",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/engine-validation.json",
+      "sha256": "40a88c2e3619fb9769ec472558d980def99c5dd4a2e964a837b961e1ea2b324c",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/localization-validation.json",
+      "sha256": "9acd76ac8123d879692f3b5768ae4d9de404886bfd67fd71a223f47f486bac94",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/master-vault-validation.json",
+      "sha256": "835c562ed5433800651b1a4c58e793191c74afd8e2410bf33ae578cbf6ff4624",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/official-engine-ui-en-validation.json",
+      "sha256": "97d0e80a2e6be0ec6aa5a720fc8696230fe52d9a0141605a01e398e0f14f095b",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/official-engine-ui-zh-CN-validation.json",
+      "sha256": "b54916f9ce8f26d9bd98c659c4de800ba3ceeb03de3c9c494171a30e1ead12ee",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/official-engine-validation.json",
+      "sha256": "fba62fdcefde0c2c08ad6ea6d13f0634c36df9397aa0f6a94d58a2d66f21d56a",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-core-validation.json",
+      "sha256": "45176ab41e084f595f76f0b11cb2f7bb237efba4e5b618c81ca0393c08da1a6b",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-ui-en-validation.json",
+      "sha256": "077b566871fdc8a255bc9de8deaaec8fcd44420db3ecf149dd1344d785dddf66",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "0f783b029784c52482252d886f96774ddf884f97f3afd9d586348358c83eeadc",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/preview-ui-validation.json",
+      "sha256": "a37b8dd342b51a7228a7c851fd83a7503c43c682ac338725aad0f9f71c79074f",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/selection-ui-validation.json",
+      "sha256": "73d6cc302fefae3026abd44ddaea07e74a1a88e917f9733731b51b418fd170b7",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/update-validation.json",
+      "sha256": "50fd0b9cf02fbeb68c838cc07c2902b8c5d64c968fbf943fc3cea9b92fabb449",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/reports/post032-performance.json",
+      "sha256": "173fadbe302f4f8b5fb5b2d1edd1aed62010dbc93c5d86083a772b07e8976ee4",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "arm64/installer/light-installer-validation.json",
+      "sha256": "257a61c7191770888f42121001732501e1c8e3849648571977eec91879b1fdcb",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "performance-before.json",
+      "sha256": "9b7d27c31c56c5626e43bc69aee80efa96b17e66b7bda9b514a964f954209bab",
+      "source": "same local ViewModel/WPF collection view, no desktop window/input"
+    },
+    {
+      "path": "performance-after.json",
+      "sha256": "61ccb80841994af86089f7132a37cdcec9f2a8e184d8e3eadf42891923ee63a2",
+      "source": "same local ViewModel/WPF collection view, no desktop window/input"
+    },
+    {
+      "path": "x64-engine/reports/official-engine-validation.json",
+      "sha256": "6711876a27614ba86e672bdadb53c9418215c993afd339184cd0bbc7a381e3b9",
+      "run": 39391099970,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64-engine/reports/official-engine-ui-en-validation.json",
+      "sha256": "a96b7ab0bb5fbfef1a17f944689fcd5ad59eb9fde96fc1ed4fb138d6fb7a4e89",
+      "run": 39391099970,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64-engine/reports/official-engine-ui-zh-CN-validation.json",
+      "sha256": "a013bb98b1532e60648e3db22abdd13c2f10f6e7d85a8c2a3beccaf43cd7ab32",
+      "run": 39391099970,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    },
+    {
+      "path": "x64-engine/reports/update-validation.json",
+      "sha256": "50fd0b9cf02fbeb68c838cc07c2902b8c5d64c968fbf943fc3cea9b92fabb449",
+      "run": 39391099970,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a"
+    }
+  ],
+  "candidates": [
+    {
+      "architecture": "x64",
+      "run": 39389922372,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a",
+      "zip": "artifacts/post032-589e24b-x64/candidate/nomozip-ui-redesign-x64.zip",
+      "sha256": "812e05a49131c5855ca1932a9ebf23dea1487d69267ab50c18682d7032b676b5",
+      "bytes": 4793835,
+      "checks": {
+        "crc": true,
+        "fileCount": 40,
+        "machines": {
+          "ArchivePassword.exe": "0x8664",
+          "nomozip-cli.exe": "0x8664",
+          "ArchiveEngineWorker.exe": "0x8664",
+          "engines/26.03/7z.dll": "0x8664",
+          "engines/26.03/7z.exe": "0x8664",
+          "engines/26.04/7z.dll": "0x8664",
+          "engines/26.04/7z.exe": "0x8664"
+        },
+        "sharedRuntime": true,
+        "framework": [
+          {
+            "name": "Microsoft.NETCore.App",
+            "version": "10.0.0"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App",
+            "version": "10.0.0"
+          }
+        ]
+      },
+      "launchedLocally": false
+    },
+    {
+      "architecture": "arm64",
+      "run": 39391092871,
+      "sourceCommit": "589e24b6377583d820b7007ed692f06a7ad7016a",
+      "zip": "artifacts/post032-589e24b-arm64/candidate/nomozip-ui-redesign-arm64.zip",
+      "sha256": "44982dcad964662f90194114c27ef2131b2b70f9643609db9aef98a2e47d4d20",
+      "bytes": 3980814,
+      "checks": {
+        "crc": true,
+        "fileCount": 40,
+        "machines": {
+          "ArchivePassword.exe": "0xaa64",
+          "nomozip-cli.exe": "0xaa64",
+          "ArchiveEngineWorker.exe": "0xaa64",
+          "engines/26.03/7z.dll": "0xaa64",
+          "engines/26.03/7z.exe": "0xaa64",
+          "engines/26.04/7z.dll": "0xaa64",
+          "engines/26.04/7z.exe": "0xaa64"
+        },
+        "sharedRuntime": true,
+        "framework": [
+          {
+            "name": "Microsoft.NETCore.App",
+            "version": "10.0.0"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App",
+            "version": "10.0.0"
+          }
+        ]
+      },
+      "launchedLocally": false
+    }
+  ],
+  "runs": {
+    "x64": 39389922372,
+    "arm64": 39391092871,
+    "x64Engine": 39391099970
+  },
+  "reusedEvidence": [
+    {
+      "run": 39387237742,
+      "source": "749a6b0",
+      "overall": "failure",
+      "validScope": "x64 existing bilingual product/button/selection/preview/editing/password organization and installer steps passed; failed new harness superseded by 39389922372"
+    }
+  ],
+  "limitations": [
+    "ARM64 button states explicitly rendered by WPF; not physical mouse acceptance",
+    "Physical mixed DPI, multiple monitors, real OS high contrast switching and interactive screen reader not independently tested",
+    "Performance samples are single runs; local before/after is ViewModel only; CI UI timings are final-only and cannot prove before/after speedup"
+  ]
+}

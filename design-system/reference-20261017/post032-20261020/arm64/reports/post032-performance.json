@@ -1,0 +1,31 @@
+{
+  "runtime": "10.0.12",
+  "architecture": "Arm64",
+  "environment": "ViewModel and WPF collection view only; no desktop window or input",
+  "samples": [
+    {
+      "count": 10000,
+      "openMs": 121.4788,
+      "searchMs": 13.5952,
+      "sortMs": 50.1557,
+      "narrowSearchMs": 4.1476,
+      "navigateMs": 8.4071,
+      "retainedBytes": 3646360,
+      "peakWorkingSet": 59998208,
+      "maxSynchronousMs": 121.4788,
+      "visible": 100
+    },
+    {
+      "count": 100000,
+      "openMs": 298.1548,
+      "searchMs": 39.4339,
+      "sortMs": 456.379,
+      "narrowSearchMs": 12.1856,
+      "navigateMs": 40.1541,
+      "retainedBytes": 31387432,
+      "peakWorkingSet": 116486144,
+      "maxSynchronousMs": 456.379,
+      "visible": 1000
+    }
+  ]
+}

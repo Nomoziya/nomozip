@@ -1,0 +1,156 @@
+{
+  "passed": true,
+  "error": null,
+  "checks": {
+    "auto cleanup switch persists after restart": true,
+    "disabled startup cleanup keeps installer": true,
+    "completed initialization consumes upgrade and clears old installer": true,
+    "auto cleanup renders its label light 1152": true,
+    "auto cleanup control fits light 1152": true,
+    "auto cleanup has keyboard and accessible name light 1152": true,
+    "directory rule reachable light 1152": true,
+    "auto cleanup renders its label light 800": true,
+    "auto cleanup control fits light 800": true,
+    "auto cleanup has keyboard and accessible name light 800": true,
+    "directory rule reachable light 800": true,
+    "auto cleanup renders its label dark 1152": true,
+    "auto cleanup control fits dark 1152": true,
+    "auto cleanup has keyboard and accessible name dark 1152": true,
+    "directory rule reachable dark 1152": true,
+    "auto cleanup renders its label dark 800": true,
+    "auto cleanup control fits dark 800": true,
+    "auto cleanup has keyboard and accessible name dark 800": true,
+    "directory rule reachable dark 800": true,
+    "invalid directory is visible and not persisted": true,
+    "actual detail save persists source rule": true,
+    "real archive inventory available": true,
+    "filter textbox uses real binding": true,
+    "hidden checked entry retained with accurate count": true,
+    "actual hidden selection engine result ok": true,
+    "filtered selection extracts actual hidden entry only": true,
+    "invalid range reports error and hides results": true,
+    "clear resets all filters preserving checks": true,
+    "folders only includes virtual folders": true,
+    "folder navigation clears global filters": true,
+    "collection reset preserves user sorting": true,
+    "filter controls fit light 1152": true,
+    "filter focus and name light 1152": true,
+    "filter controls fit light 800": true,
+    "filter focus and name light 800": true,
+    "filter controls fit dark 1152": true,
+    "filter focus and name dark 1152": true,
+    "filter controls fit dark 800": true,
+    "filter focus and name dark 800": true,
+    "filter controls fit contrast 1152": true,
+    "filter focus and name contrast 1152": true,
+    "filter controls fit contrast 800": true,
+    "filter focus and name contrast 800": true,
+    "large inventory bound search completes 10000": true,
+    "large list realizes a bounded number of rows 10000": true,
+    "large inventory bound search completes 100000": true,
+    "large list realizes a bounded number of rows 100000": true
+  },
+  "captures": [
+    {
+      "name": "updates-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "directory-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "updates-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "directory-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "updates-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "directory-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "updates-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "directory-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "large-list-10000",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "large-list-100000",
+      "width": 1152,
+      "height": 768
+    }
+  ],
+  "performance": [
+    {
+      "count": 10000,
+      "openMs": 294.8096,
+      "searchMs": 190.6822,
+      "sortMs": 157.7827,
+      "maxDispatcherGapMs": 253.9522,
+      "peakWorkingSet": 212418560
+    },
+    {
+      "count": 100000,
+      "openMs": 574.5791,
+      "searchMs": 408.6975,
+      "sortMs": 663.8727,
+      "maxDispatcherGapMs": 666.9252,
+      "peakWorkingSet": 265392128
+    }
+  ],
+  "language": "zh-CN",
+  "syntheticData": true,
+  "actualInstallationChanged": false
+}

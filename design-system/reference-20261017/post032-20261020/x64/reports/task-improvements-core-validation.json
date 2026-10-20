@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "checks": {
+    "local pause leaves sibling and queue running": true,
+    "resuming local cannot bypass queue pause": true,
+    "both pause sources release after their resumes": true,
+    "resuming queue retains local pause": true,
+    "cancel wakes paused task": true,
+    "single cancel allows sibling and queued task to finish": true,
+    "new snapshot covers exact records": true,
+    "successful use does not create edit reminder": true,
+    "unchanged save retains content identity": true,
+    "secret edit requires new backup": true,
+    "metadata edit changes content identity": true,
+    "backup state respects master lock": true,
+    "master protection preserves content identity": true,
+    "deletion requires new backup": true,
+    "old vault reads without rewrite": true,
+    "old vault content identity survives restart": true,
+    "old vault edit creates content identity": true,
+    "added count reflects new records only": true,
+    "history does not expose secret or content identity": true,
+    "encrypted history survives restart": true,
+    "damaged history rejected": true,
+    "cache counts only generated direct files": true,
+    "cleanup reports actual files and bytes": true,
+    "prepared and busy installers retained": true,
+    "unrelated files and nested files preserved": true,
+    "unlocked stale installer becomes removable": true,
+    "missing cache is harmless": true
+  },
+  "error": null
+}

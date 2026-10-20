@@ -1,0 +1,86 @@
+{
+  "x64/zh-CN": {
+    "checks": 47,
+    "performance": [
+      {
+        "count": 10000,
+        "openMs": 294.8096,
+        "searchMs": 190.6822,
+        "sortMs": 157.7827,
+        "maxDispatcherGapMs": 253.9522,
+        "peakWorkingSet": 212418560
+      },
+      {
+        "count": 100000,
+        "openMs": 574.5791,
+        "searchMs": 408.6975,
+        "sortMs": 663.8727,
+        "maxDispatcherGapMs": 666.9252,
+        "peakWorkingSet": 265392128
+      }
+    ]
+  },
+  "x64/en": {
+    "checks": 47,
+    "performance": [
+      {
+        "count": 10000,
+        "openMs": 260.9756,
+        "searchMs": 171.771,
+        "sortMs": 174.1373,
+        "maxDispatcherGapMs": 237.2543,
+        "peakWorkingSet": 199540736
+      },
+      {
+        "count": 100000,
+        "openMs": 590.9617,
+        "searchMs": 231.7217,
+        "sortMs": 682.1516,
+        "maxDispatcherGapMs": 686.2553,
+        "peakWorkingSet": 263888896
+      }
+    ]
+  },
+  "arm64/zh-CN": {
+    "checks": 47,
+    "performance": [
+      {
+        "count": 10000,
+        "openMs": 229.6737,
+        "searchMs": 155.5995,
+        "sortMs": 160.0889,
+        "maxDispatcherGapMs": 218.1062,
+        "peakWorkingSet": 208580608
+      },
+      {
+        "count": 100000,
+        "openMs": 507.8125,
+        "searchMs": 293.3028,
+        "sortMs": 597.2595,
+        "maxDispatcherGapMs": 600.0647,
+        "peakWorkingSet": 270168064
+      }
+    ]
+  },
+  "arm64/en": {
+    "checks": 47,
+    "performance": [
+      {
+        "count": 10000,
+        "openMs": 234.4118,
+        "searchMs": 130.1348,
+        "sortMs": 155.7484,
+        "maxDispatcherGapMs": 216.0729,
+        "peakWorkingSet": 205160448
+      },
+      {
+        "count": 100000,
+        "openMs": 491.4785,
+        "searchMs": 134.1152,
+        "sortMs": 612.1519,
+        "maxDispatcherGapMs": 614.6467,
+        "peakWorkingSet": 267481088
+      }
+    ]
+  }
+}

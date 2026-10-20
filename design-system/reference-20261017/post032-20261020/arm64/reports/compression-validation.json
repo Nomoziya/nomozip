@@ -1,0 +1,162 @@
+{
+  "passed": 38,
+  "total": 38,
+  "cases": [
+    {
+      "name": "26.04 level 0 official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.04 level 9 official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.04 7z False created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.04 7z False official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.04 7z True created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.04 7z True official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.04 7z wrong password rejected",
+      "passed": true
+    },
+    {
+      "name": "26.04 hidden 7z filenames require password",
+      "passed": true
+    },
+    {
+      "name": "26.04 zip False created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.04 zip False official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.04 zip True created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.04 zip True official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.04 zip wrong password rejected",
+      "passed": true
+    },
+    {
+      "name": "26.04 existing output requires confirmation",
+      "passed": true
+    },
+    {
+      "name": "26.04 confirmed replacement produces valid archive",
+      "passed": true
+    },
+    {
+      "name": "26.04 different roots with same archive path rejected",
+      "passed": true
+    },
+    {
+      "name": "26.04 unsupported ZIP Unicode password rejected before writing",
+      "passed": true
+    },
+    {
+      "name": "26.04 cancel removes partial output",
+      "passed": true
+    },
+    {
+      "name": "26.04 failed replacement keeps existing valid archive",
+      "passed": true
+    },
+    {
+      "name": "26.03 level 0 official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.03 level 9 official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.03 7z False created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.03 7z False official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.03 7z True created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.03 7z True official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.03 7z wrong password rejected",
+      "passed": true
+    },
+    {
+      "name": "26.03 hidden 7z filenames require password",
+      "passed": true
+    },
+    {
+      "name": "26.03 zip False created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.03 zip False official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.03 zip True created and validated",
+      "passed": true
+    },
+    {
+      "name": "26.03 zip True official CLI exact contents",
+      "passed": true
+    },
+    {
+      "name": "26.03 zip wrong password rejected",
+      "passed": true
+    },
+    {
+      "name": "26.03 existing output requires confirmation",
+      "passed": true
+    },
+    {
+      "name": "26.03 confirmed replacement produces valid archive",
+      "passed": true
+    },
+    {
+      "name": "26.03 different roots with same archive path rejected",
+      "passed": true
+    },
+    {
+      "name": "26.03 unsupported ZIP Unicode password rejected before writing",
+      "passed": true
+    },
+    {
+      "name": "26.03 cancel removes partial output",
+      "passed": true
+    },
+    {
+      "name": "26.03 failed replacement keeps existing valid archive",
+      "passed": true
+    }
+  ],
+  "engineHashes": {
+    "26.04": "eb84a6eb184c378d84742f372e7501d9a99c34a718ea81d4c71cd62b5a207dee",
+    "26.03": "a1f2e41eaf7ad40f5b1aa66a73e7fe327e64e0b7d65638a863c1e3a6fe64e667"
+  }
+}
