@@ -136,7 +136,7 @@
                 <Label Content="{loc:Text Redesign.ArchiveName}" Target="{Binding ElementName=ArchiveNameBox}" Padding="0" VerticalAlignment="Center"/>
                 <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionOutputName}" IsEnabled="{Binding IsIdle}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
               </Grid>
-              <Expander Header="{loc:Text Compression.Profiles}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
+              <Expander x:Name="CompressionProfilesExpander" Header="{loc:Text Compression.Profiles}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
                 <StackPanel Margin="0,8,0,0">
                   <Label Content="{loc:Text Compression.ChooseProfile}" Target="{Binding ElementName=CompressionProfileBox}" Padding="0,0,0,4"/>
                   <ComboBox x:Name="CompressionProfileBox" ItemsSource="{Binding CompressionProfiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCompressionProfile}" AutomationProperties.Name="{loc:Text Compression.ChooseProfile}" Margin="0,0,0,8"/>

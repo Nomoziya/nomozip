@@ -29,8 +29,9 @@ internal static class DesktopUsabilityValidation
         var vault=new DpapiPasswordVault(Path.Combine(data,"synthetic.apv"));
         var model=new MainViewModel(baseDirectory,data,vault,new WindowDialogs(window));await model.InitializeAsync();window.DataContext=model;
         model.Page=3;
+        await Layout();
         var view=(CompressionView)window.FindName("CompressionPage");
-        var profileExpander=Descendants(view).OfType<Expander>().Single(item=>Equals(item.Header,UiText.Get("Compression.Profiles")));
+        var profileExpander=view.CompressionProfilesExpander;
         profileExpander.IsExpanded=true;
         var first=Path.Combine(data,"first.txt");var second=Path.Combine(data,"second.txt");
         await File.WriteAllTextAsync(first,"first source");await File.WriteAllTextAsync(second,"second source");model.AddCompressionSources([first,second]);
@@ -83,8 +84,16 @@ internal static class DesktopUsabilityValidation
         {
             theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");window.MinWidth=width;window.Width=width;window.Height=width==800?600:768;
             model.Page=0;model.TaskFilterIndex=4;await Layout();
-            var filters=Descendants(window).OfType<ListBox>().Single(list=>ReferenceEquals(list.ItemsSource,model.TaskFilterBadges));
-            check($"six task filters reachable {mode} {width}",filters.Items.Count==6 && Fits(filters) && Descendants(filters).OfType<ListBoxItem>().All(Fits));
+            if(model.IsNarrow)
+            {
+                var filters=window.CompactTaskFilter;
+                ((IExpandCollapseProvider)UIElementAutomationPeer.CreatePeerForElement(filters)!.GetPattern(PatternInterface.ExpandCollapse)).Expand();await Layout();
+                var failedItem=(ComboBoxItem)filters.ItemContainerGenerator.ContainerFromIndex(4);
+                ((ISelectionItemProvider)UIElementAutomationPeer.CreatePeerForElement(failedItem)!.GetPattern(PatternInterface.SelectionItem)).Select();
+                filters.IsDropDownOpen=false;await Layout();
+                check($"six task filters reachable {mode} {width}",filters.Items.Count==6 && Fits(filters) && model.TaskFilterIndex==4);
+            }
+            else check($"six task filters reachable {mode} {width}",window.TaskFilterTabs.Items.Count==6 && Fits(window.TaskFilterTabs) && Descendants(window.TaskFilterTabs).OfType<ListBoxItem>().All(Fits));
             capture(window,$"usability-tasks-{mode}-{width}");
             model.Page=3;await Layout();
             view.CompressionProfileNameBox.BringIntoView();await Layout();

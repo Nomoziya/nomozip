@@ -240,7 +240,16 @@
                 </ContextMenu>
               </Button.ContextMenu>
 
-            </Button></WrapPanel><ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"><ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel></ListBox></DockPanel></Border>
+            </Button></WrapPanel><Grid>
+  <ListBox x:Name="TaskFilterTabs" ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}">
+    <ListBox.Style><Style TargetType="ListBox" BasedOn="{StaticResource PillTabs}"><Style.Triggers><DataTrigger Binding="{Binding IsNarrow}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></ListBox.Style>
+    <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
+  </ListBox>
+  <ComboBox x:Name="CompactTaskFilter" ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" MinWidth="170" HorizontalAlignment="Left" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}">
+    <ComboBox.Style><Style TargetType="ComboBox" BasedOn="{StaticResource CompactOptionField}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsNarrow}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ComboBox.Style>
+    <ComboBox.ItemTemplate><DataTemplate><StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Label}"/><TextBlock Text="{Binding Count}" Margin="8,0,0,0"/></StackPanel></DataTemplate></ComboBox.ItemTemplate>
+  </ComboBox>
+</Grid></DockPanel></Border>
         <ScrollViewer Grid.Row="2" x:Name="ExtractionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0">
           <Grid x:Name="ExtractionLayout">
             <Grid.ColumnDefinitions>
