@@ -5,7 +5,7 @@
 用户本轮授权：北京时间 **2026-10-22 04:10开始、06:40暂停**，陆续完成下述五项和UI改进，全部由代理验收；完成后继续搜索并实施有价值的新功能、性能或可复现bug改进。用户期间可能休息，不能依赖解锁1Password。本计划只覆盖本次窗口，不恢复旧自动任务，不自动合并、发布或改变更新渠道。
 
 - **执行设置与位置**：主会话/执行者沿用gpt-6.1-sol / high、无委派，复用本项目已验收WPF/双架构实施证据；本回合turn_context 01a15f8b-9784-7dc2-bfc9-36558dde89b8（2026-10-21T17:39:06.340Z）已核对两字段。定时新回合须按技能核对，不能沿用本回合为其设置证明。持续使用project-stage-planner、ui-design-engineering、ui-ux-pro-max。实际Git源码 **D:/Codex/7zip-password/.tools/privacy-clean-worktree-20261019**；产品基线f082c9d，准备时HEAD86cda22、工作区干净。首次实施检查新改动，从既有开发分支另建 **codex/overnight-usability-20261022**，保留原分支、正式main和所有旧候选。
-- **本地认证已验证**：原Windows CurrentUser DPAPI文件可解密；GitHub认证与预期账号、仓库push权限及Actions工作流读取通过，未调用1Password。本地辅助入口 **D:/Codex/7zip-password/.tools/gh-config/Invoke-GitHubLocal.ps1** 支持 `-Tool gh/git -ToolArguments @(...)`；真实gh API与git ls-remote均通过。仅进程环境临时使用凭证，finally恢复环境/清理字节，不复制或输出明文，不上传该本地辅助目录；不改变1Password或原加密凭证。沿用开发分支推送和隔离CI范围；凭证未来若撤销或失效则记录并继续本地独立工作，不等待用户解锁。
+- **本地认证已验证**：原Windows CurrentUser DPAPI文件可解密；GitHub认证与预期账号、仓库push权限及Actions工作流读取通过，未调用1Password。本地辅助入口 **D:/Codex/7zip-password/.tools/gh-config/Invoke-GitHubLocal.ps1** 支持 `-Tool gh/git -ToolArguments @(...)`；真实gh API、git ls-remote与开发分支实际推送均通过。Git凭证辅助程序在workspace沙盒遭MSYS子进程拒绝时，使用工具 `require_escalated` 的普通用户进程已成功，不是凭证失效；提交身份可由仓库最近提交元数据读取后以命令级 `git -c user.name=... -c user.email=...` 复用，不改全局Git设置。仅进程环境临时使用凭证，finally恢复环境/清理字节，不复制或输出明文，不上传该本地辅助目录；不改变1Password或原加密凭证。沿用开发分支推送和隔离CI范围；凭证未来若撤销或失效则记录并继续本地独立工作，不等待用户解锁。
 - **一次性调度**：当前聊天heartbeat **nomozip-10-22**，本日04:10首次，窗口内间隔唤醒延续状态，最后06:40；另有 **nomozip-10-22-06-40** 单次截止指令。每次先检查日期/时间，窗口外不补跑；06:30停止新增功能，06:40保存并暂停两项本次自动任务。主机须保持唤醒、联网且应用运行；调度延迟时不得借机延长开发。
 
 | 顺序 | 交付范围及界面方向 | 本项验收 |
