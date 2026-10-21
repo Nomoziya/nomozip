@@ -1,0 +1,2 @@
+# Preserve original CI report bytes and the SHA256 recorded in provenance.json.
+*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
