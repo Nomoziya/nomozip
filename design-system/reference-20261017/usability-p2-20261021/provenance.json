@@ -1,0 +1,2330 @@
+{
+  "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+  "status": "Isolated CI passed; candidate pending user experience acceptance; not merged or released.",
+  "finalRuns": {
+    "x64": {
+      "run": 39597672009,
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39597672009",
+      "conclusion": "success",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591"
+    },
+    "arm64": {
+      "run": 39597753718,
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39597753718",
+      "conclusion": "success",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591"
+    }
+  },
+  "checks": {
+    "flows/x64/reports/accessibility-validation.json": {
+      "passed": true,
+      "checks": 45
+    },
+    "flows/x64/reports/application-update-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "flows/x64/reports/compression-validation.json": {
+      "passed": 38,
+      "checks": 38
+    },
+    "flows/x64/reports/desktop-browser-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "flows/x64/reports/desktop-failure-validation.json": {
+      "passed": true,
+      "checks": 10
+    },
+    "flows/x64/reports/desktop-multi-password-validation.json": {
+      "passed": true,
+      "checks": 14
+    },
+    "flows/x64/reports/desktop-validation.json": {
+      "passed": true,
+      "checks": 0
+    },
+    "flows/x64/reports/display-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "flows/x64/reports/encoding-validation.json": {
+      "passed": 75,
+      "checks": 75
+    },
+    "flows/x64/reports/engine-validation.json": {
+      "passed": 101,
+      "checks": 101
+    },
+    "flows/x64/reports/localization-validation.json": {
+      "passed": true,
+      "checks": 37
+    },
+    "flows/x64/reports/master-vault-validation.json": {
+      "passed": true,
+      "checks": 36
+    },
+    "flows/x64/reports/password-organization-validation.json": {
+      "passed": true,
+      "checks": 30
+    },
+    "flows/x64/reports/post032-core-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "flows/x64/reports/post032-ui-en-validation.json": {
+      "passed": true,
+      "checks": 128
+    },
+    "flows/x64/reports/post032-ui-zh-CN-validation.json": {
+      "passed": true,
+      "checks": 128
+    },
+    "flows/x64/reports/task-improvements-core-validation.json": {
+      "passed": true,
+      "checks": 27
+    },
+    "flows/x64/reports/ui-regression-validation.json": {
+      "passed": true,
+      "checks": 17
+    },
+    "flows/x64/reports/vault-transfer-local-validation.json": {
+      "passed": true,
+      "checks": 34
+    },
+    "product/x64/zh-CN/report.json": {
+      "passed": true,
+      "checks": 477
+    },
+    "product/x64/en/report.json": {
+      "passed": true,
+      "checks": 477
+    },
+    "buttons/x64/en/report.json": {
+      "passed": true,
+      "checks": 180
+    },
+    "buttons/x64/zh-CN/report.json": {
+      "passed": true,
+      "checks": 180
+    },
+    "installer/x64/light-installer-validation.json": {
+      "passed": true,
+      "checks": 37
+    },
+    "reused/x64/sfx-ui-validation.json": {
+      "passed": true,
+      "checks": 38
+    },
+    "reused/x64/volume-ui-validation.json": {
+      "passed": true,
+      "checks": 58
+    },
+    "reused/x64/format-ui-validation.json": {
+      "passed": true,
+      "checks": 70
+    },
+    "reused/x64/archive-editing-ui-validation.json": {
+      "passed": true,
+      "checks": 61
+    },
+    "flows/arm64/reports/accessibility-validation.json": {
+      "passed": true,
+      "checks": 45
+    },
+    "flows/arm64/reports/application-update-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "flows/arm64/reports/compression-validation.json": {
+      "passed": 38,
+      "checks": 38
+    },
+    "flows/arm64/reports/desktop-browser-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "flows/arm64/reports/desktop-failure-validation.json": {
+      "passed": true,
+      "checks": 10
+    },
+    "flows/arm64/reports/desktop-multi-password-validation.json": {
+      "passed": true,
+      "checks": 14
+    },
+    "flows/arm64/reports/desktop-validation.json": {
+      "passed": true,
+      "checks": 0
+    },
+    "flows/arm64/reports/display-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "flows/arm64/reports/encoding-validation.json": {
+      "passed": 75,
+      "checks": 75
+    },
+    "flows/arm64/reports/engine-validation.json": {
+      "passed": 101,
+      "checks": 101
+    },
+    "flows/arm64/reports/localization-validation.json": {
+      "passed": true,
+      "checks": 37
+    },
+    "flows/arm64/reports/master-vault-validation.json": {
+      "passed": true,
+      "checks": 36
+    },
+    "flows/arm64/reports/password-organization-validation.json": {
+      "passed": true,
+      "checks": 30
+    },
+    "flows/arm64/reports/post032-core-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "flows/arm64/reports/post032-ui-en-validation.json": {
+      "passed": true,
+      "checks": 128
+    },
+    "flows/arm64/reports/post032-ui-zh-CN-validation.json": {
+      "passed": true,
+      "checks": 128
+    },
+    "flows/arm64/reports/task-improvements-core-validation.json": {
+      "passed": true,
+      "checks": 27
+    },
+    "flows/arm64/reports/ui-regression-validation.json": {
+      "passed": true,
+      "checks": 17
+    },
+    "flows/arm64/reports/vault-transfer-local-validation.json": {
+      "passed": true,
+      "checks": 34
+    },
+    "product/arm64/zh-CN/report.json": {
+      "passed": true,
+      "checks": 477
+    },
+    "product/arm64/en/report.json": {
+      "passed": true,
+      "checks": 477
+    },
+    "buttons/arm64/en/report.json": {
+      "passed": true,
+      "checks": 180
+    },
+    "buttons/arm64/zh-CN/report.json": {
+      "passed": true,
+      "checks": 180
+    },
+    "installer/arm64/light-installer-validation.json": {
+      "passed": true,
+      "checks": 37
+    },
+    "native/arm64/architecture-validation.json": {
+      "passed": 33,
+      "checks": 33
+    },
+    "native/arm64/export-vault-x64-validation.json": {
+      "passed": true,
+      "checks": 3
+    },
+    "native/arm64/import-vault-arm64-validation.json": {
+      "passed": true,
+      "checks": 7
+    },
+    "native/arm64/verify-vault-x64-validation.json": {
+      "passed": true,
+      "checks": 7
+    },
+    "reused/arm64/sfx-ui-validation.json": {
+      "passed": true,
+      "checks": 38
+    },
+    "reused/arm64/volume-ui-validation.json": {
+      "passed": true,
+      "checks": 58
+    },
+    "reused/arm64/format-ui-validation.json": {
+      "passed": true,
+      "checks": 70
+    },
+    "reused/arm64/archive-editing-ui-validation.json": {
+      "passed": true,
+      "checks": 61
+    }
+  },
+  "candidates": {
+    "x64": {
+      "architecture": "x64",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "bytes": 4835051,
+      "sha256": "d446ba899b5d26018ac95b40f6c781b98b4c6864365cf30e826bcd8ec5913d37",
+      "files": 40,
+      "nativePE": [
+        "ArchivePassword.exe",
+        "nomozip-cli.exe",
+        "ArchiveEngineWorker.exe",
+        "engines/26.03/7z.dll",
+        "engines/26.03/7z.exe",
+        "engines/26.04/7z.dll",
+        "engines/26.04/7z.exe"
+      ],
+      "sharedRuntime": ".NET 10",
+      "crc": true,
+      "engineDigests": true,
+      "note": "CI original candidate; no local launch or installation.",
+      "fileVersion": "0.3.3.0",
+      "productVersion": "0.3.3+b253572e829bbc86181cc656ffe31188ce27c591"
+    },
+    "arm64": {
+      "architecture": "arm64",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "bytes": 4022057,
+      "sha256": "f1d972dc88bb7fc0155b108bcb62b92a43f56417f996c246d374ca0651f7defb",
+      "files": 40,
+      "nativePE": [
+        "ArchivePassword.exe",
+        "nomozip-cli.exe",
+        "ArchiveEngineWorker.exe",
+        "engines/26.03/7z.dll",
+        "engines/26.03/7z.exe",
+        "engines/26.04/7z.dll",
+        "engines/26.04/7z.exe"
+      ],
+      "sharedRuntime": ".NET 10",
+      "crc": true,
+      "engineDigests": true,
+      "note": "CI original candidate; no local launch or installation.",
+      "fileVersion": "0.3.3.0",
+      "productVersion": "0.3.3+b253572e829bbc86181cc656ffe31188ce27c591"
+    }
+  },
+  "images": [
+    {
+      "path": "flows/x64/zh-CN/directory-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-browser-customized.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-browser-reset.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-results.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/directory-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/directory-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/directory-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/directory-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/filters-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/filters-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/filters-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/filters-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/filters-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/filters-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/p2-browser-customized.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/p2-browser-reset.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/p2-separate-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/p2-separate-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/p2-separate-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/p2-separate-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/p2-separate-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/p2-separate-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/p2-separate-results.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/updates-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/updates-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/updates-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/updates-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/usability-compression-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/usability-compression-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/usability-compression-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/usability-compression-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/usability-compression-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/usability-compression-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-browser-customized.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-browser-reset.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-results.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/directory-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/directory-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/directory-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/directory-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/filters-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/filters-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/filters-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/filters-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/filters-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/filters-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/p2-browser-customized.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/p2-browser-reset.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-results.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/updates-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/updates-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/updates-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/updates-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-light-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-contrast-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-contrast-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-dark-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-dark-800.png",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-light-1152.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-light-800.png",
+      "width": 800,
+      "height": 600
+    }
+  ],
+  "files": [
+    {
+      "path": "flows/x64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/compression-validation.json",
+      "sha256": "5ef0788a61963eac6007d4cc9783b433c727be56476cb53ce0a1ed1afe89e61e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/engine-validation.json",
+      "sha256": "29f72b2eaaf2d0d876fa738d4b9f2b189c41cdd2f722bae3bcd3f97804267cb2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/localization-validation.json",
+      "sha256": "dc26b9d3163177ecce22f16972cad35fd8df188b3d5e7754018230256ef105a2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/master-vault-validation.json",
+      "sha256": "47dd07818f0e95e2e4387290ed4ff72795cd7ba5c1c8ea2b3d1ddba73406192c",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/post032-core-validation.json",
+      "sha256": "fdb059d508375231e10a123942f5cf56738941ec63cf31b5c9da9e55bcdee16e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/post032-ui-en-validation.json",
+      "sha256": "736f0d899e9418e43da8d4341164d66e16fc3459d199f45e30deb939aaf83a45",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "0fb5b3dde2c0420b200516d907db0ec4f991c1893363fc39f54ac85968c22e8d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/reports/post032-performance.json",
+      "sha256": "a1129e158e38623b3a6db1990ba0f33a2cfa098c7bafb29e7a909ecf1fd65e09",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-dark-1152.png",
+      "sha256": "9f3f598b620fed0b2132e7adb6a91214e806d171aad7d309232966ec4051f2af",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-dark-800.png",
+      "sha256": "81dd22ae825fe7c9bd3df1ea0bb482e509d6ba8dc855a62f278ddf935e98ba6e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-light-1152.png",
+      "sha256": "e863639b352c379ba3c5f7b9e472ae66e9312d23ff431252a2b495d8ce443b1e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-light-800.png",
+      "sha256": "e4b1745b7b789388f5c7ea1710e32a5d0650c336a4c39cc99627e68859db5d10",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-contrast-1152.png",
+      "sha256": "3312ae823de67f9c7e9f9ab730576c5834ebb794686e22c8e0598456f41feea7",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-contrast-800.png",
+      "sha256": "94b5de9e348ae8ef46a62836de4bdc2912d579d675587666ea595a2793aaebae",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-dark-1152.png",
+      "sha256": "cbf71a99ac8c84c124f53a80190bd025c8c4a4e80d1df7ba827eb59eb738cae1",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-dark-800.png",
+      "sha256": "92bea76a3992655d180dcb4b89f1994ffc3a1fd052bec96e554d36d3d44d05d9",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-light-1152.png",
+      "sha256": "79f922fcc767624baa4c35c759d8118058280a65f7291be78bb61aceef89a9ee",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-light-800.png",
+      "sha256": "44470fa33a13ec891dcc31f1dc24c3760e1b85e7603058c6f40965de857c4e6f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/large-list-10000.png",
+      "sha256": "e2e4a744e904418665d49fedda7db611d61a83c8cdb51a4b421e5ad6633ece10",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/large-list-100000.png",
+      "sha256": "3deaeb0d861d564b9656b5b838bf07f209307ca159f1018287c807faa430ec74",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-browser-customized.png",
+      "sha256": "05181b5b23d57c21ea8d7e4c74cb02b2d1991ccf3665e52eb6c531d0d6d8df5d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-browser-reset.png",
+      "sha256": "7c75d9c006738198cf7729c321d88def7fdb5db4b30cade0e59976a221995424",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-contrast-1152.png",
+      "sha256": "5afa88676d0e57ea6f8afda6aeff272b9797a6bd9e9504bc5f37c992f1f119c3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-contrast-800.png",
+      "sha256": "f3e6d99be1908df8e0364dd57541d88c2bed4e21bd6a0611df5acdc037b07339",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-dark-1152.png",
+      "sha256": "b6e887106c308b2f38d280d824dab7dc956cb410d327c3631d60efdced621a0b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-dark-800.png",
+      "sha256": "3939ac91570b3db836ab9ffad0178c3832f4801a696b7ebc404f7f95a53dcc05",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-light-1152.png",
+      "sha256": "eeaa9dfbd35fc4d1d3b5e8505a145375fcf79c2a0cc5ca29f84d3f78238a0bc6",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-light-800.png",
+      "sha256": "f6395060c4f532d8d6b2d2388be4f1eaf0a8eeb5f989850e00b54743320510ea",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/p2-separate-results.png",
+      "sha256": "54f53467e940e432fe79eb726188ab7f4b3048dff3bc780654c22be811f0744e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-dark-1152.png",
+      "sha256": "1b09b8ec0a24d25d4ba07583df17641457a5b5fb19591dd3f3b04cc6ae698550",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-dark-800.png",
+      "sha256": "b30afe785fc3a5776b8974ed6f94906c26f84d244b557cd122e95105eb9f4634",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-light-1152.png",
+      "sha256": "d0724d6f5afd430d5a5670c5b46650b2b651a5daeb30c2461ab44c77c1e7ac99",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-light-800.png",
+      "sha256": "cea309e43d8f8de7f8acfebd9f7df381c75ed8da50dc6bb8ef52c6e163af2c90",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-contrast-1152.png",
+      "sha256": "0d894c97fc9b1038ddd6b3c9bc3ac609ec28e534ce0effff92c19689244e6fe5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-contrast-800.png",
+      "sha256": "ae6c36dbbc5cc342a511ddb09866d39cb2908b8b4081efd50d0b065f9d7530dd",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-dark-1152.png",
+      "sha256": "53952119e920246f0af9f6f5929aa04f00d388f5715ee3e60be097adfb03188f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-dark-800.png",
+      "sha256": "8c2c1762fc71c829e062f82b2d3d6dd777def6ede6d953b645c7ca3652094e16",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-light-1152.png",
+      "sha256": "36946f24b16f6c31b777e8b9b0d443b97712f5e8da34d3ddda28dfc44882b6eb",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-light-800.png",
+      "sha256": "046489b1b79d088f53012391b332f911d3e75fea41382e9ef7911edc97f23f4d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-contrast-1152.png",
+      "sha256": "c4c27b77621dbb1d3dd1c2d0e6c5f82d546ea72e8071ee1b94044481f12d72c5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-contrast-800.png",
+      "sha256": "2fb26182e4e89679172ce61d72305f6ba3cc31c5c352f2d51dd795e5611f91f4",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-dark-1152.png",
+      "sha256": "7ac5f0a0b7ccedc092993289b4954abb4d559b15528bfecd75a8ee2dc4189701",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-dark-800.png",
+      "sha256": "9bd4509fde70b88a10aef1c112f77a3054dbd7394c492943c89c824bbfb120d5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-light-1152.png",
+      "sha256": "e2f94f4f87993e31746c7bc61f8c823b017137f004666c605d915478999d071e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-light-800.png",
+      "sha256": "7d4b97079962271bc4971db77e6c229676743a82fd9fcc815bc9a35ad9672ce8",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/directory-dark-1152.png",
+      "sha256": "e5603e1503b1df6ee6bc1a6fe1c96fec93a708c472c20fc30f542971e907944f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/directory-dark-800.png",
+      "sha256": "721937c803c0666ad5e23d5e517d27742df31969b942c648f40cf0f04b59fa50",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/directory-light-1152.png",
+      "sha256": "68fdd8c9a9f855fe21a6fd89662b67d762eefd0c1a0635645f6a966428753111",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/directory-light-800.png",
+      "sha256": "4d849850a46f76e36f115e29136c1560a35fe6b67cbd46b40344c9b13d391468",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/filters-contrast-1152.png",
+      "sha256": "e380110ec2e2856cf13c8239871eadc12b5bc6214728552bf3fb68512965e8f5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/filters-contrast-800.png",
+      "sha256": "9f20bd046d77391eb030ece896b6b996dd5fb8dee1c5c0877671ce843f0917bf",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/filters-dark-1152.png",
+      "sha256": "7e5fa2fce42be6e8100b68b11282da666a4939dcbe25d24f07fdaf9050e1da65",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/filters-dark-800.png",
+      "sha256": "45c37d8369bc6fae6ba53e1f7f68b67343061797e3a3c2a1559ddb3412e23d54",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/filters-light-1152.png",
+      "sha256": "5a9b6236a4483c709733f0e1a0d11a0277ea15db5cc0e50b319ea80a8ff58f3a",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/filters-light-800.png",
+      "sha256": "d705d0c36ad1a30a17df0029b40d68228327ad304d4b562bc7e3fe86eaa5d97d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/large-list-10000.png",
+      "sha256": "27be30baf8852034fd6440acc16001c629c2f3367e1714f58b0166e3760c74b8",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/large-list-100000.png",
+      "sha256": "69e842910452e76f5fd06eb2668c927c7eab10e1e76df71a5a7d225320705769",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-browser-customized.png",
+      "sha256": "4ba6929519e51633df8dbb08e5d264cd571d7eb8565ffdb8aea3b743a3688e74",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-browser-reset.png",
+      "sha256": "761f4c1082b07d614dc8b7c9f71408ef75859b961a2eec1371d524e389365b72",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-contrast-1152.png",
+      "sha256": "7aa6376a82a6e34d24b1c9b916bef515c2adf1808f6f00bc48d96913259311e3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-contrast-800.png",
+      "sha256": "f1692c0c962dd3d7b2ff9a3d22635438bbd559d9af4c9299a5789d5959f56fd8",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-dark-1152.png",
+      "sha256": "33ee4a88590801c621e9c3ae5db713b8fd12f3a24eb54669768931fcdc4a6629",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-dark-800.png",
+      "sha256": "de7364a0c148f91f67bdc4356b1b728e17693d991bdafe24cde578760ae0719d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-light-1152.png",
+      "sha256": "c3ff26c721aaad07945b79387ee304699c98d5bb5e99814a4f40a0c3a39ad35e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-light-800.png",
+      "sha256": "eae31e7e8f88c85f9ab2992bd3b2fd53904e5c3b6f732b8790f1a9345496b98a",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/p2-separate-results.png",
+      "sha256": "beb8977e0b79843892fce144ea673a9f69f2b707db61f637c2f98315aeee850c",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/updates-dark-1152.png",
+      "sha256": "9c0f9c4ea6a9932bc425c10f1a194767e7e306c9124837a0c4ab36060711f370",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/updates-dark-800.png",
+      "sha256": "9f3d05ff6085fab9e48c9ac6e52b213a288a33099d124f2488690e31f12b51b4",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/updates-light-1152.png",
+      "sha256": "543802fb8c128f3a1a32c84739c6ca12497c6b8087e4338af18d7e27dc32e465",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/updates-light-800.png",
+      "sha256": "a90b70cb0f5475f5d184c81e881517f92717a2b0ecd7ef188bfba2dd114f674e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-compression-contrast-1152.png",
+      "sha256": "f8e8e78fb2a4ca7ed751314fc034987bbef2b4b80ed7b3bfd8eadf4f573ff74f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-compression-contrast-800.png",
+      "sha256": "f19fe964ea5c775bf699478afd27702763ace6e8ee0502fd74d324176c75c09f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-compression-dark-1152.png",
+      "sha256": "42a277cebea2f4ad9369bcebfc295544d8c4f83c36ace1de7e2deca6753c2ae9",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-compression-dark-800.png",
+      "sha256": "765984835726586d80a21a7e506986f0c30f1c128130b1b0f7301c10f32ad076",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-compression-light-1152.png",
+      "sha256": "d083f08fcb659a1d50e8ba1c7cfa63e4e0cd1e1df7318e5cd5a081a6edf4867b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-compression-light-800.png",
+      "sha256": "d96f709af10a57c95c669dad258ce3d4586948f5728472a9b6cf1cf7938eb057",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-contrast-1152.png",
+      "sha256": "32d3121113e86b1e88fdd2390fd3d88e4e5217bb0d868a53d8a9384d9c90abba",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-contrast-800.png",
+      "sha256": "e578d94d60d1c4a9330e3c3f4bb22c4257b051a2409c3c988434a7c5d48348f3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-dark-1152.png",
+      "sha256": "324397d41fd1748e4b2678422c773b2bead3d9efd470dc18c30ff5d1786cfea5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-dark-800.png",
+      "sha256": "5fccd420e360a0e3019b07253f9899ee5b4c597fb382f8398f2f0c2ef39640dc",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-light-1152.png",
+      "sha256": "74076fb1bda8e607e3135919cd462226e7487f3f8ca221688e5c34769ca30629",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-light-800.png",
+      "sha256": "f6b63aec1cb2ef859e1d5bb6d26fe46d2ae9890df591ab057f7e26ebd55251ce",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597672009
+    },
+    {
+      "path": "product/x64/zh-CN/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596251435
+    },
+    {
+      "path": "product/x64/en/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596251435
+    },
+    {
+      "path": "buttons/x64/en/report.json",
+      "sha256": "24e7158fb3269184e65fb11626658d26667ff46c2dc6b5cd685261e168b04347",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596251435
+    },
+    {
+      "path": "buttons/x64/zh-CN/report.json",
+      "sha256": "24e7158fb3269184e65fb11626658d26667ff46c2dc6b5cd685261e168b04347",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596251435
+    },
+    {
+      "path": "installer/x64/light-installer-validation.json",
+      "sha256": "b7dfbcc5f8c9a35b40f2bd2485142cd109f227a5879c9b27c6b2c798cf08e6b3",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596251435
+    },
+    {
+      "path": "reused/x64/sfx-ui-validation.json",
+      "sha256": "c77ec7ce494870c0b30a3b7cee5684896700be37649a123d7eeefa0b4dd0644e",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594174965
+    },
+    {
+      "path": "reused/x64/volume-ui-validation.json",
+      "sha256": "c0553c32dbfdd5ee43344307e52e0fd5892e0a91e21f7ccd621abd7d619ccca7",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594174965
+    },
+    {
+      "path": "reused/x64/format-ui-validation.json",
+      "sha256": "0e1b2ac42afee854a8d76826a4b54bc93fb8b2125b56a6a83f82b227c868c1d3",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594174965
+    },
+    {
+      "path": "reused/x64/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594174965
+    },
+    {
+      "path": "flows/arm64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/compression-validation.json",
+      "sha256": "18b3727552cdec01f94465bb30227352bc8138e3464ce79bd73f34a8d7e6d783",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/engine-validation.json",
+      "sha256": "94f674c386842752d1224055e44692a42fdd8ce2ae7d007ca38c8f9a5a7eb96b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/localization-validation.json",
+      "sha256": "dc26b9d3163177ecce22f16972cad35fd8df188b3d5e7754018230256ef105a2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/master-vault-validation.json",
+      "sha256": "08c14124e3eb24fc3fd4b9b2fafb50ee635f273ad95d1d814874ae6e620277b7",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/post032-core-validation.json",
+      "sha256": "fdb059d508375231e10a123942f5cf56738941ec63cf31b5c9da9e55bcdee16e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/post032-ui-en-validation.json",
+      "sha256": "587723b56291bbe8f3b9a36fc3896bee8a9bbcdf5a08c61f00eb70c4e78e107e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "686c8456d608c34ad2aba025f3a303bdd67876b134d3d8d476bc508812e3469b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/reports/post032-performance.json",
+      "sha256": "9ee6903c994153e7772c5fb445167cdb952336aa3e028c876c5eae60d9811f6f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-dark-1152.png",
+      "sha256": "f92018beb57cd7b9790811f2a3b8d75faef19a40ade02ee4a325eb06b80d97f8",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-dark-800.png",
+      "sha256": "ddcf81cb97d7db067611310bc6095d6bfcbbb80af43583b2c174b10108b49b6e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-light-1152.png",
+      "sha256": "bf2f3b738262491661e1b09a93b6d7232733857b7d56a492a7243686433c43b7",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-light-800.png",
+      "sha256": "9cb58d78d1cf7852c13fc5aa40e8616529b61eb8c99e3e029bf73067357923e9",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-contrast-1152.png",
+      "sha256": "994aa16255c3b86c798daa9af6b32c4b9c2ba2b6fb620cbffa0df49377909507",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-contrast-800.png",
+      "sha256": "aa9706ca0f792d763f84dc439ca9e435fab8a7692975ff0e7e4eff8e76c78609",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-dark-1152.png",
+      "sha256": "0d9c67c674ea1c08eeabcd5f40b1fb2b9a888b1d8f0c92cde65cac5f6ccc53a9",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-dark-800.png",
+      "sha256": "363911ea8745711b434858d840b6e92c2b9516ef4df916664ab003249567ffa1",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-light-1152.png",
+      "sha256": "4ab3f3588fe97b2dd54e941ba6a234554e9435f58c17a9f77560984058a94759",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-light-800.png",
+      "sha256": "b9fe64a09c1b59394ff7fb6c695d239916a053212268243e4df1e04df4fc8a65",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/large-list-10000.png",
+      "sha256": "cb8990a36a9cc7511d8b8efda94f951cf63d10adc5f83af49e39b9c9b763a63b",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/large-list-100000.png",
+      "sha256": "327fadb66d7dd340a5e25fdfb4724ea59b0fa186f3b62a1b951c828a0c2655c4",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-browser-customized.png",
+      "sha256": "05181b5b23d57c21ea8d7e4c74cb02b2d1991ccf3665e52eb6c531d0d6d8df5d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-browser-reset.png",
+      "sha256": "af450bd0f7011a61d1af027486679b4c5303cfe75dfbe49e82f3b42427d232fe",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-contrast-1152.png",
+      "sha256": "5b1db9a7e335632cf7388fbe20c1707347b25460c7bdc41dd24b51adaa0943b5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-contrast-800.png",
+      "sha256": "f3e6d99be1908df8e0364dd57541d88c2bed4e21bd6a0611df5acdc037b07339",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-dark-1152.png",
+      "sha256": "bfb00fd13c47a746dfd4fae71f6e3272700e1a75bf910d855ae635f97c37d7fe",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-dark-800.png",
+      "sha256": "3939ac91570b3db836ab9ffad0178c3832f4801a696b7ebc404f7f95a53dcc05",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-light-1152.png",
+      "sha256": "449ffdede7c8b9973fedd57636bf198b23bdd374b067cb383d6538aa48681b9d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-light-800.png",
+      "sha256": "f6395060c4f532d8d6b2d2388be4f1eaf0a8eeb5f989850e00b54743320510ea",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/p2-separate-results.png",
+      "sha256": "54f53467e940e432fe79eb726188ab7f4b3048dff3bc780654c22be811f0744e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-dark-1152.png",
+      "sha256": "6549a1eb7ad979cfd8cf7d4e84e935d4f0d8cf47e9c2030423f43fbda0426f12",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-dark-800.png",
+      "sha256": "371cf9d1143ab858aebec897c9669a5dd898952a90343a74e9bfe725e6716ad9",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-light-1152.png",
+      "sha256": "54fd70038daf83b8a5badde28f7e102372a71445590ab82fac4b2c9a1948f9e9",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-light-800.png",
+      "sha256": "0c878ad80b21219f6ce102e571f192e4f0e65548cd92396feaf043fa03241cb3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-contrast-1152.png",
+      "sha256": "f1c42536d516095b3240912ecf825ea3cd41458bea84c9e93bdd91bacb2a139e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-contrast-800.png",
+      "sha256": "ae6c36dbbc5cc342a511ddb09866d39cb2908b8b4081efd50d0b065f9d7530dd",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-dark-1152.png",
+      "sha256": "dfddacc16c4e9d6097a28c1b082e6279989162bc0feba71c263cc968c68bb4bc",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-dark-800.png",
+      "sha256": "8c2c1762fc71c829e062f82b2d3d6dd777def6ede6d953b645c7ca3652094e16",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-light-1152.png",
+      "sha256": "c20ad107e0a67937c8fc7824e37dd7e624b6a6cec486e4bb39b5b563726fa123",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-light-800.png",
+      "sha256": "046489b1b79d088f53012391b332f911d3e75fea41382e9ef7911edc97f23f4d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-contrast-1152.png",
+      "sha256": "c4c27b77621dbb1d3dd1c2d0e6c5f82d546ea72e8071ee1b94044481f12d72c5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-contrast-800.png",
+      "sha256": "7f1d4a2d8f9f481d7774ea27abc526cd3ec830ff82f39e0cb4f233b617d40ab1",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-dark-1152.png",
+      "sha256": "7ac5f0a0b7ccedc092993289b4954abb4d559b15528bfecd75a8ee2dc4189701",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-dark-800.png",
+      "sha256": "3daa947587f2bf4ce35c14abe1cf66ccfbfe1620e46eb5cb3f1072d0cf9dd098",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-light-1152.png",
+      "sha256": "e2f94f4f87993e31746c7bc61f8c823b017137f004666c605d915478999d071e",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-light-800.png",
+      "sha256": "84d12ff9072897be036d2942cb4d239d558741fd6b31218c3f7a6baec0ebe2eb",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/directory-dark-1152.png",
+      "sha256": "b810241f2f7ac1789fd8b86c0bced7d74537f513fa1723325f0c2fd35f8bfff2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/directory-dark-800.png",
+      "sha256": "73346cf7ee8ccd6cd7182203283c967df2c97acf6599921f56a7bce4d7e0eeca",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/directory-light-1152.png",
+      "sha256": "0e11aceeab065abacbd9018f3af61415b212c8d3803aaebc86b63ae8c2181678",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/directory-light-800.png",
+      "sha256": "c99f9752f485271e2d3229dc35ebc061169e8997e269dda525b7bbde52dccc07",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/filters-contrast-1152.png",
+      "sha256": "2ca0ac2450c008d36e8b79245eea80032ff36b03fc32a06c6d8789f7cc3f1196",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/filters-contrast-800.png",
+      "sha256": "8ac7e0ba3e5bf850b4600cf3de4b1fe05af6d93ac8d1831fdae90048c9dd1db5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/filters-dark-1152.png",
+      "sha256": "f397dc7e1393f4d6c1d8dfb56ed1e1f37c92e0374865b6db86cdb75b7806a3a3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/filters-dark-800.png",
+      "sha256": "daf4f38f5f19b51512b225dc48847f5c233ae802395fbc5fdd4aa3bec14c69c7",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/filters-light-1152.png",
+      "sha256": "0c4c2f794fb7336832bf7a1eb1ec07f193fbfd1cfe6d082873733901a40a7b9f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/filters-light-800.png",
+      "sha256": "b617d6ffe57de87912a3cefcd999b365bcc25820dfbb9837107503d9e53ee3f5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/large-list-10000.png",
+      "sha256": "130e9eb5823e7d7c4982bc1d8f0e6b2e76663f8cf29dfaf00b8a083a48645964",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/large-list-100000.png",
+      "sha256": "040094ed377a4721f765827f63e8f2013c4233231a77cb3d24f70b67a7a1f45d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-browser-customized.png",
+      "sha256": "4ba6929519e51633df8dbb08e5d264cd571d7eb8565ffdb8aea3b743a3688e74",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-browser-reset.png",
+      "sha256": "4f8b6a6b9d5aac77d90c2b29a74b04d49a1564b5a1c2a2d9b715bdc537e05ce3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-contrast-1152.png",
+      "sha256": "3ee0ea23c73b1b0da572d0031b7c3798ad3c7eb4b112f9365464c90b156e0b78",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-contrast-800.png",
+      "sha256": "f1692c0c962dd3d7b2ff9a3d22635438bbd559d9af4c9299a5789d5959f56fd8",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-dark-1152.png",
+      "sha256": "dd3f2660a75b0ce5e92b528d044c0fb07ea8a4b81736519ac9ed5cd15458df9f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-dark-800.png",
+      "sha256": "de7364a0c148f91f67bdc4356b1b728e17693d991bdafe24cde578760ae0719d",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-light-1152.png",
+      "sha256": "ba85a0e9522f690e3147029d7064ce9666f55b78822c0e8d20eea42ae1d85158",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-light-800.png",
+      "sha256": "eae31e7e8f88c85f9ab2992bd3b2fd53904e5c3b6f732b8790f1a9345496b98a",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/p2-separate-results.png",
+      "sha256": "beb8977e0b79843892fce144ea673a9f69f2b707db61f637c2f98315aeee850c",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/updates-dark-1152.png",
+      "sha256": "830a69fd106723966c66806afa87a826bbd6d928b970697ac4beb1f4791afc1f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/updates-dark-800.png",
+      "sha256": "fc6bae2431ff6b9c8b6fb6a1a6776bb8058f3c11082268e85c12200e5c71cc35",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/updates-light-1152.png",
+      "sha256": "b90693c852facfda51999787738e3986cbff0d0baa226352c8f7c4b485a10158",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/updates-light-800.png",
+      "sha256": "201645cbe3c0e84a1cbb8de924f33911288f14f46f3b059dddb75c66aede2de3",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-contrast-1152.png",
+      "sha256": "7f7a2704075e65c98279773f215bb4372a23487a5edc0f21da839c2f152bcbb2",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-contrast-800.png",
+      "sha256": "f19fe964ea5c775bf699478afd27702763ace6e8ee0502fd74d324176c75c09f",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-dark-1152.png",
+      "sha256": "9ac5a0d9127fff639f1a523ff5b23a062926136f078e16a60184dce42d6c33da",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-dark-800.png",
+      "sha256": "765984835726586d80a21a7e506986f0c30f1c128130b1b0f7301c10f32ad076",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-light-1152.png",
+      "sha256": "bdadf1da027a5798d34023a33bf8892b799046803016cd26eb628ff33d4ca4e8",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-light-800.png",
+      "sha256": "d96f709af10a57c95c669dad258ce3d4586948f5728472a9b6cf1cf7938eb057",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-contrast-1152.png",
+      "sha256": "32d3121113e86b1e88fdd2390fd3d88e4e5217bb0d868a53d8a9384d9c90abba",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-contrast-800.png",
+      "sha256": "9b8b52ef2e4af6492e05321db2f72efcf8a4cc8c359253f0c0021bfc094ed895",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-dark-1152.png",
+      "sha256": "324397d41fd1748e4b2678422c773b2bead3d9efd470dc18c30ff5d1786cfea5",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-dark-800.png",
+      "sha256": "c946d708937b17f53beb86cdc3ece4d4ea7f93db1868f4bdf28273f857239311",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-light-1152.png",
+      "sha256": "74076fb1bda8e607e3135919cd462226e7487f3f8ca221688e5c34769ca30629",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-light-800.png",
+      "sha256": "aa6143dc41304e99a68b00cdfcf7f96afbb4d58fcad41bea43bee4bab27e4260",
+      "sourceCommit": "b253572e829bbc86181cc656ffe31188ce27c591",
+      "run": 39597753718
+    },
+    {
+      "path": "product/arm64/zh-CN/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "product/arm64/en/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "buttons/arm64/en/report.json",
+      "sha256": "c8d7df0cc1bb3acc7186aeb642daf37a02339c7c65713e25bc8fb9c409904183",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "buttons/arm64/zh-CN/report.json",
+      "sha256": "c8d7df0cc1bb3acc7186aeb642daf37a02339c7c65713e25bc8fb9c409904183",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "installer/arm64/light-installer-validation.json",
+      "sha256": "72585a54f25d002af557071248c730cde92a093789ba44251ad6a1e677f81be2",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "native/arm64/architecture-validation.json",
+      "sha256": "e6277a1292b490ae08132932d800a183945f5ea81bc9b9c8c1825f4edf3ab961",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "native/arm64/export-vault-x64-validation.json",
+      "sha256": "49f28bd46b460ec29024bc68f065dba9d5ef34ef7b8705aa5c08a854ec2147dc",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "native/arm64/import-vault-arm64-validation.json",
+      "sha256": "4c3e92593829d0fc652e77b0d3a7fb7dd12f33b8f88f2ac5c7726e65c365fdd9",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "native/arm64/verify-vault-x64-validation.json",
+      "sha256": "a442d2215475951bfb4e754950394a87af64bf3932f2f821af693e00fc2d84ab",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "run": 39596316970
+    },
+    {
+      "path": "reused/arm64/sfx-ui-validation.json",
+      "sha256": "c77ec7ce494870c0b30a3b7cee5684896700be37649a123d7eeefa0b4dd0644e",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594290302
+    },
+    {
+      "path": "reused/arm64/volume-ui-validation.json",
+      "sha256": "c0553c32dbfdd5ee43344307e52e0fd5892e0a91e21f7ccd621abd7d619ccca7",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594290302
+    },
+    {
+      "path": "reused/arm64/format-ui-validation.json",
+      "sha256": "0e1b2ac42afee854a8d76826a4b54bc93fb8b2125b56a6a83f82b227c868c1d3",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594290302
+    },
+    {
+      "path": "reused/arm64/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "sourceCommit": "b0e1d78747f20156eb3a3a21db1de4f56c2430ab",
+      "run": 39594290302
+    },
+    {
+      "path": "local/p2-performance-local.json",
+      "sha256": "409f95b99547ea40115034b96d249a1141f09cf5e4cce15f01a06d1b76e07199",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "environment": "Local headless synthetic collections with the same indexed comparer before the 1046ee2 commit; no desktop window, not CI desktop evidence."
+    },
+    {
+      "path": "local/sort-indexed-probe.json",
+      "sha256": "0171a7c0330fbe0e91d83a6d15960f53e84b9ef99c7f8617915c88de4029a830",
+      "sourceCommit": "1046ee2c311f1fefaa9c25980241a3a4e8a54e3e",
+      "environment": "Local headless synthetic collections with the same indexed comparer before the 1046ee2 commit; no desktop window, not CI desktop evidence."
+    }
+  ],
+  "reusedScope": "Product pages, button states, installer and native architecture checks passed in 1046ee2 jobs; only the multi-volume UI fixture and screenshot minimum width changed afterwards. SFX, volumes, formats and archive editing passed in b0e1d78 jobs. Those jobs failed targeted checks and are not described as wholly successful.",
+  "boundaries": "Synthetic profiles only. Simulated high contrast. No local desktop automation, installation, real vault or production signing key. Physical mixed DPI, multiple screens, system high contrast switching and interactive screen reader acceptance remain unverified.",
+  "galleryValidation": {
+    "passed": true,
+    "selections": 116,
+    "htmlSha256": "e4919db9b0b2949b3bdd965b1d70ddff1b513ad2af8e3bb90adc4cbc2d8d04ae",
+    "scope": "Headless HTML gallery navigation only; WPF images are CI originals."
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "runtime": "10.0.12",
+  "architecture": "X64",
+  "environment": "ViewModel and WPF collection view only; no desktop window or input; peak working set is cumulative for this process",
+  "samples": [
+    {
+      "count": 10000,
+      "attempt": 1,
+      "openMs": 45.1417,
+      "searchMs": 37.4542,
+      "legacySortMs": 31.5352,
+      "sortMs": 25.6447,
+      "sortAllocatedBytes": 80280,
+      "narrowSearchMs": 17.1349,
+      "navigateMs": 3.152,
+      "peakWorkingSet": 66203648,
+      "maxSynchronousMs": 45.1417,
+      "visible": 100
+    },
+    {
+      "count": 10000,
+      "attempt": 2,
+      "openMs": 17.3722,
+      "searchMs": 17.8863,
+      "legacySortMs": 30.8079,
+      "sortMs": 22.426,
+      "sortAllocatedBytes": 80280,
+      "narrowSearchMs": 17.1743,
+      "navigateMs": 2.5385,
+      "peakWorkingSet": 77631488,
+      "maxSynchronousMs": 22.426,
+      "visible": 100
+    },
+    {
+      "count": 10000,
+      "attempt": 3,
+      "openMs": 16.6757,
+      "searchMs": 16.1969,
+      "legacySortMs": 26.3039,
+      "sortMs": 27.9089,
+      "sortAllocatedBytes": 80280,
+      "narrowSearchMs": 17.705,
+      "navigateMs": 3.1519,
+      "peakWorkingSet": 77778944,
+      "maxSynchronousMs": 27.9089,
+      "visible": 100
+    },
+    {
+      "count": 100000,
+      "attempt": 1,
+      "openMs": 211.2374,
+      "searchMs": 167.2323,
+      "legacySortMs": 424.4917,
+      "sortMs": 129.4687,
+      "sortAllocatedBytes": 800280,
+      "narrowSearchMs": 156.2937,
+      "navigateMs": 22.5885,
+      "peakWorkingSet": 141737984,
+      "maxSynchronousMs": 211.2374,
+      "visible": 1000
+    },
+    {
+      "count": 100000,
+      "attempt": 2,
+      "openMs": 225.6946,
+      "searchMs": 161.0679,
+      "legacySortMs": 338.6705,
+      "sortMs": 183.0451,
+      "sortAllocatedBytes": 800280,
+      "narrowSearchMs": 158.0747,
+      "navigateMs": 22.7824,
+      "peakWorkingSet": 183513088,
+      "maxSynchronousMs": 225.6946,
+      "visible": 1000
+    },
+    {
+      "count": 100000,
+      "attempt": 3,
+      "openMs": 174.0655,
+      "searchMs": 156.2171,
+      "legacySortMs": 271.967,
+      "sortMs": 138.6339,
+      "sortAllocatedBytes": 800280,
+      "narrowSearchMs": 150.192,
+      "navigateMs": 16.3103,
+      "peakWorkingSet": 190099456,
+      "maxSynchronousMs": 174.0655,
+      "visible": 1000
+    }
+  ]
+}
