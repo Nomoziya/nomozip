@@ -60,6 +60,8 @@ public partial class ArchiveContentsDialog : Window
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
             EditContentsButton.Visibility = Visibility.Visible;
             var shortArea=EmbeddedClose is null && BrowserRoot.ActualHeight<480;
+            SelectedOnlyBox.Margin=new Thickness(8,shortArea?2:8,8,0);
+            AdvancedFilters.Margin=new Thickness(8,shortArea?2:8,8,0);
             BrowserHeader.Height=shortArea?90:130;
             BrowserTitleRow.Margin=new Thickness(34,0,shortArea?64:18,0);
             System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(ReferenceArchiveSearch,true);

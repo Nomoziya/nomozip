@@ -347,7 +347,16 @@ public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=fals
     private System.Windows.Media.ImageSource? previewThumbnail;
     public System.Windows.Media.ImageSource? PreviewThumbnail {get=>previewThumbnail;internal set=>Set(ref previewThumbnail,value);}
     private bool showPath;
-    internal bool ShowPath {get=>showPath;set {if(Set(ref showPath,value))Changed(nameof(DisplayName));}}
+    internal bool ShowPath
+    {
+        get=>showPath;
+        set
+        {
+            if(showPath==value)return;
+            // Applying a large result already refreshes command state once after the batch.
+            showPath=value;Changed(nameof(ShowPath));Changed(nameof(DisplayName));
+        }
+    }
     private readonly string displayName=System.IO.Path.GetFileName(entry.Path.Replace('\\','/').TrimEnd('/'));
     internal string Name=>displayName;
     public string DisplayName=>ShowPath?Path:displayName;

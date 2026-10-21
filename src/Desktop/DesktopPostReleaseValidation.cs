@@ -137,11 +137,13 @@ internal static class DesktopPostReleaseValidation
                     .OfType<DataGridColumnHeaderItemAutomationPeer>().Single(peer=>ReferenceEquals(peer.Item,browser.EntryTable.Columns[1].Header));
                 ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();
                 await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
+                await Task.Delay(40);heartbeat.Stop();
+                performance.Add(new{count,openMs,searchMs,sortMs,maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
+                // The reference sort below is a correctness oracle, not a product operation.
+                // Exclude its synchronous CPU work (and screenshot rendering) from UI response measurements.
                 Check($"actual column header uses background typed sorting {count}",large.UsesBackgroundView && !large.IsRefreshing && ((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is null
                     && large.BrowserPreferences.Sorts is [{Member:"DisplayName",Direction:System.ComponentModel.ListSortDirection.Ascending}]
                     && large.VisibleRows.Select(row=>row.Path).SequenceEqual(large.VisibleRows.Select(row=>row.Path).OrderBy(path=>path,StringComparer.CurrentCulture)));
-                await Task.Delay(40);heartbeat.Stop();
-                performance.Add(new{count,openMs,searchMs,sortMs,maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
                 Check($"large list dispatcher continues during background work {count}",gaps.Count>0);
                 Check($"large list avoids half-second UI stalls {count}",gaps.Max()<200);
                 Capture(browser,$"large-list-{count}");
@@ -149,7 +151,9 @@ internal static class DesktopPostReleaseValidation
                 {
                     large.VisibleRows.Single(row=>row.Entry.Index==0).Selected=true;
                     large.Search="file-00000";large.Search="no-such-entry";large.Search="file-099999";
-                    Check("updating list reports status and blocks stale extraction",large.IsRefreshing && !large.CanSelect && !large.ExtractAllCommand.CanExecute(null) && large.ViewStatus==UiText.Get("Browser.Updating"));
+                    Check("updating list reports status and blocks stale extraction",large.IsRefreshing && !large.CanSelect && !large.ExtractAllCommand.CanExecute(null) && large.ViewStatus==UiText.Get("Browser.Updating")
+                        && !browser.EntryTable.IsEnabled && Descendants(browser).OfType<TextBlock>().Any(text=>text.Text==UiText.Get("Browser.Updating")));
+                    Capture(browser,"large-list-updating");
                     await large.WaitForIdleAsync();await Layout(browser);
                     Check("rapid searches publish the latest result only",large.VisibleRows.Count==1 && large.VisibleRows[0].Entry.Index==99999 && large.SelectedEntries is [{Index:0}]);
                     large.Search="";await large.WaitForIdleAsync();large.Navigate("folder-001");await large.WaitForIdleAsync();await Layout(browser);
