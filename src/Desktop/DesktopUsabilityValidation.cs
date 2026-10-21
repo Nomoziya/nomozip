@@ -20,7 +20,14 @@ internal static class DesktopUsabilityValidation
         data=Path.Combine(data,"usability");Directory.CreateDirectory(data);
         Task Layout()=>window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle).Task;
         void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
-        async Task Execute(Button button,MainViewModel model) {Invoke(button);await model.WaitForIdleAsync();await Layout();}
+        async Task Execute(Button button,MainViewModel model)
+        {
+            await Layout();
+            // CanExecute invalidation is dispatched after a bound field changes.
+            for(var attempt=0;attempt<40 && !button.IsEnabled;attempt++) {await Task.Delay(25);await Layout();}
+            if(!button.IsEnabled)throw new Exception($"Command remained disabled: {button.Name}; idle={model.IsIdle}; canExecute={button.Command?.CanExecute(button.CommandParameter)}; profileNameLength={model.CompressionProfileName.Length}");
+            Invoke(button);await model.WaitForIdleAsync();await Layout();
+        }
         bool Fits(FrameworkElement element)
         {
             var rect=element.TransformToAncestor(window).TransformBounds(new Rect(element.RenderSize));
