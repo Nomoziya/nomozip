@@ -109,6 +109,7 @@ public sealed partial class MainViewModel
         }
         finally
         {
+            if(current is not null){current.Running=false;current.IsIndeterminate=false;}
             compressionPassword=null;Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary));
             CompressionIndeterminate=false;Footer=CompressionMessage;cancellation.Dispose();cancellation=null;CompressionRunning=false;IsBusy=false;idle.TrySetResult();
         }
