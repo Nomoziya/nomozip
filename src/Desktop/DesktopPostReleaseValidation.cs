@@ -131,8 +131,10 @@ internal static class DesktopPostReleaseValidation
                 var realized=Descendants(browser.EntryTable).OfType<DataGridRow>().Count();
                 Check($"large list realizes a bounded number of rows {count}",realized>0 && realized<200);
                 watch.Restart();
-                var header=Descendants(browser.EntryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Single(item=>item.Column==browser.EntryTable.Columns[1]);
-                ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(header)!.GetPattern(PatternInterface.Invoke)).Invoke();
+                var headers=Descendants(browser.EntryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeadersPresenter>().Single();
+                var headerPeer=UIElementAutomationPeer.CreatePeerForElement(headers)!.GetChildren()
+                    .OfType<DataGridColumnHeaderItemAutomationPeer>().Single(peer=>ReferenceEquals(peer.Item,browser.EntryTable.Columns[1].Header));
+                ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();
                 await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
                 Check($"actual column header uses typed sorting {count}",((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is ArchiveContentComparer);
                 Capture(browser,$"large-list-{count}");
