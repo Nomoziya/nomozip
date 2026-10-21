@@ -54,8 +54,12 @@ internal static class DesktopSelectionValidation
                                 var peer=UIElementAutomationPeer.CreatePeerForElement(check)!;((IToggleProvider)peer.GetPattern(PatternInterface.Toggle)).Toggle();await Layout();
                                 Check($"real checkbox works {size.Item1} {contrast}",folder.Selected && view.SelectedEntries.Count==3 && peer.IsKeyboardFocusable() && peer.GetName()==folder.Path);
                                 var bounds=row.TransformToAncestor(table).TransformBounds(new Rect(row.RenderSize));geometry[$"{size.Item1} {contrast}"]=[bounds.Top,bounds.Bottom,table.ActualHeight];Check($"row fits content viewport {size.Item1} {contrast}",bounds.Top>=0 && bounds.Bottom<=table.ActualHeight);
-                                view.Search="outside";await Layout();Check($"hidden selections retained {size.Item1} {contrast}",view.Rows.Count==1 && view.SelectedEntries.Count==3 && view.SelectionSummary.Contains("隐藏"));
-                                view.Search="";Invoke((Button)dialog.FindName("ClearSelectionButton"));await Layout();Check($"clear disables extraction {size.Item1} {contrast}",!view.ExtractSelectedCommand.CanExecute(null));
+                                view.Search="outside";await Layout();Check($"hidden selections retained {size.Item1} {contrast}",view.Rows.Count==1 && view.SelectedEntries.Count==3 && view.CompactSelectionSummary==UiText.Format("Browser.HiddenSelection",3,3));
+                                view.Search="";await Layout();Invoke(dialog.EditContentsButton);await Layout();
+                                var clear=dialog.EditContentsMenu.Items.OfType<MenuItem>().Single(item=>ReferenceEquals(item.Command,view.ClearSelectionCommand));
+                                Check($"clear selection is reachable in actual menu {size.Item1} {contrast}",dialog.EditContentsMenu.IsOpen && clear.IsVisible && clear.IsEnabled);
+                                ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(clear)!.GetPattern(PatternInterface.Invoke)).Invoke();await Layout();dialog.EditContentsMenu.IsOpen=false;
+                                Check($"clear disables extraction {size.Item1} {contrast}",view.SelectedEntries.Count==0 && !view.ExtractSelectedCommand.CanExecute(null));
                                 DesktopAccessibilityValidation.Render(dialog,Path.Combine(root,$"artifacts/selection-{size.Item1}-{contrast}.png"),1.0);
                             }
                             var nested=view.Rows.Single(row=>row.Path.Replace('\\','/')=="folder/sub/b.txt");nested.Selected=true;await Layout();
