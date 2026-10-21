@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "kind": "headless HTML layout prototype, not WPF acceptance",
+  "htmlSha256": "85e9ef5e1fe2788b62533ad9eb9702d74ce1cabc735561b90f9b50509564c2c4",
+  "errors": [],
+  "broken": [],
+  "captures": [
+    {
+      "file": "tasks-light-1152.png",
+      "width": 1152,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "file": "tasks-light-800.png",
+      "width": 800,
+      "height": 600,
+      "overflow": false
+    },
+    {
+      "file": "compression-light-1152.png",
+      "width": 1152,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "file": "compression-light-800.png",
+      "width": 800,
+      "height": 600,
+      "overflow": false
+    },
+    {
+      "file": "tasks-dark-1152.png",
+      "width": 1152,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "file": "tasks-dark-800.png",
+      "width": 800,
+      "height": 600,
+      "overflow": false
+    },
+    {
+      "file": "compression-dark-1152.png",
+      "width": 1152,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "file": "compression-dark-800.png",
+      "width": 800,
+      "height": 600,
+      "overflow": false
+    }
+  ],
+  "checks": [
+    "failure filter",
+    "failure recovery details",
+    "compression profile selection",
+    "all-source output count"
+  ]
+}
