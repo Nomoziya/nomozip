@@ -131,9 +131,11 @@ internal static class DesktopAccessibilityValidation
                             .First(value => value.Orientation == Orientation.Vertical && ReferenceEquals(value.TemplatedParent, viewport));
                         var track = (System.Windows.Controls.Primitives.Track)bar.Template.FindName("PART_Track", bar);
                         var before = viewport.VerticalOffset;
+                        // WPF scrolls task rows in logical units; use a full unit at either row density.
+                        var dragDistance = Math.Max(12, Math.Ceiling(1 / Math.Abs(track.ValueFromDistance(0, 1))));
                         track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragStartedEventArgs(0, 0) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragStartedEvent });
-                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragDeltaEventArgs(0, 12) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragDeltaEvent });
-                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragCompletedEventArgs(0, 12, false) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragCompletedEvent });
+                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragDeltaEventArgs(0, dragDistance) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragDeltaEvent });
+                        track.Thumb.RaiseEvent(new System.Windows.Controls.Primitives.DragCompletedEventArgs(0, dragDistance, false) { RoutedEvent = System.Windows.Controls.Primitives.Thumb.DragCompletedEvent });
                         await Layout();
                         Check("custom scrollbar thumb retains scrolling", viewport.VerticalOffset > before);
                         viewport.ScrollToTop(); await Layout();

@@ -28,6 +28,7 @@ public sealed partial class MainViewModel
     public double TaskRowHeight=>TaskDensityIndex==0?64:88;
     public IReadOnlyList<string> TaskDensityChoices {get;}=[UiText.Get("Tasks.Compact"),UiText.Get("Tasks.Comfortable")];
     public bool TaskDetailsExpanded {get=>taskDetailsExpanded;set=>Set(ref taskDetailsExpanded,value);}
+    private static bool ShouldExpandTaskDetails(ArchiveTaskRow? row)=>row?.Failure is { } failure && (failure.Status!="cancelled" || failure.Failures.Count>0);
     private ListCollectionView? taskView;
     public ObservableCollection<ArchiveTaskRow> WorkspaceTasks {get;}=[];
     public string WorkspaceTaskSummary=>UiText.Format("Redesign.WorkspaceSummary",WorkspaceTasks.Count(row=>row.Running),WorkspaceTasks.Count(row=>!row.Running && !row.Completed && row.Failure is null),WorkspaceTasks.Count(row=>row.Completed || row.Failure is not null));
@@ -97,7 +98,7 @@ public sealed partial class MainViewModel
     }
     private void WorkspaceTaskChanged(object? sender,PropertyChangedEventArgs e)
     {
-        if(e.PropertyName==nameof(ArchiveTaskRow.Failure) && ReferenceEquals(sender,SelectedTask) && SelectedTask?.Failure is {Status:not "cancelled"})TaskDetailsExpanded=true;
+        if(e.PropertyName==nameof(ArchiveTaskRow.Failure) && ReferenceEquals(sender,SelectedTask) && ShouldExpandTaskDetails(SelectedTask))TaskDetailsExpanded=true;
         if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure) or nameof(ArchiveTaskRow.Paused) or nameof(ArchiveTaskRow.PauseRequested)) RefreshWorkspaceTasks();
     }
 

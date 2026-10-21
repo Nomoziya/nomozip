@@ -156,7 +156,7 @@ public sealed partial class MainViewModel : ObservableObject
     public string VaultSummary => VaultLocked ? UiText.Get("T_b4caab65183a") : vaultAvailable ? UiText.Format("T_357176e2a16d", allPasswords.Count(value => value.AutoTry)) : UiText.Get("T_98b23dcfbd8c");
     public string TaskSummary => UiText.Format("T_3292893c1e67", Tasks.Count(value => !value.Completed), Tasks.Count(value => value.Completed));
     public string ExtractButtonText => UiText.Format("T_ab3ecbe376c2", Tasks.Count(value => !value.Completed));
-    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {TaskDetailsExpanded=value?.Failure is {Status:not "cancelled"};Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(CanChangeExtractionLayout));Changed(nameof(SelectedTaskPauseCaption));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
+    public ArchiveTaskRow? SelectedTask { get => selectedTask; set { if(Set(ref selectedTask,value)) {TaskDetailsExpanded=ShouldExpandTaskDetails(value);Changed(nameof(DisplayOutputPath));Changed(nameof(IsOutputPathReadOnly));Changed(nameof(CanChangeExtractionLayout));Changed(nameof(SelectedTaskPauseCaption));if(queueAttempts.Count>0) RefreshQueuePasswordAction();} } }
     public SavedPassword? SelectedPassword { get => selectedPassword; set { if (Set(ref selectedPassword, value)) { Changed(nameof(DuplicateSummary)); CommandManager.InvalidateRequerySuggested(); } } }
 
     public async Task InitializeAsync()
