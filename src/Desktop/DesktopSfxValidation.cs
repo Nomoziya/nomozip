@@ -34,7 +34,7 @@ internal static class DesktopSfxValidation
                 });
                 var model=new MainViewModel(baseDirectory,Path.Combine(data,"state-"+version),vault,dialogs);window.DataContext=model;await model.InitializeAsync();model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();
                 model.Page=3;model.AddCompressionSources([source]);model.CompressionOutput=Path.Combine(data,version+".7z");await Layout(window);
-                var view=(CompressionView)window.FindName("CompressionPage");view.AdvancedOptions.IsExpanded=true;var sfx=(CheckBox)view.FindName("SfxBox");var create=(Button)view.FindName("CreateButton");
+                var view=(CompressionView)window.FindName("CompressionPage");view.AdvancedOptions.IsExpanded=true;var sfx=(CheckBox)view.FindName("SfxBox");var create=(Button)view.FindName("CreateButton");sfx.BringIntoView();await Layout(window);
                 Check(version+" default ordinary compression and SFX available",!model.CompressionSfx && sfx.IsEnabled && model.CanUseSfx);
                 Check(version+" accessible SFX checkbox",UIElementAutomationPeer.CreatePeerForElement(sfx)!.IsKeyboardFocusable() && UIElementAutomationPeer.CreatePeerForElement(sfx)!.GetName().Contains("自解压"));
                 Toggle(sfx);await Layout(window);Check(version+" actual toggle changes extension and explanation",model.CompressionSfx && model.CompressionOutput.EndsWith(".exe") && model.CompressionSfxHint.Contains("不自动运行"));

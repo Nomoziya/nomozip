@@ -106,11 +106,16 @@ internal static class DesktopUsabilityValidation
             {
                 var filters=window.CompactTaskFilter;
                 window.Left=0;window.Top=0;window.Opacity=1;window.Activate();await Layout();
-                ((IExpandCollapseProvider)UIElementAutomationPeer.CreatePeerForElement(filters)!.GetPattern(PatternInterface.ExpandCollapse)).Expand();await Layout();
+                var filterPeer=UIElementAutomationPeer.CreatePeerForElement(filters)!;
+                if(filterPeer.GetPattern(PatternInterface.ExpandCollapse) is not IExpandCollapseProvider expand)throw new Exception("Task filter does not expose ExpandCollapse.");
+                expand.Expand();await Layout();
                 for(var attempt=0;attempt<40 && filters.ItemContainerGenerator.ContainerFromIndex(4) is not ComboBoxItem;attempt++)
                 {if(filters.Template.FindName("PART_Popup",filters) is Popup {Child:FrameworkElement child})child.UpdateLayout();await Task.Delay(25);await Layout();}
                 if(filters.ItemContainerGenerator.ContainerFromIndex(4) is not ComboBoxItem failedItem)throw new Exception("Visible task filter popup did not realize its six choices.");
-                ((ISelectionItemProvider)UIElementAutomationPeer.CreatePeerForElement(failedItem)!.GetPattern(PatternInterface.SelectionItem)).Select();
+                // SelectionItem is exposed by item data peers under the ComboBox peer, not container wrapper peers.
+                var choices=filterPeer.GetChildren().Where(peer=>peer.GetPattern(PatternInterface.SelectionItem) is ISelectionItemProvider).ToArray();
+                if(choices.Length!=6)throw new Exception($"Task filter exposes {choices.Length} selection peers instead of six.");
+                ((ISelectionItemProvider)choices[4].GetPattern(PatternInterface.SelectionItem)).Select();
                 filters.IsDropDownOpen=false;await Layout();
                 window.Left=window.Top=-32000;window.Opacity=0;
                 check($"six task filters reachable {mode} {width}",filters.Items.Count==6 && Fits(filters) && model.TaskFilterIndex==4);
