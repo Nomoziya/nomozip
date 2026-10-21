@@ -90,6 +90,10 @@ internal static class DesktopPostReleaseValidation
             browser.FilterExtensionsBox.Text="txt";browser.FilterExtensionsBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();view.Search="";await Layout(browser);
             Check("filter textbox uses real binding",view.FilterExtensions=="txt" && view.VisibleRows.Count==2);
             Check("hidden checked entry retained with accurate count",view.SelectedEntries.Single().Path.Replace('\\','/')=="folder/b.jpg" && view.CompactSelectionSummary.Contains("1"));
+            Check("hidden selection is explicitly counted",view.CompactSelectionSummary==UiText.Format("Browser.HiddenSelection",1,1));
+            Toggle(browser.SelectedOnlyBox);await Layout(browser);
+            Check("selected only reveals hidden entries without changing extraction scope",view.ShowSelectedOnly && view.FilterExtensions=="" && view.VisibleRows.Single().Path.Replace('\\','/')=="folder/b.jpg" && view.SelectedEntries.Count==1);
+            Toggle(browser.SelectedOnlyBox);view.FilterExtensions="txt";await Layout(browser);
             Invoke(browser.ExtractSelectedButton);await Layout(browser);await view.WaitForIdleAsync();await Layout(browser);
             Check("actual hidden selection engine result "+selectionResult?.Code,selectionResult?.IsSuccess==true);
             Check("filtered selection extracts actual hidden entry only",Directory.Exists(output) && Directory.GetFiles(output,"*",SearchOption.AllDirectories).Length==1 && File.ReadAllText(Path.Combine(output,"folder/b.jpg"))=="folder/b.jpg");
@@ -110,6 +114,7 @@ internal static class DesktopPostReleaseValidation
                 Capture(browser,$"filters-{mode}-{width}");
             }
             browser.Close();browser=null;
+            await DesktopUsabilityValidation.RunAsync(window,theme,data,baseDirectory,Check,Capture);
             theme.SetMode("light");theme.Apply(false);
             foreach(var count in new[]{10000,100000})
             {
@@ -125,7 +130,11 @@ internal static class DesktopPostReleaseValidation
                 Check($"large inventory bound search completes {count}",large.VisibleRows.Count==count);
                 var realized=Descendants(browser.EntryTable).OfType<DataGridRow>().Count();
                 Check($"large list realizes a bounded number of rows {count}",realized>0 && realized<200);
-                watch.Restart();CollectionViewSource.GetDefaultView(large.VisibleRows).SortDescriptions.Add(new(nameof(ArchiveContentRow.Path),System.ComponentModel.ListSortDirection.Descending));await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
+                watch.Restart();
+                var header=Descendants(browser.EntryTable).OfType<System.Windows.Controls.Primitives.DataGridColumnHeader>().Single(item=>item.Column==browser.EntryTable.Columns[1]);
+                ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(header)!.GetPattern(PatternInterface.Invoke)).Invoke();
+                await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
+                Check($"actual column header uses typed sorting {count}",((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is ArchiveContentComparer);
                 Capture(browser,$"large-list-{count}");
                 await Task.Delay(40);heartbeat.Stop();
                 performance.Add(new{count,openMs,searchMs,sortMs,maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});

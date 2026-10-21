@@ -240,7 +240,7 @@
                 </ContextMenu>
               </Button.ContextMenu>
 
-            </Button></WrapPanel><ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"/></DockPanel></Border>
+            </Button></WrapPanel><ListBox ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Style="{StaticResource PillTabs}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}"><ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel></ListBox></DockPanel></Border>
         <ScrollViewer Grid.Row="2" x:Name="ExtractionViewport" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0">
           <Grid x:Name="ExtractionLayout">
             <Grid.ColumnDefinitions>

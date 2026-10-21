@@ -149,6 +149,7 @@
           </Button.Style>
         </Button>
       </WrapPanel>
+      <CheckBox x:Name="SelectedOnlyBox" Content="{loc:Text Browser.SelectedOnly}" IsChecked="{Binding ShowSelectedOnly}" IsEnabled="{Binding CanSelect}" Margin="8,8,8,0" ToolTip="{loc:Text Browser.SelectedOnlyHint}" AutomationProperties.Name="{loc:Text Browser.SelectedOnly}"/>
       <Expander x:Name="AdvancedFilters" Header="{loc:Text Browser.Filters}" Margin="8,8,8,0" IsEnabled="{Binding CanSelect}">
         <StackPanel Margin="0,8,0,0">
           <WrapPanel>
@@ -245,7 +246,7 @@
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="12,0,0,0"><ToggleButton x:Name="ListViewAction" Tag="list" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.ListView}" ToolTip="{loc:Text Browser.ListView}" Margin="0,0,4,0" IsChecked="True"><loc:FluentIcon Kind="TaskListSquareLtr" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton><ToggleButton x:Name="GridViewAction" Tag="grid" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.GridView}" ToolTip="{loc:Text Browser.GridView}"><loc:FluentIcon Kind="Grid" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton></StackPanel>
           <Button x:Name="BrowserTasksAction" DockPanel.Dock="Right" Style="{StaticResource SubtleButton}" Click="OnShowTasks" Visibility="Collapsed" Padding="4" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.Tasks}"><TextBlock x:Name="BrowserTaskActivity" TextTrimming="CharacterEllipsis" MaxWidth="150" AutomationProperties.LiveSetting="Polite" VerticalAlignment="Center"/></Button>
           <TextBlock DockPanel.Dock="Right" Text="{Binding OperationMessage}" TextTrimming="CharacterEllipsis" MaxWidth="160" VerticalAlignment="Center" ToolTip="{Binding OperationMessage}" AutomationProperties.LiveSetting="Polite"/>
-          <TextBlock x:Name="ContentsSummary" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectionSummary}" AutomationProperties.LiveSetting="Polite">
+          <TextBlock x:Name="ContentsSummary" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompactSelectionSummary}" AutomationProperties.LiveSetting="Polite">
             <TextBlock.Text>
               <MultiBinding StringFormat="{}{0} · {1}"><Binding Path="CompactSummary"/><Binding Path="CompactSelectionSummary"/></MultiBinding>
             </TextBlock.Text>

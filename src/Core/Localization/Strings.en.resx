@@ -3197,7 +3197,7 @@ A password is required to validate the archive data.</value>
   <data name="FileType.Pdf" xml:space="preserve"><value>PDF document</value></data>
   <data name="FileType.Sheet" xml:space="preserve"><value>{0} sheet</value></data>
   <data name="FileType.Archive" xml:space="preserve"><value>{0} archive</value></data>
-  <data name="Compression.SourceCount" xml:space="preserve"><value>{0:count:item:items} · {1} selected</value></data>
+  <data name="Compression.SourceCount" xml:space="preserve"><value>All {0:count:item:items} will be archived · {1} selected for removal</value></data>
   <data name="Vault.StatusLocked" xml:space="preserve"><value>Locked</value></data>
   <data name="Vault.StatusUnlocked" xml:space="preserve"><value>Unlocked</value></data>
   <data name="Vault.StatusLocal" xml:space="preserve"><value>Windows protection</value></data>
@@ -3337,4 +3337,18 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Browser.FilterHint" xml:space="preserve"><value>Filters show matches across folders. Hidden checked items remain included when extracting the selection.</value></data>
 
   <data name="SoftwareUpdate.SettingsSaved" xml:space="preserve"><value>Update settings saved.</value></data>
+  <data name="Browser.HiddenSelection" xml:space="preserve"><value>{0} selected, including {1} currently hidden</value></data>
+  <data name="Browser.SelectedOnly" xml:space="preserve"><value>Selected only</value></data>
+  <data name="Browser.SelectedOnlyHint" xml:space="preserve"><value>Clear current filters and show selected entries across folders without changing the extraction selection.</value></data>
+  <data name="Tasks.Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Tasks.Paused" xml:space="preserve"><value>Paused</value></data>
+  <data name="Compression.Profiles" xml:space="preserve"><value>Compression profiles</value></data>
+  <data name="Compression.ChooseProfile" xml:space="preserve"><value>Use a saved profile</value></data>
+  <data name="Compression.ProfileName" xml:space="preserve"><value>Profile name (replaces the same name)</value></data>
+  <data name="Compression.SaveProfile" xml:space="preserve"><value>Save current options</value></data>
+  <data name="Compression.DeleteProfile" xml:space="preserve"><value>Delete profile</value></data>
+  <data name="Compression.ProfileHint" xml:space="preserve"><value>Profiles save format, level and volume options, without paths or passwords. Starting creation remembers the last options automatically.</value></data>
+  <data name="Compression.ProfileSaved" xml:space="preserve"><value>Compression profile saved.</value></data>
+  <data name="Compression.ProfileDeleted" xml:space="preserve"><value>Profile deleted. Current options are unchanged.</value></data>
+  <data name="Compression.ProfileSaveFailed" xml:space="preserve"><value>Could not save compression options. Check that the settings folder is writable.</value></data>
 </root>

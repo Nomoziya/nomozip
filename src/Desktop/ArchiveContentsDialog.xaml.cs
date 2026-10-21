@@ -11,6 +11,20 @@ public partial class ArchiveContentsDialog : Window
     public ArchiveContentsDialog(ArchiveContentsViewModel model)
     {
         InitializeComponent(); DataContext = model;
+        var sortFields=new List<System.ComponentModel.SortDescription>();
+        EntryTable.Sorting += (_,args) =>
+        {
+            args.Handled=true;
+            var direction=args.Column.SortDirection==System.ComponentModel.ListSortDirection.Ascending
+                ?System.ComponentModel.ListSortDirection.Descending:System.ComponentModel.ListSortDirection.Ascending;
+            if((Keyboard.Modifiers & ModifierKeys.Shift)==0)sortFields.Clear();
+            var index=sortFields.FindIndex(field=>field.PropertyName==args.Column.SortMemberPath);
+            var field=new System.ComponentModel.SortDescription(args.Column.SortMemberPath,direction);
+            if(index<0)sortFields.Add(field);else sortFields[index]=field;
+            foreach(var column in EntryTable.Columns)column.SortDirection=sortFields.Where(item=>item.PropertyName==column.SortMemberPath).Select(item=>(System.ComponentModel.ListSortDirection?)item.Direction).FirstOrDefault();
+            ((System.Windows.Data.ListCollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(model.VisibleRows)).CustomSort=
+                new ArchiveContentComparer(sortFields.ToArray(),System.Globalization.CultureInfo.CurrentCulture);
+        };
         foreach(var item in EditContentsMenu.Items.OfType<MenuItem>())
             if(item.Icon is FluentIcon icon)
                 icon.SetBinding(Control.ForegroundProperty,new System.Windows.Data.Binding(nameof(Control.Foreground)) {Source=item});

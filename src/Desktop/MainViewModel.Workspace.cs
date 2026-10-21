@@ -62,11 +62,21 @@ public sealed partial class MainViewModel
         var row=new ArchiveTaskRow(CompressionOutput) {IsCompression=true,Running=true,IsIndeterminate=true,Status=UiText.Get("Redesign.CompressionTask")};
         row.PropertyChanged+=WorkspaceTaskChanged;WorkspaceTasks.Add(row);RefreshWorkspaceTasks(false);SelectedTask=row;return row;
     }
-    public int TaskFilterIndex { get => taskFilterIndex; set { if (Set(ref taskFilterIndex,Math.Clamp(value,0,3))) { taskView?.Refresh(); Changed(nameof(ShowCompressionActivity)); } } }
-    public IReadOnlyList<string> TaskFilters {get;} = [UiText.Get("Redesign.AllTasks"),UiText.Get("Redesign.RunningTasks"),UiText.Get("Redesign.PendingTasks"),UiText.Get("Redesign.EndedTasks")];
-    public IReadOnlyList<TaskFilterBadge> TaskFilterBadges {get;} = new[] {"Redesign.AllTasks","Redesign.RunningTasks","Redesign.PendingTasks","Redesign.EndedTasks"}.Select(key=>new TaskFilterBadge(UiText.Get(key))).ToArray();
+    private static readonly string[] taskFilterKeys = ["Redesign.AllTasks","Redesign.RunningTasks","Redesign.PendingTasks","Redesign.EndedTasks","Tasks.Failed","Tasks.Paused"];
+    public int TaskFilterIndex { get => taskFilterIndex; set { if (Set(ref taskFilterIndex,Math.Clamp(value,0,taskFilterKeys.Length-1))) { taskView?.Refresh(); Changed(nameof(ShowCompressionActivity)); } } }
+    public IReadOnlyList<string> TaskFilters {get;} = taskFilterKeys.Select(UiText.Get).ToArray();
+    public IReadOnlyList<TaskFilterBadge> TaskFilterBadges {get;} = taskFilterKeys.Select(key=>new TaskFilterBadge(UiText.Get(key))).ToArray();
     public bool ShowCompressionActivity => HasCompressionActivity && (TaskFilterIndex==0 || TaskFilterIndex==1 && CompressionRunning || TaskFilterIndex==3 && !CompressionRunning);
-    private bool MatchesTaskFilter(ArchiveTaskRow row) => TaskFilterIndex switch {1=>row.Running,2=>!row.Running && !row.Completed && row.Failure is null,3=>row.Completed || row.Failure is not null,_=>true};
+    private bool MatchesTaskFilter(ArchiveTaskRow row) => MatchesTaskFilter(row,TaskFilterIndex);
+    private bool MatchesTaskFilter(ArchiveTaskRow row,int filter) => filter switch
+    {
+        1=>row.Running,
+        2=>!row.Running && !row.Completed && row.Failure is null,
+        3=>row.Completed || row.Failure is not null,
+        4=>!row.Running && !row.Completed && row.Failure is {Status:not "cancelled"},
+        5=>row.Running && (row.Paused || row.PauseRequested || IsQueuePaused && !row.IsCompression),
+        _=>true
+    };
     private void RefreshWorkspaceTasks(bool refreshView = true)
     {
         // Collection changes already reach ListCollectionView. Refreshing during
@@ -76,11 +86,11 @@ public sealed partial class MainViewModel
             var selected=SelectedTask;taskView.Refresh();
             if(selected is not null && taskView.Contains(selected)){taskView.MoveCurrentTo(selected);SelectedTask=selected;}
         }
-        for(var index=0;index<4;index++) TaskFilterBadges[index].Count=WorkspaceTasks.Count(row=>index switch {1=>row.Running,2=>!row.Running && !row.Completed && row.Failure is null,3=>row.Completed || row.Failure is not null,_=>true});
+        for(var index=0;index<taskFilterKeys.Length;index++) TaskFilterBadges[index].Count=WorkspaceTasks.Count(row=>MatchesTaskFilter(row,index));
         Changed(nameof(TaskSummary));Changed(nameof(WorkspaceTaskSummary));Changed(nameof(ActiveTaskCount));Changed(nameof(FileWorkspaceTaskSummary));Changed(nameof(ShowCompressionActivity));
     }
     private void WorkspaceTaskChanged(object? sender,PropertyChangedEventArgs e)
-    {if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure)) RefreshWorkspaceTasks();}
+    {if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure) or nameof(ArchiveTaskRow.Paused) or nameof(ArchiveTaskRow.PauseRequested)) RefreshWorkspaceTasks();}
 
     internal async Task SaveVaultDetailsAsync(SavedPassword edited)
     {

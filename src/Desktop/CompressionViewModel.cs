@@ -120,6 +120,7 @@ public sealed partial class MainViewModel
     private string CompressionFormatName => CompressionOptions.Name;
     private void InitializeCompressionCommands()
     {
+        InitializeCompressionProfiles();
         AddCompressionFilesCommand = new RelayCommand(() => AddCompressionSources(dialogs.SelectCompressionFiles()), () => IsIdle);
         AddCompressionFolderCommand = new RelayCommand(() => { if (dialogs.SelectCompressionFolder() is { } path) AddCompressionSources([path]); }, () => IsIdle);
         RemoveCompressionSourceCommand = new RelayCommand(() =>
@@ -159,10 +160,12 @@ public sealed partial class MainViewModel
         if(!VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out var volumeSize)) {CompressionMessage=CompressionVolumeError;return;}
         if (!Path.GetExtension(CompressionOutput).Equals(CompressionExtension, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = UiText.Get("T_b64114dffb9b"); return; }
         if(volumeSize>0 && VolumeCompressionService.HasExistingTarget(CompressionOutput)) {CompressionMessage=UiText.Get("T_c4d54b1608b5");return;}
+        lastCompressionProfile = CaptureCompressionProfile("");
         IsBusy=true;idle=new TaskCompletionSource();cancellation=new CancellationTokenSource();
         ArchiveTaskRow? workspaceTask=null;
         try
         {
+        if (!await PersistCompressionProfilesAsync()) Banner = UiText.Get("Compression.ProfileSaveFailed");
         SfxModule? module=null;
         if(CompressionSfx)
         {

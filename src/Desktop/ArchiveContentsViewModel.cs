@@ -110,16 +110,15 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     {
         var valid=ArchiveEntryFilter.TryCreate(filterExtensions,filterMinimum,filterMaximum,filterKindIndex,out var filter);
         FilterError=valid?"":UiText.Get("Browser.FilterError");
-        var acrossFolders=search.Length>0 || filterExtensions.Length>0 || filterMinimum.Length>0 || filterMaximum.Length>0 || filterKindIndex!=0;
-        bool Matches(ArchiveContentRow row)=>valid && row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase) && filter.Matches(row.Entry);
+        var acrossFolders=showSelectedOnly || search.Length>0 || filterExtensions.Length>0 || filterMinimum.Length>0 || filterMaximum.Length>0 || filterKindIndex!=0;
+        bool Matches(ArchiveContentRow row)=>valid && (!showSelectedOnly || row.Selected) && row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase) && filter.Matches(row.Entry);
         var previous=CurrentRow;
-        var matches=allRows.Where(Matches).ToArray();
-        var matchSet=matches.ToHashSet();
-        var visible=orderedRows.Where(row=>matchSet.Contains(row) && (acrossFolders || string.Equals(Parent(Normalize(row.Path)),currentFolder,StringComparison.OrdinalIgnoreCase))).ToArray();
+        var matches=orderedRows.Where(Matches).ToArray();
+        var visible=acrossFolders?matches:matches.Where(row=>string.Equals(row.ParentPath,currentFolder,StringComparison.OrdinalIgnoreCase)).ToArray();
         foreach(var row in visible) row.ShowPath=acrossFolders;
         Rows.ReplaceAll(matches);VisibleRows.ReplaceAll(visible);
         CurrentRow=previous is not null && visible.Contains(previous)?previous:null;
-        Changed(nameof(Summary));Changed(nameof(CompactSummary));Changed(nameof(VisibleSelection));
+        Changed(nameof(Summary));Changed(nameof(CompactSummary));Changed(nameof(VisibleSelection));Changed(nameof(CompactSelectionSummary));
         CommandManager.InvalidateRequerySuggested();
     }
     private string filterExtensions="",filterMinimum="",filterMaximum="",filterError="";
@@ -132,11 +131,26 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public IReadOnlyList<string> FilterKindChoices {get;}=[UiText.Get("Browser.AllKinds"),UiText.Get("Browser.FilesOnly"),UiText.Get("Browser.FoldersOnly")];
     public ICommand ClearFiltersCommand => new RelayCommand(()=>
     {
-        search=filterExtensions=filterMinimum=filterMaximum="";filterKindIndex=0;
-        foreach(var name in new[]{nameof(Search),nameof(FilterExtensions),nameof(FilterMinimum),nameof(FilterMaximum),nameof(FilterKindIndex)})Changed(name);
+        search=filterExtensions=filterMinimum=filterMaximum="";filterKindIndex=0;showSelectedOnly=false;
+        foreach(var name in new[]{nameof(Search),nameof(FilterExtensions),nameof(FilterMinimum),nameof(FilterMaximum),nameof(FilterKindIndex),nameof(ShowSelectedOnly)})Changed(name);
         FilterRows();
     },()=>CanSelect);
     private bool gridView;
+    private bool showSelectedOnly;
+    public bool ShowSelectedOnly
+    {
+        get=>showSelectedOnly;
+        set
+        {
+            if (!Set(ref showSelectedOnly,value)) return;
+            if(value)
+            {
+                search=filterExtensions=filterMinimum=filterMaximum="";filterKindIndex=0;
+                foreach(var name in new[]{nameof(Search),nameof(FilterExtensions),nameof(FilterMinimum),nameof(FilterMaximum),nameof(FilterKindIndex)})Changed(name);
+            }
+            FilterRows();
+        }
+    }
     public bool GridView {get=>gridView;set=>Set(ref gridView,value);}
     internal void ClearPreviewThumbnails() {foreach(var row in allRows)row.PreviewThumbnail=null;}
     private string currentFolder="";
@@ -150,8 +164,8 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     {
         path=Normalize(path);
         if(!CanSelect || path.Length>0 && !allRows.Any(row=>row.Entry.Directory && string.Equals(Normalize(row.Path),path,StringComparison.OrdinalIgnoreCase)))return;
-        currentFolder=path;search=filterExtensions=filterMinimum=filterMaximum="";filterKindIndex=0;
-        foreach(var name in new[]{nameof(Search),nameof(FilterExtensions),nameof(FilterMinimum),nameof(FilterMaximum),nameof(FilterKindIndex),nameof(CurrentFolder)})Changed(name);
+        currentFolder=path;search=filterExtensions=filterMinimum=filterMaximum="";filterKindIndex=0;showSelectedOnly=false;
+        foreach(var name in new[]{nameof(Search),nameof(FilterExtensions),nameof(FilterMinimum),nameof(FilterMaximum),nameof(FilterKindIndex),nameof(CurrentFolder),nameof(ShowSelectedOnly)})Changed(name);
         FilterRows();RefreshBreadcrumbs();CurrentRow=null;
     }
     private void RefreshBreadcrumbs()
@@ -243,7 +257,17 @@ public sealed class ArchiveContentsViewModel : ObservableObject
         }
     }
     public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
-    public string CompactSelectionSummary=>UiText.Format("Browser.CompactSelection",SelectedEntries.Count);
+    public string CompactSelectionSummary
+    {
+        get
+        {
+            var selected=SelectedEntries;
+            if(selected.Count==0) return UiText.Format("Browser.CompactSelection",0);
+            var visible=VisibleRows.Where(row=>!row.Virtual).Select(row=>row.Entry.Index).ToHashSet();
+            var hidden=selected.Count(entry=>!visible.Contains(entry.Index));
+            return hidden==0?UiText.Format("Browser.CompactSelection",selected.Count):UiText.Format("Browser.HiddenSelection",selected.Count,hidden);
+        }
+    }
     public string CompactSummary=>UiText.Format("Browser.CompactCount",VisibleRows.Count);
     public bool? VisibleSelection
     {
@@ -262,6 +286,7 @@ public sealed class ArchiveContentsViewModel : ObservableObject
             }
         }
         finally {selecting=false;}
+        if(showSelectedOnly)FilterRows();
         Changed(nameof(SelectionSummary));Changed(nameof(CompactSelectionSummary));Changed(nameof(VisibleSelection));CommandManager.InvalidateRequerySuggested();
     }
     private void SetSelection(IEnumerable<ArchiveContentRow> rows,bool value)
@@ -298,12 +323,15 @@ public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace,EditText}
 
 public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=false) : ObservableObject
 {
+    internal string ParentPath {get;}=ParentOf(entry.Path);
+    private static string ParentOf(string path) {var normalized=path.Replace('\\','/').TrimEnd('/');var slash=normalized.LastIndexOf('/');return slash<0?"":normalized[..slash];}
     public bool Virtual=>virtualFolder;
     private System.Windows.Media.ImageSource? previewThumbnail;
     public System.Windows.Media.ImageSource? PreviewThumbnail {get=>previewThumbnail;internal set=>Set(ref previewThumbnail,value);}
     private bool showPath;
     internal bool ShowPath {get=>showPath;set {if(Set(ref showPath,value))Changed(nameof(DisplayName));}}
-    public string DisplayName=>ShowPath?Path:System.IO.Path.GetFileName(Path.Replace('\\','/').TrimEnd('/'));
+    private readonly string displayName=System.IO.Path.GetFileName(entry.Path.Replace('\\','/').TrimEnd('/'));
+    public string DisplayName=>ShowPath?Path:displayName;
     private bool selected;
     public ArchiveEntry Entry=>entry;
     public bool Selected {get=>selected;set=>Set(ref selected,value);}

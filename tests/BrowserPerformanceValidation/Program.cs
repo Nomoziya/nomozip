@@ -13,6 +13,7 @@ internal static class Program
     {
         var samples = new List<object>();
         foreach (var count in new[] { 10000, 100000 })
+        for(var attempt=1;attempt<=3;attempt++)
         {
             GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
             var memory = GC.GetTotalMemory(true);
@@ -24,11 +25,15 @@ internal static class Program
             watch.Restart(); model.Search = ".txt"; var search = watch.Elapsed.TotalMilliseconds;
             watch.Restart(); view.SortDescriptions.Add(new SortDescription(nameof(ArchiveContentRow.Path), ListSortDirection.Descending));
             var sort = watch.Elapsed.TotalMilliseconds;
+            var reference=view.Cast<ArchiveContentRow>().Select(row=>row.Entry.Index).ToArray();
+            watch.Restart(); ((ListCollectionView)view).CustomSort=new ArchiveContentComparer(nameof(ArchiveContentRow.Path),ListSortDirection.Descending,System.Globalization.CultureInfo.CurrentCulture);
+            var typedSort=watch.Elapsed.TotalMilliseconds;
+            if(!reference.SequenceEqual(view.Cast<ArchiveContentRow>().Select(row=>row.Entry.Index)))throw new Exception("Optimized sort changed inventory order.");
             watch.Restart(); model.Search = "file-000"; var narrow = watch.Elapsed.TotalMilliseconds;
             watch.Restart(); model.Search = ""; model.Navigate("folder-001"); var navigate = watch.Elapsed.TotalMilliseconds;
-            samples.Add(new { count, openMs = open, searchMs = search, sortMs = sort, narrowSearchMs = narrow, navigateMs = navigate,
+            samples.Add(new { count, attempt, openMs = open, searchMs = search, legacySortMs = sort, sortMs = typedSort, narrowSearchMs = narrow, navigateMs = navigate,
                 retainedBytes = GC.GetTotalMemory(true) - memory, peakWorkingSet = Process.GetCurrentProcess().PeakWorkingSet64,
-                maxSynchronousMs = new[] {open,search,sort,narrow,navigate}.Max(), visible = model.VisibleRows.Count });
+                maxSynchronousMs = new[] {open,search,typedSort,narrow,navigate}.Max(), visible = model.VisibleRows.Count });
         }
         var result = new { runtime = Environment.Version.ToString(), architecture = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(),
             environment = "ViewModel and WPF collection view only; no desktop window or input", samples };

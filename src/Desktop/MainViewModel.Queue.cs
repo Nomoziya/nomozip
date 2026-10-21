@@ -15,7 +15,7 @@ public sealed partial class MainViewModel
         if(queuePause is null) return;
         if(queuePause.IsRequested) {queuePause.Resume();Footer=UiText.Get("T_fb1f94c09208");}
         else {queuePause.Pause();Footer=UiText.Get("T_642a46d4d83a");}
-        Changed(nameof(QueuePauseCaption));Changed(nameof(IsQueuePaused));Changed(nameof(CanToggleTaskPause));RefreshQueuePasswordAction();
+        Changed(nameof(QueuePauseCaption));Changed(nameof(IsQueuePaused));Changed(nameof(CanToggleTaskPause));RefreshQueuePasswordAction();RefreshWorkspaceTasks();
     }
     private int queueConcurrency=1;
     private readonly Dictionary<ArchiveTaskRow,(CancellationTokenSource Skip,bool Trying)> queueAttempts=[];

@@ -3197,7 +3197,7 @@
   <data name="FileType.Pdf" xml:space="preserve"><value>PDF 文档</value></data>
   <data name="FileType.Sheet" xml:space="preserve"><value>{0} 表格</value></data>
   <data name="FileType.Archive" xml:space="preserve"><value>{0} 压缩包</value></data>
-  <data name="Compression.SourceCount" xml:space="preserve"><value>{0} 项 · 已选择 {1} 项</value></data>
+  <data name="Compression.SourceCount" xml:space="preserve"><value>将打包全部 {0} 项 · 已勾选 {1} 项用于移除</value></data>
   <data name="Vault.StatusLocked" xml:space="preserve"><value>已锁定</value></data>
   <data name="Vault.StatusUnlocked" xml:space="preserve"><value>已解锁</value></data>
   <data name="Vault.StatusLocal" xml:space="preserve"><value>本机加密保护</value></data>
@@ -3337,4 +3337,18 @@
   <data name="Browser.FilterHint" xml:space="preserve"><value>筛选跨目录显示匹配条目；隐藏的已选内容仍会包含在所选解压中。</value></data>
 
   <data name="SoftwareUpdate.SettingsSaved" xml:space="preserve"><value>更新设置已保存。</value></data>
+  <data name="Browser.HiddenSelection" xml:space="preserve"><value>已选择 {0} 项，其中 {1} 项当前不可见</value></data>
+  <data name="Browser.SelectedOnly" xml:space="preserve"><value>只看已选</value></data>
+  <data name="Browser.SelectedOnlyHint" xml:space="preserve"><value>清除当前筛选，跨目录显示所有已选条目；不改变解压范围。</value></data>
+  <data name="Tasks.Failed" xml:space="preserve"><value>失败</value></data>
+  <data name="Tasks.Paused" xml:space="preserve"><value>已暂停</value></data>
+  <data name="Compression.Profiles" xml:space="preserve"><value>压缩方案</value></data>
+  <data name="Compression.ChooseProfile" xml:space="preserve"><value>使用已有方案</value></data>
+  <data name="Compression.ProfileName" xml:space="preserve"><value>方案名称（同名将替换）</value></data>
+  <data name="Compression.SaveProfile" xml:space="preserve"><value>保存当前参数</value></data>
+  <data name="Compression.DeleteProfile" xml:space="preserve"><value>删除方案</value></data>
+  <data name="Compression.ProfileHint" xml:space="preserve"><value>保存格式、压缩级别和分卷参数，不包含路径或密码。开始创建时自动记住上次参数。</value></data>
+  <data name="Compression.ProfileSaved" xml:space="preserve"><value>压缩方案已保存。</value></data>
+  <data name="Compression.ProfileDeleted" xml:space="preserve"><value>压缩方案已删除，当前参数保留。</value></data>
+  <data name="Compression.ProfileSaveFailed" xml:space="preserve"><value>无法保存压缩参数，请检查设置目录是否可写。</value></data>
 </root>

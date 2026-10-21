@@ -108,7 +108,7 @@
                 </Style>
               </TextBlock.Style>
             </TextBlock>
-            <TextBlock Grid.Row="2" Text="{Binding CompressionSourceSummary}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding SelectedCompressionSource.Path}" Margin="20,14,12,14"/>
+            <TextBlock Grid.Row="2" Text="{Binding CompressionSourceSummary}" Style="{StaticResource Secondary}" TextWrapping="Wrap" ToolTip="{Binding CompressionSourceSummary}" Margin="20,14,12,14" AutomationProperties.LiveSetting="Polite"/>
           </Grid>
         </Border>
         <Border x:Name="SettingsPanel" Grid.Column="2" Style="{StaticResource WorkspaceCard}" Padding="24,12,24,16" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,0,0,0">
@@ -136,6 +136,19 @@
                 <Label Content="{loc:Text Redesign.ArchiveName}" Target="{Binding ElementName=ArchiveNameBox}" Padding="0" VerticalAlignment="Center"/>
                 <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionOutputName}" IsEnabled="{Binding IsIdle}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
               </Grid>
+              <Expander Header="{loc:Text Compression.Profiles}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
+                <StackPanel Margin="0,8,0,0">
+                  <Label Content="{loc:Text Compression.ChooseProfile}" Target="{Binding ElementName=CompressionProfileBox}" Padding="0,0,0,4"/>
+                  <ComboBox x:Name="CompressionProfileBox" ItemsSource="{Binding CompressionProfiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCompressionProfile}" AutomationProperties.Name="{loc:Text Compression.ChooseProfile}" Margin="0,0,0,8"/>
+                  <Label Content="{loc:Text Compression.ProfileName}" Target="{Binding ElementName=CompressionProfileNameBox}" Padding="0,0,0,4"/>
+                  <TextBox x:Name="CompressionProfileNameBox" Text="{Binding CompressionProfileName,UpdateSourceTrigger=PropertyChanged}" MaxLength="64" AutomationProperties.Name="{loc:Text Compression.ProfileName}"/>
+                  <WrapPanel Margin="0,8,0,8">
+                    <Button x:Name="SaveCompressionProfileButton" Content="{loc:Text Compression.SaveProfile}" Command="{Binding SaveCompressionProfileCommand}" Margin="0,0,8,4"/>
+                    <Button x:Name="DeleteCompressionProfileButton" Content="{loc:Text Compression.DeleteProfile}" Command="{Binding DeleteCompressionProfileCommand}" Margin="0,0,0,4"/>
+                  </WrapPanel>
+                  <TextBlock Text="{loc:Text Compression.ProfileHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                </StackPanel>
+              </Expander>
               <WrapPanel x:Name="CompressionChoices" Margin="0,2,0,12">
                 <StackPanel Margin="0,0,20,0">
                   <Label Content="{loc:Text T_0e8b1c78c5f3}" Target="{Binding ElementName=FormatBox}" Padding="0" Margin="0,0,0,6"/>

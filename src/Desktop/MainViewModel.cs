@@ -468,6 +468,11 @@ public sealed partial class MainViewModel : ObservableObject
         if (EngineVersions.Contains(settings.EngineVersion)) SelectedEngineVersion = settings.EngineVersion;
         if (!string.IsNullOrWhiteSpace(settings.UpdateRepository)) UpdateRepository = settings.UpdateRepository;
         EngineSourceIndex=settings.EngineSourceIndex;AutoCleanApplicationInstallers=settings.AutoCleanApplicationInstallers;
+        foreach (var profile in settings.CompressionProfiles ?? [])
+            if (profile is { IsValid: true } && !string.IsNullOrWhiteSpace(profile.Name) && profile.Name.Length <= 64
+                && !CompressionProfiles.Any(item => item.Name.Equals(profile.Name, StringComparison.OrdinalIgnoreCase))) CompressionProfiles.Add(profile);
+        lastCompressionProfile = settings.LastCompression is { IsValid: true } ? settings.LastCompression : null;
+        if (lastCompressionProfile is not null) ApplyCompressionProfile(lastCompressionProfile);
         directoryRules=settings.DirectoryRules ?? new();
         if(!Enum.IsDefined(directoryRules.Location) || !Enum.IsDefined(directoryRules.Layout) || !Enum.IsDefined(directoryRules.Collision) || !Enum.IsDefined(directoryRules.Naming))
         { directoryRules=new();settingsWritable=false;Banner=UiText.Get("T_9874c8d6f32d"); }
@@ -479,7 +484,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (!settingsWritable) return;
         Directory.CreateDirectory(dataDirectory);
         RememberCustomDirectory();
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress,EngineSourceIndex,AutoCleanApplicationInstallers)));
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, "settings.json"), JsonSerializer.Serialize(new Settings(1, OutputPath, AutoTry, ConflictPolicy, activeEngine, UpdateRepository,directoryRules,recentOutputPaths,QueueConcurrency,NotifyExtractionSuccess,VaultIdleIndex,RetainExtractionProgress,EngineSourceIndex,AutoCleanApplicationInstallers,lastCompressionProfile,CompressionProfiles.ToArray())));
     }
     private static void OpenFolder(string path)
     {
@@ -496,7 +501,7 @@ public sealed partial class MainViewModel : ObservableObject
         "unsupported_or_corrupt" => UiText.Get("T_21777c1adb09"), "output_write_failed" or "write_failed" => UiText.Get("T_736922310835"),
         "worker_connection_failed" or "engine_load_failed" => UiText.Get("T_ffcd45757108"), _ => UiText.Get("T_54d74bc17776"),
     };
-    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false,int EngineSourceIndex=0,bool AutoCleanApplicationInstallers=true);
+    private sealed record Settings(int Version, string OutputPath, bool AutoTry, int ConflictPolicy, string EngineVersion, string? UpdateRepository = null,ExtractionDirectoryRules? DirectoryRules=null,IReadOnlyList<string>? RecentOutputPaths=null,int QueueConcurrency=1,bool NotifyExtractionSuccess=false,int VaultIdleIndex=2,bool RetainExtractionProgress=false,int EngineSourceIndex=0,bool AutoCleanApplicationInstallers=true,CompressionProfile? LastCompression=null,IReadOnlyList<CompressionProfile>? CompressionProfiles=null);
     public void LoadPreview()
     {
         CompressionSources.Add(new("D:\\Documents\\资料", UiText.Get("T_7c7802d8adae")));
