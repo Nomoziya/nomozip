@@ -12,7 +12,7 @@
 
 ## 验证与资料
 
-功能与界面验证沿用候选589e24b：[x64新流程](https://github.com/Nomoziya/nomozip/actions/runs/39389922372)、[原生ARM64产品](https://github.com/Nomoziya/nomozip/actions/runs/39391092871)、[x64引擎补测](https://github.com/Nomoziya/nomozip/actions/runs/39391099970)。发布阶段另做0.3.3版本打包及正式0.3.2载荷升级/卸载检查；安装器使用隔离验证封装，不在用户本机安装。
+功能与界面验证沿用候选589e24b：[x64新流程](https://github.com/Nomoziya/nomozip/actions/runs/39389922372)、[原生ARM64产品](https://github.com/Nomoziya/nomozip/actions/runs/39391092871)、[x64引擎补测](https://github.com/Nomoziya/nomozip/actions/runs/39391099970)。[正式发行CI39547834713](https://github.com/Nomoziya/nomozip/actions/runs/39547834713)双架构成功：各16份根报告、正式0.3.2载荷升级/首次重启清理/卸载37项、包完整性8项。冻结标签772875f，主程序/CLI为0.3.3.0及同一源码后缀；两个源码ZIP共3308个文件内容一致，3个正式附件的服务器digest与公开回下载字节/摘要均核对通过。旧载荷从固定摘要的正式安装器提取，安装器使用隔离验证封装，不在用户本机安装；包内文档为冻结快照，本页记录最终结果。
 
 性能不是全面提升：相同本地ViewModel十万条目单次样本搜索383→172ms、目录导航48→27ms，打开95→260ms、排序307→353ms。预排序增加首次打开成本，单次采样受JIT影响，不能当作所有归档都更快。原始数据与最终真实WPF界面采样见[实际原图验收](../design-system/reference-20261017/post032-20261020/index.html)。
 
