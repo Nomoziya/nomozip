@@ -3362,4 +3362,18 @@
   <data name="Compression.CreateCount" xml:space="preserve"><value>创建压缩包（{0} 项）</value></data>
   <data name="Compression.ManageProfiles" xml:space="preserve"><value>管理压缩方案</value></data>
   <data name="Compression.CurrentOptions" xml:space="preserve"><value>当前参数</value></data>
+  <data name="Browser.ResetLayout" xml:space="preserve"><value>重置浏览布局</value></data>
+  <data name="Browser.PreferencesSaveFailed" xml:space="preserve"><value>无法保存浏览偏好，请检查设置目录是否可写。</value></data>
+  <data name="Compression.Separate" xml:space="preserve"><value>每项分别压缩</value></data>
+  <data name="Compression.SeparateHint" xml:space="preserve"><value>每个来源生成一个压缩包，使用来源名称；重名自动编号，不覆盖现有文件。</value></data>
+  <data name="Compression.AutomaticNames" xml:space="preserve"><value>按来源名称自动生成</value></data>
+  <data name="Compression.SeparateFilesOnly" xml:space="preserve"><value>此格式分别压缩仅支持文件，请移除文件夹或更换格式。</value></data>
+  <data name="Compression.SeparateOutsideSources" xml:space="preserve"><value>分别压缩时，请将保存位置设在所有来源文件夹之外，以免包含之前生成的压缩包。</value></data>
+  <data name="Compression.SeparateInvalidDirectory" xml:space="preserve"><value>无法使用此保存位置，请检查目录路径和访问权限。</value></data>
+  <data name="Compression.SeparateSourceCount" xml:space="preserve"><value>全部 {0} 项将分别生成 {0} 个压缩包 · 已勾选 {1} 项用于移除</value></data>
+  <data name="Compression.SeparateCreate" xml:space="preserve"><value>创建 {0} 个压缩包</value></data>
+  <data name="Compression.SeparateOutputs" xml:space="preserve"><value>{0} 个独立压缩包</value></data>
+  <data name="Compression.SeparateProgress" xml:space="preserve"><value>正在处理 {0}/{1}：{2} · {3}</value></data>
+  <data name="Compression.SeparateCompleted" xml:space="preserve"><value>已完成 {0}/{1} 个压缩包，失败 {2} 项。</value></data>
+  <data name="Compression.SeparateCancelled" xml:space="preserve"><value>已取消；已完成 {0}/{1} 个压缩包，失败 {2} 项，后续项目未执行。</value></data>
 </root>

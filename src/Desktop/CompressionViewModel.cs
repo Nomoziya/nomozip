@@ -33,12 +33,12 @@ public sealed partial class MainViewModel
     public bool CanEncryptCompression => IsIdle && CompressionOptions.Encryption;
     public bool CanSetCompressionLevel => IsIdle && CompressionOptions.CompressionLevel;
     public bool CanSplitCompression => IsIdle && CompressionOptions.Encryption;
-    public string CompressionSourceError => CompressionOptions.SingleFile && CompressionSources.Count > 0
+    public string CompressionSourceError => CompressionSeparate?SeparateSourceError:CompressionOptions.SingleFile && CompressionSources.Count > 0
         && (CompressionSources.Count != 1 || !File.Exists(CompressionSources[0].Path)) ? UiText.Get("T_238288d05599") : "";
     private void CompressionCapabilitiesChanged()
     {
-        Changed(nameof(CanEncryptCompression));Changed(nameof(CanSetCompressionLevel));Changed(nameof(CanSplitCompression));
-        Changed(nameof(CompressionSourceError));Changed(nameof(CompressionResultSummary));Changed(nameof(CreateArchiveCaption));CommandManager.InvalidateRequerySuggested();
+        Changed(nameof(CanEncryptCompression));Changed(nameof(CanSetCompressionLevel));Changed(nameof(CanSplitCompression));Changed(nameof(CanNameCompression));
+        Changed(nameof(CompressionSourceError));Changed(nameof(CompressionResultSummary));Changed(nameof(CreateArchiveCaption));Changed(nameof(CompressionOutputFileName));CommandManager.InvalidateRequerySuggested();
     }
     public bool CanUseSfx=>IsIdle && Is7zCompression && volumeOption==0 && sfxAvailable;
     public string CompressionSfxHint=>!Is7zCompression?(CompressionFormat==1?UiText.Get("T_aebafd23c2d9"):""):volumeOption!=0?UiText.Get("T_f12fba592449"):!sfxAvailable?UiText.Get("T_5b79de668b3b"):CompressionSfx?UiText.Get("T_ba22f8e0541a"):"";
@@ -59,7 +59,7 @@ public sealed partial class MainViewModel
     public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?UiText.Get("T_e836053f4b78"):"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
     private CompressionSourceRow[] selectedCompressionSources=[];
-    public string CompressionSourceSummary=>UiText.Format("Compression.SourceCount",CompressionSources.Count,selectedCompressionSources.Count(CompressionSources.Contains));
+    public string CompressionSourceSummary=>UiText.Format(CompressionSeparate?"Compression.SeparateSourceCount":"Compression.SourceCount",CompressionSources.Count,selectedCompressionSources.Count(CompressionSources.Contains));
     internal void SelectCompressionSources(IEnumerable<CompressionSourceRow> rows)
     {selectedCompressionSources=rows.ToArray();Changed(nameof(CompressionSourceSummary));CommandManager.InvalidateRequerySuggested();}
     public ICommand AddCompressionFilesCommand { get; private set; } = null!;
@@ -105,10 +105,10 @@ public sealed partial class MainViewModel
         CompressionSfx?UiText.Format("Compression.SfxFormat",CompressionOptions.Label):CompressionOptions.Label,
         UiText.Get(new[]{"T_bfa903605147","T_db945cfe9f9f","T_6bea77acefb3","T_dfbad24e7f4a","T_8672864e9041"}[Math.Clamp(CompressionLevel,0,4)]),
         UiText.Get(CompressionEncrypt?"Compression.Encrypted":"Compression.Unencrypted"),CompressionVolumeLabel);
-    public string CreateArchiveCaption=>UiText.Format("Compression.CreateCount",CompressionSources.Count);
-    public string CompressionOutputFileName=>Path.GetFileName(CompressionOutput);
+    public string CreateArchiveCaption=>UiText.Format(CompressionSeparate?"Compression.SeparateCreate":"Compression.CreateCount",CompressionSources.Count);
+    public string CompressionOutputFileName=>CompressionSeparate?UiText.Format("Compression.SeparateOutputs",CompressionSources.Count):Path.GetFileName(CompressionOutput);
     public string CompressionPasswordSummary => UiText.Get(compressionPassword is null ? "Redesign.PasswordNotSet" : "T_bb1057c00cf3");
-    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));Changed(nameof(CompressionOutputFileName));}} }
+    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));Changed(nameof(CompressionOutputFileName));Changed(nameof(CompressionNameInput));Changed(nameof(CompressionOutputTarget));Changed(nameof(CompressionSourceError));CommandManager.InvalidateRequerySuggested();}} }
     public string CompressionOutputDirectory
     {
         get {var slash=CompressionOutput.LastIndexOfAny(['\\','/']);return slash<0?"":CompressionOutput[..(slash==2 && CompressionOutput[1]==':'?slash+1:slash)];}
@@ -139,7 +139,7 @@ public sealed partial class MainViewModel
         }, () => IsIdle && (SelectedCompressionSource is not null || selectedCompressionSources.Any(CompressionSources.Contains)));
         BrowseCompressionOutputCommand = new RelayCommand(() => { if (dialogs.SelectArchiveOutput(CompressionSfx?"sfx":CompressionFormatName) is { } path) CompressionOutput = path; }, () => IsIdle);
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionOptions.Encryption);
-        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && !string.IsNullOrWhiteSpace(CompressionOutputName) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
+        CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && (CompressionSeparate?!string.IsNullOrWhiteSpace(CompressionOutputDirectory):!string.IsNullOrWhiteSpace(CompressionOutputName)) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
         OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
         CompressionSources.CollectionChanged += (_, _) => {CompressionCapabilitiesChanged();Changed(nameof(CompressionSourceSummary));};
     }
@@ -164,6 +164,7 @@ public sealed partial class MainViewModel
     }
     private async Task CreateArchiveAsync()
     {
+        if(CompressionSeparate){await CreateSeparateArchivesAsync();return;}
         if (CompressionSourceError.Length > 0) {CompressionMessage=CompressionSourceError;return;}
         if(!VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out var volumeSize)) {CompressionMessage=CompressionVolumeError;return;}
         if (!Path.GetExtension(CompressionOutput).Equals(CompressionExtension, StringComparison.OrdinalIgnoreCase)) { CompressionMessage = UiText.Get("T_b64114dffb9b"); return; }
@@ -196,24 +197,12 @@ public sealed partial class MainViewModel
                 else CompressionIndeterminate = true;
                 workspaceTask.Status=CompressionMessage;workspaceTask.Percent=CompressionPercent;workspaceTask.IsIndeterminate=CompressionIndeterminate;
             });
-            var outcome = module is not null ? await new SfxCompressionService(client,client).CreateAsync(CompressionSources.Select(value=>value.Path).ToArray(),CompressionOutput,module,
-                new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,cancellation.Token)
-                : await new CompressionService(client, client).CreateAsync(CompressionSources.Select(value => value.Path).ToArray(), CompressionOutput,
-                CompressionFormatName, new[] { 0, 1, 5, 7, 9 }[CompressionLevel], CompressionEncrypt ? compressionPassword?.Secret : null, CompressionHeaders, replace, progress, cancellation.Token,volumeSize);
+            var outcome = await CreateCompressionItemAsync(CompressionSources.Select(value=>value.Path).ToArray(),CompressionOutput,module,client,replace,volumeSize,progress,cancellation.Token);
             if(outcome.Engine.IsSuccess) {createdCompressionPath=outcome.OutputPath;workspaceTask.SetArchiveResult(outcome.OutputPath);}
             CompressionMessage = outcome.Engine.IsSuccess ? module is not null?UiText.Get("T_ada71e8959d8"):outcome.Volumes is { } volumes ? UiText.Format("T_d18624b2347a", volumes.Count, outcome.OutputPath) : UiText.Get("T_1bb010c7351a") : outcome.Engine.Status == "cancelled" ? UiText.Get("T_8e8fba138ab2") : CompressionError(outcome.Engine.Code);
             workspaceTask.Completed=outcome.Engine.IsSuccess;workspaceTask.Failure=outcome.Engine.IsSuccess?null:outcome.Engine;
             if(workspaceTask.Completed)workspaceTask.ResultOutputPath=Path.GetDirectoryName(Path.GetFullPath(outcome.OutputPath));
-            if (outcome.Engine.IsSuccess && CompressionEncrypt && compressionPassword is { } supplied && (supplied.Save || supplied.SavedId is not null))
-            {
-                try
-                {
-                    var savedId = supplied.SavedId ?? Guid.NewGuid();
-                    if (supplied.SavedId is null) await vault.SaveAsync(new SavedPassword(savedId, string.IsNullOrWhiteSpace(supplied.Name) ? Path.GetFileName(CompressionOutput) : supplied.Name, supplied.Secret, "", true, DateTimeOffset.UtcNow));
-                    await vault.RecordSuccessAsync(savedId, outcome.OutputPath); await RefreshVaultAsync();
-                }
-                catch (Exception exception) when (exception is VaultException or IOException or UnauthorizedAccessException) { Banner = UiText.Get("T_0346e5dcf690"); }
-            }
+            if(outcome.Engine.IsSuccess)await RecordCompressionPasswordAsync(outcome.OutputPath);
             Footer = CompressionMessage;
         }
         catch(OperationCanceledException) {CompressionMessage=UiText.Get("T_76756534e51e");if(workspaceTask is not null)workspaceTask.Failure=new EngineResult {Status="cancelled",Code="cancelled"};}

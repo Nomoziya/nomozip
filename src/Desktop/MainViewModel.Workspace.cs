@@ -64,9 +64,9 @@ public sealed partial class MainViewModel
         else Footer=UiText.Get("Redesign.OutputUnavailable");
     }
     internal void ShowCompressionTaskResult(ArchiveTaskRow row)=>dialogs.ShowCompressionResult(row.Name,row.Status,row.Failure ?? new EngineResult {Status="cancelled",Code="cancelled"});
-    private ArchiveTaskRow AddCompressionTask()
+    private ArchiveTaskRow AddCompressionTask(string? output=null)
     {
-        var row=new ArchiveTaskRow(CompressionOutput) {IsCompression=true,Running=true,IsIndeterminate=true,Status=UiText.Get("Redesign.CompressionTask")};
+        var row=new ArchiveTaskRow(output ?? CompressionOutput) {IsCompression=true,Running=true,IsIndeterminate=true,Status=UiText.Get("Redesign.CompressionTask")};
         row.PropertyChanged+=WorkspaceTaskChanged;WorkspaceTasks.Add(row);RefreshWorkspaceTasks(false);SelectedTask=row;return row;
     }
     private static readonly string[] taskFilterKeys = ["Redesign.AllTasks","Redesign.RunningTasks","Redesign.PendingTasks","Redesign.EndedTasks","Tasks.Failed","Tasks.Paused"];

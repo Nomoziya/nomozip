@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -11,7 +12,14 @@ public partial class ArchiveContentsDialog : Window
     public ArchiveContentsDialog(ArchiveContentsViewModel model)
     {
         InitializeComponent(); DataContext = model;
-        var sortFields=new List<System.ComponentModel.SortDescription>();
+        var sortFields=(model.BrowserPreferences.Sorts ?? []).Select(item=>new System.ComponentModel.SortDescription(item.Member,item.Direction)).ToList();
+        void ApplySort()
+        {
+            foreach(var column in EntryTable.Columns)column.SortDirection=sortFields.Where(item=>item.PropertyName==column.SortMemberPath).Select(item=>(System.ComponentModel.ListSortDirection?)item.Direction).FirstOrDefault();
+            ((System.Windows.Data.ListCollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(model.VisibleRows)).CustomSort=sortFields.Count==0?null:
+                new ArchiveContentComparer(sortFields.ToArray(),System.Globalization.CultureInfo.CurrentCulture);
+        }
+        ApplySort();
         EntryTable.Sorting += (_,args) =>
         {
             args.Handled=true;
@@ -21,15 +29,16 @@ public partial class ArchiveContentsDialog : Window
             var index=sortFields.FindIndex(field=>field.PropertyName==args.Column.SortMemberPath);
             var field=new System.ComponentModel.SortDescription(args.Column.SortMemberPath,direction);
             if(index<0)sortFields.Add(field);else sortFields[index]=field;
-            foreach(var column in EntryTable.Columns)column.SortDirection=sortFields.Where(item=>item.PropertyName==column.SortMemberPath).Select(item=>(System.ComponentModel.ListSortDirection?)item.Direction).FirstOrDefault();
-            ((System.Windows.Data.ListCollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(model.VisibleRows)).CustomSort=
-                new ArchiveContentComparer(sortFields.ToArray(),System.Globalization.CultureInfo.CurrentCulture);
+            ApplySort();model.RememberBrowserSort(sortFields);
         };
         foreach(var item in EditContentsMenu.Items.OfType<MenuItem>())
             if(item.Icon is FluentIcon icon)
                 icon.SetBinding(Control.ForegroundProperty,new System.Windows.Data.Binding(nameof(Control.Foreground)) {Source=item});
+        Dictionary<int,double>? widthsBeforeDrag=null;
+        double WidthFor(int index,double fallback)=>model.BrowserPreferences.Columns?.FirstOrDefault(item=>item.Column==index)?.Width ?? fallback;
         void Arrange()
         {
+            if(widthsBeforeDrag is not null)return;
             var narrow = Window.GetWindow(EntryTable)?.ActualWidth < 1050;
             var compactPreview = narrow && EntryTable.ActualWidth < 600;
             if (EntryTable.ActualWidth > 0)
@@ -40,11 +49,11 @@ public partial class ArchiveContentsDialog : Window
                 EntryTable.Columns[4].Visibility = narrow ? Visibility.Collapsed : Visibility.Visible;
                 EntryTable.Columns[5].Visibility = showEncryption ? Visibility.Visible : Visibility.Collapsed;
                 foreach (var (index, width) in new[] { (0,54d), (2,compactPreview ? 94d : 103d), (3,detailWidth), (4,171d), (5,detailWidth) })
-                { EntryTable.Columns[index].MinWidth = width; EntryTable.Columns[index].Width = width; }
+                { EntryTable.Columns[index].MinWidth = width; EntryTable.Columns[index].Width = Math.Max(width,WidthFor(index,width)); }
                 EntryTable.Columns[1].MinWidth = 130;
-                var fixedWidth = 54 + (compactPreview ? 94 : 103) + (compactPreview ? 0 : detailWidth) + (narrow ? 0 : 171) + (showEncryption ? detailWidth : 0);
+                var fixedWidth = EntryTable.Columns.Where(column=>column!=EntryTable.Columns[1] && column.Visibility==Visibility.Visible).Sum(column=>column.Width.Value);
                 var scrollGutter = EntryTable.Template.FindName("DG_ScrollViewer", EntryTable) is ScrollViewer { ComputedVerticalScrollBarVisibility: Visibility.Visible } ? SystemParameters.VerticalScrollBarWidth : 0;
-                EntryTable.Columns[1].Width = Math.Max(130, EntryTable.ActualWidth - fixedWidth - scrollGutter);
+                EntryTable.Columns[1].Width = Math.Max(130, WidthFor(1,EntryTable.ActualWidth - fixedWidth - scrollGutter));
             }
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
             EditContentsButton.Visibility = Visibility.Visible;
@@ -58,6 +67,19 @@ public partial class ArchiveContentsDialog : Window
             heading.RowDefinitions[2].Height=new GridLength(shortArea?33:40);
             ContentsArchiveName.MaxWidth = double.PositiveInfinity;
         }
+        model.BrowserLayoutReset+=(_,_)=>{sortFields.Clear();ApplySort();Arrange();};
+        static DataGridColumnHeader? HeaderFor(DependencyObject? node)
+        {while(node is not null && node is not DataGridColumnHeader)node=VisualTreeHelper.GetParent(node);return node as DataGridColumnHeader;}
+        EntryTable.AddHandler(Thumb.DragStartedEvent,new DragStartedEventHandler((_,args)=>
+        {if(HeaderFor(args.OriginalSource as DependencyObject) is not null)widthsBeforeDrag=Enumerable.Range(1,5).ToDictionary(index=>index,index=>EntryTable.Columns[index].ActualWidth);}),true);
+        EntryTable.AddHandler(Thumb.DragCompletedEvent,new DragCompletedEventHandler((_,args)=>
+        {
+            if(widthsBeforeDrag is null)return;
+            var columns=(model.BrowserPreferences.Columns ?? []).ToDictionary(item=>item.Column,item=>item.Width);
+            foreach(var (index,width) in widthsBeforeDrag)if(Math.Abs(EntryTable.Columns[index].ActualWidth-width)>0.5)
+                columns[index]=Math.Clamp(EntryTable.Columns[index].ActualWidth,40,4096);
+            widthsBeforeDrag=null;model.RememberBrowserColumns(columns.Select(item=>new BrowserColumnPreference(item.Key,item.Value)).ToArray());Arrange();
+        }),true);
         EntryTable.AddHandler(ScrollViewer.ScrollChangedEvent,new ScrollChangedEventHandler((_,args)=>{if(args.ExtentHeightChange!=0 || args.ViewportHeightChange!=0)Arrange();}));
         EntryTable.SizeChanged+=(_,_)=>Arrange();EntryTable.Loaded+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
         model.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(model.GridView)) {ListViewAction.IsChecked=!model.GridView;GridViewAction.IsChecked=model.GridView;}};
@@ -104,7 +126,6 @@ public partial class ArchiveContentsDialog : Window
     {
         if(DataContext is not ArchiveContentsViewModel model)return;
         model.GridView=((FrameworkElement)sender).Tag as string=="grid";
-        ListViewAction.IsChecked=!model.GridView;GridViewAction.IsChecked=model.GridView;
         if(model.GridView)EntryTiles.Focus();else EntryTable.Focus();
     }
     private async void OnClose(object sender, RoutedEventArgs e) {if(EmbeddedClose is not null) await EmbeddedClose();else Close();}

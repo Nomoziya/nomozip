@@ -5,7 +5,7 @@ using ArchivePassword.Core;
 
 namespace ArchivePassword.Desktop;
 
-public sealed class ArchiveContentsViewModel : ObservableObject
+public sealed partial class ArchiveContentsViewModel : ObservableObject
 {
     private readonly string archivePath;
     private IReadOnlyList<ArchiveEntry> items;
@@ -23,9 +23,11 @@ public sealed class ArchiveContentsViewModel : ObservableObject
     public ArchiveContentsViewModel(string archivePath,IReadOnlyList<ArchiveEntry> items,Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<string?>>? extract=null,Action? cancel=null,Action<string>? open=null,
         string? format=null,Func<ArchiveEditAction,IReadOnlyList<ArchiveEntry>,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveEditOutcome?>>? edit=null,
         Func<ArchiveEntry,IProgress<string>,Task>? preview=null,
-        Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveDragOutcome>>? prepareDrag=null,Action<string>? reportCleanupWarning=null)
+        Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveDragOutcome>>? prepareDrag=null,Action<string>? reportCleanupWarning=null,
+        BrowserPreferences? browserPreferences=null)
     {
         this.archivePath=archivePath;this.items=items;this.cancel=cancel;this.prepareDrag=prepareDrag;this.reportCleanupWarning=reportCleanupWarning;
+        this.browserPreferences=browserPreferences is {IsValid:true}?browserPreferences:new();gridView=this.browserPreferences.GridView;
         allRows=BuildRows(items);orderedRows=OrderRows(allRows);Rows=new(allRows);VisibleRows=[];
         AttachRows();
         SelectVisibleCommand=new RelayCommand(()=>Select(true),()=>!IsWorking && VisibleRows.Count>0);
@@ -151,7 +153,8 @@ public sealed class ArchiveContentsViewModel : ObservableObject
             FilterRows();
         }
     }
-    public bool GridView {get=>gridView;set=>Set(ref gridView,value);}
+    public bool GridView {get=>gridView;set {if(Set(ref gridView,value)){browserPreferences=browserPreferences with {GridView=value};Changed(nameof(ListView));}}}
+    public bool ListView {get=>!GridView;set=>GridView=!value;}
     internal void ClearPreviewThumbnails() {foreach(var row in allRows)row.PreviewThumbnail=null;}
     private string currentFolder="";
     public string CurrentFolder=>currentFolder;

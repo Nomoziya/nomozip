@@ -124,6 +124,10 @@
                   </TextBlock>
                 </Grid>
               </StackPanel>
+              <CheckBox x:Name="SeparateCompressionBox" Content="{loc:Text Compression.Separate}" IsChecked="{Binding CompressionSeparate}" IsEnabled="{Binding IsIdle}" Margin="0,0,0,10" AutomationProperties.Name="{loc:Text Compression.Separate}"/>
+              <TextBlock Text="{loc:Text Compression.SeparateHint}" TextWrapping="Wrap" Margin="0,0,0,10">
+                <TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CompressionSeparate}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+              </TextBlock>
               <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
@@ -143,7 +147,7 @@
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="{loc:Text Redesign.ArchiveName}" Target="{Binding ElementName=ArchiveNameBox}" Padding="0" VerticalAlignment="Center"/>
-                <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionOutputName}" IsEnabled="{Binding IsIdle}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
+                <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionNameInput}" IsEnabled="{Binding CanNameCompression}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
               </Grid>
 
               <WrapPanel x:Name="CompressionChoices" Margin="0,2,0,12">
@@ -343,7 +347,7 @@
             </TextBlock.Style>
           </TextBlock>
           <StackPanel x:Name="CompressionResultPanel" Grid.Row="0" Grid.Column="0" Margin="0,0,20,8" VerticalAlignment="Center">
-            <TextBlock Text="{Binding CompressionOutputFileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}"/>
+            <TextBlock Text="{Binding CompressionOutputFileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutputTarget}"/>
             <TextBlock x:Name="CompressionResultSummaryText" Text="{Binding CompressionResultSummary}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,4,0,0"/>
           </StackPanel>
         </Grid>

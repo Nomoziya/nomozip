@@ -19,6 +19,32 @@ try
     Check("count formatter preserves ordinary numeric formatting",UiText.Format("Download.Progress",1.25,2.5,64.3).Contains("1.25 / 2.5 MB"));
     UiText.Configure("zh-CN"); Check("Chinese count remains unchanged",UiText.Format("Browser.CompactCount",1)=="1 项");
 
+    var batchRoot=Path.Combine(data,"separate");var sources=Path.Combine(batchRoot,"sources");var target=Path.Combine(batchRoot,"output");
+    Directory.CreateDirectory(sources);Directory.CreateDirectory(target);
+    var firstDirectory=Path.Combine(sources,"backup.v1");Directory.CreateDirectory(firstDirectory);
+    var firstFile=Path.Combine(sources,"notes.txt");await File.WriteAllTextAsync(firstFile,"first");
+    var otherDirectory=Path.Combine(sources,"other");Directory.CreateDirectory(otherDirectory);
+    var secondFile=Path.Combine(otherDirectory,"notes.txt");await File.WriteAllTextAsync(secondFile,"second");
+    var existing=Path.Combine(target,"notes.zip");await File.WriteAllTextAsync(existing,"keep existing");
+    var batch=SeparateCompressionPlan.Create([firstFile,secondFile,firstDirectory,firstFile],target,".zip");
+    Check("separate plan deduplicates sources and assigns independent output paths",batch.Count==3 && batch.Select(item=>item.SourcePath).Distinct().Count()==3);
+    Check("same source names and existing output get deterministic suffixes",Path.GetFileName(batch[0].OutputPath)=="notes (2).zip" && Path.GetFileName(batch[1].OutputPath)=="notes (3).zip");
+    Check("directory naming preserves dots",Path.GetFileName(batch[2].OutputPath)=="backup.v1.zip");
+    Check("planning preserves existing files and creates no output archives",await File.ReadAllTextAsync(existing)=="keep existing" && Directory.GetFiles(target).Length==1);
+    await File.WriteAllTextAsync(Path.Combine(target,"backup.v1.7z.001"),"keep volume");
+    Check("separate naming protects an existing split volume set",Path.GetFileName(SeparateCompressionPlan.Create([firstDirectory],target,".7z")[0].OutputPath)=="backup.v1 (2).7z");
+    var archiveSource=Path.Combine(sources,"original.zip");await File.WriteAllTextAsync(archiveSource,"keep source");
+    Check("separate output never reuses a source archive path",SeparateCompressionPlan.Create([archiveSource],sources,".zip")[0].OutputPath!=archiveSource);
+    foreach(var nested in new[]{firstDirectory,Path.Combine(firstDirectory,"output")})
+    {
+        var rejected=false;try{SeparateCompressionPlan.Create([firstDirectory],nested,".zip");}catch(InvalidDataException failure){rejected=failure.Message=="batch_output_inside_source";}
+        Check("separate output inside source is rejected "+Path.GetFileName(nested),rejected);
+    }
+    var sibling=firstDirectory+"-output";
+    Check("separate plan allows a sibling with shared path prefix",SeparateCompressionPlan.Create([firstDirectory],sibling,".zip").Count==1);
+    var hidden=Path.Combine(sources,".notes");await File.WriteAllTextAsync(hidden,"hidden");
+    Check("dot filename still produces a named output",Path.GetFileName(SeparateCompressionPlan.Create([hidden],target,".zip")[0].OutputPath)==".notes.zip");
+
     var cache = Path.Combine(data,"application-updates"); Directory.CreateDirectory(cache);
     var installer=Path.Combine(cache,Guid.NewGuid().ToString("N")+".exe"); await File.WriteAllBytesAsync(installer,new byte[27]);
     var outside=Path.Combine(data,"user-download.exe");await File.WriteAllTextAsync(outside,"keep");

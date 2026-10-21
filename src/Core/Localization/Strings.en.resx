@@ -3362,4 +3362,18 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.CreateCount" xml:space="preserve"><value>Create archive ({0})</value></data>
   <data name="Compression.ManageProfiles" xml:space="preserve"><value>Manage compression profiles</value></data>
   <data name="Compression.CurrentOptions" xml:space="preserve"><value>Current options</value></data>
+  <data name="Browser.ResetLayout" xml:space="preserve"><value>Reset browser layout</value></data>
+  <data name="Browser.PreferencesSaveFailed" xml:space="preserve"><value>Could not save browser preferences. Check that the settings folder is writable.</value></data>
+  <data name="Compression.Separate" xml:space="preserve"><value>Compress each source separately</value></data>
+  <data name="Compression.SeparateHint" xml:space="preserve"><value>Create one archive per source using its name. Add a number for existing names; keep existing files.</value></data>
+  <data name="Compression.AutomaticNames" xml:space="preserve"><value>Use source names automatically</value></data>
+  <data name="Compression.SeparateFilesOnly" xml:space="preserve"><value>Separate compression with this format supports files only. Remove folders or choose another format.</value></data>
+  <data name="Compression.SeparateOutsideSources" xml:space="preserve"><value>For separate compression, choose an output folder outside all source folders to avoid including earlier output archives.</value></data>
+  <data name="Compression.SeparateInvalidDirectory" xml:space="preserve"><value>Cannot use this output folder. Check the directory path and access permissions.</value></data>
+  <data name="Compression.SeparateSourceCount" xml:space="preserve"><value>All {0:count:item:items} will create {0:count:archive:archives} · {1} selected for removal</value></data>
+  <data name="Compression.SeparateCreate" xml:space="preserve"><value>Create {0:count:archive:archives}</value></data>
+  <data name="Compression.SeparateOutputs" xml:space="preserve"><value>{0:count:separate archive:separate archives}</value></data>
+  <data name="Compression.SeparateProgress" xml:space="preserve"><value>Processing {0}/{1}: {2} · {3}</value></data>
+  <data name="Compression.SeparateCompleted" xml:space="preserve"><value>Created {0} of {1:count:archive:archives}. Failed: {2}.</value></data>
+  <data name="Compression.SeparateCancelled" xml:space="preserve"><value>Cancelled. Created {0} of {1:count:archive:archives}. Failed: {2}. Remaining sources were not processed.</value></data>
 </root>

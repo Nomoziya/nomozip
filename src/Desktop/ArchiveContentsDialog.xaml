@@ -15,7 +15,7 @@
         <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1"/>
         <Border x:Name="HeaderSurface" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" MinWidth="64" Margin="2,0,4,0" CornerRadius="3" Background="Transparent">
           <Grid><StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center"><ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True"/><loc:FluentIcon x:Name="SortGlyph" Kind="ChevronDown" Width="12" Height="12" Foreground="{TemplateBinding Foreground}" Margin="6,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/></StackPanel><Border x:Name="HeaderFocus" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="2" Margin="2" CornerRadius="3" Visibility="Collapsed" IsHitTestVisible="False"/></Grid>
-        </Border><Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Width="4" Background="Transparent" Opacity="0"/><Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Width="4" Background="Transparent" Opacity="0"/>
+        </Border><Thumb x:Name="PART_LeftHeaderGripper" Cursor="SizeWE" HorizontalAlignment="Left" Width="4" Background="Transparent" Opacity="0"/><Thumb x:Name="PART_RightHeaderGripper" Cursor="SizeWE" HorizontalAlignment="Right" Width="4" Background="Transparent" Opacity="0"/>
       </Grid><ControlTemplate.Triggers>
         <Trigger SourceName="HeaderSurface" Property="IsMouseOver" Value="True"><Setter TargetName="HeaderSurface" Property="Background" Value="{DynamicResource HeaderHoverBrush}"/></Trigger>
         <Trigger Property="IsPressed" Value="True"><Setter TargetName="HeaderSurface" Property="Background" Value="{DynamicResource HeaderPressedBrush}"/></Trigger>
@@ -118,6 +118,9 @@
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
+              <MenuItem x:Name="ResetBrowserLayoutAction" Header="{loc:Text Browser.ResetLayout}" Command="{Binding ResetBrowserLayoutCommand}">
+                <MenuItem.Icon><loc:FluentIcon Kind="ArrowSync" Width="20" Height="20"/></MenuItem.Icon>
+              </MenuItem>
               <MenuItem Header="{loc:Text Redesign.CloseArchive}" Click="OnClose">
                 <MenuItem.Icon>
                   <loc:FluentIcon Kind="Dismiss" Width="20" Height="20"/>
@@ -170,7 +173,7 @@
       </StackPanel>
     </Border>
     <Grid Grid.Row="2">
-      <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow,Mode=TwoWay}" IsSynchronizedWithCurrentItem="False" CanUserSortColumns="True" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="36" ColumnHeaderStyle="{StaticResource FileHeader}" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="OnOpenEntry">
+      <DataGrid x:Name="EntryTable" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding CurrentRow,Mode=TwoWay}" IsSynchronizedWithCurrentItem="False" CanUserSortColumns="True" SelectionMode="Single" IsEnabled="{Binding CanSelect}" RowHeight="36" ColumnHeaderStyle="{StaticResource FileHeader}" AutomationProperties.Name="{loc:Text T_5db8427e5209}" ToolTip="{loc:Text Drag.Hint}" ScrollViewer.HorizontalScrollBarVisibility="Auto" MouseDoubleClick="OnOpenEntry">
         <DataGrid.Style><Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}"><Style.Triggers><DataTrigger Binding="{Binding GridView}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></DataGrid.Style>
         <DataGrid.InputBindings>
           <KeyBinding Key="Enter" Command="{Binding OpenCurrentEntryCommand}"/>
@@ -243,7 +246,7 @@
     <Border x:Name="BrowserFooter" Height="49" ToolTip="{Binding OutputPath}" Grid.Row="3" MinHeight="48" Background="{DynamicResource ChromeBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="18,0">
       <StackPanel>
         <DockPanel>
-          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="12,0,0,0"><ToggleButton x:Name="ListViewAction" Tag="list" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.ListView}" ToolTip="{loc:Text Browser.ListView}" Margin="0,0,4,0" IsChecked="True"><loc:FluentIcon Kind="TaskListSquareLtr" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton><ToggleButton x:Name="GridViewAction" Tag="grid" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.GridView}" ToolTip="{loc:Text Browser.GridView}"><loc:FluentIcon Kind="Grid" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton></StackPanel>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="12,0,0,0"><ToggleButton x:Name="ListViewAction" Tag="list" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.ListView}" ToolTip="{loc:Text Browser.ListView}" Margin="0,0,4,0" IsChecked="{Binding ListView,Mode=TwoWay}"><loc:FluentIcon Kind="TaskListSquareLtr" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton><ToggleButton x:Name="GridViewAction" Tag="grid" Click="OnViewMode" Style="{StaticResource ViewToggle}" AutomationProperties.Name="{loc:Text Browser.GridView}" ToolTip="{loc:Text Browser.GridView}" IsChecked="{Binding GridView,Mode=TwoWay}"><loc:FluentIcon Kind="Grid" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ToggleButton}}" Width="20" Height="20"/></ToggleButton></StackPanel>
           <Button x:Name="BrowserTasksAction" DockPanel.Dock="Right" Style="{StaticResource SubtleButton}" Click="OnShowTasks" Visibility="Collapsed" Padding="4" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text Redesign.Tasks}"><TextBlock x:Name="BrowserTaskActivity" TextTrimming="CharacterEllipsis" MaxWidth="150" AutomationProperties.LiveSetting="Polite" VerticalAlignment="Center"/></Button>
           <TextBlock DockPanel.Dock="Right" Text="{Binding OperationMessage}" TextTrimming="CharacterEllipsis" MaxWidth="160" VerticalAlignment="Center" ToolTip="{Binding OperationMessage}" AutomationProperties.LiveSetting="Polite"/>
           <TextBlock x:Name="ContentsSummary" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompactSelectionSummary}" AutomationProperties.LiveSetting="Polite">

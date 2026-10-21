@@ -23,11 +23,18 @@ public sealed partial class MainViewModel
             CanSkipPasswords = false;
             if (outcome.Warning is not null) Banner = outcome.Warning;
             Footer = outcome.Engine.IsSuccess ? UiText.Format("T_58db5ae70926", task.Name, outcome.Engine.Items.Count) : outcome.Engine.Status == "cancelled" ? UiText.Get("T_f23f6d1addfc") : ErrorText(outcome.Engine.Code);
-            if (outcome.Engine.IsSuccess) await dialogs.ShowArchiveContentsAsync(new ArchiveContentsViewModel(task.Path,outcome.Engine.Items,
+            if (outcome.Engine.IsSuccess)
+            {
+                var contents=new ArchiveContentsViewModel(task.Path,outcome.Engine.Items,
                 (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path]),
                 outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status),
                 (entry,status)=>PreviewEntryAsync(task,client,entry,status),
-                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning));
+                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning,browserPreferences);
+                await dialogs.ShowArchiveContentsAsync(contents);
+                browserPreferences=contents.BrowserPreferences;
+                try {if(settingsWritable)await SaveSettingsAsync();else Banner=UiText.Get("Browser.PreferencesSaveFailed");}
+                catch(Exception error) when(error is IOException or UnauthorizedAccessException) {Banner=UiText.Get("Browser.PreferencesSaveFailed");}
+            }
         }
         catch (OperationCanceledException) { Footer = UiText.Get("T_f23f6d1addfc"); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException)
