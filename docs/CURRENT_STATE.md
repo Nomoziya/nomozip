@@ -8,7 +8,7 @@
 - 两架构各40个CI原载荷文件，CRC、主程序/CLI/worker/两引擎原生PE、共享.NET10及版本已核对。两个源码ZIP共**3308个文件内容一致**；与冻结本地检出仅列明的UTF-8换行不同。公开仅两个安装器与SHA256SUMS.txt，统一清单仅覆盖安装器；程序/源码ZIP及报告在本地/仓库保留。
 - x64安装器SHA256 **23d457023272349571675db304f313f0e9a74c066ca3f454534a4ec9135bec1d**；ARM64 **113b58eba5fdad71c2906168fa6511d66e745aefaa0f7c305ff1e808e020529a**。草稿的恰好3附件/服务器digest核对后发布，3附件公开匿名回下载字节数、SHA及逐字节比较均通过；没有重复草稿或覆盖旧发行。
 - 使用产品`GitHubApplicationChannel`只读公开检查，x64/ARM64均发现0.3.3、CanDownload=true、相对0.3.2为更新；实时`/releases/latest`仍为**engine-26.04**，引擎渠道/公钥/资产未改，旧自动任务保持暂停。本地只运行元数据检查控制台，不启动桌面、不访问真实密码库、实际安装或生产私钥。
-- 全部发行留存在源码目录下`artifacts/release-0.3.3-772875f-download`（CI原下载）、`artifacts/release-0.3.3-772875f`（双架构包/载荷/报告）、`artifacts/publish-0.3.3-772875f`（恰好3公开资产、发行请求/响应、package-review/public-download-validation/live-update-discovery及发行说明）。UI规范/原图沿用post032-20261020，当前正式入口已更新至0.3.3。源树与公开附件验证完成；最终文档保存在发行分支；向main的原子推送被自动审批拒绝，未执行，main仍为eb4eb07。理由是用户明确授权发布、未明确授权主分支合并，且AGENTS入口要求暂不合并正式版。若用户希望main同步本版，须明确授权后按非强推快进处理；不得改用API绕过。发布/附件验证已完成，不因main未同步重复产品测试。
+- 全部发行留存在源码目录下`artifacts/release-0.3.3-772875f-download`（CI原下载）、`artifacts/release-0.3.3-772875f`（双架构包/载荷/报告）、`artifacts/publish-0.3.3-772875f`（恰好3公开资产、发行请求/响应、package-review/public-download-validation/live-update-discovery及发行说明）。UI规范/原图沿用post032-20261020，当前正式入口已更新至0.3.3。源树与公开附件验证完成；最终文档保存在发行分支。初次向main推送因授权仅覆盖发布、AGENTS仍要求暂不合并而被自动审批拒绝，未执行。用户随后明确回复“可以进行合并”，本次依据新授权将发行分支与main以保留历史的非强推快进同步；未改用API绕过审批。main推送自然触发的例行CI与已成功的发行CI单独记录，不能提前称为新一轮通过；不因文档同步重跑无关产品测试。
 - 继续沿用project-stage-planner、ui-design-engineering、ui-ux-pro-max；主会话/执行者gpt-6.1-sol/high、无委派；本回合turn_context 01a15cd5-aa69-7162-a3b2-60be1e80d2f2（2026-10-21T05:01:09Z）已核对匹配。凭据只在本次1Password子进程中复用，完成后关闭，不修改登录设置。性能取舍仍按原单次样本报告，不宣称全面提速；物理混合DPI、多屏、真实系统高对比切换、交互式读屏和旧SHA平台缓存未结项继续保留。
 
 ## 2026-10-20：六项优化候选完成，等待用户体验确认
