@@ -17,7 +17,12 @@ internal static class DesktopSelectionValidation
     internal static async Task<bool> RunAsync(MainWindow window,ThemeResources theme,string root,string baseDirectory)
     {
         var data=Path.GetFullPath(Path.Combine(root,"artifacts/selection-ui",Guid.NewGuid().ToString("N")));Directory.CreateDirectory(data);
-        var checks=new Dictionary<string,bool>();var geometry=new Dictionary<string,double[]>();void Check(string name,bool passed)=>checks[name]=passed;
+        var checks=new Dictionary<string,bool>();var geometry=new Dictionary<string,double[]>();var stage="initializing";
+        void Stage(string value) {stage=value;Console.WriteLine("Selection stage: "+stage);File.WriteAllText(Path.Combine(root,"artifacts/selection-ui-validation.json"),JsonSerializer.Serialize(new {passed=false,state="running",stage,checks,geometry,syntheticData=true}));}
+        void Check(string name,bool passed) {checks[name]=passed;Stage(name);}
+        Stage(stage);
+        var watchdog=new DispatcherTimer {Interval=TimeSpan.FromSeconds(90)};
+        watchdog.Tick+=(_,_)=>{checks["selection completed within 90 seconds"]=false;Stage("timeout after "+stage);watchdog.Stop();Application.Current.Shutdown(1);};watchdog.Start();
         void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
         var archive=Path.Combine(data,"content.zip");using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create)) {foreach(var name in new[] {"folder/","folder/a.txt","folder/sub/b.txt","outside.txt"}) {var entry=zip.CreateEntry(name);if(!name.EndsWith('/')) {using var writer=new StreamWriter(entry.Open());writer.Write(name);}}}
         var vault=new DpapiPasswordVault(Path.Combine(data,"passwords.apv"));await vault.SaveAsync(new(Guid.NewGuid(),"synthetic","unused","",true,DateTimeOffset.UtcNow));var before=File.ReadAllBytes(Path.Combine(data,"passwords.apv"));
@@ -37,6 +42,7 @@ internal static class DesktopSelectionValidation
                     async Task Layout()=>await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
                     try
                     {
+                        Stage("dialog mode "+mode);
                         if(mode==0)
                         {
                             foreach(var contrast in new[] {false,true})
@@ -53,7 +59,7 @@ internal static class DesktopSelectionValidation
                                 DesktopAccessibilityValidation.Render(dialog,Path.Combine(root,$"artifacts/selection-{size.Item1}-{contrast}.png"),1.0);
                             }
                             var nested=view.Rows.Single(row=>row.Path.Replace('\\','/')=="folder/sub/b.txt");nested.Selected=true;await Layout();
-                            Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout();await view.WaitForIdleAsync();await Layout();
+                            Stage("extract plaintext selection");Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout();await view.WaitForIdleAsync();await Layout();
                             Check("actual selection writes only selected descendant",Directory.GetFiles(model!.OutputPath,"*",SearchOption.AllDirectories).Length==1 && File.ReadAllText(Path.Combine(model.OutputPath,"folder/sub/b.txt"))=="folder/sub/b.txt");
                             Check("partial extraction never marks whole archive completed",!model!.Tasks.Single().Completed && model.Tasks.Single().SelectedOutputPath==model.OutputPath && model.Tasks.Single().Status=="所选内容已解压");
                             view.OpenResultCommand.Execute(null);Check("selected result folder opened once",opened.Count==1 && opened[0]==model!.OutputPath);
@@ -63,12 +69,12 @@ internal static class DesktopSelectionValidation
                         }
                         else if(mode==1)
                         {
-                            view.SelectVisibleCommand.Execute(null);view.ExtractSelectedCommand.Execute(null);await Layout();dialog.Close();await view.WaitForIdleAsync();
+                            Stage("cancel selection on close");view.SelectVisibleCommand.Execute(null);view.ExtractSelectedCommand.Execute(null);await Layout();dialog.Close();await view.WaitForIdleAsync();
                             Check("closing during selected work cancels and waits",!view.IsWorking && !model!.Tasks.Single().Completed);
                         }
                         else
                         {
-                            view.Rows.Last(row=>row.Entry.Encrypted).Selected=true;await Layout();Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout();await view.WaitForIdleAsync();await Layout();
+                            Stage("extract encrypted selection");view.Rows.Last(row=>row.Entry.Encrypted).Selected=true;await Layout();Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout();await view.WaitForIdleAsync();await Layout();
                             Check("actual nested manual password dialog completes only selection",view.OutputPath.Length>0 && Directory.GetFiles(view.OutputPath,"*",SearchOption.AllDirectories).Length==1 && !model!.Tasks.Single().Completed);
                             Check("nested manual password saved after actual selected output",(await vault.ReadAsync()).Any(record=>record.Secret=="password2" && record.LastSuccessAt is not null));
                         }
@@ -89,7 +95,7 @@ internal static class DesktopSelectionValidation
             await PreviewSpike(root,data,baseDirectory,Check);
         }
         catch(Exception error) {checks["unexpected "+error]=false;}
-        finally {theme.Apply(SystemParameters.HighContrast);}
+        finally {watchdog.Stop();theme.Apply(SystemParameters.HighContrast);}
         await File.WriteAllTextAsync(Path.Combine(root,"artifacts/selection-ui-validation.json"),JsonSerializer.Serialize(new {passed=checks.Values.All(value=>value),total=checks.Count,checks,geometry,syntheticData=true,previewPrototypeOnly=true,fullPreviewUi=false}));return checks.Values.All(value=>value);
     }
     private static T? Find<T>(DependencyObject parent) where T:DependencyObject
