@@ -26,7 +26,7 @@ internal static class DesktopUsabilityValidation
             // CanExecute invalidation is dispatched after a bound field changes.
             for(var attempt=0;attempt<40 && !button.IsEnabled;attempt++) {await Task.Delay(25);await Layout();}
             if(!button.IsEnabled)throw new Exception($"Command remained disabled: {button.Name}; idle={model.IsIdle}; canExecute={button.Command?.CanExecute(button.CommandParameter)}; profileNameLength={model.CompressionProfileName.Length}");
-            Invoke(button);await model.WaitForIdleAsync();await Layout();
+            Invoke(button);await Layout();await model.WaitForIdleAsync();await Layout();
         }
         bool Fits(FrameworkElement element)
         {
@@ -57,7 +57,8 @@ internal static class DesktopUsabilityValidation
         check("same name replaces profile without duplicates",model.CompressionProfiles.Count==1 && model.CompressionProfiles[0].Level==3);
         model.CompressionVolumeOption=0;model.CompressionOutput=Path.Combine(data,"both-sources.zip");
         await Execute(view.CreateButton,model);
-        check("compression creates archive from all sources despite one removal selection",File.Exists(model.CompressionOutput));
+        if(!File.Exists(model.CompressionOutput))capture(window,"usability-compression-failure");
+        check("compression creates archive from all sources despite one removal selection; engine="+(model.WorkspaceTasks.LastOrDefault()?.Failure?.Code ?? "none"),File.Exists(model.CompressionOutput));
         using(var archive=System.IO.Compression.ZipFile.OpenRead(model.CompressionOutput))
         {
             using var firstReader=new StreamReader(archive.GetEntry("first.txt")!.Open());using var secondReader=new StreamReader(archive.GetEntry("second.txt")!.Open());
