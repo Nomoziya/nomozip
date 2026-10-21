@@ -133,6 +133,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Task improvements core validation failed.' }
       - name: Validate update feedback, source rules and large collection performance
         run: |
+          & ./.tools/dotnet/dotnet.exe build tests/BrowserPreferencesValidation -c Release --nologo -m:1 -nr:false
+          if ($LASTEXITCODE -ne 0) { throw 'Browser preferences process probe build failed.' }
           foreach ($taskCase in @('PostReleaseValidation','BrowserPerformanceValidation','ApplicationUpdateValidation')) {
             & ./.tools/dotnet/dotnet.exe build "tests/$taskCase" -c Release --nologo -m:1 -nr:false
             if ($LASTEXITCODE -ne 0) { throw "$taskCase build failed." }

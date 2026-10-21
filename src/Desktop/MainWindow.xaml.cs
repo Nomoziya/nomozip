@@ -105,6 +105,7 @@ public partial class MainWindow : Window
         {
             e.Cancel=true;await CloseArchiveAsync();
             if(embeddedModel is not null) return;
+            if(DataContext is MainViewModel current && current.IsBusy)await current.WaitForIdleAsync();
             _ = Dispatcher.BeginInvoke(Close);return;
         }
         if(embeddedHashes?.Model.IsBusy==true) {e.Cancel=true;embeddedHashes.Model.Cancel();await embeddedHashes.Model.WaitForIdleAsync();_ = Dispatcher.BeginInvoke(Close);return;}

@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text.Json.Nodes;
@@ -17,7 +18,7 @@ namespace ArchivePassword.Desktop;
 
 internal static class DesktopP2Validation
 {
-    internal static async Task RunAsync(MainWindow window,ThemeResources theme,string data,string baseDirectory,
+    internal static async Task RunAsync(MainWindow window,ThemeResources theme,string root,string data,string baseDirectory,
         Action<string,bool> check,Action<Window,string> capture)
     {
         if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true")throw new InvalidOperationException("Isolated CI only.");
@@ -37,7 +38,7 @@ internal static class DesktopP2Validation
         {
             var archivePath=Path.Combine(data,"preferences.zip");
             using(var archive=ZipFile.Open(archivePath,ZipArchiveMode.Create))
-            {using(var writer=new StreamWriter(archive.CreateEntry("small.txt").Open()))writer.Write("a");using(var writer=new StreamWriter(archive.CreateEntry("large.txt").Open()))writer.Write(new string('b',120));}
+            {using(var writer=new StreamWriter(archive.CreateEntry("a-small.txt").Open()))writer.Write("a");using(var writer=new StreamWriter(archive.CreateEntry("z-large.txt").Open()))writer.Write(new string('b',120));}
             var profile=Path.Combine(data,"browser-state");var vault=new DpapiPasswordVault(Path.Combine(profile,"synthetic.apv"));
             var pass=0;double rememberedWidth=0;Exception? dialogFailure=null;
             var dialogs=new WindowDialogs(window,prepareContents:dialog=>
@@ -71,14 +72,17 @@ internal static class DesktopP2Validation
                         else
                         {
                             check("P2 restart restores grid view and sort",contents.GridView && contents.BrowserPreferences.Sorts is [{Member:"Entry.Size",Direction:ListSortDirection.Descending}]
-                                && ((ListCollectionView)CollectionViewSource.GetDefaultView(contents.VisibleRows)).CustomSort is ArchiveContentComparer);
-                            check("P2 restart restores custom column width",Math.Abs(dialog.EntryTable.Columns[2].Width.Value-rememberedWidth)<1);
+                                && ((ListCollectionView)CollectionViewSource.GetDefaultView(contents.VisibleRows)).CustomSort is ArchiveContentComparer
+                                && CollectionViewSource.GetDefaultView(contents.VisibleRows).Cast<ArchiveContentRow>().First().Path=="z-large.txt");
+                            ((IToggleProvider)UIElementAutomationPeer.CreatePeerForElement(dialog.ListViewAction)!.GetPattern(PatternInterface.Toggle)).Toggle();await Layout(dialog);
+                            check("P2 restart restores custom column width",Math.Abs(dialog.EntryTable.Columns[2].ActualWidth-rememberedWidth)<1);
                             check("P2 preferences never restore search or selection",contents.Search=="" && contents.SelectedEntries.Count==0 && contents.VisibleRows.Count==2);
                             dialog.EditContentsMenu.PlacementTarget=dialog.EditContentsButton;dialog.EditContentsMenu.IsOpen=true;await Layout(dialog);
                             ((IInvokeProvider)new MenuItemAutomationPeer(dialog.ResetBrowserLayoutAction).GetPattern(PatternInterface.Invoke)).Invoke();await Layout(dialog);
                             dialog.EditContentsMenu.IsOpen=false;await Layout(dialog);
                             check("P2 actual reset restores list automatic widths and original ordering",!contents.GridView && dialog.EntryTable.IsVisible && contents.BrowserPreferences.Columns is null
-                                && contents.BrowserPreferences.Sorts is null && ((ListCollectionView)CollectionViewSource.GetDefaultView(contents.VisibleRows)).CustomSort is null);
+                                && contents.BrowserPreferences.Sorts is null && ((ListCollectionView)CollectionViewSource.GetDefaultView(contents.VisibleRows)).CustomSort is null
+                                && CollectionViewSource.GetDefaultView(contents.VisibleRows).Cast<ArchiveContentRow>().First().Path=="a-small.txt");
                             capture(dialog,"p2-browser-reset");
                         }
                     }
@@ -91,6 +95,14 @@ internal static class DesktopP2Validation
             var browser=await BrowserModel();browser.BrowseArchiveCommand.Execute(null);await browser.WaitForIdleAsync();if(dialogFailure is not null)throw dialogFailure;
             var settingsPath=Path.Combine(profile,"settings.json");var settings=JsonNode.Parse(await File.ReadAllTextAsync(settingsPath))!;
             check("P2 persisted preferences contain presentation fields only",settings["BrowserPreferences"]!.AsObject().Select(item=>item.Key).Order().SequenceEqual(new[]{"Columns","GridView","Sorts"}));
+            var expectedPath=Path.Combine(profile,"expected-preferences.json");var probePath=Path.Combine(profile,"process-probe.json");
+            await File.WriteAllTextAsync(expectedPath,System.Text.Json.JsonSerializer.Serialize(browser.BrowserPreferences));
+            var start=new ProcessStartInfo(Path.Combine(root,".tools/dotnet/dotnet.exe")){UseShellExecute=false,CreateNoWindow=true,WindowStyle=ProcessWindowStyle.Hidden};
+            foreach(var argument in new[]{Path.Combine(root,"tests/BrowserPreferencesValidation/bin/Release/net10.0-windows/BrowserPreferencesValidation.dll"),baseDirectory,profile,expectedPath,probePath})start.ArgumentList.Add(argument);
+            using(var process=Process.Start(start)!)
+            {using var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(60));try{await process.WaitForExitAsync(timeout.Token);}catch(OperationCanceledException){process.Kill(true);throw new TimeoutException("Fresh browser preference process timed out.");}
+                var probe=JsonNode.Parse(await File.ReadAllTextAsync(probePath))!;
+                check("P2 separate process initializes the production model with persisted preferences",process.ExitCode==0 && (bool)probe["passed"]! && (int)probe["processId"]! !=Environment.ProcessId);}
             browser=await BrowserModel();browser.BrowseArchiveCommand.Execute(null);await browser.WaitForIdleAsync();if(dialogFailure is not null)throw dialogFailure;
             browser=await BrowserModel();check("P2 reset survives a third model restart",!browser.BrowserPreferences.GridView && browser.BrowserPreferences.Sorts is null && browser.BrowserPreferences.Columns is null);
             settings=JsonNode.Parse(await File.ReadAllTextAsync(settingsPath))!;settings.AsObject().Remove("BrowserPreferences");await File.WriteAllTextAsync(settingsPath,settings.ToJsonString());

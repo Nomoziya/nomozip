@@ -115,7 +115,7 @@ internal static class DesktopPostReleaseValidation
             }
             browser.Close();browser=null;
             await DesktopUsabilityValidation.RunAsync(window,theme,data,baseDirectory,Check,Capture);
-            await DesktopP2Validation.RunAsync(window,theme,data,baseDirectory,Check,Capture);
+            await DesktopP2Validation.RunAsync(window,theme,root,data,baseDirectory,Check,Capture);
             theme.SetMode("light");theme.Apply(false);
             foreach(var count in new[]{10000,100000})
             {

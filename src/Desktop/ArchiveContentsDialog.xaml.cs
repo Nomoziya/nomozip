@@ -82,7 +82,6 @@ public partial class ArchiveContentsDialog : Window
         }),true);
         EntryTable.AddHandler(ScrollViewer.ScrollChangedEvent,new ScrollChangedEventHandler((_,args)=>{if(args.ExtentHeightChange!=0 || args.ViewportHeightChange!=0)Arrange();}));
         EntryTable.SizeChanged+=(_,_)=>Arrange();EntryTable.Loaded+=(_,_)=>Arrange();SizeChanged+=(_,_)=>Arrange();Loaded += (_, _) => {Arrange();EntrySearch.Focus();};
-        model.PropertyChanged+=(_,args)=>{if(args.PropertyName==nameof(model.GridView)) {ListViewAction.IsChecked=!model.GridView;GridViewAction.IsChecked=model.GridView;}};
         Point? tileDragStart=null;
         EntryTiles.PreviewMouseLeftButtonDown+=(_,args)=>{tileDragStart=FindTile(args.OriginalSource as DependencyObject) is null?null:args.GetPosition(EntryTiles);};
         EntryTiles.PreviewMouseLeftButtonUp+=(_,_)=>tileDragStart=null;

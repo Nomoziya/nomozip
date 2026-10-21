@@ -134,7 +134,13 @@ try {
     $taskChecks.upgradeReplacedOwnedPayload = (Get-FileHash (Join-Path $taskApplication '使用说明.txt')).Hash -eq (Get-FileHash (Join-Path $taskRoot "$taskPayload/使用说明.txt")).Hash
     $taskChecks.upgradePreservedFileEntry = (Get-Item -LiteralPath $taskAssociationCommand).GetValue('') -eq $taskOriginalCommand
     $taskInstalledBytes = (Get-ChildItem -LiteralPath $taskApplication -Recurse -File | Measure-Object Length -Sum).Sum
-    if ($FrameworkDependent) { $taskChecks.upgradeRemovedBundledRuntime = -not (Test-Path (Join-Path $taskApplication 'coreclr.dll')) -and $taskInstalledBytes -lt 12MB }
+    if ($FrameworkDependent) {
+        # Application code and engines can grow independently of the shared runtime.
+        # Check runtime payload directly; the installed smoke test below also proves the loaded runtime is shared.
+        $taskBundledRuntime = @('coreclr.dll','hostfxr.dll','hostpolicy.dll','System.Private.CoreLib.dll','PresentationFramework.dll') |
+            Where-Object { Test-Path -LiteralPath (Join-Path $taskApplication $_) }
+        $taskChecks.upgradeRemovedBundledRuntime = @($taskBundledRuntime).Count -eq 0
+    }
     $taskChecks.upgradePreservedVault = (Get-FileHash $taskVault).Hash -eq $taskVaultHash
     $taskChecks.upgradePreservedSettings = (Get-FileHash $taskSettings).Hash -eq $taskSettingsHash
     $taskChecks.upgradePreservedActualProgress = Test-RetainedProgress

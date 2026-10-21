@@ -11,8 +11,10 @@ public sealed class ArchiveContentComparer(IReadOnlyList<SortDescription> fields
     public int Compare(object? x, object? y)
     {
         if (x is not ArchiveContentRow left || y is not ArchiveContentRow right) return 0;
-        foreach(var field in fields)
+        // Compare is called millions of times: enumerating IReadOnlyList here allocates per comparison.
+        for(var index=0;index<fields.Count;index++)
         {
+            var field=fields[index];
             var order = field.PropertyName switch
             {
                 "Entry.Size" => left.Entry.Size.CompareTo(right.Entry.Size),

@@ -31,7 +31,7 @@ public sealed partial class MainViewModel : ObservableObject
     private string updateMessage = UiText.Get("T_3ec6f6baa17d");
     private int page, conflictPolicy;
     private BrowserPreferences browserPreferences = new();
-    internal BrowserPreferences BrowserPreferences => browserPreferences;
+    public BrowserPreferences BrowserPreferences => browserPreferences;
     private ArchiveTaskRow? selectedTask;
     private SavedPassword? selectedPassword;
     public ObservableCollection<ArchiveTaskRow> Tasks { get; } = [];

@@ -26,12 +26,12 @@ internal static class Program
             watch.Restart(); view.SortDescriptions.Add(new SortDescription(nameof(ArchiveContentRow.Path), ListSortDirection.Descending));
             var sort = watch.Elapsed.TotalMilliseconds;
             var reference=view.Cast<ArchiveContentRow>().Select(row=>row.Entry.Index).ToArray();
-            watch.Restart(); ((ListCollectionView)view).CustomSort=new ArchiveContentComparer(nameof(ArchiveContentRow.Path),ListSortDirection.Descending,System.Globalization.CultureInfo.CurrentCulture);
-            var typedSort=watch.Elapsed.TotalMilliseconds;
+            var allocationBefore=GC.GetAllocatedBytesForCurrentThread();watch.Restart(); ((ListCollectionView)view).CustomSort=new ArchiveContentComparer(nameof(ArchiveContentRow.Path),ListSortDirection.Descending,System.Globalization.CultureInfo.CurrentCulture);
+            var typedSort=watch.Elapsed.TotalMilliseconds;var sortAllocated=GC.GetAllocatedBytesForCurrentThread()-allocationBefore;
             if(!reference.SequenceEqual(view.Cast<ArchiveContentRow>().Select(row=>row.Entry.Index)))throw new Exception("Optimized sort changed inventory order.");
             watch.Restart(); model.Search = "file-000"; var narrow = watch.Elapsed.TotalMilliseconds;
             watch.Restart(); model.Search = ""; model.Navigate("folder-001"); var navigate = watch.Elapsed.TotalMilliseconds;
-            samples.Add(new { count, attempt, openMs = open, searchMs = search, legacySortMs = sort, sortMs = typedSort, narrowSearchMs = narrow, navigateMs = navigate,
+            samples.Add(new { count, attempt, openMs = open, searchMs = search, legacySortMs = sort, sortMs = typedSort, sortAllocatedBytes = sortAllocated, narrowSearchMs = narrow, navigateMs = navigate,
                 peakWorkingSet = Process.GetCurrentProcess().PeakWorkingSet64,
                 maxSynchronousMs = new[] {open,search,typedSort,narrow,navigate}.Max(), visible = model.VisibleRows.Count });
         }
