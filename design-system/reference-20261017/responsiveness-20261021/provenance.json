@@ -1,0 +1,2532 @@
+{
+  "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+  "acceptance": "Agent acceptance authorized by user. Functional/visual/performance checks passed; not merged or released.",
+  "runs": {
+    "x64": {
+      "run": 39638932088,
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "conclusion": "success",
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39638932088"
+    },
+    "arm64": {
+      "run": 39638936525,
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "conclusion": "success",
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39638936525"
+    }
+  },
+  "checks": {
+    "x64/reports/accessibility-validation.json": {
+      "passed": true,
+      "checks": 45
+    },
+    "x64/reports/application-update-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "x64/reports/archive-editing-ui-validation.json": {
+      "passed": true,
+      "checks": 61
+    },
+    "x64/reports/compression-validation.json": {
+      "passed": 38,
+      "checks": 38
+    },
+    "x64/reports/desktop-browser-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "x64/reports/desktop-failure-validation.json": {
+      "passed": true,
+      "checks": 10
+    },
+    "x64/reports/desktop-multi-password-validation.json": {
+      "passed": true,
+      "checks": 14
+    },
+    "x64/reports/desktop-validation.json": {
+      "passed": true,
+      "checks": 0
+    },
+    "x64/reports/display-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "x64/reports/drag-ui-validation.json": {
+      "passed": true,
+      "checks": 56
+    },
+    "x64/reports/encoding-validation.json": {
+      "passed": 75,
+      "checks": 75
+    },
+    "x64/reports/engine-validation.json": {
+      "passed": 101,
+      "checks": 101
+    },
+    "x64/reports/localization-validation.json": {
+      "passed": true,
+      "checks": 37
+    },
+    "x64/reports/master-vault-validation.json": {
+      "passed": true,
+      "checks": 36
+    },
+    "x64/reports/password-organization-validation.json": {
+      "passed": true,
+      "checks": 30
+    },
+    "x64/reports/post032-core-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "x64/reports/post032-ui-en-validation.json": {
+      "passed": true,
+      "checks": 151
+    },
+    "x64/reports/post032-ui-zh-CN-validation.json": {
+      "passed": true,
+      "checks": 151
+    },
+    "x64/reports/preview-ui-validation.json": {
+      "passed": true,
+      "checks": 210
+    },
+    "x64/reports/selection-ui-validation.json": {
+      "passed": true,
+      "checks": 35
+    },
+    "x64/reports/task-improvements-core-validation.json": {
+      "passed": true,
+      "checks": 27
+    },
+    "x64/reports/ui-regression-validation.json": {
+      "passed": true,
+      "checks": 17
+    },
+    "x64/reports/vault-transfer-local-validation.json": {
+      "passed": true,
+      "checks": 34
+    },
+    "arm64/reports/accessibility-validation.json": {
+      "passed": true,
+      "checks": 45
+    },
+    "arm64/reports/application-update-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "arm64/reports/archive-editing-ui-validation.json": {
+      "passed": true,
+      "checks": 61
+    },
+    "arm64/reports/compression-validation.json": {
+      "passed": 38,
+      "checks": 38
+    },
+    "arm64/reports/desktop-browser-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "arm64/reports/desktop-failure-validation.json": {
+      "passed": true,
+      "checks": 10
+    },
+    "arm64/reports/desktop-multi-password-validation.json": {
+      "passed": true,
+      "checks": 14
+    },
+    "arm64/reports/desktop-validation.json": {
+      "passed": true,
+      "checks": 0
+    },
+    "arm64/reports/display-validation.json": {
+      "passed": true,
+      "checks": 13
+    },
+    "arm64/reports/drag-ui-validation.json": {
+      "passed": true,
+      "checks": 56
+    },
+    "arm64/reports/encoding-validation.json": {
+      "passed": 75,
+      "checks": 75
+    },
+    "arm64/reports/engine-validation.json": {
+      "passed": 101,
+      "checks": 101
+    },
+    "arm64/reports/localization-validation.json": {
+      "passed": true,
+      "checks": 37
+    },
+    "arm64/reports/master-vault-validation.json": {
+      "passed": true,
+      "checks": 36
+    },
+    "arm64/reports/password-organization-validation.json": {
+      "passed": true,
+      "checks": 30
+    },
+    "arm64/reports/post032-core-validation.json": {
+      "passed": true,
+      "checks": 55
+    },
+    "arm64/reports/post032-ui-en-validation.json": {
+      "passed": true,
+      "checks": 151
+    },
+    "arm64/reports/post032-ui-zh-CN-validation.json": {
+      "passed": true,
+      "checks": 151
+    },
+    "arm64/reports/preview-ui-validation.json": {
+      "passed": true,
+      "checks": 210
+    },
+    "arm64/reports/selection-ui-validation.json": {
+      "passed": true,
+      "checks": 35
+    },
+    "arm64/reports/task-improvements-core-validation.json": {
+      "passed": true,
+      "checks": 27
+    },
+    "arm64/reports/ui-regression-validation.json": {
+      "passed": true,
+      "checks": 17
+    },
+    "arm64/reports/vault-transfer-local-validation.json": {
+      "passed": true,
+      "checks": 34
+    }
+  },
+  "performance": [
+    {
+      "architecture": "x64",
+      "language": "zh-CN",
+      "descending": {
+        "count": 10000,
+        "sortMs": 171.921,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 10.9746
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 15.5942
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 27.44
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 102.8018
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 29.2899
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 10.913
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 18.5454,
+            "priority": "Send"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 73.1036,
+            "priority": "Render"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 16.7549
+          }
+        ],
+        "maxDispatcherOperationMs": 73.1036,
+        "maxInputGapMs": 102.528,
+        "maxDispatcherGapMs": 102.8018
+      },
+      "count": 10000,
+      "openMs": 278.5067,
+      "constructionMs": 55.5735,
+      "windowConstructMs": 20.1025,
+      "windowShowMs": 45.429899999999996,
+      "searchMs": 172.626,
+      "sortMs": 158.2285,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 29.1566
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 19.9631
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 96.2148
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 118.0459
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 10.8342
+        },
+        {
+          "phase": "search",
+          "gapMs": 24.6723
+        },
+        {
+          "phase": "search",
+          "gapMs": 116.0329
+        },
+        {
+          "phase": "search",
+          "gapMs": 32.1434
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 22.8078
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 20.0265
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 106.0286
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.2038
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 30.5607
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 20.0682,
+          "priority": "Render"
+        },
+        {
+          "phase": "model construction",
+          "durationMs": 65.5913,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 86.7943,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 27.5125,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 78.4902,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 27.7628,
+          "priority": "Background"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 18.3346,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 74.317,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 17.1753
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 16.6405
+        }
+      ],
+      "maxDispatcherOperationMs": 86.7943,
+      "maxInputGapMs": 117.7238,
+      "maxDispatcherGapMs": 118.0459,
+      "peakWorkingSet": 224047104
+    },
+    {
+      "architecture": "x64",
+      "language": "zh-CN",
+      "descending": {
+        "count": 100000,
+        "sortMs": 937.7614,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 8.4215
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 28.3092
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 20.5929
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 32.232
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 12.1193
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 141.2016
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 108.1582
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 30.2566
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 264.9444
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 114.9112
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 160.7153
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 10.2929
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 27.6133
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 18.6524,
+            "priority": "Normal"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 83.06,
+            "priority": "Send"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 10.4051
+          }
+        ],
+        "maxDispatcherOperationMs": 83.06,
+        "maxInputGapMs": 160.3898,
+        "maxDispatcherGapMs": 264.9444
+      },
+      "count": 100000,
+      "openMs": 657.2016,
+      "constructionMs": 383.7132,
+      "windowConstructMs": 19.103,
+      "windowShowMs": 44.8645,
+      "searchMs": 385.9321,
+      "sortMs": 673.0583,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 30.7261
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 72.3566
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 117.2835
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 138.6735
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 114.328
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 32.4361
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 41.8525
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 93.1562
+        },
+        {
+          "phase": "search",
+          "gapMs": 30.9687
+        },
+        {
+          "phase": "search",
+          "gapMs": 30.989
+        },
+        {
+          "phase": "search",
+          "gapMs": 79.0663
+        },
+        {
+          "phase": "search",
+          "gapMs": 66.1981
+        },
+        {
+          "phase": "search",
+          "gapMs": 178.6338
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 23.2259
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 27.7834
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 186.9878
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 31.5169
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 98.6779
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 31.6862
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 45.057
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 85.2429
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 144.5201
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 10.333
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 13.5687
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 23.7993
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 64.009,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 87.7315,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 40.2127,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 101.6594,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 21.7368,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 70.3068,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 17.2997
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 16.3797
+        }
+      ],
+      "maxDispatcherOperationMs": 101.6594,
+      "maxInputGapMs": 177.5917,
+      "maxDispatcherGapMs": 186.9878,
+      "peakWorkingSet": 305311744,
+      "grid": {
+        "count": 100000,
+        "elapsedMs": 371.5038,
+        "operations": [
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 82.6233,
+            "priority": "Normal"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 17.7648,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 149.3643,
+            "priority": "Send"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 82.2821,
+            "priority": "Send"
+          }
+        ],
+        "maxDispatcherOperationMs": 149.3643,
+        "maxInputGapMs": 186.3997,
+        "maxDispatcherGapMs": 186.4496
+      }
+    },
+    {
+      "architecture": "x64",
+      "language": "en",
+      "descending": {
+        "count": 10000,
+        "sortMs": 172.7502,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 6.0871
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 28.0774
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 123.3755
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 10.4198
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 23.0921
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 20.0387
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 21.1036,
+            "priority": "Send"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 92.2561,
+            "priority": "Render"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 18.9624
+          }
+        ],
+        "maxDispatcherOperationMs": 92.2561,
+        "maxInputGapMs": 123.0859,
+        "maxDispatcherGapMs": 123.3755
+      },
+      "count": 10000,
+      "openMs": 276.1633,
+      "constructionMs": 48.311,
+      "windowConstructMs": 21.2377,
+      "windowShowMs": 41.3066,
+      "searchMs": 131.3039,
+      "sortMs": 152.7576,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 30.6278
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 96.5908
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 118.8623
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 10.3921
+        },
+        {
+          "phase": "search",
+          "gapMs": 136.1775
+        },
+        {
+          "phase": "search",
+          "gapMs": 12.9428
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 30.3276
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 103.1984
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 22.5446
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.836
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 16.5167,
+          "priority": "Render"
+        },
+        {
+          "phase": "model construction",
+          "durationMs": 62.593,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 88.3894,
+          "priority": "Render"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 15.9122,
+          "priority": "ContextIdle"
+        },
+        {
+          "phase": "search",
+          "durationMs": 30.9516,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 76.1952,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 20.4981,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 75.1376,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 19.2279
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 18.5148
+        }
+      ],
+      "maxDispatcherOperationMs": 88.3894,
+      "maxInputGapMs": 142.2488,
+      "maxDispatcherGapMs": 136.1775,
+      "peakWorkingSet": 223825920
+    },
+    {
+      "architecture": "x64",
+      "language": "en",
+      "descending": {
+        "count": 100000,
+        "sortMs": 726.7239,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 6.2146
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 15.9094
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 27.0487
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 66.0994
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 129.4347
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 10.4225
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 15.0175
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 82.3393
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 188.6167
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 41.2689
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 31.1388
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 97.7171
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 9.6787
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 32.5471
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 23.8311,
+            "priority": "Send"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 61.3506,
+            "priority": "Render"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 15.969
+          }
+        ],
+        "maxDispatcherOperationMs": 61.3506,
+        "maxInputGapMs": 97.7632,
+        "maxDispatcherGapMs": 188.6167
+      },
+      "count": 100000,
+      "openMs": 625.5205,
+      "constructionMs": 375.7224,
+      "windowConstructMs": 30.7054,
+      "windowShowMs": 54.3395,
+      "searchMs": 185.7362,
+      "sortMs": 509.5062,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 59.4629
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 20.9302
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 73.2907
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 129.9313
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 31.7887
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 153.5081
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 13.1198
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 30.5809
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 96.2078
+        },
+        {
+          "phase": "search",
+          "gapMs": 31.5645
+        },
+        {
+          "phase": "search",
+          "gapMs": 40.4907
+        },
+        {
+          "phase": "search",
+          "gapMs": 114.3593
+        },
+        {
+          "phase": "search",
+          "gapMs": 15.9246
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.7653
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 28.121
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 64.2521
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 100.4323
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 285.4598
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 10.0084
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.7402
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 24.1099
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 85.1179,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 89.9953,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 29.8569,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 75.1622,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 27.1557,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 81.4627,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 19.0114
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 18.8623
+        }
+      ],
+      "maxDispatcherOperationMs": 89.9953,
+      "maxInputGapMs": 148.7436,
+      "maxDispatcherGapMs": 285.4598,
+      "peakWorkingSet": 297480192,
+      "grid": {
+        "count": 100000,
+        "elapsedMs": 342.9143,
+        "operations": [
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 98.0376,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 16.6829,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 134.1371,
+            "priority": "Send"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 75.3164,
+            "priority": "Send"
+          }
+        ],
+        "maxDispatcherOperationMs": 134.1371,
+        "maxInputGapMs": 136.515,
+        "maxDispatcherGapMs": 136.3844
+      }
+    },
+    {
+      "architecture": "arm64",
+      "language": "zh-CN",
+      "descending": {
+        "count": 10000,
+        "sortMs": 119.7654,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 3.2995
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 16.0432
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 92.0981
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 25.6215
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 15.1453
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 49.4992,
+            "priority": "Render"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 6.5608
+          }
+        ],
+        "maxDispatcherOperationMs": 49.4992,
+        "maxInputGapMs": 91.9932,
+        "maxDispatcherGapMs": 92.0981
+      },
+      "count": 10000,
+      "openMs": 182.6778,
+      "constructionMs": 41.9165,
+      "windowConstructMs": 15.1308,
+      "windowShowMs": 34.9718,
+      "searchMs": 100.1123,
+      "sortMs": 123.0168,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 19.3932
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 8.5206
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 67.4535
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 16.6379
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 61.2068
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 9.7469
+        },
+        {
+          "phase": "search",
+          "gapMs": 91.2078
+        },
+        {
+          "phase": "search",
+          "gapMs": 6.3456
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 35.858
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 82.0997
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 5.9432
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 37.1624
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 12.2165,
+          "priority": "Render"
+        },
+        {
+          "phase": "model construction",
+          "durationMs": 50.1589,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 58.2416,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 14.5188,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 54.9392,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 58.8165,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 6.4842
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 7.5175
+        }
+      ],
+      "maxDispatcherOperationMs": 58.8165,
+      "maxInputGapMs": 91.1319,
+      "maxDispatcherGapMs": 91.2078,
+      "peakWorkingSet": 224178176
+    },
+    {
+      "architecture": "arm64",
+      "language": "zh-CN",
+      "descending": {
+        "count": 100000,
+        "sortMs": 782.7377,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 32.9095
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 31.052
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 15.9641
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 10.2164
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 47.8134
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 86.3115
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 25.8291
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 165.3455
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 175.7969
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 31.8701
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 151.1531
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 25.0013
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 15.1027,
+            "priority": "Send"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 44.8897,
+            "priority": "Render"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 6.3118
+          }
+        ],
+        "maxDispatcherOperationMs": 44.8897,
+        "maxInputGapMs": 103.1967,
+        "maxDispatcherGapMs": 175.7969
+      },
+      "count": 100000,
+      "openMs": 477.1832,
+      "constructionMs": 318.1117,
+      "windowConstructMs": 15.0488,
+      "windowShowMs": 31.5629,
+      "searchMs": 271.1296,
+      "sortMs": 576.2217,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 32.0345
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 192.1724
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 25.6739
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 118.1206
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 100.7143
+        },
+        {
+          "phase": "search",
+          "gapMs": 26.0807
+        },
+        {
+          "phase": "search",
+          "gapMs": 32.1297
+        },
+        {
+          "phase": "search",
+          "gapMs": 80.2699
+        },
+        {
+          "phase": "search",
+          "gapMs": 132.8352
+        },
+        {
+          "phase": "search",
+          "gapMs": 5.5793
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 37.1323
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.1644
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 25.8901
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 260.7666
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 31.6361
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 112.3603
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 86.754
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 5.9045
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 19.1464
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 46.6541,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 63.4997,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 23.1492,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 46.632,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 15.2641,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 48.1067,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 7.5648
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 7.0544
+        }
+      ],
+      "maxDispatcherOperationMs": 63.4997,
+      "maxInputGapMs": 103.0844,
+      "maxDispatcherGapMs": 260.7666,
+      "peakWorkingSet": 286228480,
+      "grid": {
+        "count": 100000,
+        "elapsedMs": 217.2471,
+        "operations": [
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 67.168,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 12.2902,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 54.7125,
+            "priority": "Send"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 28.3567,
+            "priority": "Send"
+          }
+        ],
+        "maxDispatcherOperationMs": 67.168,
+        "maxInputGapMs": 88.6706,
+        "maxDispatcherGapMs": 88.8431
+      }
+    },
+    {
+      "architecture": "arm64",
+      "language": "en",
+      "descending": {
+        "count": 10000,
+        "sortMs": 114.0612,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 28.0783
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 12.5259
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 57.4441
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 12.8058
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 39.6724
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 44.6382,
+            "priority": "Render"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 10.4519,
+            "priority": "Background"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 6.4884
+          }
+        ],
+        "maxDispatcherOperationMs": 44.6382,
+        "maxInputGapMs": 57.5075,
+        "maxDispatcherGapMs": 57.4441
+      },
+      "count": 10000,
+      "openMs": 166.8399,
+      "constructionMs": 43.866,
+      "windowConstructMs": 13.3205,
+      "windowShowMs": 25.4841,
+      "searchMs": 86.484,
+      "sortMs": 94.7538,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 16.9297
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 69.1062
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 13.1806
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 58.6464
+        },
+        {
+          "phase": "search",
+          "gapMs": 12.4925
+        },
+        {
+          "phase": "search",
+          "gapMs": 74.1674
+        },
+        {
+          "phase": "search",
+          "gapMs": 6.0993
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.5758
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 73.4395
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 5.9181
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 35.1732
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 38.8597,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 55.5622,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 16.8378,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 54.6408,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 41.1082,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 7.5087
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 6.7078
+        }
+      ],
+      "maxDispatcherOperationMs": 55.5622,
+      "maxInputGapMs": 74.1225,
+      "maxDispatcherGapMs": 74.1674,
+      "peakWorkingSet": 219017216
+    },
+    {
+      "architecture": "arm64",
+      "language": "en",
+      "descending": {
+        "count": 100000,
+        "sortMs": 628.2233,
+        "phaseGaps": [
+          {
+            "phase": "descending header sort",
+            "gapMs": 4.8797
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 16.3762
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 33.0925
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 32.2819
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 79.9979
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 64.1247
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 142.3321
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 15.7937
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 16.1657
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 31.8916
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 182.0305
+          },
+          {
+            "phase": "descending header sort",
+            "gapMs": 26.1189
+          }
+        ],
+        "operations": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 14.2402,
+            "priority": "Send"
+          },
+          {
+            "phase": "descending header sort",
+            "durationMs": 54.5711,
+            "priority": "Render"
+          }
+        ],
+        "resets": [
+          {
+            "phase": "descending header sort",
+            "durationMs": 7.0159
+          }
+        ],
+        "maxDispatcherOperationMs": 54.5711,
+        "maxInputGapMs": 86.0607,
+        "maxDispatcherGapMs": 182.0305
+      },
+      "count": 100000,
+      "openMs": 456.8228,
+      "constructionMs": 307.9566,
+      "windowConstructMs": 13.6057,
+      "windowShowMs": 35.5049,
+      "searchMs": 115.4574,
+      "sortMs": 415.9239,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 11.4665
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 348.5778
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 16.7594
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 70.197
+        },
+        {
+          "phase": "search",
+          "gapMs": 21.55
+        },
+        {
+          "phase": "search",
+          "gapMs": 82.9215
+        },
+        {
+          "phase": "search",
+          "gapMs": 17.3916
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 27.8866
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 46.9458
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 49.2958
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 286.4592
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.4284
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.504
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 49.1646,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 65.7636,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 18.228,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 46.2507,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 13.5409,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 43.8325,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 6.8869
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 7.0621
+        }
+      ],
+      "maxDispatcherOperationMs": 65.7636,
+      "maxInputGapMs": 97.3889,
+      "maxDispatcherGapMs": 348.5778,
+      "peakWorkingSet": 296878080,
+      "grid": {
+        "count": 100000,
+        "elapsedMs": 214.5686,
+        "operations": [
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 61.7287,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 13.098,
+            "priority": "Render"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 51.2306,
+            "priority": "Send"
+          },
+          {
+            "phase": "grid viewport and last item",
+            "durationMs": 27.1334,
+            "priority": "Send"
+          }
+        ],
+        "maxDispatcherOperationMs": 61.7287,
+        "maxInputGapMs": 86.0492,
+        "maxDispatcherGapMs": 86.0491
+      }
+    }
+  ],
+  "candidates": {
+    "x64": {
+      "architecture": "x64",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "bytes": 4872664,
+      "sha256": "92747fb1b363058291103557dc3f6b93bbddb1526ac89a2d0b7001e9fadf173f",
+      "files": 42,
+      "nativePE": [
+        "ArchivePassword.exe",
+        "nomozip-cli.exe",
+        "ArchiveEngineWorker.exe",
+        "engines/26.03/7z.dll",
+        "engines/26.03/7z.exe",
+        "engines/26.04/7z.dll",
+        "engines/26.04/7z.exe"
+      ],
+      "sharedRuntime": ".NET 10",
+      "crc": true,
+      "engineDigests": true,
+      "versions": [
+        {
+          "name": "ArchivePassword.dll",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        },
+        {
+          "name": "ArchivePassword.exe",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        },
+        {
+          "name": "nomozip-cli.dll",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        },
+        {
+          "name": "nomozip-cli.exe",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        }
+      ],
+      "note": "CI original candidate; no local launch or installation."
+    },
+    "arm64": {
+      "architecture": "arm64",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "bytes": 4059659,
+      "sha256": "62d54fbdcdd0ee7452bb9efe20dfd10b1a626021f94099e900c19f0ff1e66003",
+      "files": 42,
+      "nativePE": [
+        "ArchivePassword.exe",
+        "nomozip-cli.exe",
+        "ArchiveEngineWorker.exe",
+        "engines/26.03/7z.dll",
+        "engines/26.03/7z.exe",
+        "engines/26.04/7z.dll",
+        "engines/26.04/7z.exe"
+      ],
+      "sharedRuntime": ".NET 10",
+      "crc": true,
+      "engineDigests": true,
+      "versions": [
+        {
+          "name": "ArchivePassword.dll",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        },
+        {
+          "name": "ArchivePassword.exe",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        },
+        {
+          "name": "nomozip-cli.dll",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        },
+        {
+          "name": "nomozip-cli.exe",
+          "file": "0.3.3.0",
+          "product": "0.3.3+f082c9d85ece867328670b377967c59ce9254e22"
+        }
+      ],
+      "note": "CI original candidate; no local launch or installation."
+    }
+  },
+  "images": [
+    {
+      "path": "x64/zh-CN/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/zh-CN/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/zh-CN/large-list-updating.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/zh-CN/large-grid-last.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/en/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/en/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/en/large-list-updating.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/en/large-grid-last.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "x64/short/en-contents-dark512.png",
+      "width": 510,
+      "height": 358
+    },
+    {
+      "path": "x64/short/en-contents-high-contrast512.png",
+      "width": 510,
+      "height": 358
+    },
+    {
+      "path": "arm64/zh-CN/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/zh-CN/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/zh-CN/large-list-updating.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/zh-CN/large-grid-last.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/en/large-list-10000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/en/large-list-100000.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/en/large-list-updating.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/en/large-grid-last.png",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "path": "arm64/short/en-contents-dark512.png",
+      "width": 510,
+      "height": 358
+    },
+    {
+      "path": "arm64/short/en-contents-high-contrast512.png",
+      "width": 510,
+      "height": 358
+    }
+  ],
+  "files": [
+    {
+      "path": "x64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/compression-validation.json",
+      "sha256": "5ef0788a61963eac6007d4cc9783b433c727be56476cb53ce0a1ed1afe89e61e",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/drag-ui-validation.json",
+      "sha256": "1340eec4937dfaf2b2532f1627e8eb06bc6d0e5d612f2a2f30516141a8a8d675",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/engine-validation.json",
+      "sha256": "49bc8725aeab5e5b56d3a3a1ea352085a596c66892accee1e8e41900e6e5d0a7",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/localization-validation.json",
+      "sha256": "aa17e474caa324a62b528b6fc651455902b4e4170e38a5457b19b5a648aa8e45",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/master-vault-validation.json",
+      "sha256": "c456ab08a268eedabb52cdc7a06082d31fa657131dbf6a5fad9d832a9ebaf900",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/post032-core-validation.json",
+      "sha256": "fdb059d508375231e10a123942f5cf56738941ec63cf31b5c9da9e55bcdee16e",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/post032-ui-en-validation.json",
+      "sha256": "a187514e65a8be6f7835aea68e83136c80bf6d7994de069c505243610c6cb3f5",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "f4d683f880ebaf858714ec9fb6d47d78043fe83daad7a6b80d4d0f75a41ffb26",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/preview-ui-validation.json",
+      "sha256": "a37b8dd342b51a7228a7c851fd83a7503c43c682ac338725aad0f9f71c79074f",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/selection-ui-validation.json",
+      "sha256": "94ed0ebef35232665d7475fcb82712309c3b792949b9471166483c1fbe61e5e7",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/reports/post032-performance.json",
+      "sha256": "eba6411e6970b42ef49ded6ba6ac03d35962794853670427670558691b583b4f",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/zh-CN/large-list-10000.png",
+      "sha256": "b41d82f7bcd5cad204ec930e79f10e26cb5476714138f488b0b9e0de88a4ccf6",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/zh-CN/large-list-100000.png",
+      "sha256": "4a4cfd79bf440f8067ce73daad9f69bd7956958248aa59cefc086a62a84386c6",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/zh-CN/large-list-updating.png",
+      "sha256": "63469a7bf46962d94ae0aa8fc0e00248e00828721938ce72834b9a1c8bfd95cf",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/zh-CN/large-grid-last.png",
+      "sha256": "f5c040a25c3550ffa95da000a0726360825807b1f3a320285f7645c3e1c214a1",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/en/large-list-10000.png",
+      "sha256": "5f06b0c3b8baf5620662efe509f9af60e4b33bb1db88fb909fe14239603b3149",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/en/large-list-100000.png",
+      "sha256": "c90e6250b534919d8d40cbacc3a4e99569bd62185bc491729a78a0af68e478f9",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/en/large-list-updating.png",
+      "sha256": "d99b3d602a05f6c4c6b56b9ee1291be9f224b23a6550930895c9ee0c12d116aa",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/en/large-grid-last.png",
+      "sha256": "f5414e5e4cdfa2ebf4ba9a23e45f67f2babb2e79d179c7ecdb2efc82a9b1c117",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/short/en-contents-dark512.png",
+      "sha256": "cd20bdb530ecdc957119f2efdcb42c3ed255b7d7eb9cc5aef74acb1f882f5022",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "x64/short/en-contents-high-contrast512.png",
+      "sha256": "e753a81082654854b3206e41e4872cb3905620e4595fa937bcb8fcffd76a23c3",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638932088,
+      "architecture": "x64"
+    },
+    {
+      "path": "arm64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/compression-validation.json",
+      "sha256": "18b3727552cdec01f94465bb30227352bc8138e3464ce79bd73f34a8d7e6d783",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/drag-ui-validation.json",
+      "sha256": "1340eec4937dfaf2b2532f1627e8eb06bc6d0e5d612f2a2f30516141a8a8d675",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/engine-validation.json",
+      "sha256": "c00439ccad4cf0257717b15443c1138eb4c7ad6c1eb4771fe4579ea790cce405",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/localization-validation.json",
+      "sha256": "aa17e474caa324a62b528b6fc651455902b4e4170e38a5457b19b5a648aa8e45",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/master-vault-validation.json",
+      "sha256": "f5c857f1ea38ec469833ade4677e79dae212e75ad5fc2d099455ecc472500c85",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/post032-core-validation.json",
+      "sha256": "fdb059d508375231e10a123942f5cf56738941ec63cf31b5c9da9e55bcdee16e",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/post032-ui-en-validation.json",
+      "sha256": "015465da1eda8e323c51ecb503481df4530bdbd392bd5acb0427fedc0e61646c",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "a0876ccd68433b613306e3a58756b81c1b38fb9e685b4cd6bcf2f02df3b1f71c",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/preview-ui-validation.json",
+      "sha256": "a37b8dd342b51a7228a7c851fd83a7503c43c682ac338725aad0f9f71c79074f",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/selection-ui-validation.json",
+      "sha256": "94ed0ebef35232665d7475fcb82712309c3b792949b9471166483c1fbe61e5e7",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/vault-transfer-local-validation.json",
+      "sha256": "ce2d7c59ca96f10b2bf3c62b9195f425e8e683ecfed0c14d0ff33701323cd8e6",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/reports/post032-performance.json",
+      "sha256": "2e8b86dac1e52a8c7f16628bea65fda669c703efbb35f00992975db98c283f18",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/zh-CN/large-list-10000.png",
+      "sha256": "6c117cc58d6334a5d90ba29838fa88b4ee003256c9d4caa3fce8b1b041a773e8",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/zh-CN/large-list-100000.png",
+      "sha256": "3bc878440f813c8392a16fdccccb9d6d95da04bfee038793685980b70b845249",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/zh-CN/large-list-updating.png",
+      "sha256": "cc73e8c43a43c208b15fc4fb432d8e47b5f0edddbcc46c6152f028e6909b2237",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/zh-CN/large-grid-last.png",
+      "sha256": "50c3b3b8b12c2067ab8596c2a11260483fae0e67087c585c3ed4ed3bbcb4fc11",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/en/large-list-10000.png",
+      "sha256": "bd12c7316edcee0c61bd23c10637c5b1a13482bba98b1721618a573c3051a36a",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/en/large-list-100000.png",
+      "sha256": "e63bf04276fc034454dc6144a8aa0d2a4eb11f6f9d9f2958c029c13f6d606b80",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/en/large-list-updating.png",
+      "sha256": "ae5a294ba59177d4aedd38229be4d98ceb675b496bab0577a0d1960a9f3bcc99",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/en/large-grid-last.png",
+      "sha256": "a609712ada43636dd14224467a890683b196a3eb9dd6ae25dc250cec6c2edd2c",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/short/en-contents-dark512.png",
+      "sha256": "cd20bdb530ecdc957119f2efdcb42c3ed255b7d7eb9cc5aef74acb1f882f5022",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "arm64/short/en-contents-high-contrast512.png",
+      "sha256": "e753a81082654854b3206e41e4872cb3905620e4595fa937bcb8fcffd76a23c3",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "run": 39638936525,
+      "architecture": "arm64"
+    },
+    {
+      "path": "local/async-view-probe.json",
+      "sha256": "8a3582768ab861cb2a99a15b21e5b2e438c2a986d0bb21737ea8a0e32318cf9a",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "environment": "Local working-tree synthetic probe; product code before commit may match the final change while binary revision metadata predates it. No window or native desktop input."
+    },
+    {
+      "path": "local/browser-deferred-and-sort-20261022.json",
+      "sha256": "38500b684269a5148d91bb8392809082bf9e5452e8c404cef6609178767af097",
+      "sourceCommit": "f082c9d85ece867328670b377967c59ce9254e22",
+      "environment": "Local working-tree synthetic probe; product code before commit may match the final change while binary revision metadata predates it. No window or native desktop input."
+    },
+    {
+      "path": "local/summary-query-before.json",
+      "sha256": "9cf774a1b32824f6ace89750d16016cdb822501e164b4e9a6e70ff778983aae3",
+      "sourceCommit": "9cf244b1cee2b9f4e42ecc7a03bf9d5141efb577",
+      "environment": "Local working-tree synthetic probe; product code before commit may match the final change while binary revision metadata predates it. No window or native desktop input."
+    },
+    {
+      "path": "local/summary-query-after.json",
+      "sha256": "32d40d11929e37974d7a62ef689f556dbd177276071625f17dff0d694d12bfb8",
+      "sourceCommit": "f4271602b900ca1d49709d134c4315b8f06821c6",
+      "environment": "Local working-tree synthetic probe; product code before commit may match the final change while binary revision metadata predates it. No window or native desktop input."
+    },
+    {
+      "path": "local/idle-transition-probe-before.json",
+      "sha256": "ef951367fce585e1c825326bf92fc36130c97b633f21c0d63d096df566aab9e2",
+      "sourceCommit": "c74dfb0de738b45dff26e620db09207ea302c7ff",
+      "environment": "Local working-tree synthetic probe; product code before commit may match the final change while binary revision metadata predates it. No window or native desktop input."
+    },
+    {
+      "path": "local/idle-transition-probe-after.json",
+      "sha256": "a97d114df34e83c05e2f232ebacbd117640476274bb6b428d2b3b9d6111b470d",
+      "sourceCommit": "9cf244b1cee2b9f4e42ecc7a03bf9d5141efb577",
+      "environment": "Local working-tree synthetic probe; product code before commit may match the final change while binary revision metadata predates it. No window or native desktop input."
+    }
+  ],
+  "measurement": "200ms response budget applies to the maximum 16ms Input-priority heartbeat gap and the longest individual Dispatcher operation. Background-priority heartbeat gaps remain diagnostic queue-delay records, not a direct main-thread-blocking measurement. All initial rows must be ready before open timing ends. Ascending/descending sort and virtual-grid scrolling are covered. Correctness reference sorts and screenshots are outside timed intervals.",
+  "measurementReference": "https://learn.microsoft.com/en-us/dotnet/api/system.windows.threading.dispatcherpriority?view=windowsdesktop-10.0",
+  "reused": "Unchanged P1/P2 layout, compression formats, SFX, volumes, installer and full page/button evidence remains in ../usability-p2-20261021/provenance.json with original source/CI attribution. Current reports retest affected browsing, selection, editing, preview and drag-out flows.",
+  "displayScope": "User has one physical monitor. No second monitor required. Physical multi-monitor acceptance is not applicable to the available device; synthetic bounds checks do not prove physical multi-monitor behavior.",
+  "privacyTask": "Not passed: the 2026-10-22 00:03 Asia/Shanghai raw-source recheck still returned HTTP 200 and matched the removed account-path pattern. Prior commit-page/API checks remain local. Private request/evidence stays outside this source checkout; no Support ticket was submitted.",
+  "galleryValidation": {
+    "passed": true,
+    "selections": 20,
+    "htmlSha256": "67f0e7f0c945375a699f9fc9faed99d00980d72c1745e18677d0a676d32e0959",
+    "scope": "Headless local HTML gallery only; all WPF images are CI originals."
+  },
+  "visualReview": {
+    "reviewer": "Primary agent self-review",
+    "viewed": [
+      "x64/en/large-grid-last.png",
+      "arm64/zh-CN/large-list-updating.png",
+      "x64/short/en-contents-dark512.png",
+      "arm64/zh-CN/large-list-100000.png",
+      "arm64/short/en-contents-high-contrast512.png"
+    ],
+    "scope": "Representative actual CI WPF images checked; no claim of inspecting every image or conducting independent/user research."
+  }
+}

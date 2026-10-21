@@ -1,0 +1,20 @@
+[
+  {
+    "culture": "zh-CN",
+    "passed": true,
+    "ticks": 24,
+    "searchMs": 196.2197,
+    "sortMs": 326.8887,
+    "maxDispatcherGapMs": 175.5977,
+    "scope": "Synthetic ViewModel plus collection view only; no window or desktop input."
+  },
+  {
+    "culture": "en-US",
+    "passed": true,
+    "ticks": 10,
+    "searchMs": 67.0009,
+    "sortMs": 198.7762,
+    "maxDispatcherGapMs": 67.1314,
+    "scope": "Synthetic ViewModel plus collection view only; no window or desktop input."
+  }
+]
