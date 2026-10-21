@@ -5,7 +5,7 @@ using System.Globalization;
 namespace ArchivePassword.Desktop;
 
 // Avoid repeated property-path reflection while WPF sorts large inventories.
-public sealed class ArchiveContentComparer(IReadOnlyList<SortDescription> fields, CultureInfo culture) : IComparer
+public sealed class ArchiveContentComparer(IReadOnlyList<SortDescription> fields, CultureInfo culture, bool? showPath=null) : IComparer
 {
     public ArchiveContentComparer(string member,ListSortDirection direction,CultureInfo culture) : this([new SortDescription(member,direction)],culture) { }
     public int Compare(object? x, object? y)
@@ -19,7 +19,7 @@ public sealed class ArchiveContentComparer(IReadOnlyList<SortDescription> fields
             {
                 "Entry.Size" => left.Entry.Size.CompareTo(right.Entry.Size),
                 nameof(ArchiveContentRow.Path) => culture.CompareInfo.Compare(left.Path, right.Path),
-                _ => culture.CompareInfo.Compare(left.DisplayName, right.DisplayName)
+                _ => culture.CompareInfo.Compare(showPath is {} full?(full?left.Path:left.Name):left.DisplayName,showPath is {} fullRight?(fullRight?right.Path:right.Name):right.DisplayName)
             };
             if(order!=0)return field.Direction == ListSortDirection.Descending ? -Math.Sign(order) : order;
         }

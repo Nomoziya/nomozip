@@ -25,11 +25,12 @@ public sealed partial class MainViewModel
             Footer = outcome.Engine.IsSuccess ? UiText.Format("T_58db5ae70926", task.Name, outcome.Engine.Items.Count) : outcome.Engine.Status == "cancelled" ? UiText.Get("T_f23f6d1addfc") : ErrorText(outcome.Engine.Code);
             if (outcome.Engine.IsSuccess)
             {
-                var contents=new ArchiveContentsViewModel(task.Path,outcome.Engine.Items,
+                var contents=await Task.Run(()=>new ArchiveContentsViewModel(task.Path,outcome.Engine.Items,
                 (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path]),
                 outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status),
                 (entry,status)=>PreviewEntryAsync(task,client,entry,status),
-                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning,browserPreferences);
+                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning,browserPreferences),cancellation.Token);
+                cancellation.Token.ThrowIfCancellationRequested();
                 await dialogs.ShowArchiveContentsAsync(contents);
                 browserPreferences=contents.BrowserPreferences;
                 try {if(settingsWritable)await SaveSettingsAsync();else Banner=UiText.Get("Browser.PreferencesSaveFailed");}

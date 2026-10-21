@@ -3376,4 +3376,5 @@
   <data name="Compression.SeparateProgress" xml:space="preserve"><value>正在处理 {0}/{1}：{2} · {3}</value></data>
   <data name="Compression.SeparateCompleted" xml:space="preserve"><value>已完成 {0}/{1} 个压缩包，失败 {2} 项。</value></data>
   <data name="Compression.SeparateCancelled" xml:space="preserve"><value>已取消；已完成 {0}/{1} 个压缩包，失败 {2} 项，后续项目未执行。</value></data>
+  <data name="Browser.Updating" xml:space="preserve"><value>正在更新列表…</value></data>
 </root>

@@ -12,10 +12,12 @@ public partial class ArchiveContentsDialog : Window
     public ArchiveContentsDialog(ArchiveContentsViewModel model)
     {
         InitializeComponent(); DataContext = model;
+        model.EnableBackgroundView();
         var sortFields=(model.BrowserPreferences.Sorts ?? []).Select(item=>new System.ComponentModel.SortDescription(item.Member,item.Direction)).ToList();
         void ApplySort()
         {
             foreach(var column in EntryTable.Columns)column.SortDirection=sortFields.Where(item=>item.PropertyName==column.SortMemberPath).Select(item=>(System.ComponentModel.ListSortDirection?)item.Direction).FirstOrDefault();
+            if(model.UsesBackgroundView){model.SetViewSort(sortFields);return;}
             ((System.Windows.Data.ListCollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(model.VisibleRows)).CustomSort=sortFields.Count==0?null:
                 new ArchiveContentComparer(sortFields.ToArray(),System.Globalization.CultureInfo.CurrentCulture);
         }
@@ -94,6 +96,7 @@ public partial class ArchiveContentsDialog : Window
         var closing=false;
         Closing+=async (_,e)=>
         {
+            model.CancelViewUpdate();
             if(!closing && model.IsWorking) {e.Cancel=true;model.Cancel();await model.WaitForIdleAsync();closing=true;Close();}
             else model.ClearDrag();
         };

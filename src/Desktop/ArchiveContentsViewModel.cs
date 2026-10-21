@@ -30,14 +30,14 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         this.browserPreferences=browserPreferences is {IsValid:true}?browserPreferences:new();gridView=this.browserPreferences.GridView;
         allRows=BuildRows(items);orderedRows=OrderRows(allRows);Rows=new(allRows);VisibleRows=[];
         AttachRows();
-        SelectVisibleCommand=new RelayCommand(()=>Select(true),()=>!IsWorking && VisibleRows.Count>0);
-        ClearSelectionCommand=new RelayCommand(()=>Select(false),()=>!IsWorking && allRows.Any(row=>row.Selected));
+        SelectVisibleCommand=new RelayCommand(()=>Select(true),()=>CanSelect && VisibleRows.Count>0);
+        ClearSelectionCommand=new RelayCommand(()=>Select(false),()=>CanSelect && allRows.Any(row=>row.Selected));
         ExtractSelectedCommand=new AsyncCommand(async()=>
         {
             IsWorking=true;idle=new TaskCompletionSource();OutputPath="";
             try {OutputPath=await extract!(SelectedEntries,new Progress<string>(value=>OperationMessage=value)) ?? "";}
             finally {IsWorking=false;idle.TrySetResult();}
-        },()=>extract is not null && !IsWorking && allRows.Any(row=>row.Selected));
+        },()=>extract is not null && CanSelect && allRows.Any(row=>row.Selected));
         CancelCommand=new RelayCommand(()=>{if(IsWorking) cancel?.Invoke();else {OperationMessage=UiText.Get("Drag.Cancelled");ClearDrag();}},()=>IsWorking || dragContent is not null);
         PrepareDragCommand=new AsyncCommand(()=>DragAsync(_=>null),()=>CanDrag);
         PreviewCommand=new AsyncCommand(async()=>
@@ -45,7 +45,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
             var entry=CurrentRow!.Entry;IsWorking=true;idle=new TaskCompletionSource();
             try {await preview!(entry,new Progress<string>(value=>OperationMessage=value));}
             finally {IsWorking=false;idle.TrySetResult();}
-        },()=>preview is not null && !IsWorking && CurrentRow is not null && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
+        },()=>preview is not null && CanSelect && CurrentRow is not null && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
         FolderUpCommand=new RelayCommand(()=>Navigate(Parent(currentFolder)),()=>CanSelect && currentFolder.Length>0);
         OpenCurrentEntryCommand=new RelayCommand(()=>{if(CurrentRow?.Entry.Directory==true)Navigate(Normalize(CurrentRow.Path));else if(PreviewCommand.CanExecute(null))PreviewCommand.Execute(null);},()=>CanSelect && CurrentRow is not null && (CurrentRow.Entry.Directory || PreviewCommand.CanExecute(null)));
         OpenResultCommand=new RelayCommand(()=>open?.Invoke(OutputPath),()=>!IsWorking && OutputPath.Length>0 && open is not null);
@@ -70,7 +70,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
                 }
             }
             finally {IsWorking=false;idle.TrySetResult();}
-        },()=>EditingAvailable && !IsWorking && allowed());
+        },()=>EditingAvailable && CanSelect && allowed());
         AddFilesCommand=EditingCommand(ArchiveEditAction.AddFiles,()=>true);
         AddFolderCommand=EditingCommand(ArchiveEditAction.AddFolder,()=>true);
         DeleteSelectedCommand=EditingCommand(ArchiveEditAction.Delete,()=>allRows.Any(row=>row.Selected));
@@ -110,13 +110,18 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         rows.OrderByDescending(row=>row.Entry.Directory).ThenBy(row=>row.Path,StringComparer.CurrentCultureIgnoreCase).ToArray();
     private void FilterRows()
     {
+        if(UsesBackgroundView){QueueViewUpdate();return;}
         var valid=ArchiveEntryFilter.TryCreate(filterExtensions,filterMinimum,filterMaximum,filterKindIndex,out var filter);
         FilterError=valid?"":UiText.Get("Browser.FilterError");
         var acrossFolders=showSelectedOnly || search.Length>0 || filterExtensions.Length>0 || filterMinimum.Length>0 || filterMaximum.Length>0 || filterKindIndex!=0;
         bool Matches(ArchiveContentRow row)=>valid && (!showSelectedOnly || row.Selected) && row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase) && filter.Matches(row.Entry);
-        var previous=CurrentRow;
         var matches=orderedRows.Where(Matches).ToArray();
         var visible=acrossFolders?matches:matches.Where(row=>string.Equals(row.ParentPath,currentFolder,StringComparison.OrdinalIgnoreCase)).ToArray();
+        ApplyView(matches,visible,acrossFolders);
+    }
+    private void ApplyView(IReadOnlyList<ArchiveContentRow> matches,IReadOnlyList<ArchiveContentRow> visible,bool acrossFolders)
+    {
+        var previous=CurrentRow;
         foreach(var row in visible) row.ShowPath=acrossFolders;
         Rows.ReplaceAll(matches);VisibleRows.ReplaceAll(visible);
         CurrentRow=previous is not null && visible.Contains(previous)?previous:null;
@@ -187,7 +192,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     public ICommand ReplaceSelectedCommand {get;}
     public ICommand EditTextCommand {get;}
     public ICommand PrepareDragCommand {get;}
-    public bool CanDrag=>prepareDrag is not null && !IsWorking && (allRows.Any(row=>row.Selected) || CurrentRow is not null);
+    public bool CanDrag=>prepareDrag is not null && CanSelect && (allRows.Any(row=>row.Selected) || CurrentRow is not null);
     public bool ClearDrag()
     {
         var warning=dragContent?.Cleanup();dragCleanupNeeded=warning is not null;
@@ -227,11 +232,14 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         finally {IsWorking=false;idle.TrySetResult();CommandManager.InvalidateRequerySuggested();}
     }
     private static TaskCompletionSource CompletedSource() {var source=new TaskCompletionSource();source.SetResult();return source;}
-    public Task WaitForIdleAsync()=>idle.Task;
+    public async Task WaitForIdleAsync()
+    {
+        while(true){var update=viewUpdate;await idle.Task;await update;if(ReferenceEquals(update,viewUpdate) && !IsWorking)return;}
+    }
     public void Cancel()=>cancel?.Invoke();
     public bool IsWorking {get=>working;private set {if(Set(ref working,value)) Changed(nameof(CanSelect));}}
-    public bool CanSelect=>!IsWorking;
-    public string OperationMessage {get=>operationMessage;set=>Set(ref operationMessage,value);}
+    public bool CanSelect=>!IsWorking && !IsRefreshing;
+    public string OperationMessage {get=>operationMessage;set {if(Set(ref operationMessage,value))Changed(nameof(ViewStatus));}}
     public string OutputPath {get=>outputPath;private set=>Set(ref outputPath,value);}
     public ICommand SelectVisibleCommand {get;}
     public ICommand ClearSelectionCommand {get;}
@@ -334,6 +342,7 @@ public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=fals
     private bool showPath;
     internal bool ShowPath {get=>showPath;set {if(Set(ref showPath,value))Changed(nameof(DisplayName));}}
     private readonly string displayName=System.IO.Path.GetFileName(entry.Path.Replace('\\','/').TrimEnd('/'));
+    internal string Name=>displayName;
     public string DisplayName=>ShowPath?Path:displayName;
     private bool selected;
     public ArchiveEntry Entry=>entry;

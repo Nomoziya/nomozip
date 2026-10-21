@@ -124,10 +124,10 @@ internal static class DesktopPostReleaseValidation
                 var heartbeat=new DispatcherTimer(DispatcherPriority.Background){Interval=TimeSpan.FromMilliseconds(16)};
                 heartbeat.Tick+=(_,_)=>{var now=System.Diagnostics.Stopwatch.GetTimestamp();gaps.Add(System.Diagnostics.Stopwatch.GetElapsedTime(previous,now).TotalMilliseconds);previous=now;};heartbeat.Start();
                 var watch=System.Diagnostics.Stopwatch.StartNew();
-                var large=new ArchiveContentsViewModel(Path.Combine(data,"large-inventory.zip"),entries);
+                var large=await Task.Run(()=>new ArchiveContentsViewModel(Path.Combine(data,"large-inventory.zip"),entries));
                 browser=new ArchiveContentsDialog(large){Owner=window,MinWidth=1152,Width=1152,Height=768,ShowActivated=false,ShowInTaskbar=false,Left=-32000,Top=-32000,Opacity=0};browser.Show();await Layout(browser);
                 var openMs=watch.Elapsed.TotalMilliseconds;
-                watch.Restart();browser.EntrySearch.Text=".txt";browser.EntrySearch.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();await Layout(browser);var searchMs=watch.Elapsed.TotalMilliseconds;
+                watch.Restart();browser.EntrySearch.Text=".txt";browser.EntrySearch.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();await large.WaitForIdleAsync();await Layout(browser);var searchMs=watch.Elapsed.TotalMilliseconds;
                 Check($"large inventory bound search completes {count}",large.VisibleRows.Count==count);
                 var realized=Descendants(browser.EntryTable).OfType<DataGridRow>().Count();
                 Check($"large list realizes a bounded number of rows {count}",realized>0 && realized<200);
@@ -136,12 +136,30 @@ internal static class DesktopPostReleaseValidation
                 var headerPeer=UIElementAutomationPeer.CreatePeerForElement(headers)!.GetChildren()
                     .OfType<DataGridColumnHeaderItemAutomationPeer>().Single(peer=>ReferenceEquals(peer.Item,browser.EntryTable.Columns[1].Header));
                 ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();
-                await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
-                Check($"actual column header uses typed sorting {count}",((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is ArchiveContentComparer);
-                Capture(browser,$"large-list-{count}");
+                await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
+                Check($"actual column header uses background typed sorting {count}",large.UsesBackgroundView && !large.IsRefreshing && ((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is null
+                    && large.BrowserPreferences.Sorts is [{Member:"DisplayName",Direction:System.ComponentModel.ListSortDirection.Ascending}]
+                    && large.VisibleRows.Select(row=>row.Path).SequenceEqual(large.VisibleRows.Select(row=>row.Path).OrderBy(path=>path,StringComparer.CurrentCulture)));
                 await Task.Delay(40);heartbeat.Stop();
                 performance.Add(new{count,openMs,searchMs,sortMs,maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
-                browser.Close();browser=null;
+                Check($"large list dispatcher continues during background work {count}",gaps.Count>0);
+                Check($"large list avoids half-second UI stalls {count}",gaps.Max()<200);
+                Capture(browser,$"large-list-{count}");
+                if(count==100000)
+                {
+                    large.VisibleRows.Single(row=>row.Entry.Index==0).Selected=true;
+                    large.Search="file-00000";large.Search="no-such-entry";large.Search="file-099999";
+                    Check("updating list reports status and blocks stale extraction",large.IsRefreshing && !large.CanSelect && !large.ExtractAllCommand.CanExecute(null) && large.ViewStatus==UiText.Get("Browser.Updating"));
+                    await large.WaitForIdleAsync();await Layout(browser);
+                    Check("rapid searches publish the latest result only",large.VisibleRows.Count==1 && large.VisibleRows[0].Entry.Index==99999 && large.SelectedEntries is [{Index:0}]);
+                    large.Search="";await large.WaitForIdleAsync();large.Navigate("folder-001");await large.WaitForIdleAsync();await Layout(browser);
+                    Check("background navigation retains folder scope and hidden selection",large.VisibleRows.Count==1000 && large.VisibleRows.All(row=>row.ParentPath=="folder-001") && large.SelectedEntries is [{Index:0}]);
+                    large.ResetBrowserLayoutCommand.Execute(null);await large.WaitForIdleAsync();
+                    Check("reset clears background sorting",large.BrowserPreferences.Sorts is null && !large.GridView && browser.EntryTable.Columns.All(column=>column.SortDirection is null));
+                    var before=large.VisibleRows.ToArray();large.Search="file";browser.Close();await large.WaitForIdleAsync();
+                    Check("closing a large browser prevents pending publication",!large.IsRefreshing && before.SequenceEqual(large.VisibleRows));browser=null;
+                }
+                else {browser.Close();browser=null;}
             }
         }
         catch(Exception failure){error=failure.ToString();Console.Error.WriteLine(error);}

@@ -127,6 +127,7 @@ public partial class MainWindow
         var current = embeddedModel;
         if (current is null) return;
         if (current.IsWorking) { current.Cancel(); await current.WaitForIdleAsync(); }
+        current.CancelViewUpdate();
         if (!current.ClearDrag()) return;
         archiveClosed?.TrySetResult();
     }

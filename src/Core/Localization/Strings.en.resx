@@ -3376,4 +3376,5 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.SeparateProgress" xml:space="preserve"><value>Processing {0}/{1}: {2} · {3}</value></data>
   <data name="Compression.SeparateCompleted" xml:space="preserve"><value>Created {0} of {1:count:archive:archives}. Failed: {2}.</value></data>
   <data name="Compression.SeparateCancelled" xml:space="preserve"><value>Cancelled. Created {0} of {1:count:archive:archives}. Failed: {2}. Remaining sources were not processed.</value></data>
+  <data name="Browser.Updating" xml:space="preserve"><value>Updating list…</value></data>
 </root>
