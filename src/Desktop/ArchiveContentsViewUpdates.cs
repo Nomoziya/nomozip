@@ -12,9 +12,17 @@ public sealed partial class ArchiveContentsViewModel
     private int viewRevision;
     private CancellationTokenSource? viewCancellation;
     private Task viewUpdate=Task.CompletedTask;
+    private TaskCompletionSource? initialViewReady;
     private IReadOnlyList<SortDescription> viewSorts=[];
     internal bool UsesBackgroundView=>backgroundView;
-    internal void EnableBackgroundView()=>backgroundView=allRows.Count>=BackgroundViewThreshold;
+    internal void EnableBackgroundView()
+    {
+        if(backgroundView || allRows.Count<BackgroundViewThreshold)return;
+        backgroundView=true;
+        initialViewReady=new(TaskCreationOptions.RunContinuationsAsynchronously);viewUpdate=initialViewReady.Task;
+        UpdateVisibleSelection([]);VisibleRows.ReplaceAll([]);IsRefreshing=true;
+    }
+    internal void StartInitialView() {if(initialViewReady is not null)QueueViewUpdate();}
     public bool IsRefreshing {get=>refreshing;private set {if(Set(ref refreshing,value)){Changed(nameof(CanSelect));Changed(nameof(ViewStatus));CommandManager.InvalidateRequerySuggested();}}}
     public string ViewStatus=>IsRefreshing?UiText.Get("Browser.Updating"):OperationMessage;
     internal void SetViewSort(IReadOnlyList<SortDescription> fields)
@@ -26,9 +34,11 @@ public sealed partial class ArchiveContentsViewModel
     internal void CancelViewUpdate()
     {
         viewRevision++;var previous=viewCancellation;viewCancellation=null;previous?.Cancel();IsRefreshing=false;
+        var initial=initialViewReady;initialViewReady=null;initial?.TrySetResult();
     }
     private void QueueViewUpdate()
     {
+        var initial=initialViewReady;initialViewReady=null;
         viewCancellation?.Cancel();var cancellation=new CancellationTokenSource();viewCancellation=cancellation;
         var revision=++viewRevision;
         var valid=ArchiveEntryFilter.TryCreate(filterExtensions,filterMinimum,filterMaximum,filterKindIndex,out var filter);
@@ -39,6 +49,7 @@ public sealed partial class ArchiveContentsViewModel
         var rows=orderedRows;var fields=viewSorts;var culture=CultureInfo.CurrentCulture;
         IsRefreshing=true;
         viewUpdate=UpdateAsync();
+        initial?.TrySetResult();
         async Task UpdateAsync()
         {
             try

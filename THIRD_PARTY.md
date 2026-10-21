@@ -14,6 +14,8 @@ The x64 native worker is built with MinGW and static runtime libraries. GCC runt
 
 The C# password store uses Microsoft's System.Security.Cryptography.ProtectedData 10.0.12 package (MIT): https://www.nuget.org/packages/System.Security.Cryptography.ProtectedData/10.0.12. Runtime and framework dependencies are Microsoft's .NET 10 / WPF.
 
+Archive grid scrolling uses VirtualizingWrapPanel 2.5.4 (MIT), a managed WPF panel with no additional package dependencies: https://www.nuget.org/packages/VirtualizingWrapPanel/2.5.4 and https://github.com/sbaeumlisberger/VirtualizingWrapPanel. The original copyright and license are included as Licenses/VirtualizingWrapPanel-MIT.txt. The pinned NuGet package SHA-256 is 4f54be8fd63b25b097be7a375fe646d6351e15f7337efade44c189acb2269818.
+
 Current Windows x64 and ARM64 distributions use the system's shared .NET 10 Desktop Runtime and do not bundle .NET or WPF runtime files. Older self-contained payloads are used only as isolated upgrade test fixtures and are excluded from release assets. The per-user installer uses NSIS 3.13, obtained from the official MSYS2 3.13-2 package with the published SHA-256 verified: https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-nsis. NSIS copyright and applicable license notices are included as `licenses/NSIS-COPYING.txt`.
 
 Integration tests download RAR fixtures from libarchive's test suite, and do not include them in the application package: https://github.com/libarchive/libarchive/tree/master/libarchive/test. The tests use the fixture content and passwords documented in test_read_format_rar_encryption.c. Test fixture provenance is independent from the product license.

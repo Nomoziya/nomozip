@@ -24,6 +24,7 @@ internal static class DesktopPostReleaseValidation
         var captures = new List<object>();
         var performance = new List<object>();
         var descendingPerformance = new List<object>();
+        var gridPerformance = new List<object>();
         void Check(string name, bool passed) { checks.Add(name,passed); if(!passed)throw new Exception(name); }
         Task Layout(Window target) => target.Dispatcher.InvokeAsync(target.UpdateLayout,DispatcherPriority.ApplicationIdle).Task;
         void Invoke(Button button) => ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
@@ -122,9 +123,9 @@ internal static class DesktopPostReleaseValidation
             {
                 var entries=Enumerable.Range(0,count).Select(i=>new ArchiveEntry((uint)i,$"folder-{i%100:D3}/file-{i:D6}.txt",(ulong)i,false,false)).ToArray();
                 var gaps=new List<double>();var phaseGaps=new List<object>();var phase="model construction";var previous=System.Diagnostics.Stopwatch.GetTimestamp();
-                var operationStarts=new Dictionary<DispatcherOperation,(long start,string phase)>();var operations=new List<object>();var resets=new List<object>();var inputGaps=new List<double>();var inputPrevious=previous;
+                var operationStarts=new Dictionary<DispatcherOperation,(long start,string phase)>();var operations=new List<object>();var resets=new List<object>();var inputGaps=new List<double>();var inputPrevious=previous;var maxOperationMs=0d;
                 void Started(object? sender,DispatcherHookEventArgs args)=>operationStarts[args.Operation]=(System.Diagnostics.Stopwatch.GetTimestamp(),phase);
-                void Finished(object? sender,DispatcherHookEventArgs args){if(operationStarts.Remove(args.Operation,out var start)){var ms=System.Diagnostics.Stopwatch.GetElapsedTime(start.start).TotalMilliseconds;if(ms>10)operations.Add(new{phase=start.phase,durationMs=ms,priority=args.Operation.Priority.ToString()});}}
+                void Finished(object? sender,DispatcherHookEventArgs args){if(operationStarts.Remove(args.Operation,out var start)){var ms=System.Diagnostics.Stopwatch.GetElapsedTime(start.start).TotalMilliseconds;maxOperationMs=Math.Max(maxOperationMs,ms);if(ms>10)operations.Add(new{phase=start.phase,durationMs=ms,priority=args.Operation.Priority.ToString()});}}
                 window.Dispatcher.Hooks.OperationStarted+=Started;window.Dispatcher.Hooks.OperationCompleted+=Finished;
                 var inputHeartbeat=new DispatcherTimer(DispatcherPriority.Input){Interval=TimeSpan.FromMilliseconds(16)};
                 inputHeartbeat.Tick+=(_,_)=>{var now=System.Diagnostics.Stopwatch.GetTimestamp();inputGaps.Add(System.Diagnostics.Stopwatch.GetElapsedTime(inputPrevious,now).TotalMilliseconds);inputPrevious=now;};inputHeartbeat.Start();
@@ -134,7 +135,9 @@ internal static class DesktopPostReleaseValidation
                 var large=await Task.Run(()=>new ArchiveContentsViewModel(Path.Combine(data,"large-inventory.zip"),entries));
                 long resetStarted=0;large.VisibleRows.CollectionChanged+=(_,_)=>resetStarted=System.Diagnostics.Stopwatch.GetTimestamp();
                 var constructionMs=watch.Elapsed.TotalMilliseconds;phase="window construction/show/layout";var windowWatch=System.Diagnostics.Stopwatch.StartNew();
-                browser=new ArchiveContentsDialog(large){Owner=window,MinWidth=1152,Width=1152,Height=768,ShowActivated=false,ShowInTaskbar=false,Left=-32000,Top=-32000,Opacity=0};var windowConstructMs=windowWatch.Elapsed.TotalMilliseconds;browser.Show();var windowShowMs=windowWatch.Elapsed.TotalMilliseconds-windowConstructMs;await Layout(browser);
+                browser=new ArchiveContentsDialog(large){Owner=window,MinWidth=1152,Width=1152,Height=768,ShowActivated=false,ShowInTaskbar=false,Left=-32000,Top=-32000,Opacity=0};var windowConstructMs=windowWatch.Elapsed.TotalMilliseconds;
+                Check($"large browser defers initial rows until shell is loaded {count}",large.IsRefreshing && large.VisibleRows.Count==0);
+                browser.Show();var windowShowMs=windowWatch.Elapsed.TotalMilliseconds-windowConstructMs;await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);
                 var openMs=watch.Elapsed.TotalMilliseconds;
                 large.VisibleRows.CollectionChanged+=(_,_)=>resets.Add(new{phase,durationMs=System.Diagnostics.Stopwatch.GetElapsedTime(resetStarted).TotalMilliseconds});
                 phase="search";watch.Restart();browser.EntrySearch.Text=".txt";browser.EntrySearch.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();await large.WaitForIdleAsync();await Layout(browser);var searchMs=watch.Elapsed.TotalMilliseconds;
@@ -148,27 +151,47 @@ internal static class DesktopPostReleaseValidation
                 ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();
                 await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
                 await Task.Delay(40);heartbeat.Stop();inputHeartbeat.Stop();window.Dispatcher.Hooks.OperationStarted-=Started;window.Dispatcher.Hooks.OperationCompleted-=Finished;
-                performance.Add(new{count,openMs,constructionMs,windowConstructMs,windowShowMs,searchMs,sortMs,phaseGaps=phaseGaps.ToArray(),operations=operations.ToArray(),resets=resets.ToArray(),maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
+                performance.Add(new{count,openMs,constructionMs,windowConstructMs,windowShowMs,searchMs,sortMs,phaseGaps=phaseGaps.ToArray(),operations=operations.ToArray(),resets=resets.ToArray(),maxDispatcherOperationMs=maxOperationMs,maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
                 // The reference sort below is a correctness oracle, not a product operation.
                 // Exclude its synchronous CPU work (and screenshot rendering) from UI response measurements.
                 Check($"actual column header uses background typed sorting {count}",large.UsesBackgroundView && !large.IsRefreshing && ((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is null
                     && large.BrowserPreferences.Sorts is [{Member:"DisplayName",Direction:System.ComponentModel.ListSortDirection.Ascending}]
                     && large.VisibleRows.Select(row=>row.Path).SequenceEqual(large.VisibleRows.Select(row=>row.Path).OrderBy(path=>path,StringComparer.CurrentCulture)));
                 Check($"large list dispatcher continues during background work {count}",gaps.Count>0);
-                Check($"large list avoids half-second UI stalls {count}",gaps.Max()<200);
+                // Background-priority timers include queue starvation; keep that diagnostic, but measure response at input priority.
+                Check($"large list input delay and single UI operation stay below 200ms {count}",inputGaps.Count>0 && inputGaps.Max()<200 && maxOperationMs<200);
                 // Exercise a real order change too: the first ascending sort can match the initial inventory order.
-                gaps.Clear();inputGaps.Clear();operations.Clear();operationStarts.Clear();resets.Clear();phaseGaps.Clear();phase="descending header sort";
+                gaps.Clear();inputGaps.Clear();operations.Clear();operationStarts.Clear();resets.Clear();phaseGaps.Clear();maxOperationMs=0;phase="descending header sort";
                 previous=System.Diagnostics.Stopwatch.GetTimestamp();inputPrevious=previous;
                 window.Dispatcher.Hooks.OperationStarted+=Started;window.Dispatcher.Hooks.OperationCompleted+=Finished;heartbeat.Start();inputHeartbeat.Start();watch.Restart();
                 ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var descendingSortMs=watch.Elapsed.TotalMilliseconds;
                 await Task.Delay(40);heartbeat.Stop();inputHeartbeat.Stop();window.Dispatcher.Hooks.OperationStarted-=Started;window.Dispatcher.Hooks.OperationCompleted-=Finished;
-                descendingPerformance.Add(new{count,sortMs=descendingSortMs,phaseGaps=phaseGaps.ToArray(),operations=operations.ToArray(),resets=resets.ToArray(),maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max()});
+                descendingPerformance.Add(new{count,sortMs=descendingSortMs,phaseGaps=phaseGaps.ToArray(),operations=operations.ToArray(),resets=resets.ToArray(),maxDispatcherOperationMs=maxOperationMs,maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max()});
                 Check($"actual descending header sorts all entries {count}",large.BrowserPreferences.Sorts is [{Member:"DisplayName",Direction:System.ComponentModel.ListSortDirection.Descending}]
                     && large.VisibleRows.Select(row=>row.Path).SequenceEqual(large.VisibleRows.Select(row=>row.Path).OrderByDescending(path=>path,StringComparer.CurrentCulture)));
-                Check($"descending sort preserves UI responsiveness {count}",gaps.Count>0 && gaps.Max()<200);
+                Check($"descending sort preserves UI responsiveness {count}",inputGaps.Count>0 && inputGaps.Max()<200 && maxOperationMs<200);
                 Capture(browser,$"large-list-{count}");
                 if(count==100000)
                 {
+                    gaps.Clear();inputGaps.Clear();operations.Clear();operationStarts.Clear();resets.Clear();phaseGaps.Clear();maxOperationMs=0;phase="grid viewport and last item";
+                    previous=System.Diagnostics.Stopwatch.GetTimestamp();inputPrevious=previous;
+                    window.Dispatcher.Hooks.OperationStarted+=Started;window.Dispatcher.Hooks.OperationCompleted+=Finished;heartbeat.Start();inputHeartbeat.Start();watch.Restart();
+                    ((IToggleProvider)UIElementAutomationPeer.CreatePeerForElement(browser.GridViewAction)!.GetPattern(PatternInterface.Toggle)).Toggle();await Layout(browser);
+                    Check("large grid realizes a bounded number of tiles",large.GridView && Descendants(browser.EntryTiles).OfType<ListBoxItem>().Count() is >0 and <200);
+                    var tileScroller=Descendants(browser.EntryTiles).OfType<ScrollViewer>().Single();
+                    var scroll=(IScrollProvider)UIElementAutomationPeer.CreatePeerForElement(tileScroller)!.GetPattern(PatternInterface.Scroll);
+                    Check("large grid exposes a real scroll range",scroll.VerticallyScrollable);scroll.SetScrollPercent(-1,100);await Layout(browser);
+                    var last=large.VisibleRows.Last();var lastTile=(ListBoxItem)browser.EntryTiles.ItemContainerGenerator.ContainerFromItem(last);
+                    Check("scrolling reaches last entry without realizing the whole grid",lastTile is not null && Descendants(browser.EntryTiles).OfType<ListBoxItem>().Count() is >0 and <200);
+                    var lastBox=Descendants(lastTile!).OfType<CheckBox>().Single();Toggle(lastBox);await Layout(browser);
+                    Check("virtualized tile checkbox selects the real last entry",large.SelectedEntries is [var chosen] && chosen.Index==last.Entry.Index);
+                    Toggle(lastBox);await Layout(browser);var gridMs=watch.Elapsed.TotalMilliseconds;await Task.Delay(40);
+                    heartbeat.Stop();inputHeartbeat.Stop();window.Dispatcher.Hooks.OperationStarted-=Started;window.Dispatcher.Hooks.OperationCompleted-=Finished;
+                    gridPerformance.Add(new{count,elapsedMs=gridMs,operations=operations.ToArray(),maxDispatcherOperationMs=maxOperationMs,maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max()});
+                    Check("large grid input delay and single UI operation stay below 200ms",inputGaps.Count>0 && inputGaps.Max()<200 && maxOperationMs<200);
+                    Capture(browser,"large-grid-last");
+                    ((IToggleProvider)UIElementAutomationPeer.CreatePeerForElement(browser.ListViewAction)!.GetPattern(PatternInterface.Toggle)).Toggle();await Layout(browser);
+                    Check("returning from large grid retains inventory and empty selection",!large.GridView && large.VisibleRows.Count==count && large.SelectedEntries.Count==0);
                     large.VisibleRows.Single(row=>row.Entry.Index==0).Selected=true;
                     large.Search="file-00000";large.Search="no-such-entry";large.Search="file-099999";
                     Check("updating list reports status and blocks stale extraction",large.IsRefreshing && !large.CanSelect && !large.ExtractAllCommand.CanExecute(null) && large.ViewStatus==UiText.Get("Browser.Updating")
@@ -185,11 +208,23 @@ internal static class DesktopPostReleaseValidation
                 }
                 else {browser.Close();browser=null;}
             }
+            var embeddedEntries=Enumerable.Range(0,10000).Select(i=>new ArchiveEntry((uint)i,$"folder/file-{i:D5}.txt",1,false,false)).ToArray();
+            var embeddedModel=await Task.Run(()=>new ArchiveContentsViewModel(Path.Combine(data,"embedded-large.zip"),embeddedEntries));
+            var embeddedDialog=new ArchiveContentsDialog(embeddedModel);var host=window.HostArchiveAsync(embeddedDialog,embeddedModel);
+            try
+            {
+                await Layout(window);await embeddedModel.WaitForIdleAsync().WaitAsync(TimeSpan.FromSeconds(15));await Layout(window);
+                Check("embedded large browser publishes initial folder after its root loads",!embeddedModel.IsRefreshing && embeddedModel.VisibleRows.Count==1 && embeddedModel.VisibleRows[0].Entry.Directory);
+            }
+            finally {await embeddedDialog.EmbeddedClose!();await host;}
+            var unopened=await Task.Run(()=>new ArchiveContentsViewModel(Path.Combine(data,"unopened.zip"),embeddedEntries));
+            var unopenedDialog=new ArchiveContentsDialog(unopened);unopenedDialog.Close();await unopened.WaitForIdleAsync().WaitAsync(TimeSpan.FromSeconds(5));unopened.StartInitialView();
+            Check("closing before initial load cancels deferred publication",!unopened.IsRefreshing && unopened.VisibleRows.Count==0);
         }
         catch(Exception failure){error=failure.ToString();Console.Error.WriteLine(error);}
         finally {browser?.Close();theme.SetMode("light");theme.Apply(false);}
         var passed=error is null && checks.Count>0 && checks.Values.All(value=>value);
-        await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/post032-ui-{language}-validation.json"),JsonSerializer.Serialize(new{passed,error,checks,captures,performance,descendingPerformance,language,syntheticData=true,actualInstallationChanged=false},new JsonSerializerOptions{WriteIndented=true}));
+        await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/post032-ui-{language}-validation.json"),JsonSerializer.Serialize(new{passed,error,checks,captures,performance,descendingPerformance,gridPerformance,language,syntheticData=true,actualInstallationChanged=false},new JsonSerializerOptions{WriteIndented=true}));
         return passed;
     }
     private static IEnumerable<System.Windows.DependencyObject> Descendants(System.Windows.DependencyObject root)

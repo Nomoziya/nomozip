@@ -41,6 +41,11 @@ $taskDpapiPackage = Join-Path $taskNugetSource 'system.security.cryptography.pro
 if (-not (Test-Path $taskDpapiPackage)) {
     Invoke-WebRequest 'https://api.nuget.org/v3-flatcontainer/system.security.cryptography.protecteddata/10.0.12/system.security.cryptography.protecteddata.10.0.12.nupkg' -OutFile $taskDpapiPackage
 }
+$taskWrapPackage=Join-Path $taskNugetSource 'virtualizingwrappanel.2.5.4.nupkg'
+if(-not (Test-Path $taskWrapPackage)) {
+    Invoke-WebRequest 'https://api.nuget.org/v3-flatcontainer/virtualizingwrappanel/2.5.4/virtualizingwrappanel.2.5.4.nupkg' -OutFile $taskWrapPackage
+}
+if((Get-FileHash $taskWrapPackage -Algorithm SHA256).Hash -ne '4F54BE8FD63B25B097BE7A375FE646D6351E15F7337EFADE44C189ACB2269818'){throw 'VirtualizingWrapPanel package checksum mismatch.'}
 if (-not $SkipSdk) {
     $taskDotnet = Join-Path $taskTools 'dotnet/dotnet.exe'
     if (-not (Test-Path $taskDotnet)) {

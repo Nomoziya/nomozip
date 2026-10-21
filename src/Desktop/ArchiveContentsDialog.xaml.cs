@@ -11,8 +11,10 @@ public partial class ArchiveContentsDialog : Window
     internal Func<Task>? EmbeddedClose {get;set;}
     public ArchiveContentsDialog(ArchiveContentsViewModel model)
     {
-        InitializeComponent(); DataContext = model;
+        InitializeComponent();
         model.EnableBackgroundView();
+        DataContext=model;
+        if(model.UsesBackgroundView)BrowserRoot.Loaded+=(_,_)=>BrowserRoot.Dispatcher.BeginInvoke(model.StartInitialView,System.Windows.Threading.DispatcherPriority.Background);
         var sortFields=(model.BrowserPreferences.Sorts ?? []).Select(item=>new System.ComponentModel.SortDescription(item.Member,item.Direction)).ToList();
         void ApplySort()
         {
