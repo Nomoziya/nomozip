@@ -19,6 +19,7 @@ public sealed partial class MainViewModel
 {
     public ObservableCollection<CompressionProfile> CompressionProfiles { get; } = [];
     private CompressionProfile? selectedCompressionProfile, lastCompressionProfile;
+    private bool applyingCompressionProfile;
     private string compressionProfileName = "";
     public string CompressionProfileName { get => compressionProfileName; set { if (Set(ref compressionProfileName, value)) CommandManager.InvalidateRequerySuggested(); } }
     public CompressionProfile? SelectedCompressionProfile
@@ -36,8 +37,18 @@ public sealed partial class MainViewModel
     private void ApplyCompressionProfile(CompressionProfile profile)
     {
         if (!profile.IsValid) return;
-        CompressionFormat = profile.Format; CompressionLevel = profile.Level;
-        CompressionVolumeUnit = profile.VolumeUnit; CompressionVolumeCustom = profile.VolumeCustom; CompressionVolumeOption = profile.VolumeOption;
+        applyingCompressionProfile=true;
+        try
+        {
+            CompressionFormat = profile.Format; CompressionLevel = profile.Level;
+            CompressionVolumeUnit = profile.VolumeUnit; CompressionVolumeCustom = profile.VolumeCustom; CompressionVolumeOption = profile.VolumeOption;
+        }
+        finally {applyingCompressionProfile=false;}
+    }
+    private void CompressionProfileOptionsChanged()
+    {
+        if(applyingCompressionProfile || selectedCompressionProfile is null)return;
+        selectedCompressionProfile=null;Changed(nameof(SelectedCompressionProfile));
     }
     private void InitializeCompressionProfiles()
     {

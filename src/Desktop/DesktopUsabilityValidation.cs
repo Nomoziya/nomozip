@@ -48,7 +48,9 @@ internal static class DesktopUsabilityValidation
         view.CompressionProfileNameBox.Text="Sharing";view.CompressionProfileNameBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
         await Execute(view.SaveCompressionProfileButton,model);
         check("profile saves through actual form command",model.CompressionProfiles.Single().Name=="Sharing" && model.CompressionMessage==UiText.Get("Compression.ProfileSaved"));
-        model.CompressionFormat=0;model.CompressionLevel=0;model.CompressionVolumeOption=0;model.SelectedCompressionProfile=null;
+        model.CompressionFormat=0;model.CompressionLevel=0;model.CompressionVolumeOption=0;
+        await Layout();
+        check("editing parameters releases profile selection so it can be reapplied",view.CompressionProfileBox.SelectedItem is null);
         view.CompressionProfileBox.SelectedItem=model.CompressionProfiles.Single();await Layout();
         check("profile selection restores format level and volume",model.CompressionFormat==1 && model.CompressionLevel==4 && model.CompressionVolumeOption==4 && model.CompressionVolumeCustom=="1");
         model.CompressionProfileName="sharing";model.CompressionLevel=3;await Execute(view.SaveCompressionProfileButton,model);

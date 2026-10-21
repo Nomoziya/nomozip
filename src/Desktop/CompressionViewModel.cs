@@ -54,7 +54,7 @@ public sealed partial class MainViewModel
     public int CompressionVolumeUnit {get=>volumeUnit;set {if(Set(ref volumeUnit,value)) VolumeOptionsChanged();}}
     public string CompressionVolumeCustom {get=>volumeCustom;set {if(Set(ref volumeCustom,value)) VolumeOptionsChanged();}}
     private bool ValidVolumeSize=>VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out _);
-    private void VolumeOptionsChanged() {if(volumeOption!=0) CompressionSfx=false;Changed(nameof(CompressionVolumeError));Changed(nameof(CompressionVolumeHint));Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));CommandManager.InvalidateRequerySuggested();}
+    private void VolumeOptionsChanged() {if(volumeOption!=0) CompressionSfx=false;CompressionProfileOptionsChanged();Changed(nameof(CompressionVolumeError));Changed(nameof(CompressionVolumeHint));Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));CommandManager.InvalidateRequerySuggested();}
     public string CompressionVolumeError=>ValidVolumeSize?"":UiText.Get("T_f1a4a993b180");
     public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?UiText.Get("T_e836053f4b78"):"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
@@ -83,6 +83,7 @@ public sealed partial class MainViewModel
                 AlignCompressionExtension(previousExtension);Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));
                 Changed(nameof(Is7zCompression)); Changed(nameof(CompressionHint));
                 CompressionCapabilitiesChanged();
+                CompressionProfileOptionsChanged();
             }
         }
     }
@@ -94,7 +95,7 @@ public sealed partial class MainViewModel
         "tar" => UiText.Get("T_7f8c82c8d8b8"),
         _ => UiText.Format("T_b0f1ecfd6cb8", CompressionOptions.Extension)
     };
-    public int CompressionLevel { get => compressionLevel; set => Set(ref compressionLevel, value); }
+    public int CompressionLevel { get => compressionLevel; set {if(Set(ref compressionLevel,value))CompressionProfileOptionsChanged();} }
     public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
     public string CompressionPasswordStatus => compressionPassword is null ? UiText.Get("T_5d8111695438") : UiText.Get("T_bb1057c00cf3");
