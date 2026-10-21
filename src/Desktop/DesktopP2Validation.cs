@@ -48,7 +48,7 @@ internal static class DesktopP2Validation
                 {
                     try
                     {
-                        await Layout(dialog);var contents=(ArchiveContentsViewModel)dialog.DataContext;
+                        dialog.MinWidth=1152;dialog.Width=1152;await Layout(dialog);var contents=(ArchiveContentsViewModel)dialog.DataContext;
                         if(pass++==0)
                         {
                             check("P2 old settings default to list and no saved sort",!contents.GridView && contents.BrowserPreferences.Sorts is null);
@@ -179,10 +179,14 @@ internal static class DesktopP2Validation
             model.CompressionFormat=1;model.CompressionOutputDirectory=folder;await Layout(window);
             check("P2 output inside source is explained and creation disabled",model.CompressionSourceError==UiText.Get("Compression.SeparateOutsideSources") && !model.CreateArchiveCommand.CanExecute(null));
 
-            model=await CompressionModel("volumes");model.AddCompressionSources([first,second]);model.CompressionFormat=1;model.CompressionSeparate=true;model.CompressionVolumeCustom="0.001";model.CompressionVolumeOption=4;
+            var volumeInputs=Path.Combine(data,"volume-inputs");Directory.CreateDirectory(Path.Combine(volumeInputs,"a"));Directory.CreateDirectory(Path.Combine(volumeInputs,"b"));
+            var volumeSources=new[]{Path.Combine(volumeInputs,"a/notes.bin"),Path.Combine(volumeInputs,"b/notes.bin")};
+            var volumeBytes=new byte[2*1024*1024];new Random(17).NextBytes(volumeBytes);foreach(var source in volumeSources)await File.WriteAllBytesAsync(source,volumeBytes);
+            model=await CompressionModel("volumes");model.AddCompressionSources(volumeSources);model.CompressionFormat=1;model.CompressionLevel=0;model.CompressionSeparate=true;model.CompressionVolumeCustom="1";model.CompressionVolumeOption=4;
             await Execute(view.CreateButton,model);
             check("P2 separate split archives produce independent volume sets",model.WorkspaceTasks.Count==2 && model.WorkspaceTasks.All(row=>row.Completed)
-                && File.Exists(Path.Combine(model.CompressionOutputDirectory,"notes.zip.001")) && File.Exists(Path.Combine(model.CompressionOutputDirectory,"notes (2).zip.001")));
+                && File.Exists(Path.Combine(model.CompressionOutputDirectory,"notes.zip.002")) && File.Exists(Path.Combine(model.CompressionOutputDirectory,"notes (2).zip.002")));
+            foreach(var output in new[]{"notes.zip.001","notes (2).zip.001"})check("P2 independent split archive validates "+output,(await client.TestAsync(Path.Combine(model.CompressionOutputDirectory,output))).IsSuccess);
         }
         finally {window.DataContext=original;window.MinWidth=1152;window.Width=1152;window.Height=768;theme.SetMode("light");theme.Apply(false);}
     }
