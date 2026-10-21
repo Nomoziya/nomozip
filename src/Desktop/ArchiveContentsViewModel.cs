@@ -60,7 +60,14 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
                 if(outcome?.Engine.IsSuccess==true)
                 {
                     var currentPath=CurrentRow?.Path;
-                    this.items=outcome.Items;allRows=BuildRows(this.items);orderedRows=OrderRows(allRows);AttachRows();
+                    this.items=outcome.Items;
+                    if(UsesBackgroundView)
+                    {
+                        var inventory=await Task.Run(()=>{var rows=BuildRows(outcome.Items);return(rows,ordered:OrderRows(rows));});
+                        allRows=inventory.rows;orderedRows=inventory.ordered;
+                    }
+                    else {allRows=BuildRows(this.items);orderedRows=OrderRows(allRows);}
+                    AttachRows();
                     while(currentFolder.Length>0 && !allRows.Any(row=>row.Entry.Directory && Normalize(row.Path)==currentFolder))currentFolder=Parent(currentFolder);
                     FilterRows();RefreshBreadcrumbs();
                     CurrentRow=allRows.FirstOrDefault(row=>row.Path==currentPath);

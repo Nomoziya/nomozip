@@ -13,8 +13,8 @@ public sealed partial class ArchiveContentsViewModel
     private CancellationTokenSource? viewCancellation;
     private Task viewUpdate=Task.CompletedTask;
     private IReadOnlyList<SortDescription> viewSorts=[];
-    internal bool UsesBackgroundView=>backgroundView && allRows.Count>=BackgroundViewThreshold;
-    internal void EnableBackgroundView()=>backgroundView=true;
+    internal bool UsesBackgroundView=>backgroundView;
+    internal void EnableBackgroundView()=>backgroundView=allRows.Count>=BackgroundViewThreshold;
     public bool IsRefreshing {get=>refreshing;private set {if(Set(ref refreshing,value)){Changed(nameof(CanSelect));Changed(nameof(ViewStatus));CommandManager.InvalidateRequerySuggested();}}}
     public string ViewStatus=>IsRefreshing?UiText.Get("Browser.Updating"):OperationMessage;
     internal void SetViewSort(IReadOnlyList<SortDescription> fields)
