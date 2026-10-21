@@ -35,7 +35,7 @@ public sealed partial class ArchiveContentsViewModel
         FilterError=valid?"":UiText.Get("Browser.FilterError");
         var query=search;var folder=currentFolder;var selectedOnly=showSelectedOnly;
         var across=selectedOnly || query.Length>0 || filterExtensions.Length>0 || filterMinimum.Length>0 || filterMaximum.Length>0 || filterKindIndex!=0;
-        var selected=selectedOnly?allRows.Where(row=>row.Selected).ToHashSet():null;
+        var selected=selectedOnly?selectedRows.ToHashSet():null;
         var rows=orderedRows;var fields=viewSorts;var culture=CultureInfo.CurrentCulture;
         IsRefreshing=true;
         viewUpdate=UpdateAsync();

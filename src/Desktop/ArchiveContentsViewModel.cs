@@ -11,6 +11,9 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     private IReadOnlyList<ArchiveEntry> items;
     private IReadOnlyList<ArchiveContentRow> allRows;
     private IReadOnlyList<ArchiveContentRow> orderedRows;
+    private IReadOnlyList<ArchiveContentRow> selectedRows=[];
+    private IReadOnlyList<ArchiveEntry> selectedEntries=[];
+    private int visibleSelectedRows,hiddenSelectedEntries,fileCount,folderCount;
     private bool selecting,working;
     private string operationMessage=UiText.Get("T_59a916550385"),outputPath="";
     private TaskCompletionSource idle=CompletedSource();
@@ -29,15 +32,16 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         this.archivePath=archivePath;this.items=items;this.cancel=cancel;this.prepareDrag=prepareDrag;this.reportCleanupWarning=reportCleanupWarning;
         this.browserPreferences=browserPreferences is {IsValid:true}?browserPreferences:new();gridView=this.browserPreferences.GridView;
         allRows=BuildRows(items);orderedRows=OrderRows(allRows);Rows=new(allRows);VisibleRows=[];
+        UpdateInventoryCounts();
         AttachRows();
         SelectVisibleCommand=new RelayCommand(()=>Select(true),()=>CanSelect && VisibleRows.Count>0);
-        ClearSelectionCommand=new RelayCommand(()=>Select(false),()=>CanSelect && allRows.Any(row=>row.Selected));
+        ClearSelectionCommand=new RelayCommand(()=>Select(false),()=>CanSelect && selectedRows.Count>0);
         ExtractSelectedCommand=new AsyncCommand(async()=>
         {
             idle=new TaskCompletionSource();IsWorking=true;OutputPath="";
             try {OutputPath=await extract!(SelectedEntries,new Progress<string>(value=>OperationMessage=value)) ?? "";}
             finally {IsWorking=false;idle.TrySetResult();}
-        },()=>extract is not null && CanSelect && allRows.Any(row=>row.Selected));
+        },()=>extract is not null && CanSelect && selectedRows.Count>0);
         CancelCommand=new RelayCommand(()=>{if(IsWorking) cancel?.Invoke();else {OperationMessage=UiText.Get("Drag.Cancelled");ClearDrag();}},()=>IsWorking || dragContent is not null);
         PrepareDragCommand=new AsyncCommand(()=>DragAsync(_=>null),()=>CanDrag);
         PreviewCommand=new AsyncCommand(async()=>
@@ -56,7 +60,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
             try
             {
                 if(!ClearDrag()) return;
-                var outcome=await edit!(action,this.items,action==ArchiveEditAction.EditText?[CurrentRow!.Entry]:allRows.Any(row=>row.Selected)?SelectedEntries:[],new Progress<string>(value=>OperationMessage=value));
+                var outcome=await edit!(action,this.items,action==ArchiveEditAction.EditText?[CurrentRow!.Entry]:selectedRows.Count>0?SelectedEntries:[],new Progress<string>(value=>OperationMessage=value));
                 if(outcome?.Engine.IsSuccess==true)
                 {
                     var currentPath=CurrentRow?.Path;
@@ -67,6 +71,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
                         allRows=inventory.rows;orderedRows=inventory.ordered;
                     }
                     else {allRows=BuildRows(this.items);orderedRows=OrderRows(allRows);}
+                    selectedRows=[];selectedEntries=[];UpdateInventoryCounts();
                     AttachRows();
                     while(currentFolder.Length>0 && !allRows.Any(row=>row.Entry.Directory && Normalize(row.Path)==currentFolder))currentFolder=Parent(currentFolder);
                     FilterRows();RefreshBreadcrumbs();
@@ -80,8 +85,8 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         },()=>EditingAvailable && CanSelect && allowed());
         AddFilesCommand=EditingCommand(ArchiveEditAction.AddFiles,()=>true);
         AddFolderCommand=EditingCommand(ArchiveEditAction.AddFolder,()=>true);
-        DeleteSelectedCommand=EditingCommand(ArchiveEditAction.Delete,()=>allRows.Any(row=>row.Selected));
-        ReplaceSelectedCommand=EditingCommand(ArchiveEditAction.Replace,()=>allRows.Count(row=>row.Selected)==1 && allRows.Single(row=>row.Selected).Entry.Directory==false);
+        DeleteSelectedCommand=EditingCommand(ArchiveEditAction.Delete,()=>selectedRows.Count>0);
+        ReplaceSelectedCommand=EditingCommand(ArchiveEditAction.Replace,()=>selectedRows.Count==1 && selectedRows[0].Entry.Directory==false);
         EditTextCommand=EditingCommand(ArchiveEditAction.EditText,()=>CurrentRow is not null && ArchivePreviewPolicy.Kind(CurrentRow.Path)=="text" && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
         FilterRows();RefreshBreadcrumbs();
     }
@@ -130,6 +135,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     {
         var previous=CurrentRow;
         foreach(var row in visible) row.ShowPath=acrossFolders;
+        UpdateVisibleSelection(visible);
         Rows.ReplaceAll(matches);VisibleRows.ReplaceAll(visible);
         CurrentRow=previous is not null && visible.Contains(previous)?previous:null;
         Changed(nameof(Summary));Changed(nameof(CompactSummary));Changed(nameof(VisibleSelection));Changed(nameof(CompactSelectionSummary));
@@ -199,7 +205,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     public ICommand ReplaceSelectedCommand {get;}
     public ICommand EditTextCommand {get;}
     public ICommand PrepareDragCommand {get;}
-    public bool CanDrag=>prepareDrag is not null && CanSelect && (allRows.Any(row=>row.Selected) || CurrentRow is not null);
+    public bool CanDrag=>prepareDrag is not null && CanSelect && (selectedRows.Count>0 || CurrentRow is not null);
     public bool ClearDrag()
     {
         var warning=dragContent?.Cleanup();dragCleanupNeeded=warning is not null;
@@ -211,7 +217,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     public async Task DragAsync(Func<IReadOnlyList<string>,bool?> copy)
     {
         if(!CanDrag) return;
-        var selection=allRows.Any(row=>row.Selected)?SelectedEntries:EntriesFor([CurrentRow!]);
+        var selection=selectedRows.Count>0?SelectedEntries:EntriesFor([CurrentRow!]);
         idle=new TaskCompletionSource();IsWorking=true;
         try
         {
@@ -266,30 +272,19 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     {"preview_too_large"=>UiText.Get("Preview.TooLarge"),"preview_unsupported"=>UiText.Get("Preview.Unsupported"),_=>UiText.Get("Preview.Shortcut")};
     public ICommand OpenResultCommand {get;}
     private IReadOnlyList<ArchiveEntry> EntriesFor(IEnumerable<ArchiveContentRow> rows)=>ArchiveSelection.Expand(items,rows.SelectMany(row=>row.Virtual?items.Where(entry=>Normalize(entry.Path).StartsWith(Normalize(row.Path)+"/",StringComparison.OrdinalIgnoreCase)).Select(entry=>entry.Index):[row.Entry.Index]));
-    public IReadOnlyList<ArchiveEntry> SelectedEntries
-    {
-        get
-        {
-            var selected=allRows.Where(row=>!row.Virtual && row.Selected).Select(row=>row.Entry.Index).ToArray();
-            return selected.Length==0?[]:ArchiveSelection.Expand(items,selected);
-        }
-    }
-    public string SelectionSummary=>allRows.Any(row=>row.Selected)?UiText.Format("T_09dc19185a68", allRows.Count(row=>row.Selected), SelectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
+    public IReadOnlyList<ArchiveEntry> SelectedEntries=>selectedEntries;
+    public string SelectionSummary=>selectedRows.Count>0?UiText.Format("T_09dc19185a68",selectedRows.Count,selectedEntries.Count):UiText.Get("T_1b210b6e4fb0");
     public string CompactSelectionSummary
     {
         get
         {
-            var selected=SelectedEntries;
-            if(selected.Count==0) return UiText.Format("Browser.CompactSelection",0);
-            var visible=VisibleRows.Where(row=>!row.Virtual).Select(row=>row.Entry.Index).ToHashSet();
-            var hidden=selected.Count(entry=>!visible.Contains(entry.Index));
-            return hidden==0?UiText.Format("Browser.CompactSelection",selected.Count):UiText.Format("Browser.HiddenSelection",selected.Count,hidden);
+            return hiddenSelectedEntries==0?UiText.Format("Browser.CompactSelection",selectedEntries.Count):UiText.Format("Browser.HiddenSelection",selectedEntries.Count,hiddenSelectedEntries);
         }
     }
     public string CompactSummary=>UiText.Format("Browser.CompactCount",VisibleRows.Count);
     public bool? VisibleSelection
     {
-        get => VisibleRows.Count == 0 || VisibleRows.All(row=>!row.Selected) ? false : VisibleRows.All(row=>row.Selected) ? true : null;
+        get => visibleSelectedRows==0 ? false : visibleSelectedRows==VisibleRows.Count ? true : null;
         set=>SetSelection(VisibleRows,value==true);
     }
     private void SelectionChanged()
@@ -304,8 +299,27 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
             }
         }
         finally {selecting=false;}
+        selectedRows=allRows.Where(row=>row.Selected).ToArray();
+        var indices=selectedRows.Where(row=>!row.Virtual).Select(row=>row.Entry.Index).ToArray();
+        selectedEntries=indices.Length==0?[]:ArchiveSelection.Expand(items,indices);
+        UpdateVisibleSelection(VisibleRows);
         if(showSelectedOnly)FilterRows();
         Changed(nameof(SelectionSummary));Changed(nameof(CompactSelectionSummary));Changed(nameof(VisibleSelection));CommandManager.InvalidateRequerySuggested();
+    }
+    private void UpdateInventoryCounts()
+    {
+        fileCount=items.Count(entry=>!entry.Directory);folderCount=allRows.Count(row=>row.Entry.Directory);
+    }
+    private void UpdateVisibleSelection(IReadOnlyList<ArchiveContentRow> rows)
+    {
+        visibleSelectedRows=0;hiddenSelectedEntries=selectedEntries.Count;
+        if(selectedRows.Count==0)return;
+        var remaining=selectedEntries.Select(entry=>entry.Index).ToHashSet();
+        foreach(var row in rows)
+        {
+            if(row.Selected)visibleSelectedRows++;
+            if(!row.Virtual && remaining.Remove(row.Entry.Index))hiddenSelectedEntries--;
+        }
     }
     private void SetSelection(IEnumerable<ArchiveContentRow> rows,bool value)
     {
@@ -334,7 +348,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     public string ArchiveName => Path.GetFileName(archivePath);
     public ResettableCollection<ArchiveContentRow> Rows { get; }
     public string Search { get => search; set { if (Set(ref search, value)) { FilterRows(); Changed(nameof(Summary));Changed(nameof(CompactSummary)); Changed(nameof(VisibleSelection)); } } }
-    public string Summary => UiText.Format("T_55f9d9c65be9", VisibleRows.Count, allRows.Count, items.Count(value => !value.Directory), allRows.Count(value => value.Entry.Directory));
+    public string Summary => UiText.Format("T_55f9d9c65be9",VisibleRows.Count,allRows.Count,fileCount,folderCount);
 }
 public sealed record ArchiveBreadcrumb(string Label,ICommand NavigateCommand);
 public enum ArchiveEditAction {AddFiles,AddFolder,Delete,Replace,EditText}

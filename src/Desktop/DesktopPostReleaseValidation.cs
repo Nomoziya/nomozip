@@ -23,6 +23,7 @@ internal static class DesktopPostReleaseValidation
         var checks = new Dictionary<string,bool>(); string? error = null;
         var captures = new List<object>();
         var performance = new List<object>();
+        var descendingPerformance = new List<object>();
         void Check(string name, bool passed) { checks.Add(name,passed); if(!passed)throw new Exception(name); }
         Task Layout(Window target) => target.Dispatcher.InvokeAsync(target.UpdateLayout,DispatcherPriority.ApplicationIdle).Task;
         void Invoke(Button button) => ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
@@ -147,7 +148,7 @@ internal static class DesktopPostReleaseValidation
                 ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();
                 await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
                 await Task.Delay(40);heartbeat.Stop();inputHeartbeat.Stop();window.Dispatcher.Hooks.OperationStarted-=Started;window.Dispatcher.Hooks.OperationCompleted-=Finished;
-                performance.Add(new{count,openMs,constructionMs,windowConstructMs,windowShowMs,searchMs,sortMs,phaseGaps,operations,resets,maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
+                performance.Add(new{count,openMs,constructionMs,windowConstructMs,windowShowMs,searchMs,sortMs,phaseGaps=phaseGaps.ToArray(),operations=operations.ToArray(),resets=resets.ToArray(),maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
                 // The reference sort below is a correctness oracle, not a product operation.
                 // Exclude its synchronous CPU work (and screenshot rendering) from UI response measurements.
                 Check($"actual column header uses background typed sorting {count}",large.UsesBackgroundView && !large.IsRefreshing && ((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is null
@@ -155,6 +156,16 @@ internal static class DesktopPostReleaseValidation
                     && large.VisibleRows.Select(row=>row.Path).SequenceEqual(large.VisibleRows.Select(row=>row.Path).OrderBy(path=>path,StringComparer.CurrentCulture)));
                 Check($"large list dispatcher continues during background work {count}",gaps.Count>0);
                 Check($"large list avoids half-second UI stalls {count}",gaps.Max()<200);
+                // Exercise a real order change too: the first ascending sort can match the initial inventory order.
+                gaps.Clear();inputGaps.Clear();operations.Clear();operationStarts.Clear();resets.Clear();phaseGaps.Clear();phase="descending header sort";
+                previous=System.Diagnostics.Stopwatch.GetTimestamp();inputPrevious=previous;
+                window.Dispatcher.Hooks.OperationStarted+=Started;window.Dispatcher.Hooks.OperationCompleted+=Finished;heartbeat.Start();inputHeartbeat.Start();watch.Restart();
+                ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var descendingSortMs=watch.Elapsed.TotalMilliseconds;
+                await Task.Delay(40);heartbeat.Stop();inputHeartbeat.Stop();window.Dispatcher.Hooks.OperationStarted-=Started;window.Dispatcher.Hooks.OperationCompleted-=Finished;
+                descendingPerformance.Add(new{count,sortMs=descendingSortMs,phaseGaps=phaseGaps.ToArray(),operations=operations.ToArray(),resets=resets.ToArray(),maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max()});
+                Check($"actual descending header sorts all entries {count}",large.BrowserPreferences.Sorts is [{Member:"DisplayName",Direction:System.ComponentModel.ListSortDirection.Descending}]
+                    && large.VisibleRows.Select(row=>row.Path).SequenceEqual(large.VisibleRows.Select(row=>row.Path).OrderByDescending(path=>path,StringComparer.CurrentCulture)));
+                Check($"descending sort preserves UI responsiveness {count}",gaps.Count>0 && gaps.Max()<200);
                 Capture(browser,$"large-list-{count}");
                 if(count==100000)
                 {
@@ -178,7 +189,7 @@ internal static class DesktopPostReleaseValidation
         catch(Exception failure){error=failure.ToString();Console.Error.WriteLine(error);}
         finally {browser?.Close();theme.SetMode("light");theme.Apply(false);}
         var passed=error is null && checks.Count>0 && checks.Values.All(value=>value);
-        await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/post032-ui-{language}-validation.json"),JsonSerializer.Serialize(new{passed,error,checks,captures,performance,language,syntheticData=true,actualInstallationChanged=false},new JsonSerializerOptions{WriteIndented=true}));
+        await File.WriteAllTextAsync(Path.Combine(root,$"artifacts/post032-ui-{language}-validation.json"),JsonSerializer.Serialize(new{passed,error,checks,captures,performance,descendingPerformance,language,syntheticData=true,actualInstallationChanged=false},new JsonSerializerOptions{WriteIndented=true}));
         return passed;
     }
     private static IEnumerable<System.Windows.DependencyObject> Descendants(System.Windows.DependencyObject root)
