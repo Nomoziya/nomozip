@@ -1,0 +1,261 @@
+{
+  "passed": true,
+  "error": null,
+  "checks": {
+    "auto cleanup switch persists after restart": true,
+    "disabled startup cleanup keeps installer": true,
+    "completed initialization consumes upgrade and clears old installer": true,
+    "auto cleanup renders its label light 1152": true,
+    "auto cleanup control fits light 1152": true,
+    "auto cleanup has keyboard and accessible name light 1152": true,
+    "directory rule reachable light 1152": true,
+    "auto cleanup renders its label light 800": true,
+    "auto cleanup control fits light 800": true,
+    "auto cleanup has keyboard and accessible name light 800": true,
+    "directory rule reachable light 800": true,
+    "auto cleanup renders its label dark 1152": true,
+    "auto cleanup control fits dark 1152": true,
+    "auto cleanup has keyboard and accessible name dark 1152": true,
+    "directory rule reachable dark 1152": true,
+    "auto cleanup renders its label dark 800": true,
+    "auto cleanup control fits dark 800": true,
+    "auto cleanup has keyboard and accessible name dark 800": true,
+    "directory rule reachable dark 800": true,
+    "invalid directory is visible and not persisted": true,
+    "actual detail save persists source rule": true,
+    "real archive inventory available": true,
+    "filter textbox uses real binding": true,
+    "hidden checked entry retained with accurate count": true,
+    "hidden selection is explicitly counted": true,
+    "selected only reveals hidden entries without changing extraction scope": true,
+    "actual hidden selection engine result ok": true,
+    "filtered selection extracts actual hidden entry only": true,
+    "invalid range reports error and hides results": true,
+    "clear resets all filters preserving checks": true,
+    "folders only includes virtual folders": true,
+    "folder navigation clears global filters": true,
+    "collection reset preserves user sorting": true,
+    "filter controls fit light 1152": true,
+    "filter focus and name light 1152": true,
+    "filter controls fit light 800": true,
+    "filter focus and name light 800": true,
+    "filter controls fit dark 1152": true,
+    "filter focus and name dark 1152": true,
+    "filter controls fit dark 800": true,
+    "filter focus and name dark 800": true,
+    "filter controls fit contrast 1152": true,
+    "filter focus and name contrast 1152": true,
+    "filter controls fit contrast 800": true,
+    "filter focus and name contrast 800": true,
+    "compression scope distinguishes all sources from removal selection": true,
+    "profile saves through actual form command": true,
+    "editing parameters releases profile selection so it can be reapplied": true,
+    "profile selection restores format level and volume": true,
+    "same name replaces profile without duplicates": true,
+    "compression creates archive from all sources despite one removal selection; engine=none": true,
+    "created archive contains both source bytes": true,
+    "profile persistence contains parameters only": true,
+    "last used compression parameters and profiles survive restart": true,
+    "profile deletion persists without changing last used parameters": true,
+    "density selector switches actual task rows to comfortable": true,
+    "density selector restores compact task rows": true,
+    "failed selection expands task details": true,
+    "collapsing details preserves queue controls": true,
+    "failure filter excludes cancellations and completed compression": true,
+    "paused filter includes active paused task": true,
+    "paused filter refreshes immediately on resume": true,
+    "six task filters reachable light 1152": true,
+    "compression output summary and creation stay visible light 1152": true,
+    "compression profile actions reachable light 1152": true,
+    "profile keyboard and accessible name light 1152": true,
+    "six task filters reachable light 800": true,
+    "compression output summary and creation stay visible light 800": true,
+    "compression profile actions reachable light 800": true,
+    "profile keyboard and accessible name light 800": true,
+    "six task filters reachable dark 1152": true,
+    "compression output summary and creation stay visible dark 1152": true,
+    "compression profile actions reachable dark 1152": true,
+    "profile keyboard and accessible name dark 1152": true,
+    "six task filters reachable dark 800": true,
+    "compression output summary and creation stay visible dark 800": true,
+    "compression profile actions reachable dark 800": true,
+    "profile keyboard and accessible name dark 800": true,
+    "six task filters reachable contrast 1152": true,
+    "compression output summary and creation stay visible contrast 1152": true,
+    "compression profile actions reachable contrast 1152": true,
+    "profile keyboard and accessible name contrast 1152": true,
+    "six task filters reachable contrast 800": true,
+    "compression output summary and creation stay visible contrast 800": true,
+    "compression profile actions reachable contrast 800": true,
+    "profile keyboard and accessible name contrast 800": true,
+    "large inventory bound search completes 10000": true,
+    "large list realizes a bounded number of rows 10000": true,
+    "actual column header uses typed sorting 10000": true,
+    "large inventory bound search completes 100000": true,
+    "large list realizes a bounded number of rows 100000": true,
+    "actual column header uses typed sorting 100000": true
+  },
+  "captures": [
+    {
+      "name": "updates-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "directory-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "updates-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "directory-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "updates-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "directory-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "updates-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "directory-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-tasks-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-compression-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-tasks-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-compression-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-tasks-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-compression-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-tasks-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-compression-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-tasks-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-compression-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-tasks-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-compression-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "large-list-10000",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "large-list-100000",
+      "width": 1152,
+      "height": 768
+    }
+  ],
+  "performance": [
+    {
+      "count": 10000,
+      "openMs": 288.5085,
+      "searchMs": 149.6786,
+      "sortMs": 161.4445,
+      "maxDispatcherGapMs": 251.4121,
+      "peakWorkingSet": 213475328
+    },
+    {
+      "count": 100000,
+      "openMs": 555.1173,
+      "searchMs": 204.8103,
+      "sortMs": 512.3214,
+      "maxDispatcherGapMs": 529.6812,
+      "peakWorkingSet": 268324864
+    }
+  ],
+  "language": "en",
+  "syntheticData": true,
+  "actualInstallationChanged": false
+}

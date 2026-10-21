@@ -1,2 +1,2 @@
-*.json -text
-*.html -text
+*.json -text whitespace=cr-at-eol
+*.html -text whitespace=cr-at-eol

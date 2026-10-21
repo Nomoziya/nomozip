@@ -1,10 +1,10 @@
 {
-  "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809",
+  "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e",
   "runs": {
     "x64": 39557247501,
     "arm64": 39557300232
   },
-  "status": "Product page matrices passed in both languages and architectures; overall runs failed. Final affected flows pending at ebe3301.",
+  "status": "Isolated CI passed; user experience acceptance pending; not merged or released.",
   "files": [
     {
       "path": "product/x64/zh-CN/report.json",
@@ -521,7 +521,1210 @@
       "sha256": "c0553c32dbfdd5ee43344307e52e0fd5892e0a91e21f7ccd621abd7d619ccca7",
       "run": 39557300232,
       "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "flows/x64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/compression-validation.json",
+      "sha256": "5ef0788a61963eac6007d4cc9783b433c727be56476cb53ce0a1ed1afe89e61e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/engine-validation.json",
+      "sha256": "7f429ef3c8f0d97ba15bef90bea775cd0b021a8a351b23dbd03436efd4faf08b",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/localization-validation.json",
+      "sha256": "6bc5fb3b6d790dc4199376784752373f32f00f8818f82ccf1a4bc38ae498b1ee",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/master-vault-validation.json",
+      "sha256": "f7d717f0169acbc42e5de47ca87513e8bb3092f30b3e1281fbd1cadb85a440db",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/post032-core-validation.json",
+      "sha256": "45176ab41e084f595f76f0b11cb2f7bb237efba4e5b618c81ca0393c08da1a6b",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/post032-ui-en-validation.json",
+      "sha256": "484aa44b07506f8f1b7bad3dbe4a68f0446f287222aee01f77dedba5ae5ab822",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "097f12fce8f2680262264d4cfad43467b1e403601eef5f1ca3b2cf77a4796e47",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-dark-1152.png",
+      "sha256": "9f3f598b620fed0b2132e7adb6a91214e806d171aad7d309232966ec4051f2af",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-dark-800.png",
+      "sha256": "81dd22ae825fe7c9bd3df1ea0bb482e509d6ba8dc855a62f278ddf935e98ba6e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-light-1152.png",
+      "sha256": "e863639b352c379ba3c5f7b9e472ae66e9312d23ff431252a2b495d8ce443b1e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/directory-light-800.png",
+      "sha256": "e4b1745b7b789388f5c7ea1710e32a5d0650c336a4c39cc99627e68859db5d10",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-contrast-1152.png",
+      "sha256": "312284a51315fde55af71165c2e6592ff07148b9e2b9f23c6188c4e8324fe62d",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-contrast-800.png",
+      "sha256": "85387585b7594cc8072c348004ad77deacf786b29618c65a57b73cafe5b20a1e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-dark-1152.png",
+      "sha256": "1c0a98c7bdc560f9281912de5cb90f2f7a81a2eccc4fc8e543283d0013745e1b",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-dark-800.png",
+      "sha256": "2e3816fe15566e84d2f15d4cfe4c64b4a9200e918c344569169a000c1fc498ec",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-light-1152.png",
+      "sha256": "3256fd232ba31b673ccbb602531e3992b0bfb65a58494c416cef3824206ee68e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/filters-light-800.png",
+      "sha256": "4b3077a062540f31286948e71cf13bb1859357703e25c3a2382ecd30236eec66",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/large-list-10000.png",
+      "sha256": "ae51e354ad1161dedd3d312d96701264500ec840f221346fcae4f287867b6da7",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/large-list-100000.png",
+      "sha256": "338227b30fa41a9057f2e35a05e824f734d2dfa916c4102f47b8019fcb992841",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-dark-1152.png",
+      "sha256": "1b09b8ec0a24d25d4ba07583df17641457a5b5fb19591dd3f3b04cc6ae698550",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-dark-800.png",
+      "sha256": "b30afe785fc3a5776b8974ed6f94906c26f84d244b557cd122e95105eb9f4634",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-light-1152.png",
+      "sha256": "d0724d6f5afd430d5a5670c5b46650b2b651a5daeb30c2461ab44c77c1e7ac99",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/updates-light-800.png",
+      "sha256": "cea309e43d8f8de7f8acfebd9f7df381c75ed8da50dc6bb8ef52c6e163af2c90",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-contrast-1152.png",
+      "sha256": "763292ba7fb16c82e00417df87b70dff25c7b2345b09625520d508defcb5030e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-contrast-800.png",
+      "sha256": "5aa88721250c089bf46c5ddb114af43669ca20a8d5bdd9fe556a478bec4264d4",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-dark-1152.png",
+      "sha256": "e36e06a643d843e36632aae876799d90791c09685e01ada4b7a7aa20752d9f55",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-dark-800.png",
+      "sha256": "8209b7e7383b7eeea5f0ee5e06dc25dd967612c43064c7194a4f8e72c4daf84f",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-light-1152.png",
+      "sha256": "e9fbe57ae44bb9726678f411883aa6cb24e873c8594350bc4de97497c51d7051",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-compression-light-800.png",
+      "sha256": "c3062977b6ed95ac2f617bbc2df09aba94ff66ef3fb1978987400043d4e0954b",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-contrast-1152.png",
+      "sha256": "c4c27b77621dbb1d3dd1c2d0e6c5f82d546ea72e8071ee1b94044481f12d72c5",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-contrast-800.png",
+      "sha256": "2fb26182e4e89679172ce61d72305f6ba3cc31c5c352f2d51dd795e5611f91f4",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-dark-1152.png",
+      "sha256": "7ac5f0a0b7ccedc092993289b4954abb4d559b15528bfecd75a8ee2dc4189701",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-dark-800.png",
+      "sha256": "9bd4509fde70b88a10aef1c112f77a3054dbd7394c492943c89c824bbfb120d5",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-light-1152.png",
+      "sha256": "e2f94f4f87993e31746c7bc61f8c823b017137f004666c605d915478999d071e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/zh-CN/usability-tasks-light-800.png",
+      "sha256": "7d4b97079962271bc4971db77e6c229676743a82fd9fcc815bc9a35ad9672ce8",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/directory-dark-1152.png",
+      "sha256": "e5603e1503b1df6ee6bc1a6fe1c96fec93a708c472c20fc30f542971e907944f",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/directory-dark-800.png",
+      "sha256": "721937c803c0666ad5e23d5e517d27742df31969b942c648f40cf0f04b59fa50",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/directory-light-1152.png",
+      "sha256": "68fdd8c9a9f855fe21a6fd89662b67d762eefd0c1a0635645f6a966428753111",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/directory-light-800.png",
+      "sha256": "4d849850a46f76e36f115e29136c1560a35fe6b67cbd46b40344c9b13d391468",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/filters-contrast-1152.png",
+      "sha256": "b281e9dc2adf9e3a5bebd10adacaf2626a9a064e24a507239c1ffb821d8af58b",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/filters-contrast-800.png",
+      "sha256": "52e5e0c3be64578e6524fa1591d96c4133642b20939bba46f435d39c4e37cc60",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/filters-dark-1152.png",
+      "sha256": "db2adca9d2678e14e8eb3e719a97d5e9e090a4241219a15463c1387b99a71ebf",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/filters-dark-800.png",
+      "sha256": "ea1851b4108d3bf2bf8d5130c13eeb019e790528d0da4286f2751bee33f351f6",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/filters-light-1152.png",
+      "sha256": "fdd77fe4ad4d2b4aa3c46f30ee3628739363b2c9a43259e0a96f82eb816a0d6a",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/filters-light-800.png",
+      "sha256": "916877f243d3d26c53037232f61a6e8d13671b5fc717efd12e8c49e4c83eb010",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/large-list-10000.png",
+      "sha256": "f6176f318bab068594facdc740c42e5bb1270beff6565670b989342340a9ba2a",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/large-list-100000.png",
+      "sha256": "bc06b883607216bcc03710c954375c0da3eb4ab049b749f3ef09872f99cead01",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/updates-dark-1152.png",
+      "sha256": "9c0f9c4ea6a9932bc425c10f1a194767e7e306c9124837a0c4ab36060711f370",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/updates-dark-800.png",
+      "sha256": "9f3d05ff6085fab9e48c9ac6e52b213a288a33099d124f2488690e31f12b51b4",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/updates-light-1152.png",
+      "sha256": "543802fb8c128f3a1a32c84739c6ca12497c6b8087e4338af18d7e27dc32e465",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/updates-light-800.png",
+      "sha256": "a90b70cb0f5475f5d184c81e881517f92717a2b0ecd7ef188bfba2dd114f674e",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-compression-contrast-1152.png",
+      "sha256": "7336a4ab34db0c24da7e525aa9e0b6d215b0dd94b9bac7f51a0e9b993f816420",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-compression-contrast-800.png",
+      "sha256": "fd3479bc05de064e65542e5c9a98a0b3dbf93819d684aac9480e11cd67b83f21",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-compression-dark-1152.png",
+      "sha256": "24912a22d808168ae7a26a57ee36ce88af41d7ca6aab5adcd83b505857a2930c",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-compression-dark-800.png",
+      "sha256": "4838991ea93667fbfa08b10f3119a3c0b9815b63db69adbd0fecf9402f9926b9",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-compression-light-1152.png",
+      "sha256": "d33c49df1072de23a6710199129616301895ee3b5bca2a2467254c7dd75e28b8",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-compression-light-800.png",
+      "sha256": "951e8db2303f2c98698d466f1fb759170240f4c138aaac408d0d779d41c28152",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-contrast-1152.png",
+      "sha256": "32d3121113e86b1e88fdd2390fd3d88e4e5217bb0d868a53d8a9384d9c90abba",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-contrast-800.png",
+      "sha256": "e578d94d60d1c4a9330e3c3f4bb22c4257b051a2409c3c988434a7c5d48348f3",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-dark-1152.png",
+      "sha256": "324397d41fd1748e4b2678422c773b2bead3d9efd470dc18c30ff5d1786cfea5",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-dark-800.png",
+      "sha256": "5fccd420e360a0e3019b07253f9899ee5b4c597fb382f8398f2f0c2ef39640dc",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-light-1152.png",
+      "sha256": "74076fb1bda8e607e3135919cd462226e7487f3f8ca221688e5c34769ca30629",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/en/usability-tasks-light-800.png",
+      "sha256": "f6b63aec1cb2ef859e1d5bb6d26fe46d2ae9890df591ab057f7e26ebd55251ce",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/x64/reports/post032-performance.json",
+      "sha256": "c87c40b6d84a618dfb088ebbb230ad4a462a7d3b36898332a3293bc6934fc1c2",
+      "run": 39588466786,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "reused/x64/sfx-ui-validation.json",
+      "sha256": "c77ec7ce494870c0b30a3b7cee5684896700be37649a123d7eeefa0b4dd0644e",
+      "run": 39559132043,
+      "sourceCommit": "ebe3301a14cb1380f940e04c1faa6369c78df4d8"
+    },
+    {
+      "path": "flows/arm64/reports/accessibility-validation.json",
+      "sha256": "4c9677cde966b1568aefe0383422592c77215af2ce9548da1a3327e80cb12835",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/compression-validation.json",
+      "sha256": "18b3727552cdec01f94465bb30227352bc8138e3464ce79bd73f34a8d7e6d783",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/desktop-failure-validation.json",
+      "sha256": "5a744b73e639ab5081f0012b61c3eea79320f93737948c83797a6134d6181e1b",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/desktop-validation.json",
+      "sha256": "03bf1ba13a42e8d6ad4aa5d463bc822641124727ebcf55aefbcba9e1d7d2d152",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/encoding-validation.json",
+      "sha256": "ee74871eceee1b9dc9587171f65a7e99cfd5ca11ccba3c44dadbcc6b018a01d2",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/engine-validation.json",
+      "sha256": "f48ca1d8cc6107096cb59591bd89470a3abf190d0a10633a9d9e0becd6c4b674",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/localization-validation.json",
+      "sha256": "6bc5fb3b6d790dc4199376784752373f32f00f8818f82ccf1a4bc38ae498b1ee",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/master-vault-validation.json",
+      "sha256": "b530bf83a277703a30e77835c9033e758475caa9cb2bd4f644cb8c794eb3203e",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/post032-core-validation.json",
+      "sha256": "45176ab41e084f595f76f0b11cb2f7bb237efba4e5b618c81ca0393c08da1a6b",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/post032-ui-en-validation.json",
+      "sha256": "3645dd8e080135abb8da591a2f2e94dab1dd0a064e19650dcf85892bbe263e04",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/post032-ui-zh-CN-validation.json",
+      "sha256": "3c9fd678c319cfaa4d7fa0f9325be87c3ab595a79fc41fe5d7015a3cac111961",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-dark-1152.png",
+      "sha256": "f92018beb57cd7b9790811f2a3b8d75faef19a40ade02ee4a325eb06b80d97f8",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-dark-800.png",
+      "sha256": "ddcf81cb97d7db067611310bc6095d6bfcbbb80af43583b2c174b10108b49b6e",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-light-1152.png",
+      "sha256": "bf2f3b738262491661e1b09a93b6d7232733857b7d56a492a7243686433c43b7",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/directory-light-800.png",
+      "sha256": "9cb58d78d1cf7852c13fc5aa40e8616529b61eb8c99e3e029bf73067357923e9",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-contrast-1152.png",
+      "sha256": "67122be8d53f4407f18d0300bc6da2ab1da17951018923581380dfe3e798261c",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-contrast-800.png",
+      "sha256": "002d5672ffdc101766b9bb3f4fe78c069cc1efd0da5d916eac0648bd88c8be05",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-dark-1152.png",
+      "sha256": "6f37ce116288a1096160ba716f910b406519f4fdac045d999c6a8fe6c662ea62",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-dark-800.png",
+      "sha256": "9a12049f6ec0f169d38f581b1c27a2f8d55015b0282514bd02bcfd40e38871bb",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-light-1152.png",
+      "sha256": "2929b7fb408adb90a28a7408ca7fa0a9e335452c5ab39c2da49df36d5c6e32e2",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/filters-light-800.png",
+      "sha256": "412e4b6b555c7154e3e11a134688a98552d6f23bbcc5bc8e21ad51e580bbbdda",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/large-list-10000.png",
+      "sha256": "4dd1281459f63e8e39565fe58849481a3413615d170ceb7beeaac72f939967dd",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/large-list-100000.png",
+      "sha256": "1bffe35b3f7bd1d6751c34674146caa1cdf44504d6dac27c760aa34d0f2fa8f4",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-dark-1152.png",
+      "sha256": "6549a1eb7ad979cfd8cf7d4e84e935d4f0d8cf47e9c2030423f43fbda0426f12",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-dark-800.png",
+      "sha256": "371cf9d1143ab858aebec897c9669a5dd898952a90343a74e9bfe725e6716ad9",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-light-1152.png",
+      "sha256": "54fd70038daf83b8a5badde28f7e102372a71445590ab82fac4b2c9a1948f9e9",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/updates-light-800.png",
+      "sha256": "0c878ad80b21219f6ce102e571f192e4f0e65548cd92396feaf043fa03241cb3",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-contrast-1152.png",
+      "sha256": "c8a82087d38e6f780df7c011aa60c949fc15b9efc6da1ce3a8e5fe1d60924dbb",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-contrast-800.png",
+      "sha256": "5aa88721250c089bf46c5ddb114af43669ca20a8d5bdd9fe556a478bec4264d4",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-dark-1152.png",
+      "sha256": "9d0075cf7ea6c5ee106ad59f1ca0b0c47c8b4df60f9d7a27003db704d7f537a9",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-dark-800.png",
+      "sha256": "8209b7e7383b7eeea5f0ee5e06dc25dd967612c43064c7194a4f8e72c4daf84f",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-light-1152.png",
+      "sha256": "e7dfbcf71a8d1e2eb6e5e228b209dab1405346e0658ce56ed028a1854c978d81",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-compression-light-800.png",
+      "sha256": "c3062977b6ed95ac2f617bbc2df09aba94ff66ef3fb1978987400043d4e0954b",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-contrast-1152.png",
+      "sha256": "c4c27b77621dbb1d3dd1c2d0e6c5f82d546ea72e8071ee1b94044481f12d72c5",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-contrast-800.png",
+      "sha256": "7f1d4a2d8f9f481d7774ea27abc526cd3ec830ff82f39e0cb4f233b617d40ab1",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-dark-1152.png",
+      "sha256": "7ac5f0a0b7ccedc092993289b4954abb4d559b15528bfecd75a8ee2dc4189701",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-dark-800.png",
+      "sha256": "3daa947587f2bf4ce35c14abe1cf66ccfbfe1620e46eb5cb3f1072d0cf9dd098",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-light-1152.png",
+      "sha256": "e2f94f4f87993e31746c7bc61f8c823b017137f004666c605d915478999d071e",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/zh-CN/usability-tasks-light-800.png",
+      "sha256": "84d12ff9072897be036d2942cb4d239d558741fd6b31218c3f7a6baec0ebe2eb",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/directory-dark-1152.png",
+      "sha256": "b810241f2f7ac1789fd8b86c0bced7d74537f513fa1723325f0c2fd35f8bfff2",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/directory-dark-800.png",
+      "sha256": "73346cf7ee8ccd6cd7182203283c967df2c97acf6599921f56a7bce4d7e0eeca",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/directory-light-1152.png",
+      "sha256": "0e11aceeab065abacbd9018f3af61415b212c8d3803aaebc86b63ae8c2181678",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/directory-light-800.png",
+      "sha256": "c99f9752f485271e2d3229dc35ebc061169e8997e269dda525b7bbde52dccc07",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/filters-contrast-1152.png",
+      "sha256": "71cc9afa98321272092667a4cf1238332515c092416b0d5fece255352f53bfe1",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/filters-contrast-800.png",
+      "sha256": "c15601fcc69d088e6b74f0d3e70372ff614c9b33f4e08d3dbbf6e8a3e6f33c58",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/filters-dark-1152.png",
+      "sha256": "8b7b227617d7ae85068e576549c95dd52b936ea36c8f814a17b5b95df73d1742",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/filters-dark-800.png",
+      "sha256": "69b7e1c960f04f5f6281d23bf72830711ee6a57a1e08c3bf8e0efab278e25a45",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/filters-light-1152.png",
+      "sha256": "922f1be961b56e18ec64ffe5444d329d6b44eb0ea517ff907d818d20654a3d7e",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/filters-light-800.png",
+      "sha256": "3f538b0d7fd0da1162bd2aef5f6e352809f3f7d4df8b2d5ab883d806b61f7f13",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/large-list-10000.png",
+      "sha256": "99ca431987db6b3e8985cdd2d75d77bf0960f0152d4f8dd22be25cafd6c3117c",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/large-list-100000.png",
+      "sha256": "64ed3c2733a226f9ff030407eceae61108087f4964fb666d18d551b2121c3835",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/updates-dark-1152.png",
+      "sha256": "830a69fd106723966c66806afa87a826bbd6d928b970697ac4beb1f4791afc1f",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/updates-dark-800.png",
+      "sha256": "fc6bae2431ff6b9c8b6fb6a1a6776bb8058f3c11082268e85c12200e5c71cc35",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/updates-light-1152.png",
+      "sha256": "b90693c852facfda51999787738e3986cbff0d0baa226352c8f7c4b485a10158",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/updates-light-800.png",
+      "sha256": "201645cbe3c0e84a1cbb8de924f33911288f14f46f3b059dddb75c66aede2de3",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-contrast-1152.png",
+      "sha256": "76484172877b19b0c992074016949433f2e206f78faffcee3c78d485a270ff02",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-contrast-800.png",
+      "sha256": "fd3479bc05de064e65542e5c9a98a0b3dbf93819d684aac9480e11cd67b83f21",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-dark-1152.png",
+      "sha256": "cfa9d0a4e6038fde333e3308abf5c4b7b02989586606868df90614e1a096e70d",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-dark-800.png",
+      "sha256": "4838991ea93667fbfa08b10f3119a3c0b9815b63db69adbd0fecf9402f9926b9",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-light-1152.png",
+      "sha256": "906498990bb9f5b79ef3521098b8093885c8df76f77c18a0f00a15135d37c4be",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-compression-light-800.png",
+      "sha256": "951e8db2303f2c98698d466f1fb759170240f4c138aaac408d0d779d41c28152",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-contrast-1152.png",
+      "sha256": "32d3121113e86b1e88fdd2390fd3d88e4e5217bb0d868a53d8a9384d9c90abba",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-contrast-800.png",
+      "sha256": "9b8b52ef2e4af6492e05321db2f72efcf8a4cc8c359253f0c0021bfc094ed895",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-dark-1152.png",
+      "sha256": "324397d41fd1748e4b2678422c773b2bead3d9efd470dc18c30ff5d1786cfea5",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-dark-800.png",
+      "sha256": "c946d708937b17f53beb86cdc3ece4d4ea7f93db1868f4bdf28273f857239311",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-light-1152.png",
+      "sha256": "74076fb1bda8e607e3135919cd462226e7487f3f8ca221688e5c34769ca30629",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/en/usability-tasks-light-800.png",
+      "sha256": "aa6143dc41304e99a68b00cdfcf7f96afbb4d58fcad41bea43bee4bab27e4260",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "flows/arm64/reports/post032-performance.json",
+      "sha256": "5f80c88d9db2aa0a0c6407eef55901551cf4ce33ce82f07aaca4731a7c16af88",
+      "run": 39588526538,
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    {
+      "path": "reused/arm64/sfx-ui-validation.json",
+      "sha256": "c77ec7ce494870c0b30a3b7cee5684896700be37649a123d7eeefa0b4dd0644e",
+      "run": 39559224063,
+      "sourceCommit": "ebe3301a14cb1380f940e04c1faa6369c78df4d8"
+    },
+    {
+      "path": "reused/arm64/native/architecture-validation.json",
+      "sha256": "e6277a1292b490ae08132932d800a183945f5ea81bc9b9c8c1825f4edf3ab961",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "reused/arm64/native/export-vault-x64-validation.json",
+      "sha256": "49f28bd46b460ec29024bc68f065dba9d5ef34ef7b8705aa5c08a854ec2147dc",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "reused/arm64/native/import-vault-arm64-validation.json",
+      "sha256": "4c3e92593829d0fc652e77b0d3a7fb7dd12f33b8f88f2ac5c7726e65c365fdd9",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "reused/arm64/native/verify-vault-x64-validation.json",
+      "sha256": "a442d2215475951bfb4e754950394a87af64bf3932f2f821af693e00fc2d84ab",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
     }
   ],
-  "limitations": "CI WPF rendering and UIA; simulated contrast resources; no physical DPI, screen-reader or local installation acceptance."
+  "limitations": "CI WPF rendering and UIA; simulated contrast resources; no physical DPI, screen-reader or local installation acceptance.",
+  "productSourceCommit": "304476e763e706addccbd116f68ae2dffb343809",
+  "finalRuns": {
+    "x64": {
+      "run": 39588466786,
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39588466786",
+      "conclusion": "success",
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    },
+    "arm64": {
+      "run": 39588526538,
+      "url": "https://github.com/Nomoziya/nomozip/actions/runs/39588526538",
+      "conclusion": "success",
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+    }
+  },
+  "finalChecks": {
+    "x64": {
+      "accessibility-validation.json": {
+        "passed": true,
+        "checks": 45
+      },
+      "application-update-validation.json": {
+        "passed": true,
+        "checks": 55
+      },
+      "compression-validation.json": {
+        "passed": 38,
+        "checks": 38
+      },
+      "desktop-browser-validation.json": {
+        "passed": true,
+        "checks": 13
+      },
+      "desktop-failure-validation.json": {
+        "passed": true,
+        "checks": 10
+      },
+      "desktop-multi-password-validation.json": {
+        "passed": true,
+        "checks": 14
+      },
+      "desktop-validation.json": {
+        "passed": true,
+        "checks": null
+      },
+      "display-validation.json": {
+        "passed": true,
+        "checks": 13
+      },
+      "encoding-validation.json": {
+        "passed": 75,
+        "checks": 75
+      },
+      "engine-validation.json": {
+        "passed": 101,
+        "checks": 101
+      },
+      "localization-validation.json": {
+        "passed": true,
+        "checks": 37
+      },
+      "master-vault-validation.json": {
+        "passed": true,
+        "checks": 36
+      },
+      "password-organization-validation.json": {
+        "passed": true,
+        "checks": 30
+      },
+      "post032-core-validation.json": {
+        "passed": true,
+        "checks": 45
+      },
+      "post032-ui-en-validation.json": {
+        "passed": true,
+        "checks": 92
+      },
+      "post032-ui-zh-CN-validation.json": {
+        "passed": true,
+        "checks": 92
+      },
+      "task-improvements-core-validation.json": {
+        "passed": true,
+        "checks": 27
+      },
+      "ui-regression-validation.json": {
+        "passed": true,
+        "checks": 17
+      },
+      "vault-transfer-local-validation.json": {
+        "passed": true,
+        "checks": 34
+      }
+    },
+    "arm64": {
+      "accessibility-validation.json": {
+        "passed": true,
+        "checks": 45
+      },
+      "application-update-validation.json": {
+        "passed": true,
+        "checks": 55
+      },
+      "compression-validation.json": {
+        "passed": 38,
+        "checks": 38
+      },
+      "desktop-browser-validation.json": {
+        "passed": true,
+        "checks": 13
+      },
+      "desktop-failure-validation.json": {
+        "passed": true,
+        "checks": 10
+      },
+      "desktop-multi-password-validation.json": {
+        "passed": true,
+        "checks": 14
+      },
+      "desktop-validation.json": {
+        "passed": true,
+        "checks": null
+      },
+      "display-validation.json": {
+        "passed": true,
+        "checks": 13
+      },
+      "encoding-validation.json": {
+        "passed": 75,
+        "checks": 75
+      },
+      "engine-validation.json": {
+        "passed": 101,
+        "checks": 101
+      },
+      "localization-validation.json": {
+        "passed": true,
+        "checks": 37
+      },
+      "master-vault-validation.json": {
+        "passed": true,
+        "checks": 36
+      },
+      "password-organization-validation.json": {
+        "passed": true,
+        "checks": 30
+      },
+      "post032-core-validation.json": {
+        "passed": true,
+        "checks": 45
+      },
+      "post032-ui-en-validation.json": {
+        "passed": true,
+        "checks": 92
+      },
+      "post032-ui-zh-CN-validation.json": {
+        "passed": true,
+        "checks": 92
+      },
+      "task-improvements-core-validation.json": {
+        "passed": true,
+        "checks": 27
+      },
+      "ui-regression-validation.json": {
+        "passed": true,
+        "checks": 17
+      },
+      "vault-transfer-local-validation.json": {
+        "passed": true,
+        "checks": 34
+      }
+    }
+  },
+  "candidates": {
+    "x64": {
+      "architecture": "x64",
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e",
+      "bytes": 4814168,
+      "sha256": "7572c76b3da15e87b437995b4b275baee2d6920f150924f166682673728237db",
+      "files": 40,
+      "nativePE": [
+        "ArchivePassword.exe",
+        "nomozip-cli.exe",
+        "ArchiveEngineWorker.exe",
+        "engines/26.03/7z.dll",
+        "engines/26.03/7z.exe",
+        "engines/26.04/7z.dll",
+        "engines/26.04/7z.exe"
+      ],
+      "sharedRuntime": ".NET 10",
+      "crc": true,
+      "engineDigests": true,
+      "note": "CI original candidate; no local launch or installation.",
+      "versions": [
+        {
+          "name": "ArchivePassword.exe",
+          "fileVersion": "0.3.3.0",
+          "productVersion": "0.3.3+83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+        },
+        {
+          "name": "nomozip-cli.exe",
+          "fileVersion": "0.3.3.0",
+          "productVersion": "0.3.3+83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+        },
+        {
+          "name": "ArchivePassword.dll",
+          "fileVersion": "0.3.3.0",
+          "productVersion": "0.3.3+83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+        }
+      ]
+    },
+    "arm64": {
+      "architecture": "arm64",
+      "sourceCommit": "83abe63b12110c5c4a128d91cc005cf5f1479e7e",
+      "bytes": 4001198,
+      "sha256": "9462c44b55aa69116bbc4173ef7dd23f65efc3465b05c82f934ab4060eb3cca5",
+      "files": 40,
+      "nativePE": [
+        "ArchivePassword.exe",
+        "nomozip-cli.exe",
+        "ArchiveEngineWorker.exe",
+        "engines/26.03/7z.dll",
+        "engines/26.03/7z.exe",
+        "engines/26.04/7z.dll",
+        "engines/26.04/7z.exe"
+      ],
+      "sharedRuntime": ".NET 10",
+      "crc": true,
+      "engineDigests": true,
+      "note": "CI original candidate; no local launch or installation.",
+      "versions": [
+        {
+          "name": "ArchivePassword.exe",
+          "fileVersion": "0.3.3.0",
+          "productVersion": "0.3.3+83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+        },
+        {
+          "name": "nomozip-cli.exe",
+          "fileVersion": "0.3.3.0",
+          "productVersion": "0.3.3+83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+        },
+        {
+          "name": "ArchivePassword.dll",
+          "fileVersion": "0.3.3.0",
+          "productVersion": "0.3.3+83abe63b12110c5c4a128d91cc005cf5f1479e7e"
+        }
+      ]
+    }
+  },
+  "galleryValidation": {
+    "passed": true,
+    "selections": 128,
+    "htmlSha256": "7fe5ffd99e5249689ae8b90b5d383d9da53ed39347f10174d784904c36d367da",
+    "scope": "Headless HTML gallery navigation only; WPF evidence remains the CI original images."
+  }
 }
