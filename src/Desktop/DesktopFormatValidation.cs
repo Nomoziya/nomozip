@@ -34,7 +34,7 @@ internal static class DesktopFormatValidation
                 var model=new MainViewModel(baseDirectory,Path.Combine(data,"state-"+version),vault,dialogs);window.DataContext=model;
                 await model.InitializeAsync();model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();
                 model.Page=3;model.AddCompressionSources([source]);model.CompressionOutput=Path.Combine(data,version+".7z");await Layout(window);
-                var view=(CompressionView)window.FindName("CompressionPage");var format=(ComboBox)view.FindName("FormatBox");
+                var view=(CompressionView)window.FindName("CompressionPage");view.AdvancedOptions.IsExpanded=true;var format=(ComboBox)view.FindName("FormatBox");
                 var create=(Button)view.FindName("CreateButton");var level=(ComboBox)view.FindName("LevelBox");var encryption=(CheckBox)view.FindName("EncryptBox");var volume=(ComboBox)view.FindName("VolumeOptionBox");var sfx=(CheckBox)view.FindName("SfxBox");var error=(TextBlock)view.FindName("FormatSourceError");
                 Check(version+" accessible format chooser exposes all five formats",format.Items.Count==5 && format.Items.Cast<ComboBoxItem>().Select(item=>item.Content.ToString()).SequenceEqual(CompressionFormats.All.Select(item=>item.Label)) && UIElementAutomationPeer.CreatePeerForElement(format)!.GetName()=="压缩格式");
                 model.CompressionEncrypt=true;model.SetCompressionPasswordCommand.Execute(null);await Layout(window);await model.WaitForIdleAsync();

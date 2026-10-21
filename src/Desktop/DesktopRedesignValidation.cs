@@ -145,7 +145,7 @@ internal static class DesktopRedesignValidation
                 Check("compression level text fits without excessive blank space "+level,box.ActualWidth>=text.WidthIncludingTrailingWhitespace+39 && box.ActualWidth<=Math.Max(80,text.WidthIncludingTrailingWhitespace+42)+8);
             }
             model.CompressionLevel=originalLevel;model.CompressionVolumeOption=4;model.CompressionVolumeCustom="512";await Layout();
-            window.CompressionPage.VolumeSizeBox.BringIntoView();await Layout();
+            window.CompressionPage.AdvancedOptions.IsExpanded=true;await Layout();window.CompressionPage.VolumeSizeBox.BringIntoView();await Layout();
             Check("custom volume reserves more editing space than its short unit selector",window.CompressionPage.VolumeSizeBox.ActualWidth>window.CompressionPage.VolumeUnitBox.ActualWidth);
             Capture("compression-form-custom-volume");model.CompressionVolumeOption=0;window.CompressionPage.CompressionViewport.ScrollToTop();
             window.MinWidth=1152;window.Width=1152;window.Height=768;

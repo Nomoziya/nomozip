@@ -3351,4 +3351,15 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.ProfileSaved" xml:space="preserve"><value>Compression profile saved.</value></data>
   <data name="Compression.ProfileDeleted" xml:space="preserve"><value>Profile deleted. Current options are unchanged.</value></data>
   <data name="Compression.ProfileSaveFailed" xml:space="preserve"><value>Could not save compression options. Check that the settings folder is writable.</value></data>
+  <data name="Tasks.Density" xml:space="preserve"><value>Density</value></data>
+  <data name="Tasks.Compact" xml:space="preserve"><value>Compact</value></data>
+  <data name="Tasks.Comfortable" xml:space="preserve"><value>Comfortable</value></data>
+  <data name="Tasks.Details" xml:space="preserve"><value>Task details</value></data>
+  <data name="Compression.ResultSummary" xml:space="preserve"><value>{0:count:source:sources} · {1} · {2} · {3} · {4}</value></data>
+  <data name="Compression.SfxFormat" xml:space="preserve"><value>{0} (SFX)</value></data>
+  <data name="Compression.Encrypted" xml:space="preserve"><value>Encryption enabled</value></data>
+  <data name="Compression.Unencrypted" xml:space="preserve"><value>Unencrypted</value></data>
+  <data name="Compression.CreateCount" xml:space="preserve"><value>Create archive ({0})</value></data>
+  <data name="Compression.ManageProfiles" xml:space="preserve"><value>Manage compression profiles</value></data>
+  <data name="Compression.CurrentOptions" xml:space="preserve"><value>Current options</value></data>
 </root>

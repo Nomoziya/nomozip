@@ -271,7 +271,7 @@
                 <DockPanel Margin="24,8,24,12" Visibility="Collapsed">
                   <TextBlock Text="{loc:Text T_8f10dc147500}" Style="{StaticResource Heading}" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                 </DockPanel>
-                <DataGrid x:Name="ArchiveTasks" ColumnHeaderHeight="40" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="88">
+                <DataGrid x:Name="ArchiveTasks" ColumnHeaderHeight="40" CanUserSortColumns="False" IsSynchronizedWithCurrentItem="False" Grid.Row="1" ItemsSource="{Binding TaskView}" SelectedItem="{Binding SelectedTask}" AutomationProperties.Name="{loc:Text T_0d7d878fe5ad}" local:RowActions.Enabled="True" local:RowActions.OpenCommand="{Binding BrowseArchiveCommand}" local:RowActions.DeleteCommand="{Binding RemoveFileCommand}" RowHeight="{Binding TaskRowHeight}">
                   <DataGrid.ContextMenu>
                     <ContextMenu x:Name="TaskContextMenu" Style="{StaticResource ActionMenu}" DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Self}}" AutomationProperties.Name="{loc:Text T_21a07234feb3}">
                       <MenuItem x:Name="TaskExtractAction" Style="{StaticResource ContextPrimaryItem}" Header="{loc:Text T_326093a3324d}" Command="{Binding PrepareSelectedTaskExtractionCommand}"/>
@@ -393,12 +393,19 @@
                     </DataGridTemplateColumn>
                   </DataGrid.Columns>
                 </DataGrid>
-                <Border Grid.Row="2" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="24,16">
+                <Border Grid.Row="2" Background="{DynamicResource CanvasBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="24,10">
                   <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="*"/>
                       <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
+                    <Expander x:Name="TaskDetailsExpander" Grid.ColumnSpan="2" IsExpanded="{Binding TaskDetailsExpanded,Mode=TwoWay}" HorizontalContentAlignment="Stretch" AutomationProperties.Name="{loc:Text Tasks.Details}">
+                      <Expander.Style><Style TargetType="Expander"><Style.Triggers><DataTrigger Binding="{Binding SelectedTask}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Expander.Style>
+                      <Expander.Header><DockPanel>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding SelectedTask.Status}" Style="{StaticResource Secondary}" Margin="16,0,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.Status}"/>
+                        <TextBlock Text="{Binding SelectedTask.Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.Path}"/>
+                      </DockPanel></Expander.Header>
+                      <ScrollViewer x:Name="TaskDetailsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="160"><Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="300"/></Grid.ColumnDefinitions>
                     <loc:FileKindIcon FileName="{Binding SelectedTask.Path}" Width="34" Height="44" Margin="0,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <StackPanel Margin="52,0,20,0" VerticalAlignment="Center">
                       <TextBlock Text="{Binding SelectedTask.Name}" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
@@ -463,12 +470,14 @@
                         </Button.Style>
                       </Button>
                       <Button x:Name="BrowseArchiveAction" Content="{loc:Text T_393dd8a7f29e}" Command="{Binding BrowseArchiveCommand}" AutomationProperties.Name="{loc:Text T_eeafd62503fb}" Margin="0,0,8,4"/>
-                    </WrapPanel><DockPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0"><StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
+                    </WrapPanel></Grid></ScrollViewer></Expander><DockPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0"><StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
             <Label Content="{loc:Text T_97390316e0b1}" Target="{Binding ElementName=QueueConcurrencyChoice}" VerticalAlignment="Center" Padding="0" Margin="0,0,8,0"/>
             <ComboBox x:Name="QueueConcurrencyChoice" Style="{StaticResource CompactOptionField}" SelectedIndex="{Binding QueueConcurrencyIndex}" IsEnabled="{Binding IsIdle}" AutomationProperties.Name="{loc:Text T_6e7687ea3b36}" ToolTip="{loc:Text T_43d1355757d4}">
               <ComboBoxItem Content="{loc:Text T_df0142916f7f}"/>
               <ComboBoxItem Content="{loc:Text T_d722534ab0db}"/>
             </ComboBox>
+            <Label Content="{loc:Text Tasks.Density}" Target="{Binding ElementName=TaskDensityChoice}" Padding="0" Margin="20,0,8,0" VerticalAlignment="Center"/>
+            <ComboBox x:Name="TaskDensityChoice" ItemsSource="{Binding TaskDensityChoices}" SelectedIndex="{Binding TaskDensityIndex}" Style="{StaticResource CompactOptionField}" AutomationProperties.Name="{loc:Text Tasks.Density}"/>
           </StackPanel><WrapPanel HorizontalAlignment="Right"><Button x:Name="ExtractAction" Content="{Binding ExtractButtonText}" MinHeight="36" AutomationProperties.Name="{loc:Text T_17a8f74d32e3}" Margin="0,0,8,4" Click="OnPrepareExtraction">
               <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">

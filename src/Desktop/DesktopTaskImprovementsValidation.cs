@@ -103,7 +103,7 @@ internal static class DesktopTaskImprovementsValidation
             var inputs=Enumerable.Range(0,3).Select(index=>Path.Combine(data,$"task-{index}.7z")).ToArray();foreach(var input in inputs)File.Copy(fixture,input);
             model.AddFiles(inputs);var rows=model.Tasks.ToArray();for(var index=0;index<rows.Length;index++)rows[index].ShellOutputPath=Path.Combine(data,"output-"+index);
             await Layout();Invoke(window.ExtractAction);await Until(()=>rows.Take(2).All(row=>row.Running && row.Percent>0));
-            model.SelectedTask=rows[0];await Menu(window.TaskPauseAction);await Until(()=>rows[0].Paused);
+            model.SelectedTask=rows[0];model.TaskDetailsExpanded=true;await Menu(window.TaskPauseAction);await Until(()=>rows[0].Paused);
             await Layout();
             var pausedActions=Descendants(window.ArchiveTasks).OfType<Button>().Where(button=>Equals(button.Tag,"TaskPrimary") && ReferenceEquals(button.DataContext,rows[0])).Append(window.SelectedTaskPrimary).ToArray();
             Check("paused row and detail actions use Fluent play icon",pausedActions.Length==2 && pausedActions.All(button=>Descendants(button).OfType<FluentIcon>().Single().Kind=="Play"));

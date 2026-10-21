@@ -36,7 +36,7 @@ internal static class DesktopVolumeValidation
                 });
                 var model=new MainViewModel(baseDirectory,Path.Combine(data,"state-"+version),vault,dialogs);window.DataContext=model;await model.InitializeAsync();
                 model.SelectedEngineVersion=version;model.ApplyEngineCommand.Execute(null);await model.WaitForIdleAsync();model.Page=3;model.AddCompressionSources([source]);
-                var view=(CompressionView)window.FindName("CompressionPage");var option=(ComboBox)view.FindName("VolumeOptionBox");var size=(TextBox)view.FindName("VolumeSizeBox");var unit=(ComboBox)view.FindName("VolumeUnitBox");var create=(Button)view.FindName("CreateButton");
+                var view=(CompressionView)window.FindName("CompressionPage");view.AdvancedOptions.IsExpanded=true;var option=(ComboBox)view.FindName("VolumeOptionBox");var size=(TextBox)view.FindName("VolumeSizeBox");var unit=(ComboBox)view.FindName("VolumeUnitBox");var create=(Button)view.FindName("CreateButton");
                 model.CompressionOutput=Path.Combine(data,version+"-default.7z");await Layout(window);
                 Check(version+" default retains ordinary archive",option.SelectedIndex==0 && !size.IsVisible && model.CompressionVolumeHint=="" && model.CreateArchiveCommand.CanExecute(null));
                 Check(version+" volume controls accessible",UIElementAutomationPeer.CreatePeerForElement(option)!.IsKeyboardFocusable() && UIElementAutomationPeer.CreatePeerForElement(option)!.GetName().Contains("分卷"));

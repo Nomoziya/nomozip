@@ -82,6 +82,14 @@ internal static class DesktopUsabilityValidation
         var cancelled=new ArchiveTaskRow(Path.Combine(data,"cancelled.7z")){Failure=new EngineResult{Status="cancelled",Code="cancelled"}};
         var paused=new ArchiveTaskRow(Path.Combine(data,"paused.7z")){Running=true,PauseRequested=true,Paused=true,Status=UiText.Get("TaskControl.PauseRequested")};
         model.Tasks.Add(failed);model.Tasks.Add(cancelled);model.Tasks.Add(paused);model.Tasks.Add(new(Path.Combine(data,"pending.7z")));
+        await Layout();window.TaskDensityChoice.SelectedIndex=1;await Layout();
+        check("density selector switches actual task rows to comfortable",model.TaskDensityIndex==1 && window.ArchiveTasks.RowHeight==88);
+        window.TaskDensityChoice.SelectedIndex=0;await Layout();
+        check("density selector restores compact task rows",model.TaskDensityIndex==0 && window.ArchiveTasks.RowHeight==64);
+        model.SelectedTask=failed;await Layout();
+        check("failed selection expands task details",model.TaskDetailsExpanded && window.TaskDetailsExpander.IsExpanded);
+        window.TaskDetailsExpander.IsExpanded=false;await Layout();
+        check("collapsing details preserves queue controls",!model.TaskDetailsExpanded && window.ExtractAction.IsVisible && window.QueueConcurrencyChoice.IsVisible);
         model.TaskFilterIndex=4;
         check("failure filter excludes cancellations and completed compression",model.TaskView.Cast<ArchiveTaskRow>().SequenceEqual(new[]{failed}) && model.TaskFilterBadges[4].Count==1);
         model.TaskFilterIndex=5;
@@ -93,19 +101,24 @@ internal static class DesktopUsabilityValidation
         foreach(var mode in new[]{"light","dark","contrast"})foreach(var width in new[]{1152d,800d})
         {
             theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");window.MinWidth=width;window.Width=width;window.Height=width==800?600:768;
-            model.Page=0;model.TaskFilterIndex=4;await Layout();
+            model.Page=0;model.TaskFilterIndex=4;model.SelectedTask=failed;await Layout();
             if(model.IsNarrow)
             {
                 var filters=window.CompactTaskFilter;
+                window.Left=0;window.Top=0;window.Opacity=1;window.Activate();await Layout();
                 ((IExpandCollapseProvider)UIElementAutomationPeer.CreatePeerForElement(filters)!.GetPattern(PatternInterface.ExpandCollapse)).Expand();await Layout();
-                var failedItem=(ComboBoxItem)filters.ItemContainerGenerator.ContainerFromIndex(4);
+                for(var attempt=0;attempt<40 && filters.ItemContainerGenerator.ContainerFromIndex(4) is not ComboBoxItem;attempt++)
+                {if(filters.Template.FindName("PART_Popup",filters) is Popup {Child:FrameworkElement child})child.UpdateLayout();await Task.Delay(25);await Layout();}
+                if(filters.ItemContainerGenerator.ContainerFromIndex(4) is not ComboBoxItem failedItem)throw new Exception("Visible task filter popup did not realize its six choices.");
                 ((ISelectionItemProvider)UIElementAutomationPeer.CreatePeerForElement(failedItem)!.GetPattern(PatternInterface.SelectionItem)).Select();
                 filters.IsDropDownOpen=false;await Layout();
+                window.Left=window.Top=-32000;window.Opacity=0;
                 check($"six task filters reachable {mode} {width}",filters.Items.Count==6 && Fits(filters) && model.TaskFilterIndex==4);
             }
             else check($"six task filters reachable {mode} {width}",window.TaskFilterTabs.Items.Count==6 && Fits(window.TaskFilterTabs) && Descendants(window.TaskFilterTabs).OfType<ListBoxItem>().All(Fits));
             capture(window,$"usability-tasks-{mode}-{width}");
             model.Page=3;await Layout();
+            check($"compression output summary and creation stay visible {mode} {width}",Fits(view.CompressionResultSummaryText) && Fits(view.CreateButton) && view.CompressionResultSummaryText.Text==model.CompressionResultSummary);
             view.CompressionProfileNameBox.BringIntoView();await Layout();
             // Open only this extension, preserving the established settings layout.
             var expander=profileExpander;expander.IsExpanded=true;

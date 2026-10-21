@@ -26,7 +26,7 @@ public sealed partial class MainViewModel
     {
         get=>compressionSfx;
         set {if(value && (!Is7zCompression || volumeOption!=0 || !sfxAvailable)) return;var previous=CompressionExtension;
-            if(Set(ref compressionSfx,value)) {AlignCompressionExtension(previous);Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));}}
+            if(Set(ref compressionSfx,value)) {AlignCompressionExtension(previous);Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));Changed(nameof(CompressionResultSummary));}}
     }
     private CompressionFormatInfo CompressionOptions => CompressionFormats.All[CompressionFormat];
     private string CompressionExtension=>CompressionSfx?".exe":CompressionOptions.Extension;
@@ -38,7 +38,7 @@ public sealed partial class MainViewModel
     private void CompressionCapabilitiesChanged()
     {
         Changed(nameof(CanEncryptCompression));Changed(nameof(CanSetCompressionLevel));Changed(nameof(CanSplitCompression));
-        Changed(nameof(CompressionSourceError));CommandManager.InvalidateRequerySuggested();
+        Changed(nameof(CompressionSourceError));Changed(nameof(CompressionResultSummary));Changed(nameof(CreateArchiveCaption));CommandManager.InvalidateRequerySuggested();
     }
     public bool CanUseSfx=>IsIdle && Is7zCompression && volumeOption==0 && sfxAvailable;
     public string CompressionSfxHint=>!Is7zCompression?(CompressionFormat==1?UiText.Get("T_aebafd23c2d9"):""):volumeOption!=0?UiText.Get("T_f12fba592449"):!sfxAvailable?UiText.Get("T_5b79de668b3b"):CompressionSfx?UiText.Get("T_ba22f8e0541a"):"";
@@ -54,7 +54,7 @@ public sealed partial class MainViewModel
     public int CompressionVolumeUnit {get=>volumeUnit;set {if(Set(ref volumeUnit,value)) VolumeOptionsChanged();}}
     public string CompressionVolumeCustom {get=>volumeCustom;set {if(Set(ref volumeCustom,value)) VolumeOptionsChanged();}}
     private bool ValidVolumeSize=>VolumeSizeOptions.TryGetBytes(volumeOption,volumeCustom,volumeUnit,out _);
-    private void VolumeOptionsChanged() {if(volumeOption!=0) CompressionSfx=false;CompressionProfileOptionsChanged();Changed(nameof(CompressionVolumeError));Changed(nameof(CompressionVolumeHint));Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));CommandManager.InvalidateRequerySuggested();}
+    private void VolumeOptionsChanged() {if(volumeOption!=0) CompressionSfx=false;CompressionProfileOptionsChanged();Changed(nameof(CompressionVolumeError));Changed(nameof(CompressionVolumeHint));Changed(nameof(CanUseSfx));Changed(nameof(CompressionSfxHint));Changed(nameof(CompressionAdvancedSummary));Changed(nameof(CompressionResultSummary));CommandManager.InvalidateRequerySuggested();}
     public string CompressionVolumeError=>ValidVolumeSize?"":UiText.Get("T_f1a4a993b180");
     public string CompressionVolumeHint=>volumeOption==0?"":ValidVolumeSize?UiText.Get("T_e836053f4b78"):"";
     public ObservableCollection<CompressionSourceRow> CompressionSources { get; } = [];
@@ -95,13 +95,20 @@ public sealed partial class MainViewModel
         "tar" => UiText.Get("T_7f8c82c8d8b8"),
         _ => UiText.Format("T_b0f1ecfd6cb8", CompressionOptions.Extension)
     };
-    public int CompressionLevel { get => compressionLevel; set {if(Set(ref compressionLevel,value))CompressionProfileOptionsChanged();} }
-    public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary)); } } }
+    public int CompressionLevel { get => compressionLevel; set {if(Set(ref compressionLevel,value)){CompressionProfileOptionsChanged();Changed(nameof(CompressionResultSummary));}} }
+    public bool CompressionEncrypt { get => compressionEncrypt; set { if (value && !CompressionOptions.Encryption) return; if (Set(ref compressionEncrypt, value)) { if (!value) compressionPassword = null; Changed(nameof(CompressionPasswordStatus));Changed(nameof(CompressionPasswordSummary));Changed(nameof(CompressionResultSummary)); } } }
     public bool CompressionHeaders { get => compressionHeaders; set => Set(ref compressionHeaders, value); }
     public string CompressionPasswordStatus => compressionPassword is null ? UiText.Get("T_5d8111695438") : UiText.Get("T_bb1057c00cf3");
-    public string CompressionAdvancedSummary=>UiText.Format("Compression.AdvancedSummary",CompressionVolumeOption switch {0=>UiText.Get("T_13fa566b385e"),1=>"100 MiB",2=>"1 GiB",3=>"4 GiB",_=>CompressionVolumeCustom+" "+(CompressionVolumeUnit==0?"MiB":"GiB")},UiText.Get(CompressionSfx?"Compression.Yes":"Compression.No"));
+    private string CompressionVolumeLabel=>CompressionVolumeOption switch {0=>UiText.Get("T_13fa566b385e"),1=>"100 MiB",2=>"1 GiB",3=>"4 GiB",_=>CompressionVolumeCustom+" "+(CompressionVolumeUnit==0?"MiB":"GiB")};
+    public string CompressionAdvancedSummary=>UiText.Format("Compression.AdvancedSummary",CompressionVolumeLabel,UiText.Get(CompressionSfx?"Compression.Yes":"Compression.No"));
+    public string CompressionResultSummary=>UiText.Format("Compression.ResultSummary",CompressionSources.Count,
+        CompressionSfx?UiText.Format("Compression.SfxFormat",CompressionOptions.Label):CompressionOptions.Label,
+        UiText.Get(new[]{"T_bfa903605147","T_db945cfe9f9f","T_6bea77acefb3","T_dfbad24e7f4a","T_8672864e9041"}[Math.Clamp(CompressionLevel,0,4)]),
+        UiText.Get(CompressionEncrypt?"Compression.Encrypted":"Compression.Unencrypted"),CompressionVolumeLabel);
+    public string CreateArchiveCaption=>UiText.Format("Compression.CreateCount",CompressionSources.Count);
+    public string CompressionOutputFileName=>Path.GetFileName(CompressionOutput);
     public string CompressionPasswordSummary => UiText.Get(compressionPassword is null ? "Redesign.PasswordNotSet" : "T_bb1057c00cf3");
-    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));}} }
+    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));Changed(nameof(CompressionOutputFileName));}} }
     public string CompressionOutputDirectory
     {
         get {var slash=CompressionOutput.LastIndexOfAny(['\\','/']);return slash<0?"":CompressionOutput[..(slash==2 && CompressionOutput[1]==':'?slash+1:slash)];}

@@ -3351,4 +3351,15 @@
   <data name="Compression.ProfileSaved" xml:space="preserve"><value>压缩方案已保存。</value></data>
   <data name="Compression.ProfileDeleted" xml:space="preserve"><value>压缩方案已删除，当前参数保留。</value></data>
   <data name="Compression.ProfileSaveFailed" xml:space="preserve"><value>无法保存压缩参数，请检查设置目录是否可写。</value></data>
+  <data name="Tasks.Density" xml:space="preserve"><value>密度</value></data>
+  <data name="Tasks.Compact" xml:space="preserve"><value>紧凑</value></data>
+  <data name="Tasks.Comfortable" xml:space="preserve"><value>舒适</value></data>
+  <data name="Tasks.Details" xml:space="preserve"><value>任务详情</value></data>
+  <data name="Compression.ResultSummary" xml:space="preserve"><value>{0} 项来源 · {1} · {2} · {3} · {4}</value></data>
+  <data name="Compression.SfxFormat" xml:space="preserve"><value>{0}（自解压）</value></data>
+  <data name="Compression.Encrypted" xml:space="preserve"><value>启用加密</value></data>
+  <data name="Compression.Unencrypted" xml:space="preserve"><value>未加密</value></data>
+  <data name="Compression.CreateCount" xml:space="preserve"><value>创建压缩包（{0} 项）</value></data>
+  <data name="Compression.ManageProfiles" xml:space="preserve"><value>管理压缩方案</value></data>
+  <data name="Compression.CurrentOptions" xml:space="preserve"><value>当前参数</value></data>
 </root>

@@ -148,6 +148,7 @@ internal static class DesktopVisualRefreshValidation
                     }
                     if (page == 3)
                     {
+                        window.CompressionPage.AdvancedOptions.IsExpanded = true; await Layout();
                         var label = Descendants(window.CompressionPage.SfxBox).OfType<TextBlock>().Single(block => block.Text == UiText.Get("T_b0b03f8b05a5"));
                         var level = Descendants(window.CompressionPage.LevelLabel).OfType<FrameworkElement>().First(value=>value is AccessText or TextBlock);
                         var text = new FormattedText(label.Text, System.Globalization.CultureInfo.CurrentUICulture, label.FlowDirection,

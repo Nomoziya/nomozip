@@ -63,6 +63,7 @@ public partial class MainWindow : Window
             CompressionPage.SetCompactToolbar(compact);
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
+            TaskDetailsScroll.MaxHeight=Math.Clamp(ActualHeight-500,64,160);
             var shortWorkArea=ActualHeight<480;
             ExtractionLayout.Height = shortWorkArea?double.NaN:Math.Max(0, ExtractionViewport.ActualHeight);
             DefaultOutputPanel.Width = Math.Min(360, Math.Max(160, PreferencesScroll.ActualWidth-200));

@@ -115,6 +115,15 @@
           <ScrollViewer x:Name="SettingsScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="SettingsForm" Grid.IsSharedSizeScope="True" Width="{Binding ViewportWidth,ElementName=SettingsScroll}" MaxWidth="640" HorizontalAlignment="Left">
               <TextBlock Text="{loc:Text T_f5358f6b735d}" Style="{StaticResource Heading}" FontSize="16"/>
+              <StackPanel Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
+                <Label Content="{loc:Text Compression.Profiles}" Target="{Binding ElementName=CompressionProfileBox}" Padding="0,0,0,4"/>
+                <Grid>
+                  <ComboBox x:Name="CompressionProfileBox" ItemsSource="{Binding CompressionProfiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCompressionProfile}" AutomationProperties.Name="{loc:Text Compression.ChooseProfile}"/>
+                  <TextBlock Text="{loc:Text Compression.CurrentOptions}" Foreground="{DynamicResource SecondaryBrush}" IsHitTestVisible="False" Margin="12,0,36,0" VerticalAlignment="Center">
+                    <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedCompressionProfile}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                  </TextBlock>
+                </Grid>
+              </StackPanel>
               <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SettingsLabel"/>
@@ -136,19 +145,7 @@
                 <Label Content="{loc:Text Redesign.ArchiveName}" Target="{Binding ElementName=ArchiveNameBox}" Padding="0" VerticalAlignment="Center"/>
                 <TextBox x:Name="ArchiveNameBox" Text="{Binding CompressionOutputName}" IsEnabled="{Binding IsIdle}" Margin="0" AutomationProperties.Name="{loc:Text Redesign.ArchiveName}" Grid.Column="2"/>
               </Grid>
-              <Expander x:Name="CompressionProfilesExpander" Header="{loc:Text Compression.Profiles}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
-                <StackPanel Margin="0,8,0,0">
-                  <Label Content="{loc:Text Compression.ChooseProfile}" Target="{Binding ElementName=CompressionProfileBox}" Padding="0,0,0,4"/>
-                  <ComboBox x:Name="CompressionProfileBox" ItemsSource="{Binding CompressionProfiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCompressionProfile}" AutomationProperties.Name="{loc:Text Compression.ChooseProfile}" Margin="0,0,0,8"/>
-                  <Label Content="{loc:Text Compression.ProfileName}" Target="{Binding ElementName=CompressionProfileNameBox}" Padding="0,0,0,4"/>
-                  <TextBox x:Name="CompressionProfileNameBox" Text="{Binding CompressionProfileName,UpdateSourceTrigger=PropertyChanged}" MaxLength="64" AutomationProperties.Name="{loc:Text Compression.ProfileName}"/>
-                  <WrapPanel Margin="0,8,0,8">
-                    <Button x:Name="SaveCompressionProfileButton" Content="{loc:Text Compression.SaveProfile}" Command="{Binding SaveCompressionProfileCommand}" Margin="0,0,8,4"/>
-                    <Button x:Name="DeleteCompressionProfileButton" Content="{loc:Text Compression.DeleteProfile}" Command="{Binding DeleteCompressionProfileCommand}" Margin="0,0,0,4"/>
-                  </WrapPanel>
-                  <TextBlock Text="{loc:Text Compression.ProfileHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
-                </StackPanel>
-              </Expander>
+
               <WrapPanel x:Name="CompressionChoices" Margin="0,2,0,12">
                 <StackPanel Margin="0,0,20,0">
                   <Label Content="{loc:Text T_0e8b1c78c5f3}" Target="{Binding ElementName=FormatBox}" Padding="0" Margin="0,0,0,6"/>
@@ -185,7 +182,7 @@
                 </TextBlock.Style>
               </TextBlock>
               <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0">
-                <Expander x:Name="AdvancedOptions" IsExpanded="True" Margin="0,16,0,12">
+                <Expander x:Name="AdvancedOptions" IsExpanded="False" Margin="0,16,0,12">
                   <Expander.Header><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="{loc:Text Compression.AdvancedTitle}" Margin="0,0,12,0"/><TextBlock Grid.Column="1" Text="{Binding CompressionAdvancedSummary}" Style="{StaticResource Caption}" Foreground="{DynamicResource SecondaryBrush}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding CompressionAdvancedSummary}"/></Grid></Expander.Header>
                   <StackPanel>
                     <Grid Margin="0,0,0,8">
@@ -256,6 +253,17 @@
                   </StackPanel>
                 </Expander>
               </Border>
+              <Expander x:Name="CompressionProfilesExpander" Header="{loc:Text Compression.ManageProfiles}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
+                <StackPanel Margin="0,8,0,0">
+                  <Label Content="{loc:Text Compression.ProfileName}" Target="{Binding ElementName=CompressionProfileNameBox}" Padding="0,0,0,4"/>
+                  <TextBox x:Name="CompressionProfileNameBox" Text="{Binding CompressionProfileName,UpdateSourceTrigger=PropertyChanged}" MaxLength="64" AutomationProperties.Name="{loc:Text Compression.ProfileName}"/>
+                  <WrapPanel Margin="0,8,0,8">
+                    <Button x:Name="SaveCompressionProfileButton" Content="{loc:Text Compression.SaveProfile}" Command="{Binding SaveCompressionProfileCommand}" Margin="0,0,8,4"/>
+                    <Button x:Name="DeleteCompressionProfileButton" Content="{loc:Text Compression.DeleteProfile}" Command="{Binding DeleteCompressionProfileCommand}" Margin="0,0,0,4"/>
+                  </WrapPanel>
+                  <TextBlock Text="{loc:Text Compression.ProfileHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                </StackPanel>
+              </Expander>
             </StackPanel>
           </ScrollViewer>
         </Border>
@@ -266,16 +274,16 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition x:Name="FooterSettingsColumn" Width="320"/>
       </Grid.ColumnDefinitions>
-      <Border x:Name="CompressionActionsPanel" Grid.Column="1" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1,1,0,0" Padding="24,16,24,16">
-        <Grid x:Name="CompressionActionsRoot">
+      <Border x:Name="CompressionActionsPanel" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0" Padding="24,12">
+        <Grid x:Name="CompressionActionsRoot"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <WrapPanel HorizontalAlignment="Right" Grid.Row="1">
-            <Button x:Name="CreateButton" Content="{loc:Text T_e185d04bcc5f}" Command="{Binding CreateArchiveCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.Name="{loc:Text T_78deea3a0b97}" MinHeight="40" Margin="0,0,12,8" MinWidth="124"/>
+          <WrapPanel x:Name="CompressionFooterButtons" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1">
+            <Button x:Name="CreateButton" Content="{Binding CreateArchiveCaption}" Command="{Binding CreateArchiveCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.Name="{loc:Text T_78deea3a0b97}" MinHeight="40" Margin="0,0,12,8" MinWidth="124"/>
             <Button Content="{loc:Text T_2cd0f3be8738}" Click="OnBackFiles" Margin="0,0,8,8" MinWidth="96" MinHeight="40">
               <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -311,7 +319,7 @@
               </Button.Style>
             </Button>
           </WrapPanel>
-          <ProgressBar Grid.Row="2" Value="{Binding CompressionPercent, Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="6" Margin="0,0,0,8" AutomationProperties.Name="{loc:Text T_317cb00c1275}">
+          <ProgressBar x:Name="CompressionFooterProgress" Grid.Row="1" Grid.ColumnSpan="2" Value="{Binding CompressionPercent, Mode=OneWay}" IsIndeterminate="{Binding CompressionIndeterminate}" Height="6" Margin="0,0,0,8" AutomationProperties.Name="{loc:Text T_317cb00c1275}">
             <ProgressBar.Style>
               <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -323,7 +331,7 @@
               </Style>
             </ProgressBar.Style>
           </ProgressBar>
-          <TextBlock Grid.Row="3" Text="{Binding CompressionMessage}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
+          <TextBlock x:Name="CompressionFooterStatus" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding CompressionMessage}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite">
             <TextBlock.Style>
               <Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}">
                 <Style.Triggers>
@@ -334,7 +342,10 @@
               </Style>
             </TextBlock.Style>
           </TextBlock>
-          <TextBlock Text="{Binding CompressionOutput}" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}" Margin="0,0,0,12" Grid.Row="0" HorizontalAlignment="Left" MaxWidth="420"/>
+          <StackPanel x:Name="CompressionResultPanel" Grid.Row="0" Grid.Column="0" Margin="0,0,20,8" VerticalAlignment="Center">
+            <TextBlock Text="{Binding CompressionOutputFileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutput}"/>
+            <TextBlock x:Name="CompressionResultSummaryText" Text="{Binding CompressionResultSummary}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,4,0,0"/>
+          </StackPanel>
         </Grid>
       </Border>
     </Grid>

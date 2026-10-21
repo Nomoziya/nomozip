@@ -22,6 +22,12 @@ public sealed partial class MainViewModel
     public bool HasCompressionActivity => CompressionRunning || CompressionOutput.Length > 0 && compressionActivityStarted;
     private bool compressionActivityStarted;
     private int taskFilterIndex;
+    private int taskDensityIndex;
+    private bool taskDetailsExpanded;
+    public int TaskDensityIndex {get=>taskDensityIndex;set {if(Set(ref taskDensityIndex,Math.Clamp(value,0,1)))Changed(nameof(TaskRowHeight));}}
+    public double TaskRowHeight=>TaskDensityIndex==0?64:88;
+    public IReadOnlyList<string> TaskDensityChoices {get;}=[UiText.Get("Tasks.Compact"),UiText.Get("Tasks.Comfortable")];
+    public bool TaskDetailsExpanded {get=>taskDetailsExpanded;set=>Set(ref taskDetailsExpanded,value);}
     private ListCollectionView? taskView;
     public ObservableCollection<ArchiveTaskRow> WorkspaceTasks {get;}=[];
     public string WorkspaceTaskSummary=>UiText.Format("Redesign.WorkspaceSummary",WorkspaceTasks.Count(row=>row.Running),WorkspaceTasks.Count(row=>!row.Running && !row.Completed && row.Failure is null),WorkspaceTasks.Count(row=>row.Completed || row.Failure is not null));
@@ -90,7 +96,10 @@ public sealed partial class MainViewModel
         Changed(nameof(TaskSummary));Changed(nameof(WorkspaceTaskSummary));Changed(nameof(ActiveTaskCount));Changed(nameof(FileWorkspaceTaskSummary));Changed(nameof(ShowCompressionActivity));
     }
     private void WorkspaceTaskChanged(object? sender,PropertyChangedEventArgs e)
-    {if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure) or nameof(ArchiveTaskRow.Paused) or nameof(ArchiveTaskRow.PauseRequested)) RefreshWorkspaceTasks();}
+    {
+        if(e.PropertyName==nameof(ArchiveTaskRow.Failure) && ReferenceEquals(sender,SelectedTask) && SelectedTask?.Failure is {Status:not "cancelled"})TaskDetailsExpanded=true;
+        if(e.PropertyName is nameof(ArchiveTaskRow.Running) or nameof(ArchiveTaskRow.Completed) or nameof(ArchiveTaskRow.Failure) or nameof(ArchiveTaskRow.Paused) or nameof(ArchiveTaskRow.PauseRequested)) RefreshWorkspaceTasks();
+    }
 
     internal async Task SaveVaultDetailsAsync(SavedPassword edited)
     {

@@ -62,8 +62,11 @@ public partial class CompressionView : UserControl
         SettingsColumn.Width = narrow ? new GridLength(0) : new GridLength(440);
         SettingsRow.Height = narrow ? GridLength.Auto : new GridLength(0);
         FooterSettingsColumn.Width=SettingsColumn.Width;
-        Grid.SetColumn(CompressionActionsPanel,narrow?0:1);
-        CompressionActionsPanel.BorderThickness=narrow?new Thickness(0,1,0,0):new Thickness(1,1,0,0);
+        Grid.SetColumn(CompressionActionsPanel,0);Grid.SetColumnSpan(CompressionActionsPanel,2);
+        CompressionActionsPanel.BorderThickness=new Thickness(0,1,0,0);
+        Grid.SetColumn(CompressionFooterButtons,narrow?0:1);Grid.SetRow(CompressionFooterButtons,narrow?1:0);
+        Grid.SetColumnSpan(CompressionFooterButtons,narrow?2:1);Grid.SetColumnSpan(CompressionResultPanel,narrow?2:1);
+        Grid.SetRow(CompressionFooterProgress,narrow?2:1);Grid.SetRow(CompressionFooterStatus,narrow?3:2);
         Grid.SetRow(SettingsPanel, narrow ? 1 : 0);
         Grid.SetColumn(SettingsPanel, narrow ? 0 : 2);
         SettingsPanel.Margin = narrow ? new Thickness(0, 16, 0, 0) : new Thickness(0);
