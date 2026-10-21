@@ -1,0 +1,527 @@
+{
+  "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809",
+  "runs": {
+    "x64": 39557247501,
+    "arm64": 39557300232
+  },
+  "status": "Product page matrices passed in both languages and architectures; overall runs failed. Final affected flows pending at ebe3301.",
+  "files": [
+    {
+      "path": "product/x64/zh-CN/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/light-1152-page-0.png",
+      "sha256": "2deb21eada0d6a3cb5e5d5ad71978d52d6591af84e6ee2f595b0ec658f6d08d5",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/light-1152-page-3.png",
+      "sha256": "2068a1acfd69b8d997f0fadad4f23865ada7c60ca82d40848ffc7da0ccc9b93e",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/light-800-page-0.png",
+      "sha256": "43f9f502c33d78502574fedebe7c4211f79520a73c46d1e15a3e9352c7c8e40f",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/light-800-page-3.png",
+      "sha256": "a5e48be064855fbde8ffa6477ac53cb2ddda779de0b39ccd244981de6f64e96c",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/dark-1152-page-0.png",
+      "sha256": "3ea8b378dfda5f09dfdbfb270b16518808191a26282662790fe344d7f4c5aa01",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/dark-1152-page-3.png",
+      "sha256": "be38de4e231f8e2966a00a99410aa3b8db5d67021c402d42416948ee48f1cf49",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/dark-800-page-0.png",
+      "sha256": "f5d8093a4988e401e0a4e69d10954bea2aff90d5de10731cfff5c954569d7169",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/dark-800-page-3.png",
+      "sha256": "e8155f809255d1f6331feab9817d16692d492080e99c608440c77baf4fe56714",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/contrast-1152-page-0.png",
+      "sha256": "6b57ef36c216d5ec7acd69ab3943e21f5563b7a0687fda11ea23582dfeb3066e",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/contrast-1152-page-3.png",
+      "sha256": "9e4f5d4d2f1c551ed7177600a7516b501d7abf93341abe1e6722c366a207ba7b",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/contrast-800-page-0.png",
+      "sha256": "163620ebb41c22b7fede0a3a1e3d5a2918c3ac28d837ffc2da2c46037d7eef06",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/zh-CN/contrast-800-page-3.png",
+      "sha256": "b8b6c1a1222d35c98a79c0750935cc7fff4c29dc225ad72554f507feffa2586d",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/light-1152-page-0.png",
+      "sha256": "409f037559bd9949b4b2174f732bde344ba2be9a66b63a8f3a999bc0f89981e1",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/light-1152-page-3.png",
+      "sha256": "72204d5ce8cb3abab90ff4105b8a24f97b1b861a2cb673608da7ba67a1d594de",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/light-800-page-0.png",
+      "sha256": "4d7fd08bf22800c74b2a2400465f2ca8dc5b4ca536a415ec6802bb5fad524a87",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/light-800-page-3.png",
+      "sha256": "f2c91417668b4ebe8e8eb6c2573d3493d9e47fe230a2cf7a25824d185cfc1974",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/dark-1152-page-0.png",
+      "sha256": "7b1e2730872ccefa1816cb9c9140620a4ddf6dc5cd8ea9a151c06f22e5515ea9",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/dark-1152-page-3.png",
+      "sha256": "d168a8b131a6ac8c2d2fa2e264d45ef7b9f95b7e13d6b740ae5af56cab4d6a50",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/dark-800-page-0.png",
+      "sha256": "0cf0b2df5d4d346df4f11763ba3f97a34c6645e21c786e4e1eddab701bd1b871",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/dark-800-page-3.png",
+      "sha256": "b2d3cf805ae64bc049d915dc1eb332185df211d0addc3efee55b6cec2bbcf81f",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/contrast-1152-page-0.png",
+      "sha256": "2db40b9e4d13686818477b55df43a6db8c1f3b455b280cb631f48956d0a41065",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/contrast-1152-page-3.png",
+      "sha256": "35b178127354350a5356bf6ce0d3413e5b0a4df5ef3afc3531908fbc2a6a7265",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/contrast-800-page-0.png",
+      "sha256": "ea9dc85984e419ef5189e3d670244a70a3d143a9bbb569b0b85b2276374665f9",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/en/contrast-800-page-3.png",
+      "sha256": "a7026f111b250c833bd6d2854e3b3013cf88f414ba1eb2b00032b34db2c9a1b4",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/format-ui-validation.json",
+      "sha256": "0e1b2ac42afee854a8d76826a4b54bc93fb8b2125b56a6a83f82b227c868c1d3",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/localization-validation.json",
+      "sha256": "6bc5fb3b6d790dc4199376784752373f32f00f8818f82ccf1a4bc38ae498b1ee",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/master-vault-validation.json",
+      "sha256": "35ba7c320f60d0af03175bcfbbb0845999f226041cc00f37f21f71ae9581fc47",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/pause-ui-validation.json",
+      "sha256": "07da395dd42213d8da79f939822460f26597512ddf3b36bf7abafb6cca8849b1",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/post032-core-validation.json",
+      "sha256": "45176ab41e084f595f76f0b11cb2f7bb237efba4e5b618c81ca0393c08da1a6b",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/task-improvements-ui-en-validation.json",
+      "sha256": "8f40e6b3282cb17bb60704a7a7fd08f824cf1d8f965ffd152f2f441b42f26826",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/task-improvements-ui-zh-CN-validation.json",
+      "sha256": "deb3157693b6fca68188a487696b3bb8e495094ba03c54f82634da0809f350b6",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/x64/reports/volume-ui-validation.json",
+      "sha256": "c0553c32dbfdd5ee43344307e52e0fd5892e0a91e21f7ccd621abd7d619ccca7",
+      "run": 39557247501,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/light-1152-page-0.png",
+      "sha256": "2deb21eada0d6a3cb5e5d5ad71978d52d6591af84e6ee2f595b0ec658f6d08d5",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/light-1152-page-3.png",
+      "sha256": "2068a1acfd69b8d997f0fadad4f23865ada7c60ca82d40848ffc7da0ccc9b93e",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/light-800-page-0.png",
+      "sha256": "43f9f502c33d78502574fedebe7c4211f79520a73c46d1e15a3e9352c7c8e40f",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/light-800-page-3.png",
+      "sha256": "a5e48be064855fbde8ffa6477ac53cb2ddda779de0b39ccd244981de6f64e96c",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/dark-1152-page-0.png",
+      "sha256": "3ea8b378dfda5f09dfdbfb270b16518808191a26282662790fe344d7f4c5aa01",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/dark-1152-page-3.png",
+      "sha256": "be38de4e231f8e2966a00a99410aa3b8db5d67021c402d42416948ee48f1cf49",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/dark-800-page-0.png",
+      "sha256": "f5d8093a4988e401e0a4e69d10954bea2aff90d5de10731cfff5c954569d7169",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/dark-800-page-3.png",
+      "sha256": "e8155f809255d1f6331feab9817d16692d492080e99c608440c77baf4fe56714",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/contrast-1152-page-0.png",
+      "sha256": "6b57ef36c216d5ec7acd69ab3943e21f5563b7a0687fda11ea23582dfeb3066e",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/contrast-1152-page-3.png",
+      "sha256": "9e4f5d4d2f1c551ed7177600a7516b501d7abf93341abe1e6722c366a207ba7b",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/contrast-800-page-0.png",
+      "sha256": "163620ebb41c22b7fede0a3a1e3d5a2918c3ac28d837ffc2da2c46037d7eef06",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/zh-CN/contrast-800-page-3.png",
+      "sha256": "b8b6c1a1222d35c98a79c0750935cc7fff4c29dc225ad72554f507feffa2586d",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/report.json",
+      "sha256": "f155df6b0314103226dbdccabba3c06493556c0e182f784af044ca85aed9eabf",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/light-1152-page-0.png",
+      "sha256": "409f037559bd9949b4b2174f732bde344ba2be9a66b63a8f3a999bc0f89981e1",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/light-1152-page-3.png",
+      "sha256": "72204d5ce8cb3abab90ff4105b8a24f97b1b861a2cb673608da7ba67a1d594de",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/light-800-page-0.png",
+      "sha256": "4d7fd08bf22800c74b2a2400465f2ca8dc5b4ca536a415ec6802bb5fad524a87",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/light-800-page-3.png",
+      "sha256": "f2c91417668b4ebe8e8eb6c2573d3493d9e47fe230a2cf7a25824d185cfc1974",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/dark-1152-page-0.png",
+      "sha256": "7b1e2730872ccefa1816cb9c9140620a4ddf6dc5cd8ea9a151c06f22e5515ea9",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/dark-1152-page-3.png",
+      "sha256": "d168a8b131a6ac8c2d2fa2e264d45ef7b9f95b7e13d6b740ae5af56cab4d6a50",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/dark-800-page-0.png",
+      "sha256": "0cf0b2df5d4d346df4f11763ba3f97a34c6645e21c786e4e1eddab701bd1b871",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/dark-800-page-3.png",
+      "sha256": "b2d3cf805ae64bc049d915dc1eb332185df211d0addc3efee55b6cec2bbcf81f",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/contrast-1152-page-0.png",
+      "sha256": "2db40b9e4d13686818477b55df43a6db8c1f3b455b280cb631f48956d0a41065",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/contrast-1152-page-3.png",
+      "sha256": "35b178127354350a5356bf6ce0d3413e5b0a4df5ef3afc3531908fbc2a6a7265",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/contrast-800-page-0.png",
+      "sha256": "ea9dc85984e419ef5189e3d670244a70a3d143a9bbb569b0b85b2276374665f9",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/en/contrast-800-page-3.png",
+      "sha256": "a7026f111b250c833bd6d2854e3b3013cf88f414ba1eb2b00032b34db2c9a1b4",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/application-update-validation.json",
+      "sha256": "abaa4187395a270c65c6f6bbbb6073974d5a02da624bb5c7143cc5bb35fffd73",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/archive-editing-ui-validation.json",
+      "sha256": "55daeb9cc254efb1d0ca6c4c8b52969410ddaa94d1318a08756ee442e5064f63",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/desktop-browser-validation.json",
+      "sha256": "1e5f53f8cfa18df768fe252129b5adc337b087b00206dd578b1610adbcd41b10",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/desktop-multi-password-validation.json",
+      "sha256": "49d7e9cd2e7d6d298b0729d8b111f44fddbdd6380f0ccb197065e0c093685d04",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/display-validation.json",
+      "sha256": "d7a1016bc7a6baf0e57d8011b3180dbe094c7cd33802690c41c34f8cbafff652",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/format-ui-validation.json",
+      "sha256": "0e1b2ac42afee854a8d76826a4b54bc93fb8b2125b56a6a83f82b227c868c1d3",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/localization-validation.json",
+      "sha256": "6bc5fb3b6d790dc4199376784752373f32f00f8818f82ccf1a4bc38ae498b1ee",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/master-vault-validation.json",
+      "sha256": "7ce836b41fb5b3dd2f7f45035c64a524c5acf6848041e6889ad5f7bde88a4e4b",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/password-organization-validation.json",
+      "sha256": "e560bd5beffece8e55b3fe6c9cdc2bdd9412849201082f099b6458996b0b368e",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/pause-ui-validation.json",
+      "sha256": "07da395dd42213d8da79f939822460f26597512ddf3b36bf7abafb6cca8849b1",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/post032-core-validation.json",
+      "sha256": "45176ab41e084f595f76f0b11cb2f7bb237efba4e5b618c81ca0393c08da1a6b",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/task-improvements-core-validation.json",
+      "sha256": "fd8cf85aeaff5228412d4bb4ab4e6e5d6d66c8ed7115036f03d26371f14a4f4c",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/task-improvements-ui-en-validation.json",
+      "sha256": "cf43646c3a79afbec4c543b0cbae2b6f5ee73e71a1f58c0d03d35247bc5b504a",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/task-improvements-ui-zh-CN-validation.json",
+      "sha256": "61799547b189d6e15eb96c6c39dc6fd630443a3e7a0e294e1317479cce8aa9fa",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/ui-regression-validation.json",
+      "sha256": "d322b36f858ea5b3925f8c533fc525a06112942ba6d6e5db5f6d4cd3dae6faf1",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/vault-transfer-local-validation.json",
+      "sha256": "99792619081573bf7ddb007d0cb1a9ed760a1fd8ac7d2db211029599024cd45d",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    },
+    {
+      "path": "product/arm64/reports/volume-ui-validation.json",
+      "sha256": "c0553c32dbfdd5ee43344307e52e0fd5892e0a91e21f7ccd621abd7d619ccca7",
+      "run": 39557300232,
+      "sourceCommit": "304476e763e706addccbd116f68ae2dffb343809"
+    }
+  ],
+  "limitations": "CI WPF rendering and UIA; simulated contrast resources; no physical DPI, screen-reader or local installation acceptance."
+}
