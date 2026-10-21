@@ -11,6 +11,7 @@ internal static class Program
     [STAThread]
     static void Main(string[] args)
     {
+        BrowserIdleValidation.Run();
         ValidateSortResults();
         var samples = new List<object>();
         foreach (var count in new[] { 10000, 100000 })

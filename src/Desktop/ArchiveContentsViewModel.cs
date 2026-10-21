@@ -34,7 +34,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         ClearSelectionCommand=new RelayCommand(()=>Select(false),()=>CanSelect && allRows.Any(row=>row.Selected));
         ExtractSelectedCommand=new AsyncCommand(async()=>
         {
-            IsWorking=true;idle=new TaskCompletionSource();OutputPath="";
+            idle=new TaskCompletionSource();IsWorking=true;OutputPath="";
             try {OutputPath=await extract!(SelectedEntries,new Progress<string>(value=>OperationMessage=value)) ?? "";}
             finally {IsWorking=false;idle.TrySetResult();}
         },()=>extract is not null && CanSelect && allRows.Any(row=>row.Selected));
@@ -42,7 +42,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         PrepareDragCommand=new AsyncCommand(()=>DragAsync(_=>null),()=>CanDrag);
         PreviewCommand=new AsyncCommand(async()=>
         {
-            var entry=CurrentRow!.Entry;IsWorking=true;idle=new TaskCompletionSource();
+            var entry=CurrentRow!.Entry;idle=new TaskCompletionSource();IsWorking=true;
             try {await preview!(entry,new Progress<string>(value=>OperationMessage=value));}
             finally {IsWorking=false;idle.TrySetResult();}
         },()=>preview is not null && CanSelect && CurrentRow is not null && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
@@ -52,7 +52,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         EditingAvailable=edit is not null && !VolumeCompressionService.IsVolumePath(archivePath) && !Path.GetExtension(archivePath).Equals(".exe",StringComparison.OrdinalIgnoreCase) && format?.ToLowerInvariant() is "7z" or "zip";
         AsyncCommand EditingCommand(ArchiveEditAction action,Func<bool> allowed)=>new(async()=>
         {
-            IsWorking=true;idle=new TaskCompletionSource();OutputPath="";
+            idle=new TaskCompletionSource();IsWorking=true;OutputPath="";
             try
             {
                 if(!ClearDrag()) return;
@@ -212,7 +212,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     {
         if(!CanDrag) return;
         var selection=allRows.Any(row=>row.Selected)?SelectedEntries:EntriesFor([CurrentRow!]);
-        IsWorking=true;idle=new TaskCompletionSource();
+        idle=new TaskCompletionSource();IsWorking=true;
         try
         {
             if(dragCleanupNeeded && !ClearDrag()) return;

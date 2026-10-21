@@ -22,7 +22,7 @@ internal static class DesktopSelectionValidation
         void Check(string name,bool passed) {checks[name]=passed;Stage(name);}
         Stage(stage);
         var watchdog=new DispatcherTimer {Interval=TimeSpan.FromSeconds(90)};
-        watchdog.Tick+=(_,_)=>{checks["selection completed within 90 seconds"]=false;Stage("timeout after "+stage);watchdog.Stop();Application.Current.Shutdown(1);};watchdog.Start();
+        watchdog.Tick+=(_,_)=>{checks["selection completed within 90 seconds"]=false;Stage("timeout after "+stage);watchdog.Stop();Environment.Exit(1);};watchdog.Start();
         void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
         var archive=Path.Combine(data,"content.zip");using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create)) {foreach(var name in new[] {"folder/","folder/a.txt","folder/sub/b.txt","outside.txt"}) {var entry=zip.CreateEntry(name);if(!name.EndsWith('/')) {using var writer=new StreamWriter(entry.Open());writer.Write(name);}}}
         var vault=new DpapiPasswordVault(Path.Combine(data,"passwords.apv"));await vault.SaveAsync(new(Guid.NewGuid(),"synthetic","unused","",true,DateTimeOffset.UtcNow));var before=File.ReadAllBytes(Path.Combine(data,"passwords.apv"));
@@ -78,7 +78,7 @@ internal static class DesktopSelectionValidation
                         }
                         else
                         {
-                            Stage("extract encrypted selection");view.Rows.Last(row=>row.Entry.Encrypted).Selected=true;await Layout();Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout();await view.WaitForIdleAsync();await Layout();
+                            Stage("extract encrypted selection");view.Rows.Single(row=>row.Path=="第二文件.txt" && row.Entry.Encrypted).Selected=true;await Layout();Invoke((Button)dialog.FindName("ExtractSelectedButton"));await Layout();await view.WaitForIdleAsync();await Layout();
                             Check("actual nested manual password dialog completes only selection",view.OutputPath.Length>0 && Directory.GetFiles(view.OutputPath,"*",SearchOption.AllDirectories).Length==1 && !model!.Tasks.Single().Completed);
                             Check("nested manual password saved after actual selected output",(await vault.ReadAsync()).Any(record=>record.Secret=="password2" && record.LastSuccessAt is not null));
                         }

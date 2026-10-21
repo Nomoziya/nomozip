@@ -121,13 +121,21 @@ internal static class DesktopPostReleaseValidation
             {
                 var entries=Enumerable.Range(0,count).Select(i=>new ArchiveEntry((uint)i,$"folder-{i%100:D3}/file-{i:D6}.txt",(ulong)i,false,false)).ToArray();
                 var gaps=new List<double>();var phaseGaps=new List<object>();var phase="model construction";var previous=System.Diagnostics.Stopwatch.GetTimestamp();
+                var operationStarts=new Dictionary<DispatcherOperation,(long start,string phase)>();var operations=new List<object>();var resets=new List<object>();var inputGaps=new List<double>();var inputPrevious=previous;
+                void Started(object? sender,DispatcherHookEventArgs args)=>operationStarts[args.Operation]=(System.Diagnostics.Stopwatch.GetTimestamp(),phase);
+                void Finished(object? sender,DispatcherHookEventArgs args){if(operationStarts.Remove(args.Operation,out var start)){var ms=System.Diagnostics.Stopwatch.GetElapsedTime(start.start).TotalMilliseconds;if(ms>10)operations.Add(new{phase=start.phase,durationMs=ms,priority=args.Operation.Priority.ToString()});}}
+                window.Dispatcher.Hooks.OperationStarted+=Started;window.Dispatcher.Hooks.OperationCompleted+=Finished;
+                var inputHeartbeat=new DispatcherTimer(DispatcherPriority.Input){Interval=TimeSpan.FromMilliseconds(16)};
+                inputHeartbeat.Tick+=(_,_)=>{var now=System.Diagnostics.Stopwatch.GetTimestamp();inputGaps.Add(System.Diagnostics.Stopwatch.GetElapsedTime(inputPrevious,now).TotalMilliseconds);inputPrevious=now;};inputHeartbeat.Start();
                 var heartbeat=new DispatcherTimer(DispatcherPriority.Background){Interval=TimeSpan.FromMilliseconds(16)};
                 heartbeat.Tick+=(_,_)=>{var now=System.Diagnostics.Stopwatch.GetTimestamp();var gap=System.Diagnostics.Stopwatch.GetElapsedTime(previous,now).TotalMilliseconds;gaps.Add(gap);phaseGaps.Add(new{phase,gapMs=gap});previous=now;};heartbeat.Start();
                 var watch=System.Diagnostics.Stopwatch.StartNew();
                 var large=await Task.Run(()=>new ArchiveContentsViewModel(Path.Combine(data,"large-inventory.zip"),entries));
+                long resetStarted=0;large.VisibleRows.CollectionChanged+=(_,_)=>resetStarted=System.Diagnostics.Stopwatch.GetTimestamp();
                 var constructionMs=watch.Elapsed.TotalMilliseconds;phase="window construction/show/layout";var windowWatch=System.Diagnostics.Stopwatch.StartNew();
                 browser=new ArchiveContentsDialog(large){Owner=window,MinWidth=1152,Width=1152,Height=768,ShowActivated=false,ShowInTaskbar=false,Left=-32000,Top=-32000,Opacity=0};var windowConstructMs=windowWatch.Elapsed.TotalMilliseconds;browser.Show();var windowShowMs=windowWatch.Elapsed.TotalMilliseconds-windowConstructMs;await Layout(browser);
                 var openMs=watch.Elapsed.TotalMilliseconds;
+                large.VisibleRows.CollectionChanged+=(_,_)=>resets.Add(new{phase,durationMs=System.Diagnostics.Stopwatch.GetElapsedTime(resetStarted).TotalMilliseconds});
                 phase="search";watch.Restart();browser.EntrySearch.Text=".txt";browser.EntrySearch.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();await large.WaitForIdleAsync();await Layout(browser);var searchMs=watch.Elapsed.TotalMilliseconds;
                 Check($"large inventory bound search completes {count}",large.VisibleRows.Count==count);
                 var realized=Descendants(browser.EntryTable).OfType<DataGridRow>().Count();
@@ -138,8 +146,8 @@ internal static class DesktopPostReleaseValidation
                     .OfType<DataGridColumnHeaderItemAutomationPeer>().Single(peer=>ReferenceEquals(peer.Item,browser.EntryTable.Columns[1].Header));
                 ((IInvokeProvider)headerPeer.GetPattern(PatternInterface.Invoke)).Invoke();
                 await Layout(browser);await large.WaitForIdleAsync();await Layout(browser);var sortMs=watch.Elapsed.TotalMilliseconds;
-                await Task.Delay(40);heartbeat.Stop();
-                performance.Add(new{count,openMs,constructionMs,windowConstructMs,windowShowMs,searchMs,sortMs,phaseGaps,maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
+                await Task.Delay(40);heartbeat.Stop();inputHeartbeat.Stop();window.Dispatcher.Hooks.OperationStarted-=Started;window.Dispatcher.Hooks.OperationCompleted-=Finished;
+                performance.Add(new{count,openMs,constructionMs,windowConstructMs,windowShowMs,searchMs,sortMs,phaseGaps,operations,resets,maxInputGapMs=inputGaps.DefaultIfEmpty(0).Max(),maxDispatcherGapMs=gaps.DefaultIfEmpty(0).Max(),peakWorkingSet=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64});
                 // The reference sort below is a correctness oracle, not a product operation.
                 // Exclude its synchronous CPU work (and screenshot rendering) from UI response measurements.
                 Check($"actual column header uses background typed sorting {count}",large.UsesBackgroundView && !large.IsRefreshing && ((ListCollectionView)CollectionViewSource.GetDefaultView(large.VisibleRows)).CustomSort is null
