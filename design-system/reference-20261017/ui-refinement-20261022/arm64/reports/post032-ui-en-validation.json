@@ -1,0 +1,1170 @@
+{
+  "passed": true,
+  "error": null,
+  "checks": {
+    "auto cleanup switch persists after restart": true,
+    "disabled startup cleanup keeps installer": true,
+    "completed initialization consumes upgrade and clears old installer": true,
+    "auto cleanup renders its label light 1152": true,
+    "auto cleanup control fits light 1152": true,
+    "auto cleanup has keyboard and accessible name light 1152": true,
+    "directory rule reachable light 1152": true,
+    "auto cleanup renders its label light 800": true,
+    "auto cleanup control fits light 800": true,
+    "auto cleanup has keyboard and accessible name light 800": true,
+    "directory rule reachable light 800": true,
+    "auto cleanup renders its label dark 1152": true,
+    "auto cleanup control fits dark 1152": true,
+    "auto cleanup has keyboard and accessible name dark 1152": true,
+    "directory rule reachable dark 1152": true,
+    "auto cleanup renders its label dark 800": true,
+    "auto cleanup control fits dark 800": true,
+    "auto cleanup has keyboard and accessible name dark 800": true,
+    "directory rule reachable dark 800": true,
+    "invalid directory is visible and not persisted": true,
+    "actual detail save persists source rule": true,
+    "real archive inventory available": true,
+    "filter textbox uses real binding": true,
+    "hidden checked entry retained with accurate count": true,
+    "hidden selection is explicitly counted": true,
+    "selected only reveals hidden entries without changing extraction scope": true,
+    "actual hidden selection engine result ok": true,
+    "filtered selection extracts actual hidden entry only": true,
+    "invalid range reports error and hides results": true,
+    "clear resets all filters preserving checks": true,
+    "folders only includes virtual folders": true,
+    "folder navigation clears global filters": true,
+    "collection reset preserves user sorting": true,
+    "filter controls fit light 1152": true,
+    "filter focus and name light 1152": true,
+    "filter controls fit light 800": true,
+    "filter focus and name light 800": true,
+    "filter controls fit dark 1152": true,
+    "filter focus and name dark 1152": true,
+    "filter controls fit dark 800": true,
+    "filter focus and name dark 800": true,
+    "filter controls fit contrast 1152": true,
+    "filter focus and name contrast 1152": true,
+    "filter controls fit contrast 800": true,
+    "filter focus and name contrast 800": true,
+    "compression scope distinguishes all sources from removal selection": true,
+    "profile saves through actual form command": true,
+    "editing parameters releases profile selection so it can be reapplied": true,
+    "profile selection restores format level and volume": true,
+    "same name replaces profile without duplicates": true,
+    "compression creates archive from all sources despite one removal selection; engine=none": true,
+    "created archive contains both source bytes": true,
+    "profile persistence contains parameters only": true,
+    "last used compression parameters and profiles survive restart": true,
+    "profile deletion persists without changing last used parameters": true,
+    "density selector switches actual task rows to comfortable": true,
+    "density selector restores compact task rows": true,
+    "failed selection expands task details": true,
+    "collapsing details preserves queue controls": true,
+    "failure filter excludes cancellations and completed compression": true,
+    "paused filter includes active paused task": true,
+    "paused filter refreshes immediately on resume": true,
+    "six task filters reachable light 1152": true,
+    "six task filters share one row light 1152": true,
+    "compression output summary and creation stay visible light 1152": true,
+    "compression profile actions reachable light 1152": true,
+    "profile keyboard and accessible name light 1152": true,
+    "six task filters reachable light 800": true,
+    "compression output summary and creation stay visible light 800": true,
+    "compression profile actions reachable light 800": true,
+    "profile keyboard and accessible name light 800": true,
+    "six task filters reachable dark 1152": true,
+    "six task filters share one row dark 1152": true,
+    "compression output summary and creation stay visible dark 1152": true,
+    "compression profile actions reachable dark 1152": true,
+    "profile keyboard and accessible name dark 1152": true,
+    "six task filters reachable dark 800": true,
+    "compression output summary and creation stay visible dark 800": true,
+    "compression profile actions reachable dark 800": true,
+    "profile keyboard and accessible name dark 800": true,
+    "six task filters reachable contrast 1152": true,
+    "six task filters share one row contrast 1152": true,
+    "compression output summary and creation stay visible contrast 1152": true,
+    "compression profile actions reachable contrast 1152": true,
+    "profile keyboard and accessible name contrast 1152": true,
+    "six task filters reachable contrast 800": true,
+    "compression output summary and creation stay visible contrast 800": true,
+    "compression profile actions reachable contrast 800": true,
+    "profile keyboard and accessible name contrast 800": true,
+    "P2 old settings default to list and no saved sort": true,
+    "P2 actual size header stores descending sort": true,
+    "P2 actual header drag records width": true,
+    "P2 accessible grid toggle changes actual view": true,
+    "P2 persisted preferences contain presentation fields only": true,
+    "P2 separate process initializes the production model with persisted preferences": true,
+    "P2 restart restores grid view and sort": true,
+    "P2 restart restores custom column width": true,
+    "P2 preferences never restore search or selection": true,
+    "P2 actual reset restores list automatic widths and original ordering": true,
+    "P2 reset survives a third model restart": true,
+    "P2 settings without optional preferences remain compatible": true,
+    "P2 actual separate checkbox updates scope name and primary action": true,
+    "P2 separate option and primary action reachable light 1152": true,
+    "P2 separate option and primary action reachable light 800": true,
+    "P2 separate option and primary action reachable dark 1152": true,
+    "P2 separate option and primary action reachable dark 800": true,
+    "P2 separate option and primary action reachable contrast 1152": true,
+    "P2 separate option and primary action reachable contrast 800": true,
+    "P2 separate compression creates one successful task per source": true,
+    "P2 independent source bytes notes (2).zip": true,
+    "P2 independent source bytes notes (3).zip": true,
+    "P2 directory output retains its own contents": true,
+    "P2 separate compression preserves existing outputs and sources": true,
+    "P2 failed source retains failure and later source completes": true,
+    "P2 cancellation keeps committed output and stops later sources": true,
+    "P2 encrypted SFX batch prompts once and all tasks complete": true,
+    "P2 encrypted SFX validates without execution notes (2).exe": true,
+    "P2 encrypted SFX validates without execution notes.exe": true,
+    "P2 one saved password reused across independent outputs": true,
+    "P2 single-file format permits multiple independent file outputs": true,
+    "P2 single-file format still rejects directories": true,
+    "P2 output inside source is explained and creation disabled": true,
+    "P2 separate split archives produce independent volume sets": true,
+    "P2 independent split archive validates notes.zip.001": true,
+    "P2 independent split archive validates notes (2).zip.001": true,
+    "next browser global search includes sibling folders": true,
+    "next browser folder scope includes descendants and excludes common prefixes": true,
+    "next browser scoped search preserves hidden selection": true,
+    "next browser selected-only restores global scope and reveals hidden selection": true,
+    "next browser locate action is enabled in the real menu": true,
+    "next browser locate returns to directory and selects the same file": true,
+    "next browser locate realizes the result row": true,
+    "next browser grid separates leaf name and containing folder": true,
+    "next browser file-name labels are rendered without path prefixes": true,
+    "next browser scope controls fit light 1152": true,
+    "next browser first grid card fits light 1152": true,
+    "next browser grid checkbox stays inside artwork row light 1152": true,
+    "next browser scope controls fit light 512": true,
+    "next browser first grid card fits light 512": true,
+    "next browser grid checkbox stays inside artwork row light 512": true,
+    "next browser scope controls fit dark 1152": true,
+    "next browser first grid card fits dark 1152": true,
+    "next browser grid checkbox stays inside artwork row dark 1152": true,
+    "next browser scope controls fit dark 512": true,
+    "next browser first grid card fits dark 512": true,
+    "next browser grid checkbox stays inside artwork row dark 512": true,
+    "next browser scope controls fit contrast 1152": true,
+    "next browser first grid card fits contrast 1152": true,
+    "next browser grid checkbox stays inside artwork row contrast 1152": true,
+    "next browser scope controls fit contrast 512": true,
+    "next browser first grid card fits contrast 512": true,
+    "next browser grid checkbox stays inside artwork row contrast 512": true,
+    "content invalid folder rule disables create and preview": true,
+    "content real form sets exclusion rules": true,
+    "content dialog displays scan from actual preview button": true,
+    "content preview close action accessible light 860": true,
+    "content preview inclusion labels display completely light 860": true,
+    "content preview close action accessible light 512": true,
+    "content preview inclusion labels display completely light 512": true,
+    "content preview close action accessible dark 860": true,
+    "content preview inclusion labels display completely dark 860": true,
+    "content preview close action accessible dark 512": true,
+    "content preview inclusion labels display completely dark 512": true,
+    "content preview close action accessible contrast 860": true,
+    "content preview inclusion labels display completely contrast 860": true,
+    "content preview close action accessible contrast 512": true,
+    "content preview inclusion labels display completely contrast 512": true,
+    "content preview summary returns to compression footer": true,
+    "content form create action remains available light 1152": true,
+    "content form create action remains available light 800": true,
+    "content form create action remains available dark 1152": true,
+    "content form create action remains available dark 800": true,
+    "content form create action remains available contrast 1152": true,
+    "content form create action remains available contrast 800": true,
+    "content UI creation uses the preview exclusion policy": true,
+    "content preview summary invalidates after output changes": true,
+    "content default rules restore include-all state": true,
+    "retry starts from a real failed compression": true,
+    "failed compression displays its planned location without claiming a completed output": true,
+    "retry edit loads missing sources and original parameters without starting (page=3, sources=1, sourceMatches=True, exists=False, format=1, running=False)": true,
+    "retry is available through task detail action": true,
+    "retry detail error is fully laid out once light 1152": true,
+    "retry detail actions remain reachable light 1152": true,
+    "retry detail error is fully laid out once light 800": true,
+    "retry detail actions remain reachable light 800": true,
+    "retry detail error is fully laid out once dark 1152": true,
+    "retry detail actions remain reachable dark 1152": true,
+    "retry detail error is fully laid out once dark 800": true,
+    "retry detail actions remain reachable dark 800": true,
+    "retry detail error is fully laid out once contrast 1152": true,
+    "retry detail actions remain reachable contrast 1152": true,
+    "retry detail error is fully laid out once contrast 800": true,
+    "retry detail actions remain reachable contrast 800": true,
+    "retry reuses the failed row and preserves prior output": true,
+    "successful compression replaces planned location with the actual output location": true,
+    "retry leaves compression draft inputs unchanged": true,
+    "retry rescans changed source bytes using original ZIP format": true,
+    "retry-all only recreates failed separate outputs": true,
+    "retry encrypted fixture fails both sources after one password prompt": true,
+    "retry encrypted batch asks again once without retaining a password": true,
+    "retry cancellation stops remaining failed tasks": true,
+    "continuous encrypted fixture created": true,
+    "continuous preview uses actual supported browser sequence": true,
+    "text find selects literal case-insensitive first match": true,
+    "text find advances": true,
+    "text find wraps": true,
+    "text find reverses and wraps": true,
+    "text find reports no match": true,
+    "continuous find controls fit light": true,
+    "continuous find controls fit dark": true,
+    "continuous find controls fit high-contrast": true,
+    "next reads encrypted file and updates browser highlight (path=b.txt, loading=False, error=False, textMatches=True, browser=b.txt)": true,
+    "continuous image navigation replaces text and hides find": true,
+    "continuous image to text clears bitmap": true,
+    "previous restores text and search": true,
+    "failed continuous read clears prior content and permits recovery": true,
+    "continuous preview recovers after read error": true,
+    "preview shortcuts remain on embeddable content": true,
+    "continuous preview preserves extraction checkboxes": true,
+    "continuous preview leaves archive and vault unchanged": true,
+    "pending continuous read disables repeated navigation": true,
+    "closing continuous preview cancels pending read and prevents late publication": true,
+    "preview sequence follows current subtree filter and actual descending view sort": true,
+    "matching explanation uses exact live candidate order and deduplication": true,
+    "matching explanation labels association directory and filename": true,
+    "matching directory boundary excludes similarly named siblings": true,
+    "matching DTO contains no secret or raw password record": true,
+    "matching recent fallback separates success history without claiming creation priority": true,
+    "saved-rule preview is reachable through vault menu": true,
+    "matching preview action enabled (idle=True, locked=False, records=6, banner=)": true,
+    "matching dialog displays redacted order and disabled auto-try notice": true,
+    "matching dialog remains readable and closable light 820": true,
+    "matching record name and primary reason remain complete light 820": true,
+    "matching dialog remains readable and closable light 512": true,
+    "matching record name and primary reason remain complete light 512": true,
+    "matching dialog remains readable and closable dark 820": true,
+    "matching record name and primary reason remain complete dark 820": true,
+    "matching dialog remains readable and closable dark 512": true,
+    "matching record name and primary reason remain complete dark 512": true,
+    "matching dialog remains readable and closable high-contrast 820": true,
+    "matching record name and primary reason remain complete high-contrast 820": true,
+    "matching dialog remains readable and closable high-contrast 512": true,
+    "matching record name and primary reason remain complete high-contrast 512": true,
+    "matching preview opens and never writes or extracts (shown=True, unchanged=True, extracted=False, banner=)": true,
+    "locked vault disables matching preview": true,
+    "large browser defers initial rows until shell is loaded 10000": true,
+    "large inventory bound search completes 10000": true,
+    "large list realizes a bounded number of rows 10000": true,
+    "actual column header uses background typed sorting 10000": true,
+    "large list dispatcher continues during background work 10000": true,
+    "large list input delay and single UI operation stay below 200ms 10000": true,
+    "actual descending header sorts all entries 10000": true,
+    "descending sort preserves UI responsiveness 10000": true,
+    "large browser defers initial rows until shell is loaded 100000": true,
+    "large inventory bound search completes 100000": true,
+    "large list realizes a bounded number of rows 100000": true,
+    "actual column header uses background typed sorting 100000": true,
+    "large list dispatcher continues during background work 100000": true,
+    "large list input delay and single UI operation stay below 200ms 100000": true,
+    "actual descending header sorts all entries 100000": true,
+    "descending sort preserves UI responsiveness 100000": true,
+    "large grid realizes a bounded number of tiles": true,
+    "large grid exposes a real scroll range": true,
+    "scrolling reaches last entry without realizing the whole grid": true,
+    "virtualized tile checkbox selects the real last entry": true,
+    "large grid input delay and single UI operation stay below 200ms": true,
+    "returning from large grid retains inventory and empty selection": true,
+    "updating list reports status and blocks stale extraction": true,
+    "rapid searches publish the latest result only": true,
+    "background navigation retains folder scope and hidden selection": true,
+    "reset clears background sorting": true,
+    "closing a large browser prevents pending publication": true,
+    "embedded large browser publishes initial folder after its root loads": true,
+    "closing before initial load cancels deferred publication": true
+  },
+  "captures": [
+    {
+      "name": "updates-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "directory-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "updates-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "directory-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "updates-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "directory-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "updates-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "directory-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "filters-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "filters-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-tasks-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-compression-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-tasks-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-compression-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-tasks-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-compression-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-tasks-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-compression-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-tasks-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-compression-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "usability-tasks-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "usability-compression-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "p2-browser-customized",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "p2-browser-reset",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "p2-separate-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "p2-separate-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "p2-separate-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "p2-separate-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "p2-separate-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "p2-separate-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "p2-separate-results",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "next-browser-grid-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-browser-grid-light-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-browser-grid-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-browser-grid-dark-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-browser-grid-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-browser-grid-contrast-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-content-preview-light-860",
+      "width": 860,
+      "height": 600
+    },
+    {
+      "name": "next-content-preview-light-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-content-preview-dark-860",
+      "width": 860,
+      "height": 600
+    },
+    {
+      "name": "next-content-preview-dark-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-content-preview-contrast-860",
+      "width": 860,
+      "height": 600
+    },
+    {
+      "name": "next-content-preview-contrast-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-content-form-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-content-form-light-800",
+      "width": 1152,
+      "height": 600
+    },
+    {
+      "name": "next-content-form-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-content-form-dark-800",
+      "width": 1152,
+      "height": 600
+    },
+    {
+      "name": "next-content-form-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-content-form-contrast-800",
+      "width": 1152,
+      "height": 600
+    },
+    {
+      "name": "next-retry-edit-loaded",
+      "width": 1152,
+      "height": 600
+    },
+    {
+      "name": "refined-retry-task-details-light-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "refined-retry-task-details-light-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "refined-retry-task-details-dark-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "refined-retry-task-details-dark-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "refined-retry-task-details-contrast-1152",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "refined-retry-task-details-contrast-800",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "next-retry-task-details",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "next-continuous-preview-light",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "name": "next-continuous-preview-dark",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "name": "next-continuous-preview-high-contrast",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "name": "next-continuous-image",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "name": "next-password-match-light-820",
+      "width": 820,
+      "height": 560
+    },
+    {
+      "name": "next-password-match-light-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-password-match-dark-820",
+      "width": 820,
+      "height": 560
+    },
+    {
+      "name": "next-password-match-dark-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "next-password-match-high-contrast-820",
+      "width": 820,
+      "height": 560
+    },
+    {
+      "name": "next-password-match-high-contrast-512",
+      "width": 512,
+      "height": 360
+    },
+    {
+      "name": "large-list-10000",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "large-list-100000",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "large-grid-last",
+      "width": 1152,
+      "height": 768
+    },
+    {
+      "name": "large-list-updating",
+      "width": 1152,
+      "height": 768
+    }
+  ],
+  "performance": [
+    {
+      "count": 10000,
+      "openMs": 179.9991,
+      "constructionMs": 48.5872,
+      "windowConstructMs": 12.6886,
+      "windowShowMs": 29.1505,
+      "searchMs": 88.0561,
+      "sortMs": 94.2807,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 8.4412
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 35.2168
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 50.5379
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 77.8809
+        },
+        {
+          "phase": "search",
+          "gapMs": 86.4174
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 35.598
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 60.4753
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.4847
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 19.4016
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 41.888,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 49.9887,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 16.6922,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 54.6598,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 14.5783,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 39.3494,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 8.0269
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 13.7544
+        }
+      ],
+      "maxDispatcherOperationMs": 54.6598,
+      "maxInputGapMs": 86.4338,
+      "maxDispatcherGapMs": 86.4174,
+      "peakWorkingSet": 246767616
+    },
+    {
+      "count": 100000,
+      "openMs": 534.6918,
+      "constructionMs": 374.1466,
+      "windowConstructMs": 12.1431,
+      "windowShowMs": 28.5943,
+      "searchMs": 107.7212,
+      "sortMs": 432.4855,
+      "phaseGaps": [
+        {
+          "phase": "model construction",
+          "gapMs": 56.5005
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 19.9753
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 12.3998
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 30.9445
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 16.0757
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 30.9226
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 32.015
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 2.8987
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 44.0865
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 16.2428
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 31.9526
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 19.8003
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 12.9407
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 46.1002
+        },
+        {
+          "phase": "model construction",
+          "gapMs": 0.9776
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 44.2041
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 28.6448
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 7.8324
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 71.6136
+        },
+        {
+          "phase": "window construction/show/layout",
+          "gapMs": 5.8342
+        },
+        {
+          "phase": "search",
+          "gapMs": 96.2334
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 31.6513
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 32.0159
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 18.8441
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 28.1403
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.9814
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 30.0625
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 30.9947
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.9159
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 30.056
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.9795
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 32.0498
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 31.9305
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.9783
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 30.7248
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 16.0791
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 60.005
+        },
+        {
+          "phase": "header sort",
+          "gapMs": 15.9274
+        }
+      ],
+      "operations": [
+        {
+          "phase": "model construction",
+          "durationMs": 40.7813,
+          "priority": "Send"
+        },
+        {
+          "phase": "window construction/show/layout",
+          "durationMs": 48.4288,
+          "priority": "Render"
+        },
+        {
+          "phase": "search",
+          "durationMs": 25.1319,
+          "priority": "Send"
+        },
+        {
+          "phase": "search",
+          "durationMs": 39.3276,
+          "priority": "Render"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 14.7135,
+          "priority": "Send"
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 37.094,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "search",
+          "durationMs": 7.5134
+        },
+        {
+          "phase": "header sort",
+          "durationMs": 6.0861
+        }
+      ],
+      "maxDispatcherOperationMs": 48.4288,
+      "maxInputGapMs": 96.2076,
+      "maxDispatcherGapMs": 96.2334,
+      "peakWorkingSet": 302858240
+    }
+  ],
+  "descendingPerformance": [
+    {
+      "count": 10000,
+      "sortMs": 111.3985,
+      "phaseGaps": [
+        {
+          "phase": "descending header sort",
+          "gapMs": 35.9933
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 56.66
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 38.9987
+        }
+      ],
+      "operations": [
+        {
+          "phase": "descending header sort",
+          "durationMs": 38.5752,
+          "priority": "Render"
+        },
+        {
+          "phase": "descending header sort",
+          "durationMs": 13.7741,
+          "priority": "Background"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "descending header sort",
+          "durationMs": 5.7933
+        }
+      ],
+      "maxDispatcherOperationMs": 38.5752,
+      "maxInputGapMs": 56.6046,
+      "maxDispatcherGapMs": 56.66
+    },
+    {
+      "count": 100000,
+      "sortMs": 675.5322,
+      "phaseGaps": [
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.8311
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 43.0477
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 15.969
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 31.088
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 15.8941
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 26.0432
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 37.9656
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 17.039
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 30.0164
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 0.8724
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 32.1206
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 30.9994
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 17.0149
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 29.9668
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.0886
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 31.9517
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 31.9475
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.9058
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 30.2029
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.8928
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 30.0782
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 32.0021
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.8081
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 30.1789
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.8869
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 52.1851
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 7.7231
+        },
+        {
+          "phase": "descending header sort",
+          "gapMs": 16.1656
+        }
+      ],
+      "operations": [
+        {
+          "phase": "descending header sort",
+          "durationMs": 15.7185,
+          "priority": "Send"
+        },
+        {
+          "phase": "descending header sort",
+          "durationMs": 31.888,
+          "priority": "Render"
+        }
+      ],
+      "resets": [
+        {
+          "phase": "descending header sort",
+          "durationMs": 5.8434
+        }
+      ],
+      "maxDispatcherOperationMs": 31.888,
+      "maxInputGapMs": 52.1529,
+      "maxDispatcherGapMs": 52.1851
+    }
+  ],
+  "gridPerformance": [
+    {
+      "count": 100000,
+      "elapsedMs": 127.661,
+      "operations": [
+        {
+          "phase": "grid viewport and last item",
+          "durationMs": 39.8386,
+          "priority": "Render"
+        },
+        {
+          "phase": "grid viewport and last item",
+          "durationMs": 48.0774,
+          "priority": "Send"
+        },
+        {
+          "phase": "grid viewport and last item",
+          "durationMs": 23.9576,
+          "priority": "Send"
+        }
+      ],
+      "maxDispatcherOperationMs": 48.0774,
+      "maxInputGapMs": 59.5903,
+      "maxDispatcherGapMs": 59.6172
+    }
+  ],
+  "language": "en",
+  "syntheticData": true,
+  "actualInstallationChanged": false
+}

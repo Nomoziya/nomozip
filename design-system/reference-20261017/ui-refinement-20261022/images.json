@@ -1,0 +1,770 @@
+[
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-512",
+    "path": "x64/zh-CN/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-860",
+    "path": "x64/zh-CN/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-512",
+    "path": "x64/zh-CN/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-860",
+    "path": "x64/zh-CN/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-512",
+    "path": "x64/zh-CN/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-860",
+    "path": "x64/zh-CN/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-512",
+    "path": "x64/zh-CN/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-820",
+    "path": "x64/zh-CN/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-512",
+    "path": "x64/zh-CN/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-820",
+    "path": "x64/zh-CN/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-512",
+    "path": "x64/zh-CN/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-820",
+    "path": "x64/zh-CN/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-contrast-1152",
+    "path": "x64/zh-CN/images/refined-retry-task-details-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-contrast-800",
+    "path": "x64/zh-CN/images/refined-retry-task-details-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-dark-1152",
+    "path": "x64/zh-CN/images/refined-retry-task-details-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-dark-800",
+    "path": "x64/zh-CN/images/refined-retry-task-details-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-light-1152",
+    "path": "x64/zh-CN/images/refined-retry-task-details-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-light-800",
+    "path": "x64/zh-CN/images/refined-retry-task-details-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "usability-tasks-contrast-1152",
+    "path": "x64/zh-CN/images/usability-tasks-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "usability-tasks-contrast-800",
+    "path": "x64/zh-CN/images/usability-tasks-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "usability-tasks-dark-1152",
+    "path": "x64/zh-CN/images/usability-tasks-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "usability-tasks-dark-800",
+    "path": "x64/zh-CN/images/usability-tasks-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "usability-tasks-light-1152",
+    "path": "x64/zh-CN/images/usability-tasks-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "usability-tasks-light-800",
+    "path": "x64/zh-CN/images/usability-tasks-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-contrast-512",
+    "path": "x64/en/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-contrast-860",
+    "path": "x64/en/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-dark-512",
+    "path": "x64/en/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-dark-860",
+    "path": "x64/en/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-light-512",
+    "path": "x64/en/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-light-860",
+    "path": "x64/en/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-dark-512",
+    "path": "x64/en/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-dark-820",
+    "path": "x64/en/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-512",
+    "path": "x64/en/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-820",
+    "path": "x64/en/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-light-512",
+    "path": "x64/en/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-light-820",
+    "path": "x64/en/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "refined-retry-task-details-contrast-1152",
+    "path": "x64/en/images/refined-retry-task-details-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "refined-retry-task-details-contrast-800",
+    "path": "x64/en/images/refined-retry-task-details-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "refined-retry-task-details-dark-1152",
+    "path": "x64/en/images/refined-retry-task-details-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "refined-retry-task-details-dark-800",
+    "path": "x64/en/images/refined-retry-task-details-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "refined-retry-task-details-light-1152",
+    "path": "x64/en/images/refined-retry-task-details-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "refined-retry-task-details-light-800",
+    "path": "x64/en/images/refined-retry-task-details-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "usability-tasks-contrast-1152",
+    "path": "x64/en/images/usability-tasks-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "usability-tasks-contrast-800",
+    "path": "x64/en/images/usability-tasks-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "usability-tasks-dark-1152",
+    "path": "x64/en/images/usability-tasks-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "usability-tasks-dark-800",
+    "path": "x64/en/images/usability-tasks-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "usability-tasks-light-1152",
+    "path": "x64/en/images/usability-tasks-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "usability-tasks-light-800",
+    "path": "x64/en/images/usability-tasks-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-512",
+    "path": "arm64/zh-CN/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-860",
+    "path": "arm64/zh-CN/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-512",
+    "path": "arm64/zh-CN/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-860",
+    "path": "arm64/zh-CN/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-512",
+    "path": "arm64/zh-CN/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-860",
+    "path": "arm64/zh-CN/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-512",
+    "path": "arm64/zh-CN/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-820",
+    "path": "arm64/zh-CN/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-512",
+    "path": "arm64/zh-CN/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-820",
+    "path": "arm64/zh-CN/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-512",
+    "path": "arm64/zh-CN/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-820",
+    "path": "arm64/zh-CN/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-contrast-1152",
+    "path": "arm64/zh-CN/images/refined-retry-task-details-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-contrast-800",
+    "path": "arm64/zh-CN/images/refined-retry-task-details-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-dark-1152",
+    "path": "arm64/zh-CN/images/refined-retry-task-details-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-dark-800",
+    "path": "arm64/zh-CN/images/refined-retry-task-details-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-light-1152",
+    "path": "arm64/zh-CN/images/refined-retry-task-details-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "refined-retry-task-details-light-800",
+    "path": "arm64/zh-CN/images/refined-retry-task-details-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "usability-tasks-contrast-1152",
+    "path": "arm64/zh-CN/images/usability-tasks-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "usability-tasks-contrast-800",
+    "path": "arm64/zh-CN/images/usability-tasks-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "usability-tasks-dark-1152",
+    "path": "arm64/zh-CN/images/usability-tasks-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "usability-tasks-dark-800",
+    "path": "arm64/zh-CN/images/usability-tasks-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "usability-tasks-light-1152",
+    "path": "arm64/zh-CN/images/usability-tasks-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "usability-tasks-light-800",
+    "path": "arm64/zh-CN/images/usability-tasks-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-contrast-512",
+    "path": "arm64/en/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-contrast-860",
+    "path": "arm64/en/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-dark-512",
+    "path": "arm64/en/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-dark-860",
+    "path": "arm64/en/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-light-512",
+    "path": "arm64/en/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-light-860",
+    "path": "arm64/en/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-dark-512",
+    "path": "arm64/en/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-dark-820",
+    "path": "arm64/en/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-512",
+    "path": "arm64/en/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-820",
+    "path": "arm64/en/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-light-512",
+    "path": "arm64/en/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-light-820",
+    "path": "arm64/en/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "refined-retry-task-details-contrast-1152",
+    "path": "arm64/en/images/refined-retry-task-details-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "refined-retry-task-details-contrast-800",
+    "path": "arm64/en/images/refined-retry-task-details-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "refined-retry-task-details-dark-1152",
+    "path": "arm64/en/images/refined-retry-task-details-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "refined-retry-task-details-dark-800",
+    "path": "arm64/en/images/refined-retry-task-details-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "refined-retry-task-details-light-1152",
+    "path": "arm64/en/images/refined-retry-task-details-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "refined-retry-task-details-light-800",
+    "path": "arm64/en/images/refined-retry-task-details-light-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "usability-tasks-contrast-1152",
+    "path": "arm64/en/images/usability-tasks-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "usability-tasks-contrast-800",
+    "path": "arm64/en/images/usability-tasks-contrast-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "usability-tasks-dark-1152",
+    "path": "arm64/en/images/usability-tasks-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "usability-tasks-dark-800",
+    "path": "arm64/en/images/usability-tasks-dark-800.png",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "usability-tasks-light-1152",
+    "path": "arm64/en/images/usability-tasks-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "usability-tasks-light-800",
+    "path": "arm64/en/images/usability-tasks-light-800.png",
+    "width": 800,
+    "height": 600
+  }
+]
