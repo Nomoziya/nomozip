@@ -38,6 +38,7 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? enabled = null)
 public sealed class ArchiveTaskRow(string path, string? previewSize = null) : ObservableObject
 {
     public bool IsCompression {get;init;}
+    internal CompressionRetryOptions? CompressionRetry {get;set;}
     public string OperationLabel=>UiText.Get(IsCompression?"Redesign.CompressionTask":"Contents.CompactExtract");
     private CheckpointRecord? checkpoint;
     public CheckpointRecord? Checkpoint {get=>checkpoint;set=>Set(ref checkpoint,value);}

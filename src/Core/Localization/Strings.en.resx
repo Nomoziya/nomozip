@@ -3402,4 +3402,13 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.ContentPackage" xml:space="preserve"><value>Archive</value></data>
   <data name="Compression.ContentPath" xml:space="preserve"><value>Archive path</value></data>
   <data name="Compression.CloseContents" xml:space="preserve"><value>Close</value></data>
+  <data name="Compression.EditRetry" xml:space="preserve"><value>Edit and recreate</value></data>
+  <data name="Compression.EditRetryHint" xml:space="preserve"><value>Load this task into the compression page, replacing current inputs. Select the password again.</value></data>
+  <data name="Compression.RetryLoaded" xml:space="preserve"><value>Task sources and options loaded. Review before creating; select the encryption password again.</value></data>
+  <data name="Compression.RetryReading" xml:space="preserve"><value>Reading compression sources again…</value></data>
+  <data name="Compression.RetrySucceeded" xml:space="preserve"><value>Recreated; existing output preserved.</value></data>
+  <data name="Compression.RetryFailure" xml:space="preserve"><value>{0} Existing output was preserved. Edit the options and retry.</value></data>
+  <data name="Compression.RetrySummary" xml:space="preserve"><value>Recreated: {0} · Failed: {1}. Existing output preserved.</value></data>
+  <data name="Compression.RetryReadFailed" xml:space="preserve"><value>Cannot recreate. Check the sources, output folder and active engine, then retry. Existing output was preserved.</value></data>
+  <data name="Compression.RetryHint" xml:space="preserve"><value>Retry reads the sources again using the active engine. Existing archives are preserved with numbered names.</value></data>
 </root>

@@ -28,7 +28,7 @@ public sealed partial class MainViewModel
     public ICommand OpenTaskSourceCommand {get;private set;}=null!;
     public string SelectedTaskPauseCaption=>UiText.Get(SelectedTask?.PauseRequested==true?"TaskControl.Resume":"TaskControl.Pause");
     private bool CanControlSelectedTask=>SelectedTask is {} row && taskControls.TryGetValue(row,out var control) && !control.Cancel.IsCancellationRequested;
-    private bool CanRetrySelectedTask=>IsIdle && SelectedTask is {IsCompression:false,Completed:false,Failure:not null,Checkpoint:null} && !string.IsNullOrWhiteSpace(selectedEngine);
+    private bool CanRetrySelectedTask=>IsIdle && SelectedTask is {} row && (CanRetryCompression(row) && activeEngine.Length>0 || row is {IsCompression:false,Completed:false,Failure:not null,Checkpoint:null} && !string.IsNullOrWhiteSpace(selectedEngine));
     private void ToggleSelectedTaskPause()
     {
         if(!CanControlSelectedTask || IsQueuePaused)return;
@@ -59,10 +59,11 @@ public sealed partial class MainViewModel
     {
         ToggleSelectedTaskPauseCommand=new RelayCommand(ToggleSelectedTaskPause,()=>CanControlSelectedTask && !IsQueuePaused);
         CancelSelectedTaskCommand=new RelayCommand(CancelSelectedTask,()=>CanControlSelectedTask);
-        RetrySelectedTaskCommand=new AsyncCommand(()=>ExtractTasksAsync([SelectedTask!]),()=>CanRetrySelectedTask);
-        RetryWithPasswordCommand=new AsyncCommand(()=>ExtractTasksAsync([SelectedTask!],forceManualPassword:true),()=>CanRetrySelectedTask);
-        RetryFailedTasksCommand=new AsyncCommand(()=>ExtractTasksAsync(Tasks.Where(row=>!row.Completed && row.Failure is {Status:not "cancelled"} && row.Checkpoint is null).ToArray()),
-            ()=>IsIdle && !string.IsNullOrWhiteSpace(selectedEngine) && Tasks.Any(row=>!row.Completed && row.Failure is {Status:not "cancelled"} && row.Checkpoint is null));
+        RetrySelectedTaskCommand=new AsyncCommand(()=>SelectedTask!.IsCompression?RetryCompressionTasksAsync([SelectedTask]):ExtractTasksAsync([SelectedTask]),()=>CanRetrySelectedTask);
+        RetryWithPasswordCommand=new AsyncCommand(()=>ExtractTasksAsync([SelectedTask!],forceManualPassword:true),()=>CanRetrySelectedTask && SelectedTask?.IsCompression==false);
+        RetryFailedTasksCommand=new AsyncCommand(RetryFailedWorkspaceTasksAsync,
+            ()=>IsIdle && (!string.IsNullOrWhiteSpace(selectedEngine) && Tasks.Any(row=>!row.Completed && row.Failure is {Status:not "cancelled"} && row.Checkpoint is null)
+                || activeEngine.Length>0 && WorkspaceTasks.Any(row=>CanRetryCompression(row) && row.Failure!.Status!="cancelled")));
         OpenTaskSourceCommand=new RelayCommand(()=>OpenFolder(System.IO.Path.GetDirectoryName(SelectedTask!.Path)!),
             ()=>SelectedTask is {} row && System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(row.Path)));
         ToggleQueuePauseCommand=new RelayCommand(ToggleQueuePause,()=>CanPauseQueue);

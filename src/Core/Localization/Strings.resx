@@ -3402,4 +3402,13 @@
   <data name="Compression.ContentPackage" xml:space="preserve"><value>生成包</value></data>
   <data name="Compression.ContentPath" xml:space="preserve"><value>包内路径</value></data>
   <data name="Compression.CloseContents" xml:space="preserve"><value>关闭</value></data>
+  <data name="Compression.EditRetry" xml:space="preserve"><value>修改参数后创建</value></data>
+  <data name="Compression.EditRetryHint" xml:space="preserve"><value>将本任务参数载入压缩页，替换当前输入；密码需重新选择。</value></data>
+  <data name="Compression.RetryLoaded" xml:space="preserve"><value>已载入此任务的来源和参数。检查后创建；加密密码需重新选择。</value></data>
+  <data name="Compression.RetryReading" xml:space="preserve"><value>正在重新读取压缩来源…</value></data>
+  <data name="Compression.RetrySucceeded" xml:space="preserve"><value>重新创建完成，已有输出已保留。</value></data>
+  <data name="Compression.RetryFailure" xml:space="preserve"><value>{0} 已保留已有输出，可修改参数后重试。</value></data>
+  <data name="Compression.RetrySummary" xml:space="preserve"><value>重新创建完成 {0} 项，失败 {1} 项；已有输出已保留。</value></data>
+  <data name="Compression.RetryReadFailed" xml:space="preserve"><value>无法重新创建。检查来源、输出目录和当前启用的引擎，然后重试。已有输出已保留。</value></data>
+  <data name="Compression.RetryHint" xml:space="preserve"><value>重试时重新读取来源，使用当前启用的引擎；已有压缩输出会编号保留。</value></data>
 </root>

@@ -72,6 +72,9 @@ public partial class ArchiveContentsDialog : Window
             SearchScopeBox.MinHeight=SearchScopeBox.Height=shortArea?28:34;
             SelectedOnlyBox.Margin=new Thickness(0,shortArea?0:4,16,0);
             EntryTiles.Tag=shortArea && BrowserRoot.ActualHeight<400;
+            EntryTiles.Padding=EntryTiles.Tag is true?new Thickness(0):new Thickness(8);
+            EditContentsButton.ContentTemplate=(DataTemplate)FindResource(shortArea?"CompactMoreActionContent":"MoreActionContent");
+            EditContentsButton.ToolTip=ArchivePassword.Core.UiText.Get("Redesign.More");
             AdvancedFilters.Margin=new Thickness(8,shortArea?2:8,8,0);
             BrowserHeader.Height=shortArea?90:130;
             BrowserTitleRow.Margin=new Thickness(34,0,shortArea?64:18,0);

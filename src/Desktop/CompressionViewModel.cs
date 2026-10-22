@@ -186,7 +186,7 @@ public sealed partial class MainViewModel
         if (replace && !dialogs.ConfirmArchiveReplacement(CompressionOutput)) { CompressionMessage = UiText.Get("T_b27d094f513e"); return; }
         if (CompressionEncrypt && compressionPassword is null) await SetCompressionPasswordAsync();
         if (CompressionEncrypt && compressionPassword is null) { CompressionMessage = UiText.Get("T_d2011de64a34"); return; }
-        compressionActivityStarted=true;Changed(nameof(HasCompressionActivity));Page=0;
+        compressionAttemptGroup=Guid.NewGuid();compressionActivityStarted=true;Changed(nameof(HasCompressionActivity));Page=0;
         createdCompressionPath="";CompressionRunning = true;CompressionPercent = 0; CompressionIndeterminate = true;
         workspaceTask=AddCompressionTask();
             var client = new ArchiveEngineClient(Path.Combine(baseDirectory, "ArchiveEngineWorker.exe"), engines.DllPath(activeEngine));

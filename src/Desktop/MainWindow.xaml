@@ -278,6 +278,7 @@
                       <MenuItem x:Name="TaskPauseAction" Style="{StaticResource AvailableTaskAction}" Header="{Binding SelectedTaskPauseCaption}" Command="{Binding ToggleSelectedTaskPauseCommand}"/>
                       <MenuItem x:Name="TaskCancelAction" Style="{StaticResource AvailableTaskDanger}" Header="{loc:Text TaskControl.Cancel}" Command="{Binding CancelSelectedTaskCommand}"/>
                       <MenuItem x:Name="TaskRetryAction" Style="{StaticResource AvailableTaskAction}" Header="{loc:Text TaskControl.Retry}" Command="{Binding RetrySelectedTaskCommand}"/>
+                      <MenuItem x:Name="TaskEditCompressionRetryAction" Style="{StaticResource AvailableTaskAction}" Header="{loc:Text Compression.EditRetry}" Command="{Binding EditCompressionRetryCommand}" ToolTip="{loc:Text Compression.EditRetryHint}"/>
                       <MenuItem x:Name="TaskRetryPasswordAction" Style="{StaticResource AvailableTaskAction}" Header="{loc:Text TaskControl.RetryPassword}" Command="{Binding RetryWithPasswordCommand}"/>
                       <MenuItem x:Name="TaskRetryFailedAction" Style="{StaticResource AvailableTaskAction}" Header="{loc:Text TaskControl.RetryFailed}" Command="{Binding RetryFailedTasksCommand}"/>
                       <MenuItem x:Name="TaskSourceAction" Style="{StaticResource AvailableTaskAction}" Header="{loc:Text TaskControl.SourceFolder}" Command="{Binding OpenTaskSourceCommand}"/>
@@ -410,6 +411,10 @@
                     <StackPanel Margin="52,0,20,0" VerticalAlignment="Center">
                       <TextBlock Text="{Binding SelectedTask.Name}" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
                       <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
+                      <WrapPanel>
+                        <Button x:Name="TaskRetryDetailsButton" Content="{loc:Text TaskControl.Retry}" Command="{Binding RetrySelectedTaskCommand}" ToolTip="{loc:Text Compression.RetryHint}" Margin="0,4,8,4"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></Button.Style></Button>
+                        <Button x:Name="TaskEditRetryDetailsButton" Content="{loc:Text Compression.EditRetry}" Command="{Binding EditCompressionRetryCommand}" ToolTip="{loc:Text Compression.EditRetryHint}" Margin="0,4,8,4"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></Button.Style></Button>
+                      </WrapPanel>
                       <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
                       <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
                       <DockPanel Margin="0,12,0,0">

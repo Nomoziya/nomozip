@@ -37,21 +37,26 @@ public sealed partial class MainViewModel
         }
     }
     private Task<CompressionOutcome> CreateCompressionItemAsync(IReadOnlyList<string> sources,string output,SfxModule? module,
-        ArchiveEngineClient client,bool replace,ulong volumeSize,IProgress<TaskUpdate> progress,CancellationToken token)=>module is not null
-        ?new SfxCompressionService(client,client).CreateAsync(sources,output,module,new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,token,CompressionRules)
-        :new CompressionService(client,client).CreateAsync(sources,output,CompressionFormatName,new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,token,volumeSize,CompressionRules);
+        ArchiveEngineClient client,bool replace,ulong volumeSize,IProgress<TaskUpdate> progress,CancellationToken token)
+        =>CreateCompressionWithOptionsAsync(CaptureCompressionRetry(sources,output),output,module,client,CompressionEncrypt?compressionPassword?.Secret:null,replace,progress,token);
 
     private async Task RecordCompressionPasswordAsync(string output)
     {
-        if(!CompressionEncrypt || compressionPassword is not {} supplied || !supplied.Save && supplied.SavedId is null)return;
+        if(!CompressionEncrypt || compressionPassword is not {} supplied)return;
+        compressionPassword=await RecordCompressionPasswordAsync(output,supplied);
+    }
+    private async Task<PasswordPromptResponse> RecordCompressionPasswordAsync(string output,PasswordPromptResponse supplied)
+    {
+        if(!supplied.Save && supplied.SavedId is null)return supplied;
         try
         {
             var id=supplied.SavedId ?? Guid.NewGuid();
             if(supplied.SavedId is null)await vault.SaveAsync(new SavedPassword(id,string.IsNullOrWhiteSpace(supplied.Name)?Path.GetFileName(output):supplied.Name,supplied.Secret,"",true,DateTimeOffset.UtcNow));
-            compressionPassword=supplied with {SavedId=id};
             await vault.RecordSuccessAsync(id,output);await RefreshVaultAsync();
+            return supplied with {SavedId=id};
         }
         catch(Exception error) when(error is VaultException or IOException or UnauthorizedAccessException) {Banner=UiText.Get("T_0346e5dcf690");}
+        return supplied;
     }
     private async Task CreateSeparateArchivesAsync()
     {
@@ -75,12 +80,12 @@ public sealed partial class MainViewModel
             }
             if(CompressionEncrypt && compressionPassword is null)await SetCompressionPasswordAsync();
             if(CompressionEncrypt && compressionPassword is null){CompressionMessage=UiText.Get("T_d2011de64a34");return;}
-            compressionActivityStarted=true;Changed(nameof(HasCompressionActivity));Page=0;createdCompressionPath="";CompressionRunning=true;CompressionPercent=0;
+            compressionAttemptGroup=Guid.NewGuid();compressionActivityStarted=true;Changed(nameof(HasCompressionActivity));Page=0;createdCompressionPath="";CompressionRunning=true;CompressionPercent=0;
             var client=new ArchiveEngineClient(Path.Combine(baseDirectory,"ArchiveEngineWorker.exe"),engines.DllPath(activeEngine));
             for(var index=0;index<plan.Count;index++)
             {
                 cancellation.Token.ThrowIfCancellationRequested();
-                var item=plan[index];var position=index;var row=AddCompressionTask(item.OutputPath);current=row;
+                var item=plan[index];var position=index;var row=AddCompressionTask(item.OutputPath,[item.SourcePath]);current=row;
                 var progress=new Progress<TaskUpdate>(value=>
                 {
                     row.Status=value.Message;row.IsIndeterminate=value.Progress is not {Total:>0};

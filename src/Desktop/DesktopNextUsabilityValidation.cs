@@ -55,8 +55,8 @@ internal static class DesktopNextUsabilityValidation
             {
                 theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");browser.MinWidth=width;browser.Width=width;browser.MinHeight=360;browser.Height=width==512?360:768;await Layout();
                 check($"next browser scope controls fit {mode} {width}",Fits(browser.SearchScopeBox) && Fits(browser.SelectedOnlyBox));
-                check($"next browser first grid card fits {mode} {width}",browser.EntryTiles.ItemContainerGenerator.ContainerFromIndex(0) is FrameworkElement card && Fits(card));
                 capture(browser,$"next-browser-grid-{mode}-{width}");
+                check($"next browser first grid card fits {mode} {width}",browser.EntryTiles.ItemContainerGenerator.ContainerFromIndex(0) is FrameworkElement card && Fits(card));
             }
         }
         finally {browser.Close();theme.SetMode("light");theme.Apply(false);}
