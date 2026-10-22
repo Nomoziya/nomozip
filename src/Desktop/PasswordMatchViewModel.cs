@@ -22,6 +22,7 @@ public sealed partial class MainViewModel
 public sealed class PasswordMatchViewModel(string path,PasswordMatchPlan plan,bool autoTry)
 {
     public string ArchivePath=>path;
+    public string ArchiveName=>System.IO.Path.GetFileName(path);
     public string Summary=>UiText.Format("PasswordMatch.Summary",plan.Entries.Count,plan.DisabledCount,plan.DuplicateCount);
     public string Notice=>UiText.Get(autoTry?"PasswordMatch.Notice":"PasswordMatch.AutoTryOff");
     public IReadOnlyList<PasswordMatchRow> Rows {get;}=plan.Entries.Select(entry=>new PasswordMatchRow(entry.Order,entry.Name,entry.Group,Reason(entry))).ToArray();

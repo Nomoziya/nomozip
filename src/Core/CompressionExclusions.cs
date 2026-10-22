@@ -11,8 +11,11 @@ public sealed class CompressionExclusions
     public bool Excludes(string archivePath,bool directory)
     {
         if(RuleCount==0)return false;
-        var name=archivePath.Replace('\\','/').TrimEnd('/').Split('/')[^1];
-        return directory?directories.Contains(name):extensions.Any(extension=>name.EndsWith(extension,StringComparison.OrdinalIgnoreCase));
+        var trimmed=archivePath.AsSpan().TrimEnd("/\\");
+        var name=trimmed[(trimmed.LastIndexOfAny('/','\\')+1)..];
+        if(directory)return directories.GetAlternateLookup<ReadOnlySpan<char>>().Contains(name);
+        foreach(var extension in extensions)if(name.EndsWith(extension,StringComparison.OrdinalIgnoreCase))return true;
+        return false;
     }
     public static bool TryCreate(string directoryNames,string extensionNames,out CompressionExclusions result)
     {
