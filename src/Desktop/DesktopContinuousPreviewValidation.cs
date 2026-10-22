@@ -64,15 +64,24 @@ internal static class DesktopContinuousPreviewValidation
                         theme.SetMode(mode=="dark"?"dark":"light");theme.Apply(mode=="high-contrast");dialog.Width=640;dialog.Height=480;await Layout(dialog);capture(dialog,"next-continuous-preview-"+mode);
                         check("continuous find controls fit "+mode,dialog.PreviewText.ActualHeight>80 && dialog.PreviewFindText.ActualWidth>100 && dialog.NextPreviewButton.IsVisible);
                     }
-                    Invoke(dialog.NextPreviewButton);await model.WaitForNavigationAsync();await Layout(dialog);
-                    check("next reads encrypted file and updates browser highlight",model.EntryPath=="b.txt" && model.Text=="second entry" && browser?.CurrentRow?.Path=="b.txt");
-                    Invoke(dialog.NextPreviewButton);await model.WaitForNavigationAsync();await Layout(dialog);
+                    Invoke(dialog.NextPreviewButton);await Layout(dialog);await model.WaitForNavigationAsync();await Layout(dialog);
+                    check($"next reads encrypted file and updates browser highlight (path={model.EntryPath}, loading={model.IsLoading}, error={model.HasError}, textMatches={model.Text=="second entry"}, browser={browser?.CurrentRow?.Path})",model.EntryPath=="b.txt" && model.Text=="second entry" && browser?.CurrentRow?.Path=="b.txt");
+                    Invoke(dialog.NextPreviewButton);await Layout(dialog);await model.WaitForNavigationAsync();await Layout(dialog);
                     check("continuous image navigation replaces text and hides find",model.IsImage && model.Picture?.PixelWidth==32 && model.Text=="" && !model.ShowFind && !model.NextPreviewCommand.CanExecute(null));
                     capture(dialog,"next-continuous-image");
-                    Invoke(dialog.PreviousPreviewButton);await model.WaitForNavigationAsync();await Layout(dialog);
+                    Invoke(dialog.PreviousPreviewButton);await Layout(dialog);await model.WaitForNavigationAsync();await Layout(dialog);
                     check("continuous image to text clears bitmap",model.IsText && model.Picture is null && model.Text=="second entry");
-                    Invoke(dialog.PreviousPreviewButton);await model.WaitForNavigationAsync();await Layout(dialog);
+                    Invoke(dialog.PreviousPreviewButton);await Layout(dialog);await model.WaitForNavigationAsync();await Layout(dialog);
                     check("previous restores text and search",model.EntryPath=="a.txt" && model.Text.StartsWith("Alpha") && model.FindText=="alpha" && dialog.PreviewText.SelectionLength==5);
+                    File.Move(archive,archive+".hold");
+                    try
+                    {
+                        Invoke(dialog.NextPreviewButton);await Layout(dialog);await model.WaitForNavigationAsync();await Layout(dialog);
+                        check("failed continuous read clears prior content and permits recovery",model.HasError && model.Text=="" && model.Picture is null && model.PreviousPreviewCommand.CanExecute(null));
+                    }
+                    finally {File.Move(archive+".hold",archive);}
+                    Invoke(dialog.PreviousPreviewButton);await Layout(dialog);await model.WaitForNavigationAsync();await Layout(dialog);
+                    check("continuous preview recovers after read error",model.IsText && model.Text.StartsWith("Alpha"));
                     check("preview shortcuts remain on embeddable content",dialog.PreviewLayout.InputBindings.OfType<System.Windows.Input.KeyBinding>().Any(binding=>binding.Key==System.Windows.Input.Key.PageDown));
                 }
                 catch(Exception error){failure=error;}
@@ -85,8 +94,18 @@ internal static class DesktopContinuousPreviewValidation
         var first=new ArchiveEntry(0,"first.txt",5,false,false);var second=new ArchiveEntry(1,"second.txt",6,false,false);
         var pending=await ArchivePreviewViewModel.CreateAsync(first,Encoding.UTF8.GetBytes("first"));var entered=new TaskCompletionSource();var wasCancelled=false;
         pending.ConfigureNavigation([first,second],first,async(entry,token)=>{entered.SetResult();try{await Task.Delay(Timeout.Infinite,token);}catch(OperationCanceledException){wasCancelled=true;throw;}return ArchivePreviewViewModel.Error(entry,"late");});
-        pending.NextPreviewCommand.Execute(null);await entered.Task;pending.Clear();await pending.WaitForNavigationAsync();
+        pending.NextPreviewCommand.Execute(null);await entered.Task;
+        check("pending continuous read disables repeated navigation",!pending.NextPreviewCommand.CanExecute(null) && !pending.PreviousPreviewCommand.CanExecute(null));
+        pending.Clear();await pending.WaitForNavigationAsync();
         check("closing continuous preview cancels pending read and prevents late publication",wasCancelled && pending.Text=="" && pending.Message=="" && pending.Picture is null && !pending.CanInteract);
+        IReadOnlyList<ArchiveEntry>? capturedSequence=null;
+        var filtered=new ArchiveContentsViewModel("synthetic.zip",new[]{"alpha/a.txt","alpha/z.txt","beta/b.txt","alpha/skip.exe"}.Select((name,index)=>new ArchiveEntry((uint)index,name,1,false,false)).ToArray(),
+            previewSequence:(_,_,entries,_)=>{capturedSequence=entries;return Task.CompletedTask;});
+        filtered.Navigate("alpha");filtered.SearchScopeIndex=1;filtered.Search=".txt";
+        var sorted=System.Windows.Data.CollectionViewSource.GetDefaultView(filtered.VisibleRows);
+        sorted.SortDescriptions.Add(new(nameof(ArchiveContentRow.Path),System.ComponentModel.ListSortDirection.Descending));
+        filtered.CurrentRow=filtered.VisibleRows.First();filtered.PreviewCommand.Execute(null);await filtered.WaitForIdleAsync();
+        check("preview sequence follows current subtree filter and actual descending view sort",capturedSequence is not null && capturedSequence.Select(entry=>entry.Path).SequenceEqual(new[]{"alpha/z.txt","alpha/a.txt"}));
         theme.SetMode("light");theme.Apply(false);
     }
 }

@@ -19,7 +19,12 @@ public partial class ArchivePreviewDialog : Window
         model.FindMatchRequested+=(index,length)=>PreviewText.Dispatcher.BeginInvoke(()=>
         {if(model.IsText && index+length<=PreviewText.Text.Length){PreviewText.Select(index,length);PreviewText.ScrollToLine(PreviewText.GetLineIndexFromCharacterIndex(index));}},System.Windows.Threading.DispatcherPriority.Loaded);
         PreviewLayout.PreviewKeyDown+=(_,args)=>
-        {if(args.Key==System.Windows.Input.Key.F && System.Windows.Input.Keyboard.Modifiers==System.Windows.Input.ModifierKeys.Control && model.IsText){OnFind(this,new RoutedEventArgs());args.Handled=true;}};
+        {
+            if(args.Key==System.Windows.Input.Key.F && System.Windows.Input.Keyboard.Modifiers==System.Windows.Input.ModifierKeys.Control && model.IsText){OnFind(this,new RoutedEventArgs());args.Handled=true;}
+            else if(args.Key==System.Windows.Input.Key.Enter && PreviewFindText.IsKeyboardFocusWithin)
+            {if(model.FindNextCommand.CanExecute(null))model.FindNextCommand.Execute(null);args.Handled=true;}
+            else if(args.Key==System.Windows.Input.Key.Escape && model.ShowFind){OnCloseFind(this,new RoutedEventArgs());args.Handled=true;}
+        };
         Loaded+=(_,_)=>ArrangeImage();
         Loaded+=(_,_)=>{if(model.IsText) PreviewText.Focus();else ClosePreviewButton.Focus();};
         Closed+=(_,_)=>{model.Clear();DataContext=null;};
@@ -42,4 +47,6 @@ public partial class ArchivePreviewDialog : Window
         if(DataContext is not ArchivePreviewViewModel model)return;
         model.FindExpanded=true;PreviewFindText.Dispatcher.BeginInvoke(()=>{PreviewFindText.Focus();PreviewFindText.SelectAll();});
     }
+    private void OnCloseFind(object sender,RoutedEventArgs e)
+    {if(DataContext is ArchivePreviewViewModel model)model.FindExpanded=false;ShowFindButton.Focus();}
 }

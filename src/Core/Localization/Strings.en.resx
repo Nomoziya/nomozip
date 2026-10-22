@@ -3433,4 +3433,5 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="PasswordMatch.Record" xml:space="preserve"><value>Record / Group</value></data>
   <data name="PasswordMatch.Reason" xml:space="preserve"><value>Matching reason</value></data>
   <data name="PasswordMatch.Empty" xml:space="preserve"><value>No password records are enabled for automatic attempts.</value></data>
+  <data name="Preview.CloseFind" xml:space="preserve"><value>Close find (Esc)</value></data>
 </root>

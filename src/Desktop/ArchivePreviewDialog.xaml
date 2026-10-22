@@ -54,6 +54,7 @@
       </WrapPanel>
       <StackPanel Visibility="{Binding ShowFind,Converter={StaticResource PreviewVisible}}">
         <DockPanel LastChildFill="True">
+          <Button DockPanel.Dock="Right" Content="×" Click="OnCloseFind" ToolTip="{loc:Text Preview.CloseFind}" AutomationProperties.Name="{loc:Text Preview.CloseFind}" MinHeight="32" Width="32" Padding="0" Margin="4,0,0,0"/>
           <Button DockPanel.Dock="Right" Content="↑" Command="{Binding FindPreviousCommand}" ToolTip="{loc:Text Preview.FindPrevious}" AutomationProperties.Name="{loc:Text Preview.FindPrevious}" MinHeight="32" Width="32" Padding="0" Margin="4,0,0,0"/>
           <Button DockPanel.Dock="Right" Content="↓" Command="{Binding FindNextCommand}" ToolTip="{loc:Text Preview.FindNext}" AutomationProperties.Name="{loc:Text Preview.FindNext}" MinHeight="32" Width="32" Padding="0" Margin="4,0,0,0"/>
           <TextBox x:Name="PreviewFindText" Text="{Binding FindText,UpdateSourceTrigger=PropertyChanged,Delay=200}" MaxLength="256" MinHeight="32" Padding="6,3" AutomationProperties.Name="{loc:Text Preview.Find}"/>
