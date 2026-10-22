@@ -1,10 +1,19 @@
 # nomozip 当前状态与新会话交接
 
-## 2026-10-22：0.3.5菜单图标修正版（实施/验收中）
+## 2026-10-22：最终正式版0.3.5已合并发布，验收完成
 
-- 0.3.4已合并并发布，双架构发行/升级/公开下载通过，但main自动全套回归39733358689的双语页面步骤失败；强制取消后没有页面报告。从同一v0.3.4定向复现 **39735531347** 得到中英相同失败 **archive menu glyphs have visible themed strokes**，menu-glyphs.json证明仅新增“定位所在目录”菜单Icon为空，实际截图也缺少图标。其余菜单均20 DIP主题图标，按钮验证通过；这不是新的压缩/密码算法问题。
-- 已在独立 **codex/release-0.3.5** 补同一Fluent资源的FolderOpen 20 DIP图标，不降低原断言。用户本次合并/发布授权内完成修正并发布0.3.5；v0.3.4/6a3af03及资产保持不可变。发行版/CLI升0.3.5，新增正式0.3.4摘要固定升级夹具。先完整产品双语页面复验，再双架构发行升级/包身份、main/tag、三个附件及匿名下载/更新路由核对。
-- 沿用本回合gpt-6.1-sol/high，无委派及本机桌面自动化；源码仍为privacy-clean-worktree-20261019，旧自动任务保持暂停。失败原件位于根artifacts/publish-0.3.4-6a3af03/focused-ui-reports与focused-ui-failed.log，后续状态集中本摘要。
+- 用户本次要求“合并到正式版并发布”。最终[nomozip 0.3.5](https://github.com/Nomoziya/nomozip/releases/tag/v0.3.5)已于北京时间 **2026-10-22 15:06:17** 正式发布，draft=false、prerelease=false，仅两个架构安装器和SHA256SUMS.txt。此前0.3.4已发布但完整页面矩阵发现“定位所在目录”菜单缺图标；0.3.5已补齐并复验。v0.3.4/6a3af03及所有原附件保留，旧页注明建议使用0.3.5。
+- 实际Git源码 **D:/Codex/7zip-password/.tools/privacy-clean-worktree-20261019**，收尾回到 **main**。独立修正分支 **codex/release-0.3.5**；最终产品/标签 **6e06a9d938ffc592a539b1e9fe79ced2bea709a9 / v0.3.5** 已快进main并原子推送。随后只同步文档，不改产品/标签/资产。旧UI分支、候选与原图保护，外层主目录不是Git，仅同步当前摘要。
+- 唯一产品修正是归档“更多→定位所在目录”复用现有Fluent **FolderOpen 20 DIP**图标，不改命令/压缩/密码语义，不降低原验收断言；版本升0.3.5。此前P1/P2、浏览响应、五项功能与UI全部保留，完整功能见0.3.4发行说明和下方历史。WPF/共享.NET10、中英、双架构、主题/高对比和单屏操作方向保持。
+- **完整产品UI**：a29381a的[x64 CI39736478066](https://github.com/Nomoziya/nomozip/actions/runs/39736478066) / [原生ARM64 CI39736544094](https://github.com/Nomoziya/nomozip/actions/runs/39736544094)均成功；每架构中英页面各 **477项**、按钮各 **180项**，11个菜单图标均20 DIP且前景/主题一致。代理查看最终x64英文及ARM64中文实际菜单原图，定位项有图标；没有将元素存在代替交互验收。ARM64原生与跨架构合成库步骤也通过。
+- UI源码a29381a与发行冻结6e06a9d的代码树均为 **d65a91f228647b0e2dfe5610f804b25638943220**，已核对本地与GitHub提交对象。冻结只增空提交[skip ci]以避免main重复全套，手动发行CI完整运行；未以跳过CI代替受影响UI验收。后续文档提交同样跳过重复CI，代码与已验收发行完全一致。
+- [双架构发行CI39737126466](https://github.com/Nomoziya/nomozip/actions/runs/39737126466) **成功**，headSha均为6e06a9d：每架构16份报告、正式 **0.3.4升级/首次重启清理/卸载37项**、包完整性8项，实际业务与更新恢复检查通过。此前0.3.3→0.3.4正式升级证据保留；不冒称本轮重新执行所有未变化设备与旧安装组合。
+- 载荷每架构 **42个CI原文件**：CRC、app/CLI/worker及两引擎原生PE、引擎DLL/SFX摘要、共享.NET10无捆绑运行库、面板DLL/许可与已验收候选一致。app/CLI EXE与DLL为FileVersion **0.3.5.0** / ProductVersion **0.3.5+完整6e06a9d**，安装器版本匹配；两个源码ZIP **4237个文件内容一致**。源码ZIP、程序ZIP、完整报告不公开附加。
+- 公开安装器x64 **3064699字节** / SHA256 **5e68b9d12e747a36c4b1bdacdc590edadc654cd3455afd79288b0de5b73edca0**；ARM64 **2369262字节** / SHA256 **1065c3c16681ba762aa540ec464b0039da7e23865083efc67fe98f71a72fb2f3**。两行SHA256SUMS只列实际公开安装器。草稿先核对服务器digest，正式发布后三个附件均匿名回下载，字节/大小/摘要与本地及服务器一致。
+- 真实匿名HTTP调用现有GitHubApplicationChannel，x64/ARM64均选择稳定版0.3.5，下载URL/大小/摘要匹配；0.3.4可更新、0.3.5不降级。**engine-26.04仍是releases/latest**，软件发行latest=false；更新渠道、公私钥保持，旧自动任务继续暂停。
+- 证据集中 **D:/Codex/7zip-password/artifacts/publish-0.3.5-6e06a9d/**：32份CI原报告、两架构CI包、ci-run.json、verification.json、ui-verification.json、GitHub双提交原件、draft/public-release.json、public-assets/public-downloads及匿名下载/渠道验证。完整UI原报告/截图/运行身份另在 **artifacts/release-0.3.5-ui/{x64,arm64}/**，未本机执行候选或安装器。此前失败和0.3.4资产仍在publish-0.3.4-6a3af03，未覆盖。
+- **失败与证据复用清楚保留**：main自动全套39733358689为cancelled，双语页面先失败，普通取消不停止always步骤；强制取消后没有页面原报告/作业日志。API步骤原件证明完整桌面业务、exFAT来源、Shell实际菜单和独立用户迁移步骤成功，仅按步骤状态复用，不称整轮通过。相同v0.3.4的定向39735531347两语言均失败于archive menu glyphs have visible themed strokes；menu-glyphs.json/截图证明定位项Icon为空。现已用完整双架构页面/按钮和发行CI闭合，不留该已知UI缺陷。
+- 本回合主会话/执行者 **gpt-6.1-sol/high**，turn_context **01a16239-6258-7402-9e6f-238da53f38b2**核对匹配；持续应用project-stage-planner、ui-design-engineering、ui-ux-pro-max，无委派。GitHub沿用Windows DPAPI入口，未调用1Password或改全局凭据/技能/记忆，没有本机桌面自动化、实际安装替换、真实密码库/生产私钥访问。本轮合并、发布和必需验收完成，无运行中本轮CI；真实系统高对比/读屏/物理混合DPI多屏不冒称执行，不要求第二屏。历史旧SHA缓存仍待GitHub私密支持，不因发版宣称已清除。
 
 ## 2026-10-22：0.3.4已合并正式版并发布
 
@@ -17,7 +26,7 @@
 - 真实匿名HTTP调用现有 **GitHubApplicationChannel**：x64/ARM64均识别稳定版0.3.4，下载URL/大小/摘要匹配，0.3.3可更新、0.3.4不降级；**engine-26.04仍是releases/latest**。软件发行保留latest=false，软件/引擎渠道、正式公钥和私钥均未改变。
 - 本地证据集中 **D:/Codex/7zip-password/artifacts/publish-0.3.4-6a3af03/**：ci-x64/ci-arm64为CI原始四项包，reports-x64/reports-arm64共32份原报告，ci-run.json、verification.json、draft/public-release.json、public-assets及public-downloads、public-download-verification.json、live-channel-verification.json记录精确来源与结果。probes为无窗口更新渠道探针，没有实际安装或GUI启动。UI规范及历史原图入口保留在仓库，发行说明见RELEASE_0.3.4.md。
 - 本次主会话与执行者 **gpt-6.1-sol/high**，无委派；当前turn_context **01a16239-6258-7402-9e6f-238da53f38b2**（2026-10-22T06:08:10.408Z）核对匹配，持续应用project-stage-planner、ui-design-engineering、ui-ux-pro-max。沿用本地Windows DPAPI GitHub入口，未调用1Password/改全局凭据、技能或记忆。没有本机桌面自动化、实际安装替换、真实密码库/生产私钥访问，旧自动任务继续暂停。
-- 发行及匿名下载核对已完成；main推送触发的自动全套回归 **39733358689** 在双语产品页面步骤失败；普通取消不结束always步骤，强制取消后整轮为cancelled且未提供页面报告/作业日志，不能记为全套通过。现从同一v0.3.4/6a3af03启动x64产品界面定向复现 **39735531347**，等待明确报告；已发布安装包未改动。只有一块屏幕，不要求第二屏；真实系统高对比切换、交互读屏及物理混合DPI/多屏不冒称验收。历史旧SHA缓存仍待GitHub私密支持，不因本次发版宣称已清除，也不再次改写历史。
+- 发行及匿名下载核对已完成；main推送触发的自动全套回归 **39733358689** 在双语产品页面步骤失败；普通取消不结束always步骤，强制取消后整轮为cancelled且未提供页面报告/作业日志，不能记为全套通过。同一v0.3.4/6a3af03的x64定向 **39735531347** 已确认定位项缺图标，随后由0.3.5完整双架构UI/发行CI修正并验收，最终结果以首节为准；0.3.4原始安装包未改动。只有一块屏幕，不要求第二屏；真实系统高对比切换、交互读屏及物理混合DPI/多屏不冒称验收。历史旧SHA缓存仍待GitHub私密支持，不因本次发版宣称已清除，也不再次改写历史。
 
 ## 2026-10-22：UI层级与短窗改进完成，代理验收，未合并/发布
 
