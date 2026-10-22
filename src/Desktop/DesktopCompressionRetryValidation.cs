@@ -15,7 +15,7 @@ internal static class DesktopCompressionRetryValidation
     internal static async Task RunAsync(MainWindow window,string root,string data,string baseDirectory,
         Action<string,bool> check,Action<Window,string> capture)
     {
-        data=Path.Combine(data,"compression-retry");Directory.CreateDirectory(data);var prompts=0;
+        data=Path.GetFullPath(Path.Combine(data,"compression-retry"));Directory.CreateDirectory(data);var prompts=0;
         Task Layout()=>window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle).Task;
         void Invoke(Button button)=>((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(button)!.GetPattern(PatternInterface.Invoke)).Invoke();
         async Task<MainViewModel> Model(string name)

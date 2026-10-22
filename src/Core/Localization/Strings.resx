@@ -3411,4 +3411,26 @@
   <data name="Compression.RetrySummary" xml:space="preserve"><value>重新创建完成 {0} 项，失败 {1} 项；已有输出已保留。</value></data>
   <data name="Compression.RetryReadFailed" xml:space="preserve"><value>无法重新创建。检查来源、输出目录和当前启用的引擎，然后重试。已有输出已保留。</value></data>
   <data name="Compression.RetryHint" xml:space="preserve"><value>重试时重新读取来源，使用当前启用的引擎；已有压缩输出会编号保留。</value></data>
+  <data name="Preview.Previous" xml:space="preserve"><value>上一个</value></data>
+  <data name="Preview.Next" xml:space="preserve"><value>下一个</value></data>
+  <data name="Preview.SequenceHint" xml:space="preserve"><value>按打开预览时的筛选和排序切换，跳过不支持的文件。Ctrl+PageUp / PageDown 切换。</value></data>
+  <data name="Preview.NavigationFailed" xml:space="preserve"><value>无法读取此文件，可切换到其它文件。</value></data>
+  <data name="Preview.Find" xml:space="preserve"><value>查找文本</value></data>
+  <data name="Preview.FindNext" xml:space="preserve"><value>下一处 (F3)</value></data>
+  <data name="Preview.FindPrevious" xml:space="preserve"><value>上一处 (Shift+F3)</value></data>
+  <data name="Preview.FindNoMatch" xml:space="preserve"><value>未找到匹配文本</value></data>
+  <data name="Preview.FindLocated" xml:space="preserve"><value>已定位匹配文本 · 到末尾后循环</value></data>
+  <data name="PasswordMatch.Title" xml:space="preserve"><value>试算已保存规则</value></data>
+  <data name="PasswordMatch.Summary" xml:space="preserve"><value>尝试顺序：{0} 项 · 未启用：{1} 项 · 相同密码已去重：{2} 项</value></data>
+  <data name="PasswordMatch.Notice" xml:space="preserve"><value>关联优先，其次目录或文件名匹配，再按最近成功和创建时间排序。仅试算已保存规则，不验证密码。</value></data>
+  <data name="PasswordMatch.AutoTryOff" xml:space="preserve"><value>自动尝试已关闭。此处仅展示启用后已保存规则的顺序，不验证密码。</value></data>
+  <data name="PasswordMatch.Associated" xml:space="preserve"><value>此前成功关联</value></data>
+  <data name="PasswordMatch.Directory" xml:space="preserve"><value>目录规则命中</value></data>
+  <data name="PasswordMatch.Name" xml:space="preserve"><value>文件名规则命中</value></data>
+  <data name="PasswordMatch.Success" xml:space="preserve"><value>最近成功：{0}</value></data>
+  <data name="PasswordMatch.Fallback" xml:space="preserve"><value>常规候选 · 按创建时间排序</value></data>
+  <data name="PasswordMatch.Order" xml:space="preserve"><value>密码尝试顺序</value></data>
+  <data name="PasswordMatch.Record" xml:space="preserve"><value>记录 / 分组</value></data>
+  <data name="PasswordMatch.Reason" xml:space="preserve"><value>匹配依据</value></data>
+  <data name="PasswordMatch.Empty" xml:space="preserve"><value>没有启用自动尝试的密码记录。</value></data>
 </root>

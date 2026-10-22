@@ -29,7 +29,8 @@ public sealed partial class MainViewModel
                 (selection,status)=>ExtractSelectionAsync(task,client,selection,status),()=>cancellation?.Cancel(),path=>OpenResultDirectories([path]),
                 outcome.Engine.Format,(action,snapshot,selection,status)=>EditArchiveAsync(task,client,action,snapshot,selection,status),
                 (entry,status)=>PreviewEntryAsync(task,client,entry,status),
-                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning,browserPreferences),cancellation.Token);
+                (selection,status)=>PrepareDragAsync(task,client,selection,status),warning=>Banner=warning,browserPreferences,
+                previewSequence:(browser,entry,sequence,status)=>PreviewEntryAsync(task,client,entry,status,sequence,browser)),cancellation.Token);
                 cancellation.Token.ThrowIfCancellationRequested();
                 await dialogs.ShowArchiveContentsAsync(contents);
                 browserPreferences=contents.BrowserPreferences;

@@ -3411,4 +3411,26 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.RetrySummary" xml:space="preserve"><value>Recreated: {0} · Failed: {1}. Existing output preserved.</value></data>
   <data name="Compression.RetryReadFailed" xml:space="preserve"><value>Cannot recreate. Check the sources, output folder and active engine, then retry. Existing output was preserved.</value></data>
   <data name="Compression.RetryHint" xml:space="preserve"><value>Retry reads the sources again using the active engine. Existing archives are preserved with numbered names.</value></data>
+  <data name="Preview.Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Preview.Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Preview.SequenceHint" xml:space="preserve"><value>Uses the filter and sort order when preview was opened; skips unsupported files. Ctrl+PageUp / PageDown to switch.</value></data>
+  <data name="Preview.NavigationFailed" xml:space="preserve"><value>Cannot read this file. You can switch to another file.</value></data>
+  <data name="Preview.Find" xml:space="preserve"><value>Find text</value></data>
+  <data name="Preview.FindNext" xml:space="preserve"><value>Next match (F3)</value></data>
+  <data name="Preview.FindPrevious" xml:space="preserve"><value>Previous match (Shift+F3)</value></data>
+  <data name="Preview.FindNoMatch" xml:space="preserve"><value>No match found</value></data>
+  <data name="Preview.FindLocated" xml:space="preserve"><value>Match selected · Wraps at the end</value></data>
+  <data name="PasswordMatch.Title" xml:space="preserve"><value>Preview saved matching rules</value></data>
+  <data name="PasswordMatch.Summary" xml:space="preserve"><value>Attempt order: {0} · Disabled: {1} · Duplicate passwords omitted: {2}</value></data>
+  <data name="PasswordMatch.Notice" xml:space="preserve"><value>Associated first, then directory or filename matches, then recent success and creation time. Uses saved rules; does not verify passwords.</value></data>
+  <data name="PasswordMatch.AutoTryOff" xml:space="preserve"><value>Automatic attempts are off. Shows the saved-rule order if enabled; does not verify passwords.</value></data>
+  <data name="PasswordMatch.Associated" xml:space="preserve"><value>Previously associated</value></data>
+  <data name="PasswordMatch.Directory" xml:space="preserve"><value>Directory rule match</value></data>
+  <data name="PasswordMatch.Name" xml:space="preserve"><value>Filename rule match</value></data>
+  <data name="PasswordMatch.Success" xml:space="preserve"><value>Last success: {0}</value></data>
+  <data name="PasswordMatch.Fallback" xml:space="preserve"><value>Fallback candidate · Creation order</value></data>
+  <data name="PasswordMatch.Order" xml:space="preserve"><value>Password attempt order</value></data>
+  <data name="PasswordMatch.Record" xml:space="preserve"><value>Record / Group</value></data>
+  <data name="PasswordMatch.Reason" xml:space="preserve"><value>Matching reason</value></data>
+  <data name="PasswordMatch.Empty" xml:space="preserve"><value>No password records are enabled for automatic attempts.</value></data>
 </root>

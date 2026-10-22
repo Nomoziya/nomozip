@@ -138,6 +138,12 @@ public partial class MainWindow
         ClosePreview(); embeddedPreview = dialog; previewModel = model;
         dialog.ConfigureEmbeddedImageLayout();
         if(model.Picture is not null && embeddedModel?.Rows.FirstOrDefault(row=>row.Path==model.EntryPath) is {} previewRow)previewRow.PreviewThumbnail=model.Picture;
+        model.PropertyChanged+=(_,args)=>
+        {
+            if(args.PropertyName!=nameof(model.Picture))return;
+            embeddedModel?.ClearPreviewThumbnails();
+            if(model.Picture is not null && embeddedModel?.Rows.FirstOrDefault(row=>row.Path==model.EntryPath) is {} row)row.PreviewThumbnail=model.Picture;
+        };
         var content = (FrameworkElement)dialog.Content; dialog.Content = null; content.DataContext = model;
         DisableDialogDefaults(content); content.Margin = new Thickness(0);
         dialog.EmbeddedClose = ClosePreview; PreviewHost.Content = content;

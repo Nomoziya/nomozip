@@ -27,7 +27,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         string? format=null,Func<ArchiveEditAction,IReadOnlyList<ArchiveEntry>,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveEditOutcome?>>? edit=null,
         Func<ArchiveEntry,IProgress<string>,Task>? preview=null,
         Func<IReadOnlyList<ArchiveEntry>,IProgress<string>,Task<ArchiveDragOutcome>>? prepareDrag=null,Action<string>? reportCleanupWarning=null,
-        BrowserPreferences? browserPreferences=null)
+        BrowserPreferences? browserPreferences=null,Func<ArchiveContentsViewModel,ArchiveEntry,IReadOnlyList<ArchiveEntry>,IProgress<string>,Task>? previewSequence=null)
     {
         this.archivePath=archivePath;this.items=items;this.cancel=cancel;this.prepareDrag=prepareDrag;this.reportCleanupWarning=reportCleanupWarning;
         this.browserPreferences=browserPreferences is {IsValid:true}?browserPreferences:new();gridView=this.browserPreferences.GridView;
@@ -42,14 +42,23 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
             try {OutputPath=await extract!(SelectedEntries,new Progress<string>(value=>OperationMessage=value)) ?? "";}
             finally {IsWorking=false;idle.TrySetResult();}
         },()=>extract is not null && CanSelect && selectedRows.Count>0);
-        CancelCommand=new RelayCommand(()=>{if(IsWorking) cancel?.Invoke();else {OperationMessage=UiText.Get("Drag.Cancelled");ClearDrag();}},()=>IsWorking || dragContent is not null);
+        CancelCommand=new RelayCommand(()=>{if(IsWorking) Cancel();else {OperationMessage=UiText.Get("Drag.Cancelled");ClearDrag();}},()=>IsWorking || dragContent is not null);
         PrepareDragCommand=new AsyncCommand(()=>DragAsync(_=>null),()=>CanDrag);
         PreviewCommand=new AsyncCommand(async()=>
         {
             var entry=CurrentRow!.Entry;idle=new TaskCompletionSource();IsWorking=true;
-            try {await preview!(entry,new Progress<string>(value=>OperationMessage=value));}
-            finally {IsWorking=false;idle.TrySetResult();}
-        },()=>preview is not null && CanSelect && CurrentRow is not null && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
+            try
+            {
+                var status=new Progress<string>(value=>OperationMessage=value);
+                if(previewSequence is not null)
+                {
+                    var sequence=System.Windows.Data.CollectionViewSource.GetDefaultView(VisibleRows).Cast<ArchiveContentRow>().Select(row=>row.Entry).Where(item=>ArchivePreviewPolicy.Rejection(item)=="").ToArray();
+                    await previewSequence(this,entry,sequence,status);
+                }
+                else await preview!(entry,status);
+            }
+            finally {if(previewNavigationCancel is null){IsWorking=false;idle.TrySetResult();}}
+        },()=>(preview is not null || previewSequence is not null) && CanSelect && CurrentRow is not null && ArchivePreviewPolicy.Rejection(CurrentRow.Entry)=="");
         FolderUpCommand=new RelayCommand(()=>Navigate(Parent(currentFolder)),()=>CanSelect && currentFolder.Length>0);
         OpenCurrentEntryCommand=new RelayCommand(()=>{if(CurrentRow?.Entry.Directory==true)Navigate(Normalize(CurrentRow.Path));else if(PreviewCommand.CanExecute(null))PreviewCommand.Execute(null);},()=>CanSelect && CurrentRow is not null && (CurrentRow.Entry.Directory || PreviewCommand.CanExecute(null)));
         OpenResultCommand=new RelayCommand(()=>open?.Invoke(OutputPath),()=>!IsWorking && OutputPath.Length>0 && open is not null);
@@ -251,7 +260,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
     {
         while(true){var update=viewUpdate;await idle.Task;await update;if(ReferenceEquals(update,viewUpdate) && !IsWorking)return;}
     }
-    public void Cancel()=>cancel?.Invoke();
+    public void Cancel(){if(previewNavigationCancel is {} navigationCancel)navigationCancel();else cancel?.Invoke();}
     public bool IsWorking {get=>working;private set {if(Set(ref working,value)) Changed(nameof(CanSelect));}}
     public bool CanSelect=>!IsWorking && !IsRefreshing;
     public string OperationMessage {get=>operationMessage;set {if(Set(ref operationMessage,value))Changed(nameof(ViewStatus));}}

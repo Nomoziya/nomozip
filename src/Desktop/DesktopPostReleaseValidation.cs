@@ -121,6 +121,8 @@ internal static class DesktopPostReleaseValidation
             await DesktopNextUsabilityValidation.RunAsync(window,theme,data,Check,Capture);
             await DesktopCompressionContentsValidation.RunAsync(window,theme,root,data,baseDirectory,Check,Capture);
             await DesktopCompressionRetryValidation.RunAsync(window,root,data,baseDirectory,Check,Capture);
+            await DesktopContinuousPreviewValidation.RunAsync(window,theme,root,data,baseDirectory,Check,Capture);
+            await DesktopPasswordMatchValidation.RunAsync(window,theme,data,baseDirectory,Check,Capture);
             theme.SetMode("light");theme.Apply(false);
             foreach(var count in new[]{10000,100000})
             {

@@ -684,6 +684,7 @@
                   <MenuItem Header="{loc:Text T_ec217804074a}" Command="{Binding ImportVaultCommand}"/>
                   <MenuItem Header="{loc:Text T_e9d3dd690a4e}" Command="{Binding ExportVaultCommand}"/>
                   <MenuItem Header="{loc:Text T_fcdc3edb34ff}" Command="{Binding MergePasswordsCommand}"/>
+                  <MenuItem Header="{loc:Text PasswordMatch.Title}" Command="{Binding ExplainPasswordMatchesCommand}"/>
                 </ContextMenu>
               </Button.ContextMenu>
             </Button>

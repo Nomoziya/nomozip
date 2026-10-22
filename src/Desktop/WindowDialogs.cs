@@ -15,8 +15,16 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null,
     Action<ArchivePreviewDialog>? preparePreview=null,Func<string,bool>? confirmApplicationInstall=null,Func<string,bool>? confirmDiscardCheckpoint=null,
     Action<ExistingFileDialog>? prepareConflict=null,Action<ArchiveTextEditDialog>? prepareTextEdit=null,Action<ArchiveEditConfirmDialog>? prepareEditConfirm=null,
-    Action<CompressionContentsDialog>? prepareCompressionContents=null)
+    Action<CompressionContentsDialog>? prepareCompressionContents=null,Func<string?>? selectPasswordMatchArchive=null,Action<PasswordMatchDialog>? preparePasswordMatches=null)
 {
+    public string? SelectPasswordMatchArchive()
+    {
+        if(selectPasswordMatchArchive is not null)return selectPasswordMatchArchive();
+        var dialog=new OpenFileDialog{Title=UiText.Get("PasswordMatch.Title"),Filter=UiText.Get("T_b0e866423d58"),Multiselect=false};
+        return dialog.ShowDialog(owner)==true?dialog.FileName:null;
+    }
+    public void ShowPasswordMatches(PasswordMatchViewModel model)
+    {var dialog=new PasswordMatchDialog(model){Owner=owner};preparePasswordMatches?.Invoke(dialog);dialog.ShowDialog();}
     public void ShowCompressionContents(CompressionContentsViewModel model)
     {var dialog=new CompressionContentsDialog(model){Owner=owner};prepareCompressionContents?.Invoke(dialog);dialog.ShowDialog();}
     public bool ConfirmWorkspaceExtraction(int? count=null,int? selectedItemCount=null) => prepareContents is not null || owner is not MainWindow main || main.ConfirmExtractionOptions(count,selectedItemCount);
