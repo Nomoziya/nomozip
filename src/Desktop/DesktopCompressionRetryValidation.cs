@@ -37,6 +37,7 @@ internal static class DesktopCompressionRetryValidation
         model.AddCompressionSources([input]);model.CompressionExcludedExtensions="tmp";File.Delete(input);await Create(model);
         var task=model.WorkspaceTasks.Single();
         check("retry starts from a real failed compression",task.Failure is not null && !task.Completed && task.CompressionRetry is {ExcludedExtensions:"tmp"});
+        check("failed compression displays its planned location without claiming a completed output",task.LatestOutputPath is null && task.DisplayOutputPath==UiText.Format("Compression.PlannedLocation",Path.GetDirectoryName(task.Path)));
         model.SelectedTask=task;model.EditCompressionRetryCommand.Execute(null);await Layout();
         capture(window,"next-retry-edit-loaded");
         check($"retry edit loads missing sources and original parameters without starting (page={model.Page}, sources={model.CompressionSources.Count}, sourceMatches={model.CompressionSources.FirstOrDefault()?.Path==input}, exists={File.Exists(input)}, format={model.CompressionFormat}, running={model.CompressionRunning})",model.Page==3 && model.CompressionSources.Count==1 && model.CompressionSources[0].Path==input && !File.Exists(input) && model.CompressionFormat==1 && !model.CompressionRunning);
@@ -59,6 +60,7 @@ internal static class DesktopCompressionRetryValidation
         theme.SetMode("light");theme.Apply(false);window.MinWidth=1152;window.MinHeight=768;window.Width=1152;window.Height=768;await Layout();
         capture(window,"next-retry-task-details");Invoke(window.TaskRetryDetailsButton);await Layout();await model.WaitForIdleAsync();await Layout();
         check("retry reuses the failed row and preserves prior output",task.Completed && task.Failure is null && model.WorkspaceTasks.Count==1 && task.Path!=originalOutput && await File.ReadAllTextAsync(originalOutput)=="existing output");
+        check("successful compression replaces planned location with the actual output location",task.LatestOutputPath is not null && task.DisplayOutputPath==task.LatestOutputPath);
         check("retry leaves compression draft inputs unchanged",model.CompressionSources.Single().Path==draft && model.CompressionOutput==draftOutput && model.CompressionFormat==0 && model.CompressionExcludedExtensions=="log" && !File.Exists(draftOutput));
         var client=new ArchiveEngineClient(Path.Combine(root,"artifacts/worker/ArchiveEngineWorker.exe"),Path.Combine(root,"engines/26.04/7z.dll"));
         var extracted=Path.Combine(data,"retry-extract");var result=await client.ExtractAsync(task.Path,extracted);

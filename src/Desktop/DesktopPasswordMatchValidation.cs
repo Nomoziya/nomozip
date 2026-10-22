@@ -61,7 +61,6 @@ internal static class DesktopPasswordMatchValidation
         var menu=await DesktopMenuValidation.OpenAsync(window,window.VaultMoreAction);
         check("saved-rule preview is reachable through vault menu",menu.Items.OfType<MenuItem>().Any(item=>ReferenceEquals(item.Command,model.ExplainPasswordMatchesCommand) && DesktopMenuValidation.Reachable(item)));menu.IsOpen=false;
         check($"matching preview action enabled (idle={model.IsIdle}, locked={model.VaultLocked}, records={model.PasswordRows.Count}, banner={model.Banner})",model.ExplainPasswordMatchesCommand.CanExecute(null));
-        var resourceProbe=new PasswordMatchDialog(new(archive,plan,false));resourceProbe.Close();
         await DesktopMenuValidation.InvokeAsync(window,window.VaultMoreAction,model.ExplainPasswordMatchesCommand);await model.WaitForIdleAsync();if(failure is not null)throw failure;
         var unchanged=Enumerable.SequenceEqual(before,await File.ReadAllBytesAsync(vaultPath));var extracted=Directory.Exists(Path.GetDirectoryName(archive));
         check($"matching preview opens and never writes or extracts (shown={shown}, unchanged={unchanged}, extracted={extracted}, banner={model.Banner})",shown && unchanged && !extracted);

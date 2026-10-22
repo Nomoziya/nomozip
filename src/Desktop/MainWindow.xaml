@@ -417,7 +417,7 @@
                         <Button x:Name="TaskEditRetryDetailsButton" Content="{loc:Text Compression.EditRetry}" Command="{Binding EditCompressionRetryCommand}" ToolTip="{loc:Text Compression.EditRetryHint}" Margin="0,4,8,4"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></Button.Style></Button>
                       </WrapPanel>
                       <TextBlock Text="{Binding SelectedTask.SizeText}" Style="{StaticResource Secondary}" Margin="0,0,0,4"/>
-                      <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Text="{Binding SelectedTask.DisplayOutputPath}" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.DisplayOutputPath}"/>
                       <DockPanel Margin="0,12,0,0">
                         <Button x:Name="FilenameEncodingAction" Content="{loc:Text T_2273a2975767}" Command="{Binding FilenameEncodingCommand}" DockPanel.Dock="Right" Margin="12,0,0,0" AutomationProperties.Name="{loc:Text T_a16a60f9eb3b}" Visibility="Collapsed"/>
                         <Button x:Name="TestResultAction" Content="{loc:Text T_61375d555d33}" Command="{Binding ShowTestResultCommand}" DockPanel.Dock="Right" Margin="12,0,0,0">

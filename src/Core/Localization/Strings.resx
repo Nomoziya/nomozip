@@ -3435,4 +3435,5 @@
   <data name="PasswordMatch.Empty" xml:space="preserve"><value>没有启用自动尝试的密码记录。</value></data>
   <data name="Preview.CloseFind" xml:space="preserve"><value>收起查找 (Esc)</value></data>
   <data name="PasswordMatch.Recent" xml:space="preserve"><value>常规候选 · 按最近成功排序</value></data>
+  <data name="Compression.PlannedLocation" xml:space="preserve"><value>计划输出：{0}</value></data>
 </root>
