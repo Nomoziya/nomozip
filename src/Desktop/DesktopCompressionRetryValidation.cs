@@ -38,7 +38,8 @@ internal static class DesktopCompressionRetryValidation
         var task=model.WorkspaceTasks.Single();
         check("retry starts from a real failed compression",task.Failure is not null && !task.Completed && task.CompressionRetry is {ExcludedExtensions:"tmp"});
         model.SelectedTask=task;model.EditCompressionRetryCommand.Execute(null);await Layout();
-        check("retry edit loads missing sources and original parameters without starting",model.Page==3 && model.CompressionSources.Single().Path==input && !File.Exists(input) && model.CompressionFormat==1 && !model.CompressionRunning);
+        capture(window,"next-retry-edit-loaded");
+        check($"retry edit loads missing sources and original parameters without starting (page={model.Page}, sources={model.CompressionSources.Count}, sourceMatches={model.CompressionSources.FirstOrDefault()?.Path==input}, exists={File.Exists(input)}, format={model.CompressionFormat}, running={model.CompressionRunning})",model.Page==3 && model.CompressionSources.Count==1 && model.CompressionSources[0].Path==input && !File.Exists(input) && model.CompressionFormat==1 && !model.CompressionRunning);
         var originalOutput=task.Path;await File.WriteAllTextAsync(originalOutput,"existing output");await File.WriteAllTextAsync(input,"source changed before retry");
         var draft=Path.Combine(data,"draft.txt");await File.WriteAllTextAsync(draft,"draft");var draftOutput=Path.Combine(data,"draft.7z");
         model.CompressionSources.Clear();model.AddCompressionSources([draft]);model.CompressionFormat=0;model.CompressionOutput=draftOutput;model.CompressionExcludedExtensions="log";

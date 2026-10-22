@@ -7,7 +7,8 @@
       <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
       <TextBlock Text="{loc:Text Compression.ContentPreviewHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,6,0,0"/>
     </StackPanel>
-    <DataGrid x:Name="ContentTable" Grid.Row="2" ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" CanUserSortColumns="False" SelectionMode="Single" AutomationProperties.Name="{loc:Text Compression.PreviewContents}">
+    <DataGrid x:Name="ContentTable" Grid.Row="2" ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" CanUserSortColumns="False" SelectionMode="Single" RowHeight="36" ColumnHeaderHeight="32" AutomationProperties.Name="{loc:Text Compression.PreviewContents}">
+      <DataGrid.RowStyle><Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}"><Setter Property="ToolTip" Value="{Binding Path}"/></Style></DataGrid.RowStyle>
       <DataGrid.Columns>
         <DataGridTextColumn Header="{loc:Text Compression.ContentState}" Binding="{Binding State}" Width="90" ElementStyle="{StaticResource TableText}"/>
         <DataGridTextColumn Header="{loc:Text Compression.ContentPackage}" Binding="{Binding Package}" Width="140" ElementStyle="{StaticResource TableText}"/>

@@ -75,6 +75,7 @@ public partial class ArchiveContentsDialog : Window
             EntryTiles.Padding=EntryTiles.Tag is true?new Thickness(0):new Thickness(8);
             EditContentsButton.ContentTemplate=(DataTemplate)FindResource(shortArea?"CompactMoreActionContent":"MoreActionContent");
             EditContentsButton.ToolTip=ArchivePassword.Core.UiText.Get("Redesign.More");
+            foreach(var action in new[]{ExtractAllButton,ExtractSelectedButton,PreviewEntryButton,EditContentsButton})action.Margin=new Thickness(0,0,shortArea?4:8,0);
             AdvancedFilters.Margin=new Thickness(8,shortArea?2:8,8,0);
             BrowserHeader.Height=shortArea?90:130;
             BrowserTitleRow.Margin=new Thickness(34,0,shortArea?64:18,0);
