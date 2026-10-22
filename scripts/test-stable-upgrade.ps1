@@ -1,11 +1,13 @@
 param(
     [ValidateSet('x64','arm64')][string]$Architecture = 'x64',
-    [ValidateSet('0.2.1','0.3.0','0.3.1','0.3.2')][string]$PreviousVersion = '0.2.1'
+    [ValidateSet('0.2.1','0.3.0','0.3.1','0.3.2','0.3.3')][string]$PreviousVersion = '0.2.1'
 )
 $ErrorActionPreference = 'Stop'
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'Stable upgrade acceptance requires disposable CI.' }
 $taskRoot = Split-Path $PSScriptRoot -Parent
-$taskExpected = if ($PreviousVersion -eq '0.3.2') {
+$taskExpected = if ($PreviousVersion -eq '0.3.3') {
+    if ($Architecture -eq 'arm64') { '113b58eba5fdad71c2906168fa6511d66e745aefaa0f7c305ff1e808e020529a' } else { '23d457023272349571675db304f313f0e9a74c066ca3f454534a4ec9135bec1d' }
+} elseif ($PreviousVersion -eq '0.3.2') {
     if ($Architecture -eq 'arm64') { '0b9b204748f96ee698e6b36115ad3acce3cc3374c87132c1457097d55e1b8b82' } else { '1a09110a74cbb36571f6c2a255385246939bcd6c66ab567fa7d4ac1109003484' }
 } elseif ($PreviousVersion -eq '0.3.1') {
     if ($Architecture -eq 'arm64') { '94b639839e6fc182e892a19452b0ea5f94759e84ffbd25039b3b4f147ce783df' } else { '1a9509a2638e64dceacaaea4911356236c73dc5eb4ffe0b67d07a29810a71d57' }
@@ -16,7 +18,7 @@ $taskExpected = if ($PreviousVersion -eq '0.3.2') {
 }
 $taskPrevious = Join-Path $taskRoot "artifacts/stable-$PreviousVersion-$Architecture"
 if (Test-Path -LiteralPath $taskPrevious) { throw 'Keep prior upgrade fixtures immutable.' }
-if ($PreviousVersion -eq '0.3.2') {
+if ($PreviousVersion -in @('0.3.2','0.3.3')) {
     # Installer-only releases have no public payload ZIP. Extract the exact published
     # setup without running it; test-installer rebuilds only the isolated validation wrapper.
     $taskSetup = "$taskPrevious-setup.exe"

@@ -1,3 +1,5 @@
+当前新增任务：用户已授权合并并发布0.3.4，发行冻结/隔离升级验收/快进main/tag/三个附件及公开下载核对见[当前摘要](docs/CURRENT_STATE.md)。主会话与执行者gpt-6.1-sol/high，当前回合已核对；无新增UI方向，无委派，旧自动任务保持暂停。
+
 当前状态入口：[docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)。历史计划按需查询，当前开发见下节。
 
 ## 2026-10-22：UI改进
