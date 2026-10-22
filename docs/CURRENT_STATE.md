@@ -1,11 +1,23 @@
 # nomozip 当前状态与新会话交接
 
-## 2026-10-22：已授权合并并发布0.3.4（准备中）
+## 2026-10-22：0.3.5菜单图标修正版（实施/验收中）
 
-- 用户本次明确要求“合并到正式版并发布”，覆盖此前不合并/不发布的阶段限制。从干净097502f建立 **codex/release-0.3.4**，实际源码 **D:/Codex/7zip-password/.tools/privacy-clean-worktree-20261019**；正式远端main基线 **acd17288c4629145094579ee6cd62795d630e93b**，旧UI分支/候选/原图保持。已确认main是当前分支祖先，计划最终CI通过后以同一冻结提交快进main并建立v0.3.4。
-- 发行只改应用/CLI版本与发行维护、升级夹具及必要文档，产品以690953d已验收实现为准。发布0.3.4；隔离CI新增正式0.3.3载荷升级/数据保留/首次启动清理/卸载和包身份检查。0.3.3安装器摘要同时核对GitHub资产digest和匿名SHA256SUMS后固定在夹具，不执行本机安装。默认只公开x64/ARM64安装器与两行SHA256SUMS，不附候选/源码/图集。
-- 阶段：①冻结发行源码并运行双架构发行CI；②逐报告、原生PE/共享.NET10/版本、载荷及统一源码内容核对；③同一SHA快进main、建立tag、准备并核对草稿资产后发布；④匿名回下载与软件版本检查、engine-26.04 latest路由复核，保存当前摘要。既有功能/UI证据与未变化页面复用，交接不触发无关重测。
-- 各阶段主会话/执行者均 **gpt-6.1-sol/high**，无委派；当前turn_context **01a16239-6258-7402-9e6f-238da53f38b2**（2026-10-22T06:08:10.408Z）核对model/effort匹配，持续应用project-stage-planner、ui-design-engineering、ui-ux-pro-max。沿用已授权本地DPAPI GitHub入口，无1Password、真实库/生产私钥、本机桌面自动化或实际安装替换；旧自动任务继续暂停。
+- 0.3.4已合并并发布，双架构发行/升级/公开下载通过，但main自动全套回归39733358689的双语页面步骤失败；强制取消后没有页面报告。从同一v0.3.4定向复现 **39735531347** 得到中英相同失败 **archive menu glyphs have visible themed strokes**，menu-glyphs.json证明仅新增“定位所在目录”菜单Icon为空，实际截图也缺少图标。其余菜单均20 DIP主题图标，按钮验证通过；这不是新的压缩/密码算法问题。
+- 已在独立 **codex/release-0.3.5** 补同一Fluent资源的FolderOpen 20 DIP图标，不降低原断言。用户本次合并/发布授权内完成修正并发布0.3.5；v0.3.4/6a3af03及资产保持不可变。发行版/CLI升0.3.5，新增正式0.3.4摘要固定升级夹具。先完整产品双语页面复验，再双架构发行升级/包身份、main/tag、三个附件及匿名下载/更新路由核对。
+- 沿用本回合gpt-6.1-sol/high，无委派及本机桌面自动化；源码仍为privacy-clean-worktree-20261019，旧自动任务保持暂停。失败原件位于根artifacts/publish-0.3.4-6a3af03/focused-ui-reports与focused-ui-failed.log，后续状态集中本摘要。
+
+## 2026-10-22：0.3.4已合并正式版并发布
+
+- 用户本次明确要求“合并到正式版并发布”。[nomozip 0.3.4](https://github.com/Nomoziya/nomozip/releases/tag/v0.3.4)已于北京时间 **2026-10-22 14:22:21** 正式发布，draft=false、prerelease=false，仅3个附件。该状态覆盖下方候选阶段“不合并/未发布”的历史描述；旧UI分支、候选与设计对照保留。
+- 实际Git源码 **D:/Codex/7zip-password/.tools/privacy-clean-worktree-20261019**。发行分支 **codex/release-0.3.4** 从097502f建立；验证后以同一提交 **6a3af03f5fb0de9845f6ba39829d75ad092bee5a** 快进main并原子推送 **v0.3.4**，正式main旧基线acd1728是其祖先。随后仅同步文档，不移动tag或重构建资产；收尾工作区回到main。主目录不是Git，CURRENT_STATE首节同步，不能以其它检出代替。
+- 0.3.4整合此前全部已验收P1/P2、浏览响应和五项功能及UI：任务密度/按需详情、隐藏选择与筛选、压缩方案、浏览偏好、分别压缩、搜索范围/定位、内容排除/预览、压缩失败重试、连续预览/查找、密码规则只读试算，以及最终任务/内容/密码窗口可读性修正。产品实现与690953d一致，发行只改应用/CLI版本与维护、升级夹具及文档，WPF/共享.NET10/x64/ARM64/中英/高对比及原图保留。
+- [发行CI39732567562](https://github.com/Nomoziya/nomozip/actions/runs/39732567562) **x64和原生ARM64均成功**，headSha均为6a3af03；每架构16份报告、正式0.3.3载荷升级/首次重启清理/卸载37项、包完整性8项通过，实际业务、更新收据与下载恢复检查通过。升级旧安装器摘要与公开SHA256SUMS及GitHub digest一致后固定，先提取旧载荷、仅执行隔离验证封装。此前690953d中英各274项和其精确关联功能报告复用；没有因发行只改版本而重复所有UI/物理设备回归。
+- **发行包身份全部核对**：每架构42个载荷文件，ZIP CRC、原生app/CLI/worker/两引擎PE、引擎DLL/SFX摘要、共享.NET10无捆绑运行库、面板DLL/许可与已验收候选一致。app/CLI EXE与DLL为FileVersion **0.3.4.0** / ProductVersion **0.3.4+完整6a3af03**，安装器版本也匹配。两源码ZIP共 **4236个文件内容一致**，源码ZIP和完整报告仅本地/CI保存，未作为公开附件。
+- 公开安装器：x64 **3067850字节**，SHA256 **d7771a7cc640f10183a69d430fd34d83bda3f5c6b2d2310b38ebea7f1c9b60c8**；ARM64 **2370260字节**，SHA256 **eec9bd4d9bb82fb9656dfde97b25d5eb91436fb0ac17b5124422373166d58973**。SHA256SUMS.txt只列两个安装器。草稿资产文件名/大小/服务器digest先核对，发布后三个附件均匿名回下载，与本地逐字节及SHA256一致，未将上传成功当作下载验收。
+- 真实匿名HTTP调用现有 **GitHubApplicationChannel**：x64/ARM64均识别稳定版0.3.4，下载URL/大小/摘要匹配，0.3.3可更新、0.3.4不降级；**engine-26.04仍是releases/latest**。软件发行保留latest=false，软件/引擎渠道、正式公钥和私钥均未改变。
+- 本地证据集中 **D:/Codex/7zip-password/artifacts/publish-0.3.4-6a3af03/**：ci-x64/ci-arm64为CI原始四项包，reports-x64/reports-arm64共32份原报告，ci-run.json、verification.json、draft/public-release.json、public-assets及public-downloads、public-download-verification.json、live-channel-verification.json记录精确来源与结果。probes为无窗口更新渠道探针，没有实际安装或GUI启动。UI规范及历史原图入口保留在仓库，发行说明见RELEASE_0.3.4.md。
+- 本次主会话与执行者 **gpt-6.1-sol/high**，无委派；当前turn_context **01a16239-6258-7402-9e6f-238da53f38b2**（2026-10-22T06:08:10.408Z）核对匹配，持续应用project-stage-planner、ui-design-engineering、ui-ux-pro-max。沿用本地Windows DPAPI GitHub入口，未调用1Password/改全局凭据、技能或记忆。没有本机桌面自动化、实际安装替换、真实密码库/生产私钥访问，旧自动任务继续暂停。
+- 发行及匿名下载核对已完成；main推送触发的自动全套回归 **39733358689** 在双语产品页面步骤失败；普通取消不结束always步骤，强制取消后整轮为cancelled且未提供页面报告/作业日志，不能记为全套通过。现从同一v0.3.4/6a3af03启动x64产品界面定向复现 **39735531347**，等待明确报告；已发布安装包未改动。只有一块屏幕，不要求第二屏；真实系统高对比切换、交互读屏及物理混合DPI/多屏不冒称验收。历史旧SHA缓存仍待GitHub私密支持，不因本次发版宣称已清除，也不再次改写历史。
 
 ## 2026-10-22：UI层级与短窗改进完成，代理验收，未合并/发布
 

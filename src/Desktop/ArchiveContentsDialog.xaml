@@ -120,7 +120,9 @@
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
-              <MenuItem x:Name="LocateCurrentEntryAction" Header="{loc:Text Browser.LocateEntry}" Command="{Binding LocateCurrentEntryCommand}"/>
+              <MenuItem x:Name="LocateCurrentEntryAction" Header="{loc:Text Browser.LocateEntry}" Command="{Binding LocateCurrentEntryCommand}">
+                <MenuItem.Icon><loc:FluentIcon Kind="FolderOpen" Width="20" Height="20"/></MenuItem.Icon>
+              </MenuItem>
               <MenuItem x:Name="ResetBrowserLayoutAction" Header="{loc:Text Browser.ResetLayout}" Command="{Binding ResetBrowserLayoutCommand}">
                 <MenuItem.Icon><loc:FluentIcon Kind="ArrowSync" Width="20" Height="20"/></MenuItem.Icon>
               </MenuItem>
