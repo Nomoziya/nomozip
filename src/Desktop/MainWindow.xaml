@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <Window xmlns:loc="clr-namespace:ArchivePassword.Desktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ArchivePassword.Desktop" x:Class="ArchivePassword.Desktop.MainWindow" Style="{StaticResource AppWindow}" Title="nomozip" Width="1152" Height="768" MinWidth="800" MinHeight="600" WindowStartupLocation="CenterScreen" AllowDrop="True" Drop="OnDrop" Closing="OnClosing">
   <Window.Resources>
+    <Style x:Key="TaskFilterItem" TargetType="ListBoxItem" BasedOn="{StaticResource PillTabItem}"><Setter Property="Padding" Value="10,7"/></Style>
     <Style x:Key="AvailableTaskAction" TargetType="MenuItem" BasedOn="{StaticResource ContextActionItem}">
       <Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers>
     </Style>
@@ -241,9 +242,10 @@
               </Button.ContextMenu>
 
             </Button></WrapPanel><Grid>
-  <ListBox x:Name="TaskFilterTabs" ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}">
+  <ListBox x:Name="TaskFilterTabs" ItemContainerStyle="{StaticResource TaskFilterItem}" ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}">
     <ListBox.Style><Style TargetType="ListBox" BasedOn="{StaticResource PillTabs}"><Style.Triggers><DataTrigger Binding="{Binding IsNarrow}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></ListBox.Style>
     <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
+    <ListBox.ItemTemplate><DataTemplate><StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Label}" VerticalAlignment="Center"/><TextBlock Text="{Binding Count}" FontSize="12" FontWeight="SemiBold" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
   </ListBox>
   <ComboBox x:Name="CompactTaskFilter" ItemsSource="{Binding TaskFilterBadges}" SelectedIndex="{Binding TaskFilterIndex}" MinWidth="170" HorizontalAlignment="Left" Margin="0,0,8,4" AutomationProperties.Name="{loc:Text Redesign.TaskFilter}">
     <ComboBox.Style><Style TargetType="ComboBox" BasedOn="{StaticResource CompactOptionField}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsNarrow}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ComboBox.Style>
@@ -403,14 +405,13 @@
                     <Expander x:Name="TaskDetailsExpander" Grid.ColumnSpan="2" IsExpanded="{Binding TaskDetailsExpanded,Mode=TwoWay}" HorizontalContentAlignment="Stretch" AutomationProperties.Name="{loc:Text Tasks.Details}">
                       <Expander.Style><Style TargetType="Expander"><Style.Triggers><DataTrigger Binding="{Binding SelectedTask}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Expander.Style>
                       <Expander.Header><DockPanel>
-                        <TextBlock DockPanel.Dock="Right" Text="{Binding SelectedTask.Status}" Style="{StaticResource Secondary}" Margin="16,0,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.Status}"/>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding SelectedTask.Status}" TextWrapping="NoWrap" Margin="16,0,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.Status}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Style.Triggers><DataTrigger Binding="{Binding IsExpanded,RelativeSource={RelativeSource AncestorType=Expander}}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                         <TextBlock Text="{Binding SelectedTask.Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.Path}"/>
                       </DockPanel></Expander.Header>
-                      <ScrollViewer x:Name="TaskDetailsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="160"><Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="300"/></Grid.ColumnDefinitions>
+                      <ScrollViewer x:Name="TaskDetailsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="160"><Grid x:Name="TaskDetailsLayout" Margin="0,12,0,0"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="TaskDetailsActionsColumn" Width="240"/></Grid.ColumnDefinitions>
                     <loc:FileKindIcon FileName="{Binding SelectedTask.Path}" Width="34" Height="44" Margin="0,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <StackPanel Margin="52,0,20,0" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding SelectedTask.Name}" TextTrimming="CharacterEllipsis" Style="{StaticResource SectionTitle}"/>
-                      <TextBlock Text="{Binding SelectedTask.Status}" Margin="0,8,0,4"/>
+                      <TextBlock x:Name="TaskStatusDetails" Text="{Binding SelectedTask.Status}" TextWrapping="Wrap" Margin="0,0,0,8"/>
                       <WrapPanel>
                         <Button x:Name="TaskRetryDetailsButton" Content="{loc:Text TaskControl.Retry}" Command="{Binding RetrySelectedTaskCommand}" ToolTip="{loc:Text Compression.RetryHint}" Margin="0,4,8,4"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></Button.Style></Button>
                         <Button x:Name="TaskEditRetryDetailsButton" Content="{loc:Text Compression.EditRetry}" Command="{Binding EditCompressionRetryCommand}" ToolTip="{loc:Text Compression.EditRetryHint}" Margin="0,4,8,4"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></Button.Style></Button>
@@ -444,13 +445,15 @@
                         </Button>
                       </DockPanel>
                     </StackPanel>
-                    <WrapPanel HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Center" Width="300">
+                    <WrapPanel x:Name="TaskDetailsSecondaryActions" HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Top" Width="240">
                       <Button Click="OnTaskRowAction" Margin="0,0,8,8" Padding="14,7" HorizontalAlignment="Left" Tag="TaskPrimary" x:Name="SelectedTaskPrimary" DataContext="{Binding SelectedTask}">
                         <Button.Style>
                           <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Setter Property="IsEnabled" Value="{Binding DataContext.IsIdle,RelativeSource={RelativeSource AncestorType=Window}}"/>
                             <Setter Property="Content" Value="{Binding PrimaryActionCaption}"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
+                              <DataTrigger Binding="{Binding Failure}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
                               <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                   <Condition Binding="{Binding Running}" Value="True"/>

@@ -3420,10 +3420,10 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Preview.FindPrevious" xml:space="preserve"><value>Previous match (Shift+F3)</value></data>
   <data name="Preview.FindNoMatch" xml:space="preserve"><value>No match found</value></data>
   <data name="Preview.FindLocated" xml:space="preserve"><value>Match selected · Wraps at the end</value></data>
-  <data name="PasswordMatch.Title" xml:space="preserve"><value>Preview saved matching rules</value></data>
-  <data name="PasswordMatch.Summary" xml:space="preserve"><value>Attempt order: {0} · Disabled: {1} · Duplicate passwords omitted: {2}</value></data>
+  <data name="PasswordMatch.Title" xml:space="preserve"><value>Password attempt order</value></data>
+  <data name="PasswordMatch.Summary" xml:space="preserve"><value>{0} candidates · {1} disabled · {2} duplicates omitted</value></data>
   <data name="PasswordMatch.Notice" xml:space="preserve"><value>Associated first, then directory or filename matches, then recent success and creation time. Uses saved rules; does not verify passwords.</value></data>
-  <data name="PasswordMatch.AutoTryOff" xml:space="preserve"><value>Automatic attempts are off. Shows the saved-rule order if enabled; does not verify passwords.</value></data>
+  <data name="PasswordMatch.AutoTryOff" xml:space="preserve"><value>Automatic attempts are off. Previews the order if enabled; passwords are not verified.</value></data>
   <data name="PasswordMatch.Associated" xml:space="preserve"><value>Previously associated</value></data>
   <data name="PasswordMatch.Directory" xml:space="preserve"><value>Directory rule match</value></data>
   <data name="PasswordMatch.Name" xml:space="preserve"><value>Filename rule match</value></data>

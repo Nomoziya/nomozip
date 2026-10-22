@@ -64,6 +64,10 @@ public partial class MainWindow : Window
             if (DataContext is MainViewModel model) model.IsNarrow = narrow;
             CompressionPage.ArrangePanels(narrow);
             TaskDetailsScroll.MaxHeight=Math.Clamp(ActualHeight-500,64,160);
+            TaskDetailsActionsColumn.Width=new GridLength(narrow?0:240);
+            Grid.SetColumn(TaskDetailsSecondaryActions,narrow?0:1);Grid.SetRow(TaskDetailsSecondaryActions,narrow?1:0);
+            TaskDetailsSecondaryActions.Width=narrow?double.NaN:240;
+            TaskDetailsSecondaryActions.Margin=narrow?new Thickness(52,8,0,0):new Thickness(0);
             var shortWorkArea=ActualHeight<480;
             ExtractionLayout.Height = shortWorkArea?double.NaN:Math.Max(0, ExtractionViewport.ActualHeight);
             DefaultOutputPanel.Width = Math.Min(360, Math.Max(160, PreferencesScroll.ActualWidth-200));

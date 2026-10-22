@@ -1,5 +1,13 @@
 # nomozip 当前状态与新会话交接
 
+## 2026-10-22：UI层级与窄窗改进（实施中）
+
+- 用户要求“改进ui”。规范内改进，沿用已确认配色、导航、桌面图标和布局方向；从干净c7de8dc建立独立分支 **codex/ui-refinement-20261022**，源码 **D:/Codex/7zip-password/.tools/privacy-clean-worktree-20261019**。原分支/9d606a3候选/正式main保留。无新的定时截止，不恢复自动任务，不合并/发布。
+- 范围：任务筛选紧凑排列、展开详情去重复并完整显示错误，窄窗操作上下排；压缩内容表完整显示包含/排除、简化表头并改善列空间；密码尝试顺序按记录、匹配理由、历史时间分层，短窗以少量可见行换取完整原因。保持所有命令、六类筛选、压缩/密码规则和真实结果语义。
+- 当前before基准为next-usability-20261022的实际WPF原图，属于局部规范修正，不另换主要视觉方向。验收从任务失败→读错因→重试、内容预览辨别包含/排除、密码试算读顺序与依据出发，中英/浅深/模拟高对比及1152/800、820/512短窗核对，x64与原生ARM64隔离CI。复用未影响的功能/安装证据，本机不运行桌面自动化，不读真实库或生产私钥。
+- 主会话/执行者沿用gpt-6.1-sol/high，无委派。当前回合 **01a161f3-f188-7fa2-b238-bfdc7ab92d73**（2026-10-22T04:52:19.529Z）turn_context核对model/effort匹配，持续应用project-stage-planner、ui-design-engineering、ui-ux-pro-max。
+- 依据：UI技能检索命中Essential Text Truncation（核心文字应换行或有可见完整访问）、WPF Grid的Auto/Star布局；微软WPF面板文档 https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/panel 支持按内容分配空间，Windows UI文字指南 https://learn.microsoft.com/en-us/windows/win32/uxguide/text-ui 的去重复原则作为局部文字依据，后者是旧版指南，不照搬旧视觉。本项目须实际验证完整文字与操作可达，不能用换行本身代替验收。
+
 ## 2026-10-22：五项功能及UI由代理验收完成，未合并或发布
 
 - 用户“继续任务”恢复原五项及UI，旧06:40截止属于已结束的凌晨窗口；本轮手动执行，无新截止。**nomozip-10-22 / nomozip-10-22-06-40仍为PAUSED**，不恢复其它旧自动任务，没有Goal。正式main/0.3.3、原开发分支、旧候选和设计对照保留。

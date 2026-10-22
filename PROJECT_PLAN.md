@@ -1,5 +1,9 @@
 当前状态入口：[docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)。历史计划按需查询，当前开发见下节。
 
+## 2026-10-22：UI改进
+
+按当前摘要的UI改进范围执行：任务详情/筛选、压缩内容预览、密码匹配依据分层。独立分支codex/ui-refinement-20261022，从c7de8dc开始；gpt-6.1-sol/high直接执行，当前turn_context匹配。先采用已验收原图作为局部基准，实现后以实际操作和对应CI原图验收；保护原分支/候选，不合并发布。保持功能与轻量WPF，中英/双架构/高对比、单屏边界。具体进度和证据集中记录CURRENT_STATE。
+
 ## 2026-10-22 11:00：五项功能与UI恢复执行
 
 用户“继续任务”恢复原五项及UI，旧06:40窗口已经结束，不再作为本轮截止；旧两自动任务维持暂停。实际源码仍为privacy-clean-worktree-20261019，从5cec7bc建立codex/overnight-usability-20261022，原分支/候选/正式main保留。主会话/执行者gpt-6.1-sol/high、无委派，本轮turn_context 01a1618d-efda-72a3-870f-1641918bcf63已核对匹配，沿用project-stage-planner、ui-design-engineering、ui-ux-pro-max。范围和验收沿用下方原计划，按受影响流程逐项闭合，随后处理确有收益的扩展；不合并或发布。

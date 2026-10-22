@@ -25,16 +25,16 @@ public sealed class PasswordMatchViewModel(string path,PasswordMatchPlan plan,bo
     public string ArchiveName=>System.IO.Path.GetFileName(path);
     public string Summary=>UiText.Format("PasswordMatch.Summary",plan.Entries.Count,plan.DisabledCount,plan.DuplicateCount);
     public string Notice=>UiText.Get(autoTry?"PasswordMatch.Notice":"PasswordMatch.AutoTryOff");
-    public IReadOnlyList<PasswordMatchRow> Rows {get;}=plan.Entries.Select(entry=>new PasswordMatchRow(entry.Order,entry.Name,entry.Group,Reason(entry))).ToArray();
+    public IReadOnlyList<PasswordMatchRow> Rows {get;}=plan.Entries.Select(entry=>new PasswordMatchRow(entry.Order,entry.Name,entry.Group,Reason(entry),
+        entry.LastSuccessAt is {} last?UiText.Format("PasswordMatch.Success",last.ToLocalTime().ToString("yyyy/MM/dd HH:mm")):"")).ToArray();
     private static string Reason(PasswordMatchEntry entry)
     {
         var reasons=new List<string>();
         if(entry.Associated)reasons.Add(UiText.Get("PasswordMatch.Associated"));
         if(entry.DirectoryMatch)reasons.Add(UiText.Get("PasswordMatch.Directory"));
         if(entry.NameMatch)reasons.Add(UiText.Get("PasswordMatch.Name"));
-        if(entry.LastSuccessAt is {} last)reasons.Add(UiText.Format("PasswordMatch.Success",last.ToLocalTime().ToString("yyyy/MM/dd HH:mm")));
         if(reasons.Count==0)reasons.Add(UiText.Get("PasswordMatch.Fallback"));
         return string.Join(" · ",reasons);
     }
 }
-public sealed record PasswordMatchRow(int Order,string Name,string Group,string Reason);
+public sealed record PasswordMatchRow(int Order,string Name,string Group,string Reason,string History);

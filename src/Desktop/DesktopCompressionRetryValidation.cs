@@ -12,7 +12,7 @@ namespace ArchivePassword.Desktop;
 
 internal static class DesktopCompressionRetryValidation
 {
-    internal static async Task RunAsync(MainWindow window,string root,string data,string baseDirectory,
+    internal static async Task RunAsync(MainWindow window,ThemeResources theme,string root,string data,string baseDirectory,
         Action<string,bool> check,Action<Window,string> capture)
     {
         data=Path.GetFullPath(Path.Combine(data,"compression-retry"));Directory.CreateDirectory(data);var prompts=0;
@@ -45,6 +45,18 @@ internal static class DesktopCompressionRetryValidation
         model.CompressionSources.Clear();model.AddCompressionSources([draft]);model.CompressionFormat=0;model.CompressionOutput=draftOutput;model.CompressionExcludedExtensions="log";
         model.Page=0;model.SelectedTask=task;model.TaskDetailsExpanded=true;await Layout();window.TaskRetryDetailsButton.BringIntoView();await Layout();
         check("retry is available through task detail action",window.TaskRetryDetailsButton.IsVisible && window.TaskRetryDetailsButton.IsEnabled && window.TaskEditRetryDetailsButton.IsEnabled);
+        foreach(var mode in new[]{"light","dark","contrast"})foreach(var width in new[]{1152d,800d})
+        {
+            theme.SetMode(mode=="dark"?"dark":"light");theme.Apply(mode=="contrast");window.MinWidth=0;window.MinHeight=0;window.Width=width;window.Height=width==800?600:768;await Layout();
+            window.TaskStatusDetails.BringIntoView();await Layout();
+            check($"retry detail error is fully laid out once {mode} {width}",DesktopReadabilityValidation.CompleteText(window.TaskStatusDetails)
+                && DesktopReadabilityValidation.Descendants(window.TaskDetailsExpander).OfType<TextBlock>().Count(text=>text.Text==task.Name)==1);
+            window.TaskRetryDetailsButton.BringIntoView();await Layout();
+            var buttonBounds=window.TaskRetryDetailsButton.TransformToAncestor(window).TransformBounds(new Rect(window.TaskRetryDetailsButton.RenderSize));
+            check($"retry detail actions remain reachable {mode} {width}",buttonBounds.Bottom<window.ActualHeight && buttonBounds.Right<window.ActualWidth && window.TaskEditRetryDetailsButton.IsVisible);
+            capture(window,$"refined-retry-task-details-{mode}-{width}");
+        }
+        theme.SetMode("light");theme.Apply(false);window.Width=1152;window.Height=768;await Layout();
         capture(window,"next-retry-task-details");Invoke(window.TaskRetryDetailsButton);await Layout();await model.WaitForIdleAsync();await Layout();
         check("retry reuses the failed row and preserves prior output",task.Completed && task.Failure is null && model.WorkspaceTasks.Count==1 && task.Path!=originalOutput && await File.ReadAllTextAsync(originalOutput)=="existing output");
         check("retry leaves compression draft inputs unchanged",model.CompressionSources.Single().Path==draft && model.CompressionOutput==draftOutput && model.CompressionFormat==0 && model.CompressionExcludedExtensions=="log" && !File.Exists(draftOutput));

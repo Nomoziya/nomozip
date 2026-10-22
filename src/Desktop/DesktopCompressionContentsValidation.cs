@@ -34,6 +34,8 @@ internal static class DesktopCompressionContentsValidation
                         theme.SetMode(mode=="contrast"?"system":mode);theme.Apply(mode=="contrast");dialog.Width=width;dialog.Height=width==512?360:600;
                         await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
                         check($"content preview close action accessible {mode} {width}",dialog.ClosePreviewButton.IsVisible && dialog.ClosePreviewButton.IsEnabled && dialog.ClosePreviewButton.Focusable);
+                        var states=DesktopReadabilityValidation.Descendants(dialog.ContentTable).OfType<TextBlock>().Where(text=>text.Text==UiText.Get("Compression.Included") || text.Text==UiText.Get("Compression.Excluded")).ToArray();
+                        check($"content preview inclusion labels display completely {mode} {width}",states.Length>0 && states.All(DesktopReadabilityValidation.CompleteText));
                         capture(dialog,$"next-content-preview-{mode}-{width}");
                     }
                 }

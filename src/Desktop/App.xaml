@@ -661,6 +661,31 @@
         <Setter Property="MinWidth" Value="24"/><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="4,2"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/>
       </Style>
+      <Style x:Key="PillTabItem" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="Margin" Value="0,0,6,0"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource CapsuleFocusStyle}"/>
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ListBoxItem">
+              <Border Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ButtonBorderBrush}" BorderThickness="1" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
+                <ContentPresenter/>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                  <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource OnAccentBrush}"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
       <Style x:Key="PillTabs" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -674,35 +699,7 @@
             </ItemsPanelTemplate>
           </Setter.Value>
         </Setter>
-        <Setter Property="ItemContainerStyle">
-          <Setter.Value>
-            <Style TargetType="ListBoxItem">
-              <Setter Property="Padding" Value="14,8"/>
-              <Setter Property="Margin" Value="0,0,6,0"/>
-              <Setter Property="FocusVisualStyle" Value="{StaticResource CapsuleFocusStyle}"/>
-              <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
-              <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-              <Setter Property="Template">
-                <Setter.Value>
-                  <ControlTemplate TargetType="ListBoxItem">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ButtonBorderBrush}" BorderThickness="1" CornerRadius="{Binding ActualHeight,RelativeSource={RelativeSource Self},Converter={StaticResource HalfHeightRadius}}" Padding="{TemplateBinding Padding}">
-                      <ContentPresenter/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                      <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                      </Trigger>
-                      <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
-                        <Setter Property="Foreground" Value="{DynamicResource OnAccentBrush}"/>
-                      </Trigger>
-                    </ControlTemplate.Triggers>
-                  </ControlTemplate>
-                </Setter.Value>
-              </Setter>
-            </Style>
-          </Setter.Value>
-        </Setter>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource PillTabItem}"/>
         <Setter Property="ItemTemplate">
           <Setter.Value>
             <DataTemplate>

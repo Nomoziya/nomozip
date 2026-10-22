@@ -15,7 +15,7 @@ internal static class DesktopPasswordMatchValidation
         data=Path.GetFullPath(Path.Combine(data,"match-rules"));Directory.CreateDirectory(data);
         var archive=Path.Combine(data,"source","child","Trip.zip");var vaultPath=Path.Combine(data,"synthetic.apv");
         var vault=new DpapiPasswordVault(vaultPath);var created=DateTimeOffset.Parse("2026-01-01T00:00:00Z");
-        var associated=new SavedPassword(Guid.NewGuid(),"Associated","synthetic-one","",true,created);
+        var associated=new SavedPassword(Guid.NewGuid(),"Previously associated password for quarterly document backups","synthetic-one","",true,created);
         var folder=new SavedPassword(Guid.NewGuid(),"Directory","synthetic-two","",true,created.AddDays(1),created.AddDays(5),"Archive",MatchDirectory:Path.Combine(data,"source"));
         var named=new SavedPassword(Guid.NewGuid(),"Filename","synthetic-three","",true,created.AddDays(2),created.AddDays(4),MatchText:"trip");
         var duplicate=folder with{Id=Guid.NewGuid(),Name="Duplicate",CreatedAt=created.AddDays(9)};
@@ -44,6 +44,9 @@ internal static class DesktopPasswordMatchValidation
                         await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
                         var bounds=dialog.CloseMatchButton.TransformToAncestor(dialog).TransformBounds(new Rect(dialog.CloseMatchButton.RenderSize));
                         check($"matching dialog remains readable and closable {mode} {width}",dialog.MatchTable.ActualHeight>=80 && bounds.Bottom<=dialog.ActualHeight && dialog.CloseMatchButton.IsVisible);
+                        dialog.MatchTable.ScrollIntoView(view.Rows[0]);await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
+                        var displayed=DesktopReadabilityValidation.Descendants(dialog.MatchTable).OfType<TextBlock>().ToArray();
+                        check($"matching record name and primary reason remain complete {mode} {width}",new[]{view.Rows[0].Name,view.Rows[0].Reason,view.Rows[0].History}.All(value=>displayed.Any(text=>text.Text==value && DesktopReadabilityValidation.CompleteText(text))));
                         capture(dialog,$"next-password-match-{mode}-{width}");
                     }
                 }

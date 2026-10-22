@@ -121,6 +121,11 @@ internal static class DesktopUsabilityValidation
                 check($"six task filters reachable {mode} {width}",filters.Items.Count==6 && Fits(filters) && model.TaskFilterIndex==4);
             }
             else check($"six task filters reachable {mode} {width}",window.TaskFilterTabs.Items.Count==6 && Fits(window.TaskFilterTabs) && Descendants(window.TaskFilterTabs).OfType<ListBoxItem>().All(Fits));
+            if(!model.IsNarrow)
+            {
+                var filterRows=Descendants(window.TaskFilterTabs).OfType<ListBoxItem>().Select(item=>item.TransformToAncestor(window).Transform(new Point()).Y).ToArray();
+                check($"six task filters share one row {mode} {width}",filterRows.Length==6 && filterRows.Max()-filterRows.Min()<1);
+            }
             capture(window,$"usability-tasks-{mode}-{width}");
             model.Page=3;await Layout();
             check($"compression output summary and creation stay visible {mode} {width}",Fits(view.CompressionResultSummaryText) && Fits(view.CreateButton) && view.CompressionResultSummaryText.Text==model.CompressionResultSummary);

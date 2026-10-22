@@ -3420,10 +3420,10 @@
   <data name="Preview.FindPrevious" xml:space="preserve"><value>上一处 (Shift+F3)</value></data>
   <data name="Preview.FindNoMatch" xml:space="preserve"><value>未找到匹配文本</value></data>
   <data name="Preview.FindLocated" xml:space="preserve"><value>已定位匹配文本 · 到末尾后循环</value></data>
-  <data name="PasswordMatch.Title" xml:space="preserve"><value>试算已保存规则</value></data>
-  <data name="PasswordMatch.Summary" xml:space="preserve"><value>尝试顺序：{0} 项 · 未启用：{1} 项 · 相同密码已去重：{2} 项</value></data>
+  <data name="PasswordMatch.Title" xml:space="preserve"><value>密码尝试顺序</value></data>
+  <data name="PasswordMatch.Summary" xml:space="preserve"><value>候选 {0} 项 · 未启用 {1} 项 · 相同密码去重 {2} 项</value></data>
   <data name="PasswordMatch.Notice" xml:space="preserve"><value>关联优先，其次目录或文件名匹配，再按最近成功和创建时间排序。仅试算已保存规则，不验证密码。</value></data>
-  <data name="PasswordMatch.AutoTryOff" xml:space="preserve"><value>自动尝试已关闭。此处仅展示启用后已保存规则的顺序，不验证密码。</value></data>
+  <data name="PasswordMatch.AutoTryOff" xml:space="preserve"><value>自动尝试已关闭。此处预览启用后的候选顺序，不验证密码。</value></data>
   <data name="PasswordMatch.Associated" xml:space="preserve"><value>此前成功关联</value></data>
   <data name="PasswordMatch.Directory" xml:space="preserve"><value>目录规则命中</value></data>
   <data name="PasswordMatch.Name" xml:space="preserve"><value>文件名规则命中</value></data>

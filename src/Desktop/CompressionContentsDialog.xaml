@@ -7,13 +7,13 @@
       <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
       <TextBlock Text="{loc:Text Compression.ContentPreviewHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,6,0,0"/>
     </StackPanel>
-    <DataGrid x:Name="ContentTable" Grid.Row="2" ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" CanUserSortColumns="False" SelectionMode="Single" RowHeight="36" ColumnHeaderHeight="32" AutomationProperties.Name="{loc:Text Compression.PreviewContents}">
+    <DataGrid x:Name="ContentTable" Grid.Row="2" ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="False" CanUserSortColumns="False" SelectionMode="Single" RowHeight="36" ColumnHeaderHeight="32" ScrollViewer.HorizontalScrollBarVisibility="Auto" AutomationProperties.Name="{loc:Text Compression.PreviewContents}">
       <DataGrid.RowStyle><Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}"><Setter Property="ToolTip" Value="{Binding Path}"/></Style></DataGrid.RowStyle>
       <DataGrid.Columns>
-        <DataGridTextColumn Header="{loc:Text Compression.ContentState}" Binding="{Binding State}" Width="90" ElementStyle="{StaticResource TableText}"/>
-        <DataGridTextColumn Header="{loc:Text Compression.ContentPackage}" Binding="{Binding Package}" Width="140" ElementStyle="{StaticResource TableText}"/>
-        <DataGridTextColumn Header="{loc:Text Compression.ContentPath}" Binding="{Binding Path}" Width="*" MinWidth="160" ElementStyle="{StaticResource TableText}"/>
-        <DataGridTextColumn Header="{loc:Text T_301a69c74dfc}" Binding="{Binding SizeText}" Width="100" ElementStyle="{StaticResource TableText}"/>
+        <DataGridTextColumn Header="{loc:Text Compression.ContentState}" Binding="{Binding State}" Width="110" ElementStyle="{StaticResource TableText}"/>
+        <DataGridTextColumn Header="{loc:Text Compression.ContentPackage}" Binding="{Binding Package}" Width="118" ElementStyle="{StaticResource TableText}"/>
+        <DataGridTextColumn Header="{loc:Text Compression.ContentPath}" Binding="{Binding Path}" Width="*" MinWidth="140" ElementStyle="{StaticResource TableText}"/>
+        <DataGridTextColumn Header="{loc:Text Contents.CompactSize}" Binding="{Binding SizeText}" Width="80" ElementStyle="{StaticResource TableText}"/>
       </DataGrid.Columns>
     </DataGrid>
     <Button x:Name="ClosePreviewButton" Grid.Row="3" Content="{loc:Text Compression.CloseContents}" Click="OnClose" IsCancel="True" HorizontalAlignment="Right" Margin="0,12,0,0"/>
