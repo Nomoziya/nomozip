@@ -1,0 +1,1 @@
+{"runtime":"10.0.12","semanticCases":22,"before":{"milliseconds":110.6717,"allocatedBytes":190880040,"matches":233335,"calls":500000},"proposed":{"milliseconds":36.9446,"allocatedBytes":40,"matches":233335,"calls":500000},"current":{"milliseconds":91.8745,"allocatedBytes":190880040,"matches":233335,"calls":500000}}

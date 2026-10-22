@@ -1,0 +1,153 @@
+{
+  "passed": true,
+  "language": "en",
+  "architecture": "x64",
+  "checks": {
+    "existing vault without history receives reminder": true,
+    "successful export records protected backup status": true,
+    "new record triggers reminder": true,
+    "cancelled export preserves backup history": true,
+    "failed export preserves backup history": true,
+    "backup reminder fits light 1152": true,
+    "vault-light-1152 exact rendered viewport": true,
+    "cache cleanup fits light 1152": true,
+    "updates-light-1152 exact rendered viewport": true,
+    "backup reminder fits light 800": true,
+    "vault-light-800 exact rendered viewport": true,
+    "cache cleanup fits light 800": true,
+    "updates-light-800 exact rendered viewport": true,
+    "backup reminder fits dark 1152": true,
+    "vault-dark-1152 exact rendered viewport": true,
+    "cache cleanup fits dark 1152": true,
+    "updates-dark-1152 exact rendered viewport": true,
+    "backup reminder fits dark 800": true,
+    "vault-dark-800 exact rendered viewport": true,
+    "cache cleanup fits dark 800": true,
+    "updates-dark-800 exact rendered viewport": true,
+    "actual cleanup entry removes stale installer": true,
+    "updates-cleaned exact rendered viewport": true,
+    "reachable TaskPauseAction 23": true,
+    "paused row and detail actions use Fluent play icon": true,
+    "single pause leaves sibling progressing": true,
+    "global pause disables local resume": true,
+    "paused queue action uses Fluent play icon": true,
+    "global resume retains local pause": true,
+    "running queue action restores pause icon": true,
+    "single-task-paused exact rendered viewport": true,
+    "reachable TaskCancelAction 31": true,
+    "single cancel keeps other tasks and queued task successful": true,
+    "single cancellation clears running and pause state": true,
+    "reachable TaskPauseAction 34": true,
+    "reachable TaskPauseAction 35": true,
+    "actual single resume finishes original task": true,
+    "read failure exposes retry": true,
+    "reachable TaskRetryFailedAction 38": true,
+    "retry failed processes only failed extraction": true,
+    "reachable TaskRetryPasswordAction 40": true,
+    "manual retry uses password prompt and completes": true,
+    "unchecked manual password is not persisted": true,
+    "retry-completed exact rendered viewport": true
+  },
+  "viewports": [
+    {
+      "name": "vault-light-1152",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    },
+    {
+      "name": "updates-light-1152",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    },
+    {
+      "name": "vault-light-800",
+      "requestedWidth": 800,
+      "requestedHeight": 600,
+      "renderWidth": 800,
+      "renderHeight": 600,
+      "contentWidth": 798,
+      "contentHeight": 598
+    },
+    {
+      "name": "updates-light-800",
+      "requestedWidth": 800,
+      "requestedHeight": 600,
+      "renderWidth": 800,
+      "renderHeight": 600,
+      "contentWidth": 798,
+      "contentHeight": 598
+    },
+    {
+      "name": "vault-dark-1152",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    },
+    {
+      "name": "updates-dark-1152",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    },
+    {
+      "name": "vault-dark-800",
+      "requestedWidth": 800,
+      "requestedHeight": 600,
+      "renderWidth": 800,
+      "renderHeight": 600,
+      "contentWidth": 798,
+      "contentHeight": 598
+    },
+    {
+      "name": "updates-dark-800",
+      "requestedWidth": 800,
+      "requestedHeight": 600,
+      "renderWidth": 800,
+      "renderHeight": 600,
+      "contentWidth": 798,
+      "contentHeight": 598
+    },
+    {
+      "name": "updates-cleaned",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    },
+    {
+      "name": "single-task-paused",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    },
+    {
+      "name": "retry-completed",
+      "requestedWidth": 1152,
+      "requestedHeight": 768,
+      "renderWidth": 1152,
+      "renderHeight": 768,
+      "contentWidth": 1150,
+      "contentHeight": 766
+    }
+  ],
+  "error": null
+}

@@ -1,0 +1,962 @@
+[
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-contrast-1152",
+    "path": "x64/zh-CN/images/next-browser-grid-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-contrast-512",
+    "path": "x64/zh-CN/images/next-browser-grid-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-dark-1152",
+    "path": "x64/zh-CN/images/next-browser-grid-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-dark-512",
+    "path": "x64/zh-CN/images/next-browser-grid-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-light-1152",
+    "path": "x64/zh-CN/images/next-browser-grid-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-light-512",
+    "path": "x64/zh-CN/images/next-browser-grid-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-form-contrast-1152",
+    "path": "x64/zh-CN/images/next-content-form-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-form-contrast-800",
+    "path": "x64/zh-CN/images/next-content-form-contrast-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-form-dark-1152",
+    "path": "x64/zh-CN/images/next-content-form-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-form-dark-800",
+    "path": "x64/zh-CN/images/next-content-form-dark-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-form-light-1152",
+    "path": "x64/zh-CN/images/next-content-form-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-form-light-800",
+    "path": "x64/zh-CN/images/next-content-form-light-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-512",
+    "path": "x64/zh-CN/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-860",
+    "path": "x64/zh-CN/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-512",
+    "path": "x64/zh-CN/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-860",
+    "path": "x64/zh-CN/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-512",
+    "path": "x64/zh-CN/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-860",
+    "path": "x64/zh-CN/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-continuous-image",
+    "path": "x64/zh-CN/images/next-continuous-image.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-continuous-preview-dark",
+    "path": "x64/zh-CN/images/next-continuous-preview-dark.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-continuous-preview-high-contrast",
+    "path": "x64/zh-CN/images/next-continuous-preview-high-contrast.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-continuous-preview-light",
+    "path": "x64/zh-CN/images/next-continuous-preview-light.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-512",
+    "path": "x64/zh-CN/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-820",
+    "path": "x64/zh-CN/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-512",
+    "path": "x64/zh-CN/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-820",
+    "path": "x64/zh-CN/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-512",
+    "path": "x64/zh-CN/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-820",
+    "path": "x64/zh-CN/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-retry-edit-loaded",
+    "path": "x64/zh-CN/images/next-retry-edit-loaded.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "zh-CN",
+    "name": "next-retry-task-details",
+    "path": "x64/zh-CN/images/next-retry-task-details.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-browser-grid-contrast-1152",
+    "path": "x64/en/images/next-browser-grid-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-browser-grid-contrast-512",
+    "path": "x64/en/images/next-browser-grid-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-browser-grid-dark-1152",
+    "path": "x64/en/images/next-browser-grid-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-browser-grid-dark-512",
+    "path": "x64/en/images/next-browser-grid-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-browser-grid-light-1152",
+    "path": "x64/en/images/next-browser-grid-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-browser-grid-light-512",
+    "path": "x64/en/images/next-browser-grid-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-form-contrast-1152",
+    "path": "x64/en/images/next-content-form-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-form-contrast-800",
+    "path": "x64/en/images/next-content-form-contrast-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-form-dark-1152",
+    "path": "x64/en/images/next-content-form-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-form-dark-800",
+    "path": "x64/en/images/next-content-form-dark-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-form-light-1152",
+    "path": "x64/en/images/next-content-form-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-form-light-800",
+    "path": "x64/en/images/next-content-form-light-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-contrast-512",
+    "path": "x64/en/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-contrast-860",
+    "path": "x64/en/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-dark-512",
+    "path": "x64/en/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-dark-860",
+    "path": "x64/en/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-light-512",
+    "path": "x64/en/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-content-preview-light-860",
+    "path": "x64/en/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-continuous-image",
+    "path": "x64/en/images/next-continuous-image.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-continuous-preview-dark",
+    "path": "x64/en/images/next-continuous-preview-dark.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-continuous-preview-high-contrast",
+    "path": "x64/en/images/next-continuous-preview-high-contrast.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-continuous-preview-light",
+    "path": "x64/en/images/next-continuous-preview-light.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-dark-512",
+    "path": "x64/en/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-dark-820",
+    "path": "x64/en/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-512",
+    "path": "x64/en/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-820",
+    "path": "x64/en/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-light-512",
+    "path": "x64/en/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-password-match-light-820",
+    "path": "x64/en/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-retry-edit-loaded",
+    "path": "x64/en/images/next-retry-edit-loaded.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "x64",
+    "language": "en",
+    "name": "next-retry-task-details",
+    "path": "x64/en/images/next-retry-task-details.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-contrast-1152",
+    "path": "arm64/zh-CN/images/next-browser-grid-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-contrast-512",
+    "path": "arm64/zh-CN/images/next-browser-grid-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-dark-1152",
+    "path": "arm64/zh-CN/images/next-browser-grid-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-dark-512",
+    "path": "arm64/zh-CN/images/next-browser-grid-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-light-1152",
+    "path": "arm64/zh-CN/images/next-browser-grid-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-browser-grid-light-512",
+    "path": "arm64/zh-CN/images/next-browser-grid-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-form-contrast-1152",
+    "path": "arm64/zh-CN/images/next-content-form-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-form-contrast-800",
+    "path": "arm64/zh-CN/images/next-content-form-contrast-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-form-dark-1152",
+    "path": "arm64/zh-CN/images/next-content-form-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-form-dark-800",
+    "path": "arm64/zh-CN/images/next-content-form-dark-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-form-light-1152",
+    "path": "arm64/zh-CN/images/next-content-form-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-form-light-800",
+    "path": "arm64/zh-CN/images/next-content-form-light-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-512",
+    "path": "arm64/zh-CN/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-contrast-860",
+    "path": "arm64/zh-CN/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-512",
+    "path": "arm64/zh-CN/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-dark-860",
+    "path": "arm64/zh-CN/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-512",
+    "path": "arm64/zh-CN/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-content-preview-light-860",
+    "path": "arm64/zh-CN/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-continuous-image",
+    "path": "arm64/zh-CN/images/next-continuous-image.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-continuous-preview-dark",
+    "path": "arm64/zh-CN/images/next-continuous-preview-dark.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-continuous-preview-high-contrast",
+    "path": "arm64/zh-CN/images/next-continuous-preview-high-contrast.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-continuous-preview-light",
+    "path": "arm64/zh-CN/images/next-continuous-preview-light.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-512",
+    "path": "arm64/zh-CN/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-dark-820",
+    "path": "arm64/zh-CN/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-512",
+    "path": "arm64/zh-CN/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-high-contrast-820",
+    "path": "arm64/zh-CN/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-512",
+    "path": "arm64/zh-CN/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-password-match-light-820",
+    "path": "arm64/zh-CN/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-retry-edit-loaded",
+    "path": "arm64/zh-CN/images/next-retry-edit-loaded.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "zh-CN",
+    "name": "next-retry-task-details",
+    "path": "arm64/zh-CN/images/next-retry-task-details.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-browser-grid-contrast-1152",
+    "path": "arm64/en/images/next-browser-grid-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-browser-grid-contrast-512",
+    "path": "arm64/en/images/next-browser-grid-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-browser-grid-dark-1152",
+    "path": "arm64/en/images/next-browser-grid-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-browser-grid-dark-512",
+    "path": "arm64/en/images/next-browser-grid-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-browser-grid-light-1152",
+    "path": "arm64/en/images/next-browser-grid-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-browser-grid-light-512",
+    "path": "arm64/en/images/next-browser-grid-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-form-contrast-1152",
+    "path": "arm64/en/images/next-content-form-contrast-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-form-contrast-800",
+    "path": "arm64/en/images/next-content-form-contrast-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-form-dark-1152",
+    "path": "arm64/en/images/next-content-form-dark-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-form-dark-800",
+    "path": "arm64/en/images/next-content-form-dark-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-form-light-1152",
+    "path": "arm64/en/images/next-content-form-light-1152.png",
+    "width": 1152,
+    "height": 768
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-form-light-800",
+    "path": "arm64/en/images/next-content-form-light-800.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-contrast-512",
+    "path": "arm64/en/images/next-content-preview-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-contrast-860",
+    "path": "arm64/en/images/next-content-preview-contrast-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-dark-512",
+    "path": "arm64/en/images/next-content-preview-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-dark-860",
+    "path": "arm64/en/images/next-content-preview-dark-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-light-512",
+    "path": "arm64/en/images/next-content-preview-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-content-preview-light-860",
+    "path": "arm64/en/images/next-content-preview-light-860.png",
+    "width": 860,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-continuous-image",
+    "path": "arm64/en/images/next-continuous-image.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-continuous-preview-dark",
+    "path": "arm64/en/images/next-continuous-preview-dark.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-continuous-preview-high-contrast",
+    "path": "arm64/en/images/next-continuous-preview-high-contrast.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-continuous-preview-light",
+    "path": "arm64/en/images/next-continuous-preview-light.png",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-dark-512",
+    "path": "arm64/en/images/next-password-match-dark-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-dark-820",
+    "path": "arm64/en/images/next-password-match-dark-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-512",
+    "path": "arm64/en/images/next-password-match-high-contrast-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-high-contrast-820",
+    "path": "arm64/en/images/next-password-match-high-contrast-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-light-512",
+    "path": "arm64/en/images/next-password-match-light-512.png",
+    "width": 512,
+    "height": 360
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-password-match-light-820",
+    "path": "arm64/en/images/next-password-match-light-820.png",
+    "width": 820,
+    "height": 560
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-retry-edit-loaded",
+    "path": "arm64/en/images/next-retry-edit-loaded.png",
+    "width": 1152,
+    "height": 600
+  },
+  {
+    "arch": "arm64",
+    "language": "en",
+    "name": "next-retry-task-details",
+    "path": "arm64/en/images/next-retry-task-details.png",
+    "width": 1152,
+    "height": 600
+  }
+]

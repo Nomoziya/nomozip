@@ -1,6 +1,6 @@
 # nomozip UI 修改入口
 
-## 2026-10-22规范内扩展（实施中，待CI验收）
+## 2026-10-22规范内扩展（代理验收完成，未合并/发布）
 
 - 搜索结果列表主行显示文件名，次行显示目录；网格分开文件名主体和扩展名，目录为辅助文字，全路径可从提示访问。保留132 DIP卡片和虚拟化；512×360短窗收起网格大图标，保留28 DIP复选区域、卡片内边距4 DIP，名称/目录/大小/复选入口保留。短窗搜索范围控件28 DIP，常规34 DIP，与“仅看已选”同行换行，不得裁切第一条结果。
 - 范围为整个压缩包/当前目录及子目录，仅看已选恢复全包。“更多→定位所在目录”清查询并选中、滚动到原条目，不改变选择/提取范围。
@@ -8,7 +8,7 @@
 - 压缩失败的任务详情和菜单增加重试、修改后创建；按原参数重试不改压缩页草稿，修改入口明确会替换当前输入。原输出编号保留，状态说明来源重读及使用当前启用引擎；取消停止后续任务。短窗更多按钮仅图标，保留文字提示/可访问名称，减少工具栏换行以留出完整文件卡片。
 - 连续预览沿用侧栏；前后切换及位置计数常驻内容标题下，按打开时筛选/排序快照并跳过不支持项，Ctrl+PageUp/PageDown。文本查找按需展开，Ctrl+F与F3/Shift+F3，Enter查找下一处、Esc收起，纯文字、不区分大小写、到末尾循环；保留高亮但不抢输入焦点。读取中阻止重复切换，关闭取消，错误后允许继续浏览。
 - 密码库更多菜单增加“试算已保存规则”，选择归档后展示实际候选顺序、记录/分组及匹配原因，不展示密码、不验证或写库；已关闭自动尝试时明确该状态。长原因可水平滚动与提示查看；512×360保持列表和关闭入口。
-- 入口：ArchiveBrowsingSearch/ArchiveContentsDialog、CompressionExclusions/CompressionSources、CompressionContentViewModel/CompressionContentsDialog。WPF及真实引擎检查未通过前不标为已验收；当前CI与失败修复只记录于CURRENT_STATE。
+- 入口：ArchiveBrowsingSearch/ArchiveContentsDialog、CompressionExclusions/CompressionSources、CompressionContentViewModel/CompressionContentsDialog。最终9d606a3的x64/原生ARM64 CI及中英新增流程各243项通过；120张原图、60份报告与具体边界见[验收入口](../design-system/reference-20261017/next-usability-20261022/index.html)和CURRENT_STATE。没有真人研究或真实系统高对比/多屏验收声明。
 
 ## P2规范内扩展（2026-10-21，候选完成待体验确认）
 
