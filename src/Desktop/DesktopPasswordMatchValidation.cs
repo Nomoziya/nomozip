@@ -47,10 +47,13 @@ internal static class DesktopPasswordMatchValidation
                         theme.SetMode(mode=="dark"?"dark":"light");theme.Apply(mode=="high-contrast");dialog.MinWidth=0;dialog.MinHeight=0;dialog.Width=width;dialog.Height=width==512?360:560;
                         await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
                         var bounds=dialog.CloseMatchButton.TransformToAncestor(dialog).TransformBounds(new Rect(dialog.CloseMatchButton.RenderSize));
-                        check($"matching dialog remains readable and closable {mode} {width}",dialog.MatchTable.ActualHeight>=80 && bounds.Bottom<=dialog.ActualHeight && dialog.CloseMatchButton.IsVisible);
+                        check($"matching dialog remains readable and closable {mode} {width}",dialog.MatchTable.ActualHeight>=80 && bounds.Left>=0 && bounds.Top>=0 && bounds.Right<=dialog.ActualWidth && bounds.Bottom<=dialog.ActualHeight && dialog.CloseMatchButton.IsVisible);
                         dialog.MatchTable.ScrollIntoView(view.Rows[0]);await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
                         var displayed=DesktopReadabilityValidation.Descendants(dialog.MatchTable).OfType<TextBlock>().ToArray();
                         check($"matching record name and primary reason remain complete {mode} {width}",new[]{view.Rows[0].Name,view.Rows[0].Reason,view.Rows[0].History}.All(value=>displayed.Any(text=>text.Text==value && DesktopReadabilityValidation.CompleteText(text))));
+                        // A resized, transparent Window can retain its previous drawing until Render runs.
+                        dialog.Opacity=1;
+                        await dialog.Dispatcher.InvokeAsync(dialog.UpdateLayout,DispatcherPriority.ApplicationIdle);
                         capture(dialog,$"next-password-match-{mode}-{width}");
                     }
                 }
