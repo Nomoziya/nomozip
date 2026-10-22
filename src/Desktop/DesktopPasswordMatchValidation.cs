@@ -1,5 +1,7 @@
 using System.IO;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using ArchivePassword.Core;
@@ -59,9 +61,17 @@ internal static class DesktopPasswordMatchValidation
         var model=new MainViewModel(baseDirectory,data,vault,dialogs);await model.InitializeAsync();model.AutoTry=false;window.DataContext=model;model.Page=1;
         await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
         var menu=await DesktopMenuValidation.OpenAsync(window,window.VaultMoreAction);
-        check("saved-rule preview is reachable through vault menu",menu.Items.OfType<MenuItem>().Any(item=>ReferenceEquals(item.Command,model.ExplainPasswordMatchesCommand) && DesktopMenuValidation.Reachable(item)));menu.IsOpen=false;
+        var action=menu.Items.OfType<MenuItem>().Single(item=>ReferenceEquals(item.Command,model.ExplainPasswordMatchesCommand));
+        check("saved-rule preview is reachable through vault menu",DesktopMenuValidation.Reachable(action) && action.IsEnabled);
         check($"matching preview action enabled (idle={model.IsIdle}, locked={model.VaultLocked}, records={model.PasswordRows.Count}, banner={model.Banner})",model.ExplainPasswordMatchesCommand.CanExecute(null));
-        await DesktopMenuValidation.InvokeAsync(window,window.VaultMoreAction,model.ExplainPasswordMatchesCommand);await model.WaitForIdleAsync();if(failure is not null)throw failure;
+        try
+        {
+            ((IInvokeProvider)UIElementAutomationPeer.CreatePeerForElement(action)!.GetPattern(PatternInterface.Invoke)).Invoke();
+            await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
+            await model.WaitForIdleAsync();
+        }
+        finally {menu.IsOpen=false;}
+        if(failure is not null)throw failure;
         var unchanged=Enumerable.SequenceEqual(before,await File.ReadAllBytesAsync(vaultPath));var extracted=Directory.Exists(Path.GetDirectoryName(archive));
         check($"matching preview opens and never writes or extracts (shown={shown}, unchanged={unchanged}, extracted={extracted}, banner={model.Banner})",shown && unchanged && !extracted);
         await vault.EnableMasterPasswordAsync("synthetic-master-password");await vault.LockAsync();await model.InitializeAsync();
