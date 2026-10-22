@@ -3383,4 +3383,23 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Browser.ScopeHint" xml:space="preserve"><value>Search and advanced filters use this scope. Selected only returns to the entire archive.</value></data>
   <data name="Browser.ArchiveRoot" xml:space="preserve"><value>Archive root</value></data>
   <data name="Browser.LocateEntry" xml:space="preserve"><value>Show in containing folder</value></data>
+  <data name="Compression.ContentRules" xml:space="preserve"><value>Content exclusions and preview</value></data>
+  <data name="Compression.ExcludeDirectories" xml:space="preserve"><value>Exclude folder names (any depth)</value></data>
+  <data name="Compression.ExcludeDirectoriesHint" xml:space="preserve"><value>Enter folder names at any depth, separated by semicolons, e.g. cache;node_modules. Everything is included by default.</value></data>
+  <data name="Compression.ExcludeExtensions" xml:space="preserve"><value>Exclude file types</value></data>
+  <data name="Compression.ExcludeExtensionsHint" xml:space="preserve"><value>Separate extensions with semicolons, e.g. tmp;log;tar.gz.</value></data>
+  <data name="Compression.ExclusionError" xml:space="preserve"><value>Enter folder names or file extensions separated by semicolons. Folder names must not contain path separators or wildcards.</value></data>
+  <data name="Compression.RuleCount" xml:space="preserve"><value>Content exclusion rules: {0}</value></data>
+  <data name="Compression.LastPreview" xml:space="preserve"><value>Last preview: {0}</value></data>
+  <data name="Compression.Included" xml:space="preserve"><value>Included</value></data>
+  <data name="Compression.Excluded" xml:space="preserve"><value>Excluded</value></data>
+  <data name="Compression.ScanningContents" xml:space="preserve"><value>Scanning archive contents… Close this window to cancel.</value></data>
+  <data name="Compression.ContentCounts" xml:space="preserve"><value>Files: {0} · Folders: {1} · Source: {2:N0} B · Excluded items: {3}</value></data>
+  <data name="Compression.ContentScanFailed" xml:space="preserve"><value>Cannot read the sources. Check whether they moved or access was denied, then preview again.</value></data>
+  <data name="Compression.ContentPreviewHint" xml:space="preserve"><value>Contents of excluded folders are not scanned. Sources are scanned again when creating; source size is not the resulting archive size.</value></data>
+  <data name="Compression.PreviewContents" xml:space="preserve"><value>Preview archive contents</value></data>
+  <data name="Compression.ContentState" xml:space="preserve"><value>Action</value></data>
+  <data name="Compression.ContentPackage" xml:space="preserve"><value>Archive</value></data>
+  <data name="Compression.ContentPath" xml:space="preserve"><value>Archive path</value></data>
+  <data name="Compression.CloseContents" xml:space="preserve"><value>Close</value></data>
 </root>

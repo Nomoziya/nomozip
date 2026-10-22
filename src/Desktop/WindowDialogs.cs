@@ -14,8 +14,11 @@ public sealed class WindowDialogs(Window owner, Action<PasswordDialog>? prepareD
     Action<MasterPasswordDialog>? prepareMaster = null, Func<int,bool>? confirmVaultRecovery = null,
     Func<ArchiveEditAction,string[]>? selectArchiveEditSources=null,Func<ArchiveEditAction,int,int,bool>? confirmArchiveEdit=null,Action<ArchiveConversionDialog>? prepareConversion=null,Func<string,bool>? confirmConversionReplace=null,
     Action<ArchivePreviewDialog>? preparePreview=null,Func<string,bool>? confirmApplicationInstall=null,Func<string,bool>? confirmDiscardCheckpoint=null,
-    Action<ExistingFileDialog>? prepareConflict=null,Action<ArchiveTextEditDialog>? prepareTextEdit=null,Action<ArchiveEditConfirmDialog>? prepareEditConfirm=null)
+    Action<ExistingFileDialog>? prepareConflict=null,Action<ArchiveTextEditDialog>? prepareTextEdit=null,Action<ArchiveEditConfirmDialog>? prepareEditConfirm=null,
+    Action<CompressionContentsDialog>? prepareCompressionContents=null)
 {
+    public void ShowCompressionContents(CompressionContentsViewModel model)
+    {var dialog=new CompressionContentsDialog(model){Owner=owner};prepareCompressionContents?.Invoke(dialog);dialog.ShowDialog();}
     public bool ConfirmWorkspaceExtraction(int? count=null,int? selectedItemCount=null) => prepareContents is not null || owner is not MainWindow main || main.ConfirmExtractionOptions(count,selectedItemCount);
     public bool ConfirmDiscardCheckpoint(string name)=>confirmDiscardCheckpoint?.Invoke(name) ?? MessageBox.Show(owner,
         UiText.Format("Checkpoint.DiscardPrompt",name),UiText.Get("Checkpoint.Discard"),MessageBoxButton.YesNo,MessageBoxImage.Question,MessageBoxResult.No)==MessageBoxResult.Yes;

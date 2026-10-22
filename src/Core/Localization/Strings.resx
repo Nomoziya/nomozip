@@ -3383,4 +3383,23 @@
   <data name="Browser.ScopeHint" xml:space="preserve"><value>搜索和高级筛选使用此范围；仅看已选会恢复整个压缩包。</value></data>
   <data name="Browser.ArchiveRoot" xml:space="preserve"><value>压缩包根目录</value></data>
   <data name="Browser.LocateEntry" xml:space="preserve"><value>定位所在目录</value></data>
+  <data name="Compression.ContentRules" xml:space="preserve"><value>内容排除与预览</value></data>
+  <data name="Compression.ExcludeDirectories" xml:space="preserve"><value>排除目录名（任意层级）</value></data>
+  <data name="Compression.ExcludeDirectoriesHint" xml:space="preserve"><value>填写任意层级的目录名称，以分号分隔，如 cache;node_modules。默认全部包含。</value></data>
+  <data name="Compression.ExcludeExtensions" xml:space="preserve"><value>排除文件类型</value></data>
+  <data name="Compression.ExcludeExtensionsHint" xml:space="preserve"><value>以分号分隔扩展名，如 tmp;log;tar.gz。</value></data>
+  <data name="Compression.ExclusionError" xml:space="preserve"><value>填写目录名称或文件扩展名，并用分号分隔；目录名称不能包含路径分隔符或通配符。</value></data>
+  <data name="Compression.RuleCount" xml:space="preserve"><value>已设置 {0} 条内容排除规则</value></data>
+  <data name="Compression.LastPreview" xml:space="preserve"><value>上次预览：{0}</value></data>
+  <data name="Compression.Included" xml:space="preserve"><value>包含</value></data>
+  <data name="Compression.Excluded" xml:space="preserve"><value>排除</value></data>
+  <data name="Compression.ScanningContents" xml:space="preserve"><value>正在扫描压缩内容…关闭窗口可取消。</value></data>
+  <data name="Compression.ContentCounts" xml:space="preserve"><value>文件 {0} · 目录 {1} · 源大小 {2:N0} B · 排除项 {3}</value></data>
+  <data name="Compression.ContentScanFailed" xml:space="preserve"><value>无法读取压缩来源。检查来源是否移动或无权访问，然后重新预览。</value></data>
+  <data name="Compression.ContentPreviewHint" xml:space="preserve"><value>排除目录的子内容不扫描。创建时重新扫描；源大小不代表生成包大小。</value></data>
+  <data name="Compression.PreviewContents" xml:space="preserve"><value>预览压缩内容</value></data>
+  <data name="Compression.ContentState" xml:space="preserve"><value>处理方式</value></data>
+  <data name="Compression.ContentPackage" xml:space="preserve"><value>生成包</value></data>
+  <data name="Compression.ContentPath" xml:space="preserve"><value>包内路径</value></data>
+  <data name="Compression.CloseContents" xml:space="preserve"><value>关闭</value></data>
 </root>

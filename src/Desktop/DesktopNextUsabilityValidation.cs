@@ -23,7 +23,11 @@ internal static class DesktopNextUsabilityValidation
         bool Fits(FrameworkElement element)
         {
             var rect=element.TransformToAncestor(browser).TransformBounds(new Rect(element.RenderSize));
-            return element.IsVisible && rect.Left>=0 && rect.Top>=0 && rect.Right<=browser.ActualWidth+1 && rect.Bottom<=browser.ActualHeight+1;
+            if(!element.IsVisible || rect.Left<0 || rect.Top<0 || rect.Right>browser.ActualWidth+1 || rect.Bottom>browser.ActualHeight+1)return false;
+            for(var parent=VisualTreeHelper.GetParent(element);parent is not null && parent!=browser;parent=VisualTreeHelper.GetParent(parent))
+                if(parent is FrameworkElement region && (region.ClipToBounds || region is ScrollContentPresenter))
+                {var bounds=element.TransformToAncestor(region).TransformBounds(new Rect(element.RenderSize));if(bounds.Left < -1 || bounds.Top < -1 || bounds.Right>region.ActualWidth+1 || bounds.Bottom>region.ActualHeight+1)return false;}
+            return true;
         }
         try
         {
@@ -35,7 +39,7 @@ internal static class DesktopNextUsabilityValidation
             check("next browser folder scope includes descendants and excludes common prefixes",model.VisibleRows.Count==2 && model.VisibleRows.All(row=>row.Path.StartsWith("alpha/")));
             check("next browser scoped search preserves hidden selection",model.SelectedEntries is [{Path:"beta/report.txt"}]);
             model.ShowSelectedOnly=true;await Layout();
-            check("next browser selected-only restores global scope and reveals hidden selection",model.SearchScopeIndex==0 && model.VisibleRows.Count==1 && model.VisibleRows[0]==selected);
+            check("next browser selected-only restores global scope and reveals hidden selection",model.SearchScopeIndex==0 && model.VisibleRows.Contains(selected) && model.VisibleRows.All(row=>row.Selected) && model.SelectedEntries is [{Path:"beta/report.txt"}]);
             model.ShowSelectedOnly=false;model.Search="report";model.CurrentRow=selected;await Layout();
             browser.EditContentsMenu.PlacementTarget=browser.EditContentsButton;browser.EditContentsMenu.IsOpen=true;await Layout();
             check("next browser locate action is enabled in the real menu",browser.LocateCurrentEntryAction.IsEnabled);

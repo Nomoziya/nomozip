@@ -18,7 +18,7 @@ public sealed class VolumeCompressionService(IArchiveCreator creator,IArchiveEng
             && Path.GetFileName(path)[prefix.Length..] is var suffix && suffix.Length>=3 && suffix.All(char.IsAsciiDigit));
     }
     public async Task<CompressionOutcome> CreateAsync(IEnumerable<string> sources,string output,string format,int level,string? password,bool headers,
-        ulong size,IProgress<TaskUpdate>? progress=null,CancellationToken token=default)
+        ulong size,IProgress<TaskUpdate>? progress=null,CancellationToken token=default,CompressionExclusions? exclusions=null)
     {
         string? staging=null;string? parent=null;var committed=new List<string>();bool delivered=false;
         CompressionOutcome Failure(string code)=>new(new EngineResult {Code=code},output);
@@ -30,7 +30,7 @@ public sealed class VolumeCompressionService(IArchiveCreator creator,IArchiveEng
             output=Path.GetFullPath(output);parent=Path.GetDirectoryName(output)!;
             if(HasExistingTarget(output)) return Failure("output_exists");
             progress?.Report(new("preparing",UiText.Get("T_0a82b3e79473")));
-            var entries=await CompressionSources.CollectAsync(sources,output,token);
+            var entries=await CompressionSources.CollectAsync(sources,output,token,exclusions);
             if(entries.Count==0) return Failure("empty_sources");
             Directory.CreateDirectory(parent);staging=Path.Combine(parent,".nomozip-volumes-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(staging);
             var stagedBase=Path.Combine(staging,Path.GetFileName(output));

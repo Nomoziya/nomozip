@@ -13,9 +13,9 @@ public sealed class CompressionService(IArchiveCreator creator, IArchiveEngine v
 {
     public async Task<CompressionOutcome> CreateAsync(IEnumerable<string> sources, string outputPath, string format,
         int level = 5, string? password = null, bool encryptHeaders = true, bool replace = false,
-        IProgress<TaskUpdate>? progress = null, CancellationToken cancellationToken = default,ulong volumeSize=0)
+        IProgress<TaskUpdate>? progress = null, CancellationToken cancellationToken = default,ulong volumeSize=0,CompressionExclusions? exclusions=null)
     {
-        if(volumeSize>0) return await new VolumeCompressionService(creator,validator).CreateAsync(sources,outputPath,format,level,password,encryptHeaders,volumeSize,progress,cancellationToken);
+        if(volumeSize>0) return await new VolumeCompressionService(creator,validator).CreateAsync(sources,outputPath,format,level,password,encryptHeaders,volumeSize,progress,cancellationToken,exclusions);
         string? temporary = null;
         EngineResult Failure(string code) => new() { Code = code };
         try
@@ -27,7 +27,7 @@ public sealed class CompressionService(IArchiveCreator creator, IArchiveEngine v
             var destination = Path.GetFullPath(outputPath);
             if (File.Exists(destination) && !replace) return new(Failure("output_exists"), destination);
             progress?.Report(new("preparing", UiText.Get("T_1db01e54aa3c")));
-            var entries=await CompressionSources.CollectAsync(sources,destination,cancellationToken);
+            var entries=await CompressionSources.CollectAsync(sources,destination,cancellationToken,exclusions);
             if (entries.Count == 0) return new(Failure("empty_sources"), destination);
             if (options.SingleFile && (entries.Count != 1 || entries[0].Directory)) return new(Failure("format_single_file_required"), destination);
             Directory.CreateDirectory(Path.GetDirectoryName(destination)!);

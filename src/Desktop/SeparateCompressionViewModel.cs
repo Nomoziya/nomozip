@@ -13,6 +13,7 @@ public sealed partial class MainViewModel
         set
         {
             if(!IsIdle || !Set(ref compressionSeparate,value))return;
+            InvalidateCompressionContents();
             CompressionCapabilitiesChanged();Changed(nameof(CompressionSourceSummary));Changed(nameof(CompressionOutputFileName));
             Changed(nameof(CompressionOutputTarget));Changed(nameof(CompressionNameInput));
         }
@@ -37,8 +38,8 @@ public sealed partial class MainViewModel
     }
     private Task<CompressionOutcome> CreateCompressionItemAsync(IReadOnlyList<string> sources,string output,SfxModule? module,
         ArchiveEngineClient client,bool replace,ulong volumeSize,IProgress<TaskUpdate> progress,CancellationToken token)=>module is not null
-        ?new SfxCompressionService(client,client).CreateAsync(sources,output,module,new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,token)
-        :new CompressionService(client,client).CreateAsync(sources,output,CompressionFormatName,new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,token,volumeSize);
+        ?new SfxCompressionService(client,client).CreateAsync(sources,output,module,new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,token,CompressionRules)
+        :new CompressionService(client,client).CreateAsync(sources,output,CompressionFormatName,new[]{0,1,5,7,9}[CompressionLevel],CompressionEncrypt?compressionPassword?.Secret:null,CompressionHeaders,replace,progress,token,volumeSize,CompressionRules);
 
     private async Task RecordCompressionPasswordAsync(string output)
     {

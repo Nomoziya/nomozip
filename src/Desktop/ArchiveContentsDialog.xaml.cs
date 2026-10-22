@@ -68,6 +68,8 @@ public partial class ArchiveContentsDialog : Window
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
             EditContentsButton.Visibility = Visibility.Visible;
             var shortArea=EmbeddedClose is null && BrowserRoot.ActualHeight<480;
+            SearchScopePanel.Margin=new Thickness(8,shortArea?0:2,8,0);
+            SearchScopeBox.MinHeight=SearchScopeBox.Height=shortArea?28:34;
             SelectedOnlyBox.Margin=new Thickness(0,shortArea?0:4,16,0);
             EntryTiles.Tag=shortArea && BrowserRoot.ActualHeight<400;
             AdvancedFilters.Margin=new Thickness(8,shortArea?2:8,8,0);

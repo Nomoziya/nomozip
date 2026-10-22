@@ -29,6 +29,7 @@ foreach (var version in versions)
 {
     var client = new ArchiveEngineClient(Path.Combine(root, "artifacts/worker/ArchiveEngineWorker.exe"), Path.Combine(root, "engines", version, "7z.dll"));
     var service = new CompressionService(client, client);
+    await CompressionExclusionsValidation.RunAsync(folder,version,client,Check);
     foreach (var level in new[] { 0, 9 })
     {
         var archive = Path.Combine(folder, $"{version}-level-{level}.7z");

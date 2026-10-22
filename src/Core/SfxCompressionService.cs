@@ -2,7 +2,7 @@ namespace ArchivePassword.Core;
 public sealed class SfxCompressionService(IArchiveCreator creator,IArchiveEngine validator)
 {
     public async Task<CompressionOutcome> CreateAsync(IEnumerable<string> sources,string output,SfxModule module,int level=5,string? password=null,
-        bool encryptHeaders=true,bool replace=false,IProgress<TaskUpdate>? progress=null,CancellationToken token=default)
+        bool encryptHeaders=true,bool replace=false,IProgress<TaskUpdate>? progress=null,CancellationToken token=default,CompressionExclusions? exclusions=null)
     {
         string? archive=null,executable=null;
         CompressionOutcome Failure(string code)=>new(new EngineResult {Code=code},output);
@@ -12,7 +12,7 @@ public sealed class SfxCompressionService(IArchiveCreator creator,IArchiveEngine
             if(level is not (0 or 1 or 3 or 5 or 7 or 9)) return Failure("invalid_compression_options");
             if(!Path.GetExtension(output).Equals(".exe",StringComparison.OrdinalIgnoreCase)) return Failure("sfx_output_extension");
             output=Path.GetFullPath(output);if(File.Exists(output) && !replace) return Failure("output_exists");
-            var entries=await CompressionSources.CollectAsync(sources,output,token);if(entries.Count==0) return Failure("empty_sources");
+            var entries=await CompressionSources.CollectAsync(sources,output,token,exclusions);if(entries.Count==0) return Failure("empty_sources");
             Directory.CreateDirectory(Path.GetDirectoryName(output)!);var stem=Path.Combine(Path.GetDirectoryName(output)!,".nomozip-sfx-"+Guid.NewGuid().ToString("N"));archive=stem+".7z";executable=stem+".exe";
             progress?.Report(new("compressing",UiText.Get("T_0a3e6b6afda3")));
             var created=await creator.CreateAsync(new(entries,"7z",level,encryptHeaders),archive,password,new ForwardProgress<EngineProgress>(value=>progress?.Report(new("compressing",UiText.Get("T_0a3e6b6afda3"),value))),token);

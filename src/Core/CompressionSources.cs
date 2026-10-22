@@ -1,7 +1,8 @@
 namespace ArchivePassword.Core;
 internal static class CompressionSources
 {
-    internal static async Task<IReadOnlyList<CompressionEntry>> CollectAsync(IEnumerable<string> sources,string destination,CancellationToken cancellationToken)
+    internal static async Task<IReadOnlyList<CompressionEntry>> CollectAsync(IEnumerable<string> sources,string destination,CancellationToken cancellationToken,
+        CompressionExclusions? exclusions=null,Action<CompressionEntry>? excluded=null)
     {
         var entries=new List<CompressionEntry>();
         var paths = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -12,10 +13,11 @@ internal static class CompressionSources
             source = Path.GetFullPath(source);
             if (source.Equals(destination, StringComparison.OrdinalIgnoreCase) || !sourcePaths.Add(source)) return;
             var attributes = File.GetAttributes(source);
+            var directory = (attributes & FileAttributes.Directory) != 0;
+            if(exclusions?.Excludes(name,directory)==true){excluded?.Invoke(new(source,name,directory));return;}
             if ((attributes & FileAttributes.ReparsePoint) != 0) throw new InvalidDataException("unsupported_link");
             if (paths.TryGetValue(name, out var previous) && !previous.Equals(source, StringComparison.OrdinalIgnoreCase)) throw new InvalidDataException("duplicate_archive_path");
             paths[name] = source;
-            var directory = (attributes & FileAttributes.Directory) != 0;
             entries.Add(new(source, name, directory));
             if (directory)
                 foreach (var child in Directory.EnumerateFileSystemEntries(source)) Include(child, name + "/" + Path.GetFileName(child));

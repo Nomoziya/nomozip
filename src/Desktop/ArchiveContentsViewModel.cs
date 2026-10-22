@@ -376,7 +376,9 @@ public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=fals
     private readonly string displayName=System.IO.Path.GetFileName(entry.Path.Replace('\\','/').TrimEnd('/'));
     internal string Name=>displayName;
     public string FileName=>displayName;
-    private readonly string extension=entry.Directory?"":System.IO.Path.GetExtension(entry.Path);
+    private readonly string extension=FileExtension(entry.Path,entry.Directory);
+    private static string FileExtension(string path,bool directory)
+    {var name=System.IO.Path.GetFileName(path);var dot=name.LastIndexOf('.');return directory || dot<=0?"":name[dot..];}
     public string Extension=>extension;
     public string FileStem=>extension.Length==0?displayName:displayName[..^extension.Length];
     public string DirectoryLabel=>ShowPath?(ParentPath.Length>0?ParentPath:UiText.Get("Browser.ArchiveRoot")):"";

@@ -33,7 +33,7 @@ public sealed partial class MainViewModel
     public bool CanEncryptCompression => IsIdle && CompressionOptions.Encryption;
     public bool CanSetCompressionLevel => IsIdle && CompressionOptions.CompressionLevel;
     public bool CanSplitCompression => IsIdle && CompressionOptions.Encryption;
-    public string CompressionSourceError => CompressionSeparate?SeparateSourceError:CompressionOptions.SingleFile && CompressionSources.Count > 0
+    public string CompressionSourceError => CompressionExclusionError.Length>0?CompressionExclusionError:CompressionSeparate?SeparateSourceError:CompressionOptions.SingleFile && CompressionSources.Count > 0
         && (CompressionSources.Count != 1 || !File.Exists(CompressionSources[0].Path)) ? UiText.Get("T_238288d05599") : "";
     private void CompressionCapabilitiesChanged()
     {
@@ -108,7 +108,7 @@ public sealed partial class MainViewModel
     public string CreateArchiveCaption=>UiText.Format(CompressionSeparate?"Compression.SeparateCreate":"Compression.CreateCount",CompressionSources.Count);
     public string CompressionOutputFileName=>CompressionSeparate?UiText.Format("Compression.SeparateOutputs",CompressionSources.Count):Path.GetFileName(CompressionOutput);
     public string CompressionPasswordSummary => UiText.Get(compressionPassword is null ? "Redesign.PasswordNotSet" : "T_bb1057c00cf3");
-    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));Changed(nameof(CompressionOutputFileName));Changed(nameof(CompressionNameInput));Changed(nameof(CompressionOutputTarget));Changed(nameof(CompressionSourceError));CommandManager.InvalidateRequerySuggested();}} }
+    public string CompressionOutput { get => compressionOutput; set {if(Set(ref compressionOutput,value)) {InvalidateCompressionContents();createdCompressionPath="";Changed(nameof(CompressionOutputDirectory));Changed(nameof(CompressionOutputName));Changed(nameof(CompressionOutputFileName));Changed(nameof(CompressionNameInput));Changed(nameof(CompressionOutputTarget));Changed(nameof(CompressionSourceError));CommandManager.InvalidateRequerySuggested();}} }
     public string CompressionOutputDirectory
     {
         get {var slash=CompressionOutput.LastIndexOfAny(['\\','/']);return slash<0?"":CompressionOutput[..(slash==2 && CompressionOutput[1]==':'?slash+1:slash)];}
@@ -141,7 +141,7 @@ public sealed partial class MainViewModel
         SetCompressionPasswordCommand = new AsyncCommand(SetCompressionPasswordAsync, () => IsIdle && CompressionOptions.Encryption);
         CreateArchiveCommand = new AsyncCommand(CreateArchiveAsync, () => Page == 3 && IsIdle && CompressionSources.Count > 0 && !string.IsNullOrWhiteSpace(CompressionOutput) && (CompressionSeparate?!string.IsNullOrWhiteSpace(CompressionOutputDirectory):!string.IsNullOrWhiteSpace(CompressionOutputName)) && EngineVersions.Count > 0 && ValidVolumeSize && CompressionSourceError.Length == 0);
         OpenCreatedArchiveFolderCommand = new RelayCommand(() => OpenFolder(Path.GetDirectoryName(Path.GetFullPath(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput))!), () => File.Exists(createdCompressionPath.Length>0?createdCompressionPath:CompressionOutput));
-        CompressionSources.CollectionChanged += (_, _) => {CompressionCapabilitiesChanged();Changed(nameof(CompressionSourceSummary));};
+        CompressionSources.CollectionChanged += (_, _) => {InvalidateCompressionContents();CompressionCapabilitiesChanged();Changed(nameof(CompressionSourceSummary));};
     }
     public void AddCompressionSources(IEnumerable<string> paths)
     {

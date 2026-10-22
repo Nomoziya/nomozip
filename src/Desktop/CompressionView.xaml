@@ -257,6 +257,17 @@
                   </StackPanel>
                 </Expander>
               </Border>
+              <Expander x:Name="CompressionExclusionsExpander" Header="{loc:Text Compression.ContentRules}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
+                <StackPanel Margin="0,8,0,0">
+                  <Label Content="{loc:Text Compression.ExcludeDirectories}" Target="{Binding ElementName=ExcludedDirectoriesBox}" Padding="0,0,0,4"/>
+                  <TextBox x:Name="ExcludedDirectoriesBox" MaxLength="1024" Text="{Binding CompressionExcludedDirectories,UpdateSourceTrigger=PropertyChanged}" ToolTip="{loc:Text Compression.ExcludeDirectoriesHint}" AutomationProperties.Name="{loc:Text Compression.ExcludeDirectories}"/>
+                  <Label Content="{loc:Text Compression.ExcludeExtensions}" Target="{Binding ElementName=ExcludedExtensionsBox}" Padding="0,8,0,4"/>
+                  <TextBox x:Name="ExcludedExtensionsBox" MaxLength="1024" Text="{Binding CompressionExcludedExtensions,UpdateSourceTrigger=PropertyChanged}" ToolTip="{loc:Text Compression.ExcludeExtensionsHint}" AutomationProperties.Name="{loc:Text Compression.ExcludeExtensions}"/>
+                  <TextBlock Text="{Binding CompressionExclusionError}" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,4,0,0"/>
+                  <TextBlock Text="{loc:Text Compression.ExcludeDirectoriesHint}" Style="{StaticResource Secondary}" TextWrapping="Wrap" Margin="0,4,0,8"/>
+                  <Button x:Name="PreviewCompressionContentsButton" Content="{loc:Text Compression.PreviewContents}" Command="{Binding PreviewCompressionContentsCommand}" HorizontalAlignment="Left"/>
+                </StackPanel>
+              </Expander>
               <Expander x:Name="CompressionProfilesExpander" Header="{loc:Text Compression.ManageProfiles}" Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
                 <StackPanel Margin="0,8,0,0">
                   <Label Content="{loc:Text Compression.ProfileName}" Target="{Binding ElementName=CompressionProfileNameBox}" Padding="0,0,0,4"/>
@@ -349,6 +360,7 @@
           <StackPanel x:Name="CompressionResultPanel" Grid.Row="0" Grid.Column="0" Margin="0,0,20,8" VerticalAlignment="Center">
             <TextBlock Text="{Binding CompressionOutputFileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding CompressionOutputTarget}"/>
             <TextBlock x:Name="CompressionResultSummaryText" Text="{Binding CompressionResultSummary}" Style="{StaticResource Secondary}" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" Margin="0,4,0,0"/>
+            <TextBlock Text="{Binding CompressionContentSummary}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.LiveSetting="Polite"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Secondary}"><Style.Triggers><DataTrigger Binding="{Binding CompressionContentSummary}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
           </StackPanel>
         </Grid>
       </Border>
