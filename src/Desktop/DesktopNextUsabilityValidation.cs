@@ -57,6 +57,9 @@ internal static class DesktopNextUsabilityValidation
                 check($"next browser scope controls fit {mode} {width}",Fits(browser.SearchScopeBox) && Fits(browser.SelectedOnlyBox));
                 capture(browser,$"next-browser-grid-{mode}-{width}");
                 check($"next browser first grid card fits {mode} {width}",browser.EntryTiles.ItemContainerGenerator.ContainerFromIndex(0) is FrameworkElement card && Fits(card));
+                var firstCard=(FrameworkElement)browser.EntryTiles.ItemContainerGenerator.ContainerFromIndex(0);
+                var checkbox=Descendants(firstCard).OfType<CheckBox>().First();
+                check($"next browser grid checkbox stays inside artwork row {mode} {width}",checkbox.Parent is FrameworkElement parent && checkbox.ActualHeight<=parent.ActualHeight+1 && Fits(checkbox));
             }
         }
         finally {browser.Close();theme.SetMode("light");theme.Apply(false);}
