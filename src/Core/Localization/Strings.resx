@@ -3377,4 +3377,10 @@
   <data name="Compression.SeparateCompleted" xml:space="preserve"><value>已完成 {0}/{1} 个压缩包，失败 {2} 项。</value></data>
   <data name="Compression.SeparateCancelled" xml:space="preserve"><value>已取消；已完成 {0}/{1} 个压缩包，失败 {2} 项，后续项目未执行。</value></data>
   <data name="Browser.Updating" xml:space="preserve"><value>正在更新列表…</value></data>
+  <data name="Browser.ScopeArchive" xml:space="preserve"><value>整个压缩包</value></data>
+  <data name="Browser.ScopeFolder" xml:space="preserve"><value>当前目录及子目录</value></data>
+  <data name="Browser.SearchScope" xml:space="preserve"><value>搜索范围</value></data>
+  <data name="Browser.ScopeHint" xml:space="preserve"><value>搜索和高级筛选使用此范围；仅看已选会恢复整个压缩包。</value></data>
+  <data name="Browser.ArchiveRoot" xml:space="preserve"><value>压缩包根目录</value></data>
+  <data name="Browser.LocateEntry" xml:space="preserve"><value>定位所在目录</value></data>
 </root>

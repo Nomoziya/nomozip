@@ -3377,4 +3377,10 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.SeparateCompleted" xml:space="preserve"><value>Created {0} of {1:count:archive:archives}. Failed: {2}.</value></data>
   <data name="Compression.SeparateCancelled" xml:space="preserve"><value>Cancelled. Created {0} of {1:count:archive:archives}. Failed: {2}. Remaining sources were not processed.</value></data>
   <data name="Browser.Updating" xml:space="preserve"><value>Updating list…</value></data>
+  <data name="Browser.ScopeArchive" xml:space="preserve"><value>Entire archive</value></data>
+  <data name="Browser.ScopeFolder" xml:space="preserve"><value>Current folder + subfolders</value></data>
+  <data name="Browser.SearchScope" xml:space="preserve"><value>Search scope</value></data>
+  <data name="Browser.ScopeHint" xml:space="preserve"><value>Search and advanced filters use this scope. Selected only returns to the entire archive.</value></data>
+  <data name="Browser.ArchiveRoot" xml:space="preserve"><value>Archive root</value></data>
+  <data name="Browser.LocateEntry" xml:space="preserve"><value>Show in containing folder</value></data>
 </root>

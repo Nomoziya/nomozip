@@ -5,6 +5,7 @@
     <KeyBinding Key="Left" Modifiers="Alt" Command="{Binding FolderUpCommand}"/>
   </Window.InputBindings>
   <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="ShowWhenTrue"/>
     <Style x:Key="ViewToggle" TargetType="ToggleButton" BasedOn="{StaticResource BodyControl}">
       <Setter Property="Width" Value="36"/><Setter Property="Height" Value="32"/><Setter Property="Padding" Value="8"/><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/>
       <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ToggleButton"><Border x:Name="Tile" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsChecked" Value="True"><Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/><Setter TargetName="Tile" Property="Background" Value="{DynamicResource SelectionBrush}"/></Trigger><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Tile" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
@@ -118,6 +119,7 @@
                 </MenuItem.Icon>
               </MenuItem>
               <Separator Style="{StaticResource ActionMenuSeparator}"/>
+              <MenuItem x:Name="LocateCurrentEntryAction" Header="{loc:Text Browser.LocateEntry}" Command="{Binding LocateCurrentEntryCommand}"/>
               <MenuItem x:Name="ResetBrowserLayoutAction" Header="{loc:Text Browser.ResetLayout}" Command="{Binding ResetBrowserLayoutCommand}">
                 <MenuItem.Icon><loc:FluentIcon Kind="ArrowSync" Width="20" Height="20"/></MenuItem.Icon>
               </MenuItem>
@@ -152,7 +154,11 @@
           </Button.Style>
         </Button>
       </WrapPanel>
-      <CheckBox x:Name="SelectedOnlyBox" Content="{loc:Text Browser.SelectedOnly}" IsChecked="{Binding ShowSelectedOnly}" IsEnabled="{Binding CanSelect}" Margin="8,8,8,0" ToolTip="{loc:Text Browser.SelectedOnlyHint}" AutomationProperties.Name="{loc:Text Browser.SelectedOnly}"/>
+      <WrapPanel VerticalAlignment="Center" Margin="8,2,8,0">
+        <CheckBox x:Name="SelectedOnlyBox" Content="{loc:Text Browser.SelectedOnly}" IsChecked="{Binding ShowSelectedOnly}" IsEnabled="{Binding CanSelect}" Margin="0,4,16,0" ToolTip="{loc:Text Browser.SelectedOnlyHint}" AutomationProperties.Name="{loc:Text Browser.SelectedOnly}"/>
+        <Label Content="{loc:Text Browser.SearchScope}" Target="{Binding ElementName=SearchScopeBox}" Padding="0,4,8,0"/>
+        <ComboBox x:Name="SearchScopeBox" ItemsSource="{Binding SearchScopeChoices}" SelectedIndex="{Binding SearchScopeIndex}" Style="{StaticResource CompactOptionField}" Margin="0,2,0,0" AutomationProperties.Name="{loc:Text Browser.SearchScope}" ToolTip="{loc:Text Browser.ScopeHint}"/>
+      </WrapPanel>
       <Expander x:Name="AdvancedFilters" Header="{loc:Text Browser.Filters}" Margin="8,8,8,0" IsEnabled="{Binding CanSelect}">
         <StackPanel Margin="0,8,0,0">
           <WrapPanel>
@@ -212,7 +218,10 @@
                     </Border.Style>
                     <Image Source="{Binding PreviewThumbnail}" Stretch="UniformToFill"/>
                   </Border>
-                  <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding EncryptionText}"/>
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding DirectoryLabel}" FontSize="12" Foreground="{DynamicResource SecondaryBrush}" TextTrimming="CharacterEllipsis" Visibility="{Binding ShowPath,Converter={StaticResource ShowWhenTrue}}"/>
+                  </StackPanel>
                 </Grid>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -228,7 +237,7 @@
         <ListBox.ItemsPanel><ItemsPanelTemplate><vwp:VirtualizingWrapPanel SpacingMode="None" StretchItems="False"/></ItemsPanelTemplate></ListBox.ItemsPanel>
         <ListBox.InputBindings><KeyBinding Key="Enter" Command="{Binding OpenCurrentEntryCommand}"/><KeyBinding Key="Back" Command="{Binding FolderUpCommand}"/></ListBox.InputBindings>
         <ListBox.ItemContainerStyle><Style TargetType="ListBoxItem"><Setter Property="Margin" Value="4"/><Setter Property="Padding" Value="8"/><Setter Property="Width" Value="132"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}"/><Setter Property="Foreground" Value="{DynamicResource TextBrush}"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border x:Name="Tile" Padding="{TemplateBinding Padding}" Background="Transparent" CornerRadius="6" BorderThickness="1" BorderBrush="Transparent"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter TargetName="Tile" Property="Background" Value="{DynamicResource SelectionBrush}"/><Setter TargetName="Tile" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/></Trigger><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Tile" Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style></ListBox.ItemContainerStyle>
-        <ListBox.ItemTemplate><DataTemplate><StackPanel ToolTip="{Binding Path}"><Grid Height="68"><loc:FileKindIcon FileName="{Binding Path}" IsDirectory="{Binding Entry.Directory}" Width="44" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center"/><Image Source="{Binding PreviewThumbnail}" Width="64" Height="56" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/><CheckBox IsChecked="{Binding Selected,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" AutomationProperties.Name="{Binding Path}"/></Grid><TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" TextAlignment="Center" Margin="0,4,0,2"/><TextBlock Text="{Binding SizeText}" Style="{StaticResource Caption}" Foreground="{DynamicResource SecondaryBrush}" TextAlignment="Center"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
+        <ListBox.ItemTemplate><DataTemplate><StackPanel ToolTip="{Binding Path}"><Grid><Grid.Style><Style TargetType="Grid"><Setter Property="Height" Value="68"/><Style.Triggers><DataTrigger Binding="{Binding Tag,RelativeSource={RelativeSource AncestorType=ListBox}}" Value="True"><Setter Property="Height" Value="20"/></DataTrigger></Style.Triggers></Style></Grid.Style><Grid><Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding Tag,RelativeSource={RelativeSource AncestorType=ListBox}}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Grid.Style><loc:FileKindIcon FileName="{Binding Path}" IsDirectory="{Binding Entry.Directory}" Width="44" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center"/><Image Source="{Binding PreviewThumbnail}" Width="64" Height="56" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid><CheckBox IsChecked="{Binding Selected,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" AutomationProperties.Name="{Binding Path}"/></Grid><DockPanel Margin="0,4,0,2" ToolTip="{Binding FileName}"><TextBlock DockPanel.Dock="Right" Text="{Binding Extension}" MaxWidth="56" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding FileStem}" TextTrimming="CharacterEllipsis"/></DockPanel><TextBlock Text="{Binding DirectoryLabel}" Style="{StaticResource Caption}" Foreground="{DynamicResource SecondaryBrush}" TextTrimming="CharacterEllipsis" TextAlignment="Center" Visibility="{Binding ShowPath,Converter={StaticResource ShowWhenTrue}}"/><TextBlock Text="{Binding SizeText}" Style="{StaticResource Caption}" Foreground="{DynamicResource SecondaryBrush}" TextAlignment="Center"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
       </ListBox>
       <TextBlock Text="{loc:Text T_73d97e01d24e}" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
         <TextBlock.Style>

@@ -14,6 +14,12 @@ public partial class ArchiveContentsDialog : Window
         InitializeComponent();
         model.EnableBackgroundView();
         DataContext=model;
+        model.EntryLocationRequested+=(_,_)=>BrowserRoot.Dispatcher.BeginInvoke(() =>
+        {
+            if(model.CurrentRow is not {} row)return;
+            if(model.GridView){EntryTiles.ScrollIntoView(row);EntryTiles.UpdateLayout();(EntryTiles.ItemContainerGenerator.ContainerFromItem(row) as ListBoxItem)?.Focus();}
+            else {EntryTable.ScrollIntoView(row);EntryTable.UpdateLayout();(EntryTable.ItemContainerGenerator.ContainerFromItem(row) as DataGridRow)?.Focus();}
+        },System.Windows.Threading.DispatcherPriority.Loaded);
         if(model.UsesBackgroundView)BrowserRoot.Loaded+=(_,_)=>BrowserRoot.Dispatcher.BeginInvoke(model.StartInitialView,System.Windows.Threading.DispatcherPriority.Background);
         var sortFields=(model.BrowserPreferences.Sorts ?? []).Select(item=>new System.ComponentModel.SortDescription(item.Member,item.Direction)).ToList();
         void ApplySort()
@@ -62,7 +68,8 @@ public partial class ArchiveContentsDialog : Window
             ReferenceArchiveSearch.Width = narrow ? 230 : 286;
             EditContentsButton.Visibility = Visibility.Visible;
             var shortArea=EmbeddedClose is null && BrowserRoot.ActualHeight<480;
-            SelectedOnlyBox.Margin=new Thickness(8,shortArea?2:8,8,0);
+            SelectedOnlyBox.Margin=new Thickness(0,shortArea?0:4,16,0);
+            EntryTiles.Tag=shortArea && BrowserRoot.ActualHeight<400;
             AdvancedFilters.Margin=new Thickness(8,shortArea?2:8,8,0);
             BrowserHeader.Height=shortArea?90:130;
             BrowserTitleRow.Margin=new Thickness(34,0,shortArea?64:18,0);

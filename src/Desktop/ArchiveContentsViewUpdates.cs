@@ -45,6 +45,7 @@ public sealed partial class ArchiveContentsViewModel
         FilterError=valid?"":UiText.Get("Browser.FilterError");
         var query=search;var folder=currentFolder;var selectedOnly=showSelectedOnly;
         var across=selectedOnly || query.Length>0 || filterExtensions.Length>0 || filterMinimum.Length>0 || filterMaximum.Length>0 || filterKindIndex!=0;
+        var scope=across && searchScopeIndex==1?folder:null;
         var selected=selectedOnly?selectedRows.ToHashSet():null;
         var rows=orderedRows;var fields=viewSorts;var culture=CultureInfo.CurrentCulture;
         IsRefreshing=true;
@@ -61,7 +62,7 @@ public sealed partial class ArchiveContentsViewModel
                     {
                         if((index&255)==0)cancellation.Token.ThrowIfCancellationRequested();
                         var row=rows[index];
-                        if(!valid || selectedOnly && !selected!.Contains(row) || !row.Path.Contains(query,StringComparison.CurrentCultureIgnoreCase) || !filter.Matches(row.Entry))continue;
+                        if(!valid || !InSearchScope(row,scope) || selectedOnly && !selected!.Contains(row) || !row.Path.Contains(query,StringComparison.CurrentCultureIgnoreCase) || !filter.Matches(row.Entry))continue;
                         matches.Add(row);if(across || string.Equals(row.ParentPath,folder,StringComparison.OrdinalIgnoreCase))visible.Add(row);
                     }
                     var comparer=new ArchiveContentComparer(fields,culture,across);

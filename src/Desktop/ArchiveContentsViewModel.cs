@@ -126,7 +126,8 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
         var valid=ArchiveEntryFilter.TryCreate(filterExtensions,filterMinimum,filterMaximum,filterKindIndex,out var filter);
         FilterError=valid?"":UiText.Get("Browser.FilterError");
         var acrossFolders=showSelectedOnly || search.Length>0 || filterExtensions.Length>0 || filterMinimum.Length>0 || filterMaximum.Length>0 || filterKindIndex!=0;
-        bool Matches(ArchiveContentRow row)=>valid && (!showSelectedOnly || row.Selected) && row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase) && filter.Matches(row.Entry);
+        var scope=acrossFolders && searchScopeIndex==1?currentFolder:null;
+        bool Matches(ArchiveContentRow row)=>valid && InSearchScope(row,scope) && (!showSelectedOnly || row.Selected) && row.Path.Contains(search,StringComparison.CurrentCultureIgnoreCase) && filter.Matches(row.Entry);
         var matches=orderedRows.Where(Matches).ToArray();
         var visible=acrossFolders?matches:matches.Where(row=>string.Equals(row.ParentPath,currentFolder,StringComparison.OrdinalIgnoreCase)).ToArray();
         ApplyView(matches,visible,acrossFolders);
@@ -165,6 +166,7 @@ public sealed partial class ArchiveContentsViewModel : ObservableObject
             if (!Set(ref showSelectedOnly,value)) return;
             if(value)
             {
+                searchScopeIndex=0;Changed(nameof(SearchScopeIndex));
                 search=filterExtensions=filterMinimum=filterMaximum="";filterKindIndex=0;
                 foreach(var name in new[]{nameof(Search),nameof(FilterExtensions),nameof(FilterMinimum),nameof(FilterMaximum),nameof(FilterKindIndex)})Changed(name);
             }
@@ -361,18 +363,23 @@ public sealed class ArchiveContentRow(ArchiveEntry entry,bool virtualFolder=fals
     private System.Windows.Media.ImageSource? previewThumbnail;
     public System.Windows.Media.ImageSource? PreviewThumbnail {get=>previewThumbnail;internal set=>Set(ref previewThumbnail,value);}
     private bool showPath;
-    internal bool ShowPath
+    public bool ShowPath
     {
         get=>showPath;
         set
         {
             if(showPath==value)return;
             // Applying a large result already refreshes command state once after the batch.
-            showPath=value;Changed(nameof(ShowPath));Changed(nameof(DisplayName));
+            showPath=value;Changed(nameof(ShowPath));Changed(nameof(DisplayName));Changed(nameof(DirectoryLabel));
         }
     }
     private readonly string displayName=System.IO.Path.GetFileName(entry.Path.Replace('\\','/').TrimEnd('/'));
     internal string Name=>displayName;
+    public string FileName=>displayName;
+    private readonly string extension=entry.Directory?"":System.IO.Path.GetExtension(entry.Path);
+    public string Extension=>extension;
+    public string FileStem=>extension.Length==0?displayName:displayName[..^extension.Length];
+    public string DirectoryLabel=>ShowPath?(ParentPath.Length>0?ParentPath:UiText.Get("Browser.ArchiveRoot")):"";
     public string DisplayName=>ShowPath?Path:displayName;
     private bool selected;
     public ArchiveEntry Entry=>entry;

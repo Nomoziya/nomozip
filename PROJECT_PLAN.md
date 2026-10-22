@@ -1,5 +1,11 @@
 当前状态入口：[docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)。历史计划按需查询，当前开发见下节。
 
+## 2026-10-22 11:00：五项功能与UI恢复执行
+
+用户“继续任务”恢复原五项及UI，旧06:40窗口已经结束，不再作为本轮截止；旧两自动任务维持暂停。实际源码仍为privacy-clean-worktree-20261019，从5cec7bc建立codex/overnight-usability-20261022，原分支/候选/正式main保留。主会话/执行者gpt-6.1-sol/high、无委派，本轮turn_context 01a1618d-efda-72a3-870f-1641918bcf63已核对匹配，沿用project-stage-planner、ui-design-engineering、ui-ux-pro-max。范围和验收沿用下方原计划，按受影响流程逐项闭合，随后处理确有收益的扩展；不合并或发布。
+
+当前第一项实现搜索范围/目录定位及文件名、路径层级/短窗网格，源码本地构建通过；新增DesktopNextUsabilityValidation实际WPF检查，待双架构CI验收。其余四项尚未实施。定位用原生WPF ScrollIntoView实现并请求当前条目容器焦点，参考https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.datagrid.scrollintoview?view=windowsdesktop-10.0 ，不引入新包。定时未执行原因尚未确证，相关元数据取证不能替代执行证据，本轮直接手动推进；具体当前状态以摘要为准。
+
 ## 2026-10-22：一次性凌晨自主开发计划（04:10–06:40）
 
 **06:40截止结果：已暂停，未实际实施。** 当前仍为原开发分支codex/post-0.3.3-usability-20261021，截止前HEAD98cfd3b；未创建overnight分支，五项新功能及追加UI均未开始/未验收，未做完成后扩展研究，没有本次新CI。两个本次自动任务均已设PAUSED，产品和旧验收证据保留；未启动原因未知，不在截止后补跑。完整事实及后续入口见当前摘要。本节以下为事前计划，不是完成记录。
