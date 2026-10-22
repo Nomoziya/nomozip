@@ -29,6 +29,8 @@ internal static class DesktopPasswordMatchValidation
         var outside=await provider.ExplainAsync(Path.Combine(data,"source-other","Trip.zip"));
         check("matching directory boundary excludes similarly named siblings",!outside.Entries.Single(row=>row.Id==folder.Id).DirectoryMatch && !outside.Entries.Any(row=>row.Associated));
         check("matching DTO contains no secret or raw password record",typeof(PasswordMatchEntry).GetProperties().All(property=>property.Name is not ("Secret" or "Password") && property.PropertyType!=typeof(SavedPassword)));
+        var recent=new PasswordMatchViewModel(archive,new([new(1,Guid.NewGuid(),"Recent fallback","",false,false,false,created.AddDays(10))],0,0),true).Rows.Single();
+        check("matching recent fallback separates success history without claiming creation priority",recent.Reason==UiText.Get("PasswordMatch.Recent") && recent.History.Length>0);
         Exception? failure=null;var shown=false;
         var dialogs=new WindowDialogs(window,selectPasswordMatchArchive:()=>archive,preparePasswordMatches:dialog=>
         {
@@ -58,8 +60,11 @@ internal static class DesktopPasswordMatchValidation
         await window.Dispatcher.InvokeAsync(window.UpdateLayout,DispatcherPriority.ApplicationIdle);
         var menu=await DesktopMenuValidation.OpenAsync(window,window.VaultMoreAction);
         check("saved-rule preview is reachable through vault menu",menu.Items.OfType<MenuItem>().Any(item=>ReferenceEquals(item.Command,model.ExplainPasswordMatchesCommand) && DesktopMenuValidation.Reachable(item)));menu.IsOpen=false;
-        model.ExplainPasswordMatchesCommand.Execute(null);await model.WaitForIdleAsync();if(failure is not null)throw failure;
-        check("matching preview opens and never writes or extracts",shown && Enumerable.SequenceEqual(before,await File.ReadAllBytesAsync(vaultPath)) && !Directory.Exists(Path.GetDirectoryName(archive)));
+        check($"matching preview action enabled (idle={model.IsIdle}, locked={model.VaultLocked}, records={model.PasswordRows.Count}, banner={model.Banner})",model.ExplainPasswordMatchesCommand.CanExecute(null));
+        var resourceProbe=new PasswordMatchDialog(new(archive,plan,false));resourceProbe.Close();
+        await DesktopMenuValidation.InvokeAsync(window,window.VaultMoreAction,model.ExplainPasswordMatchesCommand);await model.WaitForIdleAsync();if(failure is not null)throw failure;
+        var unchanged=Enumerable.SequenceEqual(before,await File.ReadAllBytesAsync(vaultPath));var extracted=Directory.Exists(Path.GetDirectoryName(archive));
+        check($"matching preview opens and never writes or extracts (shown={shown}, unchanged={unchanged}, extracted={extracted}, banner={model.Banner})",shown && unchanged && !extracted);
         await vault.EnableMasterPasswordAsync("synthetic-master-password");await vault.LockAsync();await model.InitializeAsync();
         check("locked vault disables matching preview",model.VaultLocked && !model.ExplainPasswordMatchesCommand.CanExecute(null));
         theme.SetMode("light");theme.Apply(false);

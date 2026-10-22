@@ -3398,7 +3398,7 @@
   <data name="Compression.ContentScanFailed" xml:space="preserve"><value>无法读取压缩来源。检查来源是否移动或无权访问，然后重新预览。</value></data>
   <data name="Compression.ContentPreviewHint" xml:space="preserve"><value>排除目录的子内容不扫描。创建时重新扫描；源大小不代表生成包大小。</value></data>
   <data name="Compression.PreviewContents" xml:space="preserve"><value>预览压缩内容</value></data>
-  <data name="Compression.ContentState" xml:space="preserve"><value>处理方式</value></data>
+  <data name="Compression.ContentState" xml:space="preserve"><value>状态</value></data>
   <data name="Compression.ContentPackage" xml:space="preserve"><value>生成包</value></data>
   <data name="Compression.ContentPath" xml:space="preserve"><value>包内路径</value></data>
   <data name="Compression.CloseContents" xml:space="preserve"><value>关闭</value></data>
@@ -3434,4 +3434,5 @@
   <data name="PasswordMatch.Reason" xml:space="preserve"><value>匹配依据</value></data>
   <data name="PasswordMatch.Empty" xml:space="preserve"><value>没有启用自动尝试的密码记录。</value></data>
   <data name="Preview.CloseFind" xml:space="preserve"><value>收起查找 (Esc)</value></data>
+  <data name="PasswordMatch.Recent" xml:space="preserve"><value>常规候选 · 按最近成功排序</value></data>
 </root>

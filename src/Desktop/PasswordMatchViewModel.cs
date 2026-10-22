@@ -33,7 +33,7 @@ public sealed class PasswordMatchViewModel(string path,PasswordMatchPlan plan,bo
         if(entry.Associated)reasons.Add(UiText.Get("PasswordMatch.Associated"));
         if(entry.DirectoryMatch)reasons.Add(UiText.Get("PasswordMatch.Directory"));
         if(entry.NameMatch)reasons.Add(UiText.Get("PasswordMatch.Name"));
-        if(reasons.Count==0)reasons.Add(UiText.Get("PasswordMatch.Fallback"));
+        if(reasons.Count==0)reasons.Add(UiText.Get(entry.LastSuccessAt is null?"PasswordMatch.Fallback":"PasswordMatch.Recent"));
         return string.Join(" · ",reasons);
     }
 }

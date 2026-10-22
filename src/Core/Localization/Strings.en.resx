@@ -3398,7 +3398,7 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="Compression.ContentScanFailed" xml:space="preserve"><value>Cannot read the sources. Check whether they moved or access was denied, then preview again.</value></data>
   <data name="Compression.ContentPreviewHint" xml:space="preserve"><value>Contents of excluded folders are not scanned. Sources are scanned again when creating; source size is not the resulting archive size.</value></data>
   <data name="Compression.PreviewContents" xml:space="preserve"><value>Preview archive contents</value></data>
-  <data name="Compression.ContentState" xml:space="preserve"><value>Action</value></data>
+  <data name="Compression.ContentState" xml:space="preserve"><value>Status</value></data>
   <data name="Compression.ContentPackage" xml:space="preserve"><value>Archive</value></data>
   <data name="Compression.ContentPath" xml:space="preserve"><value>Archive path</value></data>
   <data name="Compression.CloseContents" xml:space="preserve"><value>Close</value></data>
@@ -3434,4 +3434,5 @@ Waiting for data. You can wait or cancel and retry.</value></data>
   <data name="PasswordMatch.Reason" xml:space="preserve"><value>Matching reason</value></data>
   <data name="PasswordMatch.Empty" xml:space="preserve"><value>No password records are enabled for automatic attempts.</value></data>
   <data name="Preview.CloseFind" xml:space="preserve"><value>Close find (Esc)</value></data>
+  <data name="PasswordMatch.Recent" xml:space="preserve"><value>Fallback candidate · Recent success order</value></data>
 </root>
